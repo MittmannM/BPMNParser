@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" 
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" 
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" 
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI" 
+                  id="Definitions_DSGVO_Art33" 
+                  targetNamespace="http://bpmn.io/schema/bpmn" 
+                  exporter="bpmn-js (https://demo.bpmn.io)" 
+                  exporterVersion="11.4.1">
+  <bpmn:collaboration id="Collaboration_DSGVO">
+    <bpmn:participant id="Participant_AV" name="Auftragsverarbeiter" processRef="Process_AV" />
+    <bpmn:participant id="Participant_V" name="Verantwortlicher" processRef="Process_V" />
+    <bpmn:participant id="Participant_AB" name="Aufsichtsbehörde (Art. 55)" />
+    <bpmn:messageFlow id="MessageFlow_1" sourceRef="Task_AV_Notify" targetRef="Start_V" />
+    <bpmn:messageFlow id="MessageFlow_2" sourceRef="Task_V_Send" targetRef="Participant_AB" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_AV" isExecutable="false">
+    <bpmn:startEvent id="Start_AV" name="Verletzung des Schutzes personenbezogener Daten bekannt (Abs. 2)">
+      <bpmn:outgoing>Flow_AV_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Task_AV_Notify" name="Verantwortlichen unverzüglich melden">
+      <bpmn:incoming>Flow_AV_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_AV_2</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="End_AV" name="Pflicht erfüllt">
+      <bpmn:incoming>Flow_AV_2</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_AV_1" sourceRef="Start_AV" targetRef="Task_AV_Notify" />
+    <bpmn:sequenceFlow id="Flow_AV_2" sourceRef="Task_AV_Notify" targetRef="End_AV" />
+  </bpmn:process>
+
+  <bpmn:process id="Process_V" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_1">
+      <bpmn:lane id="Lane_V_Main" name="Datenschutz / Geschäftsführung">
+        <bpmn:flowNodeRef>Start_V</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Split_Doc_Notif</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_V_Doc</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_V_Risk</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Split_Risk</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_V_NoRisk</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_V_Prep</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Split_72h</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_V_DelayReason</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Merge_72h</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Merge_Loop</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_V_Send</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Split_Complete</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_V_Gather</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Merge_Final</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_V_Success</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+
+    <bpmn:startEvent id="Start_V" name="Verletzung bekannt geworden">
+      <bpmn:outgoing>Flow_V_1</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1" />
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_V_1" sourceRef="Start_V" targetRef="Gateway_Split_Doc_Notif" />
+
+    <bpmn:parallelGateway id="Gateway_Split_Doc_Notif" name="Pflichten parallel ausführen">
+      <bpmn:incoming>Flow_V_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_V_Doc_1</bpmn:outgoing>
+      <bpmn:outgoing>Flow_V_Notif_1</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:sequenceFlow id="Flow_V_Doc_1" sourceRef="Gateway_Split_Doc_Notif" targetRef="Task_V_Doc" />
+    <bpmn:task id="Task_V_Doc" name="Verletzung, Fakten, Auswirkungen u. Maßnahmen dokumentieren (Abs. 5)">
+      <bpmn:incoming>Flow_V_Doc_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_V_Doc_2</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DOA_1">
+        <bpmn:targetRef>DataObject_Doc</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_V_Doc_2" sourceRef="Task_V_Doc" targetRef="Gateway_Merge_Final" />
+
+    <bpmn:sequenceFlow id="Flow_V_Notif_1" sourceRef="Gateway_Split_Doc_Notif" targetRef="Task_V_Risk" />
+    <bpmn:task id="Task_V_Risk" name="Risiko für Rechte und Freiheiten natürlicher Personen prüfen">
+      <bpmn:incoming>Flow_V_Notif_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_V_Notif_2</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_V_Notif_2" sourceRef="Task_V_Risk" targetRef="Gateway_Split_Risk" />
+
+    <bpmn:exclusiveGateway id="Gateway_Split_Risk" name="Voraussichtliches Risiko?">
+      <bpmn:incoming>Flow_V_Notif_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_V_NoRisk</bpmn:outgoing>
+      <bpmn:outgoing>Flow_V_Risk</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sequenceFlow id="Flow_V_NoRisk" name="Nein" sourceRef="Gateway_Split_Risk" targetRef="End_V_NoRisk" />
+    <bpmn:endEvent id="End_V_NoRisk" name="Keine Meldung nötig (nur interne Doku)">
+      <bpmn:incoming>Flow_V_NoRisk</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_V_Risk" name="Ja" sourceRef="Gateway_Split_Risk" targetRef="Task_V_Prep" />
+    <bpmn:task id="Task_V_Prep" name="Meldungsinhalte zusammentragen (Art. 33 Abs. 3)">
+      <bpmn:incoming>Flow_V_Risk</bpmn:incoming>
+      <bpmn:outgoing>Flow_V_Prep_Out</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DOA_2">
+        <bpmn:targetRef>DataObject_Info</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_V_Prep_Out" sourceRef="Task_V_Prep" targetRef="Gateway_Split_72h" />
+
+    <bpmn:exclusiveGateway id="Gateway_Split_72h" name="&#62; 72 Stunden vergangen?">
+      <bpmn:incoming>Flow_V_Prep_Out</bpmn:incoming>
+      <bpmn:outgoing>Flow_V_72h_Yes</bpmn:outgoing>
+      <bpmn:outgoing>Flow_V_72h_No</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sequenceFlow id="Flow_V_72h_Yes" name="Ja" sourceRef="Gateway_Split_72h" targetRef="Task_V_DelayReason" />
+    <bpmn:task id="Task_V_DelayReason" name="Begründung für Verzögerung beifügen (Abs. 1 S. 2)">
+      <bpmn:incoming>Flow_V_72h_Yes</bpmn:incoming>
+      <bpmn:outgoing>Flow_V_Delay_Out</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_V_Delay_Out" sourceRef="Task_V_DelayReason" targetRef="Gateway_Merge_72h" />
+
+    <bpmn:sequenceFlow id="Flow_V_72h_No" name="Nein" sourceRef="Gateway_Split_72h" targetRef="Gateway_Merge_72h" />
+
+    <bpmn:exclusiveGateway id="Gateway_Merge_72h">
+      <bpmn:incoming>Flow_V_Delay_Out</bpmn:incoming>
+      <bpmn:incoming>Flow_V_72h_No</bpmn:incoming>
+      <bpmn:outgoing>Flow_V_Merge72h_Out</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_V_Merge72h_Out" sourceRef="Gateway_Merge_72h" targetRef="Gateway_Merge_Loop" />
+
+    <bpmn:exclusiveGateway id="Gateway_Merge_Loop">
+      <bpmn:incoming>Flow_V_Merge72h_Out</bpmn:incoming>
+      <bpmn:incoming>Flow_V_Gather_Out</bpmn:incoming>
+      <bpmn:outgoing>Flow_Loop_In</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_Loop_In" sourceRef="Gateway_Merge_Loop" targetRef="Task_V_Send" />
+
+    <bpmn:task id="Task_V_Send" name="Meldung (oder Teilmeldung) an Behörde übermitteln">
+      <bpmn:incoming>Flow_Loop_In</bpmn:incoming>
+      <bpmn:outgoing>Flow_V_Send_Out</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_V_Send_Out" sourceRef="Task_V_Send" targetRef="Gateway_Split_Complete" />
+
+    <bpmn:exclusiveGateway id="Gateway_Split_Complete" name="Informationen vollständig?">
+      <bpmn:incoming>Flow_V_Send_Out</bpmn:incoming>
+      <bpmn:outgoing>Flow_V_Complete_No</bpmn:outgoing>
+      <bpmn:outgoing>Flow_V_Complete_Yes</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sequenceFlow id="Flow_V_Complete_No" name="Nein (schrittweise Meldung)" sourceRef="Gateway_Split_Complete" targetRef="Task_V_Gather" />
+    <bpmn:task id="Task_V_Gather" name="Weitere Infos ohne unangemessene Verzögerung beschaffen (Abs. 4)">
+      <bpmn:incoming>Flow_V_Complete_No</bpmn:incoming>
+      <bpmn:outgoing>Flow_V_Gather_Out</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_V_Gather_Out" sourceRef="Task_V_Gather" targetRef="Gateway_Merge_Loop" />
+
+    <bpmn:sequenceFlow id="Flow_V_Complete_Yes" name="Ja" sourceRef="Gateway_Split_Complete" targetRef="Gateway_Merge_Final" />
+
+    <bpmn:parallelGateway id="Gateway_Merge_Final" name="Pflichten erfüllt">
+      <bpmn:incoming>Flow_V_Complete_Yes</bpmn:incoming>
+      <bpmn:incoming>Flow_V_Doc_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_V_Final</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:sequenceFlow id="Flow_V_Final" sourceRef="Gateway_Merge_Final" targetRef="End_V_Success" />
+    <bpmn:endEvent id="End_V_Success" name="Meldeprozess erfolgreich abgeschlossen">
+      <bpmn:incoming>Flow_V_Final</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:dataObjectReference id="DataObject_Doc" name="Dokumentation (Fakten, Folgen, Maßnahmen)" dataObjectRef="DO_1" />
+    <bpmn:dataObject id="DO_1" />
+    <bpmn:dataObjectReference id="DataObject_Info" name="Informationen (Art, Betroffene, DPO, Folgen)" dataObjectRef="DO_2" />
+    <bpmn:dataObject id="DO_2" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_DSGVO">
+      <bpmndi:BPMNShape id="Participant_AV_Shape" bpmnElement="Participant_AV" isHorizontal="true">
+        <dc:Bounds x="100" y="80" width="400" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Start_AV_Shape" bpmnElement="Start_AV">
+        <dc:Bounds x="150" y="122" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="135" y="165" width="67" height="66" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AV_Notify_Shape" bpmnElement="Task_AV_Notify">
+        <dc:Bounds x="240" y="100" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_AV_Shape" bpmnElement="End_AV">
+        <dc:Bounds x="400" y="122" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="388" y="165" width="61" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_AV_1_Edge" bpmnElement="Flow_AV_1">
+        <di:waypoint x="186" y="140" />
+        <di:waypoint x="240" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AV_2_Edge" bpmnElement="Flow_AV_2">
+        <di:waypoint x="340" y="140" />
+        <di:waypoint x="400" y="140" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNShape id="Participant_AB_Shape" bpmnElement="Participant_AB" isHorizontal="true">
+        <dc:Bounds x="100" y="700" width="1500" height="80" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Participant_V_Shape" bpmnElement="Participant_V" isHorizontal="true">
+        <dc:Bounds x="100" y="250" width="1500" height="400" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_V_Main_Shape" bpmnElement="Lane_V_Main" isHorizontal="true">
+        <dc:Bounds x="130" y="250" width="1470" height="400" />
+      </bpmndi:BPMNShape>
+      
+      <bpmndi:BPMNShape id="Start_V_Shape" bpmnElement="Start_V">
+        <dc:Bounds x="160" y="432" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="138" y="475" width="81" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Split_Doc_Notif_Shape" bpmnElement="Gateway_Split_Doc_Notif">
+        <dc:Bounds x="230" y="425" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="216" y="482" width="79" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_V_Doc_Shape" bpmnElement="Task_V_Doc">
+        <dc:Bounds x="330" y="280" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_V_Risk_Shape" bpmnElement="Task_V_Risk">
+        <dc:Bounds x="330" y="410" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Split_Risk_Shape" bpmnElement="Gateway_Split_Risk" isMarkerVisible="true">
+        <dc:Bounds x="480" y="425" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="464" y="387" width="82" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_V_NoRisk_Shape" bpmnElement="End_V_NoRisk">
+        <dc:Bounds x="580" y="550" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="561" y="593" width="75" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_V_Prep_Shape" bpmnElement="Task_V_Prep">
+        <dc:Bounds x="580" y="410" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Split_72h_Shape" bpmnElement="Gateway_Split_72h" isMarkerVisible="true">
+        <dc:Bounds x="730" y="425" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="724" y="482" width="63" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_V_DelayReason_Shape" bpmnElement="Task_V_DelayReason">
+        <dc:Bounds x="830" y="320" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Merge_72h_Shape" bpmnElement="Gateway_Merge_72h" isMarkerVisible="true">
+        <dc:Bounds x="980" y="425" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Merge_Loop_Shape" bpmnElement="Gateway_Merge_Loop" isMarkerVisible="true">
+        <dc:Bounds x="1050" y="425" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_V_Send_Shape" bpmnElement="Task_V_Send">
+        <dc:Bounds x="1130" y="410" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Split_Complete_Shape" bpmnElement="Gateway_Split_Complete" isMarkerVisible="true">
+        <dc:Bounds x="1280" y="425" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1269" y="388" width="72" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_V_Gather_Shape" bpmnElement="Task_V_Gather">
+        <dc:Bounds x="1130" y="520" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Merge_Final_Shape" bpmnElement="Gateway_Merge_Final">
+        <dc:Bounds x="1400" y="425" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1388" y="482" width="75" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_V_Success_Shape" bpmnElement="End_V_Success">
+        <dc:Bounds x="1500" y="432" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1482" y="475" width="73" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="DataObject_Doc_Shape" bpmnElement="DataObject_Doc">
+        <dc:Bounds x="482" y="265" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="461" y="322" width="78" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObject_Info_Shape" bpmnElement="DataObject_Info">
+        <dc:Bounds x="592" y="320" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="566" y="283" width="88" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_V_1_Edge" bpmnElement="Flow_V_1">
+        <di:waypoint x="196" y="450" />
+        <di:waypoint x="230" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_V_Doc_1_Edge" bpmnElement="Flow_V_Doc_1">
+        <di:waypoint x="255" y="425" />
+        <di:waypoint x="255" y="320" />
+        <di:waypoint x="330" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_V_Doc_2_Edge" bpmnElement="Flow_V_Doc_2">
+        <di:waypoint x="430" y="320" />
+        <di:waypoint x="1425" y="320" />
+        <di:waypoint x="1425" y="425" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_V_Notif_1_Edge" bpmnElement="Flow_V_Notif_1">
+        <di:waypoint x="280" y="450" />
+        <di:waypoint x="330" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_V_Notif_2_Edge" bpmnElement="Flow_V_Notif_2">
+        <di:waypoint x="430" y="450" />
+        <di:waypoint x="480" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_V_NoRisk_Edge" bpmnElement="Flow_V_NoRisk">
+        <di:waypoint x="505" y="475" />
+        <di:waypoint x="505" y="568" />
+        <di:waypoint x="580" y="568" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="510" y="519" width="23" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_V_Risk_Edge" bpmnElement="Flow_V_Risk">
+        <di:waypoint x="530" y="450" />
+        <di:waypoint x="580" y="450" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="549" y="432" width="12" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_V_Prep_Out_Edge" bpmnElement="Flow_V_Prep_Out">
+        <di:waypoint x="680" y="450" />
+        <di:waypoint x="730" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_V_72h_Yes_Edge" bpmnElement="Flow_V_72h_Yes">
+        <di:waypoint x="755" y="425" />
+        <di:waypoint x="755" y="360" />
+        <di:waypoint x="830" y="360" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="764" y="390" width="12" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_V_Delay_Out_Edge" bpmnElement="Flow_V_Delay_Out">
+        <di:waypoint x="930" y="360" />
+        <di:waypoint x="1005" y="360" />
+        <di:waypoint x="1005" y="425" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_V_72h_No_Edge" bpmnElement="Flow_V_72h_No">
+        <di:waypoint x="780" y="450" />
+        <di:waypoint x="980" y="450" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="869" y="432" width="23" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_V_Merge72h_Out_Edge" bpmnElement="Flow_V_Merge72h_Out">
+        <di:waypoint x="1030" y="450" />
+        <di:waypoint x="1050" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Loop_In_Edge" bpmnElement="Flow_Loop_In">
+        <di:waypoint x="1100" y="450" />
+        <di:waypoint x="1130" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_V_Send_Out_Edge" bpmnElement="Flow_V_Send_Out">
+        <di:waypoint x="1230" y="450" />
+        <di:waypoint x="1280" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_V_Complete_No_Edge" bpmnElement="Flow_V_Complete_No">
+        <di:waypoint x="1305" y="475" />
+        <di:waypoint x="1305" y="560" />
+        <di:waypoint x="1230" y="560" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1312" y="515" width="59" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_V_Gather_Out_Edge" bpmnElement="Flow_V_Gather_Out">
+        <di:waypoint x="1130" y="560" />
+        <di:waypoint x="1075" y="560" />
+        <di:waypoint x="1075" y="475" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_V_Complete_Yes_Edge" bpmnElement="Flow_V_Complete_Yes">
+        <di:waypoint x="1330" y="450" />
+        <di:waypoint x="1400" y="450" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1359" y="432" width="12" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_V_Final_Edge" bpmnElement="Flow_V_Final">
+        <di:waypoint x="1450" y="450" />
+        <di:waypoint x="1500" y="450" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="DOA_1_Edge" bpmnElement="DOA_1">
+        <di:waypoint x="430" y="298" />
+        <di:waypoint x="482" y="291" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DOA_2_Edge" bpmnElement="DOA_2">
+        <di:waypoint x="618" y="410" />
+        <di:waypoint x="613" y="370" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_1_Edge" bpmnElement="MessageFlow_1">
+        <di:waypoint x="290" y="180" />
+        <di:waypoint x="290" y="306" />
+        <di:waypoint x="178" y="306" />
+        <di:waypoint x="178" y="432" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_2_Edge" bpmnElement="MessageFlow_2">
+        <di:waypoint x="1180" y="490" />
+        <di:waypoint x="1180" y="700" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
