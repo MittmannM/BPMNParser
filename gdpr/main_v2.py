@@ -1,6 +1,7 @@
 import os
-from parser_v2 import extract_gdpr_structural
-from generator import generate_bpmn_master
+
+from generator_v2_impl import generate_bpmn_master
+from parser_v3_impl import extract_gdpr_structural
 
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
