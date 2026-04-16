@@ -4,7 +4,8 @@ from utils import generate_id
 from constants import (
     ACTOR_LIST, STRUCTURAL_NS, DEONTIC_WRAPPERS, MODAL_HELPERS,
     CONTENT_VERBS, RELATION_VERBS, EVENT_TRIGGERS, HUMANIZER,
-    COND_HUMANIZER, RECIPIENT_HUMANIZER, RAW_SKIP_LABELS
+    COND_HUMANIZER, RECIPIENT_HUMANIZER, RAW_SKIP_LABELS,
+    CONTEXT_PREDICATES
 )
 
 def extract_gdpr_master(xml_path, target_article="art_33"):
@@ -79,38 +80,64 @@ def extract_gdpr_master(xml_path, target_article="art_33"):
             # --- IF-Block analysieren ---
             if_match = re.search(r'<ruleml:if>(.*?)</ruleml:if>', rule_block, re.DOTALL | re.IGNORECASE)
             if_var_concepts = {}
+            # Maps variable key (e.g. ':x') -> actor concept (e.g. 'Processor')
+            if_var_actors = {}
             if if_match:
                 if_block = if_match.group(1)
 
+                # ISSUE 1 FIX: Strip <ruleml:Naf> blocks BEFORE processing atoms.
+                # Naf encodes "NOT(exception)" guards (e.g. exceptionCha4Sec1Art28Par3Point1AuthByEU).
+                # They must never be treated as conditions or data objects.
+                if_block_no_naf = re.sub(r'<ruleml:Naf>.*?</ruleml:Naf>', '', if_block, flags=re.DOTALL)
+
                 # Time bounds
-                time_m = re.search(r'<ruleml:Fun\s+iri="swrlb:add"\s*/>.*?<ruleml:Ind>([^<]+)</ruleml:Ind>', if_block, re.DOTALL)
+                time_m = re.search(r'<ruleml:Fun\s+iri="swrlb:add"\s*/?>.*?<ruleml:Ind>([^<]+)</ruleml:Ind>', if_block_no_naf, re.DOTALL)
                 if time_m:
                     has_time_bound = True
                     time_bound_value = time_m.group(1).strip()
                     conditions.append(f"> {time_bound_value} elapsed")
 
                 # Structural signals
-                if re.search(r'iri="rioOnto:and"', if_block): gateway_type = "parallel"
-                elif re.search(r'iri="rioOnto:or"', if_block): gateway_type = "exclusive"
-                if re.search(r'iri="rioOnto:not"', if_block): conditions.append("NOT Possible")
-                if re.search(r'iri="rioOnto:possible"', if_block) or re.search(r"iri=\"rioOnto:possible'\"", if_block) or re.search(r'iri="rioOnto:partOf"', if_block):
+                if re.search(r'iri="rioOnto:and"', if_block_no_naf): gateway_type = "parallel"
+                elif re.search(r'iri="rioOnto:or"', if_block_no_naf): gateway_type = "exclusive"
+                if re.search(r'iri="rioOnto:not"', if_block_no_naf): conditions.append("NOT Possible")
+                if re.search(r'iri="rioOnto:possible"', if_block_no_naf) or re.search(r"iri=\"rioOnto:possible'\"", if_block_no_naf) or re.search(r'iri="rioOnto:partOf"', if_block_no_naf):
                     conditions.append("Partial Information Available")
 
-                # Domain events vs. gateway conditions
-                for atom in re.findall(r'<ruleml:Atom[^>]*>(.*?)</ruleml:Atom>', if_block, re.DOTALL):
+                # ISSUE 2 FIX: Build var->concept map AND var->actor map from ALL atoms,
+                # including those where the actor variable is introduced with key= (not just keyref=).
+                for atom in re.findall(r'<ruleml:Atom[^>]*>(.*?)</ruleml:Atom>', if_block_no_naf, re.DOTALL):
                     rel = re.search(r'<ruleml:Rel[^>]*iri="([^:]+):([^"]+)"', atom)
                     if not rel: continue
                     ns, concept = rel.group(1), rel.group(2)
                     clean_c = concept.replace("'", "")
-                    
-                    a_keyrefs = re.findall(r'<ruleml:Var[^>]* keyref="([^"]+)"', atom)
-                    if a_keyrefs and concept not in STRUCTURAL_NS:
-                        if_var_concepts[a_keyrefs[0]] = clean_c
-                    if clean_c in ACTOR_LIST:
-                        for kr in a_keyrefs:
-                            if_var_concepts[kr] = clean_c
 
-                    if ns in STRUCTURAL_NS or concept in ACTOR_LIST: continue
+                    # Collect ALL variable names (both key= definitions and keyref= references)
+                    key_vars   = re.findall(r'<ruleml:Var[^>]* key="([^"]+)"', atom)
+                    keyrefs    = re.findall(r'<ruleml:Var[^>]* keyref="([^"]+)"', atom)
+                    all_vars   = key_vars + keyrefs
+
+                    # Store first-arg concept for every variable seen in this atom
+                    if all_vars and clean_c not in STRUCTURAL_NS:
+                        if_var_concepts[all_vars[0]] = clean_c
+
+                    # ISSUE 2: If this atom declares an actor, register ALL its variable names.
+                    if clean_c in ACTOR_LIST:
+                        for v in all_vars:
+                            if_var_actors[v] = clean_c
+                            if_var_concepts[v] = clean_c
+
+                # ISSUE 3 FIX: Only collect true gateway conditions — NOT background context predicates.
+                # Background context atoms (PersonalData, nominates, isBasedOn, Contract, etc.) define
+                # the legal scenario and would bloat every XOR gateway label. Skip them.
+                for atom in re.findall(r'<ruleml:Atom[^>]*>(.*?)</ruleml:Atom>', if_block_no_naf, re.DOTALL):
+                    rel = re.search(r'<ruleml:Rel[^>]*iri="([^:]+):([^"]+)"', atom)
+                    if not rel: continue
+                    ns, concept = rel.group(1), rel.group(2)
+                    clean_c = concept.replace("'", "")
+
+                    if ns in STRUCTURAL_NS or clean_c in ACTOR_LIST: continue
+                    if clean_c in CONTEXT_PREDICATES: continue   # <- ISSUE 3: skip background context
                     if clean_c in EVENT_TRIGGERS:
                         if clean_c not in events:
                             events.append(clean_c)
@@ -194,10 +221,15 @@ def extract_gdpr_master(xml_path, target_article="art_33"):
 
                 if concept in {'Obliged', 'Permitted', 'Prohibited'}:
                     deontic_action_var = keyrefs[0]
+                    # ISSUE 2 FIX: actor variable is 3rd keyref (index 2) in Obliged(:event, :time, :actor).
+                    # Look it up in if_var_actors first (precise map), then fall back to if_var_concepts.
                     if len(keyrefs) > 2:
                         av = keyrefs[2]
-                        if av in if_var_concepts and if_var_concepts[av] in ACTOR_LIST:
+                        if av in if_var_actors:
+                            task_actor = if_var_actors[av]
+                        elif av in if_var_concepts and if_var_concepts[av] in ACTOR_LIST:
                             task_actor = if_var_concepts[av]
+                    # Also check Fun elements directly encoding the actor
                     for f in funs:
                         if f in ACTOR_LIST:
                             task_actor = f; break
@@ -207,8 +239,12 @@ def extract_gdpr_master(xml_path, target_article="art_33"):
                     has_right = True
                     if len(keyrefs) > 1:
                         deontic_action_var = keyrefs[1]
-                    if keyrefs[0] in if_var_concepts and if_var_concepts[keyrefs[0]] in ACTOR_LIST:
-                        task_actor = if_var_concepts[keyrefs[0]]
+                    # For Right, first keyref is the actor variable
+                    actor_var = keyrefs[0]
+                    if actor_var in if_var_actors:
+                        task_actor = if_var_actors[actor_var]
+                    elif actor_var in if_var_concepts and if_var_concepts[actor_var] in ACTOR_LIST:
+                        task_actor = if_var_concepts[actor_var]
                 break
 
             if deontic_action_var:

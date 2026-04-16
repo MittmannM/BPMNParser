@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:collaboration id="Collaboration_1">
+    <bpmn:participant id="Participant_Process" name="GDPR Process" processRef="Process_GDPR" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_GDPR" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_1">
+      <bpmn:lane id="Lane_Controller" name="Controller">
+        <bpmn:flowNodeRef>StartEvent_9929cad4</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_f5479ca2</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ebfcfc65</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Split_36f20e22</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Merge_07d8f7f5</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_43f7be63</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Split_8add88e3</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Merge_3cdc0e58</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_05d0dac5</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Split_c76cee6d</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Merge_e5924ac4</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_c0f5b1f9</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Split_29018353</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Merge_60939469</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_92a3f803</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Split_f8d944f3</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Merge_af3a896f</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_0e4457a1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Split_c132a154</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Merge_0a8d710d</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="StartEvent_9929cad4" name="Start" />
+    <bpmn:sequenceFlow id="Flow_0e085650" sourceRef="StartEvent_9929cad4" targetRef="Gateway_Split_36f20e22" />
+    <bpmn:exclusiveGateway id="Gateway_Split_36f20e22" name="If NOT all info available yet?"><bpmn:incoming>Flow_0e085650</bpmn:incoming></bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_Yes_8411f777" name="Yes" sourceRef="Gateway_Split_36f20e22" targetRef="Task_ebfcfc65" />
+    <bpmn:task id="Task_ebfcfc65" name="Erase Personal Data to Controller
+(Art. 17 Abs. 1 lit. a)"><bpmn:incoming>Flow_Yes_8411f777</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_e18dcdf9" sourceRef="Task_ebfcfc65" targetRef="Gateway_Merge_07d8f7f5" />
+    <bpmn:sequenceFlow id="Flow_No_23b481e2" name="No" sourceRef="Gateway_Split_36f20e22" targetRef="Gateway_Merge_07d8f7f5" />
+    <bpmn:exclusiveGateway id="Gateway_Merge_07d8f7f5"><bpmn:incoming>Flow_e18dcdf9</bpmn:incoming><bpmn:incoming>Flow_No_23b481e2</bpmn:incoming></bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_8c3e0965" sourceRef="Gateway_Merge_07d8f7f5" targetRef="Gateway_Split_8add88e3" />
+    <bpmn:exclusiveGateway id="Gateway_Split_8add88e3" name="If NOT all info available yet AND Consent Withdrawn?"><bpmn:incoming>Flow_8c3e0965</bpmn:incoming></bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_Yes_21baa5dc" name="Yes" sourceRef="Gateway_Split_8add88e3" targetRef="Task_43f7be63" />
+    <bpmn:task id="Task_43f7be63" name="Erase Personal Data to Controller
+(Art. 17 Abs. 1 lit. b)"><bpmn:incoming>Flow_Yes_21baa5dc</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_fa1faab0" sourceRef="Task_43f7be63" targetRef="Gateway_Merge_3cdc0e58" />
+    <bpmn:sequenceFlow id="Flow_No_7782f749" name="No" sourceRef="Gateway_Split_8add88e3" targetRef="Gateway_Merge_3cdc0e58" />
+    <bpmn:exclusiveGateway id="Gateway_Merge_3cdc0e58"><bpmn:incoming>Flow_fa1faab0</bpmn:incoming><bpmn:incoming>Flow_No_7782f749</bpmn:incoming></bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_c95b24bc" sourceRef="Gateway_Merge_3cdc0e58" targetRef="Gateway_Split_c76cee6d" />
+    <bpmn:exclusiveGateway id="Gateway_Split_c76cee6d" name="If Public Interest Processing AND Consent Withdrawn?"><bpmn:incoming>Flow_c95b24bc</bpmn:incoming></bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_Yes_b48068c1" name="Yes" sourceRef="Gateway_Split_c76cee6d" targetRef="Task_05d0dac5" />
+    <bpmn:task id="Task_05d0dac5" name="Erase Personal Data to Controller
+(Art. 17 Abs. 1 lit. c)"><bpmn:incoming>Flow_Yes_b48068c1</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_008bdca9" sourceRef="Task_05d0dac5" targetRef="Gateway_Merge_e5924ac4" />
+    <bpmn:sequenceFlow id="Flow_No_3c9d6cf4" name="No" sourceRef="Gateway_Split_c76cee6d" targetRef="Gateway_Merge_e5924ac4" />
+    <bpmn:exclusiveGateway id="Gateway_Merge_e5924ac4"><bpmn:incoming>Flow_008bdca9</bpmn:incoming><bpmn:incoming>Flow_No_3c9d6cf4</bpmn:incoming></bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_41e97179" sourceRef="Gateway_Merge_e5924ac4" targetRef="Gateway_Split_29018353" />
+    <bpmn:exclusiveGateway id="Gateway_Split_29018353" name="If NOT all info available yet AND Processing Was Lawful?"><bpmn:incoming>Flow_41e97179</bpmn:incoming></bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_Yes_0fe684c9" name="Yes" sourceRef="Gateway_Split_29018353" targetRef="Task_c0f5b1f9" />
+    <bpmn:task id="Task_c0f5b1f9" name="Erase Personal Data to Controller
+(Art. 17 Abs. 1 lit. d)"><bpmn:incoming>Flow_Yes_0fe684c9</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_29b27424" sourceRef="Task_c0f5b1f9" targetRef="Gateway_Merge_60939469" />
+    <bpmn:sequenceFlow id="Flow_No_e8d114c5" name="No" sourceRef="Gateway_Split_29018353" targetRef="Gateway_Merge_60939469" />
+    <bpmn:exclusiveGateway id="Gateway_Merge_60939469"><bpmn:incoming>Flow_29b27424</bpmn:incoming><bpmn:incoming>Flow_No_e8d114c5</bpmn:incoming></bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_e7823016" sourceRef="Gateway_Merge_60939469" targetRef="Gateway_Split_f8d944f3" />
+    <bpmn:exclusiveGateway id="Gateway_Split_f8d944f3" name="If Original Consent Given AND Data Subject Gave Consent?"><bpmn:incoming>Flow_e7823016</bpmn:incoming></bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_Yes_aaab7581" name="Yes" sourceRef="Gateway_Split_f8d944f3" targetRef="Task_92a3f803" />
+    <bpmn:task id="Task_92a3f803" name="Erase Personal Data to Controller
+(Art. 17 Abs. 1 lit. f)"><bpmn:incoming>Flow_Yes_aaab7581</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_4fbfbf91" sourceRef="Task_92a3f803" targetRef="Gateway_Merge_af3a896f" />
+    <bpmn:sequenceFlow id="Flow_No_699a8928" name="No" sourceRef="Gateway_Split_f8d944f3" targetRef="Gateway_Merge_af3a896f" />
+    <bpmn:exclusiveGateway id="Gateway_Merge_af3a896f"><bpmn:incoming>Flow_4fbfbf91</bpmn:incoming><bpmn:incoming>Flow_No_699a8928</bpmn:incoming></bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_877bf2d5" sourceRef="Gateway_Merge_af3a896f" targetRef="Gateway_Split_c132a154" />
+    <bpmn:exclusiveGateway id="Gateway_Split_c132a154" name="If Information Made Public OR Erase Personal Data?"><bpmn:incoming>Flow_877bf2d5</bpmn:incoming></bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_Yes_c092f253" name="Yes" sourceRef="Gateway_Split_c132a154" targetRef="Task_0e4457a1" />
+    <bpmn:sendTask id="Task_0e4457a1" name="Notify to Controller
+(Art. 17 Abs. 2)"><bpmn:incoming>Flow_Yes_c092f253</bpmn:incoming></bpmn:sendTask>
+    <bpmn:sequenceFlow id="Flow_b34be510" sourceRef="Task_0e4457a1" targetRef="Gateway_Merge_0a8d710d" />
+    <bpmn:sequenceFlow id="Flow_No_0d072b0d" name="No" sourceRef="Gateway_Split_c132a154" targetRef="Gateway_Merge_0a8d710d" />
+    <bpmn:exclusiveGateway id="Gateway_Merge_0a8d710d"><bpmn:incoming>Flow_b34be510</bpmn:incoming><bpmn:incoming>Flow_No_0d072b0d</bpmn:incoming></bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_d4a12c94" sourceRef="Gateway_Merge_0a8d710d" targetRef="EndEvent_f5479ca2" />
+    <bpmn:endEvent id="EndEvent_f5479ca2" name="End"><bpmn:incoming>Flow_d4a12c94</bpmn:incoming></bpmn:endEvent>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
+      <bpmndi:BPMNShape id="Participant_Process_di" bpmnElement="Participant_Process" isHorizontal="true"><dc:Bounds x="50" y="50" width="3486" height="200" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Controller_di" bpmnElement="Lane_Controller" isHorizontal="true"><dc:Bounds x="80" y="50" width="3456" height="200" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_9929cad4_di" bpmnElement="StartEvent_9929cad4"><dc:Bounds x="150" y="132" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Split_36f20e22_di" bpmnElement="Gateway_Split_36f20e22" isMarkerVisible="true"><dc:Bounds x="286" y="125" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ebfcfc65_di" bpmnElement="Task_ebfcfc65"><dc:Bounds x="406" y="110" width="150" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Merge_07d8f7f5_di" bpmnElement="Gateway_Merge_07d8f7f5" isMarkerVisible="true"><dc:Bounds x="636" y="125" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Split_8add88e3_di" bpmnElement="Gateway_Split_8add88e3" isMarkerVisible="true"><dc:Bounds x="786" y="125" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_43f7be63_di" bpmnElement="Task_43f7be63"><dc:Bounds x="906" y="110" width="150" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Merge_3cdc0e58_di" bpmnElement="Gateway_Merge_3cdc0e58" isMarkerVisible="true"><dc:Bounds x="1136" y="125" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Split_c76cee6d_di" bpmnElement="Gateway_Split_c76cee6d" isMarkerVisible="true"><dc:Bounds x="1286" y="125" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_05d0dac5_di" bpmnElement="Task_05d0dac5"><dc:Bounds x="1406" y="110" width="150" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Merge_e5924ac4_di" bpmnElement="Gateway_Merge_e5924ac4" isMarkerVisible="true"><dc:Bounds x="1636" y="125" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Split_29018353_di" bpmnElement="Gateway_Split_29018353" isMarkerVisible="true"><dc:Bounds x="1786" y="125" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_c0f5b1f9_di" bpmnElement="Task_c0f5b1f9"><dc:Bounds x="1906" y="110" width="150" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Merge_60939469_di" bpmnElement="Gateway_Merge_60939469" isMarkerVisible="true"><dc:Bounds x="2136" y="125" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Split_f8d944f3_di" bpmnElement="Gateway_Split_f8d944f3" isMarkerVisible="true"><dc:Bounds x="2286" y="125" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_92a3f803_di" bpmnElement="Task_92a3f803"><dc:Bounds x="2406" y="110" width="150" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Merge_af3a896f_di" bpmnElement="Gateway_Merge_af3a896f" isMarkerVisible="true"><dc:Bounds x="2636" y="125" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Split_c132a154_di" bpmnElement="Gateway_Split_c132a154" isMarkerVisible="true"><dc:Bounds x="2786" y="125" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_0e4457a1_di" bpmnElement="Task_0e4457a1"><dc:Bounds x="2906" y="110" width="150" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Merge_0a8d710d_di" bpmnElement="Gateway_Merge_0a8d710d" isMarkerVisible="true"><dc:Bounds x="3136" y="125" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_f5479ca2_di" bpmnElement="EndEvent_f5479ca2"><dc:Bounds x="3286" y="132" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0e085650_di" bpmnElement="Flow_0e085650"><di:waypoint x="186" y="150" /><di:waypoint x="286" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Yes_8411f777_di" bpmnElement="Flow_Yes_8411f777"><di:waypoint x="336" y="150" /><di:waypoint x="406" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_e18dcdf9_di" bpmnElement="Flow_e18dcdf9"><di:waypoint x="556" y="150" /><di:waypoint x="636" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_No_23b481e2_di" bpmnElement="Flow_No_23b481e2"><di:waypoint x="311" y="175" /><di:waypoint x="311" y="216" /><di:waypoint x="661" y="216" /><di:waypoint x="661" y="175" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8c3e0965_di" bpmnElement="Flow_8c3e0965"><di:waypoint x="686" y="150" /><di:waypoint x="786" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Yes_21baa5dc_di" bpmnElement="Flow_Yes_21baa5dc"><di:waypoint x="836" y="150" /><di:waypoint x="906" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_fa1faab0_di" bpmnElement="Flow_fa1faab0"><di:waypoint x="1056" y="150" /><di:waypoint x="1136" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_No_7782f749_di" bpmnElement="Flow_No_7782f749"><di:waypoint x="811" y="175" /><di:waypoint x="811" y="216" /><di:waypoint x="1161" y="216" /><di:waypoint x="1161" y="175" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_c95b24bc_di" bpmnElement="Flow_c95b24bc"><di:waypoint x="1186" y="150" /><di:waypoint x="1286" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Yes_b48068c1_di" bpmnElement="Flow_Yes_b48068c1"><di:waypoint x="1336" y="150" /><di:waypoint x="1406" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_008bdca9_di" bpmnElement="Flow_008bdca9"><di:waypoint x="1556" y="150" /><di:waypoint x="1636" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_No_3c9d6cf4_di" bpmnElement="Flow_No_3c9d6cf4"><di:waypoint x="1311" y="175" /><di:waypoint x="1311" y="216" /><di:waypoint x="1661" y="216" /><di:waypoint x="1661" y="175" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_41e97179_di" bpmnElement="Flow_41e97179"><di:waypoint x="1686" y="150" /><di:waypoint x="1786" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Yes_0fe684c9_di" bpmnElement="Flow_Yes_0fe684c9"><di:waypoint x="1836" y="150" /><di:waypoint x="1906" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_29b27424_di" bpmnElement="Flow_29b27424"><di:waypoint x="2056" y="150" /><di:waypoint x="2136" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_No_e8d114c5_di" bpmnElement="Flow_No_e8d114c5"><di:waypoint x="1811" y="175" /><di:waypoint x="1811" y="216" /><di:waypoint x="2161" y="216" /><di:waypoint x="2161" y="175" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_e7823016_di" bpmnElement="Flow_e7823016"><di:waypoint x="2186" y="150" /><di:waypoint x="2286" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Yes_aaab7581_di" bpmnElement="Flow_Yes_aaab7581"><di:waypoint x="2336" y="150" /><di:waypoint x="2406" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4fbfbf91_di" bpmnElement="Flow_4fbfbf91"><di:waypoint x="2556" y="150" /><di:waypoint x="2636" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_No_699a8928_di" bpmnElement="Flow_No_699a8928"><di:waypoint x="2311" y="175" /><di:waypoint x="2311" y="216" /><di:waypoint x="2661" y="216" /><di:waypoint x="2661" y="175" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_877bf2d5_di" bpmnElement="Flow_877bf2d5"><di:waypoint x="2686" y="150" /><di:waypoint x="2786" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Yes_c092f253_di" bpmnElement="Flow_Yes_c092f253"><di:waypoint x="2836" y="150" /><di:waypoint x="2906" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_b34be510_di" bpmnElement="Flow_b34be510"><di:waypoint x="3056" y="150" /><di:waypoint x="3136" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_No_0d072b0d_di" bpmnElement="Flow_No_0d072b0d"><di:waypoint x="2811" y="175" /><di:waypoint x="2811" y="216" /><di:waypoint x="3161" y="216" /><di:waypoint x="3161" y="175" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_d4a12c94_di" bpmnElement="Flow_d4a12c94"><di:waypoint x="3186" y="150" /><di:waypoint x="3286" y="150" /></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

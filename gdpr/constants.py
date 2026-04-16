@@ -14,7 +14,33 @@ RELATION_VERBS = {
     'isRepresentedBy', 'ResponsibleFor', 'Transmit', 'nominates',
     'isBasedOn', 'RelatedTo', 'partOf', 'cause', 'imply', 'Hold',
     'Execute', 'Request', 'LegalRequirement', 'Marketing', 'publicPowers',
-    'Purpose', 'PersonalDataProcessing'
+    'Purpose', 'PersonalDataProcessing', 'AuthorizedBy', 'WorkIn',
+    'PartyOf', 'Contract', 'ViolationOf', 'AdhereTo', 'codeOfConduct',
+    'ApprovedCertificationMechanism', 'StandardContractualClause',
+    'confidentialWrt', 'AssistFor', 'Return', 'Define',
+}
+
+# Background context predicates: atoms that appear in every rule's IF block to define
+# the legal scenario (who is involved, what data, what legal basis). These must NEVER
+# become XOR/AND gateway condition labels — they're always true preconditions, not
+# true decision branches.
+CONTEXT_PREDICATES = {
+    # Data & subject role markers
+    'PersonalData', 'PersonalDataProcessing', 'DataSubject', 'Controller',
+    'Processor', 'SupervisoryAuthority', 'MemberState',
+    # Legal relationship markers
+    'nominates', 'isBasedOn', 'Purpose', 'partOf', 'isRepresentedBy',
+    'ResponsibleFor', 'LegalRequirement', 'publicPowers', 'Marketing',
+    # Contract / sub-processor context
+    'Contract', 'PartyOf', 'ViolationOf', 'StandardContractualClause',
+    # Compliance markers
+    'AdhereTo', 'codeOfConduct', 'ApprovedCertificationMechanism',
+    # Relational descriptors
+    'RelatedTo', 'WorkIn', 'AssistFor', 'AuthorizedBy',
+    'confidentialWrt', 'Return', 'Define',
+    # Misc structural
+    'Communicate', 'Transmit', 'Execute', 'Request', 'Hold', 'cause',
+    'imply', 'PublicInterest',
 }
 
 # True process-triggering events
@@ -74,6 +100,24 @@ COND_HUMANIZER = {
     "nominates": "Processor Nominates Representative",
     "feasible": "Notification Feasible",
     "NOT Possible": "NOT all info available yet",
+    # Art. 17 grounds for erasure
+    "publicInterest": "Public Interest Processing",
+    "lawfulness": "Processing Was Lawful",
+    "Consent": "Original Consent Given",
+    "GiveConsent": "Data Subject Gave Consent",
+    "WithdrawConsent": "Consent Withdrawn",
+    "public": "Information Made Public",
+    # Art. 5 data minimisation
+    "accurate": "Data is Accurate",
+    "PersonalDataRecord": "Processing Record Exists",
+    "Store": "Data Stored",
+    # Art. 30 / 34
+    "Representative": "Controller Has Representative",
+    "requireTooMuchEffort": "Disproportionate Effort",
+    # Art. 28 sub-processor conditions
+    "Demonstrate": "Compliance Demonstrated",
+    "Comply With Obligations": "Obligations Complied With",
+    "Maintain Processing Record": "Processing Record Maintained",
 }
 
 RECIPIENT_HUMANIZER = {

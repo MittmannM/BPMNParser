@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:collaboration id="Collaboration_1">
+    <bpmn:participant id="Participant_Process" name="GDPR Process" processRef="Process_GDPR" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_GDPR" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_1">
+      <bpmn:lane id="Lane_Controller" name="Controller">
+        <bpmn:flowNodeRef>StartEvent_11ca7766</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_49d95460</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_f1c4da17</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Split_a95ddf79</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Merge_306f5089</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_cbb00d35</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_32464eff</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Split_053c6d0c</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Merge_0976b8ec</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="StartEvent_11ca7766" name="Start" />
+    <bpmn:sequenceFlow id="Flow_8a7f11c4" sourceRef="StartEvent_11ca7766" targetRef="Event_cbb00d35" />
+    <bpmn:intermediateCatchEvent id="Event_cbb00d35" name="Data Breach Detected"><bpmn:incoming>Flow_8a7f11c4</bpmn:incoming><bpmn:conditionalEventDefinition id="CondDef_5c4b0fff"><bpmn:condition xsi:type="bpmn:tFormalExpression">Data Breach Detected</bpmn:condition></bpmn:conditionalEventDefinition></bpmn:intermediateCatchEvent>
+    <bpmn:sequenceFlow id="Flow_3bb18766" sourceRef="Event_cbb00d35" targetRef="Gateway_Split_a95ddf79" />
+    <bpmn:exclusiveGateway id="Gateway_Split_a95ddf79" name="If High Risk to Individuals AND Risk to Rights & Freedoms AND Natural Person Affected?"><bpmn:incoming>Flow_3bb18766</bpmn:incoming></bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_Yes_40241e7a" name="Yes" sourceRef="Gateway_Split_a95ddf79" targetRef="Task_f1c4da17" />
+    <bpmn:dataObject id="DataObj_1dedd637" />
+    <bpmn:dataObjectReference id="DataRef_0b9c8ddd" dataObjectRef="DataObj_1dedd637" name="Contact Details" />
+    <bpmn:sendTask id="Task_f1c4da17" name="Notify to Data Subject
+(Art. 34 Abs. 1)"><bpmn:incoming>Flow_Yes_40241e7a</bpmn:incoming><bpmn:dataOutputAssociation id="Assoc_09e0864a"><bpmn:targetRef>DataRef_0b9c8ddd</bpmn:targetRef></bpmn:dataOutputAssociation></bpmn:sendTask>
+    <bpmn:sequenceFlow id="Flow_3dab0db1" sourceRef="Task_f1c4da17" targetRef="Gateway_Merge_306f5089" />
+    <bpmn:sequenceFlow id="Flow_No_329fddde" name="No" sourceRef="Gateway_Split_a95ddf79" targetRef="Gateway_Merge_306f5089" />
+    <bpmn:exclusiveGateway id="Gateway_Merge_306f5089"><bpmn:incoming>Flow_3dab0db1</bpmn:incoming><bpmn:incoming>Flow_No_329fddde</bpmn:incoming></bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_af13ed13" sourceRef="Gateway_Merge_306f5089" targetRef="Gateway_Split_053c6d0c" />
+    <bpmn:exclusiveGateway id="Gateway_Split_053c6d0c" name="If Disproportionate Effort?"><bpmn:incoming>Flow_af13ed13</bpmn:incoming></bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_Yes_f1d49e49" name="Yes" sourceRef="Gateway_Split_053c6d0c" targetRef="Task_32464eff" />
+    <bpmn:sendTask id="Task_32464eff" name="Notify
+(Art. 34 Abs. 3 lit. c)"><bpmn:incoming>Flow_Yes_f1d49e49</bpmn:incoming></bpmn:sendTask>
+    <bpmn:sequenceFlow id="Flow_db2c335c" sourceRef="Task_32464eff" targetRef="Gateway_Merge_0976b8ec" />
+    <bpmn:sequenceFlow id="Flow_No_3d4a1fce" name="No" sourceRef="Gateway_Split_053c6d0c" targetRef="Gateway_Merge_0976b8ec" />
+    <bpmn:exclusiveGateway id="Gateway_Merge_0976b8ec"><bpmn:incoming>Flow_db2c335c</bpmn:incoming><bpmn:incoming>Flow_No_3d4a1fce</bpmn:incoming></bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_e3213854" sourceRef="Gateway_Merge_0976b8ec" targetRef="EndEvent_49d95460" />
+    <bpmn:endEvent id="EndEvent_49d95460" name="End"><bpmn:incoming>Flow_e3213854</bpmn:incoming></bpmn:endEvent>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
+      <bpmndi:BPMNShape id="Participant_Process_di" bpmnElement="Participant_Process" isHorizontal="true"><dc:Bounds x="50" y="50" width="1602" height="200" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Controller_di" bpmnElement="Lane_Controller" isHorizontal="true"><dc:Bounds x="80" y="50" width="1572" height="200" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_11ca7766_di" bpmnElement="StartEvent_11ca7766"><dc:Bounds x="150" y="132" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_cbb00d35_di" bpmnElement="Event_cbb00d35"><dc:Bounds x="266" y="132" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Split_a95ddf79_di" bpmnElement="Gateway_Split_a95ddf79" isMarkerVisible="true"><dc:Bounds x="402" y="125" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_0b9c8ddd_di" bpmnElement="DataRef_0b9c8ddd"><dc:Bounds x="512" y="30" width="36" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_f1c4da17_di" bpmnElement="Task_f1c4da17"><dc:Bounds x="522" y="110" width="150" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Merge_306f5089_di" bpmnElement="Gateway_Merge_306f5089" isMarkerVisible="true"><dc:Bounds x="752" y="125" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Split_053c6d0c_di" bpmnElement="Gateway_Split_053c6d0c" isMarkerVisible="true"><dc:Bounds x="902" y="125" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_32464eff_di" bpmnElement="Task_32464eff"><dc:Bounds x="1022" y="110" width="150" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Merge_0976b8ec_di" bpmnElement="Gateway_Merge_0976b8ec" isMarkerVisible="true"><dc:Bounds x="1252" y="125" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_49d95460_di" bpmnElement="EndEvent_49d95460"><dc:Bounds x="1402" y="132" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_8a7f11c4_di" bpmnElement="Flow_8a7f11c4"><di:waypoint x="186" y="150" /><di:waypoint x="266" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3bb18766_di" bpmnElement="Flow_3bb18766"><di:waypoint x="302" y="150" /><di:waypoint x="402" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Yes_40241e7a_di" bpmnElement="Flow_Yes_40241e7a"><di:waypoint x="452" y="150" /><di:waypoint x="522" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_09e0864a_di" bpmnElement="Assoc_09e0864a"><di:waypoint x="597" y="110" /><di:waypoint x="530" y="80" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3dab0db1_di" bpmnElement="Flow_3dab0db1"><di:waypoint x="672" y="150" /><di:waypoint x="752" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_No_329fddde_di" bpmnElement="Flow_No_329fddde"><di:waypoint x="427" y="175" /><di:waypoint x="427" y="216" /><di:waypoint x="777" y="216" /><di:waypoint x="777" y="175" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_af13ed13_di" bpmnElement="Flow_af13ed13"><di:waypoint x="802" y="150" /><di:waypoint x="902" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Yes_f1d49e49_di" bpmnElement="Flow_Yes_f1d49e49"><di:waypoint x="952" y="150" /><di:waypoint x="1022" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_db2c335c_di" bpmnElement="Flow_db2c335c"><di:waypoint x="1172" y="150" /><di:waypoint x="1252" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_No_3d4a1fce_di" bpmnElement="Flow_No_3d4a1fce"><di:waypoint x="927" y="175" /><di:waypoint x="927" y="216" /><di:waypoint x="1277" y="216" /><di:waypoint x="1277" y="175" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_e3213854_di" bpmnElement="Flow_e3213854"><di:waypoint x="1302" y="150" /><di:waypoint x="1402" y="150" /></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
