@@ -9,15 +9,19 @@ MODAL_HELPERS = {'AbleTo', 'nonDelayed', 'possible', 'responsible', 'feasible', 
 # Content verbs: verbs that describe WHAT a document/record must contain — never primary tasks
 CONTENT_VERBS = {'Contain', 'Describe', 'CategoryOf', 'allInfoAbout', 'imply'}
 
-# Relation verbs: structural relations in the ontology — skip as data objects
+# Relation verbs: ONLY true structural/ontological predicates that can NEVER be
+# primary BPMN tasks (pure logical connectives, type predicates, qualitative attributes).
+# DO NOT put domain action verbs here even if they sometimes appear as IF-block context —
+# use CONTEXT_PREDICATES for that (it only filters the gateway-condition scan, not THEN resolution).
 RELATION_VERBS = {
-    'isRepresentedBy', 'ResponsibleFor', 'Transmit', 'nominates',
-    'isBasedOn', 'RelatedTo', 'partOf', 'cause', 'imply', 'Hold',
-    'Execute', 'Request', 'LegalRequirement', 'Marketing', 'publicPowers',
-    'Purpose', 'PersonalDataProcessing', 'AuthorizedBy', 'WorkIn',
-    'PartyOf', 'Contract', 'ViolationOf', 'AdhereTo', 'codeOfConduct',
+    # Pure ontological type/membership predicates
+    'isRepresentedBy', 'nominates', 'isBasedOn', 'partOf', 'cause', 'imply',
+    'LegalRequirement', 'Marketing', 'publicPowers', 'Purpose',
+    # Structural relationship markers (not callable as process steps)
+    'PartyOf', 'ViolationOf', 'codeOfConduct',
     'ApprovedCertificationMechanism', 'StandardContractualClause',
-    'confidentialWrt', 'AssistFor', 'Return', 'Define',
+    # Attribute/state predicates
+    'confidentialWrt',
 }
 
 # Background context predicates: atoms that appear in every rule's IF block to define
@@ -90,6 +94,26 @@ HUMANIZER = {
     "Register": "Maintain Processing Record",
     "WriteIn": "Record Processing Activity",
     "Implement": "Implement Measure",
+    # Art. 82 — liability & compensation
+    "ResponsibleFor": "Bear Legal Responsibility",
+    "CompensationFor": "Receive Compensation",
+    "PayFor": "Pay Compensation",
+    "HasBeenDamaged": "Damage Suffered",
+    "Request": "Submit Request",
+    # Art. 82 / general — additional action verbs
+    "Transmit": "Transmit Data",
+    "Execute": "Execute Processing",
+    "Hold": "Hold Data",
+    "RelatedTo": "Related Processing",
+    "AdhereTo": "Adhere to Rules",
+    "AssistFor": "Assist With Compliance",
+    "Return": "Return Personal Data",
+    "WorkIn": "Work In Capacity",
+    "AuthorizedBy": "Authorized By Controller",
+    "Define": "Define Processing Scope",
+    "Contract": "Enter Contract",
+    "Demonstrate": "Demonstrate Compliance",
+    "ComplyWith": "Comply With Obligations",
 }
 
 COND_HUMANIZER = {
