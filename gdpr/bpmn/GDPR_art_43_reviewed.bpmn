@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art43_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art43_Reviewed">
+    <bpmn:participant id="Participant_CertificationBody_Art43"
+                      name="Accredited Certification Body"
+                      processRef="Process_CertificationBody_Art43" />
+    <bpmn:participant id="Participant_SupervisoryAuthority_Art43"
+                      name="Supervisory Authority" />
+
+    <bpmn:messageFlow id="MessageFlow_NotifyGrantOrRenewal_Art43"
+                      sourceRef="SendTask_NotifyGrantOrRenewal_Art43"
+                      targetRef="Participant_SupervisoryAuthority_Art43" />
+    <bpmn:messageFlow id="MessageFlow_SendGrantOrRenewalReasons_Art43"
+                      sourceRef="SendTask_SendGrantOrRenewalReasons_Art43"
+                      targetRef="Participant_SupervisoryAuthority_Art43" />
+    <bpmn:messageFlow id="MessageFlow_NotifyWithdrawal_Art43"
+                      sourceRef="SendTask_NotifyWithdrawal_Art43"
+                      targetRef="Participant_SupervisoryAuthority_Art43" />
+    <bpmn:messageFlow id="MessageFlow_SendWithdrawalReasons_Art43"
+                      sourceRef="SendTask_SendWithdrawalReasons_Art43"
+                      targetRef="Participant_SupervisoryAuthority_Art43" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_CertificationBody_Art43"
+                name="Issuing, renewing, or withdrawing certification"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 43 based on DAPRECO LegalRuleML statements239-241.
+      The model focuses on an accredited certification body that is responsible for certification
+      decisions under an approved certification mechanism and must communicate granted or
+      withdrawn certification, together with the reasons for that decision, to the supervisory
+      authority. The assessment step is included as an operational bridge so that the withdrawal
+      and grant-or-renew paths remain process-readable.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_CertificationCase_Art43"
+                     name="Certification body handles a certification case">
+      <bpmn:outgoing>Flow_Start_To_ConfirmResponsibility_Art43</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_ConfirmResponsibility_Art43"
+               name="Confirm responsibility for the approved certification mechanism">
+      <bpmn:incoming>Flow_Start_To_ConfirmResponsibility_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_ConfirmResponsibility_To_GatewayAccredited_Art43</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_Accredited_Art43"
+                           name="Is the body accredited by the supervisory authority?">
+      <bpmn:incoming>Flow_ConfirmResponsibility_To_GatewayAccredited_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAccredited_To_EndNotAccredited_Art43</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAccredited_To_ReviewCase_Art43</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_NotAccredited_Art43"
+                   name="No accredited certification action can be taken">
+      <bpmn:incoming>Flow_GatewayAccredited_To_EndNotAccredited_Art43</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:task id="Task_ReviewCertificationCase_Art43"
+               name="Review whether the certification requirements are fulfilled or still fulfilled">
+      <bpmn:incoming>Flow_GatewayAccredited_To_ReviewCase_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReviewCase_To_GatewayRequirements_Art43</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_RequirementsFulfilled_Art43"
+                           name="Are the certification requirements fulfilled or still fulfilled?">
+      <bpmn:incoming>Flow_ReviewCase_To_GatewayRequirements_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayRequirements_To_IssueOrRenew_Art43</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayRequirements_To_Withdraw_Art43</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_IssueOrRenewCertification_Art43"
+               name="Issue or renew certification under the approved certification mechanism">
+      <bpmn:incoming>Flow_GatewayRequirements_To_IssueOrRenew_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_IssueOrRenew_To_NotifyGrantOrRenewal_Art43</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="SendTask_NotifyGrantOrRenewal_Art43"
+                   name="Notify the supervisory authority of the granted or renewed certification">
+      <bpmn:incoming>Flow_IssueOrRenew_To_NotifyGrantOrRenewal_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_NotifyGrantOrRenewal_To_PrepareGrantReasons_Art43</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:task id="Task_PrepareGrantOrRenewalReasons_Art43"
+               name="Prepare the reasons for the grant or renewal decision">
+      <bpmn:incoming>Flow_NotifyGrantOrRenewal_To_PrepareGrantReasons_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_PrepareGrantReasons_To_SendGrantReasons_Art43</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="SendTask_SendGrantOrRenewalReasons_Art43"
+                   name="Send the reasons for the grant or renewal decision to the supervisory authority">
+      <bpmn:incoming>Flow_PrepareGrantReasons_To_SendGrantReasons_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendGrantReasons_To_EndGrantNotified_Art43</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_GrantOrRenewalCompleted_Art43"
+                   name="Grant or renewal notification completed">
+      <bpmn:incoming>Flow_SendGrantReasons_To_EndGrantNotified_Art43</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:task id="Task_WithdrawCertification_Art43"
+               name="Withdraw certification under the approved certification mechanism">
+      <bpmn:incoming>Flow_GatewayRequirements_To_Withdraw_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_Withdraw_To_NotifyWithdrawal_Art43</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="SendTask_NotifyWithdrawal_Art43"
+                   name="Notify the supervisory authority of the withdrawn certification">
+      <bpmn:incoming>Flow_Withdraw_To_NotifyWithdrawal_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_NotifyWithdrawal_To_PrepareWithdrawalReasons_Art43</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:task id="Task_PrepareWithdrawalReasons_Art43"
+               name="Prepare the reasons for the withdrawal decision">
+      <bpmn:incoming>Flow_NotifyWithdrawal_To_PrepareWithdrawalReasons_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_PrepareWithdrawalReasons_To_SendWithdrawalReasons_Art43</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="SendTask_SendWithdrawalReasons_Art43"
+                   name="Send the reasons for the withdrawal decision to the supervisory authority">
+      <bpmn:incoming>Flow_PrepareWithdrawalReasons_To_SendWithdrawalReasons_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendWithdrawalReasons_To_EndWithdrawalNotified_Art43</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_WithdrawalCompleted_Art43"
+                   name="Withdrawal notification completed">
+      <bpmn:incoming>Flow_SendWithdrawalReasons_To_EndWithdrawalNotified_Art43</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_ConfirmResponsibility_Art43"
+                       sourceRef="StartEvent_CertificationCase_Art43"
+                       targetRef="Task_ConfirmResponsibility_Art43" />
+    <bpmn:sequenceFlow id="Flow_ConfirmResponsibility_To_GatewayAccredited_Art43"
+                       sourceRef="Task_ConfirmResponsibility_Art43"
+                       targetRef="Gateway_Accredited_Art43" />
+    <bpmn:sequenceFlow id="Flow_GatewayAccredited_To_EndNotAccredited_Art43"
+                       name="No"
+                       sourceRef="Gateway_Accredited_Art43"
+                       targetRef="EndEvent_NotAccredited_Art43" />
+    <bpmn:sequenceFlow id="Flow_GatewayAccredited_To_ReviewCase_Art43"
+                       name="Yes"
+                       sourceRef="Gateway_Accredited_Art43"
+                       targetRef="Task_ReviewCertificationCase_Art43" />
+    <bpmn:sequenceFlow id="Flow_ReviewCase_To_GatewayRequirements_Art43"
+                       sourceRef="Task_ReviewCertificationCase_Art43"
+                       targetRef="Gateway_RequirementsFulfilled_Art43" />
+    <bpmn:sequenceFlow id="Flow_GatewayRequirements_To_IssueOrRenew_Art43"
+                       name="Yes"
+                       sourceRef="Gateway_RequirementsFulfilled_Art43"
+                       targetRef="Task_IssueOrRenewCertification_Art43" />
+    <bpmn:sequenceFlow id="Flow_GatewayRequirements_To_Withdraw_Art43"
+                       name="No"
+                       sourceRef="Gateway_RequirementsFulfilled_Art43"
+                       targetRef="Task_WithdrawCertification_Art43" />
+    <bpmn:sequenceFlow id="Flow_IssueOrRenew_To_NotifyGrantOrRenewal_Art43"
+                       sourceRef="Task_IssueOrRenewCertification_Art43"
+                       targetRef="SendTask_NotifyGrantOrRenewal_Art43" />
+    <bpmn:sequenceFlow id="Flow_NotifyGrantOrRenewal_To_PrepareGrantReasons_Art43"
+                       sourceRef="SendTask_NotifyGrantOrRenewal_Art43"
+                       targetRef="Task_PrepareGrantOrRenewalReasons_Art43" />
+    <bpmn:sequenceFlow id="Flow_PrepareGrantReasons_To_SendGrantReasons_Art43"
+                       sourceRef="Task_PrepareGrantOrRenewalReasons_Art43"
+                       targetRef="SendTask_SendGrantOrRenewalReasons_Art43" />
+    <bpmn:sequenceFlow id="Flow_SendGrantReasons_To_EndGrantNotified_Art43"
+                       sourceRef="SendTask_SendGrantOrRenewalReasons_Art43"
+                       targetRef="EndEvent_GrantOrRenewalCompleted_Art43" />
+    <bpmn:sequenceFlow id="Flow_Withdraw_To_NotifyWithdrawal_Art43"
+                       sourceRef="Task_WithdrawCertification_Art43"
+                       targetRef="SendTask_NotifyWithdrawal_Art43" />
+    <bpmn:sequenceFlow id="Flow_NotifyWithdrawal_To_PrepareWithdrawalReasons_Art43"
+                       sourceRef="SendTask_NotifyWithdrawal_Art43"
+                       targetRef="Task_PrepareWithdrawalReasons_Art43" />
+    <bpmn:sequenceFlow id="Flow_PrepareWithdrawalReasons_To_SendWithdrawalReasons_Art43"
+                       sourceRef="Task_PrepareWithdrawalReasons_Art43"
+                       targetRef="SendTask_SendWithdrawalReasons_Art43" />
+    <bpmn:sequenceFlow id="Flow_SendWithdrawalReasons_To_EndWithdrawalNotified_Art43"
+                       sourceRef="SendTask_SendWithdrawalReasons_Art43"
+                       targetRef="EndEvent_WithdrawalCompleted_Art43" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art43_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art43_Reviewed"
+                      bpmnElement="Collaboration_Art43_Reviewed">
+      <bpmndi:BPMNShape id="Participant_CertificationBody_Art43_di"
+                        bpmnElement="Participant_CertificationBody_Art43"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="3200" height="420" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_SupervisoryAuthority_Art43_di"
+                        bpmnElement="Participant_SupervisoryAuthority_Art43"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="500" width="3200" height="140" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_CertificationCase_Art43_di"
+                        bpmnElement="StartEvent_CertificationCase_Art43">
+        <dc:Bounds x="120" y="222" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ConfirmResponsibility_Art43_di"
+                        bpmnElement="Task_ConfirmResponsibility_Art43">
+        <dc:Bounds x="230" y="200" width="260" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Accredited_Art43_di"
+                        bpmnElement="Gateway_Accredited_Art43"
+                        isMarkerVisible="true">
+        <dc:Bounds x="570" y="215" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NotAccredited_Art43_di"
+                        bpmnElement="EndEvent_NotAccredited_Art43">
+        <dc:Bounds x="740" y="122" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReviewCertificationCase_Art43_di"
+                        bpmnElement="Task_ReviewCertificationCase_Art43">
+        <dc:Bounds x="710" y="200" width="320" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_RequirementsFulfilled_Art43_di"
+                        bpmnElement="Gateway_RequirementsFulfilled_Art43"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1120" y="215" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_IssueOrRenewCertification_Art43_di"
+                        bpmnElement="Task_IssueOrRenewCertification_Art43">
+        <dc:Bounds x="1260" y="120" width="280" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_NotifyGrantOrRenewal_Art43_di"
+                        bpmnElement="SendTask_NotifyGrantOrRenewal_Art43">
+        <dc:Bounds x="1640" y="120" width="300" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareGrantOrRenewalReasons_Art43_di"
+                        bpmnElement="Task_PrepareGrantOrRenewalReasons_Art43">
+        <dc:Bounds x="2040" y="120" width="280" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_SendGrantOrRenewalReasons_Art43_di"
+                        bpmnElement="SendTask_SendGrantOrRenewalReasons_Art43">
+        <dc:Bounds x="2420" y="120" width="320" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_GrantOrRenewalCompleted_Art43_di"
+                        bpmnElement="EndEvent_GrantOrRenewalCompleted_Art43">
+        <dc:Bounds x="2840" y="142" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_WithdrawCertification_Art43_di"
+                        bpmnElement="Task_WithdrawCertification_Art43">
+        <dc:Bounds x="1260" y="290" width="280" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_NotifyWithdrawal_Art43_di"
+                        bpmnElement="SendTask_NotifyWithdrawal_Art43">
+        <dc:Bounds x="1640" y="290" width="300" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareWithdrawalReasons_Art43_di"
+                        bpmnElement="Task_PrepareWithdrawalReasons_Art43">
+        <dc:Bounds x="2040" y="290" width="280" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_SendWithdrawalReasons_Art43_di"
+                        bpmnElement="SendTask_SendWithdrawalReasons_Art43">
+        <dc:Bounds x="2420" y="290" width="320" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_WithdrawalCompleted_Art43_di"
+                        bpmnElement="EndEvent_WithdrawalCompleted_Art43">
+        <dc:Bounds x="2840" y="312" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_ConfirmResponsibility_Art43_di" bpmnElement="Flow_Start_To_ConfirmResponsibility_Art43">
+        <di:waypoint x="156" y="240" />
+        <di:waypoint x="230" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ConfirmResponsibility_To_GatewayAccredited_Art43_di" bpmnElement="Flow_ConfirmResponsibility_To_GatewayAccredited_Art43">
+        <di:waypoint x="490" y="240" />
+        <di:waypoint x="570" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAccredited_To_EndNotAccredited_Art43_di" bpmnElement="Flow_GatewayAccredited_To_EndNotAccredited_Art43">
+        <di:waypoint x="595" y="215" />
+        <di:waypoint x="595" y="140" />
+        <di:waypoint x="740" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAccredited_To_ReviewCase_Art43_di" bpmnElement="Flow_GatewayAccredited_To_ReviewCase_Art43">
+        <di:waypoint x="620" y="240" />
+        <di:waypoint x="710" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReviewCase_To_GatewayRequirements_Art43_di" bpmnElement="Flow_ReviewCase_To_GatewayRequirements_Art43">
+        <di:waypoint x="1030" y="240" />
+        <di:waypoint x="1120" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRequirements_To_IssueOrRenew_Art43_di" bpmnElement="Flow_GatewayRequirements_To_IssueOrRenew_Art43">
+        <di:waypoint x="1145" y="215" />
+        <di:waypoint x="1145" y="160" />
+        <di:waypoint x="1260" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRequirements_To_Withdraw_Art43_di" bpmnElement="Flow_GatewayRequirements_To_Withdraw_Art43">
+        <di:waypoint x="1145" y="265" />
+        <di:waypoint x="1145" y="330" />
+        <di:waypoint x="1260" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_IssueOrRenew_To_NotifyGrantOrRenewal_Art43_di" bpmnElement="Flow_IssueOrRenew_To_NotifyGrantOrRenewal_Art43">
+        <di:waypoint x="1540" y="160" />
+        <di:waypoint x="1640" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_NotifyGrantOrRenewal_To_PrepareGrantReasons_Art43_di" bpmnElement="Flow_NotifyGrantOrRenewal_To_PrepareGrantReasons_Art43">
+        <di:waypoint x="1940" y="160" />
+        <di:waypoint x="2040" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_PrepareGrantReasons_To_SendGrantReasons_Art43_di" bpmnElement="Flow_PrepareGrantReasons_To_SendGrantReasons_Art43">
+        <di:waypoint x="2320" y="160" />
+        <di:waypoint x="2420" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendGrantReasons_To_EndGrantNotified_Art43_di" bpmnElement="Flow_SendGrantReasons_To_EndGrantNotified_Art43">
+        <di:waypoint x="2740" y="160" />
+        <di:waypoint x="2840" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Withdraw_To_NotifyWithdrawal_Art43_di" bpmnElement="Flow_Withdraw_To_NotifyWithdrawal_Art43">
+        <di:waypoint x="1540" y="330" />
+        <di:waypoint x="1640" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_NotifyWithdrawal_To_PrepareWithdrawalReasons_Art43_di" bpmnElement="Flow_NotifyWithdrawal_To_PrepareWithdrawalReasons_Art43">
+        <di:waypoint x="1940" y="330" />
+        <di:waypoint x="2040" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_PrepareWithdrawalReasons_To_SendWithdrawalReasons_Art43_di" bpmnElement="Flow_PrepareWithdrawalReasons_To_SendWithdrawalReasons_Art43">
+        <di:waypoint x="2320" y="330" />
+        <di:waypoint x="2420" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendWithdrawalReasons_To_EndWithdrawalNotified_Art43_di" bpmnElement="Flow_SendWithdrawalReasons_To_EndWithdrawalNotified_Art43">
+        <di:waypoint x="2740" y="330" />
+        <di:waypoint x="2840" y="330" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_NotifyGrantOrRenewal_Art43_di" bpmnElement="MessageFlow_NotifyGrantOrRenewal_Art43">
+        <di:waypoint x="1790" y="200" />
+        <di:waypoint x="1790" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SendGrantOrRenewalReasons_Art43_di" bpmnElement="MessageFlow_SendGrantOrRenewalReasons_Art43">
+        <di:waypoint x="2580" y="200" />
+        <di:waypoint x="2580" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_NotifyWithdrawal_Art43_di" bpmnElement="MessageFlow_NotifyWithdrawal_Art43">
+        <di:waypoint x="1790" y="370" />
+        <di:waypoint x="1790" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SendWithdrawalReasons_Art43_di" bpmnElement="MessageFlow_SendWithdrawalReasons_Art43">
+        <di:waypoint x="2580" y="370" />
+        <di:waypoint x="2580" y="500" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

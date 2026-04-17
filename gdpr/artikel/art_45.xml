@@ -1,0 +1,595 @@
+<?xml version='1.0' encoding='utf-8'?>
+<lrml:LegalRuleML xmlns:lrml="http://docs.oasis-open.org/legalruleml/ns/v1.0/" xmlns:ruleml="http://ruleml.org/spec" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/legalruleml/ns/v1.0/lrml-compact.xsd"><lrml:Prefix pre="GDPR" refID="/akn/eu/act/regulation/2018-05-25/eng@2018-05-25/!main#" />
+  <lrml:Prefix pre="rioOnto" refID="http://www.liviorobaldo.com/rioOnto#" />
+  <lrml:Prefix pre="dapreco" refID="http://www.liviorobaldo.com/dapreco#" />
+  <lrml:Prefix pre="prOnto" refID="https://w3id.org/ontology/pronto#" />
+  <lrml:LegalReferences><lrml:LegalReference refersTo="gdprC5A45P1ref" refID="GDPR:art_45__para_1" />
+    <lrml:LegalReference refersTo="gdprC5A45P3ref" refID="GDPR:art_45__para_3" />
+    </lrml:LegalReferences><lrml:Associations><lrml:Association>
+      <lrml:appliesSource keyref="#gdprC5A45P1ref" />
+      <lrml:toTarget keyref="#statements242" />
+    </lrml:Association>
+    <lrml:Association>
+      <lrml:appliesSource keyref="#gdprC5A45P3ref" />
+      <lrml:toTarget keyref="#statements243" />
+    </lrml:Association>
+    </lrml:Associations><lrml:Context key="context_2" type="rioOnto:permissionRule">
+    <lrml:inScope keyref="#statements242Formula1" />
+    <lrml:inScope keyref="#statements242Formula2" />
+    <lrml:inScope keyref="#statements242Formula3" />
+    </lrml:Context>
+  <lrml:Context key="context_3" type="rioOnto:constitutiveRule">
+    <lrml:inScope keyref="#statements242Formula4" />
+    <lrml:inScope keyref="#statements242Formula5" />
+    <lrml:inScope keyref="#statements242Formula6" />
+    <lrml:inScope keyref="#statements243Formula1" />
+    </lrml:Context>
+  <lrml:Statements key="statements242">
+    <lrml:ConstitutiveStatement key="statements242Formula1">
+      
+      <ruleml:Rule closure="universal">
+        <ruleml:if>
+          <ruleml:Exists>
+            <ruleml:Var key=":a1">a1</ruleml:Var>
+            <ruleml:Var key=":ea">ea</ruleml:Var>
+            <ruleml:Var key=":w">w</ruleml:Var>
+            <ruleml:Var key=":z">z</ruleml:Var>
+            <ruleml:Var key=":y">y</ruleml:Var>
+            <ruleml:Var key=":c">c</ruleml:Var>
+            <ruleml:Var key=":x">x</ruleml:Var>
+            <ruleml:Var key=":edp">edp</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:RexistAtTime" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var key=":t1">t1</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A6026">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var keyref=":ea" />
+                <ruleml:Var keyref=":edp" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:DataSubject" />
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:PersonalData" />
+                <ruleml:Var keyref=":z" />
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Controller" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="dapreco:ThirdCountry" />
+                <ruleml:Var keyref=":c" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A6027">
+                <ruleml:Rel iri="dapreco:AuthorizedBy" />
+                <ruleml:Var keyref=":ea" />
+                <ruleml:Var key=":et">et</ruleml:Var>
+                <ruleml:Ind>EuropeanUnion</ruleml:Ind>
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Processor" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A6028">
+                <ruleml:Rel iri="prOnto:nominates" />
+                <ruleml:Var keyref=":edp" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A6029">
+                <ruleml:Rel iri="prOnto:Transmit" />
+                <ruleml:Var keyref=":et" />
+                <ruleml:Var keyref=":x" />
+                <ruleml:Var keyref=":z" />
+                <ruleml:Var keyref=":c" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:if>
+        <ruleml:then>
+          <ruleml:Atom>
+            <ruleml:Rel iri="rioOnto:RexistAtTime" />
+            <ruleml:Var keyref=":et" />
+            <ruleml:Var keyref=":t1" />
+          </ruleml:Atom>
+        </ruleml:then>
+      </ruleml:Rule>
+    </lrml:ConstitutiveStatement>
+    <lrml:ConstitutiveStatement key="statements242Formula2">
+      
+      <ruleml:Rule closure="universal">
+        <ruleml:if>
+          <ruleml:Exists>
+            <ruleml:Var key=":a1">a1</ruleml:Var>
+            <ruleml:Var key=":eco">eco</ruleml:Var>
+            <ruleml:Var key=":ea">ea</ruleml:Var>
+            <ruleml:Var key=":w">w</ruleml:Var>
+            <ruleml:Var key=":z">z</ruleml:Var>
+            <ruleml:Var key=":y">y</ruleml:Var>
+            <ruleml:Var key=":k">k</ruleml:Var>
+            <ruleml:Var key=":c">c</ruleml:Var>
+            <ruleml:Var key=":x">x</ruleml:Var>
+            <ruleml:Var key=":edp">edp</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:RexistAtTime" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var key=":t1">t1</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A6030">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var keyref=":eco" />
+                <ruleml:Var keyref=":ea" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:DataSubject" />
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:PersonalData" />
+                <ruleml:Var keyref=":z" />
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Controller" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A6031">
+                <ruleml:Rel iri="dapreco:Contain" />
+                <ruleml:Var keyref=":eco" />
+                <ruleml:Var keyref=":c" />
+                <ruleml:Var keyref=":k" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="dapreco:ThirdCountry" />
+                <ruleml:Var keyref=":c" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A6032">
+                <ruleml:Rel iri="dapreco:AuthorizedBy" />
+                <ruleml:Var keyref=":ea" />
+                <ruleml:Var key=":et">et</ruleml:Var>
+                <ruleml:Ind>EuropeanUnion</ruleml:Ind>
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Processor" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A6033">
+                <ruleml:Rel iri="prOnto:nominates" />
+                <ruleml:Var keyref=":edp" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A6034">
+                <ruleml:Rel iri="prOnto:Transmit" />
+                <ruleml:Var keyref=":et" />
+                <ruleml:Var keyref=":x" />
+                <ruleml:Var keyref=":z" />
+                <ruleml:Var keyref=":k" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:if>
+        <ruleml:then>
+          <ruleml:Atom>
+            <ruleml:Rel iri="rioOnto:RexistAtTime" />
+            <ruleml:Var keyref=":et" />
+            <ruleml:Var keyref=":t1" />
+          </ruleml:Atom>
+        </ruleml:then>
+      </ruleml:Rule>
+    </lrml:ConstitutiveStatement>
+    <lrml:ConstitutiveStatement key="statements242Formula3">
+      
+      <ruleml:Rule closure="universal">
+        <ruleml:if>
+          <ruleml:Exists>
+            <ruleml:Var key=":a1">a1</ruleml:Var>
+            <ruleml:Var key=":ea">ea</ruleml:Var>
+            <ruleml:Var key=":w">w</ruleml:Var>
+            <ruleml:Var key=":z">z</ruleml:Var>
+            <ruleml:Var key=":y">y</ruleml:Var>
+            <ruleml:Var key=":c">c</ruleml:Var>
+            <ruleml:Var key=":x">x</ruleml:Var>
+            <ruleml:Var key=":edp">edp</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:RexistAtTime" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var key=":t1">t1</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A6035">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var keyref=":ea" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:DataSubject" />
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:PersonalData" />
+                <ruleml:Var keyref=":z" />
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Controller" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:InternationalOrganization" />
+                <ruleml:Var keyref=":c" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A6036">
+                <ruleml:Rel iri="dapreco:AuthorizedBy" />
+                <ruleml:Var keyref=":ea" />
+                <ruleml:Var key=":et">et</ruleml:Var>
+                <ruleml:Ind>EuropeanUnion</ruleml:Ind>
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Processor" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A6037">
+                <ruleml:Rel iri="prOnto:nominates" />
+                <ruleml:Var keyref=":edp" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A6038">
+                <ruleml:Rel iri="prOnto:Transmit" />
+                <ruleml:Var keyref=":et" />
+                <ruleml:Var keyref=":x" />
+                <ruleml:Var keyref=":z" />
+                <ruleml:Var keyref=":c" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:if>
+        <ruleml:then>
+          <ruleml:Atom>
+            <ruleml:Rel iri="rioOnto:RexistAtTime" />
+            <ruleml:Var keyref=":et" />
+            <ruleml:Var keyref=":t1" />
+          </ruleml:Atom>
+        </ruleml:then>
+      </ruleml:Rule>
+    </lrml:ConstitutiveStatement>
+    <lrml:ConstitutiveStatement key="statements242Formula4">
+      
+      <ruleml:Rule closure="universal">
+        <ruleml:if>
+          <ruleml:Exists>
+            <ruleml:Var key=":a1">a1</ruleml:Var>
+            <ruleml:Var key=":ea">ea</ruleml:Var>
+            <ruleml:Var key=":w">w</ruleml:Var>
+            <ruleml:Var key=":y">y</ruleml:Var>
+            <ruleml:Var key=":x">x</ruleml:Var>
+            <ruleml:Var key=":edp">edp</ruleml:Var>
+            <ruleml:Var key=":c">c</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:RexistAtTime" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var key=":t1">t1</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A6039">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var keyref=":ea" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:DataSubject" />
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:PersonalData" />
+                <ruleml:Var key=":z">z</ruleml:Var>
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Controller" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Processor" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A6040">
+                <ruleml:Rel iri="prOnto:nominates" />
+                <ruleml:Var keyref=":edp" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="dapreco:ThirdCountry" />
+                <ruleml:Var keyref=":c" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A6041">
+                <ruleml:Rel iri="dapreco:AuthorizedBy" />
+                <ruleml:Var keyref=":ea" />
+                <ruleml:Var key=":et">et</ruleml:Var>
+                <ruleml:Ind>EuropeanUnion</ruleml:Ind>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A6042">
+                <ruleml:Rel iri="prOnto:Transmit" />
+                <ruleml:Var keyref=":et" />
+                <ruleml:Var keyref=":x" />
+                <ruleml:Var keyref=":z" />
+                <ruleml:Var keyref=":c" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:if>
+        <ruleml:then>
+          <ruleml:Atom>
+            <ruleml:Rel iri="rioOnto:Permitted" />
+            <ruleml:Var keyref=":et" />
+            <ruleml:Var keyref=":t1" />
+            <ruleml:Var keyref=":z" />
+          </ruleml:Atom>
+        </ruleml:then>
+      </ruleml:Rule>
+    </lrml:ConstitutiveStatement>
+    <lrml:ConstitutiveStatement key="statements242Formula5">
+      
+      <ruleml:Rule closure="universal">
+        <ruleml:if>
+          <ruleml:Exists>
+            <ruleml:Var key=":a1">a1</ruleml:Var>
+            <ruleml:Var key=":eco">eco</ruleml:Var>
+            <ruleml:Var key=":ea">ea</ruleml:Var>
+            <ruleml:Var key=":w">w</ruleml:Var>
+            <ruleml:Var key=":y">y</ruleml:Var>
+            <ruleml:Var key=":x">x</ruleml:Var>
+            <ruleml:Var key=":edp">edp</ruleml:Var>
+            <ruleml:Var key=":k">k</ruleml:Var>
+            <ruleml:Var key=":c">c</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:RexistAtTime" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var key=":t1">t1</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A6043">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var keyref=":eco" />
+                <ruleml:Var keyref=":ea" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:DataSubject" />
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:PersonalData" />
+                <ruleml:Var key=":z">z</ruleml:Var>
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Controller" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Processor" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A6044">
+                <ruleml:Rel iri="prOnto:nominates" />
+                <ruleml:Var keyref=":edp" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A6045">
+                <ruleml:Rel iri="dapreco:Contain" />
+                <ruleml:Var keyref=":eco" />
+                <ruleml:Var keyref=":c" />
+                <ruleml:Var keyref=":k" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="dapreco:ThirdCountry" />
+                <ruleml:Var keyref=":c" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A6046">
+                <ruleml:Rel iri="dapreco:AuthorizedBy" />
+                <ruleml:Var keyref=":ea" />
+                <ruleml:Var key=":et">et</ruleml:Var>
+                <ruleml:Ind>EuropeanUnion</ruleml:Ind>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A6047">
+                <ruleml:Rel iri="prOnto:Transmit" />
+                <ruleml:Var keyref=":et" />
+                <ruleml:Var keyref=":x" />
+                <ruleml:Var keyref=":z" />
+                <ruleml:Var keyref=":k" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:if>
+        <ruleml:then>
+          <ruleml:Atom>
+            <ruleml:Rel iri="rioOnto:Permitted" />
+            <ruleml:Var keyref=":et" />
+            <ruleml:Var keyref=":t1" />
+            <ruleml:Var keyref=":z" />
+          </ruleml:Atom>
+        </ruleml:then>
+      </ruleml:Rule>
+    </lrml:ConstitutiveStatement>
+    <lrml:ConstitutiveStatement key="statements242Formula6">
+      
+      <ruleml:Rule closure="universal">
+        <ruleml:if>
+          <ruleml:Exists>
+            <ruleml:Var key=":a1">a1</ruleml:Var>
+            <ruleml:Var key=":ea">ea</ruleml:Var>
+            <ruleml:Var key=":w">w</ruleml:Var>
+            <ruleml:Var key=":y">y</ruleml:Var>
+            <ruleml:Var key=":x">x</ruleml:Var>
+            <ruleml:Var key=":edp">edp</ruleml:Var>
+            <ruleml:Var key=":c">c</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:RexistAtTime" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var key=":t1">t1</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A6048">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var keyref=":ea" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:DataSubject" />
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:PersonalData" />
+                <ruleml:Var key=":z">z</ruleml:Var>
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Controller" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Processor" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A6049">
+                <ruleml:Rel iri="prOnto:nominates" />
+                <ruleml:Var keyref=":edp" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:InternationalOrganization" />
+                <ruleml:Var keyref=":c" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A6050">
+                <ruleml:Rel iri="dapreco:AuthorizedBy" />
+                <ruleml:Var keyref=":ea" />
+                <ruleml:Var key=":et">et</ruleml:Var>
+                <ruleml:Ind>EuropeanUnion</ruleml:Ind>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A6051">
+                <ruleml:Rel iri="prOnto:Transmit" />
+                <ruleml:Var keyref=":et" />
+                <ruleml:Var keyref=":x" />
+                <ruleml:Var keyref=":z" />
+                <ruleml:Var keyref=":c" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:if>
+        <ruleml:then>
+          <ruleml:Atom>
+            <ruleml:Rel iri="rioOnto:Permitted" />
+            <ruleml:Var keyref=":et" />
+            <ruleml:Var keyref=":t1" />
+            <ruleml:Var keyref=":z" />
+          </ruleml:Atom>
+        </ruleml:then>
+      </ruleml:Rule>
+    </lrml:ConstitutiveStatement>
+  </lrml:Statements>
+  <lrml:Statements key="statements243">
+    <lrml:ConstitutiveStatement key="statements243Formula1">
+      
+      <ruleml:Rule closure="universal">
+        <ruleml:if>
+          <ruleml:Exists>
+            <ruleml:Var key=":w">w</ruleml:Var>
+            <ruleml:Var key=":z">z</ruleml:Var>
+            <ruleml:Var key=":et">et</ruleml:Var>
+            <ruleml:Var key=":x">x</ruleml:Var>
+            <ruleml:Var key=":edp">edp</ruleml:Var>
+            <ruleml:Var key=":y">y</ruleml:Var>
+            <ruleml:Var key=":c">c</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:DataSubject" />
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:PersonalData" />
+                <ruleml:Var keyref=":z" />
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:RexistAtTime" />
+                <ruleml:Var key=":ea">ea</ruleml:Var>
+                <ruleml:Var key=":t1">t1</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A6052">
+                <ruleml:Rel iri="dapreco:AuthorizedBy" />
+                <ruleml:Var keyref=":ea" />
+                <ruleml:Var keyref=":et" />
+                <ruleml:Ind>EuropeanUnion</ruleml:Ind>
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Processor" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A6053">
+                <ruleml:Rel iri="prOnto:nominates" />
+                <ruleml:Var keyref=":edp" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A6054">
+                <ruleml:Rel iri="prOnto:Transmit" />
+                <ruleml:Var keyref=":et" />
+                <ruleml:Var keyref=":x" />
+                <ruleml:Var keyref=":z" />
+                <ruleml:Var keyref=":c" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:if>
+        <ruleml:then>
+          <ruleml:Exists>
+            <ruleml:Var key=":en">en</ruleml:Var>
+            <ruleml:Var key=":t2">t2</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:RexistAtTime" />
+                <ruleml:Var keyref=":en" />
+                <ruleml:Var keyref=":t2" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:After>
+                  <ruleml:Var keyref=":t2" />
+                  <ruleml:Expr>
+                    <ruleml:Fun iri="swrlb:add" />
+                    <ruleml:Var keyref=":t1" />
+                    <ruleml:Ind>4y</ruleml:Ind>
+                  </ruleml:Expr>
+                </ruleml:After>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A6055">
+                <ruleml:Rel iri="rioOnto:not" />
+                <ruleml:Var keyref=":en" />
+                <ruleml:Var keyref=":ea" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:then>
+      </ruleml:Rule>
+    </lrml:ConstitutiveStatement>
+  </lrml:Statements>
+  </lrml:LegalRuleML>

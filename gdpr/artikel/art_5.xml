@@ -1,0 +1,2153 @@
+<?xml version='1.0' encoding='utf-8'?>
+<lrml:LegalRuleML xmlns:lrml="http://docs.oasis-open.org/legalruleml/ns/v1.0/" xmlns:ruleml="http://ruleml.org/spec" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/legalruleml/ns/v1.0/lrml-compact.xsd"><lrml:Prefix pre="GDPR" refID="/akn/eu/act/regulation/2018-05-25/eng@2018-05-25/!main#" />
+  <lrml:Prefix pre="rioOnto" refID="http://www.liviorobaldo.com/rioOnto#" />
+  <lrml:Prefix pre="dapreco" refID="http://www.liviorobaldo.com/dapreco#" />
+  <lrml:Prefix pre="prOnto" refID="https://w3id.org/ontology/pronto#" />
+  <lrml:LegalReferences><lrml:LegalReference refersTo="gdprC2A5P1p1ref" refID="GDPR:art_5__para_1__content__list_1__point_a" />
+    <lrml:LegalReference refersTo="gdprC2A5P1p2ref" refID="GDPR:art_5__para_1__content__list_1__point_b" />
+    <lrml:LegalReference refersTo="gdprC2A5P1p3ref" refID="GDPR:art_5__para_1__content__list_1__point_c" />
+    <lrml:LegalReference refersTo="gdprC2A5P1p4ref" refID="GDPR:art_5__para_1__content__list_1__point_d" />
+    <lrml:LegalReference refersTo="gdprC2A5P1p5ref" refID="GDPR:art_5__para_1__content__list_1__point_e" />
+    <lrml:LegalReference refersTo="gdprC2A5P1p6ref" refID="GDPR:art_5__para_1__content__list_1__point_f" />
+    </lrml:LegalReferences><lrml:Associations><lrml:Association>
+      <lrml:appliesSource keyref="#gdprC2A5P1p1ref" />
+      <lrml:toTarget keyref="#statements1" />
+    </lrml:Association>
+    <lrml:Association>
+      <lrml:appliesSource keyref="#gdprC2A5P1p2ref" />
+      <lrml:toTarget keyref="#statements2" />
+    </lrml:Association>
+    <lrml:Association>
+      <lrml:appliesSource keyref="#gdprC2A5P1p3ref" />
+      <lrml:toTarget keyref="#statements3" />
+    </lrml:Association>
+    <lrml:Association>
+      <lrml:appliesSource keyref="#gdprC2A5P1p4ref" />
+      <lrml:toTarget keyref="#statements4" />
+    </lrml:Association>
+    <lrml:Association>
+      <lrml:appliesSource keyref="#gdprC2A5P1p5ref" />
+      <lrml:toTarget keyref="#statements5" />
+    </lrml:Association>
+    <lrml:Association>
+      <lrml:appliesSource keyref="#gdprC2A5P1p6ref" />
+      <lrml:toTarget keyref="#statements6" />
+    </lrml:Association>
+    </lrml:Associations><lrml:Context key="context_1" type="rioOnto:obligationRule">
+    <lrml:inScope keyref="#statements1Formula1" />
+    <lrml:inScope keyref="#statements2Formula1" />
+    <lrml:inScope keyref="#statements3Formula1" />
+    <lrml:inScope keyref="#statements4Formula1" />
+    <lrml:inScope keyref="#statements4Formula2" />
+    <lrml:inScope keyref="#statements5Formula1" />
+    <lrml:inScope keyref="#statements6Formula1" />
+    </lrml:Context>
+  <lrml:Context key="context_3" type="rioOnto:constitutiveRule">
+    <lrml:inScope keyref="#statements1Formula2" />
+    <lrml:inScope keyref="#statements2Formula2" />
+    <lrml:inScope keyref="#statements2Formula3" />
+    <lrml:inScope keyref="#statements3Formula2" />
+    <lrml:inScope keyref="#statements4Formula3" />
+    <lrml:inScope keyref="#statements4Formula4" />
+    <lrml:inScope keyref="#statements5Formula2" />
+    <lrml:inScope keyref="#statements6Formula2" />
+    </lrml:Context>
+  <lrml:Statements key="statements1">
+    <lrml:ConstitutiveStatement key="statements1Formula1">
+      
+      <ruleml:Rule closure="universal">
+        <ruleml:if>
+          <ruleml:Exists>
+            <ruleml:Var key=":a1">a1</ruleml:Var>
+            <ruleml:Var key=":edp">edp</ruleml:Var>
+            <ruleml:Var key=":z">z</ruleml:Var>
+            <ruleml:Var key=":x">x</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:RexistAtTime" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var key=":t1">t1</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A1">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var key=":ep">ep</ruleml:Var>
+                <ruleml:Var keyref=":edp" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:DataSubject" />
+                <ruleml:Var key=":w">w</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:PersonalData" />
+                <ruleml:Var keyref=":z" />
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Controller" />
+                <ruleml:Var key=":y">y</ruleml:Var>
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Processor" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A2">
+                <ruleml:Rel iri="prOnto:nominates" />
+                <ruleml:Var keyref=":edp" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A3">
+                <ruleml:Rel iri="prOnto:PersonalDataProcessing" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":x" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:if>
+        <ruleml:then>
+          <ruleml:Exists>
+            <ruleml:Var key=":a2">a2</ruleml:Var>
+            <ruleml:Var key=":t2">t2</ruleml:Var>
+            <ruleml:Var key=":ei">ei</ruleml:Var>
+            <ruleml:Var key=":ec1">ec1</ruleml:Var>
+            <ruleml:Var key=":ec2">ec2</ruleml:Var>
+            <ruleml:Var key=":ec3">ec3</ruleml:Var>
+            <ruleml:Var key=":ed">ed</ruleml:Var>
+            <ruleml:Var key=":em">em</ruleml:Var>
+            <ruleml:Var key=":el">el</ruleml:Var>
+            <ruleml:Var key=":ef">ef</ruleml:Var>
+            <ruleml:Var key=":et">et</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:RexistAtTime" />
+                <ruleml:Var keyref=":a2" />
+                <ruleml:Var keyref=":t2" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:After>
+                  <ruleml:Var keyref=":t2" />
+                  <ruleml:Var keyref=":t1" />
+                </ruleml:After>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A4">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a2" />
+                <ruleml:Var keyref=":ei" />
+                <ruleml:Var keyref=":ec1" />
+                <ruleml:Var keyref=":ec2" />
+                <ruleml:Var keyref=":ec3" />
+                <ruleml:Var keyref=":ed" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Measure" />
+                <ruleml:Var keyref=":em" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A5">
+                <ruleml:Rel iri="dapreco:Implement" />
+                <ruleml:Var keyref=":ei" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":em" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A6">
+                <ruleml:Rel iri="rioOnto:cause" />
+                <ruleml:Var keyref=":ec1" />
+                <ruleml:Var keyref=":em" />
+                <ruleml:Var keyref=":el" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A7">
+                <ruleml:Rel iri="prOnto:lawfulness" />
+                <ruleml:Var keyref=":el" />
+                <ruleml:Var keyref=":ep" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A8">
+                <ruleml:Rel iri="rioOnto:cause" />
+                <ruleml:Var keyref=":ec2" />
+                <ruleml:Var keyref=":em" />
+                <ruleml:Var keyref=":ef" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A9">
+                <ruleml:Rel iri="prOnto:fairness" />
+                <ruleml:Var keyref=":ef" />
+                <ruleml:Var keyref=":ep" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A10">
+                <ruleml:Rel iri="rioOnto:cause" />
+                <ruleml:Var keyref=":ec3" />
+                <ruleml:Var keyref=":em" />
+                <ruleml:Var keyref=":et" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A11">
+                <ruleml:Rel iri="prOnto:transparency" />
+                <ruleml:Var keyref=":et" />
+                <ruleml:Var keyref=":ep" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="dapreco:RelatedTo" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A12">
+                <ruleml:Rel iri="dapreco:Describe" />
+                <ruleml:Var keyref=":ed" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":ei" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:then>
+      </ruleml:Rule>
+    </lrml:ConstitutiveStatement>
+    <lrml:ConstitutiveStatement key="statements1Formula2">
+      
+      <ruleml:Rule closure="universal">
+        <ruleml:if>
+          <ruleml:Exists>
+            <ruleml:Var key=":a1">a1</ruleml:Var>
+            <ruleml:Var key=":edp">edp</ruleml:Var>
+            <ruleml:Var key=":z">z</ruleml:Var>
+            <ruleml:Var key=":x">x</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:RexistAtTime" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var key=":t1">t1</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A13">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var key=":ep">ep</ruleml:Var>
+                <ruleml:Var keyref=":edp" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:DataSubject" />
+                <ruleml:Var key=":w">w</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:PersonalData" />
+                <ruleml:Var keyref=":z" />
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Controller" />
+                <ruleml:Var key=":y">y</ruleml:Var>
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Processor" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A14">
+                <ruleml:Rel iri="prOnto:nominates" />
+                <ruleml:Var keyref=":edp" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A15">
+                <ruleml:Rel iri="prOnto:PersonalDataProcessing" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":x" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:if>
+        <ruleml:then>
+          <ruleml:Exists>
+            <ruleml:Var key=":t2">t2</ruleml:Var>
+            <ruleml:Var key=":a2">a2</ruleml:Var>
+            <ruleml:Var key=":ei">ei</ruleml:Var>
+            <ruleml:Var key=":ec1">ec1</ruleml:Var>
+            <ruleml:Var key=":ec2">ec2</ruleml:Var>
+            <ruleml:Var key=":ec3">ec3</ruleml:Var>
+            <ruleml:Var key=":ed">ed</ruleml:Var>
+            <ruleml:Var key=":em">em</ruleml:Var>
+            <ruleml:Var key=":el">el</ruleml:Var>
+            <ruleml:Var key=":ef">ef</ruleml:Var>
+            <ruleml:Var key=":et">et</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:Obliged" />
+                <ruleml:Var keyref=":a2" />
+                <ruleml:Var keyref=":t2" />
+                <ruleml:Var keyref=":y" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:After>
+                  <ruleml:Var keyref=":t2" />
+                  <ruleml:Var keyref=":t1" />
+                </ruleml:After>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A16">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a2" />
+                <ruleml:Var keyref=":ei" />
+                <ruleml:Var keyref=":ec1" />
+                <ruleml:Var keyref=":ec2" />
+                <ruleml:Var keyref=":ec3" />
+                <ruleml:Var keyref=":ed" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Measure" />
+                <ruleml:Var keyref=":em" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A17">
+                <ruleml:Rel iri="dapreco:Implement" />
+                <ruleml:Var keyref=":ei" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":em" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A18">
+                <ruleml:Rel iri="rioOnto:cause" />
+                <ruleml:Var keyref=":ec1" />
+                <ruleml:Var keyref=":em" />
+                <ruleml:Var keyref=":el" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A19">
+                <ruleml:Rel iri="prOnto:lawfulness" />
+                <ruleml:Var keyref=":el" />
+                <ruleml:Var keyref=":ep" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A20">
+                <ruleml:Rel iri="rioOnto:cause" />
+                <ruleml:Var keyref=":ec2" />
+                <ruleml:Var keyref=":em" />
+                <ruleml:Var keyref=":ef" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A21">
+                <ruleml:Rel iri="prOnto:fairness" />
+                <ruleml:Var keyref=":ef" />
+                <ruleml:Var keyref=":ep" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A22">
+                <ruleml:Rel iri="rioOnto:cause" />
+                <ruleml:Var keyref=":ec3" />
+                <ruleml:Var keyref=":em" />
+                <ruleml:Var keyref=":et" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A23">
+                <ruleml:Rel iri="prOnto:transparency" />
+                <ruleml:Var keyref=":et" />
+                <ruleml:Var keyref=":ep" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="dapreco:RelatedTo" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A24">
+                <ruleml:Rel iri="dapreco:Describe" />
+                <ruleml:Var keyref=":ed" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":ei" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:then>
+      </ruleml:Rule>
+    </lrml:ConstitutiveStatement>
+  </lrml:Statements>
+  <lrml:Statements key="statements2">
+    <lrml:ConstitutiveStatement key="statements2Formula1">
+      
+      <ruleml:Rule closure="universal">
+        <ruleml:if>
+          <ruleml:Exists>
+            <ruleml:Var key=":a1">a1</ruleml:Var>
+            <ruleml:Var key=":edp">edp</ruleml:Var>
+            <ruleml:Var key=":w">w</ruleml:Var>
+            <ruleml:Var key=":z">z</ruleml:Var>
+            <ruleml:Var key=":x">x</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:RexistAtTime" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var key=":t1">t1</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A25">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var key=":ep">ep</ruleml:Var>
+                <ruleml:Var keyref=":edp" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:DataSubject" />
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:PersonalData" />
+                <ruleml:Var keyref=":z" />
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Controller" />
+                <ruleml:Var key=":y">y</ruleml:Var>
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Processor" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A26">
+                <ruleml:Rel iri="prOnto:nominates" />
+                <ruleml:Var keyref=":edp" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A27">
+                <ruleml:Rel iri="prOnto:PersonalDataProcessing" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":x" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Purpose" />
+                <ruleml:Var key=":epu">epu</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:isBasedOn" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":epu" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:if>
+        <ruleml:then>
+          <ruleml:Exists>
+            <ruleml:Var key=":a2">a2</ruleml:Var>
+            <ruleml:Var key=":t2">t2</ruleml:Var>
+            <ruleml:Var key=":ei">ei</ruleml:Var>
+            <ruleml:Var key=":ec1">ec1</ruleml:Var>
+            <ruleml:Var key=":ec2">ec2</ruleml:Var>
+            <ruleml:Var key=":ec3">ec3</ruleml:Var>
+            <ruleml:Var key=":ed">ed</ruleml:Var>
+            <ruleml:Var key=":em">em</ruleml:Var>
+            <ruleml:Var key=":es">es</ruleml:Var>
+            <ruleml:Var key=":el">el</ruleml:Var>
+            <ruleml:Var key=":ecw">ecw</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:RexistAtTime" />
+                <ruleml:Var keyref=":a2" />
+                <ruleml:Var keyref=":t2" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:After>
+                  <ruleml:Var keyref=":t2" />
+                  <ruleml:Var keyref=":t1" />
+                </ruleml:After>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A28">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a2" />
+                <ruleml:Var keyref=":ei" />
+                <ruleml:Var keyref=":ec1" />
+                <ruleml:Var keyref=":ec2" />
+                <ruleml:Var keyref=":ec3" />
+                <ruleml:Var keyref=":ed" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Measure" />
+                <ruleml:Var keyref=":em" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A29">
+                <ruleml:Rel iri="dapreco:Implement" />
+                <ruleml:Var keyref=":ei" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":em" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A30">
+                <ruleml:Rel iri="rioOnto:cause" />
+                <ruleml:Var keyref=":ec1" />
+                <ruleml:Var keyref=":em" />
+                <ruleml:Var keyref=":es" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A31">
+                <ruleml:Rel iri="dapreco:specified" />
+                <ruleml:Var keyref=":es" />
+                <ruleml:Var keyref=":epu" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A32">
+                <ruleml:Rel iri="rioOnto:cause" />
+                <ruleml:Var keyref=":ec2" />
+                <ruleml:Var keyref=":em" />
+                <ruleml:Var keyref=":el" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A33">
+                <ruleml:Rel iri="prOnto:lawfulness" />
+                <ruleml:Var keyref=":el" />
+                <ruleml:Var keyref=":epu" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A34">
+                <ruleml:Rel iri="rioOnto:cause" />
+                <ruleml:Var keyref=":ec3" />
+                <ruleml:Var keyref=":em" />
+                <ruleml:Var keyref=":ecw" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A35">
+                <ruleml:Rel iri="dapreco:CompatibleWith" />
+                <ruleml:Var keyref=":ecw" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":epu" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A36">
+                <ruleml:Rel iri="dapreco:Describe" />
+                <ruleml:Var keyref=":ed" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":ei" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:then>
+      </ruleml:Rule>
+    </lrml:ConstitutiveStatement>
+    <lrml:ConstitutiveStatement key="statements2Formula2">
+      
+      <ruleml:Rule closure="universal">
+        <ruleml:if>
+          <ruleml:Exists>
+            <ruleml:Var key=":a1">a1</ruleml:Var>
+            <ruleml:Var key=":t1">t1</ruleml:Var>
+            <ruleml:Var key=":eor">eor</ruleml:Var>
+            <ruleml:Var key=":edp">edp</ruleml:Var>
+            <ruleml:Var key=":w">w</ruleml:Var>
+            <ruleml:Var key=":z">z</ruleml:Var>
+            <ruleml:Var key=":y">y</ruleml:Var>
+            <ruleml:Var key=":x">x</ruleml:Var>
+            <ruleml:Var key=":ebo1">ebo1</ruleml:Var>
+            <ruleml:Var key=":ebo2">ebo2</ruleml:Var>
+            <ruleml:Var key=":ebo3">ebo3</ruleml:Var>
+            <ruleml:Var key=":epi">epi</ruleml:Var>
+            <ruleml:Var key=":ers">ers</ruleml:Var>
+            <ruleml:Var key=":est">est</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:RexistAtTime" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var keyref=":t1" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A37">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var key=":ep">ep</ruleml:Var>
+                <ruleml:Var keyref=":eor" />
+                <ruleml:Var keyref=":edp" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:DataSubject" />
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:PersonalData" />
+                <ruleml:Var keyref=":z" />
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Controller" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Processor" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A38">
+                <ruleml:Rel iri="prOnto:nominates" />
+                <ruleml:Var keyref=":edp" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A39">
+                <ruleml:Rel iri="prOnto:PersonalDataProcessing" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":x" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Purpose" />
+                <ruleml:Var key=":epu">epu</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:isBasedOn" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":epu" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A40">
+                <ruleml:Rel iri="rioOnto:or" />
+                <ruleml:Var keyref=":eor" />
+                <ruleml:Var keyref=":ebo1" />
+                <ruleml:Var keyref=":ebo2" />
+                <ruleml:Var keyref=":ebo3" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A41">
+                <ruleml:Rel iri="prOnto:isBasedOn" />
+                <ruleml:Var keyref=":ebo1" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":epi" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:PublicInterest" />
+                <ruleml:Var keyref=":epi" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A42">
+                <ruleml:Rel iri="prOnto:isBasedOn" />
+                <ruleml:Var keyref=":ebo2" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":ers" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Research" />
+                <ruleml:Var keyref=":ers" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A43">
+                <ruleml:Rel iri="prOnto:isBasedOn" />
+                <ruleml:Var keyref=":ebo3" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":est" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Statistic" />
+                <ruleml:Var keyref=":est" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:if>
+        <ruleml:then>
+          <ruleml:Exists>
+            <ruleml:Var key=":epu">epu</ruleml:Var>
+            <ruleml:Atom>
+              <ruleml:Rel iri="dapreco:CompatibleWith" />
+              <ruleml:Var keyref=":ep" />
+              <ruleml:Var keyref=":epu" />
+            </ruleml:Atom>
+          </ruleml:Exists>
+        </ruleml:then>
+      </ruleml:Rule>
+    </lrml:ConstitutiveStatement>
+    <lrml:ConstitutiveStatement key="statements2Formula3">
+      
+      <ruleml:Rule closure="universal">
+        <ruleml:if>
+          <ruleml:Exists>
+            <ruleml:Var key=":a1">a1</ruleml:Var>
+            <ruleml:Var key=":edp">edp</ruleml:Var>
+            <ruleml:Var key=":w">w</ruleml:Var>
+            <ruleml:Var key=":z">z</ruleml:Var>
+            <ruleml:Var key=":x">x</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:RexistAtTime" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var key=":t1">t1</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A44">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var key=":ep">ep</ruleml:Var>
+                <ruleml:Var keyref=":edp" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:DataSubject" />
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:PersonalData" />
+                <ruleml:Var keyref=":z" />
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Controller" />
+                <ruleml:Var key=":y">y</ruleml:Var>
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Processor" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A45">
+                <ruleml:Rel iri="prOnto:nominates" />
+                <ruleml:Var keyref=":edp" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A46">
+                <ruleml:Rel iri="prOnto:PersonalDataProcessing" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":x" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Purpose" />
+                <ruleml:Var key=":epu">epu</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:isBasedOn" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":epu" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:if>
+        <ruleml:then>
+          <ruleml:Exists>
+            <ruleml:Var key=":t2">t2</ruleml:Var>
+            <ruleml:Var key=":a2">a2</ruleml:Var>
+            <ruleml:Var key=":ei">ei</ruleml:Var>
+            <ruleml:Var key=":ec1">ec1</ruleml:Var>
+            <ruleml:Var key=":ec2">ec2</ruleml:Var>
+            <ruleml:Var key=":ec3">ec3</ruleml:Var>
+            <ruleml:Var key=":ed">ed</ruleml:Var>
+            <ruleml:Var key=":em">em</ruleml:Var>
+            <ruleml:Var key=":es">es</ruleml:Var>
+            <ruleml:Var key=":el">el</ruleml:Var>
+            <ruleml:Var key=":ecw">ecw</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:Obliged" />
+                <ruleml:Var keyref=":a2" />
+                <ruleml:Var keyref=":t2" />
+                <ruleml:Var keyref=":y" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:After>
+                  <ruleml:Var keyref=":t2" />
+                  <ruleml:Var keyref=":t1" />
+                </ruleml:After>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A47">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a2" />
+                <ruleml:Var keyref=":ei" />
+                <ruleml:Var keyref=":ec1" />
+                <ruleml:Var keyref=":ec2" />
+                <ruleml:Var keyref=":ec3" />
+                <ruleml:Var keyref=":ed" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Measure" />
+                <ruleml:Var keyref=":em" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A48">
+                <ruleml:Rel iri="dapreco:Implement" />
+                <ruleml:Var keyref=":ei" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":em" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A49">
+                <ruleml:Rel iri="rioOnto:cause" />
+                <ruleml:Var keyref=":ec1" />
+                <ruleml:Var keyref=":em" />
+                <ruleml:Var keyref=":es" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A50">
+                <ruleml:Rel iri="dapreco:specified" />
+                <ruleml:Var keyref=":es" />
+                <ruleml:Var keyref=":epu" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A51">
+                <ruleml:Rel iri="rioOnto:cause" />
+                <ruleml:Var keyref=":ec2" />
+                <ruleml:Var keyref=":em" />
+                <ruleml:Var keyref=":el" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A52">
+                <ruleml:Rel iri="prOnto:lawfulness" />
+                <ruleml:Var keyref=":el" />
+                <ruleml:Var keyref=":epu" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A53">
+                <ruleml:Rel iri="rioOnto:cause" />
+                <ruleml:Var keyref=":ec3" />
+                <ruleml:Var keyref=":em" />
+                <ruleml:Var keyref=":ecw" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A54">
+                <ruleml:Rel iri="dapreco:CompatibleWith" />
+                <ruleml:Var keyref=":ecw" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":epu" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A55">
+                <ruleml:Rel iri="dapreco:Describe" />
+                <ruleml:Var keyref=":ed" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":ei" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:then>
+      </ruleml:Rule>
+    </lrml:ConstitutiveStatement>
+  </lrml:Statements>
+  <lrml:Statements key="statements3">
+    <lrml:ConstitutiveStatement key="statements3Formula1">
+      
+      <ruleml:Rule closure="universal">
+        <ruleml:if>
+          <ruleml:Exists>
+            <ruleml:Var key=":a1">a1</ruleml:Var>
+            <ruleml:Var key=":ep">ep</ruleml:Var>
+            <ruleml:Var key=":edp">edp</ruleml:Var>
+            <ruleml:Var key=":w">w</ruleml:Var>
+            <ruleml:Var key=":x">x</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:RexistAtTime" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var key=":t1">t1</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A56">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":edp" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:DataSubject" />
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:PersonalData" />
+                <ruleml:Var key=":z">z</ruleml:Var>
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Controller" />
+                <ruleml:Var key=":y">y</ruleml:Var>
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Processor" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A57">
+                <ruleml:Rel iri="prOnto:nominates" />
+                <ruleml:Var keyref=":edp" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A58">
+                <ruleml:Rel iri="prOnto:PersonalDataProcessing" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":x" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Purpose" />
+                <ruleml:Var key=":epu">epu</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:isBasedOn" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":epu" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:if>
+        <ruleml:then>
+          <ruleml:Exists>
+            <ruleml:Var key=":a2">a2</ruleml:Var>
+            <ruleml:Var key=":t2">t2</ruleml:Var>
+            <ruleml:Var key=":ei">ei</ruleml:Var>
+            <ruleml:Var key=":ec1">ec1</ruleml:Var>
+            <ruleml:Var key=":ec2">ec2</ruleml:Var>
+            <ruleml:Var key=":ec3">ec3</ruleml:Var>
+            <ruleml:Var key=":ed1">ed1</ruleml:Var>
+            <ruleml:Var key=":ed2">ed2</ruleml:Var>
+            <ruleml:Var key=":ed3">ed3</ruleml:Var>
+            <ruleml:Var key=":em">em</ruleml:Var>
+            <ruleml:Var key=":eaw">eaw</ruleml:Var>
+            <ruleml:Var key=":ert">ert</ruleml:Var>
+            <ruleml:Var key=":elt">elt</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:RexistAtTime" />
+                <ruleml:Var keyref=":a2" />
+                <ruleml:Var keyref=":t2" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:After>
+                  <ruleml:Var keyref=":t2" />
+                  <ruleml:Var keyref=":t1" />
+                </ruleml:After>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A59">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a2" />
+                <ruleml:Var keyref=":ei" />
+                <ruleml:Var keyref=":ec1" />
+                <ruleml:Var keyref=":ec2" />
+                <ruleml:Var keyref=":ec3" />
+                <ruleml:Var keyref=":ed1" />
+                <ruleml:Var keyref=":ed2" />
+                <ruleml:Var keyref=":ed3" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Measure" />
+                <ruleml:Var keyref=":em" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A60">
+                <ruleml:Rel iri="dapreco:Implement" />
+                <ruleml:Var keyref=":ei" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":em" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A61">
+                <ruleml:Rel iri="rioOnto:cause" />
+                <ruleml:Var keyref=":ec1" />
+                <ruleml:Var keyref=":em" />
+                <ruleml:Var keyref=":eaw" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A62">
+                <ruleml:Rel iri="dapreco:AdequateWith" />
+                <ruleml:Var keyref=":eaw" />
+                <ruleml:Var keyref=":z" />
+                <ruleml:Var keyref=":epu" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A63">
+                <ruleml:Rel iri="rioOnto:cause" />
+                <ruleml:Var keyref=":ec2" />
+                <ruleml:Var keyref=":em" />
+                <ruleml:Var keyref=":ert" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A64">
+                <ruleml:Rel iri="dapreco:RelevantTo" />
+                <ruleml:Var keyref=":ert" />
+                <ruleml:Var keyref=":z" />
+                <ruleml:Var keyref=":epu" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A65">
+                <ruleml:Rel iri="rioOnto:cause" />
+                <ruleml:Var keyref=":ec3" />
+                <ruleml:Var keyref=":em" />
+                <ruleml:Var keyref=":elt" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A66">
+                <ruleml:Rel iri="dapreco:LimitedTo" />
+                <ruleml:Var keyref=":elt" />
+                <ruleml:Var keyref=":z" />
+                <ruleml:Var keyref=":epu" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A67">
+                <ruleml:Rel iri="dapreco:Describe" />
+                <ruleml:Var keyref=":ed1" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":ec1" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A68">
+                <ruleml:Rel iri="dapreco:Describe" />
+                <ruleml:Var keyref=":ed2" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":ec2" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A69">
+                <ruleml:Rel iri="dapreco:Describe" />
+                <ruleml:Var keyref=":ed3" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":ec3" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:then>
+      </ruleml:Rule>
+    </lrml:ConstitutiveStatement>
+    <lrml:ConstitutiveStatement key="statements3Formula2">
+      
+      <ruleml:Rule closure="universal">
+        <ruleml:if>
+          <ruleml:Exists>
+            <ruleml:Var key=":a1">a1</ruleml:Var>
+            <ruleml:Var key=":ep">ep</ruleml:Var>
+            <ruleml:Var key=":edp">edp</ruleml:Var>
+            <ruleml:Var key=":w">w</ruleml:Var>
+            <ruleml:Var key=":x">x</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:RexistAtTime" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var key=":t1">t1</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A70">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":edp" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:DataSubject" />
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:PersonalData" />
+                <ruleml:Var key=":z">z</ruleml:Var>
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Controller" />
+                <ruleml:Var key=":y">y</ruleml:Var>
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Processor" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A71">
+                <ruleml:Rel iri="prOnto:nominates" />
+                <ruleml:Var keyref=":edp" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A72">
+                <ruleml:Rel iri="prOnto:PersonalDataProcessing" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":x" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Purpose" />
+                <ruleml:Var key=":epu">epu</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:isBasedOn" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":epu" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:if>
+        <ruleml:then>
+          <ruleml:Exists>
+            <ruleml:Var key=":t2">t2</ruleml:Var>
+            <ruleml:Var key=":a2">a2</ruleml:Var>
+            <ruleml:Var key=":ei">ei</ruleml:Var>
+            <ruleml:Var key=":ec1">ec1</ruleml:Var>
+            <ruleml:Var key=":ec2">ec2</ruleml:Var>
+            <ruleml:Var key=":ec3">ec3</ruleml:Var>
+            <ruleml:Var key=":ed1">ed1</ruleml:Var>
+            <ruleml:Var key=":ed2">ed2</ruleml:Var>
+            <ruleml:Var key=":ed3">ed3</ruleml:Var>
+            <ruleml:Var key=":em">em</ruleml:Var>
+            <ruleml:Var key=":eaw">eaw</ruleml:Var>
+            <ruleml:Var key=":ert">ert</ruleml:Var>
+            <ruleml:Var key=":elt">elt</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:Obliged" />
+                <ruleml:Var keyref=":a2" />
+                <ruleml:Var keyref=":t2" />
+                <ruleml:Var keyref=":y" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:After>
+                  <ruleml:Var keyref=":t2" />
+                  <ruleml:Var keyref=":t1" />
+                </ruleml:After>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A73">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a2" />
+                <ruleml:Var keyref=":ei" />
+                <ruleml:Var keyref=":ec1" />
+                <ruleml:Var keyref=":ec2" />
+                <ruleml:Var keyref=":ec3" />
+                <ruleml:Var keyref=":ed1" />
+                <ruleml:Var keyref=":ed2" />
+                <ruleml:Var keyref=":ed3" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Measure" />
+                <ruleml:Var keyref=":em" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A74">
+                <ruleml:Rel iri="dapreco:Implement" />
+                <ruleml:Var keyref=":ei" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":em" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A75">
+                <ruleml:Rel iri="rioOnto:cause" />
+                <ruleml:Var keyref=":ec1" />
+                <ruleml:Var keyref=":em" />
+                <ruleml:Var keyref=":eaw" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A76">
+                <ruleml:Rel iri="dapreco:AdequateWith" />
+                <ruleml:Var keyref=":eaw" />
+                <ruleml:Var keyref=":z" />
+                <ruleml:Var keyref=":epu" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A77">
+                <ruleml:Rel iri="rioOnto:cause" />
+                <ruleml:Var keyref=":ec2" />
+                <ruleml:Var keyref=":em" />
+                <ruleml:Var keyref=":ert" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A78">
+                <ruleml:Rel iri="dapreco:RelevantTo" />
+                <ruleml:Var keyref=":ert" />
+                <ruleml:Var keyref=":z" />
+                <ruleml:Var keyref=":epu" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A79">
+                <ruleml:Rel iri="rioOnto:cause" />
+                <ruleml:Var keyref=":ec3" />
+                <ruleml:Var keyref=":em" />
+                <ruleml:Var keyref=":elt" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A80">
+                <ruleml:Rel iri="dapreco:LimitedTo" />
+                <ruleml:Var keyref=":elt" />
+                <ruleml:Var keyref=":z" />
+                <ruleml:Var keyref=":epu" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A81">
+                <ruleml:Rel iri="dapreco:Describe" />
+                <ruleml:Var keyref=":ed1" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":ec1" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A82">
+                <ruleml:Rel iri="dapreco:Describe" />
+                <ruleml:Var keyref=":ed2" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":ec2" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A83">
+                <ruleml:Rel iri="dapreco:Describe" />
+                <ruleml:Var keyref=":ed3" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":ec3" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:then>
+      </ruleml:Rule>
+    </lrml:ConstitutiveStatement>
+  </lrml:Statements>
+  <lrml:Statements key="statements4">
+    <lrml:ConstitutiveStatement key="statements4Formula1">
+      
+      <ruleml:Rule closure="universal">
+        <ruleml:if>
+          <ruleml:Exists>
+            <ruleml:Var key=":a1">a1</ruleml:Var>
+            <ruleml:Var key=":ep">ep</ruleml:Var>
+            <ruleml:Var key=":edp">edp</ruleml:Var>
+            <ruleml:Var key=":w">w</ruleml:Var>
+            <ruleml:Var key=":x">x</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:RexistAtTime" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var key=":t1">t1</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A84">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":edp" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:DataSubject" />
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:PersonalData" />
+                <ruleml:Var key=":z">z</ruleml:Var>
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Controller" />
+                <ruleml:Var key=":y">y</ruleml:Var>
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Processor" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A85">
+                <ruleml:Rel iri="prOnto:nominates" />
+                <ruleml:Var keyref=":edp" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A86">
+                <ruleml:Rel iri="prOnto:PersonalDataProcessing" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":x" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:if>
+        <ruleml:then>
+          <ruleml:Exists>
+            <ruleml:Var key=":a2">a2</ruleml:Var>
+            <ruleml:Var key=":t2">t2</ruleml:Var>
+            <ruleml:Var key=":ei">ei</ruleml:Var>
+            <ruleml:Var key=":ec1">ec1</ruleml:Var>
+            <ruleml:Var key=":ec2">ec2</ruleml:Var>
+            <ruleml:Var key=":ed1">ed1</ruleml:Var>
+            <ruleml:Var key=":ed2">ed2</ruleml:Var>
+            <ruleml:Var key=":em">em</ruleml:Var>
+            <ruleml:Var key=":eca">eca</ruleml:Var>
+            <ruleml:Var key=":eud">eud</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:RexistAtTime" />
+                <ruleml:Var keyref=":a2" />
+                <ruleml:Var keyref=":t2" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:After>
+                  <ruleml:Var keyref=":t2" />
+                  <ruleml:Var keyref=":t1" />
+                </ruleml:After>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A87">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a2" />
+                <ruleml:Var keyref=":ei" />
+                <ruleml:Var keyref=":ec1" />
+                <ruleml:Var keyref=":ec2" />
+                <ruleml:Var keyref=":ed1" />
+                <ruleml:Var keyref=":ed2" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Measure" />
+                <ruleml:Var keyref=":em" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A88">
+                <ruleml:Rel iri="dapreco:Implement" />
+                <ruleml:Var keyref=":ei" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":em" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A89">
+                <ruleml:Rel iri="rioOnto:cause" />
+                <ruleml:Var keyref=":ec1" />
+                <ruleml:Var keyref=":em" />
+                <ruleml:Var keyref=":eca" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A90">
+                <ruleml:Rel iri="dapreco:accurate" />
+                <ruleml:Var keyref=":eca" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A91">
+                <ruleml:Rel iri="rioOnto:cause" />
+                <ruleml:Var keyref=":ec2" />
+                <ruleml:Var keyref=":em" />
+                <ruleml:Var keyref=":eud" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A92">
+                <ruleml:Rel iri="dapreco:upToDate" />
+                <ruleml:Var keyref=":eud" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A93">
+                <ruleml:Rel iri="dapreco:Describe" />
+                <ruleml:Var keyref=":ed1" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":ec1" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A94">
+                <ruleml:Rel iri="dapreco:Describe" />
+                <ruleml:Var keyref=":ed2" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":ec2" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:then>
+      </ruleml:Rule>
+    </lrml:ConstitutiveStatement>
+    <lrml:ConstitutiveStatement key="statements4Formula2">
+      
+      <ruleml:Rule closure="universal">
+        <ruleml:if>
+          <ruleml:Exists>
+            <ruleml:Var key=":a1">a1</ruleml:Var>
+            <ruleml:Var key=":ep">ep</ruleml:Var>
+            <ruleml:Var key=":enr">enr</ruleml:Var>
+            <ruleml:Var key=":edp">edp</ruleml:Var>
+            <ruleml:Var key=":w">w</ruleml:Var>
+            <ruleml:Var key=":x">x</ruleml:Var>
+            <ruleml:Var key=":eaw">eaw</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:RexistAtTime" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var key=":t1">t1</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A95">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":enr" />
+                <ruleml:Var keyref=":edp" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:DataSubject" />
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:PersonalData" />
+                <ruleml:Var key=":z">z</ruleml:Var>
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Controller" />
+                <ruleml:Var key=":y">y</ruleml:Var>
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Processor" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A96">
+                <ruleml:Rel iri="prOnto:nominates" />
+                <ruleml:Var keyref=":edp" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A97">
+                <ruleml:Rel iri="prOnto:PersonalDataProcessing" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":x" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A98">
+                <ruleml:Rel iri="rioOnto:not" />
+                <ruleml:Var keyref=":enr" />
+                <ruleml:Var keyref=":eaw" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A99">
+                <ruleml:Rel iri="dapreco:accurate" />
+                <ruleml:Var keyref=":eaw" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:if>
+        <ruleml:then>
+          <ruleml:Exists>
+            <ruleml:Var key=":o1">o1</ruleml:Var>
+            <ruleml:Var key=":eca">eca</ruleml:Var>
+            <ruleml:Var key=":eco">eco</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:RexistAtTime" />
+                <ruleml:Var keyref=":o1" />
+                <ruleml:Var keyref=":t1" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A100">
+                <ruleml:Rel iri="rioOnto:or" />
+                <ruleml:Var keyref=":o1" />
+                <ruleml:Var keyref=":eca" />
+                <ruleml:Var keyref=":eco" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A101">
+                <ruleml:Rel iri="prOnto:Delete" />
+                <ruleml:Var keyref=":eca" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A102">
+                <ruleml:Rel iri="dapreco:Rectify" />
+                <ruleml:Var keyref=":eco" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:then>
+      </ruleml:Rule>
+    </lrml:ConstitutiveStatement>
+    <lrml:ConstitutiveStatement key="statements4Formula3">
+      
+      <ruleml:Rule closure="universal">
+        <ruleml:if>
+          <ruleml:Exists>
+            <ruleml:Var key=":a1">a1</ruleml:Var>
+            <ruleml:Var key=":ep">ep</ruleml:Var>
+            <ruleml:Var key=":edp">edp</ruleml:Var>
+            <ruleml:Var key=":w">w</ruleml:Var>
+            <ruleml:Var key=":x">x</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:RexistAtTime" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var key=":t1">t1</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A103">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":edp" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:DataSubject" />
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:PersonalData" />
+                <ruleml:Var key=":z">z</ruleml:Var>
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Controller" />
+                <ruleml:Var key=":y">y</ruleml:Var>
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Processor" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A104">
+                <ruleml:Rel iri="prOnto:nominates" />
+                <ruleml:Var keyref=":edp" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A105">
+                <ruleml:Rel iri="prOnto:PersonalDataProcessing" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":x" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:if>
+        <ruleml:then>
+          <ruleml:Exists>
+            <ruleml:Var key=":t2">t2</ruleml:Var>
+            <ruleml:Var key=":a2">a2</ruleml:Var>
+            <ruleml:Var key=":ei">ei</ruleml:Var>
+            <ruleml:Var key=":ec1">ec1</ruleml:Var>
+            <ruleml:Var key=":ec2">ec2</ruleml:Var>
+            <ruleml:Var key=":ed1">ed1</ruleml:Var>
+            <ruleml:Var key=":ed2">ed2</ruleml:Var>
+            <ruleml:Var key=":em">em</ruleml:Var>
+            <ruleml:Var key=":eca">eca</ruleml:Var>
+            <ruleml:Var key=":eud">eud</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:Obliged" />
+                <ruleml:Var keyref=":a2" />
+                <ruleml:Var keyref=":t2" />
+                <ruleml:Var keyref=":y" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:After>
+                  <ruleml:Var keyref=":t2" />
+                  <ruleml:Var keyref=":t1" />
+                </ruleml:After>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A106">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a2" />
+                <ruleml:Var keyref=":ei" />
+                <ruleml:Var keyref=":ec1" />
+                <ruleml:Var keyref=":ec2" />
+                <ruleml:Var keyref=":ed1" />
+                <ruleml:Var keyref=":ed2" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Measure" />
+                <ruleml:Var keyref=":em" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A107">
+                <ruleml:Rel iri="dapreco:Implement" />
+                <ruleml:Var keyref=":ei" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":em" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A108">
+                <ruleml:Rel iri="rioOnto:cause" />
+                <ruleml:Var keyref=":ec1" />
+                <ruleml:Var keyref=":em" />
+                <ruleml:Var keyref=":eca" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A109">
+                <ruleml:Rel iri="dapreco:accurate" />
+                <ruleml:Var keyref=":eca" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A110">
+                <ruleml:Rel iri="rioOnto:cause" />
+                <ruleml:Var keyref=":ec2" />
+                <ruleml:Var keyref=":em" />
+                <ruleml:Var keyref=":eud" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A111">
+                <ruleml:Rel iri="dapreco:upToDate" />
+                <ruleml:Var keyref=":eud" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A112">
+                <ruleml:Rel iri="dapreco:Describe" />
+                <ruleml:Var keyref=":ed1" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":ec1" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A113">
+                <ruleml:Rel iri="dapreco:Describe" />
+                <ruleml:Var keyref=":ed2" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":ec2" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:then>
+      </ruleml:Rule>
+    </lrml:ConstitutiveStatement>
+    <lrml:ConstitutiveStatement key="statements4Formula4">
+      
+      <ruleml:Rule closure="universal">
+        <ruleml:if>
+          <ruleml:Exists>
+            <ruleml:Var key=":a1">a1</ruleml:Var>
+            <ruleml:Var key=":ep">ep</ruleml:Var>
+            <ruleml:Var key=":enr">enr</ruleml:Var>
+            <ruleml:Var key=":edp">edp</ruleml:Var>
+            <ruleml:Var key=":w">w</ruleml:Var>
+            <ruleml:Var key=":x">x</ruleml:Var>
+            <ruleml:Var key=":eaw">eaw</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:RexistAtTime" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var key=":t1">t1</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A114">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":enr" />
+                <ruleml:Var keyref=":edp" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:DataSubject" />
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:PersonalData" />
+                <ruleml:Var key=":z">z</ruleml:Var>
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Controller" />
+                <ruleml:Var key=":y">y</ruleml:Var>
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Processor" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A115">
+                <ruleml:Rel iri="prOnto:nominates" />
+                <ruleml:Var keyref=":edp" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A116">
+                <ruleml:Rel iri="prOnto:PersonalDataProcessing" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":x" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A117">
+                <ruleml:Rel iri="rioOnto:not" />
+                <ruleml:Var keyref=":enr" />
+                <ruleml:Var keyref=":eaw" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A118">
+                <ruleml:Rel iri="dapreco:accurate" />
+                <ruleml:Var keyref=":eaw" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:if>
+        <ruleml:then>
+          <ruleml:Exists>
+            <ruleml:Var key=":o1">o1</ruleml:Var>
+            <ruleml:Var key=":eca">eca</ruleml:Var>
+            <ruleml:Var key=":eco">eco</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:Obliged" />
+                <ruleml:Var keyref=":o1" />
+                <ruleml:Var keyref=":t1" />
+                <ruleml:Var keyref=":y" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A119">
+                <ruleml:Rel iri="rioOnto:or" />
+                <ruleml:Var keyref=":o1" />
+                <ruleml:Var keyref=":eca" />
+                <ruleml:Var keyref=":eco" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A120">
+                <ruleml:Rel iri="prOnto:Delete" />
+                <ruleml:Var keyref=":eca" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A121">
+                <ruleml:Rel iri="dapreco:Rectify" />
+                <ruleml:Var keyref=":eco" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:then>
+      </ruleml:Rule>
+    </lrml:ConstitutiveStatement>
+  </lrml:Statements>
+  <lrml:Statements key="statements5">
+    <lrml:ConstitutiveStatement key="statements5Formula1">
+      
+      <ruleml:Rule closure="universal">
+        <ruleml:if>
+          <ruleml:Exists>
+            <ruleml:Var key=":a1">a1</ruleml:Var>
+            <ruleml:Var key=":ep">ep</ruleml:Var>
+            <ruleml:Var key=":en">en</ruleml:Var>
+            <ruleml:Var key=":edp">edp</ruleml:Var>
+            <ruleml:Var key=":x">x</ruleml:Var>
+            <ruleml:Var key=":epu">epu</ruleml:Var>
+            <ruleml:Var key=":p">p</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:RexistAtTime" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var key=":t1">t1</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A122">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":en" />
+                <ruleml:Var keyref=":edp" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:DataSubject" />
+                <ruleml:Var key=":w">w</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:PersonalData" />
+                <ruleml:Var key=":z">z</ruleml:Var>
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Controller" />
+                <ruleml:Var key=":y">y</ruleml:Var>
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Processor" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A123">
+                <ruleml:Rel iri="prOnto:nominates" />
+                <ruleml:Var keyref=":edp" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A124">
+                <ruleml:Rel iri="prOnto:PersonalDataProcessing" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":x" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Purpose" />
+                <ruleml:Var keyref=":epu" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:isBasedOn" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":epu" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="dapreco:PersonalDataRecord" />
+                <ruleml:Var keyref=":p" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Store" />
+                <ruleml:Var keyref=":z" />
+                <ruleml:Var keyref=":p" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A125">
+                <ruleml:Rel iri="rioOnto:not" />
+                <ruleml:Var keyref=":en" />
+                <ruleml:Var key=":ei">ei</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A126">
+                <ruleml:Rel iri="rioOnto:imply" />
+                <ruleml:Var keyref=":ei" />
+                <ruleml:Var keyref=":z" />
+                <ruleml:Var keyref=":epu" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:if>
+        <ruleml:then>
+          <ruleml:Exists>
+            <ruleml:Var key=":a2">a2</ruleml:Var>
+            <ruleml:Var key=":t2">t2</ruleml:Var>
+            <ruleml:Var key=":ec2">ec2</ruleml:Var>
+            <ruleml:Var key=":ed2">ed2</ruleml:Var>
+            <ruleml:Var key=":em">em</ruleml:Var>
+            <ruleml:Var key=":eni">eni</ruleml:Var>
+            <ruleml:Var key=":eif">eif</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:RexistAtTime" />
+                <ruleml:Var keyref=":a2" />
+                <ruleml:Var keyref=":t2" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:After>
+                  <ruleml:Var keyref=":t2" />
+                  <ruleml:Var keyref=":t1" />
+                </ruleml:After>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A127">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a2" />
+                <ruleml:Var keyref=":ei" />
+                <ruleml:Var keyref=":ec2" />
+                <ruleml:Var keyref=":ed2" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Measure" />
+                <ruleml:Var keyref=":em" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A128">
+                <ruleml:Rel iri="dapreco:Implement" />
+                <ruleml:Var keyref=":ei" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":em" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A129">
+                <ruleml:Rel iri="rioOnto:cause" />
+                <ruleml:Var keyref=":ec2" />
+                <ruleml:Var keyref=":em" />
+                <ruleml:Var keyref=":eni" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A130">
+                <ruleml:Rel iri="rioOnto:not" />
+                <ruleml:Var keyref=":eni" />
+                <ruleml:Var keyref=":eif" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A131">
+                <ruleml:Rel iri="dapreco:IdentifiableFrom" />
+                <ruleml:Var keyref=":eif" />
+                <ruleml:Var keyref=":w" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A132">
+                <ruleml:Rel iri="dapreco:Describe" />
+                <ruleml:Var keyref=":ed2" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":ec2" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:then>
+      </ruleml:Rule>
+    </lrml:ConstitutiveStatement>
+    <lrml:ConstitutiveStatement key="statements5Formula2">
+      
+      <ruleml:Rule closure="universal">
+        <ruleml:if>
+          <ruleml:Exists>
+            <ruleml:Var key=":a1">a1</ruleml:Var>
+            <ruleml:Var key=":ep">ep</ruleml:Var>
+            <ruleml:Var key=":en">en</ruleml:Var>
+            <ruleml:Var key=":edp">edp</ruleml:Var>
+            <ruleml:Var key=":x">x</ruleml:Var>
+            <ruleml:Var key=":epu">epu</ruleml:Var>
+            <ruleml:Var key=":p">p</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:RexistAtTime" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var key=":t1">t1</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A133">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":en" />
+                <ruleml:Var keyref=":edp" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:DataSubject" />
+                <ruleml:Var key=":w">w</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:PersonalData" />
+                <ruleml:Var key=":z">z</ruleml:Var>
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Controller" />
+                <ruleml:Var key=":y">y</ruleml:Var>
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Processor" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A134">
+                <ruleml:Rel iri="prOnto:nominates" />
+                <ruleml:Var keyref=":edp" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A135">
+                <ruleml:Rel iri="prOnto:PersonalDataProcessing" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":x" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Purpose" />
+                <ruleml:Var keyref=":epu" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:isBasedOn" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":epu" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="dapreco:PersonalDataRecord" />
+                <ruleml:Var keyref=":p" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Store" />
+                <ruleml:Var keyref=":z" />
+                <ruleml:Var keyref=":p" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A136">
+                <ruleml:Rel iri="rioOnto:not" />
+                <ruleml:Var keyref=":en" />
+                <ruleml:Var key=":ei">ei</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A137">
+                <ruleml:Rel iri="rioOnto:imply" />
+                <ruleml:Var keyref=":ei" />
+                <ruleml:Var keyref=":z" />
+                <ruleml:Var keyref=":epu" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:if>
+        <ruleml:then>
+          <ruleml:Exists>
+            <ruleml:Var key=":t2">t2</ruleml:Var>
+            <ruleml:Var key=":a2">a2</ruleml:Var>
+            <ruleml:Var key=":ec2">ec2</ruleml:Var>
+            <ruleml:Var key=":ed2">ed2</ruleml:Var>
+            <ruleml:Var key=":em">em</ruleml:Var>
+            <ruleml:Var key=":eni">eni</ruleml:Var>
+            <ruleml:Var key=":eif">eif</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:Obliged" />
+                <ruleml:Var keyref=":a2" />
+                <ruleml:Var keyref=":t2" />
+                <ruleml:Var keyref=":y" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:After>
+                  <ruleml:Var keyref=":t2" />
+                  <ruleml:Var keyref=":t1" />
+                </ruleml:After>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A138">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a2" />
+                <ruleml:Var keyref=":ei" />
+                <ruleml:Var keyref=":ec2" />
+                <ruleml:Var keyref=":ed2" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Measure" />
+                <ruleml:Var keyref=":em" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A139">
+                <ruleml:Rel iri="dapreco:Implement" />
+                <ruleml:Var keyref=":ei" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":em" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A140">
+                <ruleml:Rel iri="rioOnto:cause" />
+                <ruleml:Var keyref=":ec2" />
+                <ruleml:Var keyref=":em" />
+                <ruleml:Var keyref=":eni" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A141">
+                <ruleml:Rel iri="rioOnto:not" />
+                <ruleml:Var keyref=":eni" />
+                <ruleml:Var keyref=":eif" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A142">
+                <ruleml:Rel iri="dapreco:IdentifiableFrom" />
+                <ruleml:Var keyref=":eif" />
+                <ruleml:Var keyref=":w" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A143">
+                <ruleml:Rel iri="dapreco:Describe" />
+                <ruleml:Var keyref=":ed2" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":ec2" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:then>
+      </ruleml:Rule>
+    </lrml:ConstitutiveStatement>
+  </lrml:Statements>
+  <lrml:Statements key="statements6">
+    <lrml:ConstitutiveStatement key="statements6Formula1">
+      
+      <ruleml:Rule closure="universal">
+        <ruleml:if>
+          <ruleml:Exists>
+            <ruleml:Var key=":a1">a1</ruleml:Var>
+            <ruleml:Var key=":edp">edp</ruleml:Var>
+            <ruleml:Var key=":w">w</ruleml:Var>
+            <ruleml:Var key=":z">z</ruleml:Var>
+            <ruleml:Var key=":x">x</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:RexistAtTime" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var key=":t1">t1</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A144">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var key=":ep">ep</ruleml:Var>
+                <ruleml:Var keyref=":edp" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:DataSubject" />
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:PersonalData" />
+                <ruleml:Var keyref=":z" />
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Controller" />
+                <ruleml:Var key=":y">y</ruleml:Var>
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Processor" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A145">
+                <ruleml:Rel iri="prOnto:nominates" />
+                <ruleml:Var keyref=":edp" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A146">
+                <ruleml:Rel iri="prOnto:PersonalDataProcessing" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":x" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:if>
+        <ruleml:then>
+          <ruleml:Exists>
+            <ruleml:Var key=":a2">a2</ruleml:Var>
+            <ruleml:Var key=":t2">t2</ruleml:Var>
+            <ruleml:Var key=":ei">ei</ruleml:Var>
+            <ruleml:Var key=":ec">ec</ruleml:Var>
+            <ruleml:Var key=":ed">ed</ruleml:Var>
+            <ruleml:Var key=":em">em</ruleml:Var>
+            <ruleml:Var key=":ese">ese</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:RexistAtTime" />
+                <ruleml:Var keyref=":a2" />
+                <ruleml:Var keyref=":t2" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:After>
+                  <ruleml:Var keyref=":t2" />
+                  <ruleml:Var keyref=":t1" />
+                </ruleml:After>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A147">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a2" />
+                <ruleml:Var keyref=":ei" />
+                <ruleml:Var keyref=":ec" />
+                <ruleml:Var keyref=":ed" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Measure" />
+                <ruleml:Var keyref=":em" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A148">
+                <ruleml:Rel iri="dapreco:Implement" />
+                <ruleml:Var keyref=":ei" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":em" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A149">
+                <ruleml:Rel iri="rioOnto:cause" />
+                <ruleml:Var keyref=":ec" />
+                <ruleml:Var keyref=":em" />
+                <ruleml:Var keyref=":ese" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A150">
+                <ruleml:Rel iri="dapreco:security" />
+                <ruleml:Var keyref=":ese" />
+                <ruleml:Var keyref=":ep" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A151">
+                <ruleml:Rel iri="dapreco:Describe" />
+                <ruleml:Var keyref=":ed" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":ec" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:then>
+      </ruleml:Rule>
+    </lrml:ConstitutiveStatement>
+    <lrml:ConstitutiveStatement key="statements6Formula2">
+      
+      <ruleml:Rule closure="universal">
+        <ruleml:if>
+          <ruleml:Exists>
+            <ruleml:Var key=":a1">a1</ruleml:Var>
+            <ruleml:Var key=":edp">edp</ruleml:Var>
+            <ruleml:Var key=":w">w</ruleml:Var>
+            <ruleml:Var key=":z">z</ruleml:Var>
+            <ruleml:Var key=":x">x</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:RexistAtTime" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var key=":t1">t1</ruleml:Var>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A152">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a1" />
+                <ruleml:Var key=":ep">ep</ruleml:Var>
+                <ruleml:Var keyref=":edp" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:DataSubject" />
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:PersonalData" />
+                <ruleml:Var keyref=":z" />
+                <ruleml:Var keyref=":w" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Controller" />
+                <ruleml:Var key=":y">y</ruleml:Var>
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Processor" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A153">
+                <ruleml:Rel iri="prOnto:nominates" />
+                <ruleml:Var keyref=":edp" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":x" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A154">
+                <ruleml:Rel iri="prOnto:PersonalDataProcessing" />
+                <ruleml:Var keyref=":ep" />
+                <ruleml:Var keyref=":x" />
+                <ruleml:Var keyref=":z" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:if>
+        <ruleml:then>
+          <ruleml:Exists>
+            <ruleml:Var key=":t2">t2</ruleml:Var>
+            <ruleml:Var key=":a2">a2</ruleml:Var>
+            <ruleml:Var key=":ei">ei</ruleml:Var>
+            <ruleml:Var key=":ec">ec</ruleml:Var>
+            <ruleml:Var key=":ed">ed</ruleml:Var>
+            <ruleml:Var key=":em">em</ruleml:Var>
+            <ruleml:Var key=":ese">ese</ruleml:Var>
+            <ruleml:And>
+              <ruleml:Atom>
+                <ruleml:Rel iri="rioOnto:Obliged" />
+                <ruleml:Var keyref=":a2" />
+                <ruleml:Var keyref=":t2" />
+                <ruleml:Var keyref=":y" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:After>
+                  <ruleml:Var keyref=":t2" />
+                  <ruleml:Var keyref=":t1" />
+                </ruleml:After>
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A155">
+                <ruleml:Rel iri="rioOnto:and" />
+                <ruleml:Var keyref=":a2" />
+                <ruleml:Var keyref=":ei" />
+                <ruleml:Var keyref=":ec" />
+                <ruleml:Var keyref=":ed" />
+              </ruleml:Atom>
+              <ruleml:Atom>
+                <ruleml:Rel iri="prOnto:Measure" />
+                <ruleml:Var keyref=":em" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A156">
+                <ruleml:Rel iri="dapreco:Implement" />
+                <ruleml:Var keyref=":ei" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":em" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A157">
+                <ruleml:Rel iri="rioOnto:cause" />
+                <ruleml:Var keyref=":ec" />
+                <ruleml:Var keyref=":em" />
+                <ruleml:Var keyref=":ese" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A158">
+                <ruleml:Rel iri="dapreco:security" />
+                <ruleml:Var keyref=":ese" />
+                <ruleml:Var keyref=":ep" />
+              </ruleml:Atom>
+              <ruleml:Atom keyref=":A159">
+                <ruleml:Rel iri="dapreco:Describe" />
+                <ruleml:Var keyref=":ed" />
+                <ruleml:Var keyref=":y" />
+                <ruleml:Var keyref=":ec" />
+              </ruleml:Atom>
+            </ruleml:And>
+          </ruleml:Exists>
+        </ruleml:then>
+      </ruleml:Rule>
+    </lrml:ConstitutiveStatement>
+  </lrml:Statements>
+  </lrml:LegalRuleML>

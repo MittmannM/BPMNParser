@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:collaboration id="Collaboration_1">
+    <bpmn:participant id="Participant_Controller_daddd6ea" name="Controller" processRef="Process_Controller_fe9c379e" />
+    <bpmn:participant id="Participant_System_f4debf6e" name="System" processRef="Process_System_d7896239" />
+    <bpmn:participant id="Participant_Processor_0b1daafc" name="Processor" processRef="Process_Processor_1c69864d" />
+    <bpmn:messageFlow id="MessageFlow_0a331e5b" sourceRef="Task_68b927ae" targetRef="Participant_Processor_0b1daafc" />
+    <bpmn:messageFlow id="MessageFlow_a5ebb943" sourceRef="Task_8b211705" targetRef="Participant_Processor_0b1daafc" />
+    <bpmn:messageFlow id="MessageFlow_1a80207a" sourceRef="Task_0c17b29f" targetRef="Participant_Processor_0b1daafc" />
+    <bpmn:messageFlow id="MessageFlow_92b3ed93" sourceRef="Task_5f748ee7" targetRef="Participant_Processor_0b1daafc" />
+    <bpmn:messageFlow id="MessageFlow_9091c309" sourceRef="Task_bc9de08d" targetRef="Participant_Processor_0b1daafc" />
+    <bpmn:messageFlow id="MessageFlow_83bdf3cb" sourceRef="Task_db84195e" targetRef="Participant_Processor_0b1daafc" />
+    <bpmn:messageFlow id="MessageFlow_73f949b1" sourceRef="Task_d2258934" targetRef="Participant_Processor_0b1daafc" />
+    <bpmn:messageFlow id="MessageFlow_3d07973c" sourceRef="Task_45b49985" targetRef="Participant_Processor_0b1daafc" />
+    <bpmn:messageFlow id="MessageFlow_c9c328b4" sourceRef="Task_f1ec7db8" targetRef="Participant_Processor_0b1daafc" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_Controller_fe9c379e" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_2e8faa26" name="Start" />
+    <bpmn:sequenceFlow id="Flow_0592ee11" sourceRef="StartEvent_2e8faa26" targetRef="Task_1a717536" />
+    <bpmn:dataObject id="DataObj_725619a7" />
+    <bpmn:dataObjectReference id="DataRef_3821b7d3" dataObjectRef="DataObj_725619a7" name="Maintain Processing Record" />
+    <bpmn:task id="Task_1a717536" name="Record Processing Activity
+(Art. 30 Abs. 1)"><bpmn:incoming>Flow_0592ee11</bpmn:incoming><bpmn:dataOutputAssociation id="Assoc_efb09ac1"><bpmn:targetRef>DataRef_3821b7d3</bpmn:targetRef></bpmn:dataOutputAssociation></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_afcbc97c"><bpmn:text>Check exception in Art. 30 Abs. 5&#10;No exception under Art. 30 Abs. 5&#10;Bear Legal Responsibility</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_7e985e7e" sourceRef="Task_1a717536" targetRef="Annotation_afcbc97c" />
+    <bpmn:sequenceFlow id="Flow_a9c32d98" sourceRef="Task_1a717536" targetRef="Task_ebdf0a3b" />
+    <bpmn:task id="Task_ebdf0a3b" name="Maintain Processing Record
+(Art. 30 Abs. 1)"><bpmn:incoming>Flow_a9c32d98</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_39642163" sourceRef="Task_ebdf0a3b" targetRef="Task_4542eb80" />
+    <bpmn:task id="Task_4542eb80" name="Be Represented By
+(Art. 30 Abs. 1)"><bpmn:incoming>Flow_39642163</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_1e9d322f" sourceRef="Task_4542eb80" targetRef="Task_22bee656" />
+    <bpmn:dataObject id="DataObj_200eaf7b" />
+    <bpmn:dataObjectReference id="DataRef_5f3363e5" dataObjectRef="DataObj_200eaf7b" name="Maintain Processing Record" />
+    <bpmn:task id="Task_22bee656" name="Record Processing Activity
+(Art. 30 Abs. 1)"><bpmn:incoming>Flow_1e9d322f</bpmn:incoming><bpmn:dataOutputAssociation id="Assoc_e2bce966"><bpmn:targetRef>DataRef_5f3363e5</bpmn:targetRef></bpmn:dataOutputAssociation></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_5cbc76e2" sourceRef="Task_22bee656" targetRef="Task_aca24b50" />
+    <bpmn:task id="Task_aca24b50" name="Bear Legal Responsibility
+(Art. 30 Abs. 1)"><bpmn:incoming>Flow_5cbc76e2</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_dd95bd8d" sourceRef="Task_aca24b50" targetRef="Task_6080c8ed" />
+    <bpmn:task id="Task_6080c8ed" name="Bear Legal Responsibility
+(Art. 30 Abs. 1)"><bpmn:incoming>Flow_dd95bd8d</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_0fe855c1" sourceRef="Task_6080c8ed" targetRef="Task_435eaa67" />
+    <bpmn:dataObject id="DataObj_5331f88b" />
+    <bpmn:dataObjectReference id="DataRef_ad669292" dataObjectRef="DataObj_5331f88b" name="Contact Details" />
+    <bpmn:task id="Task_435eaa67" name="Maintain Processing Record
+(Art. 30 Abs. 1 lit. a)"><bpmn:incoming>Flow_0fe855c1</bpmn:incoming><bpmn:dataOutputAssociation id="Assoc_100c918b"><bpmn:targetRef>DataRef_ad669292</bpmn:targetRef></bpmn:dataOutputAssociation></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_afe1cf6d"><bpmn:text>No exception under Art. 30 Abs. 5&#10;Applies when: Maintain Processing Record</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_141b65c9" sourceRef="Task_435eaa67" targetRef="Annotation_afe1cf6d" />
+    <bpmn:sequenceFlow id="Flow_48e054a8" sourceRef="Task_435eaa67" targetRef="Task_68b927ae" />
+    <bpmn:dataObject id="DataObj_876b6c68" />
+    <bpmn:dataObjectReference id="DataRef_f035d4c9" dataObjectRef="DataObj_876b6c68" name="Purpose" />
+    <bpmn:task id="Task_68b927ae" name="Processor Nominates Controller to Processor
+(Art. 30 Abs. 1 lit. b)"><bpmn:incoming>Flow_48e054a8</bpmn:incoming><bpmn:dataOutputAssociation id="Assoc_22dfe6d3"><bpmn:targetRef>DataRef_f035d4c9</bpmn:targetRef></bpmn:dataOutputAssociation></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_12320e4d"><bpmn:text>No exception under Art. 30 Abs. 5&#10;Applies when: Maintain Processing Record</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_223ace62" sourceRef="Task_68b927ae" targetRef="Annotation_12320e4d" />
+    <bpmn:sequenceFlow id="Flow_15742bf8" sourceRef="Task_68b927ae" targetRef="Task_8b211705" />
+    <bpmn:task id="Task_8b211705" name="Processor Nominates Controller to Processor
+(Art. 30 Abs. 1 lit. c)"><bpmn:incoming>Flow_15742bf8</bpmn:incoming></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_62a70a25"><bpmn:text>No exception under Art. 30 Abs. 5&#10;Applies when: Maintain Processing Record</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_ac67deda" sourceRef="Task_8b211705" targetRef="Annotation_62a70a25" />
+    <bpmn:sequenceFlow id="Flow_06a88ed7" sourceRef="Task_8b211705" targetRef="Task_05495709" />
+    <bpmn:dataObject id="DataObj_1e48e4e5" />
+    <bpmn:dataObjectReference id="DataRef_973e8693" dataObjectRef="DataObj_1e48e4e5" name="Contact Details" />
+    <bpmn:task id="Task_05495709" name="Maintain Processing Record
+(Art. 30 Abs. 1 lit. d)"><bpmn:incoming>Flow_06a88ed7</bpmn:incoming><bpmn:dataOutputAssociation id="Assoc_4062eab7"><bpmn:targetRef>DataRef_973e8693</bpmn:targetRef></bpmn:dataOutputAssociation></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_681d4620"><bpmn:text>No exception under Art. 30 Abs. 5&#10;Applies when: Maintain Processing Record</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_58e18553" sourceRef="Task_05495709" targetRef="Annotation_681d4620" />
+    <bpmn:sequenceFlow id="Flow_4dafd7de" sourceRef="Task_05495709" targetRef="Task_0c17b29f" />
+    <bpmn:dataObject id="DataObj_fe0cfc2c" />
+    <bpmn:dataObjectReference id="DataRef_28f3819b" dataObjectRef="DataObj_fe0cfc2c" name="Contact Details" />
+    <bpmn:task id="Task_0c17b29f" name="Processor Nominates Controller to Processor
+(Art. 30 Abs. 1 lit. e)"><bpmn:incoming>Flow_4dafd7de</bpmn:incoming><bpmn:dataOutputAssociation id="Assoc_70eb54b8"><bpmn:targetRef>DataRef_28f3819b</bpmn:targetRef></bpmn:dataOutputAssociation></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_0dcee5f5"><bpmn:text>No exception under Art. 30 Abs. 5&#10;No exception under Art. 49 Abs. 1&#10;No exception under exceptionCha5ArtA49Par1FromPoint1ToPoint6&#10;Applies when: Maintain Processing Record AND Transfer to Third Country AND Transfer to International Organization AND Implement Measure</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_398ec6ad" sourceRef="Task_0c17b29f" targetRef="Annotation_0dcee5f5" />
+    <bpmn:sequenceFlow id="Flow_f7f62ac9" sourceRef="Task_0c17b29f" targetRef="Task_aa09a2cf" />
+    <bpmn:task id="Task_aa09a2cf" name="Maintain Processing Record
+(Art. 30 Abs. 1 lit. f)"><bpmn:incoming>Flow_f7f62ac9</bpmn:incoming></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_b1394e6f"><bpmn:text>Further information may be provided later&#10;No exception under Art. 30 Abs. 5&#10;Applies when: Maintain Processing Record AND timeOf</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_cb614d87" sourceRef="Task_aa09a2cf" targetRef="Annotation_b1394e6f" />
+    <bpmn:sequenceFlow id="Flow_78aa1396" sourceRef="Task_aa09a2cf" targetRef="Task_5f748ee7" />
+    <bpmn:task id="Task_5f748ee7" name="Processor Nominates Controller to Processor
+(Art. 30 Abs. 1 lit. g)"><bpmn:incoming>Flow_78aa1396</bpmn:incoming></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_66c0bf54"><bpmn:text>Further information may be provided later&#10;No exception under Art. 30 Abs. 5&#10;Applies when: Maintain Processing Record AND Implement Measure AND security</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_0022fec3" sourceRef="Task_5f748ee7" targetRef="Annotation_66c0bf54" />
+    <bpmn:sequenceFlow id="Flow_0e249b0e" sourceRef="Task_5f748ee7" targetRef="Task_bc9de08d" />
+    <bpmn:dataObject id="DataObj_921dc5ea" />
+    <bpmn:dataObjectReference id="DataRef_f16ab090" dataObjectRef="DataObj_921dc5ea" name="Contact Details" />
+    <bpmn:task id="Task_bc9de08d" name="Processor Nominates Controller to Processor
+(Art. 30 Abs. 2 lit. a)"><bpmn:incoming>Flow_0e249b0e</bpmn:incoming><bpmn:dataOutputAssociation id="Assoc_d3d0d198"><bpmn:targetRef>DataRef_f16ab090</bpmn:targetRef></bpmn:dataOutputAssociation></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_78980f5a"><bpmn:text>No exception under Art. 30 Abs. 5&#10;Applies when: Maintain Processing Record</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_e0552a6f" sourceRef="Task_bc9de08d" targetRef="Annotation_78980f5a" />
+    <bpmn:sequenceFlow id="Flow_542feca8" sourceRef="Task_bc9de08d" targetRef="Task_db84195e" />
+    <bpmn:dataObject id="DataObj_78161b67" />
+    <bpmn:dataObjectReference id="DataRef_99205edd" dataObjectRef="DataObj_78161b67" name="Categories of Data" />
+    <bpmn:task id="Task_db84195e" name="Processor Nominates Controller to Processor
+(Art. 30 Abs. 2 lit. b)"><bpmn:incoming>Flow_542feca8</bpmn:incoming><bpmn:dataOutputAssociation id="Assoc_93bd76ca"><bpmn:targetRef>DataRef_99205edd</bpmn:targetRef></bpmn:dataOutputAssociation></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_6ab401a6"><bpmn:text>No exception under Art. 30 Abs. 5&#10;Applies when: Maintain Processing Record</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_e5ad8388" sourceRef="Task_db84195e" targetRef="Annotation_6ab401a6" />
+    <bpmn:sequenceFlow id="Flow_4645b972" sourceRef="Task_db84195e" targetRef="Task_d2258934" />
+    <bpmn:dataObject id="DataObj_7d4bd923" />
+    <bpmn:dataObjectReference id="DataRef_666beb6c" dataObjectRef="DataObj_7d4bd923" name="Contact Details" />
+    <bpmn:task id="Task_d2258934" name="Processor Nominates Controller to Processor
+(Art. 30 Abs. 2 lit. c)"><bpmn:incoming>Flow_4645b972</bpmn:incoming><bpmn:dataOutputAssociation id="Assoc_d171d386"><bpmn:targetRef>DataRef_666beb6c</bpmn:targetRef></bpmn:dataOutputAssociation></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_66cff202"><bpmn:text>No exception under Art. 30 Abs. 5&#10;No exception under Art. 49 Abs. 1&#10;Applies when: Maintain Processing Record AND Transfer to Third Country AND Transfer to International Organization AND Implement Measure</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_7bad2447" sourceRef="Task_d2258934" targetRef="Annotation_66cff202" />
+    <bpmn:sequenceFlow id="Flow_97928411" sourceRef="Task_d2258934" targetRef="Task_45b49985" />
+    <bpmn:task id="Task_45b49985" name="Processor Nominates Controller to Processor
+(Art. 30 Abs. 2 lit. d)"><bpmn:incoming>Flow_97928411</bpmn:incoming></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_d06297e5"><bpmn:text>Further information may be provided later&#10;No exception under Art. 30 Abs. 5&#10;Applies when: Maintain Processing Record AND Implement Measure AND security</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_f6e36b28" sourceRef="Task_45b49985" targetRef="Annotation_d06297e5" />
+    <bpmn:sequenceFlow id="Flow_7b02349f" sourceRef="Task_45b49985" targetRef="Task_a7cc23b8" />
+    <bpmn:task id="Task_a7cc23b8" name="Maintain Processing Record
+(Art. 30 Abs. 3)"><bpmn:incoming>Flow_7b02349f</bpmn:incoming></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_83c9e393"><bpmn:text>Written Form Required&#10;Applies when: Maintain Processing Record</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_34d1ebce" sourceRef="Task_a7cc23b8" targetRef="Annotation_83c9e393" />
+    <bpmn:sequenceFlow id="Flow_a31545b8" sourceRef="Task_a7cc23b8" targetRef="Task_f1ec7db8" />
+    <bpmn:task id="Task_f1ec7db8" name="Processor Nominates Controller to Processor
+(Art. 30 Abs. 3)"><bpmn:incoming>Flow_a31545b8</bpmn:incoming></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_56c6bddb"><bpmn:text>Written Form Required&#10;Applies when: Maintain Processing Record</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_70e4d16f" sourceRef="Task_f1ec7db8" targetRef="Annotation_56c6bddb" />
+    <bpmn:sequenceFlow id="Flow_48cd356a" sourceRef="Task_f1ec7db8" targetRef="Task_ab653ef1" />
+    <bpmn:dataObject id="DataObj_ef4bbae3" />
+    <bpmn:dataObjectReference id="DataRef_5e2486ff" dataObjectRef="DataObj_ef4bbae3" name="Maintain Processing Record" />
+    <bpmn:task id="Task_ab653ef1" name="Provide Data Access
+(Art. 30 Abs. 4)"><bpmn:incoming>Flow_48cd356a</bpmn:incoming><bpmn:dataOutputAssociation id="Assoc_9ac12317"><bpmn:targetRef>DataRef_5e2486ff</bpmn:targetRef></bpmn:dataOutputAssociation></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_b75e45ae"><bpmn:text>Notify the competent supervisory authority&#10;AbleTo&#10;Applies when: Maintain Processing Record</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_d936e79d" sourceRef="Task_ab653ef1" targetRef="Annotation_b75e45ae" />
+    <bpmn:sequenceFlow id="Flow_cd1d83f2" sourceRef="Task_ab653ef1" targetRef="EndEvent_87b4cb9c" />
+    <bpmn:endEvent id="EndEvent_87b4cb9c" name="End"><bpmn:incoming>Flow_cd1d83f2</bpmn:incoming></bpmn:endEvent>
+  </bpmn:process>
+  <bpmn:process id="Process_System_d7896239" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_fad7dc40" name="Start" />
+    <bpmn:sequenceFlow id="Flow_08f12f06" sourceRef="StartEvent_fad7dc40" targetRef="Task_b27d892f" />
+    <bpmn:dataObject id="DataObj_35ef131e" />
+    <bpmn:dataObjectReference id="DataRef_57092fc9" dataObjectRef="DataObj_35ef131e" name="Contact Details" />
+    <bpmn:task id="Task_b27d892f" name="Joint Controllers Involved
+(Art. 30 Abs. 1 lit. a)"><bpmn:incoming>Flow_08f12f06</bpmn:incoming><bpmn:dataOutputAssociation id="Assoc_17e1bc14"><bpmn:targetRef>DataRef_57092fc9</bpmn:targetRef></bpmn:dataOutputAssociation></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_73078ed0"><bpmn:text>No exception under Art. 30 Abs. 5&#10;Applies when: Joint Controllers Involved AND Maintain Processing Record</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_dbe996d0" sourceRef="Task_b27d892f" targetRef="Annotation_73078ed0" />
+    <bpmn:sequenceFlow id="Flow_2596ac5a" sourceRef="Task_b27d892f" targetRef="Task_2967aacd" />
+    <bpmn:task id="Task_2967aacd" name="Maintain Processing Record
+(Art. 30 Abs. 1 lit. e)"><bpmn:incoming>Flow_2596ac5a</bpmn:incoming></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_2a98421e"><bpmn:text>No exception under exceptionCha5ArtA49Par1FromPoint1ToPoint6&#10;No exception under Art. 30 Abs. 5&#10;Applies when: Maintain Processing Record AND Transfer to Third Country AND Implement Measure AND Legitimate Interest</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_63637afc" sourceRef="Task_2967aacd" targetRef="Annotation_2a98421e" />
+    <bpmn:sequenceFlow id="Flow_93085b51" sourceRef="Task_2967aacd" targetRef="EndEvent_ef8d3417" />
+    <bpmn:endEvent id="EndEvent_ef8d3417" name="End"><bpmn:incoming>Flow_93085b51</bpmn:incoming></bpmn:endEvent>
+  </bpmn:process>
+  <bpmn:process id="Process_Processor_1c69864d" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_e3a1358c" name="Start" />
+    <bpmn:sequenceFlow id="Flow_1c6ae955" sourceRef="StartEvent_e3a1358c" targetRef="Task_c657092f" />
+    <bpmn:dataObject id="DataObj_438a2e7e" />
+    <bpmn:dataObjectReference id="DataRef_fbec8326" dataObjectRef="DataObj_438a2e7e" name="Maintain Processing Record" />
+    <bpmn:task id="Task_c657092f" name="Record Processing Activity
+(Art. 30 Abs. 2)"><bpmn:incoming>Flow_1c6ae955</bpmn:incoming><bpmn:dataOutputAssociation id="Assoc_bbda331c"><bpmn:targetRef>DataRef_fbec8326</bpmn:targetRef></bpmn:dataOutputAssociation></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_227869f3"><bpmn:text>No exception under Art. 30 Abs. 5&#10;Bear Legal Responsibility</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_5f0f6110" sourceRef="Task_c657092f" targetRef="Annotation_227869f3" />
+    <bpmn:sequenceFlow id="Flow_d74ee427" sourceRef="Task_c657092f" targetRef="Task_0ea2cc41" />
+    <bpmn:task id="Task_0ea2cc41" name="Maintain Processing Record
+(Art. 30 Abs. 2)"><bpmn:incoming>Flow_d74ee427</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_b37ef046" sourceRef="Task_0ea2cc41" targetRef="Task_2011245a" />
+    <bpmn:task id="Task_2011245a" name="Be Represented By
+(Art. 30 Abs. 2)"><bpmn:incoming>Flow_b37ef046</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_543cc045" sourceRef="Task_2011245a" targetRef="Task_e8a31930" />
+    <bpmn:dataObject id="DataObj_55885eff" />
+    <bpmn:dataObjectReference id="DataRef_ae015253" dataObjectRef="DataObj_55885eff" name="Maintain Processing Record" />
+    <bpmn:task id="Task_e8a31930" name="Record Processing Activity
+(Art. 30 Abs. 2)"><bpmn:incoming>Flow_543cc045</bpmn:incoming><bpmn:dataOutputAssociation id="Assoc_5c2d9a7a"><bpmn:targetRef>DataRef_ae015253</bpmn:targetRef></bpmn:dataOutputAssociation></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_d67d4a12" sourceRef="Task_e8a31930" targetRef="Task_190365c9" />
+    <bpmn:task id="Task_190365c9" name="Bear Legal Responsibility
+(Art. 30 Abs. 2)"><bpmn:incoming>Flow_d67d4a12</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_fd32ffdf" sourceRef="Task_190365c9" targetRef="Task_109d238d" />
+    <bpmn:task id="Task_109d238d" name="Bear Legal Responsibility
+(Art. 30 Abs. 2)"><bpmn:incoming>Flow_fd32ffdf</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_4fffeb2a" sourceRef="Task_109d238d" targetRef="EndEvent_7d847b28" />
+    <bpmn:endEvent id="EndEvent_7d847b28" name="End"><bpmn:incoming>Flow_4fffeb2a</bpmn:incoming></bpmn:endEvent>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
+      <bpmndi:BPMNShape id="Participant_Controller_daddd6ea_di" bpmnElement="Participant_Controller_daddd6ea" isHorizontal="true"><dc:Bounds x="60" y="50" width="5400" height="220" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_System_f4debf6e_di" bpmnElement="Participant_System_f4debf6e" isHorizontal="true"><dc:Bounds x="60" y="310" width="5400" height="220" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Processor_0b1daafc_di" bpmnElement="Participant_Processor_0b1daafc" isHorizontal="true"><dc:Bounds x="60" y="570" width="5400" height="220" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_2e8faa26_di" bpmnElement="StartEvent_2e8faa26"><dc:Bounds x="140" y="142" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_3821b7d3_di" bpmnElement="DataRef_3821b7d3"><dc:Bounds x="220" y="80" width="36" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_1a717536_di" bpmnElement="Task_1a717536"><dc:Bounds x="220" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_afcbc97c_di" bpmnElement="Annotation_afcbc97c"><dc:Bounds x="590" y="110" width="280" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ebdf0a3b_di" bpmnElement="Task_ebdf0a3b"><dc:Bounds x="470" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_4542eb80_di" bpmnElement="Task_4542eb80"><dc:Bounds x="720" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_5f3363e5_di" bpmnElement="DataRef_5f3363e5"><dc:Bounds x="970" y="80" width="36" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_22bee656_di" bpmnElement="Task_22bee656"><dc:Bounds x="970" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_aca24b50_di" bpmnElement="Task_aca24b50"><dc:Bounds x="1220" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_6080c8ed_di" bpmnElement="Task_6080c8ed"><dc:Bounds x="1470" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_ad669292_di" bpmnElement="DataRef_ad669292"><dc:Bounds x="1720" y="80" width="36" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_435eaa67_di" bpmnElement="Task_435eaa67"><dc:Bounds x="1720" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_afe1cf6d_di" bpmnElement="Annotation_afe1cf6d"><dc:Bounds x="2090" y="110" width="280" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_f035d4c9_di" bpmnElement="DataRef_f035d4c9"><dc:Bounds x="1970" y="80" width="36" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_68b927ae_di" bpmnElement="Task_68b927ae"><dc:Bounds x="1970" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_12320e4d_di" bpmnElement="Annotation_12320e4d"><dc:Bounds x="2340" y="110" width="280" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_8b211705_di" bpmnElement="Task_8b211705"><dc:Bounds x="2220" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_62a70a25_di" bpmnElement="Annotation_62a70a25"><dc:Bounds x="2590" y="110" width="280" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_973e8693_di" bpmnElement="DataRef_973e8693"><dc:Bounds x="2470" y="80" width="36" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_05495709_di" bpmnElement="Task_05495709"><dc:Bounds x="2470" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_681d4620_di" bpmnElement="Annotation_681d4620"><dc:Bounds x="2840" y="110" width="280" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_28f3819b_di" bpmnElement="DataRef_28f3819b"><dc:Bounds x="2720" y="80" width="36" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_0c17b29f_di" bpmnElement="Task_0c17b29f"><dc:Bounds x="2720" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_0dcee5f5_di" bpmnElement="Annotation_0dcee5f5"><dc:Bounds x="3090" y="110" width="280" height="100" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_aa09a2cf_di" bpmnElement="Task_aa09a2cf"><dc:Bounds x="2970" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_b1394e6f_di" bpmnElement="Annotation_b1394e6f"><dc:Bounds x="3340" y="110" width="280" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_5f748ee7_di" bpmnElement="Task_5f748ee7"><dc:Bounds x="3220" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_66c0bf54_di" bpmnElement="Annotation_66c0bf54"><dc:Bounds x="3590" y="110" width="280" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_f16ab090_di" bpmnElement="DataRef_f16ab090"><dc:Bounds x="3470" y="80" width="36" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_bc9de08d_di" bpmnElement="Task_bc9de08d"><dc:Bounds x="3470" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_78980f5a_di" bpmnElement="Annotation_78980f5a"><dc:Bounds x="3840" y="110" width="280" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_99205edd_di" bpmnElement="DataRef_99205edd"><dc:Bounds x="3720" y="80" width="36" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_db84195e_di" bpmnElement="Task_db84195e"><dc:Bounds x="3720" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_6ab401a6_di" bpmnElement="Annotation_6ab401a6"><dc:Bounds x="4090" y="110" width="280" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_666beb6c_di" bpmnElement="DataRef_666beb6c"><dc:Bounds x="3970" y="80" width="36" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_d2258934_di" bpmnElement="Task_d2258934"><dc:Bounds x="3970" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_66cff202_di" bpmnElement="Annotation_66cff202"><dc:Bounds x="4340" y="110" width="280" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_45b49985_di" bpmnElement="Task_45b49985"><dc:Bounds x="4220" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_d06297e5_di" bpmnElement="Annotation_d06297e5"><dc:Bounds x="4590" y="110" width="280" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_a7cc23b8_di" bpmnElement="Task_a7cc23b8"><dc:Bounds x="4470" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_83c9e393_di" bpmnElement="Annotation_83c9e393"><dc:Bounds x="4840" y="110" width="280" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_f1ec7db8_di" bpmnElement="Task_f1ec7db8"><dc:Bounds x="4720" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_56c6bddb_di" bpmnElement="Annotation_56c6bddb"><dc:Bounds x="5090" y="110" width="280" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_5e2486ff_di" bpmnElement="DataRef_5e2486ff"><dc:Bounds x="4970" y="80" width="36" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ab653ef1_di" bpmnElement="Task_ab653ef1"><dc:Bounds x="4970" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_b75e45ae_di" bpmnElement="Annotation_b75e45ae"><dc:Bounds x="5340" y="110" width="280" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_87b4cb9c_di" bpmnElement="EndEvent_87b4cb9c"><dc:Bounds x="5220" y="142" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_fad7dc40_di" bpmnElement="StartEvent_fad7dc40"><dc:Bounds x="140" y="402" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_57092fc9_di" bpmnElement="DataRef_57092fc9"><dc:Bounds x="220" y="340" width="36" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_b27d892f_di" bpmnElement="Task_b27d892f"><dc:Bounds x="220" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_73078ed0_di" bpmnElement="Annotation_73078ed0"><dc:Bounds x="590" y="370" width="280" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_2967aacd_di" bpmnElement="Task_2967aacd"><dc:Bounds x="470" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_2a98421e_di" bpmnElement="Annotation_2a98421e"><dc:Bounds x="840" y="370" width="280" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ef8d3417_di" bpmnElement="EndEvent_ef8d3417"><dc:Bounds x="720" y="402" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_e3a1358c_di" bpmnElement="StartEvent_e3a1358c"><dc:Bounds x="140" y="662" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_fbec8326_di" bpmnElement="DataRef_fbec8326"><dc:Bounds x="220" y="600" width="36" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_c657092f_di" bpmnElement="Task_c657092f"><dc:Bounds x="220" y="640" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_227869f3_di" bpmnElement="Annotation_227869f3"><dc:Bounds x="590" y="630" width="280" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_0ea2cc41_di" bpmnElement="Task_0ea2cc41"><dc:Bounds x="470" y="640" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_2011245a_di" bpmnElement="Task_2011245a"><dc:Bounds x="720" y="640" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_ae015253_di" bpmnElement="DataRef_ae015253"><dc:Bounds x="970" y="600" width="36" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_e8a31930_di" bpmnElement="Task_e8a31930"><dc:Bounds x="970" y="640" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_190365c9_di" bpmnElement="Task_190365c9"><dc:Bounds x="1220" y="640" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_109d238d_di" bpmnElement="Task_109d238d"><dc:Bounds x="1470" y="640" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_7d847b28_di" bpmnElement="EndEvent_7d847b28"><dc:Bounds x="1720" y="662" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0592ee11_di" bpmnElement="Flow_0592ee11"><di:waypoint x="176" y="160" /><di:waypoint x="220" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_efb09ac1_di" bpmnElement="Assoc_efb09ac1"><di:waypoint x="305" y="155" /><di:waypoint x="238" y="130" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_7e985e7e_di" bpmnElement="Assoc_Annot_7e985e7e"><di:waypoint x="390" y="160" /><di:waypoint x="590" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_a9c32d98_di" bpmnElement="Flow_a9c32d98"><di:waypoint x="390" y="160" /><di:waypoint x="470" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_39642163_di" bpmnElement="Flow_39642163"><di:waypoint x="640" y="160" /><di:waypoint x="720" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1e9d322f_di" bpmnElement="Flow_1e9d322f"><di:waypoint x="890" y="160" /><di:waypoint x="970" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_e2bce966_di" bpmnElement="Assoc_e2bce966"><di:waypoint x="1055" y="155" /><di:waypoint x="988" y="130" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5cbc76e2_di" bpmnElement="Flow_5cbc76e2"><di:waypoint x="1140" y="160" /><di:waypoint x="1220" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_dd95bd8d_di" bpmnElement="Flow_dd95bd8d"><di:waypoint x="1390" y="160" /><di:waypoint x="1470" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0fe855c1_di" bpmnElement="Flow_0fe855c1"><di:waypoint x="1640" y="160" /><di:waypoint x="1720" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_100c918b_di" bpmnElement="Assoc_100c918b"><di:waypoint x="1805" y="155" /><di:waypoint x="1738" y="130" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_141b65c9_di" bpmnElement="Assoc_Annot_141b65c9"><di:waypoint x="1890" y="160" /><di:waypoint x="2090" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_48e054a8_di" bpmnElement="Flow_48e054a8"><di:waypoint x="1890" y="160" /><di:waypoint x="1970" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_22dfe6d3_di" bpmnElement="Assoc_22dfe6d3"><di:waypoint x="2055" y="155" /><di:waypoint x="1988" y="130" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_223ace62_di" bpmnElement="Assoc_Annot_223ace62"><di:waypoint x="2140" y="160" /><di:waypoint x="2340" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_15742bf8_di" bpmnElement="Flow_15742bf8"><di:waypoint x="2140" y="160" /><di:waypoint x="2220" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_ac67deda_di" bpmnElement="Assoc_Annot_ac67deda"><di:waypoint x="2390" y="160" /><di:waypoint x="2590" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_06a88ed7_di" bpmnElement="Flow_06a88ed7"><di:waypoint x="2390" y="160" /><di:waypoint x="2470" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_4062eab7_di" bpmnElement="Assoc_4062eab7"><di:waypoint x="2555" y="155" /><di:waypoint x="2488" y="130" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_58e18553_di" bpmnElement="Assoc_Annot_58e18553"><di:waypoint x="2640" y="160" /><di:waypoint x="2840" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4dafd7de_di" bpmnElement="Flow_4dafd7de"><di:waypoint x="2640" y="160" /><di:waypoint x="2720" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_70eb54b8_di" bpmnElement="Assoc_70eb54b8"><di:waypoint x="2805" y="155" /><di:waypoint x="2738" y="130" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_398ec6ad_di" bpmnElement="Assoc_Annot_398ec6ad"><di:waypoint x="2890" y="160" /><di:waypoint x="3090" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_f7f62ac9_di" bpmnElement="Flow_f7f62ac9"><di:waypoint x="2890" y="160" /><di:waypoint x="2970" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_cb614d87_di" bpmnElement="Assoc_Annot_cb614d87"><di:waypoint x="3140" y="160" /><di:waypoint x="3340" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_78aa1396_di" bpmnElement="Flow_78aa1396"><di:waypoint x="3140" y="160" /><di:waypoint x="3220" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_0022fec3_di" bpmnElement="Assoc_Annot_0022fec3"><di:waypoint x="3390" y="160" /><di:waypoint x="3590" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0e249b0e_di" bpmnElement="Flow_0e249b0e"><di:waypoint x="3390" y="160" /><di:waypoint x="3470" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_d3d0d198_di" bpmnElement="Assoc_d3d0d198"><di:waypoint x="3555" y="155" /><di:waypoint x="3488" y="130" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_e0552a6f_di" bpmnElement="Assoc_Annot_e0552a6f"><di:waypoint x="3640" y="160" /><di:waypoint x="3840" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_542feca8_di" bpmnElement="Flow_542feca8"><di:waypoint x="3640" y="160" /><di:waypoint x="3720" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_93bd76ca_di" bpmnElement="Assoc_93bd76ca"><di:waypoint x="3805" y="155" /><di:waypoint x="3738" y="130" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_e5ad8388_di" bpmnElement="Assoc_Annot_e5ad8388"><di:waypoint x="3890" y="160" /><di:waypoint x="4090" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4645b972_di" bpmnElement="Flow_4645b972"><di:waypoint x="3890" y="160" /><di:waypoint x="3970" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_d171d386_di" bpmnElement="Assoc_d171d386"><di:waypoint x="4055" y="155" /><di:waypoint x="3988" y="130" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_7bad2447_di" bpmnElement="Assoc_Annot_7bad2447"><di:waypoint x="4140" y="160" /><di:waypoint x="4340" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_97928411_di" bpmnElement="Flow_97928411"><di:waypoint x="4140" y="160" /><di:waypoint x="4220" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_f6e36b28_di" bpmnElement="Assoc_Annot_f6e36b28"><di:waypoint x="4390" y="160" /><di:waypoint x="4590" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7b02349f_di" bpmnElement="Flow_7b02349f"><di:waypoint x="4390" y="160" /><di:waypoint x="4470" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_34d1ebce_di" bpmnElement="Assoc_Annot_34d1ebce"><di:waypoint x="4640" y="160" /><di:waypoint x="4840" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_a31545b8_di" bpmnElement="Flow_a31545b8"><di:waypoint x="4640" y="160" /><di:waypoint x="4720" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_70e4d16f_di" bpmnElement="Assoc_Annot_70e4d16f"><di:waypoint x="4890" y="160" /><di:waypoint x="5090" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_48cd356a_di" bpmnElement="Flow_48cd356a"><di:waypoint x="4890" y="160" /><di:waypoint x="4970" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_9ac12317_di" bpmnElement="Assoc_9ac12317"><di:waypoint x="5055" y="155" /><di:waypoint x="4988" y="130" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_d936e79d_di" bpmnElement="Assoc_Annot_d936e79d"><di:waypoint x="5140" y="160" /><di:waypoint x="5340" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_cd1d83f2_di" bpmnElement="Flow_cd1d83f2"><di:waypoint x="5140" y="160" /><di:waypoint x="5220" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_08f12f06_di" bpmnElement="Flow_08f12f06"><di:waypoint x="176" y="420" /><di:waypoint x="220" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_17e1bc14_di" bpmnElement="Assoc_17e1bc14"><di:waypoint x="305" y="415" /><di:waypoint x="238" y="390" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_dbe996d0_di" bpmnElement="Assoc_Annot_dbe996d0"><di:waypoint x="390" y="420" /><di:waypoint x="590" y="410" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2596ac5a_di" bpmnElement="Flow_2596ac5a"><di:waypoint x="390" y="420" /><di:waypoint x="470" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_63637afc_di" bpmnElement="Assoc_Annot_63637afc"><di:waypoint x="640" y="420" /><di:waypoint x="840" y="410" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_93085b51_di" bpmnElement="Flow_93085b51"><di:waypoint x="640" y="420" /><di:waypoint x="720" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1c6ae955_di" bpmnElement="Flow_1c6ae955"><di:waypoint x="176" y="680" /><di:waypoint x="220" y="680" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_bbda331c_di" bpmnElement="Assoc_bbda331c"><di:waypoint x="305" y="675" /><di:waypoint x="238" y="650" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_5f0f6110_di" bpmnElement="Assoc_Annot_5f0f6110"><di:waypoint x="390" y="680" /><di:waypoint x="590" y="670" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_d74ee427_di" bpmnElement="Flow_d74ee427"><di:waypoint x="390" y="680" /><di:waypoint x="470" y="680" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_b37ef046_di" bpmnElement="Flow_b37ef046"><di:waypoint x="640" y="680" /><di:waypoint x="720" y="680" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_543cc045_di" bpmnElement="Flow_543cc045"><di:waypoint x="890" y="680" /><di:waypoint x="970" y="680" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_5c2d9a7a_di" bpmnElement="Assoc_5c2d9a7a"><di:waypoint x="1055" y="675" /><di:waypoint x="988" y="650" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_d67d4a12_di" bpmnElement="Flow_d67d4a12"><di:waypoint x="1140" y="680" /><di:waypoint x="1220" y="680" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_fd32ffdf_di" bpmnElement="Flow_fd32ffdf"><di:waypoint x="1390" y="680" /><di:waypoint x="1470" y="680" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4fffeb2a_di" bpmnElement="Flow_4fffeb2a"><di:waypoint x="1640" y="680" /><di:waypoint x="1720" y="680" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_0a331e5b_di" bpmnElement="MessageFlow_0a331e5b"><di:waypoint x="2055" y="160" /><di:waypoint x="2055" y="570" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_a5ebb943_di" bpmnElement="MessageFlow_a5ebb943"><di:waypoint x="2305" y="160" /><di:waypoint x="2305" y="570" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_1a80207a_di" bpmnElement="MessageFlow_1a80207a"><di:waypoint x="2805" y="160" /><di:waypoint x="2805" y="570" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_92b3ed93_di" bpmnElement="MessageFlow_92b3ed93"><di:waypoint x="3305" y="160" /><di:waypoint x="3305" y="570" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_9091c309_di" bpmnElement="MessageFlow_9091c309"><di:waypoint x="3555" y="160" /><di:waypoint x="3555" y="570" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_83bdf3cb_di" bpmnElement="MessageFlow_83bdf3cb"><di:waypoint x="3805" y="160" /><di:waypoint x="3805" y="570" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_73f949b1_di" bpmnElement="MessageFlow_73f949b1"><di:waypoint x="4055" y="160" /><di:waypoint x="4055" y="570" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_3d07973c_di" bpmnElement="MessageFlow_3d07973c"><di:waypoint x="4305" y="160" /><di:waypoint x="4305" y="570" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_c9c328b4_di" bpmnElement="MessageFlow_c9c328b4"><di:waypoint x="4805" y="160" /><di:waypoint x="4805" y="570" /></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

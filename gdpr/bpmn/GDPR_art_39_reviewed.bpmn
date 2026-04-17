@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  id="Definitions_Art39_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art39_Reviewed">
+    <bpmn:participant id="Participant_DPO_Art39"
+                      name="Data Protection Officer"
+                      processRef="Process_DPO_Art39" />
+    <bpmn:participant id="Participant_ControllerProcessor_Art39"
+                      name="Controller or Processor" />
+    <bpmn:participant id="Participant_SupervisoryAuthority_Art39"
+                      name="Supervisory Authority" />
+
+    <bpmn:messageFlow id="MessageFlow_InformControllerProcessor"
+                      sourceRef="Task_InformControllerProcessor"
+                      targetRef="Participant_ControllerProcessor_Art39" />
+    <bpmn:messageFlow id="MessageFlow_InformEmployees"
+                      sourceRef="Task_InformEmployees"
+                      targetRef="Participant_ControllerProcessor_Art39" />
+    <bpmn:messageFlow id="MessageFlow_CooperateAuthority"
+                      sourceRef="Task_CooperateAuthority"
+                      targetRef="Participant_SupervisoryAuthority_Art39" />
+    <bpmn:messageFlow id="MessageFlow_ContactPointAuthority"
+                      sourceRef="Task_ContactPointAuthority"
+                      targetRef="Participant_SupervisoryAuthority_Art39" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_DPO_Art39"
+                name="Performing the DPO tasks"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 39 based on DAPRECO LegalRuleML statements211-216.
+      The model covers informing and advising controller, processor, and employees,
+      monitoring compliance and policies, advising on DPIAs, cooperating with the
+      supervisory authority, serving as contact point, and carrying out the tasks
+      with due regard to risks to the rights and freedoms of data subjects.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_DPOTasks_Art39"
+                     name="DPO tasks are triggered">
+      <bpmn:outgoing>Flow_Start_To_AssessRisk</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_AssessRisk"
+               name="Assess the risk to rights and freedoms of data subjects">
+      <bpmn:incoming>Flow_Start_To_AssessRisk</bpmn:incoming>
+      <bpmn:outgoing>Flow_AssessRisk_To_GatewaySplit</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_TasksSplit_Art39">
+      <bpmn:incoming>Flow_AssessRisk_To_GatewaySplit</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplit_To_InformControllerProcessor</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplit_To_InformEmployees</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplit_To_MonitorCompliance</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplit_To_AdviseDPIA</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplit_To_CooperateAuthority</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplit_To_ContactPointAuthority</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:sendTask id="Task_InformControllerProcessor"
+                   name="Inform and advise the controller or processor on applicable obligations">
+      <bpmn:incoming>Flow_GatewaySplit_To_InformControllerProcessor</bpmn:incoming>
+      <bpmn:outgoing>Flow_InformControllerProcessor_To_GatewayJoin</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:sendTask id="Task_InformEmployees"
+                   name="Inform and advise employees involved in processing on applicable obligations">
+      <bpmn:incoming>Flow_GatewaySplit_To_InformEmployees</bpmn:incoming>
+      <bpmn:outgoing>Flow_InformEmployees_To_GatewayJoin</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:task id="Task_MonitorCompliance"
+               name="Monitor compliance with GDPR, Union, Member-State law, and data protection policies">
+      <bpmn:incoming>Flow_GatewaySplit_To_MonitorCompliance</bpmn:incoming>
+      <bpmn:outgoing>Flow_MonitorCompliance_To_GatewayJoin</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_AdviseDPIA"
+               name="Advise on DPIAs and monitor their performance">
+      <bpmn:incoming>Flow_GatewaySplit_To_AdviseDPIA</bpmn:incoming>
+      <bpmn:outgoing>Flow_AdviseDPIA_To_GatewayJoin</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_CooperateAuthority"
+               name="Cooperate with the supervisory authority">
+      <bpmn:incoming>Flow_GatewaySplit_To_CooperateAuthority</bpmn:incoming>
+      <bpmn:outgoing>Flow_CooperateAuthority_To_GatewayJoin</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ContactPointAuthority"
+               name="Act as the contact point for the supervisory authority and consult on related matters">
+      <bpmn:incoming>Flow_GatewaySplit_To_ContactPointAuthority</bpmn:incoming>
+      <bpmn:outgoing>Flow_ContactPointAuthority_To_GatewayJoin</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_TasksJoin_Art39">
+      <bpmn:incoming>Flow_InformControllerProcessor_To_GatewayJoin</bpmn:incoming>
+      <bpmn:incoming>Flow_InformEmployees_To_GatewayJoin</bpmn:incoming>
+      <bpmn:incoming>Flow_MonitorCompliance_To_GatewayJoin</bpmn:incoming>
+      <bpmn:incoming>Flow_AdviseDPIA_To_GatewayJoin</bpmn:incoming>
+      <bpmn:incoming>Flow_CooperateAuthority_To_GatewayJoin</bpmn:incoming>
+      <bpmn:incoming>Flow_ContactPointAuthority_To_GatewayJoin</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoin_To_End</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:endEvent id="EndEvent_DPOTasksCompleted_Art39"
+                   name="DPO tasks performed with a risk-based approach">
+      <bpmn:incoming>Flow_GatewayJoin_To_End</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_AssessRisk"
+                       sourceRef="StartEvent_DPOTasks_Art39"
+                       targetRef="Task_AssessRisk" />
+    <bpmn:sequenceFlow id="Flow_AssessRisk_To_GatewaySplit"
+                       sourceRef="Task_AssessRisk"
+                       targetRef="Gateway_TasksSplit_Art39" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplit_To_InformControllerProcessor"
+                       sourceRef="Gateway_TasksSplit_Art39"
+                       targetRef="Task_InformControllerProcessor" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplit_To_InformEmployees"
+                       sourceRef="Gateway_TasksSplit_Art39"
+                       targetRef="Task_InformEmployees" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplit_To_MonitorCompliance"
+                       sourceRef="Gateway_TasksSplit_Art39"
+                       targetRef="Task_MonitorCompliance" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplit_To_AdviseDPIA"
+                       sourceRef="Gateway_TasksSplit_Art39"
+                       targetRef="Task_AdviseDPIA" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplit_To_CooperateAuthority"
+                       sourceRef="Gateway_TasksSplit_Art39"
+                       targetRef="Task_CooperateAuthority" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplit_To_ContactPointAuthority"
+                       sourceRef="Gateway_TasksSplit_Art39"
+                       targetRef="Task_ContactPointAuthority" />
+    <bpmn:sequenceFlow id="Flow_InformControllerProcessor_To_GatewayJoin"
+                       sourceRef="Task_InformControllerProcessor"
+                       targetRef="Gateway_TasksJoin_Art39" />
+    <bpmn:sequenceFlow id="Flow_InformEmployees_To_GatewayJoin"
+                       sourceRef="Task_InformEmployees"
+                       targetRef="Gateway_TasksJoin_Art39" />
+    <bpmn:sequenceFlow id="Flow_MonitorCompliance_To_GatewayJoin"
+                       sourceRef="Task_MonitorCompliance"
+                       targetRef="Gateway_TasksJoin_Art39" />
+    <bpmn:sequenceFlow id="Flow_AdviseDPIA_To_GatewayJoin"
+                       sourceRef="Task_AdviseDPIA"
+                       targetRef="Gateway_TasksJoin_Art39" />
+    <bpmn:sequenceFlow id="Flow_CooperateAuthority_To_GatewayJoin"
+                       sourceRef="Task_CooperateAuthority"
+                       targetRef="Gateway_TasksJoin_Art39" />
+    <bpmn:sequenceFlow id="Flow_ContactPointAuthority_To_GatewayJoin"
+                       sourceRef="Task_ContactPointAuthority"
+                       targetRef="Gateway_TasksJoin_Art39" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoin_To_End"
+                       sourceRef="Gateway_TasksJoin_Art39"
+                       targetRef="EndEvent_DPOTasksCompleted_Art39" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art39_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art39_Reviewed"
+                      bpmnElement="Collaboration_Art39_Reviewed">
+      <bpmndi:BPMNShape id="Participant_DPO_Art39_di"
+                        bpmnElement="Participant_DPO_Art39"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="3880" height="520" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_ControllerProcessor_Art39_di"
+                        bpmnElement="Participant_ControllerProcessor_Art39"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="600" width="3880" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_SupervisoryAuthority_Art39_di"
+                        bpmnElement="Participant_SupervisoryAuthority_Art39"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="760" width="3880" height="120" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_DPOTasks_Art39_di"
+                        bpmnElement="StartEvent_DPOTasks_Art39">
+        <dc:Bounds x="140" y="262" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessRisk_di"
+                        bpmnElement="Task_AssessRisk">
+        <dc:Bounds x="230" y="240" width="230" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_TasksSplit_Art39_di"
+                        bpmnElement="Gateway_TasksSplit_Art39"
+                        isMarkerVisible="true">
+        <dc:Bounds x="530" y="255" width="50" height="50" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Task_InformControllerProcessor_di"
+                        bpmnElement="Task_InformControllerProcessor">
+        <dc:Bounds x="660" y="40" width="260" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_InformEmployees_di"
+                        bpmnElement="Task_InformEmployees">
+        <dc:Bounds x="660" y="140" width="260" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_MonitorCompliance_di"
+                        bpmnElement="Task_MonitorCompliance">
+        <dc:Bounds x="660" y="240" width="270" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AdviseDPIA_di"
+                        bpmnElement="Task_AdviseDPIA">
+        <dc:Bounds x="660" y="340" width="250" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CooperateAuthority_di"
+                        bpmnElement="Task_CooperateAuthority">
+        <dc:Bounds x="660" y="440" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ContactPointAuthority_di"
+                        bpmnElement="Task_ContactPointAuthority">
+        <dc:Bounds x="990" y="240" width="320" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_TasksJoin_Art39_di"
+                        bpmnElement="Gateway_TasksJoin_Art39"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1410" y="255" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_DPOTasksCompleted_Art39_di"
+                        bpmnElement="EndEvent_DPOTasksCompleted_Art39">
+        <dc:Bounds x="1540" y="262" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_AssessRisk_di" bpmnElement="Flow_Start_To_AssessRisk">
+        <di:waypoint x="176" y="280" />
+        <di:waypoint x="230" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AssessRisk_To_GatewaySplit_di" bpmnElement="Flow_AssessRisk_To_GatewaySplit">
+        <di:waypoint x="460" y="280" />
+        <di:waypoint x="530" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplit_To_InformControllerProcessor_di" bpmnElement="Flow_GatewaySplit_To_InformControllerProcessor">
+        <di:waypoint x="555" y="255" />
+        <di:waypoint x="555" y="80" />
+        <di:waypoint x="660" y="80" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplit_To_InformEmployees_di" bpmnElement="Flow_GatewaySplit_To_InformEmployees">
+        <di:waypoint x="555" y="255" />
+        <di:waypoint x="555" y="180" />
+        <di:waypoint x="660" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplit_To_MonitorCompliance_di" bpmnElement="Flow_GatewaySplit_To_MonitorCompliance">
+        <di:waypoint x="580" y="280" />
+        <di:waypoint x="660" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplit_To_AdviseDPIA_di" bpmnElement="Flow_GatewaySplit_To_AdviseDPIA">
+        <di:waypoint x="555" y="305" />
+        <di:waypoint x="555" y="380" />
+        <di:waypoint x="660" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplit_To_CooperateAuthority_di" bpmnElement="Flow_GatewaySplit_To_CooperateAuthority">
+        <di:waypoint x="555" y="305" />
+        <di:waypoint x="555" y="480" />
+        <di:waypoint x="660" y="480" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplit_To_ContactPointAuthority_di" bpmnElement="Flow_GatewaySplit_To_ContactPointAuthority">
+        <di:waypoint x="580" y="280" />
+        <di:waypoint x="990" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_InformControllerProcessor_To_GatewayJoin_di" bpmnElement="Flow_InformControllerProcessor_To_GatewayJoin">
+        <di:waypoint x="920" y="80" />
+        <di:waypoint x="1435" y="80" />
+        <di:waypoint x="1435" y="255" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_InformEmployees_To_GatewayJoin_di" bpmnElement="Flow_InformEmployees_To_GatewayJoin">
+        <di:waypoint x="920" y="180" />
+        <di:waypoint x="1435" y="180" />
+        <di:waypoint x="1435" y="255" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_MonitorCompliance_To_GatewayJoin_di" bpmnElement="Flow_MonitorCompliance_To_GatewayJoin">
+        <di:waypoint x="930" y="280" />
+        <di:waypoint x="1410" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AdviseDPIA_To_GatewayJoin_di" bpmnElement="Flow_AdviseDPIA_To_GatewayJoin">
+        <di:waypoint x="910" y="380" />
+        <di:waypoint x="1435" y="380" />
+        <di:waypoint x="1435" y="305" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_CooperateAuthority_To_GatewayJoin_di" bpmnElement="Flow_CooperateAuthority_To_GatewayJoin">
+        <di:waypoint x="880" y="480" />
+        <di:waypoint x="1435" y="480" />
+        <di:waypoint x="1435" y="305" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ContactPointAuthority_To_GatewayJoin_di" bpmnElement="Flow_ContactPointAuthority_To_GatewayJoin">
+        <di:waypoint x="1310" y="280" />
+        <di:waypoint x="1410" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoin_To_End_di" bpmnElement="Flow_GatewayJoin_To_End">
+        <di:waypoint x="1460" y="280" />
+        <di:waypoint x="1540" y="280" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_InformControllerProcessor_di" bpmnElement="MessageFlow_InformControllerProcessor">
+        <di:waypoint x="790" y="120" />
+        <di:waypoint x="790" y="600" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_InformEmployees_di" bpmnElement="MessageFlow_InformEmployees">
+        <di:waypoint x="790" y="220" />
+        <di:waypoint x="790" y="600" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_CooperateAuthority_di" bpmnElement="MessageFlow_CooperateAuthority">
+        <di:waypoint x="770" y="520" />
+        <di:waypoint x="770" y="760" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ContactPointAuthority_di" bpmnElement="MessageFlow_ContactPointAuthority">
+        <di:waypoint x="1150" y="320" />
+        <di:waypoint x="1150" y="760" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

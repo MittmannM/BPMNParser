@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  id="Definitions_Art36_Manual"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art36_Manual">
+    <bpmn:participant id="Participant_Controller" name="Controller" processRef="Process_Controller_Art36" />
+    <bpmn:participant id="Participant_SupervisoryAuthority" name="Supervisory Authority" />
+
+    <bpmn:messageFlow id="MessageFlow_ControllerToSA_Consultation"
+                      sourceRef="Task_SendPriorConsultation"
+                      targetRef="Participant_SupervisoryAuthority" />
+    <bpmn:messageFlow id="MessageFlow_SAToController_AdditionalInfoRequest"
+                      sourceRef="Participant_SupervisoryAuthority"
+                      targetRef="Task_ReceiveAdditionalInfoRequest" />
+    <bpmn:messageFlow id="MessageFlow_ControllerToSA_AdditionalInfo"
+                      sourceRef="Task_SendAdditionalInformation"
+                      targetRef="Participant_SupervisoryAuthority" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_Controller_Art36"
+                name="Controller prior consultation with supervisory authority"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 36 based on DAPRECO LegalRuleML statements189-195.
+      The local source models the duty to request prior consultation where the DPIA still indicates
+      a high risk, plus the information package under Article 36(3)(a)-(f).
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_DPIACompleted"
+                     name="Controller completed the impact assessment">
+      <bpmn:outgoing>Flow_Start_To_AssessResidualHighRisk</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_AssessResidualHighRisk"
+               name="Assess whether the DPIA indicates residual high risk">
+      <bpmn:incoming>Flow_Start_To_AssessResidualHighRisk</bpmn:incoming>
+      <bpmn:outgoing>Flow_AssessResidualHighRisk_To_GatewayResidualHighRisk</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_ResidualHighRisk"
+                           name="Residual high risk remains without sufficient mitigation?">
+      <bpmn:incoming>Flow_AssessResidualHighRisk_To_GatewayResidualHighRisk</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayResidualHighRisk_To_EndNoConsultation</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayResidualHighRisk_To_GatewayCompileSplit</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:parallelGateway id="Gateway_CompileSplit">
+      <bpmn:incoming>Flow_GatewayResidualHighRisk_To_GatewayCompileSplit</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayCompileSplit_To_DocumentResponsibilities</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayCompileSplit_To_DocumentPurposesMeans</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayCompileSplit_To_DocumentMeasuresSafeguards</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayCompileSplit_To_AttachDPIA</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_DocumentResponsibilities"
+               name="Document controller and processor responsibilities">
+      <bpmn:incoming>Flow_GatewayCompileSplit_To_DocumentResponsibilities</bpmn:incoming>
+      <bpmn:outgoing>Flow_DocumentResponsibilities_To_GatewayCompileJoin</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_DocumentPurposesMeans"
+               name="Document the purposes and means of the intended processing">
+      <bpmn:incoming>Flow_GatewayCompileSplit_To_DocumentPurposesMeans</bpmn:incoming>
+      <bpmn:outgoing>Flow_DocumentPurposesMeans_To_GatewayCompileJoin</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_DocumentMeasuresSafeguards"
+               name="Document measures and safeguards for protecting rights and freedoms">
+      <bpmn:incoming>Flow_GatewayCompileSplit_To_DocumentMeasuresSafeguards</bpmn:incoming>
+      <bpmn:outgoing>Flow_DocumentMeasuresSafeguards_To_GatewayCompileJoin</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_AttachDPIA"
+               name="Attach the data protection impact assessment">
+      <bpmn:incoming>Flow_GatewayCompileSplit_To_AttachDPIA</bpmn:incoming>
+      <bpmn:outgoing>Flow_AttachDPIA_To_GatewayCompileJoin</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_CompileJoin">
+      <bpmn:incoming>Flow_DocumentResponsibilities_To_GatewayCompileJoin</bpmn:incoming>
+      <bpmn:incoming>Flow_DocumentPurposesMeans_To_GatewayCompileJoin</bpmn:incoming>
+      <bpmn:incoming>Flow_DocumentMeasuresSafeguards_To_GatewayCompileJoin</bpmn:incoming>
+      <bpmn:incoming>Flow_AttachDPIA_To_GatewayCompileJoin</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayCompileJoin_To_GatewayDPODesignated</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_DPODesignated"
+                           name="Is a DPO designated?">
+      <bpmn:incoming>Flow_GatewayCompileJoin_To_GatewayDPODesignated</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayDPODesignated_To_TaskDocumentDPOContact</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayDPODesignated_To_SendPriorConsultation</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_DocumentDPOContact"
+               name="Provide the DPO contact details">
+      <bpmn:incoming>Flow_GatewayDPODesignated_To_TaskDocumentDPOContact</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskDocumentDPOContact_To_SendPriorConsultation</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="Task_SendPriorConsultation"
+                   name="Send prior consultation request to the supervisory authority">
+      <bpmn:incoming>Flow_GatewayDPODesignated_To_SendPriorConsultation</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskDocumentDPOContact_To_SendPriorConsultation</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendPriorConsultation_To_GatewayAdditionalInfoRequested</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:exclusiveGateway id="Gateway_AdditionalInfoRequested"
+                           name="Additional information requested by the supervisory authority?">
+      <bpmn:incoming>Flow_SendPriorConsultation_To_GatewayAdditionalInfoRequested</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAdditionalInfoRequested_To_ReceiveAdditionalInfoRequest</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAdditionalInfoRequested_To_EndConsultationSubmitted</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:receiveTask id="Task_ReceiveAdditionalInfoRequest"
+                      name="Receive additional information request from the supervisory authority">
+      <bpmn:incoming>Flow_GatewayAdditionalInfoRequested_To_ReceiveAdditionalInfoRequest</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveAdditionalInfoRequest_To_CollectAdditionalInformation</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:task id="Task_CollectAdditionalInformation"
+               name="Collect additional information requested by the supervisory authority">
+      <bpmn:incoming>Flow_ReceiveAdditionalInfoRequest_To_CollectAdditionalInformation</bpmn:incoming>
+      <bpmn:outgoing>Flow_CollectAdditionalInformation_To_SendAdditionalInformation</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="Task_SendAdditionalInformation"
+                   name="Send additional requested information to the supervisory authority">
+      <bpmn:incoming>Flow_CollectAdditionalInformation_To_SendAdditionalInformation</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendAdditionalInformation_To_EndConsultationSubmitted</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_NoConsultationRequired"
+                   name="No prior consultation required">
+      <bpmn:incoming>Flow_GatewayResidualHighRisk_To_EndNoConsultation</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_ConsultationSubmitted"
+                   name="Prior consultation submitted">
+      <bpmn:incoming>Flow_GatewayAdditionalInfoRequested_To_EndConsultationSubmitted</bpmn:incoming>
+      <bpmn:incoming>Flow_SendAdditionalInformation_To_EndConsultationSubmitted</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_AssessResidualHighRisk"
+                       sourceRef="StartEvent_DPIACompleted"
+                       targetRef="Task_AssessResidualHighRisk" />
+    <bpmn:sequenceFlow id="Flow_AssessResidualHighRisk_To_GatewayResidualHighRisk"
+                       sourceRef="Task_AssessResidualHighRisk"
+                       targetRef="Gateway_ResidualHighRisk" />
+    <bpmn:sequenceFlow id="Flow_GatewayResidualHighRisk_To_EndNoConsultation"
+                       name="No"
+                       sourceRef="Gateway_ResidualHighRisk"
+                       targetRef="EndEvent_NoConsultationRequired" />
+    <bpmn:sequenceFlow id="Flow_GatewayResidualHighRisk_To_GatewayCompileSplit"
+                       name="Yes"
+                       sourceRef="Gateway_ResidualHighRisk"
+                       targetRef="Gateway_CompileSplit" />
+    <bpmn:sequenceFlow id="Flow_GatewayCompileSplit_To_DocumentResponsibilities"
+                       sourceRef="Gateway_CompileSplit"
+                       targetRef="Task_DocumentResponsibilities" />
+    <bpmn:sequenceFlow id="Flow_GatewayCompileSplit_To_DocumentPurposesMeans"
+                       sourceRef="Gateway_CompileSplit"
+                       targetRef="Task_DocumentPurposesMeans" />
+    <bpmn:sequenceFlow id="Flow_GatewayCompileSplit_To_DocumentMeasuresSafeguards"
+                       sourceRef="Gateway_CompileSplit"
+                       targetRef="Task_DocumentMeasuresSafeguards" />
+    <bpmn:sequenceFlow id="Flow_GatewayCompileSplit_To_AttachDPIA"
+                       sourceRef="Gateway_CompileSplit"
+                       targetRef="Task_AttachDPIA" />
+    <bpmn:sequenceFlow id="Flow_DocumentResponsibilities_To_GatewayCompileJoin"
+                       sourceRef="Task_DocumentResponsibilities"
+                       targetRef="Gateway_CompileJoin" />
+    <bpmn:sequenceFlow id="Flow_DocumentPurposesMeans_To_GatewayCompileJoin"
+                       sourceRef="Task_DocumentPurposesMeans"
+                       targetRef="Gateway_CompileJoin" />
+    <bpmn:sequenceFlow id="Flow_DocumentMeasuresSafeguards_To_GatewayCompileJoin"
+                       sourceRef="Task_DocumentMeasuresSafeguards"
+                       targetRef="Gateway_CompileJoin" />
+    <bpmn:sequenceFlow id="Flow_AttachDPIA_To_GatewayCompileJoin"
+                       sourceRef="Task_AttachDPIA"
+                       targetRef="Gateway_CompileJoin" />
+    <bpmn:sequenceFlow id="Flow_GatewayCompileJoin_To_GatewayDPODesignated"
+                       sourceRef="Gateway_CompileJoin"
+                       targetRef="Gateway_DPODesignated" />
+    <bpmn:sequenceFlow id="Flow_GatewayDPODesignated_To_TaskDocumentDPOContact"
+                       name="Yes"
+                       sourceRef="Gateway_DPODesignated"
+                       targetRef="Task_DocumentDPOContact" />
+    <bpmn:sequenceFlow id="Flow_GatewayDPODesignated_To_SendPriorConsultation"
+                       name="No"
+                       sourceRef="Gateway_DPODesignated"
+                       targetRef="Task_SendPriorConsultation" />
+    <bpmn:sequenceFlow id="Flow_TaskDocumentDPOContact_To_SendPriorConsultation"
+                       sourceRef="Task_DocumentDPOContact"
+                       targetRef="Task_SendPriorConsultation" />
+    <bpmn:sequenceFlow id="Flow_SendPriorConsultation_To_GatewayAdditionalInfoRequested"
+                       sourceRef="Task_SendPriorConsultation"
+                       targetRef="Gateway_AdditionalInfoRequested" />
+    <bpmn:sequenceFlow id="Flow_GatewayAdditionalInfoRequested_To_ReceiveAdditionalInfoRequest"
+                       name="Yes"
+                       sourceRef="Gateway_AdditionalInfoRequested"
+                       targetRef="Task_ReceiveAdditionalInfoRequest" />
+    <bpmn:sequenceFlow id="Flow_ReceiveAdditionalInfoRequest_To_CollectAdditionalInformation"
+                       sourceRef="Task_ReceiveAdditionalInfoRequest"
+                       targetRef="Task_CollectAdditionalInformation" />
+    <bpmn:sequenceFlow id="Flow_GatewayAdditionalInfoRequested_To_EndConsultationSubmitted"
+                       name="No"
+                       sourceRef="Gateway_AdditionalInfoRequested"
+                       targetRef="EndEvent_ConsultationSubmitted" />
+    <bpmn:sequenceFlow id="Flow_CollectAdditionalInformation_To_SendAdditionalInformation"
+                       sourceRef="Task_CollectAdditionalInformation"
+                       targetRef="Task_SendAdditionalInformation" />
+    <bpmn:sequenceFlow id="Flow_SendAdditionalInformation_To_EndConsultationSubmitted"
+                       sourceRef="Task_SendAdditionalInformation"
+                       targetRef="EndEvent_ConsultationSubmitted" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art36_Manual">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art36_Manual"
+                      bpmnElement="Collaboration_Art36_Manual">
+      <bpmndi:BPMNShape id="Participant_Controller_di"
+                        bpmnElement="Participant_Controller"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="3320" height="520" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_SupervisoryAuthority_di"
+                        bpmnElement="Participant_SupervisoryAuthority"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="600" width="3320" height="140" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_DPIACompleted_di"
+                        bpmnElement="StartEvent_DPIACompleted">
+        <dc:Bounds x="140" y="212" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessResidualHighRisk_di"
+                        bpmnElement="Task_AssessResidualHighRisk">
+        <dc:Bounds x="220" y="190" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ResidualHighRisk_di"
+                        bpmnElement="Gateway_ResidualHighRisk"
+                        isMarkerVisible="true">
+        <dc:Bounds x="450" y="205" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_CompileSplit_di"
+                        bpmnElement="Gateway_CompileSplit"
+                        isMarkerVisible="true">
+        <dc:Bounds x="580" y="205" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DocumentResponsibilities_di"
+                        bpmnElement="Task_DocumentResponsibilities">
+        <dc:Bounds x="700" y="30" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DocumentPurposesMeans_di"
+                        bpmnElement="Task_DocumentPurposesMeans">
+        <dc:Bounds x="700" y="120" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DocumentMeasuresSafeguards_di"
+                        bpmnElement="Task_DocumentMeasuresSafeguards">
+        <dc:Bounds x="700" y="210" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AttachDPIA_di"
+                        bpmnElement="Task_AttachDPIA">
+        <dc:Bounds x="700" y="345" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_CompileJoin_di"
+                        bpmnElement="Gateway_CompileJoin"
+                        isMarkerVisible="true">
+        <dc:Bounds x="980" y="205" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_DPODesignated_di"
+                        bpmnElement="Gateway_DPODesignated"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1090" y="205" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DocumentDPOContact_di"
+                        bpmnElement="Task_DocumentDPOContact">
+        <dc:Bounds x="1210" y="80" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SendPriorConsultation_di"
+                        bpmnElement="Task_SendPriorConsultation">
+        <dc:Bounds x="1260" y="190" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AdditionalInfoRequested_di"
+                        bpmnElement="Gateway_AdditionalInfoRequested"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1530" y="205" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReceiveAdditionalInfoRequest_di"
+                        bpmnElement="Task_ReceiveAdditionalInfoRequest">
+        <dc:Bounds x="1650" y="80" width="230" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CollectAdditionalInformation_di"
+                        bpmnElement="Task_CollectAdditionalInformation">
+        <dc:Bounds x="1650" y="190" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SendAdditionalInformation_di"
+                        bpmnElement="Task_SendAdditionalInformation">
+        <dc:Bounds x="1920" y="190" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NoConsultationRequired_di"
+                        bpmnElement="EndEvent_NoConsultationRequired">
+        <dc:Bounds x="520" y="462" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ConsultationSubmitted_di"
+                        bpmnElement="EndEvent_ConsultationSubmitted">
+        <dc:Bounds x="2190" y="212" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_AssessResidualHighRisk_di"
+                       bpmnElement="Flow_Start_To_AssessResidualHighRisk">
+        <di:waypoint x="176" y="230" />
+        <di:waypoint x="220" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AssessResidualHighRisk_To_GatewayResidualHighRisk_di"
+                       bpmnElement="Flow_AssessResidualHighRisk_To_GatewayResidualHighRisk">
+        <di:waypoint x="400" y="230" />
+        <di:waypoint x="450" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayResidualHighRisk_To_EndNoConsultation_di"
+                       bpmnElement="Flow_GatewayResidualHighRisk_To_EndNoConsultation">
+        <di:waypoint x="475" y="255" />
+        <di:waypoint x="475" y="480" />
+        <di:waypoint x="520" y="480" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayResidualHighRisk_To_GatewayCompileSplit_di"
+                       bpmnElement="Flow_GatewayResidualHighRisk_To_GatewayCompileSplit">
+        <di:waypoint x="500" y="230" />
+        <di:waypoint x="580" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayCompileSplit_To_DocumentResponsibilities_di"
+                       bpmnElement="Flow_GatewayCompileSplit_To_DocumentResponsibilities">
+        <di:waypoint x="605" y="205" />
+        <di:waypoint x="605" y="70" />
+        <di:waypoint x="700" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayCompileSplit_To_DocumentPurposesMeans_di"
+                       bpmnElement="Flow_GatewayCompileSplit_To_DocumentPurposesMeans">
+        <di:waypoint x="605" y="205" />
+        <di:waypoint x="605" y="160" />
+        <di:waypoint x="700" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayCompileSplit_To_DocumentMeasuresSafeguards_di"
+                       bpmnElement="Flow_GatewayCompileSplit_To_DocumentMeasuresSafeguards">
+        <di:waypoint x="630" y="230" />
+        <di:waypoint x="700" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayCompileSplit_To_AttachDPIA_di"
+                       bpmnElement="Flow_GatewayCompileSplit_To_AttachDPIA">
+        <di:waypoint x="605" y="255" />
+        <di:waypoint x="605" y="385" />
+        <di:waypoint x="700" y="385" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_DocumentResponsibilities_To_GatewayCompileJoin_di"
+                       bpmnElement="Flow_DocumentResponsibilities_To_GatewayCompileJoin">
+        <di:waypoint x="900" y="70" />
+        <di:waypoint x="1005" y="70" />
+        <di:waypoint x="1005" y="205" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_DocumentPurposesMeans_To_GatewayCompileJoin_di"
+                       bpmnElement="Flow_DocumentPurposesMeans_To_GatewayCompileJoin">
+        <di:waypoint x="900" y="160" />
+        <di:waypoint x="1005" y="160" />
+        <di:waypoint x="1005" y="205" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_DocumentMeasuresSafeguards_To_GatewayCompileJoin_di"
+                       bpmnElement="Flow_DocumentMeasuresSafeguards_To_GatewayCompileJoin">
+        <di:waypoint x="900" y="250" />
+        <di:waypoint x="980" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AttachDPIA_To_GatewayCompileJoin_di"
+                       bpmnElement="Flow_AttachDPIA_To_GatewayCompileJoin">
+        <di:waypoint x="900" y="385" />
+        <di:waypoint x="1005" y="385" />
+        <di:waypoint x="1005" y="255" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayCompileJoin_To_GatewayDPODesignated_di"
+                       bpmnElement="Flow_GatewayCompileJoin_To_GatewayDPODesignated">
+        <di:waypoint x="1030" y="230" />
+        <di:waypoint x="1090" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayDPODesignated_To_TaskDocumentDPOContact_di"
+                       bpmnElement="Flow_GatewayDPODesignated_To_TaskDocumentDPOContact">
+        <di:waypoint x="1115" y="205" />
+        <di:waypoint x="1115" y="120" />
+        <di:waypoint x="1210" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayDPODesignated_To_SendPriorConsultation_di"
+                       bpmnElement="Flow_GatewayDPODesignated_To_SendPriorConsultation">
+        <di:waypoint x="1140" y="230" />
+        <di:waypoint x="1260" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskDocumentDPOContact_To_SendPriorConsultation_di"
+                       bpmnElement="Flow_TaskDocumentDPOContact_To_SendPriorConsultation">
+        <di:waypoint x="1420" y="120" />
+        <di:waypoint x="1505" y="120" />
+        <di:waypoint x="1505" y="230" />
+        <di:waypoint x="1470" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendPriorConsultation_To_GatewayAdditionalInfoRequested_di"
+                       bpmnElement="Flow_SendPriorConsultation_To_GatewayAdditionalInfoRequested">
+        <di:waypoint x="1470" y="230" />
+        <di:waypoint x="1530" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAdditionalInfoRequested_To_ReceiveAdditionalInfoRequest_di"
+                       bpmnElement="Flow_GatewayAdditionalInfoRequested_To_ReceiveAdditionalInfoRequest">
+        <di:waypoint x="1555" y="205" />
+        <di:waypoint x="1555" y="120" />
+        <di:waypoint x="1650" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveAdditionalInfoRequest_To_CollectAdditionalInformation_di"
+                       bpmnElement="Flow_ReceiveAdditionalInfoRequest_To_CollectAdditionalInformation">
+        <di:waypoint x="1765" y="160" />
+        <di:waypoint x="1765" y="190" />
+        <di:waypoint x="1755" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAdditionalInfoRequested_To_EndConsultationSubmitted_di"
+                       bpmnElement="Flow_GatewayAdditionalInfoRequested_To_EndConsultationSubmitted">
+        <di:waypoint x="1555" y="205" />
+        <di:waypoint x="1555" y="150" />
+        <di:waypoint x="2208" y="150" />
+        <di:waypoint x="2208" y="212" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_CollectAdditionalInformation_To_SendAdditionalInformation_di"
+                       bpmnElement="Flow_CollectAdditionalInformation_To_SendAdditionalInformation">
+        <di:waypoint x="1860" y="230" />
+        <di:waypoint x="1920" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendAdditionalInformation_To_EndConsultationSubmitted_di"
+                       bpmnElement="Flow_SendAdditionalInformation_To_EndConsultationSubmitted">
+        <di:waypoint x="2130" y="230" />
+        <di:waypoint x="2190" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ControllerToSA_Consultation_di"
+                       bpmnElement="MessageFlow_ControllerToSA_Consultation">
+        <di:waypoint x="1365" y="230" />
+        <di:waypoint x="1365" y="600" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SAToController_AdditionalInfoRequest_di"
+                       bpmnElement="MessageFlow_SAToController_AdditionalInfoRequest">
+        <di:waypoint x="1765" y="600" />
+        <di:waypoint x="1765" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ControllerToSA_AdditionalInfo_di"
+                       bpmnElement="MessageFlow_ControllerToSA_AdditionalInfo">
+        <di:waypoint x="2025" y="230" />
+        <di:waypoint x="2025" y="600" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

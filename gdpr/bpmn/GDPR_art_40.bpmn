@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:collaboration id="Collaboration_1">
+    <bpmn:participant id="Participant_System_0ecd6648" name="System" processRef="Process_System_763f1230" />
+    <bpmn:participant id="Participant_Controller_d80f2b68" name="Controller" processRef="Process_Controller_3ebbaa8f" />
+    <bpmn:participant id="Participant_DataSubject_8bc7fff3" name="DataSubject" processRef="Process_DataSubject_187482a2" />
+    <bpmn:participant id="Participant_Processor_034d9866" name="Processor" processRef="Process_Processor_0f4445d7" />
+    <bpmn:participant id="Participant_Data_Subject_e1ee4dc5" name="Data Subject" />
+    <bpmn:participant id="Participant_Supervisory_Authority_55f62dbf" name="Supervisory Authority" />
+    <bpmn:messageFlow id="MessageFlow_eaf965c7" sourceRef="Task_c3cc2b56" targetRef="Participant_Data_Subject_e1ee4dc5" />
+    <bpmn:messageFlow id="MessageFlow_2ea913e2" sourceRef="Task_80313dc7" targetRef="Participant_Data_Subject_e1ee4dc5" />
+    <bpmn:messageFlow id="MessageFlow_818658df" sourceRef="Task_8bc803ae" targetRef="Participant_Data_Subject_e1ee4dc5" />
+    <bpmn:messageFlow id="MessageFlow_a9549a34" sourceRef="Task_3adbe9f6" targetRef="Participant_Supervisory_Authority_55f62dbf" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_System_763f1230" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_ef520faf" name="Start" />
+    <bpmn:sequenceFlow id="Flow_eb72b3ef" sourceRef="StartEvent_ef520faf" targetRef="Task_fe112b27" />
+    <bpmn:task id="Task_fe112b27" name="codeOfConduct
+(Art. 40 Abs. 2 lit. a)"><bpmn:incoming>Flow_eb72b3ef</bpmn:incoming></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_85e2da76"><bpmn:text>fairness&#10;transparency&#10;Applies when: Representative Bodies Involved&#10;Permitted under these conditions</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_a25ff26e" sourceRef="Task_fe112b27" targetRef="Annotation_85e2da76" />
+    <bpmn:sequenceFlow id="Flow_4e353d91" sourceRef="Task_fe112b27" targetRef="Task_4fe435fc" />
+    <bpmn:task id="Task_4fe435fc" name="Define Processing Scope
+(Art. 40 Abs. 2 lit. a)"><bpmn:incoming>Flow_4e353d91</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_1ee61f8b" sourceRef="Task_4fe435fc" targetRef="Task_ee099ab4" />
+    <bpmn:task id="Task_ee099ab4" name="Describe
+(Art. 40 Abs. 2 lit. a)"><bpmn:incoming>Flow_1ee61f8b</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_0d474a33" sourceRef="Task_ee099ab4" targetRef="Task_68fd027a" />
+    <bpmn:task id="Task_68fd027a" name="codeOfConduct
+(Art. 40 Abs. 2 lit. d)"><bpmn:incoming>Flow_0d474a33</bpmn:incoming></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_9f67c02d"><bpmn:text>Applies when: Representative Bodies Involved&#10;Permitted under these conditions</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_d636810d" sourceRef="Task_68fd027a" targetRef="Annotation_9f67c02d" />
+    <bpmn:sequenceFlow id="Flow_3730ac17" sourceRef="Task_68fd027a" targetRef="Task_ae8282ab" />
+    <bpmn:task id="Task_ae8282ab" name="Define Processing Scope
+(Art. 40 Abs. 2 lit. d)"><bpmn:incoming>Flow_3730ac17</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_7ed2fb17" sourceRef="Task_ae8282ab" targetRef="Task_a959ceb3" />
+    <bpmn:task id="Task_a959ceb3" name="Describe
+(Art. 40 Abs. 2 lit. d)"><bpmn:incoming>Flow_7ed2fb17</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_6aaa6685" sourceRef="Task_a959ceb3" targetRef="Task_001bfbc9" />
+    <bpmn:task id="Task_001bfbc9" name="codeOfConduct
+(Art. 40 Abs. 2 lit. h)"><bpmn:incoming>Flow_6aaa6685</bpmn:incoming></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_f1a948bf"><bpmn:text>Under the GDPR&#10;Applies when: Representative Bodies Involved&#10;Permitted under these conditions</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_fbb05b22" sourceRef="Task_001bfbc9" targetRef="Annotation_f1a948bf" />
+    <bpmn:sequenceFlow id="Flow_73c96540" sourceRef="Task_001bfbc9" targetRef="Task_653c34ed" />
+    <bpmn:task id="Task_653c34ed" name="Define Processing Scope
+(Art. 40 Abs. 2 lit. h)"><bpmn:incoming>Flow_73c96540</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_be5012d7" sourceRef="Task_653c34ed" targetRef="Task_b70408cf" />
+    <bpmn:task id="Task_b70408cf" name="Describe
+(Art. 40 Abs. 2 lit. h)"><bpmn:incoming>Flow_be5012d7</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_6ed856ce" sourceRef="Task_b70408cf" targetRef="Task_498c4112" />
+    <bpmn:task id="Task_498c4112" name="Measures Taken/Proposed
+(Art. 40 Abs. 2 lit. h)"><bpmn:incoming>Flow_6ed856ce</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_de9fb27c" sourceRef="Task_498c4112" targetRef="Task_a895139b" />
+    <bpmn:dataObject id="DataObj_eb3771f8" />
+    <bpmn:dataObjectReference id="DataRef_461a8917" dataObjectRef="DataObj_eb3771f8" name="GDPR" />
+    <bpmn:task id="Task_a895139b" name="Comply With Obligations
+(Art. 40 Abs. 2 lit. h)"><bpmn:incoming>Flow_de9fb27c</bpmn:incoming><bpmn:dataOutputAssociation id="Assoc_82a4ce03"><bpmn:targetRef>DataRef_461a8917</bpmn:targetRef></bpmn:dataOutputAssociation></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_bd697491" sourceRef="Task_a895139b" targetRef="Task_e91c4b24" />
+    <bpmn:task id="Task_e91c4b24" name="setToDefault
+(Art. 40 Abs. 2 lit. h)"><bpmn:incoming>Flow_bd697491</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_ced66306" sourceRef="Task_e91c4b24" targetRef="Task_fdaf6f91" />
+    <bpmn:task id="Task_fdaf6f91" name="Risk to Rights and Freedoms
+(Art. 40 Abs. 2 lit. h)"><bpmn:incoming>Flow_ced66306</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_5932558b" sourceRef="Task_fdaf6f91" targetRef="EndEvent_f985befb" />
+    <bpmn:endEvent id="EndEvent_f985befb" name="End"><bpmn:incoming>Flow_5932558b</bpmn:incoming></bpmn:endEvent>
+  </bpmn:process>
+  <bpmn:process id="Process_Controller_3ebbaa8f" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_3047ee72" name="Start" />
+    <bpmn:sequenceFlow id="Flow_8a9fd126" sourceRef="StartEvent_3047ee72" targetRef="Task_b6ce4d4a" />
+    <bpmn:dataObject id="DataObj_c9e054d3" />
+    <bpmn:dataObjectReference id="DataRef_4ee0986b" dataObjectRef="DataObj_c9e054d3" name="Store" />
+    <bpmn:task id="Task_b6ce4d4a" name="Store
+(Art. 40 Abs. 2 lit. c)"><bpmn:incoming>Flow_8a9fd126</bpmn:incoming><bpmn:dataOutputAssociation id="Assoc_718dd9fc"><bpmn:targetRef>DataRef_4ee0986b</bpmn:targetRef></bpmn:dataOutputAssociation></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_b3849053"><bpmn:text>Applies when: Representative Bodies Involved&#10;Permitted under these conditions</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_7ecc0e20" sourceRef="Task_b6ce4d4a" targetRef="Annotation_b3849053" />
+    <bpmn:sequenceFlow id="Flow_f3f34967" sourceRef="Task_b6ce4d4a" targetRef="Task_f593d8bd" />
+    <bpmn:task id="Task_f593d8bd" name="Define Processing Scope
+(Art. 40 Abs. 2 lit. c)"><bpmn:incoming>Flow_f3f34967</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_de5253cb" sourceRef="Task_f593d8bd" targetRef="Task_adfee25a" />
+    <bpmn:task id="Task_adfee25a" name="codeOfConduct
+(Art. 40 Abs. 2 lit. c)"><bpmn:incoming>Flow_de5253cb</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_b7e05cbb" sourceRef="Task_adfee25a" targetRef="Task_0a0eb8cd" />
+    <bpmn:task id="Task_0a0eb8cd" name="Describe
+(Art. 40 Abs. 2 lit. c)"><bpmn:incoming>Flow_b7e05cbb</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_5ac10371" sourceRef="Task_0a0eb8cd" targetRef="Task_d7ebe24f" />
+    <bpmn:task id="Task_d7ebe24f" name="Pseudonymise
+(Art. 40 Abs. 2 lit. d)"><bpmn:incoming>Flow_5ac10371</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_cb5a1134" sourceRef="Task_d7ebe24f" targetRef="Task_c3cc2b56" />
+    <bpmn:dataObject id="DataObj_b7237fd4" />
+    <bpmn:dataObjectReference id="DataRef_7958fff3" dataObjectRef="DataObj_b7237fd4" name="Legitimate Interest" />
+    <bpmn:dataObject id="DataObj_c6e9cf71" />
+    <bpmn:dataObjectReference id="DataRef_a60607d4" dataObjectRef="DataObj_c6e9cf71" name="Rights and Freedoms" />
+    <bpmn:sendTask id="Task_c3cc2b56" name="Notify to Data Subject
+(Art. 40 Abs. 2 lit. e)"><bpmn:incoming>Flow_cb5a1134</bpmn:incoming><bpmn:dataOutputAssociation id="Assoc_a2ae0daf"><bpmn:targetRef>DataRef_7958fff3</bpmn:targetRef></bpmn:dataOutputAssociation><bpmn:dataOutputAssociation id="Assoc_ac870b8a"><bpmn:targetRef>DataRef_a60607d4</bpmn:targetRef></bpmn:dataOutputAssociation></bpmn:sendTask>
+    <bpmn:textAnnotation id="Annotation_a6a12798"><bpmn:text>Applies when: Representative Bodies Involved&#10;Permitted under these conditions</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_cee8fb76" sourceRef="Task_c3cc2b56" targetRef="Annotation_a6a12798" />
+    <bpmn:sequenceFlow id="Flow_1de55711" sourceRef="Task_c3cc2b56" targetRef="Task_36000c63" />
+    <bpmn:task id="Task_36000c63" name="Define Processing Scope
+(Art. 40 Abs. 2 lit. e)"><bpmn:incoming>Flow_1de55711</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_0cd0cc29" sourceRef="Task_36000c63" targetRef="Task_2bba33d4" />
+    <bpmn:task id="Task_2bba33d4" name="codeOfConduct
+(Art. 40 Abs. 2 lit. e)"><bpmn:incoming>Flow_0cd0cc29</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_5ba9e8d0" sourceRef="Task_2bba33d4" targetRef="Task_1400a24f" />
+    <bpmn:task id="Task_1400a24f" name="Describe
+(Art. 40 Abs. 2 lit. e)"><bpmn:incoming>Flow_5ba9e8d0</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_58a72572" sourceRef="Task_1400a24f" targetRef="Task_2307cf7b" />
+    <bpmn:sendTask id="Task_2307cf7b" name="Notify
+(Art. 40 Abs. 2 lit. e)"><bpmn:incoming>Flow_58a72572</bpmn:incoming></bpmn:sendTask>
+    <bpmn:sequenceFlow id="Flow_b0777111" sourceRef="Task_2307cf7b" targetRef="Task_80313dc7" />
+    <bpmn:sendTask id="Task_80313dc7" name="Notify to Data Subject
+(Art. 40 Abs. 2 lit. g)"><bpmn:incoming>Flow_b0777111</bpmn:incoming></bpmn:sendTask>
+    <bpmn:textAnnotation id="Annotation_5fce22ef"><bpmn:text>Applies when: Representative Bodies Involved&#10;Permitted under these conditions</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_10b2474d" sourceRef="Task_80313dc7" targetRef="Annotation_5fce22ef" />
+    <bpmn:sequenceFlow id="Flow_87a94fa2" sourceRef="Task_80313dc7" targetRef="Task_879f54ac" />
+    <bpmn:task id="Task_879f54ac" name="Define Processing Scope
+(Art. 40 Abs. 2 lit. g)"><bpmn:incoming>Flow_87a94fa2</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_450d562e" sourceRef="Task_879f54ac" targetRef="Task_a39fb4e7" />
+    <bpmn:task id="Task_a39fb4e7" name="codeOfConduct
+(Art. 40 Abs. 2 lit. g)"><bpmn:incoming>Flow_450d562e</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_d444fdd8" sourceRef="Task_a39fb4e7" targetRef="Task_3a07159d" />
+    <bpmn:task id="Task_3a07159d" name="Describe
+(Art. 40 Abs. 2 lit. g)"><bpmn:incoming>Flow_d444fdd8</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_4546c722" sourceRef="Task_3a07159d" targetRef="Task_8bc803ae" />
+    <bpmn:task id="Task_8bc803ae" name="Protect Rights and Freedoms to Data Subject
+(Art. 40 Abs. 2 lit. g)"><bpmn:incoming>Flow_4546c722</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_5361755b" sourceRef="Task_8bc803ae" targetRef="Task_78432375" />
+    <bpmn:task id="Task_78432375" name="Authorized By Controller
+(Art. 40 Abs. 2 lit. g)"><bpmn:incoming>Flow_5361755b</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_d315d7e8" sourceRef="Task_78432375" targetRef="Task_e125d1c6" />
+    <bpmn:task id="Task_e125d1c6" name="Implement Measure
+(Art. 40 Abs. 2 lit. h)"><bpmn:incoming>Flow_d315d7e8</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_9fdcb874" sourceRef="Task_e125d1c6" targetRef="Task_3adbe9f6" />
+    <bpmn:dataObject id="DataObj_07b332ea" />
+    <bpmn:dataObjectReference id="DataRef_65be0cf9" dataObjectRef="DataObj_07b332ea" name="All Info About the Breach" />
+    <bpmn:sendTask id="Task_3adbe9f6" name="Notify to Supervisory Authority
+(Art. 40 Abs. 2 lit. i)"><bpmn:incoming>Flow_9fdcb874</bpmn:incoming><bpmn:dataOutputAssociation id="Assoc_e6a14fc6"><bpmn:targetRef>DataRef_65be0cf9</bpmn:targetRef></bpmn:dataOutputAssociation></bpmn:sendTask>
+    <bpmn:textAnnotation id="Annotation_3eb81462"><bpmn:text>Notify the competent supervisory authority&#10;Applies when: Representative Bodies Involved&#10;Permitted under these conditions</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_e4c2bf0a" sourceRef="Task_3adbe9f6" targetRef="Annotation_3eb81462" />
+    <bpmn:sequenceFlow id="Flow_11fbae0f" sourceRef="Task_3adbe9f6" targetRef="Task_4f728ccc" />
+    <bpmn:task id="Task_4f728ccc" name="Define Processing Scope
+(Art. 40 Abs. 2 lit. i)"><bpmn:incoming>Flow_11fbae0f</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_9abf4b48" sourceRef="Task_4f728ccc" targetRef="Task_ad338bd3" />
+    <bpmn:task id="Task_ad338bd3" name="codeOfConduct
+(Art. 40 Abs. 2 lit. i)"><bpmn:incoming>Flow_9abf4b48</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_044594fa" sourceRef="Task_ad338bd3" targetRef="Task_da8f968e" />
+    <bpmn:task id="Task_da8f968e" name="Describe
+(Art. 40 Abs. 2 lit. i)"><bpmn:incoming>Flow_044594fa</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_d030996d" sourceRef="Task_da8f968e" targetRef="Task_84f93805" />
+    <bpmn:task id="Task_84f93805" name="Data Breach Detected
+(Art. 40 Abs. 2 lit. i)"><bpmn:incoming>Flow_d030996d</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_3902385a" sourceRef="Task_84f93805" targetRef="Task_bff54f89" />
+    <bpmn:dataObject id="DataObj_3feb7e8e" />
+    <bpmn:dataObjectReference id="DataRef_0a0aed9d" dataObjectRef="DataObj_3feb7e8e" name="All Info About the Breach" />
+    <bpmn:sendTask id="Task_bff54f89" name="Notify to Controller
+(Art. 40 Abs. 2 lit. i)"><bpmn:incoming>Flow_3902385a</bpmn:incoming><bpmn:dataOutputAssociation id="Assoc_b4b8cf07"><bpmn:targetRef>DataRef_0a0aed9d</bpmn:targetRef></bpmn:dataOutputAssociation></bpmn:sendTask>
+    <bpmn:sequenceFlow id="Flow_9fde4d9c" sourceRef="Task_bff54f89" targetRef="Task_57d83ea5" />
+    <bpmn:dataObject id="DataObj_6b7c99fb" />
+    <bpmn:dataObjectReference id="DataRef_e4170d72" dataObjectRef="DataObj_6b7c99fb" name="Execute Processing" />
+    <bpmn:task id="Task_57d83ea5" name="Execute Processing
+(Art. 40 Abs. 2 lit. k)"><bpmn:incoming>Flow_9fde4d9c</bpmn:incoming><bpmn:dataOutputAssociation id="Assoc_390da66b"><bpmn:targetRef>DataRef_e4170d72</bpmn:targetRef></bpmn:dataOutputAssociation></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_3b8da1bf"><bpmn:text>Applies when: Representative Bodies Involved&#10;Permitted under these conditions</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_cf149781" sourceRef="Task_57d83ea5" targetRef="Annotation_3b8da1bf" />
+    <bpmn:sequenceFlow id="Flow_210ab54b" sourceRef="Task_57d83ea5" targetRef="Task_9f2a1343" />
+    <bpmn:task id="Task_9f2a1343" name="Define Processing Scope
+(Art. 40 Abs. 2 lit. k)"><bpmn:incoming>Flow_210ab54b</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_21ff287d" sourceRef="Task_9f2a1343" targetRef="Task_75c504a0" />
+    <bpmn:task id="Task_75c504a0" name="codeOfConduct
+(Art. 40 Abs. 2 lit. k)"><bpmn:incoming>Flow_21ff287d</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_02654d6d" sourceRef="Task_75c504a0" targetRef="Task_1802d753" />
+    <bpmn:task id="Task_1802d753" name="Describe
+(Art. 40 Abs. 2 lit. k)"><bpmn:incoming>Flow_02654d6d</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_a28aa435" sourceRef="Task_1802d753" targetRef="Task_82d5ce8f" />
+    <bpmn:task id="Task_82d5ce8f" name="LegalClaim
+(Art. 40 Abs. 2 lit. k)"><bpmn:incoming>Flow_a28aa435</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_1490d42c" sourceRef="Task_82d5ce8f" targetRef="Task_9874d4df" />
+    <bpmn:task id="Task_9874d4df" name="Enter Arrangement
+(Art. 40 Abs. 2 lit. k)"><bpmn:incoming>Flow_1490d42c</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_823d4934" sourceRef="Task_9874d4df" targetRef="Task_c564522f" />
+    <bpmn:task id="Task_c564522f" name="Adhere to Rules
+(Art. 40 Abs. 3)"><bpmn:incoming>Flow_823d4934</bpmn:incoming></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_a9d9894e"><bpmn:text>Applies when: Offers Goods or Services AND Monitoring Activities&#10;Permitted under these conditions</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_45af690c" sourceRef="Task_c564522f" targetRef="Annotation_a9d9894e" />
+    <bpmn:sequenceFlow id="Flow_7fe0f3a7" sourceRef="Task_c564522f" targetRef="Task_d85bcd6f" />
+    <bpmn:task id="Task_d85bcd6f" name="codeOfConduct
+(Art. 40 Abs. 3)"><bpmn:incoming>Flow_7fe0f3a7</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_6727af38" sourceRef="Task_d85bcd6f" targetRef="Task_2b96c2a3" />
+    <bpmn:dataObject id="DataObj_f6c5dffa" />
+    <bpmn:dataObjectReference id="DataRef_2e838bbb" dataObjectRef="DataObj_f6c5dffa" name="Adhere to Rules" />
+    <bpmn:task id="Task_2b96c2a3" name="Measures Taken/Proposed
+(Art. 40 Abs. 4)"><bpmn:incoming>Flow_6727af38</bpmn:incoming><bpmn:dataOutputAssociation id="Assoc_7d1417dc"><bpmn:targetRef>DataRef_2e838bbb</bpmn:targetRef></bpmn:dataOutputAssociation></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_1d25d33d"><bpmn:text>AbleTo&#10;Applies when: Monitoring Body AND Be Accredited By AND Have Expert Knowledge&#10;Also address: Comply With Obligations</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_484fca14" sourceRef="Task_2b96c2a3" targetRef="Annotation_1d25d33d" />
+    <bpmn:sequenceFlow id="Flow_d79b110d" sourceRef="Task_2b96c2a3" targetRef="Task_70d32ec1" />
+    <bpmn:task id="Task_70d32ec1" name="Monitor Compliance
+(Art. 40 Abs. 4)"><bpmn:incoming>Flow_d79b110d</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_555320ab" sourceRef="Task_70d32ec1" targetRef="Task_56ac1ba5" />
+    <bpmn:dataObject id="DataObj_77ebd799" />
+    <bpmn:dataObjectReference id="DataRef_7b0fc1c8" dataObjectRef="DataObj_77ebd799" name="Draft Notification" />
+    <bpmn:task id="Task_56ac1ba5" name="Receive Communication
+(Art. 40 Abs. 5)"><bpmn:incoming>Flow_555320ab</bpmn:incoming><bpmn:dataOutputAssociation id="Assoc_f4216d4b"><bpmn:targetRef>DataRef_7b0fc1c8</bpmn:targetRef></bpmn:dataOutputAssociation></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_d32b4ca0"><bpmn:text>Notify the competent supervisory authority&#10;Applies when: Representative Bodies Involved&#10;Permitted under these conditions</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_711b5789" sourceRef="Task_56ac1ba5" targetRef="Annotation_d32b4ca0" />
+    <bpmn:sequenceFlow id="Flow_3123bf7d" sourceRef="Task_56ac1ba5" targetRef="EndEvent_cb461d49" />
+    <bpmn:endEvent id="EndEvent_cb461d49" name="End"><bpmn:incoming>Flow_3123bf7d</bpmn:incoming></bpmn:endEvent>
+  </bpmn:process>
+  <bpmn:process id="Process_DataSubject_187482a2" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_656572db" name="Start" />
+    <bpmn:sequenceFlow id="Flow_68f2daa3" sourceRef="StartEvent_656572db" targetRef="Task_68aa9a0b" />
+    <bpmn:task id="Task_68aa9a0b" name="High Risk to Individuals
+(Art. 40 Abs. 2 lit. h)"><bpmn:incoming>Flow_68f2daa3</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_0174c97e" sourceRef="Task_68aa9a0b" targetRef="EndEvent_c2d92fd3" />
+    <bpmn:endEvent id="EndEvent_c2d92fd3" name="End"><bpmn:incoming>Flow_0174c97e</bpmn:incoming></bpmn:endEvent>
+  </bpmn:process>
+  <bpmn:process id="Process_Processor_0f4445d7" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_07f530fd" name="Start" />
+    <bpmn:sequenceFlow id="Flow_9118a4a1" sourceRef="StartEvent_07f530fd" targetRef="Task_6c822257" />
+    <bpmn:sendTask id="Task_6c822257" name="Transmit Data
+(Art. 40 Abs. 2 lit. j)"><bpmn:incoming>Flow_9118a4a1</bpmn:incoming></bpmn:sendTask>
+    <bpmn:textAnnotation id="Annotation_673b3d8d"><bpmn:text>Applies when: Representative Bodies Involved&#10;Permitted under these conditions</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_9e17b53f" sourceRef="Task_6c822257" targetRef="Annotation_673b3d8d" />
+    <bpmn:sequenceFlow id="Flow_e0b2c53b" sourceRef="Task_6c822257" targetRef="Task_605cf27d" />
+    <bpmn:task id="Task_605cf27d" name="Define Processing Scope
+(Art. 40 Abs. 2 lit. j)"><bpmn:incoming>Flow_e0b2c53b</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_ebba1394" sourceRef="Task_605cf27d" targetRef="Task_775a6d05" />
+    <bpmn:task id="Task_775a6d05" name="codeOfConduct
+(Art. 40 Abs. 2 lit. j)"><bpmn:incoming>Flow_ebba1394</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_863ec0b3" sourceRef="Task_775a6d05" targetRef="Task_7da439c1" />
+    <bpmn:task id="Task_7da439c1" name="Describe
+(Art. 40 Abs. 2 lit. j)"><bpmn:incoming>Flow_863ec0b3</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_3fa04bf0" sourceRef="Task_7da439c1" targetRef="Task_10406197" />
+    <bpmn:task id="Task_10406197" name="International Organization
+(Art. 40 Abs. 2 lit. j)"><bpmn:incoming>Flow_3fa04bf0</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_f6cf1772" sourceRef="Task_10406197" targetRef="Task_5d041b50" />
+    <bpmn:task id="Task_5d041b50" name="Third Country
+(Art. 40 Abs. 2 lit. j)"><bpmn:incoming>Flow_f6cf1772</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_895711ec" sourceRef="Task_5d041b50" targetRef="EndEvent_c03a0ae4" />
+    <bpmn:endEvent id="EndEvent_c03a0ae4" name="End"><bpmn:incoming>Flow_895711ec</bpmn:incoming></bpmn:endEvent>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
+      <bpmndi:BPMNShape id="Participant_System_0ecd6648_di" bpmnElement="Participant_System_0ecd6648" isHorizontal="true"><dc:Bounds x="60" y="50" width="8900" height="220" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Controller_d80f2b68_di" bpmnElement="Participant_Controller_d80f2b68" isHorizontal="true"><dc:Bounds x="60" y="310" width="8900" height="220" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Data_Subject_e1ee4dc5_di" bpmnElement="Participant_Data_Subject_e1ee4dc5" isHorizontal="true"><dc:Bounds x="60" y="570" width="8900" height="220" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_DataSubject_8bc7fff3_di" bpmnElement="Participant_DataSubject_8bc7fff3" isHorizontal="true"><dc:Bounds x="60" y="830" width="8900" height="220" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Supervisory_Authority_55f62dbf_di" bpmnElement="Participant_Supervisory_Authority_55f62dbf" isHorizontal="true"><dc:Bounds x="60" y="1090" width="8900" height="220" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Processor_034d9866_di" bpmnElement="Participant_Processor_034d9866" isHorizontal="true"><dc:Bounds x="60" y="1350" width="8900" height="220" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_ef520faf_di" bpmnElement="StartEvent_ef520faf"><dc:Bounds x="140" y="142" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_fe112b27_di" bpmnElement="Task_fe112b27"><dc:Bounds x="220" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_85e2da76_di" bpmnElement="Annotation_85e2da76"><dc:Bounds x="590" y="110" width="280" height="100" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_4fe435fc_di" bpmnElement="Task_4fe435fc"><dc:Bounds x="470" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ee099ab4_di" bpmnElement="Task_ee099ab4"><dc:Bounds x="720" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_68fd027a_di" bpmnElement="Task_68fd027a"><dc:Bounds x="970" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_9f67c02d_di" bpmnElement="Annotation_9f67c02d"><dc:Bounds x="1340" y="110" width="280" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ae8282ab_di" bpmnElement="Task_ae8282ab"><dc:Bounds x="1220" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_a959ceb3_di" bpmnElement="Task_a959ceb3"><dc:Bounds x="1470" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_001bfbc9_di" bpmnElement="Task_001bfbc9"><dc:Bounds x="1720" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_f1a948bf_di" bpmnElement="Annotation_f1a948bf"><dc:Bounds x="2090" y="110" width="280" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_653c34ed_di" bpmnElement="Task_653c34ed"><dc:Bounds x="1970" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_b70408cf_di" bpmnElement="Task_b70408cf"><dc:Bounds x="2220" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_498c4112_di" bpmnElement="Task_498c4112"><dc:Bounds x="2470" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_461a8917_di" bpmnElement="DataRef_461a8917"><dc:Bounds x="2720" y="80" width="36" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_a895139b_di" bpmnElement="Task_a895139b"><dc:Bounds x="2720" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_e91c4b24_di" bpmnElement="Task_e91c4b24"><dc:Bounds x="2970" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_fdaf6f91_di" bpmnElement="Task_fdaf6f91"><dc:Bounds x="3220" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_f985befb_di" bpmnElement="EndEvent_f985befb"><dc:Bounds x="3470" y="142" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_3047ee72_di" bpmnElement="StartEvent_3047ee72"><dc:Bounds x="140" y="402" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_4ee0986b_di" bpmnElement="DataRef_4ee0986b"><dc:Bounds x="220" y="340" width="36" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_b6ce4d4a_di" bpmnElement="Task_b6ce4d4a"><dc:Bounds x="220" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_b3849053_di" bpmnElement="Annotation_b3849053"><dc:Bounds x="590" y="370" width="280" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_f593d8bd_di" bpmnElement="Task_f593d8bd"><dc:Bounds x="470" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_adfee25a_di" bpmnElement="Task_adfee25a"><dc:Bounds x="720" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_0a0eb8cd_di" bpmnElement="Task_0a0eb8cd"><dc:Bounds x="970" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_d7ebe24f_di" bpmnElement="Task_d7ebe24f"><dc:Bounds x="1220" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_7958fff3_di" bpmnElement="DataRef_7958fff3"><dc:Bounds x="1470" y="340" width="36" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_a60607d4_di" bpmnElement="DataRef_a60607d4"><dc:Bounds x="1540" y="340" width="36" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_c3cc2b56_di" bpmnElement="Task_c3cc2b56"><dc:Bounds x="1470" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_a6a12798_di" bpmnElement="Annotation_a6a12798"><dc:Bounds x="1840" y="370" width="280" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_36000c63_di" bpmnElement="Task_36000c63"><dc:Bounds x="1720" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_2bba33d4_di" bpmnElement="Task_2bba33d4"><dc:Bounds x="1970" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_1400a24f_di" bpmnElement="Task_1400a24f"><dc:Bounds x="2220" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_2307cf7b_di" bpmnElement="Task_2307cf7b"><dc:Bounds x="2470" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_80313dc7_di" bpmnElement="Task_80313dc7"><dc:Bounds x="2720" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_5fce22ef_di" bpmnElement="Annotation_5fce22ef"><dc:Bounds x="3090" y="370" width="280" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_879f54ac_di" bpmnElement="Task_879f54ac"><dc:Bounds x="2970" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_a39fb4e7_di" bpmnElement="Task_a39fb4e7"><dc:Bounds x="3220" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_3a07159d_di" bpmnElement="Task_3a07159d"><dc:Bounds x="3470" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_8bc803ae_di" bpmnElement="Task_8bc803ae"><dc:Bounds x="3720" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_78432375_di" bpmnElement="Task_78432375"><dc:Bounds x="3970" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_e125d1c6_di" bpmnElement="Task_e125d1c6"><dc:Bounds x="4220" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_65be0cf9_di" bpmnElement="DataRef_65be0cf9"><dc:Bounds x="4470" y="340" width="36" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_3adbe9f6_di" bpmnElement="Task_3adbe9f6"><dc:Bounds x="4470" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_3eb81462_di" bpmnElement="Annotation_3eb81462"><dc:Bounds x="4840" y="370" width="280" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_4f728ccc_di" bpmnElement="Task_4f728ccc"><dc:Bounds x="4720" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ad338bd3_di" bpmnElement="Task_ad338bd3"><dc:Bounds x="4970" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_da8f968e_di" bpmnElement="Task_da8f968e"><dc:Bounds x="5220" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_84f93805_di" bpmnElement="Task_84f93805"><dc:Bounds x="5470" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_0a0aed9d_di" bpmnElement="DataRef_0a0aed9d"><dc:Bounds x="5720" y="340" width="36" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_bff54f89_di" bpmnElement="Task_bff54f89"><dc:Bounds x="5720" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_e4170d72_di" bpmnElement="DataRef_e4170d72"><dc:Bounds x="5970" y="340" width="36" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_57d83ea5_di" bpmnElement="Task_57d83ea5"><dc:Bounds x="5970" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_3b8da1bf_di" bpmnElement="Annotation_3b8da1bf"><dc:Bounds x="6340" y="370" width="280" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_9f2a1343_di" bpmnElement="Task_9f2a1343"><dc:Bounds x="6220" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_75c504a0_di" bpmnElement="Task_75c504a0"><dc:Bounds x="6470" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_1802d753_di" bpmnElement="Task_1802d753"><dc:Bounds x="6720" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_82d5ce8f_di" bpmnElement="Task_82d5ce8f"><dc:Bounds x="6970" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_9874d4df_di" bpmnElement="Task_9874d4df"><dc:Bounds x="7220" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_c564522f_di" bpmnElement="Task_c564522f"><dc:Bounds x="7470" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_a9d9894e_di" bpmnElement="Annotation_a9d9894e"><dc:Bounds x="7840" y="370" width="280" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_d85bcd6f_di" bpmnElement="Task_d85bcd6f"><dc:Bounds x="7720" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_2e838bbb_di" bpmnElement="DataRef_2e838bbb"><dc:Bounds x="7970" y="340" width="36" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_2b96c2a3_di" bpmnElement="Task_2b96c2a3"><dc:Bounds x="7970" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_1d25d33d_di" bpmnElement="Annotation_1d25d33d"><dc:Bounds x="8340" y="370" width="280" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_70d32ec1_di" bpmnElement="Task_70d32ec1"><dc:Bounds x="8220" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_7b0fc1c8_di" bpmnElement="DataRef_7b0fc1c8"><dc:Bounds x="8470" y="340" width="36" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_56ac1ba5_di" bpmnElement="Task_56ac1ba5"><dc:Bounds x="8470" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_d32b4ca0_di" bpmnElement="Annotation_d32b4ca0"><dc:Bounds x="8840" y="370" width="280" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_cb461d49_di" bpmnElement="EndEvent_cb461d49"><dc:Bounds x="8720" y="402" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_656572db_di" bpmnElement="StartEvent_656572db"><dc:Bounds x="140" y="922" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_68aa9a0b_di" bpmnElement="Task_68aa9a0b"><dc:Bounds x="220" y="900" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_c2d92fd3_di" bpmnElement="EndEvent_c2d92fd3"><dc:Bounds x="470" y="922" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_07f530fd_di" bpmnElement="StartEvent_07f530fd"><dc:Bounds x="140" y="1442" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_6c822257_di" bpmnElement="Task_6c822257"><dc:Bounds x="220" y="1420" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_673b3d8d_di" bpmnElement="Annotation_673b3d8d"><dc:Bounds x="590" y="1410" width="280" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_605cf27d_di" bpmnElement="Task_605cf27d"><dc:Bounds x="470" y="1420" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_775a6d05_di" bpmnElement="Task_775a6d05"><dc:Bounds x="720" y="1420" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_7da439c1_di" bpmnElement="Task_7da439c1"><dc:Bounds x="970" y="1420" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_10406197_di" bpmnElement="Task_10406197"><dc:Bounds x="1220" y="1420" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_5d041b50_di" bpmnElement="Task_5d041b50"><dc:Bounds x="1470" y="1420" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_c03a0ae4_di" bpmnElement="EndEvent_c03a0ae4"><dc:Bounds x="1720" y="1442" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_eb72b3ef_di" bpmnElement="Flow_eb72b3ef"><di:waypoint x="176" y="160" /><di:waypoint x="220" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_a25ff26e_di" bpmnElement="Assoc_Annot_a25ff26e"><di:waypoint x="390" y="160" /><di:waypoint x="590" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4e353d91_di" bpmnElement="Flow_4e353d91"><di:waypoint x="390" y="160" /><di:waypoint x="470" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ee61f8b_di" bpmnElement="Flow_1ee61f8b"><di:waypoint x="640" y="160" /><di:waypoint x="720" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0d474a33_di" bpmnElement="Flow_0d474a33"><di:waypoint x="890" y="160" /><di:waypoint x="970" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_d636810d_di" bpmnElement="Assoc_Annot_d636810d"><di:waypoint x="1140" y="160" /><di:waypoint x="1340" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3730ac17_di" bpmnElement="Flow_3730ac17"><di:waypoint x="1140" y="160" /><di:waypoint x="1220" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7ed2fb17_di" bpmnElement="Flow_7ed2fb17"><di:waypoint x="1390" y="160" /><di:waypoint x="1470" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6aaa6685_di" bpmnElement="Flow_6aaa6685"><di:waypoint x="1640" y="160" /><di:waypoint x="1720" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_fbb05b22_di" bpmnElement="Assoc_Annot_fbb05b22"><di:waypoint x="1890" y="160" /><di:waypoint x="2090" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_73c96540_di" bpmnElement="Flow_73c96540"><di:waypoint x="1890" y="160" /><di:waypoint x="1970" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_be5012d7_di" bpmnElement="Flow_be5012d7"><di:waypoint x="2140" y="160" /><di:waypoint x="2220" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6ed856ce_di" bpmnElement="Flow_6ed856ce"><di:waypoint x="2390" y="160" /><di:waypoint x="2470" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_de9fb27c_di" bpmnElement="Flow_de9fb27c"><di:waypoint x="2640" y="160" /><di:waypoint x="2720" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_82a4ce03_di" bpmnElement="Assoc_82a4ce03"><di:waypoint x="2805" y="155" /><di:waypoint x="2738" y="130" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_bd697491_di" bpmnElement="Flow_bd697491"><di:waypoint x="2890" y="160" /><di:waypoint x="2970" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ced66306_di" bpmnElement="Flow_ced66306"><di:waypoint x="3140" y="160" /><di:waypoint x="3220" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5932558b_di" bpmnElement="Flow_5932558b"><di:waypoint x="3390" y="160" /><di:waypoint x="3470" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8a9fd126_di" bpmnElement="Flow_8a9fd126"><di:waypoint x="176" y="420" /><di:waypoint x="220" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_718dd9fc_di" bpmnElement="Assoc_718dd9fc"><di:waypoint x="305" y="415" /><di:waypoint x="238" y="390" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_7ecc0e20_di" bpmnElement="Assoc_Annot_7ecc0e20"><di:waypoint x="390" y="420" /><di:waypoint x="590" y="410" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_f3f34967_di" bpmnElement="Flow_f3f34967"><di:waypoint x="390" y="420" /><di:waypoint x="470" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_de5253cb_di" bpmnElement="Flow_de5253cb"><di:waypoint x="640" y="420" /><di:waypoint x="720" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_b7e05cbb_di" bpmnElement="Flow_b7e05cbb"><di:waypoint x="890" y="420" /><di:waypoint x="970" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5ac10371_di" bpmnElement="Flow_5ac10371"><di:waypoint x="1140" y="420" /><di:waypoint x="1220" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_cb5a1134_di" bpmnElement="Flow_cb5a1134"><di:waypoint x="1390" y="420" /><di:waypoint x="1470" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_a2ae0daf_di" bpmnElement="Assoc_a2ae0daf"><di:waypoint x="1555" y="415" /><di:waypoint x="1488" y="390" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_ac870b8a_di" bpmnElement="Assoc_ac870b8a"><di:waypoint x="1555" y="415" /><di:waypoint x="1558" y="390" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_cee8fb76_di" bpmnElement="Assoc_Annot_cee8fb76"><di:waypoint x="1640" y="420" /><di:waypoint x="1840" y="410" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1de55711_di" bpmnElement="Flow_1de55711"><di:waypoint x="1640" y="420" /><di:waypoint x="1720" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0cd0cc29_di" bpmnElement="Flow_0cd0cc29"><di:waypoint x="1890" y="420" /><di:waypoint x="1970" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5ba9e8d0_di" bpmnElement="Flow_5ba9e8d0"><di:waypoint x="2140" y="420" /><di:waypoint x="2220" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_58a72572_di" bpmnElement="Flow_58a72572"><di:waypoint x="2390" y="420" /><di:waypoint x="2470" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_b0777111_di" bpmnElement="Flow_b0777111"><di:waypoint x="2640" y="420" /><di:waypoint x="2720" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_10b2474d_di" bpmnElement="Assoc_Annot_10b2474d"><di:waypoint x="2890" y="420" /><di:waypoint x="3090" y="410" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_87a94fa2_di" bpmnElement="Flow_87a94fa2"><di:waypoint x="2890" y="420" /><di:waypoint x="2970" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_450d562e_di" bpmnElement="Flow_450d562e"><di:waypoint x="3140" y="420" /><di:waypoint x="3220" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_d444fdd8_di" bpmnElement="Flow_d444fdd8"><di:waypoint x="3390" y="420" /><di:waypoint x="3470" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4546c722_di" bpmnElement="Flow_4546c722"><di:waypoint x="3640" y="420" /><di:waypoint x="3720" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5361755b_di" bpmnElement="Flow_5361755b"><di:waypoint x="3890" y="420" /><di:waypoint x="3970" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_d315d7e8_di" bpmnElement="Flow_d315d7e8"><di:waypoint x="4140" y="420" /><di:waypoint x="4220" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9fdcb874_di" bpmnElement="Flow_9fdcb874"><di:waypoint x="4390" y="420" /><di:waypoint x="4470" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_e6a14fc6_di" bpmnElement="Assoc_e6a14fc6"><di:waypoint x="4555" y="415" /><di:waypoint x="4488" y="390" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_e4c2bf0a_di" bpmnElement="Assoc_Annot_e4c2bf0a"><di:waypoint x="4640" y="420" /><di:waypoint x="4840" y="410" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11fbae0f_di" bpmnElement="Flow_11fbae0f"><di:waypoint x="4640" y="420" /><di:waypoint x="4720" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9abf4b48_di" bpmnElement="Flow_9abf4b48"><di:waypoint x="4890" y="420" /><di:waypoint x="4970" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_044594fa_di" bpmnElement="Flow_044594fa"><di:waypoint x="5140" y="420" /><di:waypoint x="5220" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_d030996d_di" bpmnElement="Flow_d030996d"><di:waypoint x="5390" y="420" /><di:waypoint x="5470" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3902385a_di" bpmnElement="Flow_3902385a"><di:waypoint x="5640" y="420" /><di:waypoint x="5720" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_b4b8cf07_di" bpmnElement="Assoc_b4b8cf07"><di:waypoint x="5805" y="415" /><di:waypoint x="5738" y="390" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9fde4d9c_di" bpmnElement="Flow_9fde4d9c"><di:waypoint x="5890" y="420" /><di:waypoint x="5970" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_390da66b_di" bpmnElement="Assoc_390da66b"><di:waypoint x="6055" y="415" /><di:waypoint x="5988" y="390" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_cf149781_di" bpmnElement="Assoc_Annot_cf149781"><di:waypoint x="6140" y="420" /><di:waypoint x="6340" y="410" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_210ab54b_di" bpmnElement="Flow_210ab54b"><di:waypoint x="6140" y="420" /><di:waypoint x="6220" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_21ff287d_di" bpmnElement="Flow_21ff287d"><di:waypoint x="6390" y="420" /><di:waypoint x="6470" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_02654d6d_di" bpmnElement="Flow_02654d6d"><di:waypoint x="6640" y="420" /><di:waypoint x="6720" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_a28aa435_di" bpmnElement="Flow_a28aa435"><di:waypoint x="6890" y="420" /><di:waypoint x="6970" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1490d42c_di" bpmnElement="Flow_1490d42c"><di:waypoint x="7140" y="420" /><di:waypoint x="7220" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_823d4934_di" bpmnElement="Flow_823d4934"><di:waypoint x="7390" y="420" /><di:waypoint x="7470" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_45af690c_di" bpmnElement="Assoc_Annot_45af690c"><di:waypoint x="7640" y="420" /><di:waypoint x="7840" y="410" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7fe0f3a7_di" bpmnElement="Flow_7fe0f3a7"><di:waypoint x="7640" y="420" /><di:waypoint x="7720" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6727af38_di" bpmnElement="Flow_6727af38"><di:waypoint x="7890" y="420" /><di:waypoint x="7970" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_7d1417dc_di" bpmnElement="Assoc_7d1417dc"><di:waypoint x="8055" y="415" /><di:waypoint x="7988" y="390" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_484fca14_di" bpmnElement="Assoc_Annot_484fca14"><di:waypoint x="8140" y="420" /><di:waypoint x="8340" y="410" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_d79b110d_di" bpmnElement="Flow_d79b110d"><di:waypoint x="8140" y="420" /><di:waypoint x="8220" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_555320ab_di" bpmnElement="Flow_555320ab"><di:waypoint x="8390" y="420" /><di:waypoint x="8470" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_f4216d4b_di" bpmnElement="Assoc_f4216d4b"><di:waypoint x="8555" y="415" /><di:waypoint x="8488" y="390" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_711b5789_di" bpmnElement="Assoc_Annot_711b5789"><di:waypoint x="8640" y="420" /><di:waypoint x="8840" y="410" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3123bf7d_di" bpmnElement="Flow_3123bf7d"><di:waypoint x="8640" y="420" /><di:waypoint x="8720" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_68f2daa3_di" bpmnElement="Flow_68f2daa3"><di:waypoint x="176" y="940" /><di:waypoint x="220" y="940" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0174c97e_di" bpmnElement="Flow_0174c97e"><di:waypoint x="390" y="940" /><di:waypoint x="470" y="940" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9118a4a1_di" bpmnElement="Flow_9118a4a1"><di:waypoint x="176" y="1460" /><di:waypoint x="220" y="1460" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_9e17b53f_di" bpmnElement="Assoc_Annot_9e17b53f"><di:waypoint x="390" y="1460" /><di:waypoint x="590" y="1450" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_e0b2c53b_di" bpmnElement="Flow_e0b2c53b"><di:waypoint x="390" y="1460" /><di:waypoint x="470" y="1460" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ebba1394_di" bpmnElement="Flow_ebba1394"><di:waypoint x="640" y="1460" /><di:waypoint x="720" y="1460" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_863ec0b3_di" bpmnElement="Flow_863ec0b3"><di:waypoint x="890" y="1460" /><di:waypoint x="970" y="1460" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3fa04bf0_di" bpmnElement="Flow_3fa04bf0"><di:waypoint x="1140" y="1460" /><di:waypoint x="1220" y="1460" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_f6cf1772_di" bpmnElement="Flow_f6cf1772"><di:waypoint x="1390" y="1460" /><di:waypoint x="1470" y="1460" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_895711ec_di" bpmnElement="Flow_895711ec"><di:waypoint x="1640" y="1460" /><di:waypoint x="1720" y="1460" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_eaf965c7_di" bpmnElement="MessageFlow_eaf965c7"><di:waypoint x="1555" y="420" /><di:waypoint x="1555" y="570" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_2ea913e2_di" bpmnElement="MessageFlow_2ea913e2"><di:waypoint x="2805" y="420" /><di:waypoint x="2805" y="570" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_818658df_di" bpmnElement="MessageFlow_818658df"><di:waypoint x="3805" y="420" /><di:waypoint x="3805" y="570" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_a9549a34_di" bpmnElement="MessageFlow_a9549a34"><di:waypoint x="4555" y="420" /><di:waypoint x="4555" y="1090" /></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:collaboration id="Collaboration_1">
+    <bpmn:participant id="Participant_Process" name="GDPR Process" processRef="Process_GDPR" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_GDPR" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_1">
+      <bpmn:lane id="Lane_Controller" name="Controller">
+        <bpmn:flowNodeRef>StartEvent_782d93d6</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_4971cd11</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Split_d8e49ab0</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Merge_d36f1540</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_c6d18423</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_de8c495f</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_b50d4857</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="StartEvent_782d93d6" name="Start" />
+    <bpmn:sequenceFlow id="Flow_5c97b78f" sourceRef="StartEvent_782d93d6" targetRef="Gateway_Split_d8e49ab0" />
+    <bpmn:parallelGateway id="Gateway_Split_d8e49ab0" name="Implement Measure"><bpmn:incoming>Flow_5c97b78f</bpmn:incoming></bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_02592e57" name="Implement Measure" sourceRef="Gateway_Split_d8e49ab0" targetRef="Task_c6d18423" />
+    <bpmn:task id="Task_c6d18423" name="Implement Measure: Implement Measure
+(Art. 24 Abs. 1)"><bpmn:incoming>Flow_02592e57</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_303276e4" name="Demonstrate Compliance" sourceRef="Gateway_Split_d8e49ab0" targetRef="Task_de8c495f" />
+    <bpmn:task id="Task_de8c495f" name="Demonstrate Compliance
+(Art. 24 Abs. 1)"><bpmn:incoming>Flow_303276e4</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_1c076f3d" sourceRef="Task_c6d18423" targetRef="Gateway_Merge_d36f1540" />
+    <bpmn:sequenceFlow id="Flow_d866946f" sourceRef="Task_de8c495f" targetRef="Gateway_Merge_d36f1540" />
+    <bpmn:parallelGateway id="Gateway_Merge_d36f1540"><bpmn:incoming>Flow_1c076f3d</bpmn:incoming><bpmn:incoming>Flow_d866946f</bpmn:incoming></bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_43f6f4bc" sourceRef="Gateway_Merge_d36f1540" targetRef="Task_b50d4857" />
+    <bpmn:task id="Task_b50d4857" name="Implement Measure
+(Art. 24 Abs. 2)"><bpmn:incoming>Flow_43f6f4bc</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_a01a4d78" sourceRef="Task_b50d4857" targetRef="EndEvent_4971cd11" />
+    <bpmn:endEvent id="EndEvent_4971cd11" name="End"><bpmn:incoming>Flow_a01a4d78</bpmn:incoming></bpmn:endEvent>
+    <bpmn:textAnnotation id="Annotation_bdc3ce77"><bpmn:text>Under the GDPR&#10;AbleTo</bpmn:text></bpmn:textAnnotation>
+    <bpmn:textAnnotation id="Annotation_10145b3f"><bpmn:text>Applies when: Use reasonable effort AND Data Protection Policies</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_c1686fc9" sourceRef="Gateway_Split_d8e49ab0" targetRef="Annotation_bdc3ce77" />
+    <bpmn:association id="Assoc_Annot_b4168465" sourceRef="Task_b50d4857" targetRef="Annotation_10145b3f" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
+      <bpmndi:BPMNShape id="Participant_Process_di" bpmnElement="Participant_Process" isHorizontal="true"><dc:Bounds x="50" y="50" width="1296" height="230" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Controller_di" bpmnElement="Lane_Controller" isHorizontal="true"><dc:Bounds x="80" y="50" width="1266" height="230" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_782d93d6_di" bpmnElement="StartEvent_782d93d6"><dc:Bounds x="150" y="147" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Split_d8e49ab0_di" bpmnElement="Gateway_Split_d8e49ab0" isMarkerVisible="true"><dc:Bounds x="286" y="140" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_c6d18423_di" bpmnElement="Task_c6d18423"><dc:Bounds x="416" y="70" width="150" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_de8c495f_di" bpmnElement="Task_de8c495f"><dc:Bounds x="416" y="180" width="150" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Merge_d36f1540_di" bpmnElement="Gateway_Merge_d36f1540" isMarkerVisible="true"><dc:Bounds x="656" y="140" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_bdc3ce77_di" bpmnElement="Annotation_bdc3ce77"><dc:Bounds x="496" y="105" width="260" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_b50d4857_di" bpmnElement="Task_b50d4857"><dc:Bounds x="846" y="125" width="150" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_10145b3f_di" bpmnElement="Annotation_10145b3f"><dc:Bounds x="1056" y="105" width="260" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_4971cd11_di" bpmnElement="EndEvent_4971cd11"><dc:Bounds x="1096" y="147" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_5c97b78f_di" bpmnElement="Flow_5c97b78f"><di:waypoint x="186" y="165" /><di:waypoint x="286" y="165" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_02592e57_di" bpmnElement="Flow_02592e57"><di:waypoint x="311" y="165" /><di:waypoint x="416" y="110" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_303276e4_di" bpmnElement="Flow_303276e4"><di:waypoint x="311" y="165" /><di:waypoint x="416" y="220" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1c076f3d_di" bpmnElement="Flow_1c076f3d"><di:waypoint x="566" y="110" /><di:waypoint x="656" y="165" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_d866946f_di" bpmnElement="Flow_d866946f"><di:waypoint x="566" y="220" /><di:waypoint x="656" y="165" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_c1686fc9_di" bpmnElement="Assoc_Annot_c1686fc9"><di:waypoint x="336" y="165" /><di:waypoint x="496" y="145" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_43f6f4bc_di" bpmnElement="Flow_43f6f4bc"><di:waypoint x="706" y="165" /><di:waypoint x="846" y="165" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_b4168465_di" bpmnElement="Assoc_Annot_b4168465"><di:waypoint x="996" y="165" /><di:waypoint x="1056" y="145" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_a01a4d78_di" bpmnElement="Flow_a01a4d78"><di:waypoint x="996" y="165" /><di:waypoint x="1096" y="165" /></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

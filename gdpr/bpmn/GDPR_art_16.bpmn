@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:collaboration id="Collaboration_1">
+    <bpmn:participant id="Participant_DataSubject_1fb8d860" name="DataSubject" processRef="Process_DataSubject_107aecf6" />
+    <bpmn:participant id="Participant_Controller_78b95f80" name="Controller" />
+    <bpmn:messageFlow id="MessageFlow_0596bfea" sourceRef="Task_5f53d82f" targetRef="Participant_Controller_78b95f80" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_DataSubject_107aecf6" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_025eb1b7" name="Start" />
+    <bpmn:sequenceFlow id="Flow_075c0255" sourceRef="StartEvent_025eb1b7" targetRef="Task_2460d69d" />
+    <bpmn:task id="Task_2460d69d" name="Rectify Data
+(Art. 16 Abs. 1)"><bpmn:incoming>Flow_075c0255</bpmn:incoming></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_47c39772"><bpmn:text>No exception under Art. 12 Abs. 2&#10;No exception under Art. 11 Abs. 2&#10;Perform without undue delay&#10;Applies when: Rectify Data</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_358d060e" sourceRef="Task_2460d69d" targetRef="Annotation_47c39772" />
+    <bpmn:sequenceFlow id="Flow_ae3a1e07" sourceRef="Task_2460d69d" targetRef="Task_5f53d82f" />
+    <bpmn:task id="Task_5f53d82f" name="Complete to Controller
+(Art. 16 Abs. 1)"><bpmn:incoming>Flow_ae3a1e07</bpmn:incoming></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_85e3a195"><bpmn:text>No exception under Art. 12 Abs. 2&#10;No exception under Art. 11 Abs. 2&#10;Perform without undue delay&#10;Applies when: Complete</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_da6da252" sourceRef="Task_5f53d82f" targetRef="Annotation_85e3a195" />
+    <bpmn:sequenceFlow id="Flow_fb2ae0c2" sourceRef="Task_5f53d82f" targetRef="EndEvent_7a972909" />
+    <bpmn:endEvent id="EndEvent_7a972909" name="End"><bpmn:incoming>Flow_fb2ae0c2</bpmn:incoming></bpmn:endEvent>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
+      <bpmndi:BPMNShape id="Participant_DataSubject_1fb8d860_di" bpmnElement="Participant_DataSubject_1fb8d860" isHorizontal="true"><dc:Bounds x="60" y="50" width="1200" height="220" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Controller_78b95f80_di" bpmnElement="Participant_Controller_78b95f80" isHorizontal="true"><dc:Bounds x="60" y="310" width="1200" height="220" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_025eb1b7_di" bpmnElement="StartEvent_025eb1b7"><dc:Bounds x="140" y="142" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_2460d69d_di" bpmnElement="Task_2460d69d"><dc:Bounds x="220" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_47c39772_di" bpmnElement="Annotation_47c39772"><dc:Bounds x="590" y="110" width="280" height="100" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_5f53d82f_di" bpmnElement="Task_5f53d82f"><dc:Bounds x="470" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_85e3a195_di" bpmnElement="Annotation_85e3a195"><dc:Bounds x="840" y="110" width="280" height="100" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_7a972909_di" bpmnElement="EndEvent_7a972909"><dc:Bounds x="720" y="142" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_075c0255_di" bpmnElement="Flow_075c0255"><di:waypoint x="176" y="160" /><di:waypoint x="220" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_358d060e_di" bpmnElement="Assoc_Annot_358d060e"><di:waypoint x="390" y="160" /><di:waypoint x="590" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ae3a1e07_di" bpmnElement="Flow_ae3a1e07"><di:waypoint x="390" y="160" /><di:waypoint x="470" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_da6da252_di" bpmnElement="Assoc_Annot_da6da252"><di:waypoint x="640" y="160" /><di:waypoint x="840" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_fb2ae0c2_di" bpmnElement="Flow_fb2ae0c2"><di:waypoint x="640" y="160" /><di:waypoint x="720" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_0596bfea_di" bpmnElement="MessageFlow_0596bfea"><di:waypoint x="555" y="160" /><di:waypoint x="555" y="310" /></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

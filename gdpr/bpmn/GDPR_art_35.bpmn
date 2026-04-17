@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:collaboration id="Collaboration_1">
+    <bpmn:participant id="Participant_Controller_88759761" name="Controller" processRef="Process_Controller_fe5c2d33" />
+    <bpmn:participant id="Participant_Processor_5b309076" name="Processor" />
+    <bpmn:messageFlow id="MessageFlow_f6a7c12c" sourceRef="Task_c93a8efb" targetRef="Participant_Processor_5b309076" />
+    <bpmn:messageFlow id="MessageFlow_705c1210" sourceRef="Task_f2a7518e" targetRef="Participant_Processor_5b309076" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_Controller_fe5c2d33" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_3b0c1bf7" name="Start" />
+    <bpmn:sequenceFlow id="Flow_8f78866b" sourceRef="StartEvent_3b0c1bf7" targetRef="Task_03bddcd7" />
+    <bpmn:dataObject id="DataObj_b06ba31d" />
+    <bpmn:dataObjectReference id="DataRef_68c8bc69" dataObjectRef="DataObj_b06ba31d" name="GDPR" />
+    <bpmn:task id="Task_03bddcd7" name="Document Information
+(Art. 35 Abs. 1)"><bpmn:incoming>Flow_8f78866b</bpmn:incoming><bpmn:dataOutputAssociation id="Assoc_bb64ea05"><bpmn:targetRef>DataRef_68c8bc69</bpmn:targetRef></bpmn:dataOutputAssociation></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_fa925bb4"><bpmn:text>Check exception in Art. 35 Abs. 10&#10;Under the GDPR&#10;No exception under Art. 35 Abs. 10&#10;Outcome should be verifiable&#10;Applies when: Likely to Cause Risk AND High Risk to Individuals AND Risk to Rights &amp; Freedoms</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_854fcdfb" sourceRef="Task_03bddcd7" targetRef="Annotation_fa925bb4" />
+    <bpmn:sequenceFlow id="Flow_97647435" sourceRef="Task_03bddcd7" targetRef="Task_1c148b94" />
+    <bpmn:dataObject id="DataObj_276571bd" />
+    <bpmn:dataObjectReference id="DataRef_6314eada" dataObjectRef="DataObj_276571bd" name="Submit Request" />
+    <bpmn:task id="Task_1c148b94" name="Submit Request
+(Art. 35 Abs. 2)"><bpmn:incoming>Flow_97647435</bpmn:incoming><bpmn:dataOutputAssociation id="Assoc_57e851bb"><bpmn:targetRef>DataRef_6314eada</bpmn:targetRef></bpmn:dataOutputAssociation></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_6f7c5ac9"><bpmn:text>No exception under Art. 35 Abs. 10</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_957192ac" sourceRef="Task_1c148b94" targetRef="Annotation_6f7c5ac9" />
+    <bpmn:sequenceFlow id="Flow_648f45b0" sourceRef="Task_1c148b94" targetRef="Task_acefdaf9" />
+    <bpmn:task id="Task_acefdaf9" name="Assist With Compliance to Controller
+(Art. 35 Abs. 2)"><bpmn:incoming>Flow_648f45b0</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_b3fef33f" sourceRef="Task_acefdaf9" targetRef="Task_df54908c" />
+    <bpmn:dataObject id="DataObj_72433005" />
+    <bpmn:dataObjectReference id="DataRef_c3d8f70b" dataObjectRef="DataObj_72433005" name="GDPR" />
+    <bpmn:task id="Task_df54908c" name="Document Information
+(Art. 35 Abs. 3 lit. a)"><bpmn:incoming>Flow_b3fef33f</bpmn:incoming><bpmn:dataOutputAssociation id="Assoc_acae1596"><bpmn:targetRef>DataRef_c3d8f70b</bpmn:targetRef></bpmn:dataOutputAssociation></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_f62b4716"><bpmn:text>Under the GDPR&#10;No exception under Art. 35 Abs. 10&#10;Outcome should be verifiable&#10;Applies when: Implement Measure AND Automated Decision-Making AND Legal Effect on the Person AND Significant Effect on the Person</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_a755e467" sourceRef="Task_df54908c" targetRef="Annotation_f62b4716" />
+    <bpmn:sequenceFlow id="Flow_dc599fce" sourceRef="Task_df54908c" targetRef="Task_ad27788e" />
+    <bpmn:dataObject id="DataObj_5eb2f0f4" />
+    <bpmn:dataObjectReference id="DataRef_202835c6" dataObjectRef="DataObj_5eb2f0f4" name="GDPR" />
+    <bpmn:task id="Task_ad27788e" name="Document Information
+(Art. 35 Abs. 3 lit. b)"><bpmn:incoming>Flow_dc599fce</bpmn:incoming><bpmn:dataOutputAssociation id="Assoc_ebfd7daa"><bpmn:targetRef>DataRef_202835c6</bpmn:targetRef></bpmn:dataOutputAssociation></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_727d71a6"><bpmn:text>Under the GDPR&#10;No exception under Art. 35 Abs. 10&#10;Outcome should be verifiable&#10;Applies when: Ethnic Origin Data AND Large-Scale Processing AND OpinionData AND ReligiousOrPhilosophicalBeliefsData</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_40c36f9c" sourceRef="Task_ad27788e" targetRef="Annotation_727d71a6" />
+    <bpmn:sequenceFlow id="Flow_e550d2a2" sourceRef="Task_ad27788e" targetRef="Task_b5c840ea" />
+    <bpmn:dataObject id="DataObj_c463a0d4" />
+    <bpmn:dataObjectReference id="DataRef_5511a813" dataObjectRef="DataObj_c463a0d4" name="GDPR" />
+    <bpmn:task id="Task_b5c840ea" name="Document Information
+(Art. 35 Abs. 3 lit. c)"><bpmn:incoming>Flow_e550d2a2</bpmn:incoming><bpmn:dataOutputAssociation id="Assoc_ab4c795d"><bpmn:targetRef>DataRef_5511a813</bpmn:targetRef></bpmn:dataOutputAssociation></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_9b891020"><bpmn:text>Under the GDPR&#10;No exception under Art. 35 Abs. 10&#10;Outcome should be verifiable&#10;Applies when: Monitoring Activities AND Publicly Accessible Area AND Large-Scale Processing</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_c7216c75" sourceRef="Task_b5c840ea" targetRef="Annotation_9b891020" />
+    <bpmn:sequenceFlow id="Flow_8074e72f" sourceRef="Task_b5c840ea" targetRef="Task_c93a8efb" />
+    <bpmn:task id="Task_c93a8efb" name="Processor Nominates Controller to Processor
+(Art. 35 Abs. 9)"><bpmn:incoming>Flow_8074e72f</bpmn:incoming></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_fac93f39"><bpmn:text>Applies when: GDPR Violation AND Public Interest Processing&#10;Include: Describe&#10;No exception under Art. 35 Abs. 10&#10;Also address: Measures Already Taken&#10;Also address: Measures Taken/Proposed</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_b5355dba" sourceRef="Task_c93a8efb" targetRef="Annotation_fac93f39" />
+    <bpmn:sequenceFlow id="Flow_286cf852" sourceRef="Task_c93a8efb" targetRef="Task_f2a7518e" />
+    <bpmn:task id="Task_f2a7518e" name="Processor Nominates Controller to Processor
+(Art. 35 Abs. 11)"><bpmn:incoming>Flow_286cf852</bpmn:incoming></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_8106c388"><bpmn:text>Applies when: necessary</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_ee46fc3d" sourceRef="Task_f2a7518e" targetRef="Annotation_8106c388" />
+    <bpmn:sequenceFlow id="Flow_eada3e85" sourceRef="Task_f2a7518e" targetRef="EndEvent_70f9f6af" />
+    <bpmn:endEvent id="EndEvent_70f9f6af" name="End"><bpmn:incoming>Flow_eada3e85</bpmn:incoming></bpmn:endEvent>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
+      <bpmndi:BPMNShape id="Participant_Controller_88759761_di" bpmnElement="Participant_Controller_88759761" isHorizontal="true"><dc:Bounds x="60" y="50" width="2400" height="220" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Processor_5b309076_di" bpmnElement="Participant_Processor_5b309076" isHorizontal="true"><dc:Bounds x="60" y="310" width="2400" height="220" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_3b0c1bf7_di" bpmnElement="StartEvent_3b0c1bf7"><dc:Bounds x="140" y="142" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_68c8bc69_di" bpmnElement="DataRef_68c8bc69"><dc:Bounds x="220" y="80" width="36" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_03bddcd7_di" bpmnElement="Task_03bddcd7"><dc:Bounds x="220" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_fa925bb4_di" bpmnElement="Annotation_fa925bb4"><dc:Bounds x="590" y="110" width="280" height="120" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_6314eada_di" bpmnElement="DataRef_6314eada"><dc:Bounds x="470" y="80" width="36" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_1c148b94_di" bpmnElement="Task_1c148b94"><dc:Bounds x="470" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_6f7c5ac9_di" bpmnElement="Annotation_6f7c5ac9"><dc:Bounds x="840" y="110" width="280" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_acefdaf9_di" bpmnElement="Task_acefdaf9"><dc:Bounds x="720" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_c3d8f70b_di" bpmnElement="DataRef_c3d8f70b"><dc:Bounds x="970" y="80" width="36" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_df54908c_di" bpmnElement="Task_df54908c"><dc:Bounds x="970" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_f62b4716_di" bpmnElement="Annotation_f62b4716"><dc:Bounds x="1340" y="110" width="280" height="100" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_202835c6_di" bpmnElement="DataRef_202835c6"><dc:Bounds x="1220" y="80" width="36" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ad27788e_di" bpmnElement="Task_ad27788e"><dc:Bounds x="1220" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_727d71a6_di" bpmnElement="Annotation_727d71a6"><dc:Bounds x="1590" y="110" width="280" height="100" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_5511a813_di" bpmnElement="DataRef_5511a813"><dc:Bounds x="1470" y="80" width="36" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_b5c840ea_di" bpmnElement="Task_b5c840ea"><dc:Bounds x="1470" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_9b891020_di" bpmnElement="Annotation_9b891020"><dc:Bounds x="1840" y="110" width="280" height="100" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_c93a8efb_di" bpmnElement="Task_c93a8efb"><dc:Bounds x="1720" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_fac93f39_di" bpmnElement="Annotation_fac93f39"><dc:Bounds x="2090" y="110" width="280" height="120" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_f2a7518e_di" bpmnElement="Task_f2a7518e"><dc:Bounds x="1970" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_8106c388_di" bpmnElement="Annotation_8106c388"><dc:Bounds x="2340" y="110" width="280" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_70f9f6af_di" bpmnElement="EndEvent_70f9f6af"><dc:Bounds x="2220" y="142" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_8f78866b_di" bpmnElement="Flow_8f78866b"><di:waypoint x="176" y="160" /><di:waypoint x="220" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_bb64ea05_di" bpmnElement="Assoc_bb64ea05"><di:waypoint x="305" y="155" /><di:waypoint x="238" y="130" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_854fcdfb_di" bpmnElement="Assoc_Annot_854fcdfb"><di:waypoint x="390" y="160" /><di:waypoint x="590" y="170" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_97647435_di" bpmnElement="Flow_97647435"><di:waypoint x="390" y="160" /><di:waypoint x="470" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_57e851bb_di" bpmnElement="Assoc_57e851bb"><di:waypoint x="555" y="155" /><di:waypoint x="488" y="130" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_957192ac_di" bpmnElement="Assoc_Annot_957192ac"><di:waypoint x="640" y="160" /><di:waypoint x="840" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_648f45b0_di" bpmnElement="Flow_648f45b0"><di:waypoint x="640" y="160" /><di:waypoint x="720" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_b3fef33f_di" bpmnElement="Flow_b3fef33f"><di:waypoint x="890" y="160" /><di:waypoint x="970" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_acae1596_di" bpmnElement="Assoc_acae1596"><di:waypoint x="1055" y="155" /><di:waypoint x="988" y="130" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_a755e467_di" bpmnElement="Assoc_Annot_a755e467"><di:waypoint x="1140" y="160" /><di:waypoint x="1340" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_dc599fce_di" bpmnElement="Flow_dc599fce"><di:waypoint x="1140" y="160" /><di:waypoint x="1220" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_ebfd7daa_di" bpmnElement="Assoc_ebfd7daa"><di:waypoint x="1305" y="155" /><di:waypoint x="1238" y="130" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_40c36f9c_di" bpmnElement="Assoc_Annot_40c36f9c"><di:waypoint x="1390" y="160" /><di:waypoint x="1590" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_e550d2a2_di" bpmnElement="Flow_e550d2a2"><di:waypoint x="1390" y="160" /><di:waypoint x="1470" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_ab4c795d_di" bpmnElement="Assoc_ab4c795d"><di:waypoint x="1555" y="155" /><di:waypoint x="1488" y="130" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_c7216c75_di" bpmnElement="Assoc_Annot_c7216c75"><di:waypoint x="1640" y="160" /><di:waypoint x="1840" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8074e72f_di" bpmnElement="Flow_8074e72f"><di:waypoint x="1640" y="160" /><di:waypoint x="1720" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_b5355dba_di" bpmnElement="Assoc_Annot_b5355dba"><di:waypoint x="1890" y="160" /><di:waypoint x="2090" y="170" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_286cf852_di" bpmnElement="Flow_286cf852"><di:waypoint x="1890" y="160" /><di:waypoint x="1970" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_ee46fc3d_di" bpmnElement="Assoc_Annot_ee46fc3d"><di:waypoint x="2140" y="160" /><di:waypoint x="2340" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_eada3e85_di" bpmnElement="Flow_eada3e85"><di:waypoint x="2140" y="160" /><di:waypoint x="2220" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_f6a7c12c_di" bpmnElement="MessageFlow_f6a7c12c"><di:waypoint x="1805" y="160" /><di:waypoint x="1805" y="310" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_705c1210_di" bpmnElement="MessageFlow_705c1210"><di:waypoint x="2055" y="160" /><di:waypoint x="2055" y="310" /></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

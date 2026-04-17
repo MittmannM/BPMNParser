@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  id="Defs_Art37_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:collaboration id="Collab_Art37_Reviewed">
+    <bpmn:participant id="Participant_ControllerOrProcessor" name="Controller or Processor" processRef="Process_Art37_Reviewed" />
+    <bpmn:participant id="Participant_SupervisoryAuthority" name="Supervisory Authority" />
+    <bpmn:messageFlow id="MessageFlow_CommunicateDPOContactDetails" sourceRef="Task_CommunicateAuthority" targetRef="Participant_SupervisoryAuthority" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_Art37_Reviewed" name="Designation of the data protection officer" isExecutable="false">
+    <bpmn:documentation>Manual BPMN conversion for GDPR Article 37 based on DAPRECO LegalRuleML statements196-204. The model captures the three designation triggers, the judicial-capacity exception, the optional shared-DPO arrangement, the qualification requirement, and the publication/communication duty.</bpmn:documentation>
+    <bpmn:startEvent id="StartEvent_AssessDuty" name="Assess DPO designation duty">
+      <bpmn:outgoing>Flow_Start_AssessPublic</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Task_AssessPublic" name="Assess whether the controller or processor is a public authority or body">
+      <bpmn:incoming>Flow_Start_AssessPublic</bpmn:incoming>
+      <bpmn:outgoing>Flow_AssessPublic_GatewayPublic</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:exclusiveGateway id="Gateway_Public" name="Is the controller or processor a public authority or body?">
+      <bpmn:incoming>Flow_AssessPublic_GatewayPublic</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayPublic_TaskCourt</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayPublic_TaskAssessMonitoring</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:task id="Task_CheckCourt" name="Check whether the authority acts in a judicial capacity">
+      <bpmn:incoming>Flow_GatewayPublic_TaskCourt</bpmn:incoming>
+      <bpmn:outgoing>Flow_CheckCourt_GatewayCourt</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:exclusiveGateway id="Gateway_Court" name="Does the authority act in a judicial capacity?">
+      <bpmn:incoming>Flow_CheckCourt_GatewayCourt</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayCourt_EndNoDesignation</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayCourt_TaskDesignate</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:task id="Task_AssessMonitoring" name="Assess whether core activities involve regular and systematic monitoring on a large scale">
+      <bpmn:incoming>Flow_GatewayPublic_TaskAssessMonitoring</bpmn:incoming>
+      <bpmn:outgoing>Flow_AssessMonitoring_GatewayMonitoring</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:exclusiveGateway id="Gateway_Monitoring" name="Do the core activities involve regular and systematic monitoring on a large scale?">
+      <bpmn:incoming>Flow_AssessMonitoring_GatewayMonitoring</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayMonitoring_TaskAssessLargeScale</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayMonitoring_TaskDesignate</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:task id="Task_AssessLargeScale" name="Assess whether core activities involve large-scale special-category or criminal-data processing">
+      <bpmn:incoming>Flow_GatewayMonitoring_TaskAssessLargeScale</bpmn:incoming>
+      <bpmn:outgoing>Flow_AssessLargeScale_GatewayLargeScale</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:exclusiveGateway id="Gateway_LargeScale" name="Does the processing involve large-scale special-category or criminal-data processing?">
+      <bpmn:incoming>Flow_AssessLargeScale_GatewayLargeScale</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayLargeScale_TaskDesignate</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayLargeScale_EndNoDesignation</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="EndEvent_NoDesignation" name="No DPO designation required">
+      <bpmn:incoming>Flow_GatewayCourt_EndNoDesignation</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayLargeScale_EndNoDesignation</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:task id="Task_PrepareDesignation" name="Prepare the DPO designation arrangement">
+      <bpmn:incoming>Flow_GatewayCourt_TaskDesignate</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayMonitoring_TaskDesignate</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayLargeScale_TaskDesignate</bpmn:incoming>
+      <bpmn:outgoing>Flow_PrepareDesignation_GatewayShared</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:exclusiveGateway id="Gateway_Shared" name="Shared DPO arrangement needed?">
+      <bpmn:incoming>Flow_PrepareDesignation_GatewayShared</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayShared_TaskSharedArrangement</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayShared_TaskSelectDPO</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:task id="Task_SharedArrangement" name="Arrange one DPO for several entities and ensure easy accessibility">
+      <bpmn:incoming>Flow_GatewayShared_TaskSharedArrangement</bpmn:incoming>
+      <bpmn:outgoing>Flow_SharedArrangement_TaskSelectDPO</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_SelectDPO" name="Select a DPO with expert knowledge of data protection law and practices">
+      <bpmn:incoming>Flow_GatewayShared_TaskSelectDPO</bpmn:incoming>
+      <bpmn:incoming>Flow_SharedArrangement_TaskSelectDPO</bpmn:incoming>
+      <bpmn:outgoing>Flow_SelectDPO_TaskAppointDPO</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_AppointDPO" name="Appoint the selected DPO as staff member or external service provider">
+      <bpmn:incoming>Flow_SelectDPO_TaskAppointDPO</bpmn:incoming>
+      <bpmn:outgoing>Flow_AppointDPO_TaskPublishContactDetails</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_PublishContactDetails" name="Publish the DPO contact details">
+      <bpmn:incoming>Flow_AppointDPO_TaskPublishContactDetails</bpmn:incoming>
+      <bpmn:outgoing>Flow_PublishContactDetails_TaskCommunicateAuthority</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sendTask id="Task_CommunicateAuthority" name="Communicate the DPO contact details to the supervisory authority">
+      <bpmn:incoming>Flow_PublishContactDetails_TaskCommunicateAuthority</bpmn:incoming>
+      <bpmn:outgoing>Flow_CommunicateAuthority_EndCompleted</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:endEvent id="EndEvent_Completed" name="DPO designation completed">
+      <bpmn:incoming>Flow_CommunicateAuthority_EndCompleted</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_Start_AssessPublic" sourceRef="StartEvent_AssessDuty" targetRef="Task_AssessPublic" />
+    <bpmn:sequenceFlow id="Flow_AssessPublic_GatewayPublic" sourceRef="Task_AssessPublic" targetRef="Gateway_Public" />
+    <bpmn:sequenceFlow id="Flow_GatewayPublic_TaskCourt" name="Yes" sourceRef="Gateway_Public" targetRef="Task_CheckCourt" />
+    <bpmn:sequenceFlow id="Flow_GatewayPublic_TaskAssessMonitoring" name="No" sourceRef="Gateway_Public" targetRef="Task_AssessMonitoring" />
+    <bpmn:sequenceFlow id="Flow_CheckCourt_GatewayCourt" sourceRef="Task_CheckCourt" targetRef="Gateway_Court" />
+    <bpmn:sequenceFlow id="Flow_GatewayCourt_EndNoDesignation" name="Yes" sourceRef="Gateway_Court" targetRef="EndEvent_NoDesignation" />
+    <bpmn:sequenceFlow id="Flow_GatewayCourt_TaskDesignate" name="No" sourceRef="Gateway_Court" targetRef="Task_PrepareDesignation" />
+    <bpmn:sequenceFlow id="Flow_AssessMonitoring_GatewayMonitoring" sourceRef="Task_AssessMonitoring" targetRef="Gateway_Monitoring" />
+    <bpmn:sequenceFlow id="Flow_GatewayMonitoring_TaskDesignate" name="Yes" sourceRef="Gateway_Monitoring" targetRef="Task_PrepareDesignation" />
+    <bpmn:sequenceFlow id="Flow_GatewayMonitoring_TaskAssessLargeScale" name="No" sourceRef="Gateway_Monitoring" targetRef="Task_AssessLargeScale" />
+    <bpmn:sequenceFlow id="Flow_AssessLargeScale_GatewayLargeScale" sourceRef="Task_AssessLargeScale" targetRef="Gateway_LargeScale" />
+    <bpmn:sequenceFlow id="Flow_GatewayLargeScale_TaskDesignate" name="Yes" sourceRef="Gateway_LargeScale" targetRef="Task_PrepareDesignation" />
+    <bpmn:sequenceFlow id="Flow_GatewayLargeScale_EndNoDesignation" name="No" sourceRef="Gateway_LargeScale" targetRef="EndEvent_NoDesignation" />
+    <bpmn:sequenceFlow id="Flow_PrepareDesignation_GatewayShared" sourceRef="Task_PrepareDesignation" targetRef="Gateway_Shared" />
+    <bpmn:sequenceFlow id="Flow_GatewayShared_TaskSharedArrangement" name="Yes" sourceRef="Gateway_Shared" targetRef="Task_SharedArrangement" />
+    <bpmn:sequenceFlow id="Flow_GatewayShared_TaskSelectDPO" name="No" sourceRef="Gateway_Shared" targetRef="Task_SelectDPO" />
+    <bpmn:sequenceFlow id="Flow_SharedArrangement_TaskSelectDPO" sourceRef="Task_SharedArrangement" targetRef="Task_SelectDPO" />
+    <bpmn:sequenceFlow id="Flow_SelectDPO_TaskAppointDPO" sourceRef="Task_SelectDPO" targetRef="Task_AppointDPO" />
+    <bpmn:sequenceFlow id="Flow_AppointDPO_TaskPublishContactDetails" sourceRef="Task_AppointDPO" targetRef="Task_PublishContactDetails" />
+    <bpmn:sequenceFlow id="Flow_PublishContactDetails_TaskCommunicateAuthority" sourceRef="Task_PublishContactDetails" targetRef="Task_CommunicateAuthority" />
+    <bpmn:sequenceFlow id="Flow_CommunicateAuthority_EndCompleted" sourceRef="Task_CommunicateAuthority" targetRef="EndEvent_Completed" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art37_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art37_Reviewed" bpmnElement="Collab_Art37_Reviewed">
+      <bpmndi:BPMNShape id="Participant_ControllerOrProcessor_di" bpmnElement="Participant_ControllerOrProcessor" isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="3520" height="420" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_SupervisoryAuthority_di" bpmnElement="Participant_SupervisoryAuthority" isHorizontal="true">
+        <dc:Bounds x="60" y="500" width="3520" height="120" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_AssessDuty_di" bpmnElement="StartEvent_AssessDuty">
+        <dc:Bounds x="140" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessPublic_di" bpmnElement="Task_AssessPublic">
+        <dc:Bounds x="220" y="170" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Public_di" bpmnElement="Gateway_Public" isMarkerVisible="true">
+        <dc:Bounds x="490" y="185" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CheckCourt_di" bpmnElement="Task_CheckCourt">
+        <dc:Bounds x="590" y="170" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Court_di" bpmnElement="Gateway_Court" isMarkerVisible="true">
+        <dc:Bounds x="860" y="185" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessMonitoring_di" bpmnElement="Task_AssessMonitoring">
+        <dc:Bounds x="960" y="170" width="240" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Monitoring_di" bpmnElement="Gateway_Monitoring" isMarkerVisible="true">
+        <dc:Bounds x="1260" y="185" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessLargeScale_di" bpmnElement="Task_AssessLargeScale">
+        <dc:Bounds x="1360" y="170" width="250" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_LargeScale_di" bpmnElement="Gateway_LargeScale" isMarkerVisible="true">
+        <dc:Bounds x="1670" y="185" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NoDesignation_di" bpmnElement="EndEvent_NoDesignation">
+        <dc:Bounds x="1790" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareDesignation_di" bpmnElement="Task_PrepareDesignation">
+        <dc:Bounds x="1890" y="170" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Shared_di" bpmnElement="Gateway_Shared" isMarkerVisible="true">
+        <dc:Bounds x="2130" y="185" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SharedArrangement_di" bpmnElement="Task_SharedArrangement">
+        <dc:Bounds x="2230" y="80" width="250" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SelectDPO_di" bpmnElement="Task_SelectDPO">
+        <dc:Bounds x="2230" y="170" width="280" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AppointDPO_di" bpmnElement="Task_AppointDPO">
+        <dc:Bounds x="2570" y="170" width="250" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PublishContactDetails_di" bpmnElement="Task_PublishContactDetails">
+        <dc:Bounds x="2880" y="170" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CommunicateAuthority_di" bpmnElement="Task_CommunicateAuthority">
+        <dc:Bounds x="3140" y="170" width="260" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Completed_di" bpmnElement="EndEvent_Completed">
+        <dc:Bounds x="3440" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_AssessPublic_di" bpmnElement="Flow_Start_AssessPublic">
+        <di:waypoint x="176" y="210" />
+        <di:waypoint x="220" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AssessPublic_GatewayPublic_di" bpmnElement="Flow_AssessPublic_GatewayPublic">
+        <di:waypoint x="430" y="210" />
+        <di:waypoint x="490" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPublic_TaskCourt_di" bpmnElement="Flow_GatewayPublic_TaskCourt">
+        <di:waypoint x="515" y="185" />
+        <di:waypoint x="515" y="120" />
+        <di:waypoint x="590" y="120" />
+        <di:waypoint x="590" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPublic_TaskAssessMonitoring_di" bpmnElement="Flow_GatewayPublic_TaskAssessMonitoring">
+        <di:waypoint x="540" y="210" />
+        <di:waypoint x="960" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_CheckCourt_GatewayCourt_di" bpmnElement="Flow_CheckCourt_GatewayCourt">
+        <di:waypoint x="800" y="210" />
+        <di:waypoint x="860" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayCourt_EndNoDesignation_di" bpmnElement="Flow_GatewayCourt_EndNoDesignation">
+        <di:waypoint x="885" y="235" />
+        <di:waypoint x="885" y="310" />
+        <di:waypoint x="1808" y="310" />
+        <di:waypoint x="1808" y="228" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayCourt_TaskDesignate_di" bpmnElement="Flow_GatewayCourt_TaskDesignate">
+        <di:waypoint x="910" y="210" />
+        <di:waypoint x="1890" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AssessMonitoring_GatewayMonitoring_di" bpmnElement="Flow_AssessMonitoring_GatewayMonitoring">
+        <di:waypoint x="1200" y="210" />
+        <di:waypoint x="1260" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayMonitoring_TaskAssessLargeScale_di" bpmnElement="Flow_GatewayMonitoring_TaskAssessLargeScale">
+        <di:waypoint x="1310" y="210" />
+        <di:waypoint x="1360" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayMonitoring_TaskDesignate_di" bpmnElement="Flow_GatewayMonitoring_TaskDesignate">
+        <di:waypoint x="1285" y="235" />
+        <di:waypoint x="1285" y="300" />
+        <di:waypoint x="1985" y="300" />
+        <di:waypoint x="1985" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AssessLargeScale_GatewayLargeScale_di" bpmnElement="Flow_AssessLargeScale_GatewayLargeScale">
+        <di:waypoint x="1610" y="210" />
+        <di:waypoint x="1670" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayLargeScale_TaskDesignate_di" bpmnElement="Flow_GatewayLargeScale_TaskDesignate">
+        <di:waypoint x="1720" y="210" />
+        <di:waypoint x="1890" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayLargeScale_EndNoDesignation_di" bpmnElement="Flow_GatewayLargeScale_EndNoDesignation">
+        <di:waypoint x="1695" y="235" />
+        <di:waypoint x="1695" y="320" />
+        <di:waypoint x="1808" y="320" />
+        <di:waypoint x="1808" y="228" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_PrepareDesignation_GatewayShared_di" bpmnElement="Flow_PrepareDesignation_GatewayShared">
+        <di:waypoint x="2080" y="210" />
+        <di:waypoint x="2130" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayShared_TaskSharedArrangement_di" bpmnElement="Flow_GatewayShared_TaskSharedArrangement">
+        <di:waypoint x="2155" y="185" />
+        <di:waypoint x="2155" y="120" />
+        <di:waypoint x="2230" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayShared_TaskSelectDPO_di" bpmnElement="Flow_GatewayShared_TaskSelectDPO">
+        <di:waypoint x="2180" y="210" />
+        <di:waypoint x="2230" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SharedArrangement_TaskSelectDPO_di" bpmnElement="Flow_SharedArrangement_TaskSelectDPO">
+        <di:waypoint x="2480" y="120" />
+        <di:waypoint x="2480" y="210" />
+        <di:waypoint x="2230" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SelectDPO_TaskAppointDPO_di" bpmnElement="Flow_SelectDPO_TaskAppointDPO">
+        <di:waypoint x="2510" y="210" />
+        <di:waypoint x="2570" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AppointDPO_TaskPublishContactDetails_di" bpmnElement="Flow_AppointDPO_TaskPublishContactDetails">
+        <di:waypoint x="2820" y="210" />
+        <di:waypoint x="2880" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_PublishContactDetails_TaskCommunicateAuthority_di" bpmnElement="Flow_PublishContactDetails_TaskCommunicateAuthority">
+        <di:waypoint x="3090" y="210" />
+        <di:waypoint x="3140" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_CommunicateAuthority_EndCompleted_di" bpmnElement="Flow_CommunicateAuthority_EndCompleted">
+        <di:waypoint x="3400" y="210" />
+        <di:waypoint x="3440" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_CommunicateDPOContactDetails_di" bpmnElement="MessageFlow_CommunicateDPOContactDetails">
+        <di:waypoint x="3270" y="250" />
+        <di:waypoint x="3270" y="500" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

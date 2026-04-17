@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  id="Definitions_Art38_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art38_Reviewed">
+    <bpmn:participant id="Participant_ControllerProcessor_Art38"
+                      name="Controller or Processor"
+                      processRef="Process_ControllerProcessor_Art38" />
+    <bpmn:participant id="Participant_DPO_Art38"
+                      name="Data Protection Officer"
+                      processRef="Process_DPO_Art38" />
+    <bpmn:participant id="Participant_DataSubject_Art38"
+                      name="Data Subject" />
+
+    <bpmn:messageFlow id="MessageFlow_InvolveDPO"
+                      sourceRef="Task_InvolveDPO"
+                      targetRef="Task_ReceiveInvolvementRequest" />
+    <bpmn:messageFlow id="MessageFlow_DataSubjectToDPO"
+                      sourceRef="Participant_DataSubject_Art38"
+                      targetRef="Task_ReceiveDataSubjectMatter" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_ControllerProcessor_Art38"
+                name="Positioning and supporting the DPO"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 38 based on DAPRECO LegalRuleML statements205-210.
+      The model covers timely involvement of the DPO, support for the DPO's compliance tasks,
+      protection from instructions and task-related sanctions, direct reporting, data subject access,
+      confidentiality, and conflict-of-interest checks for additional duties.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_DPODesignated_Art38"
+                     name="DPO designated for the processing context">
+      <bpmn:outgoing>Flow_Start_To_IdentifyIssue</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_IdentifyIssue"
+               name="Identify an issue related to the protection of personal data">
+      <bpmn:incoming>Flow_Start_To_IdentifyIssue</bpmn:incoming>
+      <bpmn:outgoing>Flow_IdentifyIssue_To_InvolveDPO</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="Task_InvolveDPO"
+                   name="Involve the DPO without delay">
+      <bpmn:incoming>Flow_IdentifyIssue_To_InvolveDPO</bpmn:incoming>
+      <bpmn:outgoing>Flow_InvolveDPO_To_ProvideSupport</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:task id="Task_ProvideSupport"
+               name="Provide resources, access, and assistance for the DPO tasks">
+      <bpmn:incoming>Flow_InvolveDPO_To_ProvideSupport</bpmn:incoming>
+      <bpmn:outgoing>Flow_ProvideSupport_To_GatewayInstruction</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_Instruction"
+                           name="Is an instruction on DPO task performance being considered?">
+      <bpmn:incoming>Flow_ProvideSupport_To_GatewayInstruction</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayInstruction_To_WithdrawInstruction</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayInstruction_To_GatewaySanction</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_WithdrawInstruction"
+               name="Withdraw the instruction and preserve DPO independence">
+      <bpmn:incoming>Flow_GatewayInstruction_To_WithdrawInstruction</bpmn:incoming>
+      <bpmn:outgoing>Flow_WithdrawInstruction_To_GatewaySanction</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_Sanction"
+                           name="Is dismissal or a penalty being considered because of DPO tasks?">
+      <bpmn:incoming>Flow_GatewayInstruction_To_GatewaySanction</bpmn:incoming>
+      <bpmn:incoming>Flow_WithdrawInstruction_To_GatewaySanction</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySanction_To_StopSanction</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySanction_To_EnsureReporting</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_StopSanction"
+               name="Stop the dismissal or penalty measure">
+      <bpmn:incoming>Flow_GatewaySanction_To_StopSanction</bpmn:incoming>
+      <bpmn:outgoing>Flow_StopSanction_To_EnsureReporting</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_EnsureReporting"
+               name="Ensure direct reporting to the highest management level">
+      <bpmn:incoming>Flow_GatewaySanction_To_EnsureReporting</bpmn:incoming>
+      <bpmn:incoming>Flow_StopSanction_To_EnsureReporting</bpmn:incoming>
+      <bpmn:outgoing>Flow_EnsureReporting_To_EnableContact</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_EnableContact"
+               name="Maintain a direct contact channel for data subjects to reach the DPO">
+      <bpmn:incoming>Flow_EnsureReporting_To_EnableContact</bpmn:incoming>
+      <bpmn:outgoing>Flow_EnableContact_To_GatewayOtherDuties</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_OtherDuties"
+                           name="Does the DPO perform other tasks or duties?">
+      <bpmn:incoming>Flow_EnableContact_To_GatewayOtherDuties</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayOtherDuties_To_AssessConflict</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayOtherDuties_To_EndCompleted</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_AssessConflict"
+               name="Assess whether the other tasks create a conflict of interests">
+      <bpmn:incoming>Flow_GatewayOtherDuties_To_AssessConflict</bpmn:incoming>
+      <bpmn:outgoing>Flow_AssessConflict_To_GatewayConflict</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_Conflict"
+                           name="Do the other tasks create a conflict of interests?">
+      <bpmn:incoming>Flow_AssessConflict_To_GatewayConflict</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayConflict_To_RemoveConflict</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayConflict_To_EndCompleted</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_RemoveConflict"
+               name="Remove or reassign the conflicting tasks">
+      <bpmn:incoming>Flow_GatewayConflict_To_RemoveConflict</bpmn:incoming>
+      <bpmn:outgoing>Flow_RemoveConflict_To_EndCompleted</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_ControllerCompleted_Art38"
+                   name="DPO position safeguards maintained">
+      <bpmn:incoming>Flow_GatewayOtherDuties_To_EndCompleted</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayConflict_To_EndCompleted</bpmn:incoming>
+      <bpmn:incoming>Flow_RemoveConflict_To_EndCompleted</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_IdentifyIssue"
+                       sourceRef="StartEvent_DPODesignated_Art38"
+                       targetRef="Task_IdentifyIssue" />
+    <bpmn:sequenceFlow id="Flow_IdentifyIssue_To_InvolveDPO"
+                       sourceRef="Task_IdentifyIssue"
+                       targetRef="Task_InvolveDPO" />
+    <bpmn:sequenceFlow id="Flow_InvolveDPO_To_ProvideSupport"
+                       sourceRef="Task_InvolveDPO"
+                       targetRef="Task_ProvideSupport" />
+    <bpmn:sequenceFlow id="Flow_ProvideSupport_To_GatewayInstruction"
+                       sourceRef="Task_ProvideSupport"
+                       targetRef="Gateway_Instruction" />
+    <bpmn:sequenceFlow id="Flow_GatewayInstruction_To_WithdrawInstruction"
+                       name="Yes"
+                       sourceRef="Gateway_Instruction"
+                       targetRef="Task_WithdrawInstruction" />
+    <bpmn:sequenceFlow id="Flow_GatewayInstruction_To_GatewaySanction"
+                       name="No"
+                       sourceRef="Gateway_Instruction"
+                       targetRef="Gateway_Sanction" />
+    <bpmn:sequenceFlow id="Flow_WithdrawInstruction_To_GatewaySanction"
+                       sourceRef="Task_WithdrawInstruction"
+                       targetRef="Gateway_Sanction" />
+    <bpmn:sequenceFlow id="Flow_GatewaySanction_To_StopSanction"
+                       name="Yes"
+                       sourceRef="Gateway_Sanction"
+                       targetRef="Task_StopSanction" />
+    <bpmn:sequenceFlow id="Flow_GatewaySanction_To_EnsureReporting"
+                       name="No"
+                       sourceRef="Gateway_Sanction"
+                       targetRef="Task_EnsureReporting" />
+    <bpmn:sequenceFlow id="Flow_StopSanction_To_EnsureReporting"
+                       sourceRef="Task_StopSanction"
+                       targetRef="Task_EnsureReporting" />
+    <bpmn:sequenceFlow id="Flow_EnsureReporting_To_EnableContact"
+                       sourceRef="Task_EnsureReporting"
+                       targetRef="Task_EnableContact" />
+    <bpmn:sequenceFlow id="Flow_EnableContact_To_GatewayOtherDuties"
+                       sourceRef="Task_EnableContact"
+                       targetRef="Gateway_OtherDuties" />
+    <bpmn:sequenceFlow id="Flow_GatewayOtherDuties_To_AssessConflict"
+                       name="Yes"
+                       sourceRef="Gateway_OtherDuties"
+                       targetRef="Task_AssessConflict" />
+    <bpmn:sequenceFlow id="Flow_GatewayOtherDuties_To_EndCompleted"
+                       name="No"
+                       sourceRef="Gateway_OtherDuties"
+                       targetRef="EndEvent_ControllerCompleted_Art38" />
+    <bpmn:sequenceFlow id="Flow_AssessConflict_To_GatewayConflict"
+                       sourceRef="Task_AssessConflict"
+                       targetRef="Gateway_Conflict" />
+    <bpmn:sequenceFlow id="Flow_GatewayConflict_To_RemoveConflict"
+                       name="Yes"
+                       sourceRef="Gateway_Conflict"
+                       targetRef="Task_RemoveConflict" />
+    <bpmn:sequenceFlow id="Flow_GatewayConflict_To_EndCompleted"
+                       name="No"
+                       sourceRef="Gateway_Conflict"
+                       targetRef="EndEvent_ControllerCompleted_Art38" />
+    <bpmn:sequenceFlow id="Flow_RemoveConflict_To_EndCompleted"
+                       sourceRef="Task_RemoveConflict"
+                       targetRef="EndEvent_ControllerCompleted_Art38" />
+  </bpmn:process>
+
+  <bpmn:process id="Process_DPO_Art38"
+                name="DPO assistance and contact handling"
+                isExecutable="false">
+    <bpmn:startEvent id="StartEvent_DPOIssuePath_Art38"
+                     name="DPO involvement path available">
+      <bpmn:outgoing>Flow_DPOIssueStart_To_ReceiveInvolvementRequest</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:receiveTask id="Task_ReceiveInvolvementRequest"
+                      name="Receive involvement in a personal-data-protection issue">
+      <bpmn:incoming>Flow_DPOIssueStart_To_ReceiveInvolvementRequest</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveInvolvementRequest_To_AssistIssue</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:task id="Task_AssistIssue"
+               name="Assist on the personal-data-protection issue">
+      <bpmn:incoming>Flow_ReceiveInvolvementRequest_To_AssistIssue</bpmn:incoming>
+      <bpmn:outgoing>Flow_AssistIssue_To_ObserveConfidentialityIssue</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ObserveConfidentialityIssue"
+               name="Observe secrecy or confidentiality while assisting on the issue">
+      <bpmn:incoming>Flow_AssistIssue_To_ObserveConfidentialityIssue</bpmn:incoming>
+      <bpmn:outgoing>Flow_ObserveConfidentialityIssue_To_EndIssuePath</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_DPOIssuePath_Art38"
+                   name="Issue support provided">
+      <bpmn:incoming>Flow_ObserveConfidentialityIssue_To_EndIssuePath</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:startEvent id="StartEvent_DataSubjectPath_Art38"
+                     name="Data subject contact path available">
+      <bpmn:outgoing>Flow_DataSubjectStart_To_ReceiveDataSubjectMatter</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:receiveTask id="Task_ReceiveDataSubjectMatter"
+                      name="Receive a data subject matter about processing or rights">
+      <bpmn:incoming>Flow_DataSubjectStart_To_ReceiveDataSubjectMatter</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveDataSubjectMatter_To_AssistDataSubject</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:task id="Task_AssistDataSubject"
+               name="Assist on the processing or rights matter">
+      <bpmn:incoming>Flow_ReceiveDataSubjectMatter_To_AssistDataSubject</bpmn:incoming>
+      <bpmn:outgoing>Flow_AssistDataSubject_To_ObserveConfidentialityRights</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ObserveConfidentialityRights"
+               name="Observe secrecy or confidentiality while handling the rights matter">
+      <bpmn:incoming>Flow_AssistDataSubject_To_ObserveConfidentialityRights</bpmn:incoming>
+      <bpmn:outgoing>Flow_ObserveConfidentialityRights_To_EndDataSubjectPath</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_DPODataSubjectPath_Art38"
+                   name="Data subject matter handled">
+      <bpmn:incoming>Flow_ObserveConfidentialityRights_To_EndDataSubjectPath</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_DPOIssueStart_To_ReceiveInvolvementRequest"
+                       sourceRef="StartEvent_DPOIssuePath_Art38"
+                       targetRef="Task_ReceiveInvolvementRequest" />
+    <bpmn:sequenceFlow id="Flow_ReceiveInvolvementRequest_To_AssistIssue"
+                       sourceRef="Task_ReceiveInvolvementRequest"
+                       targetRef="Task_AssistIssue" />
+    <bpmn:sequenceFlow id="Flow_AssistIssue_To_ObserveConfidentialityIssue"
+                       sourceRef="Task_AssistIssue"
+                       targetRef="Task_ObserveConfidentialityIssue" />
+    <bpmn:sequenceFlow id="Flow_ObserveConfidentialityIssue_To_EndIssuePath"
+                       sourceRef="Task_ObserveConfidentialityIssue"
+                       targetRef="EndEvent_DPOIssuePath_Art38" />
+    <bpmn:sequenceFlow id="Flow_DataSubjectStart_To_ReceiveDataSubjectMatter"
+                       sourceRef="StartEvent_DataSubjectPath_Art38"
+                       targetRef="Task_ReceiveDataSubjectMatter" />
+    <bpmn:sequenceFlow id="Flow_ReceiveDataSubjectMatter_To_AssistDataSubject"
+                       sourceRef="Task_ReceiveDataSubjectMatter"
+                       targetRef="Task_AssistDataSubject" />
+    <bpmn:sequenceFlow id="Flow_AssistDataSubject_To_ObserveConfidentialityRights"
+                       sourceRef="Task_AssistDataSubject"
+                       targetRef="Task_ObserveConfidentialityRights" />
+    <bpmn:sequenceFlow id="Flow_ObserveConfidentialityRights_To_EndDataSubjectPath"
+                       sourceRef="Task_ObserveConfidentialityRights"
+                       targetRef="EndEvent_DPODataSubjectPath_Art38" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art38_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art38_Reviewed"
+                      bpmnElement="Collaboration_Art38_Reviewed">
+      <bpmndi:BPMNShape id="Participant_ControllerProcessor_Art38_di"
+                        bpmnElement="Participant_ControllerProcessor_Art38"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="4020" height="320" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_DPO_Art38_di"
+                        bpmnElement="Participant_DPO_Art38"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="400" width="4020" height="300" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_DataSubject_Art38_di"
+                        bpmnElement="Participant_DataSubject_Art38"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="740" width="4020" height="120" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_DPODesignated_Art38_di"
+                        bpmnElement="StartEvent_DPODesignated_Art38">
+        <dc:Bounds x="130" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_IdentifyIssue_di"
+                        bpmnElement="Task_IdentifyIssue">
+        <dc:Bounds x="220" y="160" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_InvolveDPO_di"
+                        bpmnElement="Task_InvolveDPO">
+        <dc:Bounds x="500" y="160" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ProvideSupport_di"
+                        bpmnElement="Task_ProvideSupport">
+        <dc:Bounds x="760" y="160" width="240" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Instruction_di"
+                        bpmnElement="Gateway_Instruction"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1060" y="175" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_WithdrawInstruction_di"
+                        bpmnElement="Task_WithdrawInstruction">
+        <dc:Bounds x="1180" y="60" width="230" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Sanction_di"
+                        bpmnElement="Gateway_Sanction"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1180" y="175" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_StopSanction_di"
+                        bpmnElement="Task_StopSanction">
+        <dc:Bounds x="1310" y="60" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_EnsureReporting_di"
+                        bpmnElement="Task_EnsureReporting">
+        <dc:Bounds x="1310" y="160" width="250" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_EnableContact_di"
+                        bpmnElement="Task_EnableContact">
+        <dc:Bounds x="1640" y="160" width="260" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_OtherDuties_di"
+                        bpmnElement="Gateway_OtherDuties"
+                        isMarkerVisible="true">
+        <dc:Bounds x="2010" y="175" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessConflict_di"
+                        bpmnElement="Task_AssessConflict">
+        <dc:Bounds x="2130" y="60" width="240" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Conflict_di"
+                        bpmnElement="Gateway_Conflict"
+                        isMarkerVisible="true">
+        <dc:Bounds x="2430" y="75" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RemoveConflict_di"
+                        bpmnElement="Task_RemoveConflict">
+        <dc:Bounds x="2550" y="60" width="230" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ControllerCompleted_Art38_di"
+                        bpmnElement="EndEvent_ControllerCompleted_Art38">
+        <dc:Bounds x="2930" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_DPOIssuePath_Art38_di"
+                        bpmnElement="StartEvent_DPOIssuePath_Art38">
+        <dc:Bounds x="180" y="482" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReceiveInvolvementRequest_di"
+                        bpmnElement="Task_ReceiveInvolvementRequest">
+        <dc:Bounds x="270" y="460" width="260" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssistIssue_di"
+                        bpmnElement="Task_AssistIssue">
+        <dc:Bounds x="610" y="460" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ObserveConfidentialityIssue_di"
+                        bpmnElement="Task_ObserveConfidentialityIssue">
+        <dc:Bounds x="900" y="460" width="300" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_DPOIssuePath_Art38_di"
+                        bpmnElement="EndEvent_DPOIssuePath_Art38">
+        <dc:Bounds x="1270" y="482" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_DataSubjectPath_Art38_di"
+                        bpmnElement="StartEvent_DataSubjectPath_Art38">
+        <dc:Bounds x="180" y="602" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReceiveDataSubjectMatter_di"
+                        bpmnElement="Task_ReceiveDataSubjectMatter">
+        <dc:Bounds x="270" y="580" width="270" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssistDataSubject_di"
+                        bpmnElement="Task_AssistDataSubject">
+        <dc:Bounds x="620" y="580" width="230" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ObserveConfidentialityRights_di"
+                        bpmnElement="Task_ObserveConfidentialityRights">
+        <dc:Bounds x="940" y="580" width="300" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_DPODataSubjectPath_Art38_di"
+                        bpmnElement="EndEvent_DPODataSubjectPath_Art38">
+        <dc:Bounds x="1310" y="602" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_IdentifyIssue_di" bpmnElement="Flow_Start_To_IdentifyIssue">
+        <di:waypoint x="166" y="200" />
+        <di:waypoint x="220" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_IdentifyIssue_To_InvolveDPO_di" bpmnElement="Flow_IdentifyIssue_To_InvolveDPO">
+        <di:waypoint x="430" y="200" />
+        <di:waypoint x="500" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_InvolveDPO_To_ProvideSupport_di" bpmnElement="Flow_InvolveDPO_To_ProvideSupport">
+        <di:waypoint x="690" y="200" />
+        <di:waypoint x="760" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ProvideSupport_To_GatewayInstruction_di" bpmnElement="Flow_ProvideSupport_To_GatewayInstruction">
+        <di:waypoint x="1000" y="200" />
+        <di:waypoint x="1060" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayInstruction_To_WithdrawInstruction_di" bpmnElement="Flow_GatewayInstruction_To_WithdrawInstruction">
+        <di:waypoint x="1085" y="175" />
+        <di:waypoint x="1085" y="100" />
+        <di:waypoint x="1180" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayInstruction_To_GatewaySanction_di" bpmnElement="Flow_GatewayInstruction_To_GatewaySanction">
+        <di:waypoint x="1110" y="200" />
+        <di:waypoint x="1180" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_WithdrawInstruction_To_GatewaySanction_di" bpmnElement="Flow_WithdrawInstruction_To_GatewaySanction">
+        <di:waypoint x="1295" y="140" />
+        <di:waypoint x="1295" y="200" />
+        <di:waypoint x="1230" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySanction_To_StopSanction_di" bpmnElement="Flow_GatewaySanction_To_StopSanction">
+        <di:waypoint x="1205" y="175" />
+        <di:waypoint x="1205" y="100" />
+        <di:waypoint x="1310" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySanction_To_EnsureReporting_di" bpmnElement="Flow_GatewaySanction_To_EnsureReporting">
+        <di:waypoint x="1230" y="200" />
+        <di:waypoint x="1310" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_StopSanction_To_EnsureReporting_di" bpmnElement="Flow_StopSanction_To_EnsureReporting">
+        <di:waypoint x="1420" y="140" />
+        <di:waypoint x="1420" y="160" />
+        <di:waypoint x="1435" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_EnsureReporting_To_EnableContact_di" bpmnElement="Flow_EnsureReporting_To_EnableContact">
+        <di:waypoint x="1560" y="200" />
+        <di:waypoint x="1640" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_EnableContact_To_GatewayOtherDuties_di" bpmnElement="Flow_EnableContact_To_GatewayOtherDuties">
+        <di:waypoint x="1900" y="200" />
+        <di:waypoint x="2010" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayOtherDuties_To_AssessConflict_di" bpmnElement="Flow_GatewayOtherDuties_To_AssessConflict">
+        <di:waypoint x="2035" y="175" />
+        <di:waypoint x="2035" y="100" />
+        <di:waypoint x="2130" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayOtherDuties_To_EndCompleted_di" bpmnElement="Flow_GatewayOtherDuties_To_EndCompleted">
+        <di:waypoint x="2060" y="200" />
+        <di:waypoint x="2948" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AssessConflict_To_GatewayConflict_di" bpmnElement="Flow_AssessConflict_To_GatewayConflict">
+        <di:waypoint x="2370" y="100" />
+        <di:waypoint x="2430" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayConflict_To_RemoveConflict_di" bpmnElement="Flow_GatewayConflict_To_RemoveConflict">
+        <di:waypoint x="2480" y="100" />
+        <di:waypoint x="2550" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayConflict_To_EndCompleted_di" bpmnElement="Flow_GatewayConflict_To_EndCompleted">
+        <di:waypoint x="2455" y="125" />
+        <di:waypoint x="2455" y="200" />
+        <di:waypoint x="2948" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_RemoveConflict_To_EndCompleted_di" bpmnElement="Flow_RemoveConflict_To_EndCompleted">
+        <di:waypoint x="2780" y="100" />
+        <di:waypoint x="2948" y="100" />
+        <di:waypoint x="2948" y="182" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_DPOIssueStart_To_ReceiveInvolvementRequest_di" bpmnElement="Flow_DPOIssueStart_To_ReceiveInvolvementRequest">
+        <di:waypoint x="216" y="500" />
+        <di:waypoint x="270" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveInvolvementRequest_To_AssistIssue_di" bpmnElement="Flow_ReceiveInvolvementRequest_To_AssistIssue">
+        <di:waypoint x="530" y="500" />
+        <di:waypoint x="610" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AssistIssue_To_ObserveConfidentialityIssue_di" bpmnElement="Flow_AssistIssue_To_ObserveConfidentialityIssue">
+        <di:waypoint x="830" y="500" />
+        <di:waypoint x="900" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ObserveConfidentialityIssue_To_EndIssuePath_di" bpmnElement="Flow_ObserveConfidentialityIssue_To_EndIssuePath">
+        <di:waypoint x="1200" y="500" />
+        <di:waypoint x="1270" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_DataSubjectStart_To_ReceiveDataSubjectMatter_di" bpmnElement="Flow_DataSubjectStart_To_ReceiveDataSubjectMatter">
+        <di:waypoint x="216" y="620" />
+        <di:waypoint x="270" y="620" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveDataSubjectMatter_To_AssistDataSubject_di" bpmnElement="Flow_ReceiveDataSubjectMatter_To_AssistDataSubject">
+        <di:waypoint x="540" y="620" />
+        <di:waypoint x="620" y="620" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AssistDataSubject_To_ObserveConfidentialityRights_di" bpmnElement="Flow_AssistDataSubject_To_ObserveConfidentialityRights">
+        <di:waypoint x="850" y="620" />
+        <di:waypoint x="940" y="620" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ObserveConfidentialityRights_To_EndDataSubjectPath_di" bpmnElement="Flow_ObserveConfidentialityRights_To_EndDataSubjectPath">
+        <di:waypoint x="1240" y="620" />
+        <di:waypoint x="1310" y="620" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_InvolveDPO_di" bpmnElement="MessageFlow_InvolveDPO">
+        <di:waypoint x="595" y="240" />
+        <di:waypoint x="595" y="460" />
+        <di:waypoint x="400" y="460" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_DataSubjectToDPO_di" bpmnElement="MessageFlow_DataSubjectToDPO">
+        <di:waypoint x="405" y="740" />
+        <di:waypoint x="405" y="660" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

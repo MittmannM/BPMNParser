@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  id="Definitions_Art34_Manual"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art34_Manual">
+    <bpmn:participant id="Participant_Controller" name="Controller" processRef="Process_Controller_Art34" />
+    <bpmn:participant id="Participant_DataSubject" name="Data Subject" />
+    <bpmn:participant id="Participant_Public" name="Public" />
+
+    <bpmn:messageFlow id="MessageFlow_ControllerToDataSubject"
+                      sourceRef="Task_NotifyDataSubject"
+                      targetRef="Participant_DataSubject" />
+    <bpmn:messageFlow id="MessageFlow_ControllerToPublic"
+                      sourceRef="Task_PublicCommunication"
+                      targetRef="Participant_Public" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_Controller_Art34"
+                name="Controller communication to data subjects after a breach"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 34 based on DAPRECO LegalRuleML statements175-179.
+      statements175 models the obligation to communicate a breach to the data subject without undue delay
+      when the breach is likely to result in a high risk and no Art. 34(3) exception applies.
+      statements176 models the required communication content.
+      statements177-179 model the Art. 34(3) exceptions and the substitute public communication.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_Art34AssessmentStarted"
+                     name="Controller starts Article 34 assessment">
+      <bpmn:outgoing>Flow_Start_To_AssessHighRisk</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_AssessHighRisk"
+               name="Assess whether the breach is likely to result in high risk">
+      <bpmn:incoming>Flow_Start_To_AssessHighRisk</bpmn:incoming>
+      <bpmn:outgoing>Flow_AssessHighRisk_To_GatewayHighRisk</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_HighRiskLikely"
+                           name="High risk to rights and freedoms likely?">
+      <bpmn:incoming>Flow_AssessHighRisk_To_GatewayHighRisk</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayHighRisk_To_EndNoCommunication</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayHighRisk_To_CheckProtectionMeasures</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_CheckProtectionMeasures"
+               name="Assess whether protection measures already nullify the breach risk">
+      <bpmn:incoming>Flow_GatewayHighRisk_To_CheckProtectionMeasures</bpmn:incoming>
+      <bpmn:outgoing>Flow_CheckProtectionMeasures_To_GatewayRiskNullified</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_RiskNullified"
+                           name="Protection measures nullify the breach risk?">
+      <bpmn:incoming>Flow_CheckProtectionMeasures_To_GatewayRiskNullified</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayRiskNullified_To_EndNoCommunication</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayRiskNullified_To_CheckSubsequentMeasures</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_CheckSubsequentMeasures"
+               name="Assess whether subsequent measures removed the likely high risk">
+      <bpmn:incoming>Flow_GatewayRiskNullified_To_CheckSubsequentMeasures</bpmn:incoming>
+      <bpmn:outgoing>Flow_CheckSubsequentMeasures_To_GatewayHighRiskRemoved</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_HighRiskRemoved"
+                           name="Subsequent measures removed the likely high risk?">
+      <bpmn:incoming>Flow_CheckSubsequentMeasures_To_GatewayHighRiskRemoved</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayHighRiskRemoved_To_EndNoCommunication</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayHighRiskRemoved_To_CheckDisproportionateEffort</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_CheckDisproportionateEffort"
+               name="Assess whether individual communication requires disproportionate effort">
+      <bpmn:incoming>Flow_GatewayHighRiskRemoved_To_CheckDisproportionateEffort</bpmn:incoming>
+      <bpmn:outgoing>Flow_CheckDisproportionateEffort_To_GatewayDisproportionateEffort</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_DisproportionateEffort"
+                           name="Individual communication requires disproportionate effort?">
+      <bpmn:incoming>Flow_CheckDisproportionateEffort_To_GatewayDisproportionateEffort</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayDisproportionateEffort_To_TaskPublicCommunication</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayDisproportionateEffort_To_GatewayCompileSplit</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:parallelGateway id="Gateway_CompileSplit">
+      <bpmn:incoming>Flow_GatewayDisproportionateEffort_To_GatewayCompileSplit</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayCompileSplit_To_ProvideContact</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayCompileSplit_To_DescribeConsequences</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayCompileSplit_To_DescribeMeasures</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_ProvideContact"
+               name="Provide DPO or other contact point details">
+      <bpmn:incoming>Flow_GatewayCompileSplit_To_ProvideContact</bpmn:incoming>
+      <bpmn:outgoing>Flow_ProvideContact_To_GatewayCompileJoin</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_DescribeConsequences"
+               name="Describe the likely consequences of the breach">
+      <bpmn:incoming>Flow_GatewayCompileSplit_To_DescribeConsequences</bpmn:incoming>
+      <bpmn:outgoing>Flow_DescribeConsequences_To_GatewayCompileJoin</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_DescribeMeasures"
+               name="Describe taken or proposed measures, including mitigation">
+      <bpmn:incoming>Flow_GatewayCompileSplit_To_DescribeMeasures</bpmn:incoming>
+      <bpmn:outgoing>Flow_DescribeMeasures_To_GatewayCompileJoin</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_CompileJoin">
+      <bpmn:incoming>Flow_ProvideContact_To_GatewayCompileJoin</bpmn:incoming>
+      <bpmn:incoming>Flow_DescribeConsequences_To_GatewayCompileJoin</bpmn:incoming>
+      <bpmn:incoming>Flow_DescribeMeasures_To_GatewayCompileJoin</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayCompileJoin_To_NotifyDataSubject</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:sendTask id="Task_NotifyDataSubject"
+                   name="Communicate the breach information to the data subject without undue delay">
+      <bpmn:documentation>
+        Art. 34(1) combined with Art. 34(2): direct communication is required when high risk exists
+        and no Art. 34(3) exception applies.
+      </bpmn:documentation>
+      <bpmn:incoming>Flow_GatewayCompileJoin_To_NotifyDataSubject</bpmn:incoming>
+      <bpmn:outgoing>Flow_NotifyDataSubject_To_EndCommunicationCompleted</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:sendTask id="Task_PublicCommunication"
+                   name="Issue an equivalent public communication">
+      <bpmn:documentation>
+        Art. 34(3)(c): when individual communication requires disproportionate effort,
+        the controller uses public communication or a similar measure that effectively informs data subjects.
+      </bpmn:documentation>
+      <bpmn:incoming>Flow_GatewayDisproportionateEffort_To_TaskPublicCommunication</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPublicCommunication_To_EndPublicCommunicationCompleted</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_NoCommunicationRequired"
+                   name="No direct data subject communication required">
+      <bpmn:incoming>Flow_GatewayHighRisk_To_EndNoCommunication</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayRiskNullified_To_EndNoCommunication</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayHighRiskRemoved_To_EndNoCommunication</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_CommunicationCompleted"
+                   name="Direct communication completed">
+      <bpmn:incoming>Flow_NotifyDataSubject_To_EndCommunicationCompleted</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_PublicCommunicationCompleted"
+                   name="Public communication completed">
+      <bpmn:incoming>Flow_TaskPublicCommunication_To_EndPublicCommunicationCompleted</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_AssessHighRisk"
+                       sourceRef="StartEvent_Art34AssessmentStarted"
+                       targetRef="Task_AssessHighRisk" />
+    <bpmn:sequenceFlow id="Flow_AssessHighRisk_To_GatewayHighRisk"
+                       sourceRef="Task_AssessHighRisk"
+                       targetRef="Gateway_HighRiskLikely" />
+    <bpmn:sequenceFlow id="Flow_GatewayHighRisk_To_EndNoCommunication"
+                       name="No"
+                       sourceRef="Gateway_HighRiskLikely"
+                       targetRef="EndEvent_NoCommunicationRequired" />
+    <bpmn:sequenceFlow id="Flow_GatewayHighRisk_To_CheckProtectionMeasures"
+                       name="Yes"
+                       sourceRef="Gateway_HighRiskLikely"
+                       targetRef="Task_CheckProtectionMeasures" />
+    <bpmn:sequenceFlow id="Flow_CheckProtectionMeasures_To_GatewayRiskNullified"
+                       sourceRef="Task_CheckProtectionMeasures"
+                       targetRef="Gateway_RiskNullified" />
+    <bpmn:sequenceFlow id="Flow_GatewayRiskNullified_To_EndNoCommunication"
+                       name="Yes"
+                       sourceRef="Gateway_RiskNullified"
+                       targetRef="EndEvent_NoCommunicationRequired" />
+    <bpmn:sequenceFlow id="Flow_GatewayRiskNullified_To_CheckSubsequentMeasures"
+                       name="No"
+                       sourceRef="Gateway_RiskNullified"
+                       targetRef="Task_CheckSubsequentMeasures" />
+    <bpmn:sequenceFlow id="Flow_CheckSubsequentMeasures_To_GatewayHighRiskRemoved"
+                       sourceRef="Task_CheckSubsequentMeasures"
+                       targetRef="Gateway_HighRiskRemoved" />
+    <bpmn:sequenceFlow id="Flow_GatewayHighRiskRemoved_To_EndNoCommunication"
+                       name="Yes"
+                       sourceRef="Gateway_HighRiskRemoved"
+                       targetRef="EndEvent_NoCommunicationRequired" />
+    <bpmn:sequenceFlow id="Flow_GatewayHighRiskRemoved_To_CheckDisproportionateEffort"
+                       name="No"
+                       sourceRef="Gateway_HighRiskRemoved"
+                       targetRef="Task_CheckDisproportionateEffort" />
+    <bpmn:sequenceFlow id="Flow_CheckDisproportionateEffort_To_GatewayDisproportionateEffort"
+                       sourceRef="Task_CheckDisproportionateEffort"
+                       targetRef="Gateway_DisproportionateEffort" />
+    <bpmn:sequenceFlow id="Flow_GatewayDisproportionateEffort_To_TaskPublicCommunication"
+                       name="Yes"
+                       sourceRef="Gateway_DisproportionateEffort"
+                       targetRef="Task_PublicCommunication" />
+    <bpmn:sequenceFlow id="Flow_GatewayDisproportionateEffort_To_GatewayCompileSplit"
+                       name="No"
+                       sourceRef="Gateway_DisproportionateEffort"
+                       targetRef="Gateway_CompileSplit" />
+    <bpmn:sequenceFlow id="Flow_GatewayCompileSplit_To_ProvideContact"
+                       sourceRef="Gateway_CompileSplit"
+                       targetRef="Task_ProvideContact" />
+    <bpmn:sequenceFlow id="Flow_GatewayCompileSplit_To_DescribeConsequences"
+                       sourceRef="Gateway_CompileSplit"
+                       targetRef="Task_DescribeConsequences" />
+    <bpmn:sequenceFlow id="Flow_GatewayCompileSplit_To_DescribeMeasures"
+                       sourceRef="Gateway_CompileSplit"
+                       targetRef="Task_DescribeMeasures" />
+    <bpmn:sequenceFlow id="Flow_ProvideContact_To_GatewayCompileJoin"
+                       sourceRef="Task_ProvideContact"
+                       targetRef="Gateway_CompileJoin" />
+    <bpmn:sequenceFlow id="Flow_DescribeConsequences_To_GatewayCompileJoin"
+                       sourceRef="Task_DescribeConsequences"
+                       targetRef="Gateway_CompileJoin" />
+    <bpmn:sequenceFlow id="Flow_DescribeMeasures_To_GatewayCompileJoin"
+                       sourceRef="Task_DescribeMeasures"
+                       targetRef="Gateway_CompileJoin" />
+    <bpmn:sequenceFlow id="Flow_GatewayCompileJoin_To_NotifyDataSubject"
+                       sourceRef="Gateway_CompileJoin"
+                       targetRef="Task_NotifyDataSubject" />
+    <bpmn:sequenceFlow id="Flow_NotifyDataSubject_To_EndCommunicationCompleted"
+                       sourceRef="Task_NotifyDataSubject"
+                       targetRef="EndEvent_CommunicationCompleted" />
+    <bpmn:sequenceFlow id="Flow_TaskPublicCommunication_To_EndPublicCommunicationCompleted"
+                       sourceRef="Task_PublicCommunication"
+                       targetRef="EndEvent_PublicCommunicationCompleted" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art34_Manual">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art34_Manual"
+                      bpmnElement="Collaboration_Art34_Manual">
+      <bpmndi:BPMNShape id="Participant_Controller_di"
+                        bpmnElement="Participant_Controller"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="2140" height="420" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_DataSubject_di"
+                        bpmnElement="Participant_DataSubject"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="500" width="2140" height="140" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Public_di"
+                        bpmnElement="Participant_Public"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="680" width="2140" height="140" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_Art34AssessmentStarted_di"
+                        bpmnElement="StartEvent_Art34AssessmentStarted">
+        <dc:Bounds x="140" y="177" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessHighRisk_di"
+                        bpmnElement="Task_AssessHighRisk">
+        <dc:Bounds x="220" y="155" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_HighRiskLikely_di"
+                        bpmnElement="Gateway_HighRiskLikely"
+                        isMarkerVisible="true">
+        <dc:Bounds x="430" y="170" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CheckProtectionMeasures_di"
+                        bpmnElement="Task_CheckProtectionMeasures">
+        <dc:Bounds x="520" y="155" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_RiskNullified_di"
+                        bpmnElement="Gateway_RiskNullified"
+                        isMarkerVisible="true">
+        <dc:Bounds x="730" y="170" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CheckSubsequentMeasures_di"
+                        bpmnElement="Task_CheckSubsequentMeasures">
+        <dc:Bounds x="820" y="155" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_HighRiskRemoved_di"
+                        bpmnElement="Gateway_HighRiskRemoved"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1030" y="170" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CheckDisproportionateEffort_di"
+                        bpmnElement="Task_CheckDisproportionateEffort">
+        <dc:Bounds x="1120" y="155" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_DisproportionateEffort_di"
+                        bpmnElement="Gateway_DisproportionateEffort"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1350" y="170" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_CompileSplit_di"
+                        bpmnElement="Gateway_CompileSplit"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1450" y="170" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ProvideContact_di"
+                        bpmnElement="Task_ProvideContact">
+        <dc:Bounds x="1540" y="55" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DescribeConsequences_di"
+                        bpmnElement="Task_DescribeConsequences">
+        <dc:Bounds x="1540" y="155" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DescribeMeasures_di"
+                        bpmnElement="Task_DescribeMeasures">
+        <dc:Bounds x="1540" y="255" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_CompileJoin_di"
+                        bpmnElement="Gateway_CompileJoin"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1760" y="170" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_NotifyDataSubject_di"
+                        bpmnElement="Task_NotifyDataSubject">
+        <dc:Bounds x="1850" y="155" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PublicCommunication_di"
+                        bpmnElement="Task_PublicCommunication">
+        <dc:Bounds x="1450" y="310" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NoCommunicationRequired_di"
+                        bpmnElement="EndEvent_NoCommunicationRequired">
+        <dc:Bounds x="1180" y="352" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_CommunicationCompleted_di"
+                        bpmnElement="EndEvent_CommunicationCompleted">
+        <dc:Bounds x="2080" y="177" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_PublicCommunicationCompleted_di"
+                        bpmnElement="EndEvent_PublicCommunicationCompleted">
+        <dc:Bounds x="1690" y="332" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_AssessHighRisk_di"
+                       bpmnElement="Flow_Start_To_AssessHighRisk">
+        <di:waypoint x="176" y="195" />
+        <di:waypoint x="220" y="195" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AssessHighRisk_To_GatewayHighRisk_di"
+                       bpmnElement="Flow_AssessHighRisk_To_GatewayHighRisk">
+        <di:waypoint x="390" y="195" />
+        <di:waypoint x="430" y="195" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayHighRisk_To_EndNoCommunication_di"
+                       bpmnElement="Flow_GatewayHighRisk_To_EndNoCommunication">
+        <di:waypoint x="455" y="220" />
+        <di:waypoint x="455" y="370" />
+        <di:waypoint x="1180" y="370" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayHighRisk_To_CheckProtectionMeasures_di"
+                       bpmnElement="Flow_GatewayHighRisk_To_CheckProtectionMeasures">
+        <di:waypoint x="480" y="195" />
+        <di:waypoint x="520" y="195" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_CheckProtectionMeasures_To_GatewayRiskNullified_di"
+                       bpmnElement="Flow_CheckProtectionMeasures_To_GatewayRiskNullified">
+        <di:waypoint x="690" y="195" />
+        <di:waypoint x="730" y="195" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRiskNullified_To_EndNoCommunication_di"
+                       bpmnElement="Flow_GatewayRiskNullified_To_EndNoCommunication">
+        <di:waypoint x="755" y="220" />
+        <di:waypoint x="755" y="370" />
+        <di:waypoint x="1180" y="370" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRiskNullified_To_CheckSubsequentMeasures_di"
+                       bpmnElement="Flow_GatewayRiskNullified_To_CheckSubsequentMeasures">
+        <di:waypoint x="780" y="195" />
+        <di:waypoint x="820" y="195" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_CheckSubsequentMeasures_To_GatewayHighRiskRemoved_di"
+                       bpmnElement="Flow_CheckSubsequentMeasures_To_GatewayHighRiskRemoved">
+        <di:waypoint x="990" y="195" />
+        <di:waypoint x="1030" y="195" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayHighRiskRemoved_To_EndNoCommunication_di"
+                       bpmnElement="Flow_GatewayHighRiskRemoved_To_EndNoCommunication">
+        <di:waypoint x="1055" y="220" />
+        <di:waypoint x="1055" y="370" />
+        <di:waypoint x="1180" y="370" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayHighRiskRemoved_To_CheckDisproportionateEffort_di"
+                       bpmnElement="Flow_GatewayHighRiskRemoved_To_CheckDisproportionateEffort">
+        <di:waypoint x="1080" y="195" />
+        <di:waypoint x="1120" y="195" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_CheckDisproportionateEffort_To_GatewayDisproportionateEffort_di"
+                       bpmnElement="Flow_CheckDisproportionateEffort_To_GatewayDisproportionateEffort">
+        <di:waypoint x="1310" y="195" />
+        <di:waypoint x="1350" y="195" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayDisproportionateEffort_To_TaskPublicCommunication_di"
+                       bpmnElement="Flow_GatewayDisproportionateEffort_To_TaskPublicCommunication">
+        <di:waypoint x="1375" y="220" />
+        <di:waypoint x="1375" y="350" />
+        <di:waypoint x="1450" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayDisproportionateEffort_To_GatewayCompileSplit_di"
+                       bpmnElement="Flow_GatewayDisproportionateEffort_To_GatewayCompileSplit">
+        <di:waypoint x="1400" y="195" />
+        <di:waypoint x="1450" y="195" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayCompileSplit_To_ProvideContact_di"
+                       bpmnElement="Flow_GatewayCompileSplit_To_ProvideContact">
+        <di:waypoint x="1475" y="170" />
+        <di:waypoint x="1475" y="95" />
+        <di:waypoint x="1540" y="95" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayCompileSplit_To_DescribeConsequences_di"
+                       bpmnElement="Flow_GatewayCompileSplit_To_DescribeConsequences">
+        <di:waypoint x="1500" y="195" />
+        <di:waypoint x="1540" y="195" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayCompileSplit_To_DescribeMeasures_di"
+                       bpmnElement="Flow_GatewayCompileSplit_To_DescribeMeasures">
+        <di:waypoint x="1475" y="220" />
+        <di:waypoint x="1475" y="295" />
+        <di:waypoint x="1540" y="295" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ProvideContact_To_GatewayCompileJoin_di"
+                       bpmnElement="Flow_ProvideContact_To_GatewayCompileJoin">
+        <di:waypoint x="1720" y="95" />
+        <di:waypoint x="1785" y="95" />
+        <di:waypoint x="1785" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_DescribeConsequences_To_GatewayCompileJoin_di"
+                       bpmnElement="Flow_DescribeConsequences_To_GatewayCompileJoin">
+        <di:waypoint x="1720" y="195" />
+        <di:waypoint x="1760" y="195" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_DescribeMeasures_To_GatewayCompileJoin_di"
+                       bpmnElement="Flow_DescribeMeasures_To_GatewayCompileJoin">
+        <di:waypoint x="1720" y="295" />
+        <di:waypoint x="1785" y="295" />
+        <di:waypoint x="1785" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayCompileJoin_To_NotifyDataSubject_di"
+                       bpmnElement="Flow_GatewayCompileJoin_To_NotifyDataSubject">
+        <di:waypoint x="1810" y="195" />
+        <di:waypoint x="1850" y="195" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_NotifyDataSubject_To_EndCommunicationCompleted_di"
+                       bpmnElement="Flow_NotifyDataSubject_To_EndCommunicationCompleted">
+        <di:waypoint x="2040" y="195" />
+        <di:waypoint x="2080" y="195" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPublicCommunication_To_EndPublicCommunicationCompleted_di"
+                       bpmnElement="Flow_TaskPublicCommunication_To_EndPublicCommunicationCompleted">
+        <di:waypoint x="1650" y="350" />
+        <di:waypoint x="1690" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ControllerToDataSubject_di"
+                       bpmnElement="MessageFlow_ControllerToDataSubject">
+        <di:waypoint x="1945" y="195" />
+        <di:waypoint x="1945" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ControllerToPublic_di"
+                       bpmnElement="MessageFlow_ControllerToPublic">
+        <di:waypoint x="1550" y="350" />
+        <di:waypoint x="1550" y="680" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -11,7 +11,7 @@ def main():
         os.makedirs(output_dir)
 
     # Testing a subset of articles as requested
-    for target_article in ["art_17", "art_33", "art_82"]:
+    for target_article in ["art_17", "art_33", "art_82", "art_83", "art_29"]:
         output_filename = os.path.join(output_dir, f"GDPR_{target_article}_v2.bpmn")
         print(f"\n--- {target_article} (v2) ---")
         tasks = extract_gdpr_structural(xml_input_path, target_article=target_article)

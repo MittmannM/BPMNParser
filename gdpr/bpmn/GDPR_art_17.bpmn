@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:collaboration id="Collaboration_1">
+    <bpmn:participant id="Participant_DataSubject_f603d4b1" name="DataSubject" processRef="Process_DataSubject_1e46a5f1" />
+    <bpmn:participant id="Participant_Controller_ea8c923f" name="Controller" processRef="Process_Controller_27f63f97" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_DataSubject_1e46a5f1" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_f3203a5f" name="Start" />
+    <bpmn:sequenceFlow id="Flow_98885fa6" sourceRef="StartEvent_f3203a5f" targetRef="Task_13d6e4be" />
+    <bpmn:task id="Task_13d6e4be" name="Erase Personal Data
+(Art. 17 Abs. 1)"><bpmn:incoming>Flow_98885fa6</bpmn:incoming></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_4102c57c"><bpmn:text>Check exception in Art. 17 Abs. 3 lit. a&#10;Check exception in Art. 17 Abs. 3 lit. b&#10;Check exception in Art. 17 Abs. 3 lit. c&#10;Check exception in Art. 17 Abs. 3 lit. d&#10;Check exception in Art. 17 Abs. 3 lit. e&#10;No exception under Art. 17 Abs. 3&#10;No exception under Art. 12 Abs. 2&#10;No exception under Art. 11 Abs. 2&#10;Perform without undue delay</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_64de63ae" sourceRef="Task_13d6e4be" targetRef="Annotation_4102c57c" />
+    <bpmn:sequenceFlow id="Flow_6b7ca87a" sourceRef="Task_13d6e4be" targetRef="Task_f627414b" />
+    <bpmn:dataObject id="DataObj_1d3c7af5" />
+    <bpmn:dataObjectReference id="DataRef_99df8be5" dataObjectRef="DataObj_1d3c7af5" name="Copy of Personal Data" />
+    <bpmn:task id="Task_f627414b" name="Erase Personal Data
+(Art. 17 Abs. 2)"><bpmn:incoming>Flow_6b7ca87a</bpmn:incoming><bpmn:dataOutputAssociation id="Assoc_5f0e1f10"><bpmn:targetRef>DataRef_99df8be5</bpmn:targetRef></bpmn:dataOutputAssociation></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_08322a56" sourceRef="Task_f627414b" targetRef="EndEvent_8ee4e481" />
+    <bpmn:endEvent id="EndEvent_8ee4e481" name="End"><bpmn:incoming>Flow_08322a56</bpmn:incoming></bpmn:endEvent>
+  </bpmn:process>
+  <bpmn:process id="Process_Controller_27f63f97" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_6574eeca" name="Start" />
+    <bpmn:sequenceFlow id="Flow_638900b1" sourceRef="StartEvent_6574eeca" targetRef="Task_c65f51cd" />
+    <bpmn:task id="Task_c65f51cd" name="Erase Personal Data
+(Art. 17 Abs. 1 lit. a)"><bpmn:incoming>Flow_638900b1</bpmn:incoming></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_ddb392e2"><bpmn:text>No exception under Art. 17 Abs. 3&#10;No exception under Art. 18 Abs. 1, point 3&#10;No exception under Art. 12 Abs. 2&#10;No exception under Art. 11 Abs. 2&#10;Perform without undue delay</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_79e0e379" sourceRef="Task_c65f51cd" targetRef="Annotation_ddb392e2" />
+    <bpmn:sequenceFlow id="Flow_09b8ab9f" sourceRef="Task_c65f51cd" targetRef="Task_2703229c" />
+    <bpmn:task id="Task_2703229c" name="Erase Personal Data
+(Art. 17 Abs. 1 lit. b)"><bpmn:incoming>Flow_09b8ab9f</bpmn:incoming></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_d5a01fbc"><bpmn:text>No exception under Art. 17 Abs. 3&#10;No exception under Art. 12 Abs. 2&#10;No exception under Art. 11 Abs. 2&#10;Perform without undue delay&#10;Applies when: Consent Withdrawn</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_6412eef4" sourceRef="Task_2703229c" targetRef="Annotation_d5a01fbc" />
+    <bpmn:sequenceFlow id="Flow_8f484f00" sourceRef="Task_2703229c" targetRef="Task_4c5949f1" />
+    <bpmn:task id="Task_4c5949f1" name="Erase Personal Data
+(Art. 17 Abs. 1 lit. c)"><bpmn:incoming>Flow_8f484f00</bpmn:incoming></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_bc32e212"><bpmn:text>No exception under Art. 21 Abs. 1&#10;No exception under Art. 17 Abs. 3&#10;No exception under Art. 12 Abs. 2&#10;No exception under Art. 11 Abs. 2&#10;Perform without undue delay&#10;Applies when: Permitted AND Consent Withdrawn AND Legitimate Interest AND High Risk to Individuals</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_bf031cb6" sourceRef="Task_4c5949f1" targetRef="Annotation_bc32e212" />
+    <bpmn:sequenceFlow id="Flow_f98e3b8e" sourceRef="Task_4c5949f1" targetRef="Task_e0d0823a" />
+    <bpmn:task id="Task_e0d0823a" name="Erase Personal Data
+(Art. 17 Abs. 1 lit. d)"><bpmn:incoming>Flow_f98e3b8e</bpmn:incoming></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_b24055c7"><bpmn:text>No exception under Art. 17 Abs. 3&#10;No exception under Art. 18 Abs. 1, point 2&#10;No exception under Art. 12 Abs. 2&#10;No exception under Art. 11 Abs. 2&#10;Perform without undue delay&#10;Applies when: Processing Was Lawful</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_eabe8b6e" sourceRef="Task_e0d0823a" targetRef="Annotation_b24055c7" />
+    <bpmn:sequenceFlow id="Flow_f704caaf" sourceRef="Task_e0d0823a" targetRef="Task_59f15be9" />
+    <bpmn:task id="Task_59f15be9" name="Erase Personal Data
+(Art. 17 Abs. 1 lit. e)"><bpmn:incoming>Flow_f704caaf</bpmn:incoming></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_6d3eaf91"><bpmn:text>No exception under Art. 17 Abs. 3&#10;No exception under Art. 12 Abs. 2&#10;No exception under Art. 11 Abs. 2&#10;Perform without undue delay&#10;Applies when: Obliged</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_87f0899c" sourceRef="Task_59f15be9" targetRef="Annotation_6d3eaf91" />
+    <bpmn:sequenceFlow id="Flow_4154cb0f" sourceRef="Task_59f15be9" targetRef="Task_5c0ca704" />
+    <bpmn:task id="Task_5c0ca704" name="Erase Personal Data
+(Art. 17 Abs. 1 lit. f)"><bpmn:incoming>Flow_4154cb0f</bpmn:incoming></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_b1a3eca0"><bpmn:text>No exception under Art. 17 Abs. 3&#10;No exception under Art. 12 Abs. 2&#10;No exception under Art. 11 Abs. 2&#10;Perform without undue delay&#10;Applies when: Original Consent Given AND Data Subject Gave Consent AND Age at or below minimum consent age</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_d2212b10" sourceRef="Task_5c0ca704" targetRef="Annotation_b1a3eca0" />
+    <bpmn:sequenceFlow id="Flow_31376997" sourceRef="Task_5c0ca704" targetRef="Task_62470a72" />
+    <bpmn:sendTask id="Task_62470a72" name="Notify to Controller
+(Art. 17 Abs. 2)"><bpmn:incoming>Flow_31376997</bpmn:incoming></bpmn:sendTask>
+    <bpmn:textAnnotation id="Annotation_c389affe"><bpmn:text>No exception under Art. 17 Abs. 3&#10;No exception under Art. 12 Abs. 2&#10;No exception under Art. 11 Abs. 2&#10;Use reasonable effort&#10;Applies when: Information Made Public AND Obliged</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_0f992551" sourceRef="Task_62470a72" targetRef="Annotation_c389affe" />
+    <bpmn:sequenceFlow id="Flow_1f9ce237" sourceRef="Task_62470a72" targetRef="EndEvent_6a91289e" />
+    <bpmn:endEvent id="EndEvent_6a91289e" name="End"><bpmn:incoming>Flow_1f9ce237</bpmn:incoming></bpmn:endEvent>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
+      <bpmndi:BPMNShape id="Participant_DataSubject_f603d4b1_di" bpmnElement="Participant_DataSubject_f603d4b1" isHorizontal="true"><dc:Bounds x="60" y="50" width="2150" height="220" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Controller_ea8c923f_di" bpmnElement="Participant_Controller_ea8c923f" isHorizontal="true"><dc:Bounds x="60" y="310" width="2150" height="220" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_f3203a5f_di" bpmnElement="StartEvent_f3203a5f"><dc:Bounds x="140" y="142" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_13d6e4be_di" bpmnElement="Task_13d6e4be"><dc:Bounds x="220" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_4102c57c_di" bpmnElement="Annotation_4102c57c"><dc:Bounds x="590" y="110" width="280" height="200" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_99df8be5_di" bpmnElement="DataRef_99df8be5"><dc:Bounds x="470" y="80" width="36" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_f627414b_di" bpmnElement="Task_f627414b"><dc:Bounds x="470" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_8ee4e481_di" bpmnElement="EndEvent_8ee4e481"><dc:Bounds x="720" y="142" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_6574eeca_di" bpmnElement="StartEvent_6574eeca"><dc:Bounds x="140" y="402" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_c65f51cd_di" bpmnElement="Task_c65f51cd"><dc:Bounds x="220" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_ddb392e2_di" bpmnElement="Annotation_ddb392e2"><dc:Bounds x="590" y="370" width="280" height="120" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_2703229c_di" bpmnElement="Task_2703229c"><dc:Bounds x="470" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_d5a01fbc_di" bpmnElement="Annotation_d5a01fbc"><dc:Bounds x="840" y="370" width="280" height="120" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_4c5949f1_di" bpmnElement="Task_4c5949f1"><dc:Bounds x="720" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_bc32e212_di" bpmnElement="Annotation_bc32e212"><dc:Bounds x="1090" y="370" width="280" height="140" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_e0d0823a_di" bpmnElement="Task_e0d0823a"><dc:Bounds x="970" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_b24055c7_di" bpmnElement="Annotation_b24055c7"><dc:Bounds x="1340" y="370" width="280" height="140" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_59f15be9_di" bpmnElement="Task_59f15be9"><dc:Bounds x="1220" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_6d3eaf91_di" bpmnElement="Annotation_6d3eaf91"><dc:Bounds x="1590" y="370" width="280" height="120" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_5c0ca704_di" bpmnElement="Task_5c0ca704"><dc:Bounds x="1470" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_b1a3eca0_di" bpmnElement="Annotation_b1a3eca0"><dc:Bounds x="1840" y="370" width="280" height="120" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_62470a72_di" bpmnElement="Task_62470a72"><dc:Bounds x="1720" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_c389affe_di" bpmnElement="Annotation_c389affe"><dc:Bounds x="2090" y="370" width="280" height="120" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_6a91289e_di" bpmnElement="EndEvent_6a91289e"><dc:Bounds x="1970" y="402" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_98885fa6_di" bpmnElement="Flow_98885fa6"><di:waypoint x="176" y="160" /><di:waypoint x="220" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_64de63ae_di" bpmnElement="Assoc_Annot_64de63ae"><di:waypoint x="390" y="160" /><di:waypoint x="590" y="210" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6b7ca87a_di" bpmnElement="Flow_6b7ca87a"><di:waypoint x="390" y="160" /><di:waypoint x="470" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_5f0e1f10_di" bpmnElement="Assoc_5f0e1f10"><di:waypoint x="555" y="155" /><di:waypoint x="488" y="130" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_08322a56_di" bpmnElement="Flow_08322a56"><di:waypoint x="640" y="160" /><di:waypoint x="720" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_638900b1_di" bpmnElement="Flow_638900b1"><di:waypoint x="176" y="420" /><di:waypoint x="220" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_79e0e379_di" bpmnElement="Assoc_Annot_79e0e379"><di:waypoint x="390" y="420" /><di:waypoint x="590" y="430" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_09b8ab9f_di" bpmnElement="Flow_09b8ab9f"><di:waypoint x="390" y="420" /><di:waypoint x="470" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_6412eef4_di" bpmnElement="Assoc_Annot_6412eef4"><di:waypoint x="640" y="420" /><di:waypoint x="840" y="430" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8f484f00_di" bpmnElement="Flow_8f484f00"><di:waypoint x="640" y="420" /><di:waypoint x="720" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_bf031cb6_di" bpmnElement="Assoc_Annot_bf031cb6"><di:waypoint x="890" y="420" /><di:waypoint x="1090" y="440" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_f98e3b8e_di" bpmnElement="Flow_f98e3b8e"><di:waypoint x="890" y="420" /><di:waypoint x="970" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_eabe8b6e_di" bpmnElement="Assoc_Annot_eabe8b6e"><di:waypoint x="1140" y="420" /><di:waypoint x="1340" y="440" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_f704caaf_di" bpmnElement="Flow_f704caaf"><di:waypoint x="1140" y="420" /><di:waypoint x="1220" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_87f0899c_di" bpmnElement="Assoc_Annot_87f0899c"><di:waypoint x="1390" y="420" /><di:waypoint x="1590" y="430" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4154cb0f_di" bpmnElement="Flow_4154cb0f"><di:waypoint x="1390" y="420" /><di:waypoint x="1470" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_d2212b10_di" bpmnElement="Assoc_Annot_d2212b10"><di:waypoint x="1640" y="420" /><di:waypoint x="1840" y="430" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_31376997_di" bpmnElement="Flow_31376997"><di:waypoint x="1640" y="420" /><di:waypoint x="1720" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_0f992551_di" bpmnElement="Assoc_Annot_0f992551"><di:waypoint x="1890" y="420" /><di:waypoint x="2090" y="430" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1f9ce237_di" bpmnElement="Flow_1f9ce237"><di:waypoint x="1890" y="420" /><di:waypoint x="1970" y="420" /></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

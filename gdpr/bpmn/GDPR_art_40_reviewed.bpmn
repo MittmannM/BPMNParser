@@ -1,0 +1,847 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  id="Definitions_Art40_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art40_Reviewed">
+    <bpmn:participant id="Participant_Association_Art40"
+                      name="Association or Other Body"
+                      processRef="Process_Association_Art40" />
+    <bpmn:participant id="Participant_SupervisoryAuthority_Art40"
+                      name="Supervisory Authority"
+                      processRef="Process_SupervisoryAuthority_Art40" />
+
+    <bpmn:messageFlow id="MessageFlow_SubmitDraft_Art40"
+                      sourceRef="SendTask_SubmitDraft_Art40"
+                      targetRef="ReceiveTask_ReceiveDraft_Art40" />
+    <bpmn:messageFlow id="MessageFlow_RejectionDecision_Art40"
+                      sourceRef="SendTask_IssueRejection_Art40"
+                      targetRef="ReceiveTask_ReceiveAuthorityDecision_Art40" />
+    <bpmn:messageFlow id="MessageFlow_ApprovalDecision_Art40"
+                      sourceRef="SendTask_NotifyApproval_Art40"
+                      targetRef="ReceiveTask_ReceiveAuthorityDecision_Art40" />
+    <bpmn:messageFlow id="MessageFlow_CrossBorderDecision_Art40"
+                      sourceRef="SendTask_NotifyCrossBorderPath_Art40"
+                      targetRef="ReceiveTask_ReceiveAuthorityDecision_Art40" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_Association_Art40"
+                name="Preparing and submitting a code of conduct"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 40 based on DAPRECO LegalRuleML statements217-230.
+      The model captures the preparation or amendment of a code of conduct, the legally relevant
+      content areas listed in the article, the inclusion of monitoring measures, submission to the
+      competent supervisory authority, and the approval or revision path.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_NeedCode_Art40"
+                     name="Need to improve GDPR application through a code of conduct">
+      <bpmn:outgoing>Flow_Start_To_Draft_Art40</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_DraftCode_Art40"
+               name="Draft, amend, or extend the code of conduct">
+      <bpmn:incoming>Flow_Start_To_Draft_Art40</bpmn:incoming>
+      <bpmn:incoming>Flow_ReviseDraft_To_Draft_Art40</bpmn:incoming>
+      <bpmn:outgoing>Flow_Draft_To_ContentSplit_Art40</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_ContentSplit_Art40">
+      <bpmn:incoming>Flow_Draft_To_ContentSplit_Art40</bpmn:incoming>
+      <bpmn:outgoing>Flow_ContentSplit_To_FairTransparent_Art40</bpmn:outgoing>
+      <bpmn:outgoing>Flow_ContentSplit_To_LegitimateInterests_Art40</bpmn:outgoing>
+      <bpmn:outgoing>Flow_ContentSplit_To_CollectData_Art40</bpmn:outgoing>
+      <bpmn:outgoing>Flow_ContentSplit_To_Pseudonymisation_Art40</bpmn:outgoing>
+      <bpmn:outgoing>Flow_ContentSplit_To_PublicInformation_Art40</bpmn:outgoing>
+      <bpmn:outgoing>Flow_ContentSplit_To_ExerciseRights_Art40</bpmn:outgoing>
+      <bpmn:outgoing>Flow_ContentSplit_To_ChildrenConsent_Art40</bpmn:outgoing>
+      <bpmn:outgoing>Flow_ContentSplit_To_ControllerMeasures_Art40</bpmn:outgoing>
+      <bpmn:outgoing>Flow_ContentSplit_To_BreachProcedures_Art40</bpmn:outgoing>
+      <bpmn:outgoing>Flow_ContentSplit_To_Transfers_Art40</bpmn:outgoing>
+      <bpmn:outgoing>Flow_ContentSplit_To_DisputeResolution_Art40</bpmn:outgoing>
+      <bpmn:outgoing>Flow_ContentSplit_To_MonitoringMeasures_Art40</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_FairTransparent_Art40"
+               name="Define fair and transparent processing practices">
+      <bpmn:incoming>Flow_ContentSplit_To_FairTransparent_Art40</bpmn:incoming>
+      <bpmn:outgoing>Flow_FairTransparent_To_ContentJoin_Art40</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_LegitimateInterests_Art40"
+               name="Define the handling of legitimate interests in specific contexts">
+      <bpmn:incoming>Flow_ContentSplit_To_LegitimateInterests_Art40</bpmn:incoming>
+      <bpmn:outgoing>Flow_LegitimateInterests_To_ContentJoin_Art40</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_CollectData_Art40"
+               name="Define rules for collecting personal data">
+      <bpmn:incoming>Flow_ContentSplit_To_CollectData_Art40</bpmn:incoming>
+      <bpmn:outgoing>Flow_CollectData_To_ContentJoin_Art40</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_Pseudonymisation_Art40"
+               name="Define pseudonymisation safeguards">
+      <bpmn:incoming>Flow_ContentSplit_To_Pseudonymisation_Art40</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pseudonymisation_To_ContentJoin_Art40</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_PublicInformation_Art40"
+               name="Define information duties towards the public and data subjects">
+      <bpmn:incoming>Flow_ContentSplit_To_PublicInformation_Art40</bpmn:incoming>
+      <bpmn:outgoing>Flow_PublicInformation_To_ContentJoin_Art40</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ExerciseRights_Art40"
+               name="Define how data subject rights are exercised">
+      <bpmn:incoming>Flow_ContentSplit_To_ExerciseRights_Art40</bpmn:incoming>
+      <bpmn:outgoing>Flow_ExerciseRights_To_ContentJoin_Art40</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ChildrenConsent_Art40"
+               name="Define child-protection information and consent mechanisms">
+      <bpmn:incoming>Flow_ContentSplit_To_ChildrenConsent_Art40</bpmn:incoming>
+      <bpmn:outgoing>Flow_ChildrenConsent_To_ContentJoin_Art40</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ControllerMeasures_Art40"
+               name="Define controller, privacy-by-design, and security measures">
+      <bpmn:incoming>Flow_ContentSplit_To_ControllerMeasures_Art40</bpmn:incoming>
+      <bpmn:outgoing>Flow_ControllerMeasures_To_ContentJoin_Art40</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_BreachProcedures_Art40"
+               name="Define personal data breach notification and communication procedures">
+      <bpmn:incoming>Flow_ContentSplit_To_BreachProcedures_Art40</bpmn:incoming>
+      <bpmn:outgoing>Flow_BreachProcedures_To_ContentJoin_Art40</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_Transfers_Art40"
+               name="Define safeguards for transfers to third countries or international organisations">
+      <bpmn:incoming>Flow_ContentSplit_To_Transfers_Art40</bpmn:incoming>
+      <bpmn:outgoing>Flow_Transfers_To_ContentJoin_Art40</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_DisputeResolution_Art40"
+               name="Define out-of-court and dispute-resolution procedures">
+      <bpmn:incoming>Flow_ContentSplit_To_DisputeResolution_Art40</bpmn:incoming>
+      <bpmn:outgoing>Flow_DisputeResolution_To_ContentJoin_Art40</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_MonitoringMeasures_Art40"
+               name="Include measures that enable an accredited body to monitor compliance with the code">
+      <bpmn:incoming>Flow_ContentSplit_To_MonitoringMeasures_Art40</bpmn:incoming>
+      <bpmn:outgoing>Flow_MonitoringMeasures_To_ContentJoin_Art40</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_ContentJoin_Art40">
+      <bpmn:incoming>Flow_FairTransparent_To_ContentJoin_Art40</bpmn:incoming>
+      <bpmn:incoming>Flow_LegitimateInterests_To_ContentJoin_Art40</bpmn:incoming>
+      <bpmn:incoming>Flow_CollectData_To_ContentJoin_Art40</bpmn:incoming>
+      <bpmn:incoming>Flow_Pseudonymisation_To_ContentJoin_Art40</bpmn:incoming>
+      <bpmn:incoming>Flow_PublicInformation_To_ContentJoin_Art40</bpmn:incoming>
+      <bpmn:incoming>Flow_ExerciseRights_To_ContentJoin_Art40</bpmn:incoming>
+      <bpmn:incoming>Flow_ChildrenConsent_To_ContentJoin_Art40</bpmn:incoming>
+      <bpmn:incoming>Flow_ControllerMeasures_To_ContentJoin_Art40</bpmn:incoming>
+      <bpmn:incoming>Flow_BreachProcedures_To_ContentJoin_Art40</bpmn:incoming>
+      <bpmn:incoming>Flow_Transfers_To_ContentJoin_Art40</bpmn:incoming>
+      <bpmn:incoming>Flow_DisputeResolution_To_ContentJoin_Art40</bpmn:incoming>
+      <bpmn:incoming>Flow_MonitoringMeasures_To_ContentJoin_Art40</bpmn:incoming>
+      <bpmn:outgoing>Flow_ContentJoin_To_GatewayRepresent_Art40</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_RepresentCategories_Art40"
+                           name="Does the body represent categories of controllers or processors?">
+      <bpmn:incoming>Flow_ContentJoin_To_GatewayRepresent_Art40</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayRepresent_To_EndCannotSubmit_Art40</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayRepresent_To_SubmitDraft_Art40</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_CannotSubmit_Art40"
+                   name="Draft cannot be submitted under Article 40(3)">
+      <bpmn:incoming>Flow_GatewayRepresent_To_EndCannotSubmit_Art40</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sendTask id="SendTask_SubmitDraft_Art40"
+                   name="Submit the draft, amendment, or extension to the competent supervisory authority">
+      <bpmn:incoming>Flow_GatewayRepresent_To_SubmitDraft_Art40</bpmn:incoming>
+      <bpmn:outgoing>Flow_SubmitDraft_To_ReceiveDecision_Art40</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveAuthorityDecision_Art40"
+                      name="Receive the supervisory authority decision">
+      <bpmn:incoming>Flow_SubmitDraft_To_ReceiveDecision_Art40</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveDecision_To_GatewayApproved_Art40</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:exclusiveGateway id="Gateway_Approved_Art40"
+                           name="Was the draft approved?">
+      <bpmn:incoming>Flow_ReceiveDecision_To_GatewayApproved_Art40</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayApproved_To_ReviseDraft_Art40</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayApproved_To_EndApproved_Art40</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ReviseDraft_Art40"
+               name="Revise the draft code based on the authority feedback">
+      <bpmn:incoming>Flow_GatewayApproved_To_ReviseDraft_Art40</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReviseDraft_To_Draft_Art40</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_ApprovedCodeAvailable_Art40"
+                   name="Approved code is available">
+      <bpmn:incoming>Flow_GatewayApproved_To_EndApproved_Art40</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_Draft_Art40"
+                       sourceRef="StartEvent_NeedCode_Art40"
+                       targetRef="Task_DraftCode_Art40" />
+    <bpmn:sequenceFlow id="Flow_Draft_To_ContentSplit_Art40"
+                       sourceRef="Task_DraftCode_Art40"
+                       targetRef="Gateway_ContentSplit_Art40" />
+    <bpmn:sequenceFlow id="Flow_ContentSplit_To_FairTransparent_Art40"
+                       sourceRef="Gateway_ContentSplit_Art40"
+                       targetRef="Task_FairTransparent_Art40" />
+    <bpmn:sequenceFlow id="Flow_ContentSplit_To_LegitimateInterests_Art40"
+                       sourceRef="Gateway_ContentSplit_Art40"
+                       targetRef="Task_LegitimateInterests_Art40" />
+    <bpmn:sequenceFlow id="Flow_ContentSplit_To_CollectData_Art40"
+                       sourceRef="Gateway_ContentSplit_Art40"
+                       targetRef="Task_CollectData_Art40" />
+    <bpmn:sequenceFlow id="Flow_ContentSplit_To_Pseudonymisation_Art40"
+                       sourceRef="Gateway_ContentSplit_Art40"
+                       targetRef="Task_Pseudonymisation_Art40" />
+    <bpmn:sequenceFlow id="Flow_ContentSplit_To_PublicInformation_Art40"
+                       sourceRef="Gateway_ContentSplit_Art40"
+                       targetRef="Task_PublicInformation_Art40" />
+    <bpmn:sequenceFlow id="Flow_ContentSplit_To_ExerciseRights_Art40"
+                       sourceRef="Gateway_ContentSplit_Art40"
+                       targetRef="Task_ExerciseRights_Art40" />
+    <bpmn:sequenceFlow id="Flow_ContentSplit_To_ChildrenConsent_Art40"
+                       sourceRef="Gateway_ContentSplit_Art40"
+                       targetRef="Task_ChildrenConsent_Art40" />
+    <bpmn:sequenceFlow id="Flow_ContentSplit_To_ControllerMeasures_Art40"
+                       sourceRef="Gateway_ContentSplit_Art40"
+                       targetRef="Task_ControllerMeasures_Art40" />
+    <bpmn:sequenceFlow id="Flow_ContentSplit_To_BreachProcedures_Art40"
+                       sourceRef="Gateway_ContentSplit_Art40"
+                       targetRef="Task_BreachProcedures_Art40" />
+    <bpmn:sequenceFlow id="Flow_ContentSplit_To_Transfers_Art40"
+                       sourceRef="Gateway_ContentSplit_Art40"
+                       targetRef="Task_Transfers_Art40" />
+    <bpmn:sequenceFlow id="Flow_ContentSplit_To_DisputeResolution_Art40"
+                       sourceRef="Gateway_ContentSplit_Art40"
+                       targetRef="Task_DisputeResolution_Art40" />
+    <bpmn:sequenceFlow id="Flow_ContentSplit_To_MonitoringMeasures_Art40"
+                       sourceRef="Gateway_ContentSplit_Art40"
+                       targetRef="Task_MonitoringMeasures_Art40" />
+    <bpmn:sequenceFlow id="Flow_FairTransparent_To_ContentJoin_Art40"
+                       sourceRef="Task_FairTransparent_Art40"
+                       targetRef="Gateway_ContentJoin_Art40" />
+    <bpmn:sequenceFlow id="Flow_LegitimateInterests_To_ContentJoin_Art40"
+                       sourceRef="Task_LegitimateInterests_Art40"
+                       targetRef="Gateway_ContentJoin_Art40" />
+    <bpmn:sequenceFlow id="Flow_CollectData_To_ContentJoin_Art40"
+                       sourceRef="Task_CollectData_Art40"
+                       targetRef="Gateway_ContentJoin_Art40" />
+    <bpmn:sequenceFlow id="Flow_Pseudonymisation_To_ContentJoin_Art40"
+                       sourceRef="Task_Pseudonymisation_Art40"
+                       targetRef="Gateway_ContentJoin_Art40" />
+    <bpmn:sequenceFlow id="Flow_PublicInformation_To_ContentJoin_Art40"
+                       sourceRef="Task_PublicInformation_Art40"
+                       targetRef="Gateway_ContentJoin_Art40" />
+    <bpmn:sequenceFlow id="Flow_ExerciseRights_To_ContentJoin_Art40"
+                       sourceRef="Task_ExerciseRights_Art40"
+                       targetRef="Gateway_ContentJoin_Art40" />
+    <bpmn:sequenceFlow id="Flow_ChildrenConsent_To_ContentJoin_Art40"
+                       sourceRef="Task_ChildrenConsent_Art40"
+                       targetRef="Gateway_ContentJoin_Art40" />
+    <bpmn:sequenceFlow id="Flow_ControllerMeasures_To_ContentJoin_Art40"
+                       sourceRef="Task_ControllerMeasures_Art40"
+                       targetRef="Gateway_ContentJoin_Art40" />
+    <bpmn:sequenceFlow id="Flow_BreachProcedures_To_ContentJoin_Art40"
+                       sourceRef="Task_BreachProcedures_Art40"
+                       targetRef="Gateway_ContentJoin_Art40" />
+    <bpmn:sequenceFlow id="Flow_Transfers_To_ContentJoin_Art40"
+                       sourceRef="Task_Transfers_Art40"
+                       targetRef="Gateway_ContentJoin_Art40" />
+    <bpmn:sequenceFlow id="Flow_DisputeResolution_To_ContentJoin_Art40"
+                       sourceRef="Task_DisputeResolution_Art40"
+                       targetRef="Gateway_ContentJoin_Art40" />
+    <bpmn:sequenceFlow id="Flow_MonitoringMeasures_To_ContentJoin_Art40"
+                       sourceRef="Task_MonitoringMeasures_Art40"
+                       targetRef="Gateway_ContentJoin_Art40" />
+    <bpmn:sequenceFlow id="Flow_ContentJoin_To_GatewayRepresent_Art40"
+                       sourceRef="Gateway_ContentJoin_Art40"
+                       targetRef="Gateway_RepresentCategories_Art40" />
+    <bpmn:sequenceFlow id="Flow_GatewayRepresent_To_EndCannotSubmit_Art40"
+                       name="No"
+                       sourceRef="Gateway_RepresentCategories_Art40"
+                       targetRef="EndEvent_CannotSubmit_Art40" />
+    <bpmn:sequenceFlow id="Flow_GatewayRepresent_To_SubmitDraft_Art40"
+                       name="Yes"
+                       sourceRef="Gateway_RepresentCategories_Art40"
+                       targetRef="SendTask_SubmitDraft_Art40" />
+    <bpmn:sequenceFlow id="Flow_SubmitDraft_To_ReceiveDecision_Art40"
+                       sourceRef="SendTask_SubmitDraft_Art40"
+                       targetRef="ReceiveTask_ReceiveAuthorityDecision_Art40" />
+    <bpmn:sequenceFlow id="Flow_ReceiveDecision_To_GatewayApproved_Art40"
+                       sourceRef="ReceiveTask_ReceiveAuthorityDecision_Art40"
+                       targetRef="Gateway_Approved_Art40" />
+    <bpmn:sequenceFlow id="Flow_GatewayApproved_To_ReviseDraft_Art40"
+                       name="No"
+                       sourceRef="Gateway_Approved_Art40"
+                       targetRef="Task_ReviseDraft_Art40" />
+    <bpmn:sequenceFlow id="Flow_GatewayApproved_To_EndApproved_Art40"
+                       name="Yes"
+                       sourceRef="Gateway_Approved_Art40"
+                       targetRef="EndEvent_ApprovedCodeAvailable_Art40" />
+    <bpmn:sequenceFlow id="Flow_ReviseDraft_To_Draft_Art40"
+                       sourceRef="Task_ReviseDraft_Art40"
+                       targetRef="Task_DraftCode_Art40" />
+  </bpmn:process>
+
+  <bpmn:process id="Process_SupervisoryAuthority_Art40"
+                name="Reviewing and publishing the code of conduct"
+                isExecutable="false">
+    <bpmn:documentation>
+      The supervisory-authority process reflects the review of the submitted draft, the decision on
+      compliance and safeguards, the approval path, and the register-and-publish step where the
+      approved code does not relate to processing activities in several Member States.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_ReviewTriggered_Art40"
+                     name="Authority review is triggered">
+      <bpmn:outgoing>Flow_AuthorityStart_To_ReceiveDraft_Art40</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveDraft_Art40"
+                      name="Receive the draft, amendment, or extension">
+      <bpmn:incoming>Flow_AuthorityStart_To_ReceiveDraft_Art40</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveDraft_To_Assess_Art40</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:task id="Task_AssessDraftCompliance_Art40"
+               name="Assess whether the draft complies with GDPR and provides sufficient safeguards">
+      <bpmn:incoming>Flow_ReceiveDraft_To_Assess_Art40</bpmn:incoming>
+      <bpmn:outgoing>Flow_Assess_To_GatewayCompliance_Art40</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_Compliance_Art40"
+                           name="Does the draft comply and provide sufficient safeguards?">
+      <bpmn:incoming>Flow_Assess_To_GatewayCompliance_Art40</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayCompliance_To_IssueRejection_Art40</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayCompliance_To_ApproveDraft_Art40</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="SendTask_IssueRejection_Art40"
+                   name="Issue a negative opinion or request revisions">
+      <bpmn:incoming>Flow_GatewayCompliance_To_IssueRejection_Art40</bpmn:incoming>
+      <bpmn:outgoing>Flow_IssueRejection_To_EndNotApproved_Art40</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_NotApproved_Art40"
+                   name="Draft not approved">
+      <bpmn:incoming>Flow_IssueRejection_To_EndNotApproved_Art40</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:task id="Task_ApproveDraft_Art40"
+               name="Approve the draft, amendment, or extension">
+      <bpmn:incoming>Flow_GatewayCompliance_To_ApproveDraft_Art40</bpmn:incoming>
+      <bpmn:outgoing>Flow_ApproveDraft_To_GatewaySeveralStates_Art40</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_SeveralMemberStates_Art40"
+                           name="Does the approved code relate to several Member States?">
+      <bpmn:incoming>Flow_ApproveDraft_To_GatewaySeveralStates_Art40</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySeveralStates_To_NotifyCrossBorder_Art40</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySeveralStates_To_RegisterPublish_Art40</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_RegisterAndPublishCode_Art40"
+               name="Register and publish the approved code">
+      <bpmn:incoming>Flow_GatewaySeveralStates_To_RegisterPublish_Art40</bpmn:incoming>
+      <bpmn:outgoing>Flow_RegisterPublish_To_NotifyApproval_Art40</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="SendTask_NotifyApproval_Art40"
+                   name="Notify the body that the draft was approved">
+      <bpmn:incoming>Flow_RegisterPublish_To_NotifyApproval_Art40</bpmn:incoming>
+      <bpmn:outgoing>Flow_NotifyApproval_To_EndApprovalCompleted_Art40</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_ApprovalCompleted_Art40"
+                   name="Approval, registration, and publication completed">
+      <bpmn:incoming>Flow_NotifyApproval_To_EndApprovalCompleted_Art40</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sendTask id="SendTask_NotifyCrossBorderPath_Art40"
+                   name="Notify the body that the approved draft requires the multi-state path">
+      <bpmn:incoming>Flow_GatewaySeveralStates_To_NotifyCrossBorder_Art40</bpmn:incoming>
+      <bpmn:outgoing>Flow_NotifyCrossBorder_To_EndCrossBorder_Art40</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_CrossBorderPath_Art40"
+                   name="Cross-border follow-up continues outside this article slice">
+      <bpmn:incoming>Flow_NotifyCrossBorder_To_EndCrossBorder_Art40</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_AuthorityStart_To_ReceiveDraft_Art40"
+                       sourceRef="StartEvent_ReviewTriggered_Art40"
+                       targetRef="ReceiveTask_ReceiveDraft_Art40" />
+    <bpmn:sequenceFlow id="Flow_ReceiveDraft_To_Assess_Art40"
+                       sourceRef="ReceiveTask_ReceiveDraft_Art40"
+                       targetRef="Task_AssessDraftCompliance_Art40" />
+    <bpmn:sequenceFlow id="Flow_Assess_To_GatewayCompliance_Art40"
+                       sourceRef="Task_AssessDraftCompliance_Art40"
+                       targetRef="Gateway_Compliance_Art40" />
+    <bpmn:sequenceFlow id="Flow_GatewayCompliance_To_IssueRejection_Art40"
+                       name="No"
+                       sourceRef="Gateway_Compliance_Art40"
+                       targetRef="SendTask_IssueRejection_Art40" />
+    <bpmn:sequenceFlow id="Flow_GatewayCompliance_To_ApproveDraft_Art40"
+                       name="Yes"
+                       sourceRef="Gateway_Compliance_Art40"
+                       targetRef="Task_ApproveDraft_Art40" />
+    <bpmn:sequenceFlow id="Flow_IssueRejection_To_EndNotApproved_Art40"
+                       sourceRef="SendTask_IssueRejection_Art40"
+                       targetRef="EndEvent_NotApproved_Art40" />
+    <bpmn:sequenceFlow id="Flow_ApproveDraft_To_GatewaySeveralStates_Art40"
+                       sourceRef="Task_ApproveDraft_Art40"
+                       targetRef="Gateway_SeveralMemberStates_Art40" />
+    <bpmn:sequenceFlow id="Flow_GatewaySeveralStates_To_NotifyCrossBorder_Art40"
+                       name="Yes"
+                       sourceRef="Gateway_SeveralMemberStates_Art40"
+                       targetRef="SendTask_NotifyCrossBorderPath_Art40" />
+    <bpmn:sequenceFlow id="Flow_GatewaySeveralStates_To_RegisterPublish_Art40"
+                       name="No"
+                       sourceRef="Gateway_SeveralMemberStates_Art40"
+                       targetRef="Task_RegisterAndPublishCode_Art40" />
+    <bpmn:sequenceFlow id="Flow_RegisterPublish_To_NotifyApproval_Art40"
+                       sourceRef="Task_RegisterAndPublishCode_Art40"
+                       targetRef="SendTask_NotifyApproval_Art40" />
+    <bpmn:sequenceFlow id="Flow_NotifyApproval_To_EndApprovalCompleted_Art40"
+                       sourceRef="SendTask_NotifyApproval_Art40"
+                       targetRef="EndEvent_ApprovalCompleted_Art40" />
+    <bpmn:sequenceFlow id="Flow_NotifyCrossBorder_To_EndCrossBorder_Art40"
+                       sourceRef="SendTask_NotifyCrossBorderPath_Art40"
+                       targetRef="EndEvent_CrossBorderPath_Art40" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art40_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art40_Reviewed"
+                      bpmnElement="Collaboration_Art40_Reviewed">
+      <bpmndi:BPMNShape id="Participant_Association_Art40_di"
+                        bpmnElement="Participant_Association_Art40"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="5200" height="760" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_SupervisoryAuthority_Art40_di"
+                        bpmnElement="Participant_SupervisoryAuthority_Art40"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="860" width="5200" height="420" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_NeedCode_Art40_di"
+                        bpmnElement="StartEvent_NeedCode_Art40">
+        <dc:Bounds x="140" y="392" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DraftCode_Art40_di"
+                        bpmnElement="Task_DraftCode_Art40">
+        <dc:Bounds x="230" y="370" width="240" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ContentSplit_Art40_di"
+                        bpmnElement="Gateway_ContentSplit_Art40"
+                        isMarkerVisible="true">
+        <dc:Bounds x="550" y="385" width="50" height="50" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Task_FairTransparent_Art40_di"
+                        bpmnElement="Task_FairTransparent_Art40">
+        <dc:Bounds x="690" y="60" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_LegitimateInterests_Art40_di"
+                        bpmnElement="Task_LegitimateInterests_Art40">
+        <dc:Bounds x="920" y="60" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CollectData_Art40_di"
+                        bpmnElement="Task_CollectData_Art40">
+        <dc:Bounds x="1170" y="60" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Pseudonymisation_Art40_di"
+                        bpmnElement="Task_Pseudonymisation_Art40">
+        <dc:Bounds x="1400" y="60" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PublicInformation_Art40_di"
+                        bpmnElement="Task_PublicInformation_Art40">
+        <dc:Bounds x="1630" y="60" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ExerciseRights_Art40_di"
+                        bpmnElement="Task_ExerciseRights_Art40">
+        <dc:Bounds x="1880" y="60" width="210" height="80" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Task_ChildrenConsent_Art40_di"
+                        bpmnElement="Task_ChildrenConsent_Art40">
+        <dc:Bounds x="690" y="620" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ControllerMeasures_Art40_di"
+                        bpmnElement="Task_ControllerMeasures_Art40">
+        <dc:Bounds x="940" y="620" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_BreachProcedures_Art40_di"
+                        bpmnElement="Task_BreachProcedures_Art40">
+        <dc:Bounds x="1190" y="620" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Transfers_Art40_di"
+                        bpmnElement="Task_Transfers_Art40">
+        <dc:Bounds x="1440" y="620" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DisputeResolution_Art40_di"
+                        bpmnElement="Task_DisputeResolution_Art40">
+        <dc:Bounds x="1690" y="620" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_MonitoringMeasures_Art40_di"
+                        bpmnElement="Task_MonitoringMeasures_Art40">
+        <dc:Bounds x="1940" y="620" width="240" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ContentJoin_Art40_di"
+                        bpmnElement="Gateway_ContentJoin_Art40"
+                        isMarkerVisible="true">
+        <dc:Bounds x="2190" y="385" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_RepresentCategories_Art40_di"
+                        bpmnElement="Gateway_RepresentCategories_Art40"
+                        isMarkerVisible="true">
+        <dc:Bounds x="2410" y="385" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_CannotSubmit_Art40_di"
+                        bpmnElement="EndEvent_CannotSubmit_Art40">
+        <dc:Bounds x="2600" y="552" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_SubmitDraft_Art40_di"
+                        bpmnElement="SendTask_SubmitDraft_Art40">
+        <dc:Bounds x="2730" y="370" width="240" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveAuthorityDecision_Art40_di"
+                        bpmnElement="ReceiveTask_ReceiveAuthorityDecision_Art40">
+        <dc:Bounds x="3040" y="370" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Approved_Art40_di"
+                        bpmnElement="Gateway_Approved_Art40"
+                        isMarkerVisible="true">
+        <dc:Bounds x="3350" y="385" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReviseDraft_Art40_di"
+                        bpmnElement="Task_ReviseDraft_Art40">
+        <dc:Bounds x="3490" y="500" width="250" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ApprovedCodeAvailable_Art40_di"
+                        bpmnElement="EndEvent_ApprovedCodeAvailable_Art40">
+        <dc:Bounds x="3680" y="392" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_ReviewTriggered_Art40_di"
+                        bpmnElement="StartEvent_ReviewTriggered_Art40">
+        <dc:Bounds x="2730" y="1002" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveDraft_Art40_di"
+                        bpmnElement="ReceiveTask_ReceiveDraft_Art40">
+        <dc:Bounds x="2850" y="980" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessDraftCompliance_Art40_di"
+                        bpmnElement="Task_AssessDraftCompliance_Art40">
+        <dc:Bounds x="3130" y="980" width="260" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Compliance_Art40_di"
+                        bpmnElement="Gateway_Compliance_Art40"
+                        isMarkerVisible="true">
+        <dc:Bounds x="3450" y="995" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_IssueRejection_Art40_di"
+                        bpmnElement="SendTask_IssueRejection_Art40">
+        <dc:Bounds x="3710" y="890" width="250" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NotApproved_Art40_di"
+                        bpmnElement="EndEvent_NotApproved_Art40">
+        <dc:Bounds x="4020" y="912" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ApproveDraft_Art40_di"
+                        bpmnElement="Task_ApproveDraft_Art40">
+        <dc:Bounds x="3710" y="1050" width="240" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SeveralMemberStates_Art40_di"
+                        bpmnElement="Gateway_SeveralMemberStates_Art40"
+                        isMarkerVisible="true">
+        <dc:Bounds x="4010" y="1065" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RegisterAndPublishCode_Art40_di"
+                        bpmnElement="Task_RegisterAndPublishCode_Art40">
+        <dc:Bounds x="4250" y="980" width="230" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_NotifyApproval_Art40_di"
+                        bpmnElement="SendTask_NotifyApproval_Art40">
+        <dc:Bounds x="4540" y="980" width="240" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ApprovalCompleted_Art40_di"
+                        bpmnElement="EndEvent_ApprovalCompleted_Art40">
+        <dc:Bounds x="4850" y="1002" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_NotifyCrossBorderPath_Art40_di"
+                        bpmnElement="SendTask_NotifyCrossBorderPath_Art40">
+        <dc:Bounds x="4250" y="1140" width="290" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_CrossBorderPath_Art40_di"
+                        bpmnElement="EndEvent_CrossBorderPath_Art40">
+        <dc:Bounds x="4600" y="1162" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_Draft_Art40_di" bpmnElement="Flow_Start_To_Draft_Art40">
+        <di:waypoint x="176" y="410" />
+        <di:waypoint x="230" y="410" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Draft_To_ContentSplit_Art40_di" bpmnElement="Flow_Draft_To_ContentSplit_Art40">
+        <di:waypoint x="470" y="410" />
+        <di:waypoint x="550" y="410" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ContentSplit_To_FairTransparent_Art40_di" bpmnElement="Flow_ContentSplit_To_FairTransparent_Art40">
+        <di:waypoint x="575" y="385" />
+        <di:waypoint x="575" y="100" />
+        <di:waypoint x="690" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ContentSplit_To_LegitimateInterests_Art40_di" bpmnElement="Flow_ContentSplit_To_LegitimateInterests_Art40">
+        <di:waypoint x="575" y="385" />
+        <di:waypoint x="575" y="130" />
+        <di:waypoint x="920" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ContentSplit_To_CollectData_Art40_di" bpmnElement="Flow_ContentSplit_To_CollectData_Art40">
+        <di:waypoint x="575" y="385" />
+        <di:waypoint x="575" y="90" />
+        <di:waypoint x="1170" y="90" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ContentSplit_To_Pseudonymisation_Art40_di" bpmnElement="Flow_ContentSplit_To_Pseudonymisation_Art40">
+        <di:waypoint x="575" y="385" />
+        <di:waypoint x="575" y="120" />
+        <di:waypoint x="1400" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ContentSplit_To_PublicInformation_Art40_di" bpmnElement="Flow_ContentSplit_To_PublicInformation_Art40">
+        <di:waypoint x="575" y="385" />
+        <di:waypoint x="575" y="100" />
+        <di:waypoint x="1630" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ContentSplit_To_ExerciseRights_Art40_di" bpmnElement="Flow_ContentSplit_To_ExerciseRights_Art40">
+        <di:waypoint x="575" y="385" />
+        <di:waypoint x="575" y="120" />
+        <di:waypoint x="1880" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ContentSplit_To_ChildrenConsent_Art40_di" bpmnElement="Flow_ContentSplit_To_ChildrenConsent_Art40">
+        <di:waypoint x="575" y="435" />
+        <di:waypoint x="575" y="660" />
+        <di:waypoint x="690" y="660" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ContentSplit_To_ControllerMeasures_Art40_di" bpmnElement="Flow_ContentSplit_To_ControllerMeasures_Art40">
+        <di:waypoint x="575" y="435" />
+        <di:waypoint x="575" y="650" />
+        <di:waypoint x="940" y="650" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ContentSplit_To_BreachProcedures_Art40_di" bpmnElement="Flow_ContentSplit_To_BreachProcedures_Art40">
+        <di:waypoint x="575" y="435" />
+        <di:waypoint x="575" y="680" />
+        <di:waypoint x="1190" y="680" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ContentSplit_To_Transfers_Art40_di" bpmnElement="Flow_ContentSplit_To_Transfers_Art40">
+        <di:waypoint x="575" y="435" />
+        <di:waypoint x="575" y="650" />
+        <di:waypoint x="1440" y="650" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ContentSplit_To_DisputeResolution_Art40_di" bpmnElement="Flow_ContentSplit_To_DisputeResolution_Art40">
+        <di:waypoint x="575" y="435" />
+        <di:waypoint x="575" y="680" />
+        <di:waypoint x="1690" y="680" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ContentSplit_To_MonitoringMeasures_Art40_di" bpmnElement="Flow_ContentSplit_To_MonitoringMeasures_Art40">
+        <di:waypoint x="575" y="435" />
+        <di:waypoint x="575" y="650" />
+        <di:waypoint x="1940" y="650" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_FairTransparent_To_ContentJoin_Art40_di" bpmnElement="Flow_FairTransparent_To_ContentJoin_Art40">
+        <di:waypoint x="890" y="100" />
+        <di:waypoint x="2215" y="100" />
+        <di:waypoint x="2215" y="385" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_LegitimateInterests_To_ContentJoin_Art40_di" bpmnElement="Flow_LegitimateInterests_To_ContentJoin_Art40">
+        <di:waypoint x="1140" y="100" />
+        <di:waypoint x="2215" y="100" />
+        <di:waypoint x="2215" y="385" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_CollectData_To_ContentJoin_Art40_di" bpmnElement="Flow_CollectData_To_ContentJoin_Art40">
+        <di:waypoint x="1370" y="100" />
+        <di:waypoint x="2215" y="100" />
+        <di:waypoint x="2215" y="385" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pseudonymisation_To_ContentJoin_Art40_di" bpmnElement="Flow_Pseudonymisation_To_ContentJoin_Art40">
+        <di:waypoint x="1600" y="100" />
+        <di:waypoint x="2215" y="100" />
+        <di:waypoint x="2215" y="385" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_PublicInformation_To_ContentJoin_Art40_di" bpmnElement="Flow_PublicInformation_To_ContentJoin_Art40">
+        <di:waypoint x="1850" y="100" />
+        <di:waypoint x="2215" y="100" />
+        <di:waypoint x="2215" y="385" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ExerciseRights_To_ContentJoin_Art40_di" bpmnElement="Flow_ExerciseRights_To_ContentJoin_Art40">
+        <di:waypoint x="2090" y="100" />
+        <di:waypoint x="2215" y="100" />
+        <di:waypoint x="2215" y="385" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ChildrenConsent_To_ContentJoin_Art40_di" bpmnElement="Flow_ChildrenConsent_To_ContentJoin_Art40">
+        <di:waypoint x="910" y="660" />
+        <di:waypoint x="2215" y="660" />
+        <di:waypoint x="2215" y="435" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ControllerMeasures_To_ContentJoin_Art40_di" bpmnElement="Flow_ControllerMeasures_To_ContentJoin_Art40">
+        <di:waypoint x="1160" y="660" />
+        <di:waypoint x="2215" y="660" />
+        <di:waypoint x="2215" y="435" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_BreachProcedures_To_ContentJoin_Art40_di" bpmnElement="Flow_BreachProcedures_To_ContentJoin_Art40">
+        <di:waypoint x="1410" y="660" />
+        <di:waypoint x="2215" y="660" />
+        <di:waypoint x="2215" y="435" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Transfers_To_ContentJoin_Art40_di" bpmnElement="Flow_Transfers_To_ContentJoin_Art40">
+        <di:waypoint x="1660" y="660" />
+        <di:waypoint x="2215" y="660" />
+        <di:waypoint x="2215" y="435" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_DisputeResolution_To_ContentJoin_Art40_di" bpmnElement="Flow_DisputeResolution_To_ContentJoin_Art40">
+        <di:waypoint x="1910" y="660" />
+        <di:waypoint x="2215" y="660" />
+        <di:waypoint x="2215" y="435" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_MonitoringMeasures_To_ContentJoin_Art40_di" bpmnElement="Flow_MonitoringMeasures_To_ContentJoin_Art40">
+        <di:waypoint x="2180" y="660" />
+        <di:waypoint x="2215" y="660" />
+        <di:waypoint x="2215" y="435" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_ContentJoin_To_GatewayRepresent_Art40_di" bpmnElement="Flow_ContentJoin_To_GatewayRepresent_Art40">
+        <di:waypoint x="2240" y="410" />
+        <di:waypoint x="2410" y="410" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRepresent_To_EndCannotSubmit_Art40_di" bpmnElement="Flow_GatewayRepresent_To_EndCannotSubmit_Art40">
+        <di:waypoint x="2435" y="435" />
+        <di:waypoint x="2435" y="570" />
+        <di:waypoint x="2600" y="570" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRepresent_To_SubmitDraft_Art40_di" bpmnElement="Flow_GatewayRepresent_To_SubmitDraft_Art40">
+        <di:waypoint x="2460" y="410" />
+        <di:waypoint x="2730" y="410" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SubmitDraft_To_ReceiveDecision_Art40_di" bpmnElement="Flow_SubmitDraft_To_ReceiveDecision_Art40">
+        <di:waypoint x="2970" y="410" />
+        <di:waypoint x="3040" y="410" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveDecision_To_GatewayApproved_Art40_di" bpmnElement="Flow_ReceiveDecision_To_GatewayApproved_Art40">
+        <di:waypoint x="3260" y="410" />
+        <di:waypoint x="3350" y="410" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayApproved_To_ReviseDraft_Art40_di" bpmnElement="Flow_GatewayApproved_To_ReviseDraft_Art40">
+        <di:waypoint x="3375" y="435" />
+        <di:waypoint x="3375" y="540" />
+        <di:waypoint x="3490" y="540" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayApproved_To_EndApproved_Art40_di" bpmnElement="Flow_GatewayApproved_To_EndApproved_Art40">
+        <di:waypoint x="3400" y="410" />
+        <di:waypoint x="3680" y="410" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReviseDraft_To_Draft_Art40_di" bpmnElement="Flow_ReviseDraft_To_Draft_Art40">
+        <di:waypoint x="3490" y="540" />
+        <di:waypoint x="3490" y="730" />
+        <di:waypoint x="350" y="730" />
+        <di:waypoint x="350" y="450" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_AuthorityStart_To_ReceiveDraft_Art40_di" bpmnElement="Flow_AuthorityStart_To_ReceiveDraft_Art40">
+        <di:waypoint x="2766" y="1020" />
+        <di:waypoint x="2850" y="1020" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveDraft_To_Assess_Art40_di" bpmnElement="Flow_ReceiveDraft_To_Assess_Art40">
+        <di:waypoint x="3070" y="1020" />
+        <di:waypoint x="3130" y="1020" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Assess_To_GatewayCompliance_Art40_di" bpmnElement="Flow_Assess_To_GatewayCompliance_Art40">
+        <di:waypoint x="3390" y="1020" />
+        <di:waypoint x="3450" y="1020" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayCompliance_To_IssueRejection_Art40_di" bpmnElement="Flow_GatewayCompliance_To_IssueRejection_Art40">
+        <di:waypoint x="3475" y="995" />
+        <di:waypoint x="3475" y="930" />
+        <di:waypoint x="3710" y="930" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayCompliance_To_ApproveDraft_Art40_di" bpmnElement="Flow_GatewayCompliance_To_ApproveDraft_Art40">
+        <di:waypoint x="3475" y="1045" />
+        <di:waypoint x="3475" y="1090" />
+        <di:waypoint x="3710" y="1090" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_IssueRejection_To_EndNotApproved_Art40_di" bpmnElement="Flow_IssueRejection_To_EndNotApproved_Art40">
+        <di:waypoint x="3960" y="930" />
+        <di:waypoint x="4020" y="930" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ApproveDraft_To_GatewaySeveralStates_Art40_di" bpmnElement="Flow_ApproveDraft_To_GatewaySeveralStates_Art40">
+        <di:waypoint x="3950" y="1090" />
+        <di:waypoint x="4010" y="1090" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySeveralStates_To_RegisterPublish_Art40_di" bpmnElement="Flow_GatewaySeveralStates_To_RegisterPublish_Art40">
+        <di:waypoint x="4035" y="1065" />
+        <di:waypoint x="4035" y="1020" />
+        <di:waypoint x="4250" y="1020" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySeveralStates_To_NotifyCrossBorder_Art40_di" bpmnElement="Flow_GatewaySeveralStates_To_NotifyCrossBorder_Art40">
+        <di:waypoint x="4035" y="1115" />
+        <di:waypoint x="4035" y="1180" />
+        <di:waypoint x="4250" y="1180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_RegisterPublish_To_NotifyApproval_Art40_di" bpmnElement="Flow_RegisterPublish_To_NotifyApproval_Art40">
+        <di:waypoint x="4480" y="1020" />
+        <di:waypoint x="4540" y="1020" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_NotifyApproval_To_EndApprovalCompleted_Art40_di" bpmnElement="Flow_NotifyApproval_To_EndApprovalCompleted_Art40">
+        <di:waypoint x="4780" y="1020" />
+        <di:waypoint x="4850" y="1020" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_NotifyCrossBorder_To_EndCrossBorder_Art40_di" bpmnElement="Flow_NotifyCrossBorder_To_EndCrossBorder_Art40">
+        <di:waypoint x="4540" y="1180" />
+        <di:waypoint x="4600" y="1180" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_SubmitDraft_Art40_di" bpmnElement="MessageFlow_SubmitDraft_Art40">
+        <di:waypoint x="2850" y="450" />
+        <di:waypoint x="2850" y="980" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_RejectionDecision_Art40_di" bpmnElement="MessageFlow_RejectionDecision_Art40">
+        <di:waypoint x="3835" y="890" />
+        <di:waypoint x="3835" y="520" />
+        <di:waypoint x="3150" y="520" />
+        <di:waypoint x="3150" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ApprovalDecision_Art40_di" bpmnElement="MessageFlow_ApprovalDecision_Art40">
+        <di:waypoint x="4660" y="980" />
+        <di:waypoint x="4660" y="300" />
+        <di:waypoint x="3150" y="300" />
+        <di:waypoint x="3150" y="370" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_CrossBorderDecision_Art40_di" bpmnElement="MessageFlow_CrossBorderDecision_Art40">
+        <di:waypoint x="4395" y="1140" />
+        <di:waypoint x="4395" y="260" />
+        <di:waypoint x="3150" y="260" />
+        <di:waypoint x="3150" y="370" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

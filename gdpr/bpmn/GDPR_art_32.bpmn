@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:collaboration id="Collaboration_1">
+    <bpmn:participant id="Participant_Controller_b115dbb9" name="Controller" processRef="Process_Controller_bc940020" />
+    <bpmn:participant id="Participant_DataSubject_1f3fa785" name="DataSubject" processRef="Process_DataSubject_08b37943" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_Controller_bc940020" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_f6b09493" name="Start" />
+    <bpmn:sequenceFlow id="Flow_5820361f" sourceRef="StartEvent_f6b09493" targetRef="Task_2942d9ad" />
+    <bpmn:task id="Task_2942d9ad" name="Measures Taken/Proposed
+(Art. 32 Abs. 1)"><bpmn:incoming>Flow_5820361f</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_763b5618" sourceRef="Task_2942d9ad" targetRef="Task_5113167b" />
+    <bpmn:task id="Task_5113167b" name="Implement Measure
+(Art. 32 Abs. 1)"><bpmn:incoming>Flow_763b5618</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_e17e882d" sourceRef="Task_5113167b" targetRef="Task_c59796c1" />
+    <bpmn:task id="Task_c59796c1" name="Risk to Rights and Freedoms
+(Art. 32 Abs. 1)"><bpmn:incoming>Flow_e17e882d</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_2ddd7b2a" sourceRef="Task_c59796c1" targetRef="Task_61127807" />
+    <bpmn:task id="Task_61127807" name="Authorized By Controller to Controller
+(Art. 32 Abs. 4)"><bpmn:incoming>Flow_2ddd7b2a</bpmn:incoming></bpmn:task>
+    <bpmn:textAnnotation id="Annotation_d881ead6"><bpmn:text>Applies when: Provide Data Access AND Natural Person Affected</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Annot_6f2531ee" sourceRef="Task_61127807" targetRef="Annotation_d881ead6" />
+    <bpmn:sequenceFlow id="Flow_762ca317" sourceRef="Task_61127807" targetRef="EndEvent_5d2c4efc" />
+    <bpmn:endEvent id="EndEvent_5d2c4efc" name="End"><bpmn:incoming>Flow_762ca317</bpmn:incoming></bpmn:endEvent>
+  </bpmn:process>
+  <bpmn:process id="Process_DataSubject_08b37943" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_d5277738" name="Start" />
+    <bpmn:sequenceFlow id="Flow_2053c424" sourceRef="StartEvent_d5277738" targetRef="Task_6715de27" />
+    <bpmn:task id="Task_6715de27" name="High Risk to Individuals
+(Art. 32 Abs. 1)"><bpmn:incoming>Flow_2053c424</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="Flow_47b895e5" sourceRef="Task_6715de27" targetRef="EndEvent_15ae2cb4" />
+    <bpmn:endEvent id="EndEvent_15ae2cb4" name="End"><bpmn:incoming>Flow_47b895e5</bpmn:incoming></bpmn:endEvent>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
+      <bpmndi:BPMNShape id="Participant_Controller_b115dbb9_di" bpmnElement="Participant_Controller_b115dbb9" isHorizontal="true"><dc:Bounds x="60" y="50" width="1400" height="220" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_DataSubject_1f3fa785_di" bpmnElement="Participant_DataSubject_1f3fa785" isHorizontal="true"><dc:Bounds x="60" y="310" width="1400" height="220" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_f6b09493_di" bpmnElement="StartEvent_f6b09493"><dc:Bounds x="140" y="142" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_2942d9ad_di" bpmnElement="Task_2942d9ad"><dc:Bounds x="220" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_5113167b_di" bpmnElement="Task_5113167b"><dc:Bounds x="470" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_c59796c1_di" bpmnElement="Task_c59796c1"><dc:Bounds x="720" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_61127807_di" bpmnElement="Task_61127807"><dc:Bounds x="970" y="120" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_d881ead6_di" bpmnElement="Annotation_d881ead6"><dc:Bounds x="1340" y="110" width="280" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_5d2c4efc_di" bpmnElement="EndEvent_5d2c4efc"><dc:Bounds x="1220" y="142" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_d5277738_di" bpmnElement="StartEvent_d5277738"><dc:Bounds x="140" y="402" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_6715de27_di" bpmnElement="Task_6715de27"><dc:Bounds x="220" y="380" width="170" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_15ae2cb4_di" bpmnElement="EndEvent_15ae2cb4"><dc:Bounds x="470" y="402" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_5820361f_di" bpmnElement="Flow_5820361f"><di:waypoint x="176" y="160" /><di:waypoint x="220" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_763b5618_di" bpmnElement="Flow_763b5618"><di:waypoint x="390" y="160" /><di:waypoint x="470" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_e17e882d_di" bpmnElement="Flow_e17e882d"><di:waypoint x="640" y="160" /><di:waypoint x="720" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2ddd7b2a_di" bpmnElement="Flow_2ddd7b2a"><di:waypoint x="890" y="160" /><di:waypoint x="970" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Annot_6f2531ee_di" bpmnElement="Assoc_Annot_6f2531ee"><di:waypoint x="1140" y="160" /><di:waypoint x="1340" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_762ca317_di" bpmnElement="Flow_762ca317"><di:waypoint x="1140" y="160" /><di:waypoint x="1220" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2053c424_di" bpmnElement="Flow_2053c424"><di:waypoint x="176" y="420" /><di:waypoint x="220" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_47b895e5_di" bpmnElement="Flow_47b895e5"><di:waypoint x="390" y="420" /><di:waypoint x="470" y="420" /></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
