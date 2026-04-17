@@ -55,11 +55,11 @@ Existing auto-generated BPMN files in this folder are drafts only and do not cou
 | Art. 41 | `GDPR_art_41_reviewed.bpmn` | done | Manual review completed from statements231-234; public-body exception, accreditation requirements, monitoring setup, and non-compliance notification path checked against the master checklist |
 | Art. 42 | `GDPR_art_42_reviewed.bpmn` | done | Manual review completed from statements235-238; voluntary certification path, information-and-access duty, and certification renewal handling checked against the master checklist |
 | Art. 43 | `GDPR_art_43_reviewed.bpmn` | done | Manual review completed from statements239-241; accredited certification-body responsibility and supervisory-authority notification plus reasons path checked against the master checklist |
-| Art. 45 | `GDPR_art_45_reviewed.bpmn` | pending |  |
-| Art. 46 | `GDPR_art_46_reviewed.bpmn` | pending |  |
-| Art. 47 | `GDPR_art_47_reviewed.bpmn` | pending |  |
-| Art. 48 | `GDPR_art_48_reviewed.bpmn` | pending |  |
-| Art. 49 | `GDPR_art_49_reviewed.bpmn` | pending |  |
+| Art. 45 | `GDPR_art_45_reviewed.bpmn` | done | Manual review completed from statements242-243; adequacy-based transfer paths and four-year authorization review logic checked against the master checklist |
+| Art. 46 | `GDPR_art_46_reviewed.bpmn` | done | Manual review completed from statements244-250; six safeguard instruments, supervisory-authority authorization branches, and common safeguards-plus-risk check aligned with the master checklist |
+| Art. 47 | `GDPR_art_47_reviewed.bpmn` | done | Manual review completed from statements251-252; grouped BCR content duties, supervisory-authority approval, data-subject availability, and ongoing governance obligations checked against the master checklist |
+| Art. 48 | `GDPR_art_48_reviewed.bpmn` | done | Manual review completed from statements253; third-country request, Article 48 agreement check, non-recognition path, and agreement-based transfer path checked against the master checklist |
+| Art. 49 | `GDPR_art_49_reviewed.bpmn` | done | Manual review completed from statements254-263; full derogation tree, public-authority restriction, public-register limitation, and fallback information plus documentation duties checked against the master checklist |
 | Art. 77 | `GDPR_art_77_reviewed.bpmn` | pending |  |
 | Art. 78 | `GDPR_art_78_reviewed.bpmn` | pending |  |
 | Art. 79 | `GDPR_art_79_reviewed.bpmn` | pending |  |

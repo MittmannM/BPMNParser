@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art46_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art46_Reviewed">
+    <bpmn:participant id="Participant_ControllerProcessor_Art46"
+                      name="Controller or Processor"
+                      processRef="Process_ControllerProcessor_Art46" />
+    <bpmn:participant id="Participant_SupervisoryAuthority_Art46"
+                      name="Supervisory Authority" />
+    <bpmn:participant id="Participant_Counterparty_Art46"
+                      name="Recipient or public-body counterparty" />
+
+    <bpmn:messageFlow id="MessageFlow_PublicBodyInstrument_Art46"
+                      sourceRef="SendTask_ConcludePublicBodyInstrument_Art46"
+                      targetRef="Participant_Counterparty_Art46" />
+    <bpmn:messageFlow id="MessageFlow_CodeCommitments_Art46"
+                      sourceRef="SendTask_AgreeCodeCommitments_Art46"
+                      targetRef="Participant_Counterparty_Art46" />
+    <bpmn:messageFlow id="MessageFlow_CertificationCommitments_Art46"
+                      sourceRef="SendTask_AgreeCertificationCommitments_Art46"
+                      targetRef="Participant_Counterparty_Art46" />
+    <bpmn:messageFlow id="MessageFlow_RequestClauseAuthorization_Art46"
+                      sourceRef="SendTask_RequestClauseAuthorization_Art46"
+                      targetRef="Participant_SupervisoryAuthority_Art46" />
+    <bpmn:messageFlow id="MessageFlow_ClauseAuthorizationDecision_Art46"
+                      sourceRef="Participant_SupervisoryAuthority_Art46"
+                      targetRef="ReceiveTask_ReceiveClauseAuthorizationDecision_Art46" />
+    <bpmn:messageFlow id="MessageFlow_ConcludeAuthorizedClauses_Art46"
+                      sourceRef="SendTask_ConcludeAuthorizedClauses_Art46"
+                      targetRef="Participant_Counterparty_Art46" />
+    <bpmn:messageFlow id="MessageFlow_RequestArrangementAuthorization_Art46"
+                      sourceRef="SendTask_RequestArrangementAuthorization_Art46"
+                      targetRef="Participant_SupervisoryAuthority_Art46" />
+    <bpmn:messageFlow id="MessageFlow_ArrangementAuthorizationDecision_Art46"
+                      sourceRef="Participant_SupervisoryAuthority_Art46"
+                      targetRef="ReceiveTask_ReceiveArrangementAuthorizationDecision_Art46" />
+    <bpmn:messageFlow id="MessageFlow_ConcludeAuthorizedArrangement_Art46"
+                      sourceRef="SendTask_ConcludeAuthorizedArrangement_Art46"
+                      targetRef="Participant_Counterparty_Art46" />
+    <bpmn:messageFlow id="MessageFlow_TransferPersonalData_Art46"
+                      sourceRef="SendTask_TransferPersonalData_Art46"
+                      targetRef="Participant_Counterparty_Art46" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_ControllerProcessor_Art46"
+                name="Transferring personal data with appropriate safeguards"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 46 based on DAPRECO LegalRuleML statements244-250.
+      The model reflects the no-adequacy condition, the need for appropriate safeguards and low
+      residual risk, and the six safeguard instruments that are explicitly encoded in the
+      LegalRuleML file: legally binding public-body instruments, binding corporate rules, approved
+      codes of conduct with binding commitments, approved certification mechanisms with binding
+      commitments, contractual clauses authorized by a supervisory authority, and administrative
+      arrangements between public bodies authorized by a supervisory authority.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_NeedTransfer_Art46"
+                     name="Need to transfer personal data to a third country or international organisation">
+      <bpmn:outgoing>Flow_Start_To_GatewayNoAdequacy_Art46</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_NoAdequacyDecision_Art46"
+                           name="Is there no adequacy decision for the destination?">
+      <bpmn:incoming>Flow_Start_To_GatewayNoAdequacy_Art46</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayNoAdequacy_To_EndUseAdequacyRoute_Art46</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayNoAdequacy_To_GatewayInstrument_Art46</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_UseAdequacyRoute_Art46"
+                   name="Use the adequacy route instead of Article 46 safeguards">
+      <bpmn:incoming>Flow_GatewayNoAdequacy_To_EndUseAdequacyRoute_Art46</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_SafeguardInstrument_Art46"
+                           name="Which safeguard instrument will be used?">
+      <bpmn:incoming>Flow_GatewayNoAdequacy_To_GatewayInstrument_Art46</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayInstrument_To_PublicBodyInstrument_Art46</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayInstrument_To_BindingCorporateRules_Art46</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayInstrument_To_CodeCommitments_Art46</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayInstrument_To_CertificationCommitments_Art46</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayInstrument_To_PrepareClauses_Art46</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayInstrument_To_PrepareArrangement_Art46</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="SendTask_ConcludePublicBodyInstrument_Art46"
+                   name="Conclude a legally binding and enforceable public-body instrument">
+      <bpmn:incoming>Flow_GatewayInstrument_To_PublicBodyInstrument_Art46</bpmn:incoming>
+      <bpmn:outgoing>Flow_PublicBodyInstrument_To_GatewaySafeguardReady_Art46</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:task id="Task_AdoptBindingCorporateRules_Art46"
+               name="Adopt binding corporate rules for the transfer">
+      <bpmn:incoming>Flow_GatewayInstrument_To_BindingCorporateRules_Art46</bpmn:incoming>
+      <bpmn:outgoing>Flow_BindingCorporateRules_To_GatewaySafeguardReady_Art46</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="SendTask_AgreeCodeCommitments_Art46"
+                   name="Agree adherence to an approved code of conduct with binding commitments">
+      <bpmn:incoming>Flow_GatewayInstrument_To_CodeCommitments_Art46</bpmn:incoming>
+      <bpmn:outgoing>Flow_CodeCommitments_To_GatewaySafeguardReady_Art46</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:sendTask id="SendTask_AgreeCertificationCommitments_Art46"
+                   name="Agree an approved certification mechanism with binding commitments">
+      <bpmn:incoming>Flow_GatewayInstrument_To_CertificationCommitments_Art46</bpmn:incoming>
+      <bpmn:outgoing>Flow_CertificationCommitments_To_GatewaySafeguardReady_Art46</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:task id="Task_PrepareAdHocClauses_Art46"
+               name="Prepare ad hoc contractual clauses for supervisory-authority authorization">
+      <bpmn:incoming>Flow_GatewayInstrument_To_PrepareClauses_Art46</bpmn:incoming>
+      <bpmn:outgoing>Flow_PrepareClauses_To_RequestClauseAuthorization_Art46</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="SendTask_RequestClauseAuthorization_Art46"
+                   name="Request supervisory-authority authorization for the contractual clauses">
+      <bpmn:incoming>Flow_PrepareClauses_To_RequestClauseAuthorization_Art46</bpmn:incoming>
+      <bpmn:outgoing>Flow_RequestClauseAuthorization_To_ReceiveClauseDecision_Art46</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveClauseAuthorizationDecision_Art46"
+                      name="Receive the authorization decision for the contractual clauses">
+      <bpmn:incoming>Flow_RequestClauseAuthorization_To_ReceiveClauseDecision_Art46</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveClauseDecision_To_GatewayClausesAuthorized_Art46</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:exclusiveGateway id="Gateway_ClausesAuthorized_Art46"
+                           name="Did the supervisory authority authorize the contractual clauses?">
+      <bpmn:incoming>Flow_ReceiveClauseDecision_To_GatewayClausesAuthorized_Art46</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayClausesAuthorized_To_EndClausesRejected_Art46</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayClausesAuthorized_To_ConcludeAuthorizedClauses_Art46</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_ClausesRejected_Art46"
+                   name="The contractual clauses were not authorized">
+      <bpmn:incoming>Flow_GatewayClausesAuthorized_To_EndClausesRejected_Art46</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sendTask id="SendTask_ConcludeAuthorizedClauses_Art46"
+                   name="Conclude the authorized contractual clauses with the counterparty">
+      <bpmn:incoming>Flow_GatewayClausesAuthorized_To_ConcludeAuthorizedClauses_Art46</bpmn:incoming>
+      <bpmn:outgoing>Flow_ConcludeAuthorizedClauses_To_GatewaySafeguardReady_Art46</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:task id="Task_PrepareAdministrativeArrangement_Art46"
+               name="Prepare administrative arrangements for supervisory-authority authorization">
+      <bpmn:incoming>Flow_GatewayInstrument_To_PrepareArrangement_Art46</bpmn:incoming>
+      <bpmn:outgoing>Flow_PrepareArrangement_To_RequestArrangementAuthorization_Art46</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="SendTask_RequestArrangementAuthorization_Art46"
+                   name="Request supervisory-authority authorization for the administrative arrangements">
+      <bpmn:incoming>Flow_PrepareArrangement_To_RequestArrangementAuthorization_Art46</bpmn:incoming>
+      <bpmn:outgoing>Flow_RequestArrangementAuthorization_To_ReceiveArrangementDecision_Art46</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveArrangementAuthorizationDecision_Art46"
+                      name="Receive the authorization decision for the administrative arrangements">
+      <bpmn:incoming>Flow_RequestArrangementAuthorization_To_ReceiveArrangementDecision_Art46</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveArrangementDecision_To_GatewayArrangementAuthorized_Art46</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:exclusiveGateway id="Gateway_ArrangementAuthorized_Art46"
+                           name="Did the supervisory authority authorize the administrative arrangements?">
+      <bpmn:incoming>Flow_ReceiveArrangementDecision_To_GatewayArrangementAuthorized_Art46</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayArrangementAuthorized_To_EndArrangementRejected_Art46</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayArrangementAuthorized_To_ConcludeAuthorizedArrangement_Art46</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_ArrangementRejected_Art46"
+                   name="The administrative arrangements were not authorized">
+      <bpmn:incoming>Flow_GatewayArrangementAuthorized_To_EndArrangementRejected_Art46</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sendTask id="SendTask_ConcludeAuthorizedArrangement_Art46"
+                   name="Conclude the authorized administrative arrangements with the public-body counterparty">
+      <bpmn:incoming>Flow_GatewayArrangementAuthorized_To_ConcludeAuthorizedArrangement_Art46</bpmn:incoming>
+      <bpmn:outgoing>Flow_ConcludeAuthorizedArrangement_To_GatewaySafeguardReady_Art46</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:exclusiveGateway id="Gateway_SafeguardReady_Art46">
+      <bpmn:incoming>Flow_PublicBodyInstrument_To_GatewaySafeguardReady_Art46</bpmn:incoming>
+      <bpmn:incoming>Flow_BindingCorporateRules_To_GatewaySafeguardReady_Art46</bpmn:incoming>
+      <bpmn:incoming>Flow_CodeCommitments_To_GatewaySafeguardReady_Art46</bpmn:incoming>
+      <bpmn:incoming>Flow_CertificationCommitments_To_GatewaySafeguardReady_Art46</bpmn:incoming>
+      <bpmn:incoming>Flow_ConcludeAuthorizedClauses_To_GatewaySafeguardReady_Art46</bpmn:incoming>
+      <bpmn:incoming>Flow_ConcludeAuthorizedArrangement_To_GatewaySafeguardReady_Art46</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySafeguardReady_To_ImplementSafeguards_Art46</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ImplementSafeguards_Art46"
+               name="Implement the selected safeguards, commitments, and supplementary measures">
+      <bpmn:incoming>Flow_GatewaySafeguardReady_To_ImplementSafeguards_Art46</bpmn:incoming>
+      <bpmn:outgoing>Flow_ImplementSafeguards_To_AssessProtection_Art46</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_AssessProtection_Art46"
+               name="Assess enforceable rights, legal remedies, and residual risk for the transfer">
+      <bpmn:incoming>Flow_ImplementSafeguards_To_AssessProtection_Art46</bpmn:incoming>
+      <bpmn:outgoing>Flow_AssessProtection_To_GatewayResidualRisk_Art46</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_ResidualRiskControlled_Art46"
+                           name="Do the safeguards and measures prevent residual risk to the data subject?">
+      <bpmn:incoming>Flow_AssessProtection_To_GatewayResidualRisk_Art46</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayResidualRisk_To_EndTransferBlocked_Art46</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayResidualRisk_To_TransferPersonalData_Art46</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_TransferBlocked_Art46"
+                   name="The transfer is blocked because the safeguards are insufficient">
+      <bpmn:incoming>Flow_GatewayResidualRisk_To_EndTransferBlocked_Art46</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sendTask id="SendTask_TransferPersonalData_Art46"
+                   name="Transfer personal data under the selected safeguards">
+      <bpmn:incoming>Flow_GatewayResidualRisk_To_TransferPersonalData_Art46</bpmn:incoming>
+      <bpmn:outgoing>Flow_TransferPersonalData_To_EndTransferCompleted_Art46</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_TransferCompleted_Art46"
+                   name="Transfer completed with appropriate safeguards">
+      <bpmn:incoming>Flow_TransferPersonalData_To_EndTransferCompleted_Art46</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_GatewayNoAdequacy_Art46" sourceRef="StartEvent_NeedTransfer_Art46" targetRef="Gateway_NoAdequacyDecision_Art46" />
+    <bpmn:sequenceFlow id="Flow_GatewayNoAdequacy_To_EndUseAdequacyRoute_Art46" name="No" sourceRef="Gateway_NoAdequacyDecision_Art46" targetRef="EndEvent_UseAdequacyRoute_Art46" />
+    <bpmn:sequenceFlow id="Flow_GatewayNoAdequacy_To_GatewayInstrument_Art46" name="Yes" sourceRef="Gateway_NoAdequacyDecision_Art46" targetRef="Gateway_SafeguardInstrument_Art46" />
+    <bpmn:sequenceFlow id="Flow_GatewayInstrument_To_PublicBodyInstrument_Art46" name="Public-body instrument" sourceRef="Gateway_SafeguardInstrument_Art46" targetRef="SendTask_ConcludePublicBodyInstrument_Art46" />
+    <bpmn:sequenceFlow id="Flow_GatewayInstrument_To_BindingCorporateRules_Art46" name="Binding corporate rules" sourceRef="Gateway_SafeguardInstrument_Art46" targetRef="Task_AdoptBindingCorporateRules_Art46" />
+    <bpmn:sequenceFlow id="Flow_GatewayInstrument_To_CodeCommitments_Art46" name="Approved code of conduct" sourceRef="Gateway_SafeguardInstrument_Art46" targetRef="SendTask_AgreeCodeCommitments_Art46" />
+    <bpmn:sequenceFlow id="Flow_GatewayInstrument_To_CertificationCommitments_Art46" name="Approved certification mechanism" sourceRef="Gateway_SafeguardInstrument_Art46" targetRef="SendTask_AgreeCertificationCommitments_Art46" />
+    <bpmn:sequenceFlow id="Flow_GatewayInstrument_To_PrepareClauses_Art46" name="Authorized contractual clauses" sourceRef="Gateway_SafeguardInstrument_Art46" targetRef="Task_PrepareAdHocClauses_Art46" />
+    <bpmn:sequenceFlow id="Flow_GatewayInstrument_To_PrepareArrangement_Art46" name="Authorized administrative arrangements" sourceRef="Gateway_SafeguardInstrument_Art46" targetRef="Task_PrepareAdministrativeArrangement_Art46" />
+    <bpmn:sequenceFlow id="Flow_PublicBodyInstrument_To_GatewaySafeguardReady_Art46" sourceRef="SendTask_ConcludePublicBodyInstrument_Art46" targetRef="Gateway_SafeguardReady_Art46" />
+    <bpmn:sequenceFlow id="Flow_BindingCorporateRules_To_GatewaySafeguardReady_Art46" sourceRef="Task_AdoptBindingCorporateRules_Art46" targetRef="Gateway_SafeguardReady_Art46" />
+    <bpmn:sequenceFlow id="Flow_CodeCommitments_To_GatewaySafeguardReady_Art46" sourceRef="SendTask_AgreeCodeCommitments_Art46" targetRef="Gateway_SafeguardReady_Art46" />
+    <bpmn:sequenceFlow id="Flow_CertificationCommitments_To_GatewaySafeguardReady_Art46" sourceRef="SendTask_AgreeCertificationCommitments_Art46" targetRef="Gateway_SafeguardReady_Art46" />
+    <bpmn:sequenceFlow id="Flow_PrepareClauses_To_RequestClauseAuthorization_Art46" sourceRef="Task_PrepareAdHocClauses_Art46" targetRef="SendTask_RequestClauseAuthorization_Art46" />
+    <bpmn:sequenceFlow id="Flow_RequestClauseAuthorization_To_ReceiveClauseDecision_Art46" sourceRef="SendTask_RequestClauseAuthorization_Art46" targetRef="ReceiveTask_ReceiveClauseAuthorizationDecision_Art46" />
+    <bpmn:sequenceFlow id="Flow_ReceiveClauseDecision_To_GatewayClausesAuthorized_Art46" sourceRef="ReceiveTask_ReceiveClauseAuthorizationDecision_Art46" targetRef="Gateway_ClausesAuthorized_Art46" />
+    <bpmn:sequenceFlow id="Flow_GatewayClausesAuthorized_To_EndClausesRejected_Art46" name="No" sourceRef="Gateway_ClausesAuthorized_Art46" targetRef="EndEvent_ClausesRejected_Art46" />
+    <bpmn:sequenceFlow id="Flow_GatewayClausesAuthorized_To_ConcludeAuthorizedClauses_Art46" name="Yes" sourceRef="Gateway_ClausesAuthorized_Art46" targetRef="SendTask_ConcludeAuthorizedClauses_Art46" />
+    <bpmn:sequenceFlow id="Flow_ConcludeAuthorizedClauses_To_GatewaySafeguardReady_Art46" sourceRef="SendTask_ConcludeAuthorizedClauses_Art46" targetRef="Gateway_SafeguardReady_Art46" />
+    <bpmn:sequenceFlow id="Flow_PrepareArrangement_To_RequestArrangementAuthorization_Art46" sourceRef="Task_PrepareAdministrativeArrangement_Art46" targetRef="SendTask_RequestArrangementAuthorization_Art46" />
+    <bpmn:sequenceFlow id="Flow_RequestArrangementAuthorization_To_ReceiveArrangementDecision_Art46" sourceRef="SendTask_RequestArrangementAuthorization_Art46" targetRef="ReceiveTask_ReceiveArrangementAuthorizationDecision_Art46" />
+    <bpmn:sequenceFlow id="Flow_ReceiveArrangementDecision_To_GatewayArrangementAuthorized_Art46" sourceRef="ReceiveTask_ReceiveArrangementAuthorizationDecision_Art46" targetRef="Gateway_ArrangementAuthorized_Art46" />
+    <bpmn:sequenceFlow id="Flow_GatewayArrangementAuthorized_To_EndArrangementRejected_Art46" name="No" sourceRef="Gateway_ArrangementAuthorized_Art46" targetRef="EndEvent_ArrangementRejected_Art46" />
+    <bpmn:sequenceFlow id="Flow_GatewayArrangementAuthorized_To_ConcludeAuthorizedArrangement_Art46" name="Yes" sourceRef="Gateway_ArrangementAuthorized_Art46" targetRef="SendTask_ConcludeAuthorizedArrangement_Art46" />
+    <bpmn:sequenceFlow id="Flow_ConcludeAuthorizedArrangement_To_GatewaySafeguardReady_Art46" sourceRef="SendTask_ConcludeAuthorizedArrangement_Art46" targetRef="Gateway_SafeguardReady_Art46" />
+    <bpmn:sequenceFlow id="Flow_GatewaySafeguardReady_To_ImplementSafeguards_Art46" sourceRef="Gateway_SafeguardReady_Art46" targetRef="Task_ImplementSafeguards_Art46" />
+    <bpmn:sequenceFlow id="Flow_ImplementSafeguards_To_AssessProtection_Art46" sourceRef="Task_ImplementSafeguards_Art46" targetRef="Task_AssessProtection_Art46" />
+    <bpmn:sequenceFlow id="Flow_AssessProtection_To_GatewayResidualRisk_Art46" sourceRef="Task_AssessProtection_Art46" targetRef="Gateway_ResidualRiskControlled_Art46" />
+    <bpmn:sequenceFlow id="Flow_GatewayResidualRisk_To_EndTransferBlocked_Art46" name="No" sourceRef="Gateway_ResidualRiskControlled_Art46" targetRef="EndEvent_TransferBlocked_Art46" />
+    <bpmn:sequenceFlow id="Flow_GatewayResidualRisk_To_TransferPersonalData_Art46" name="Yes" sourceRef="Gateway_ResidualRiskControlled_Art46" targetRef="SendTask_TransferPersonalData_Art46" />
+    <bpmn:sequenceFlow id="Flow_TransferPersonalData_To_EndTransferCompleted_Art46" sourceRef="SendTask_TransferPersonalData_Art46" targetRef="EndEvent_TransferCompleted_Art46" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art46_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art46_Reviewed"
+                      bpmnElement="Collaboration_Art46_Reviewed">
+      <bpmndi:BPMNShape id="Participant_ControllerProcessor_Art46_di"
+                        bpmnElement="Participant_ControllerProcessor_Art46"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="4680" height="720" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_SupervisoryAuthority_Art46_di"
+                        bpmnElement="Participant_SupervisoryAuthority_Art46"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="800" width="4680" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Counterparty_Art46_di"
+                        bpmnElement="Participant_Counterparty_Art46"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="960" width="4680" height="120" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_NeedTransfer_Art46_di" bpmnElement="StartEvent_NeedTransfer_Art46">
+        <dc:Bounds x="120" y="392" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_NoAdequacyDecision_Art46_di" bpmnElement="Gateway_NoAdequacyDecision_Art46" isMarkerVisible="true">
+        <dc:Bounds x="240" y="385" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_UseAdequacyRoute_Art46_di" bpmnElement="EndEvent_UseAdequacyRoute_Art46">
+        <dc:Bounds x="400" y="292" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SafeguardInstrument_Art46_di" bpmnElement="Gateway_SafeguardInstrument_Art46" isMarkerVisible="true">
+        <dc:Bounds x="420" y="385" width="50" height="50" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="SendTask_ConcludePublicBodyInstrument_Art46_di" bpmnElement="SendTask_ConcludePublicBodyInstrument_Art46">
+        <dc:Bounds x="620" y="80" width="320" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AdoptBindingCorporateRules_Art46_di" bpmnElement="Task_AdoptBindingCorporateRules_Art46">
+        <dc:Bounds x="620" y="180" width="300" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_AgreeCodeCommitments_Art46_di" bpmnElement="SendTask_AgreeCodeCommitments_Art46">
+        <dc:Bounds x="620" y="280" width="330" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_AgreeCertificationCommitments_Art46_di" bpmnElement="SendTask_AgreeCertificationCommitments_Art46">
+        <dc:Bounds x="620" y="380" width="340" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareAdHocClauses_Art46_di" bpmnElement="Task_PrepareAdHocClauses_Art46">
+        <dc:Bounds x="620" y="480" width="340" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareAdministrativeArrangement_Art46_di" bpmnElement="Task_PrepareAdministrativeArrangement_Art46">
+        <dc:Bounds x="620" y="590" width="360" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_RequestClauseAuthorization_Art46_di" bpmnElement="SendTask_RequestClauseAuthorization_Art46">
+        <dc:Bounds x="1100" y="480" width="320" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveClauseAuthorizationDecision_Art46_di" bpmnElement="ReceiveTask_ReceiveClauseAuthorizationDecision_Art46">
+        <dc:Bounds x="1540" y="480" width="330" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ClausesAuthorized_Art46_di" bpmnElement="Gateway_ClausesAuthorized_Art46" isMarkerVisible="true">
+        <dc:Bounds x="1970" y="495" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ClausesRejected_Art46_di" bpmnElement="EndEvent_ClausesRejected_Art46">
+        <dc:Bounds x="2150" y="602" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_ConcludeAuthorizedClauses_Art46_di" bpmnElement="SendTask_ConcludeAuthorizedClauses_Art46">
+        <dc:Bounds x="2140" y="480" width="320" height="80" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="SendTask_RequestArrangementAuthorization_Art46_di" bpmnElement="SendTask_RequestArrangementAuthorization_Art46">
+        <dc:Bounds x="1100" y="590" width="340" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveArrangementAuthorizationDecision_Art46_di" bpmnElement="ReceiveTask_ReceiveArrangementAuthorizationDecision_Art46">
+        <dc:Bounds x="1540" y="590" width="350" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ArrangementAuthorized_Art46_di" bpmnElement="Gateway_ArrangementAuthorized_Art46" isMarkerVisible="true">
+        <dc:Bounds x="1970" y="605" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ArrangementRejected_Art46_di" bpmnElement="EndEvent_ArrangementRejected_Art46">
+        <dc:Bounds x="2150" y="692" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_ConcludeAuthorizedArrangement_Art46_di" bpmnElement="SendTask_ConcludeAuthorizedArrangement_Art46">
+        <dc:Bounds x="2140" y="590" width="350" height="80" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Gateway_SafeguardReady_Art46_di" bpmnElement="Gateway_SafeguardReady_Art46" isMarkerVisible="true">
+        <dc:Bounds x="2640" y="385" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ImplementSafeguards_Art46_di" bpmnElement="Task_ImplementSafeguards_Art46">
+        <dc:Bounds x="2800" y="360" width="340" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessProtection_Art46_di" bpmnElement="Task_AssessProtection_Art46">
+        <dc:Bounds x="3270" y="360" width="350" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ResidualRiskControlled_Art46_di" bpmnElement="Gateway_ResidualRiskControlled_Art46" isMarkerVisible="true">
+        <dc:Bounds x="3730" y="375" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_TransferBlocked_Art46_di" bpmnElement="EndEvent_TransferBlocked_Art46">
+        <dc:Bounds x="3920" y="282" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_TransferPersonalData_Art46_di" bpmnElement="SendTask_TransferPersonalData_Art46">
+        <dc:Bounds x="3900" y="360" width="300" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_TransferCompleted_Art46_di" bpmnElement="EndEvent_TransferCompleted_Art46">
+        <dc:Bounds x="4300" y="382" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_GatewayNoAdequacy_Art46_di" bpmnElement="Flow_Start_To_GatewayNoAdequacy_Art46">
+        <di:waypoint x="156" y="410" />
+        <di:waypoint x="240" y="410" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayNoAdequacy_To_EndUseAdequacyRoute_Art46_di" bpmnElement="Flow_GatewayNoAdequacy_To_EndUseAdequacyRoute_Art46">
+        <di:waypoint x="265" y="385" />
+        <di:waypoint x="265" y="310" />
+        <di:waypoint x="400" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayNoAdequacy_To_GatewayInstrument_Art46_di" bpmnElement="Flow_GatewayNoAdequacy_To_GatewayInstrument_Art46">
+        <di:waypoint x="290" y="410" />
+        <di:waypoint x="420" y="410" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_GatewayInstrument_To_PublicBodyInstrument_Art46_di" bpmnElement="Flow_GatewayInstrument_To_PublicBodyInstrument_Art46">
+        <di:waypoint x="445" y="385" />
+        <di:waypoint x="445" y="120" />
+        <di:waypoint x="620" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayInstrument_To_BindingCorporateRules_Art46_di" bpmnElement="Flow_GatewayInstrument_To_BindingCorporateRules_Art46">
+        <di:waypoint x="445" y="385" />
+        <di:waypoint x="445" y="220" />
+        <di:waypoint x="620" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayInstrument_To_CodeCommitments_Art46_di" bpmnElement="Flow_GatewayInstrument_To_CodeCommitments_Art46">
+        <di:waypoint x="470" y="410" />
+        <di:waypoint x="620" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayInstrument_To_CertificationCommitments_Art46_di" bpmnElement="Flow_GatewayInstrument_To_CertificationCommitments_Art46">
+        <di:waypoint x="470" y="410" />
+        <di:waypoint x="620" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayInstrument_To_PrepareClauses_Art46_di" bpmnElement="Flow_GatewayInstrument_To_PrepareClauses_Art46">
+        <di:waypoint x="445" y="435" />
+        <di:waypoint x="445" y="520" />
+        <di:waypoint x="620" y="520" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayInstrument_To_PrepareArrangement_Art46_di" bpmnElement="Flow_GatewayInstrument_To_PrepareArrangement_Art46">
+        <di:waypoint x="445" y="435" />
+        <di:waypoint x="445" y="630" />
+        <di:waypoint x="620" y="630" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_PublicBodyInstrument_To_GatewaySafeguardReady_Art46_di" bpmnElement="Flow_PublicBodyInstrument_To_GatewaySafeguardReady_Art46">
+        <di:waypoint x="940" y="120" />
+        <di:waypoint x="2665" y="120" />
+        <di:waypoint x="2665" y="385" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_BindingCorporateRules_To_GatewaySafeguardReady_Art46_di" bpmnElement="Flow_BindingCorporateRules_To_GatewaySafeguardReady_Art46">
+        <di:waypoint x="920" y="220" />
+        <di:waypoint x="2665" y="220" />
+        <di:waypoint x="2665" y="385" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_CodeCommitments_To_GatewaySafeguardReady_Art46_di" bpmnElement="Flow_CodeCommitments_To_GatewaySafeguardReady_Art46">
+        <di:waypoint x="950" y="320" />
+        <di:waypoint x="2665" y="320" />
+        <di:waypoint x="2665" y="385" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_CertificationCommitments_To_GatewaySafeguardReady_Art46_di" bpmnElement="Flow_CertificationCommitments_To_GatewaySafeguardReady_Art46">
+        <di:waypoint x="960" y="420" />
+        <di:waypoint x="2640" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_PrepareClauses_To_RequestClauseAuthorization_Art46_di" bpmnElement="Flow_PrepareClauses_To_RequestClauseAuthorization_Art46">
+        <di:waypoint x="960" y="520" />
+        <di:waypoint x="1100" y="520" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_RequestClauseAuthorization_To_ReceiveClauseDecision_Art46_di" bpmnElement="Flow_RequestClauseAuthorization_To_ReceiveClauseDecision_Art46">
+        <di:waypoint x="1420" y="520" />
+        <di:waypoint x="1540" y="520" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveClauseDecision_To_GatewayClausesAuthorized_Art46_di" bpmnElement="Flow_ReceiveClauseDecision_To_GatewayClausesAuthorized_Art46">
+        <di:waypoint x="1870" y="520" />
+        <di:waypoint x="1970" y="520" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayClausesAuthorized_To_EndClausesRejected_Art46_di" bpmnElement="Flow_GatewayClausesAuthorized_To_EndClausesRejected_Art46">
+        <di:waypoint x="1995" y="545" />
+        <di:waypoint x="1995" y="620" />
+        <di:waypoint x="2150" y="620" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayClausesAuthorized_To_ConcludeAuthorizedClauses_Art46_di" bpmnElement="Flow_GatewayClausesAuthorized_To_ConcludeAuthorizedClauses_Art46">
+        <di:waypoint x="2020" y="520" />
+        <di:waypoint x="2140" y="520" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ConcludeAuthorizedClauses_To_GatewaySafeguardReady_Art46_di" bpmnElement="Flow_ConcludeAuthorizedClauses_To_GatewaySafeguardReady_Art46">
+        <di:waypoint x="2460" y="520" />
+        <di:waypoint x="2665" y="520" />
+        <di:waypoint x="2665" y="435" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_PrepareArrangement_To_RequestArrangementAuthorization_Art46_di" bpmnElement="Flow_PrepareArrangement_To_RequestArrangementAuthorization_Art46">
+        <di:waypoint x="980" y="630" />
+        <di:waypoint x="1100" y="630" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_RequestArrangementAuthorization_To_ReceiveArrangementDecision_Art46_di" bpmnElement="Flow_RequestArrangementAuthorization_To_ReceiveArrangementDecision_Art46">
+        <di:waypoint x="1440" y="630" />
+        <di:waypoint x="1540" y="630" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveArrangementDecision_To_GatewayArrangementAuthorized_Art46_di" bpmnElement="Flow_ReceiveArrangementDecision_To_GatewayArrangementAuthorized_Art46">
+        <di:waypoint x="1890" y="630" />
+        <di:waypoint x="1970" y="630" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayArrangementAuthorized_To_EndArrangementRejected_Art46_di" bpmnElement="Flow_GatewayArrangementAuthorized_To_EndArrangementRejected_Art46">
+        <di:waypoint x="1995" y="655" />
+        <di:waypoint x="1995" y="710" />
+        <di:waypoint x="2150" y="710" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayArrangementAuthorized_To_ConcludeAuthorizedArrangement_Art46_di" bpmnElement="Flow_GatewayArrangementAuthorized_To_ConcludeAuthorizedArrangement_Art46">
+        <di:waypoint x="2020" y="630" />
+        <di:waypoint x="2140" y="630" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ConcludeAuthorizedArrangement_To_GatewaySafeguardReady_Art46_di" bpmnElement="Flow_ConcludeAuthorizedArrangement_To_GatewaySafeguardReady_Art46">
+        <di:waypoint x="2490" y="630" />
+        <di:waypoint x="2665" y="630" />
+        <di:waypoint x="2665" y="435" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_GatewaySafeguardReady_To_ImplementSafeguards_Art46_di" bpmnElement="Flow_GatewaySafeguardReady_To_ImplementSafeguards_Art46">
+        <di:waypoint x="2690" y="410" />
+        <di:waypoint x="2800" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ImplementSafeguards_To_AssessProtection_Art46_di" bpmnElement="Flow_ImplementSafeguards_To_AssessProtection_Art46">
+        <di:waypoint x="3140" y="400" />
+        <di:waypoint x="3270" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AssessProtection_To_GatewayResidualRisk_Art46_di" bpmnElement="Flow_AssessProtection_To_GatewayResidualRisk_Art46">
+        <di:waypoint x="3620" y="400" />
+        <di:waypoint x="3730" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayResidualRisk_To_EndTransferBlocked_Art46_di" bpmnElement="Flow_GatewayResidualRisk_To_EndTransferBlocked_Art46">
+        <di:waypoint x="3755" y="375" />
+        <di:waypoint x="3755" y="300" />
+        <di:waypoint x="3920" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayResidualRisk_To_TransferPersonalData_Art46_di" bpmnElement="Flow_GatewayResidualRisk_To_TransferPersonalData_Art46">
+        <di:waypoint x="3780" y="400" />
+        <di:waypoint x="3900" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TransferPersonalData_To_EndTransferCompleted_Art46_di" bpmnElement="Flow_TransferPersonalData_To_EndTransferCompleted_Art46">
+        <di:waypoint x="4200" y="400" />
+        <di:waypoint x="4300" y="400" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_PublicBodyInstrument_Art46_di" bpmnElement="MessageFlow_PublicBodyInstrument_Art46">
+        <di:waypoint x="780" y="160" />
+        <di:waypoint x="780" y="960" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_CodeCommitments_Art46_di" bpmnElement="MessageFlow_CodeCommitments_Art46">
+        <di:waypoint x="785" y="360" />
+        <di:waypoint x="785" y="960" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_CertificationCommitments_Art46_di" bpmnElement="MessageFlow_CertificationCommitments_Art46">
+        <di:waypoint x="790" y="460" />
+        <di:waypoint x="790" y="960" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_RequestClauseAuthorization_Art46_di" bpmnElement="MessageFlow_RequestClauseAuthorization_Art46">
+        <di:waypoint x="1260" y="560" />
+        <di:waypoint x="1260" y="800" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ClauseAuthorizationDecision_Art46_di" bpmnElement="MessageFlow_ClauseAuthorizationDecision_Art46">
+        <di:waypoint x="1705" y="800" />
+        <di:waypoint x="1705" y="560" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ConcludeAuthorizedClauses_Art46_di" bpmnElement="MessageFlow_ConcludeAuthorizedClauses_Art46">
+        <di:waypoint x="2300" y="560" />
+        <di:waypoint x="2300" y="960" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_RequestArrangementAuthorization_Art46_di" bpmnElement="MessageFlow_RequestArrangementAuthorization_Art46">
+        <di:waypoint x="1270" y="670" />
+        <di:waypoint x="1270" y="800" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ArrangementAuthorizationDecision_Art46_di" bpmnElement="MessageFlow_ArrangementAuthorizationDecision_Art46">
+        <di:waypoint x="1715" y="800" />
+        <di:waypoint x="1715" y="670" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ConcludeAuthorizedArrangement_Art46_di" bpmnElement="MessageFlow_ConcludeAuthorizedArrangement_Art46">
+        <di:waypoint x="2315" y="670" />
+        <di:waypoint x="2315" y="960" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_TransferPersonalData_Art46_di" bpmnElement="MessageFlow_TransferPersonalData_Art46">
+        <di:waypoint x="4050" y="440" />
+        <di:waypoint x="4050" y="960" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

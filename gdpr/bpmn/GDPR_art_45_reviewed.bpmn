@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art45_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art45_Reviewed">
+    <bpmn:participant id="Participant_ControllerProcessor_Art45"
+                      name="Controller or Processor"
+                      processRef="Process_ControllerProcessor_Art45" />
+    <bpmn:participant id="Participant_EUAuthority_Art45"
+                      name="European Union adequacy authority"
+                      processRef="Process_EUAuthority_Art45" />
+    <bpmn:participant id="Participant_Recipient_Art45"
+                      name="Recipient in third country or international organisation" />
+
+    <bpmn:messageFlow id="MessageFlow_PublishAdequacyAuthorization_Art45"
+                      sourceRef="SendTask_PublishAdequacyAuthorization_Art45"
+                      targetRef="ReceiveTask_ConsultAdequacyAuthorization_Art45" />
+    <bpmn:messageFlow id="MessageFlow_TransferPersonalData_Art45"
+                      sourceRef="SendTask_TransferPersonalData_Art45"
+                      targetRef="Participant_Recipient_Art45" />
+    <bpmn:messageFlow id="MessageFlow_PublishContinuedAuthorization_Art45"
+                      sourceRef="SendTask_PublishContinuedAuthorization_Art45"
+                      targetRef="Participant_ControllerProcessor_Art45" />
+    <bpmn:messageFlow id="MessageFlow_PublishAuthorizationChange_Art45"
+                      sourceRef="SendTask_PublishAuthorizationChange_Art45"
+                      targetRef="Participant_ControllerProcessor_Art45" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_ControllerProcessor_Art45"
+                name="Transferring personal data on the basis of an adequacy authorization"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 45 based on DAPRECO LegalRuleML statements242-243.
+      The model captures the permission to transfer personal data when a destination is covered by
+      an authorization adopted by the European Union and adds a review point after four years.
+      The review loop is an explicit BPMN interpretation of statements243Formula1, which encodes
+      that the authorization no longer remains in force after a four-year threshold unless it is
+      positively maintained.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_NeedInternationalTransfer_Art45"
+                     name="Need to transfer personal data outside the Union">
+      <bpmn:outgoing>Flow_Start_To_GatewayDestinationType_Art45</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_DestinationType_Art45"
+                           name="What is the transfer destination type?">
+      <bpmn:incoming>Flow_Start_To_GatewayDestinationType_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayDestinationType_To_IdentifyThirdCountry_Art45</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayDestinationType_To_IdentifyCoveredTerritory_Art45</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayDestinationType_To_IdentifyInternationalOrganisation_Art45</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_IdentifyThirdCountry_Art45"
+               name="Identify the destination as a third country">
+      <bpmn:incoming>Flow_GatewayDestinationType_To_IdentifyThirdCountry_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_IdentifyThirdCountry_To_GatewayDestinationMerged_Art45</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_IdentifyCoveredTerritory_Art45"
+               name="Identify the destination as a territory or sector within a third country">
+      <bpmn:incoming>Flow_GatewayDestinationType_To_IdentifyCoveredTerritory_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_IdentifyCoveredTerritory_To_GatewayDestinationMerged_Art45</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_IdentifyInternationalOrganisation_Art45"
+               name="Identify the destination as an international organisation">
+      <bpmn:incoming>Flow_GatewayDestinationType_To_IdentifyInternationalOrganisation_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_IdentifyInternationalOrganisation_To_GatewayDestinationMerged_Art45</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_DestinationMerged_Art45">
+      <bpmn:incoming>Flow_IdentifyThirdCountry_To_GatewayDestinationMerged_Art45</bpmn:incoming>
+      <bpmn:incoming>Flow_IdentifyCoveredTerritory_To_GatewayDestinationMerged_Art45</bpmn:incoming>
+      <bpmn:incoming>Flow_IdentifyInternationalOrganisation_To_GatewayDestinationMerged_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayDestinationMerged_To_ConsultAuthorization_Art45</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:receiveTask id="ReceiveTask_ConsultAdequacyAuthorization_Art45"
+                      name="Consult the published adequacy authorization for the destination">
+      <bpmn:incoming>Flow_GatewayDestinationMerged_To_ConsultAuthorization_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_ConsultAuthorization_To_GatewayAuthorizationInForce_Art45</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:exclusiveGateway id="Gateway_AuthorizationInForce_Art45"
+                           name="Is an adequacy authorization in force for the destination?">
+      <bpmn:incoming>Flow_ConsultAuthorization_To_GatewayAuthorizationInForce_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAuthorizationInForce_To_EndNoAdequacyTransfer_Art45</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAuthorizationInForce_To_TransferPersonalData_Art45</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_NoAdequacyTransfer_Art45"
+                   name="No transfer based on adequacy authorization is permitted">
+      <bpmn:incoming>Flow_GatewayAuthorizationInForce_To_EndNoAdequacyTransfer_Art45</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sendTask id="SendTask_TransferPersonalData_Art45"
+                   name="Transfer personal data to the recipient under the adequacy authorization">
+      <bpmn:incoming>Flow_GatewayAuthorizationInForce_To_TransferPersonalData_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_TransferPersonalData_To_EndTransferCompleted_Art45</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_TransferCompleted_Art45"
+                   name="Transfer completed on the basis of adequacy">
+      <bpmn:incoming>Flow_TransferPersonalData_To_EndTransferCompleted_Art45</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_GatewayDestinationType_Art45"
+                       sourceRef="StartEvent_NeedInternationalTransfer_Art45"
+                       targetRef="Gateway_DestinationType_Art45" />
+    <bpmn:sequenceFlow id="Flow_GatewayDestinationType_To_IdentifyThirdCountry_Art45"
+                       name="Third country"
+                       sourceRef="Gateway_DestinationType_Art45"
+                       targetRef="Task_IdentifyThirdCountry_Art45" />
+    <bpmn:sequenceFlow id="Flow_GatewayDestinationType_To_IdentifyCoveredTerritory_Art45"
+                       name="Territory or sector"
+                       sourceRef="Gateway_DestinationType_Art45"
+                       targetRef="Task_IdentifyCoveredTerritory_Art45" />
+    <bpmn:sequenceFlow id="Flow_GatewayDestinationType_To_IdentifyInternationalOrganisation_Art45"
+                       name="International organisation"
+                       sourceRef="Gateway_DestinationType_Art45"
+                       targetRef="Task_IdentifyInternationalOrganisation_Art45" />
+    <bpmn:sequenceFlow id="Flow_IdentifyThirdCountry_To_GatewayDestinationMerged_Art45"
+                       sourceRef="Task_IdentifyThirdCountry_Art45"
+                       targetRef="Gateway_DestinationMerged_Art45" />
+    <bpmn:sequenceFlow id="Flow_IdentifyCoveredTerritory_To_GatewayDestinationMerged_Art45"
+                       sourceRef="Task_IdentifyCoveredTerritory_Art45"
+                       targetRef="Gateway_DestinationMerged_Art45" />
+    <bpmn:sequenceFlow id="Flow_IdentifyInternationalOrganisation_To_GatewayDestinationMerged_Art45"
+                       sourceRef="Task_IdentifyInternationalOrganisation_Art45"
+                       targetRef="Gateway_DestinationMerged_Art45" />
+    <bpmn:sequenceFlow id="Flow_GatewayDestinationMerged_To_ConsultAuthorization_Art45"
+                       sourceRef="Gateway_DestinationMerged_Art45"
+                       targetRef="ReceiveTask_ConsultAdequacyAuthorization_Art45" />
+    <bpmn:sequenceFlow id="Flow_ConsultAuthorization_To_GatewayAuthorizationInForce_Art45"
+                       sourceRef="ReceiveTask_ConsultAdequacyAuthorization_Art45"
+                       targetRef="Gateway_AuthorizationInForce_Art45" />
+    <bpmn:sequenceFlow id="Flow_GatewayAuthorizationInForce_To_EndNoAdequacyTransfer_Art45"
+                       name="No"
+                       sourceRef="Gateway_AuthorizationInForce_Art45"
+                       targetRef="EndEvent_NoAdequacyTransfer_Art45" />
+    <bpmn:sequenceFlow id="Flow_GatewayAuthorizationInForce_To_TransferPersonalData_Art45"
+                       name="Yes"
+                       sourceRef="Gateway_AuthorizationInForce_Art45"
+                       targetRef="SendTask_TransferPersonalData_Art45" />
+    <bpmn:sequenceFlow id="Flow_TransferPersonalData_To_EndTransferCompleted_Art45"
+                       sourceRef="SendTask_TransferPersonalData_Art45"
+                       targetRef="EndEvent_TransferCompleted_Art45" />
+  </bpmn:process>
+
+  <bpmn:process id="Process_EUAuthority_Art45"
+                name="Adopting and reviewing adequacy authorization"
+                isExecutable="false">
+    <bpmn:documentation>
+      This process makes the external adequacy-decision lifecycle explicit for BPMN readability.
+      The adoption step mirrors the authorization used in statements242, while the timed review
+      point reflects statements243Formula1 and is modeled as a four-year review that can either
+      keep the authorization in force or change it.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_AssessDestination_Art45"
+                     name="Need to assess protection in a destination">
+      <bpmn:outgoing>Flow_StartEU_To_AssessProtection_Art45</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_AssessProtectionLevel_Art45"
+               name="Assess the level of protection in the destination">
+      <bpmn:incoming>Flow_StartEU_To_AssessProtection_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_AssessProtection_To_GatewayAdequate_Art45</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_AdequateProtection_Art45"
+                           name="Is the level of protection adequate?">
+      <bpmn:incoming>Flow_AssessProtection_To_GatewayAdequate_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAdequate_To_EndNoAuthorization_Art45</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAdequate_To_PublishAuthorization_Art45</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_NoAuthorizationAdopted_Art45"
+                   name="No adequacy authorization adopted">
+      <bpmn:incoming>Flow_GatewayAdequate_To_EndNoAuthorization_Art45</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sendTask id="SendTask_PublishAdequacyAuthorization_Art45"
+                   name="Publish the adequacy authorization for the destination">
+      <bpmn:incoming>Flow_GatewayAdequate_To_PublishAuthorization_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_PublishAuthorization_To_FourYearReview_Art45</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:intermediateCatchEvent id="IntermediateCatchEvent_FourYearReview_Art45"
+                                 name="Four years pass since the adequacy authorization">
+      <bpmn:incoming>Flow_PublishAuthorization_To_FourYearReview_Art45</bpmn:incoming>
+      <bpmn:incoming>Flow_PublishContinuedAuthorization_To_FourYearReview_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_FourYearReview_To_ReviewAuthorization_Art45</bpmn:outgoing>
+      <bpmn:timerEventDefinition />
+    </bpmn:intermediateCatchEvent>
+
+    <bpmn:task id="Task_ReviewAuthorization_Art45"
+               name="Review whether the adequacy authorization should remain in force">
+      <bpmn:incoming>Flow_FourYearReview_To_ReviewAuthorization_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReviewAuthorization_To_GatewayMaintainAuthorization_Art45</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_MaintainAuthorization_Art45"
+                           name="Should the adequacy authorization remain in force?">
+      <bpmn:incoming>Flow_ReviewAuthorization_To_GatewayMaintainAuthorization_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayMaintainAuthorization_To_PublishAuthorizationChange_Art45</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayMaintainAuthorization_To_PublishContinuedAuthorization_Art45</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="SendTask_PublishAuthorizationChange_Art45"
+                   name="Publish an amendment, suspension, or revocation of the adequacy authorization">
+      <bpmn:incoming>Flow_GatewayMaintainAuthorization_To_PublishAuthorizationChange_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_PublishAuthorizationChange_To_EndAuthorizationChanged_Art45</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_AuthorizationChanged_Art45"
+                   name="Adequacy authorization changed or no longer in force">
+      <bpmn:incoming>Flow_PublishAuthorizationChange_To_EndAuthorizationChanged_Art45</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sendTask id="SendTask_PublishContinuedAuthorization_Art45"
+                   name="Publish that the adequacy authorization remains in force">
+      <bpmn:incoming>Flow_GatewayMaintainAuthorization_To_PublishContinuedAuthorization_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_PublishContinuedAuthorization_To_FourYearReview_Art45</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:sequenceFlow id="Flow_StartEU_To_AssessProtection_Art45"
+                       sourceRef="StartEvent_AssessDestination_Art45"
+                       targetRef="Task_AssessProtectionLevel_Art45" />
+    <bpmn:sequenceFlow id="Flow_AssessProtection_To_GatewayAdequate_Art45"
+                       sourceRef="Task_AssessProtectionLevel_Art45"
+                       targetRef="Gateway_AdequateProtection_Art45" />
+    <bpmn:sequenceFlow id="Flow_GatewayAdequate_To_EndNoAuthorization_Art45"
+                       name="No"
+                       sourceRef="Gateway_AdequateProtection_Art45"
+                       targetRef="EndEvent_NoAuthorizationAdopted_Art45" />
+    <bpmn:sequenceFlow id="Flow_GatewayAdequate_To_PublishAuthorization_Art45"
+                       name="Yes"
+                       sourceRef="Gateway_AdequateProtection_Art45"
+                       targetRef="SendTask_PublishAdequacyAuthorization_Art45" />
+    <bpmn:sequenceFlow id="Flow_PublishAuthorization_To_FourYearReview_Art45"
+                       sourceRef="SendTask_PublishAdequacyAuthorization_Art45"
+                       targetRef="IntermediateCatchEvent_FourYearReview_Art45" />
+    <bpmn:sequenceFlow id="Flow_FourYearReview_To_ReviewAuthorization_Art45"
+                       sourceRef="IntermediateCatchEvent_FourYearReview_Art45"
+                       targetRef="Task_ReviewAuthorization_Art45" />
+    <bpmn:sequenceFlow id="Flow_ReviewAuthorization_To_GatewayMaintainAuthorization_Art45"
+                       sourceRef="Task_ReviewAuthorization_Art45"
+                       targetRef="Gateway_MaintainAuthorization_Art45" />
+    <bpmn:sequenceFlow id="Flow_GatewayMaintainAuthorization_To_PublishAuthorizationChange_Art45"
+                       name="No"
+                       sourceRef="Gateway_MaintainAuthorization_Art45"
+                       targetRef="SendTask_PublishAuthorizationChange_Art45" />
+    <bpmn:sequenceFlow id="Flow_GatewayMaintainAuthorization_To_PublishContinuedAuthorization_Art45"
+                       name="Yes"
+                       sourceRef="Gateway_MaintainAuthorization_Art45"
+                       targetRef="SendTask_PublishContinuedAuthorization_Art45" />
+    <bpmn:sequenceFlow id="Flow_PublishAuthorizationChange_To_EndAuthorizationChanged_Art45"
+                       sourceRef="SendTask_PublishAuthorizationChange_Art45"
+                       targetRef="EndEvent_AuthorizationChanged_Art45" />
+    <bpmn:sequenceFlow id="Flow_PublishContinuedAuthorization_To_FourYearReview_Art45"
+                       sourceRef="SendTask_PublishContinuedAuthorization_Art45"
+                       targetRef="IntermediateCatchEvent_FourYearReview_Art45" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art45_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art45_Reviewed"
+                      bpmnElement="Collaboration_Art45_Reviewed">
+      <bpmndi:BPMNShape id="Participant_ControllerProcessor_Art45_di"
+                        bpmnElement="Participant_ControllerProcessor_Art45"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="3520" height="300" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_EUAuthority_Art45_di"
+                        bpmnElement="Participant_EUAuthority_Art45"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="390" width="3520" height="320" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Recipient_Art45_di"
+                        bpmnElement="Participant_Recipient_Art45"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="760" width="3520" height="120" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_NeedInternationalTransfer_Art45_di" bpmnElement="StartEvent_NeedInternationalTransfer_Art45">
+        <dc:Bounds x="120" y="172" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_DestinationType_Art45_di" bpmnElement="Gateway_DestinationType_Art45" isMarkerVisible="true">
+        <dc:Bounds x="240" y="165" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_IdentifyThirdCountry_Art45_di" bpmnElement="Task_IdentifyThirdCountry_Art45">
+        <dc:Bounds x="360" y="60" width="250" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_IdentifyCoveredTerritory_Art45_di" bpmnElement="Task_IdentifyCoveredTerritory_Art45">
+        <dc:Bounds x="360" y="160" width="300" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_IdentifyInternationalOrganisation_Art45_di" bpmnElement="Task_IdentifyInternationalOrganisation_Art45">
+        <dc:Bounds x="360" y="260" width="300" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_DestinationMerged_Art45_di" bpmnElement="Gateway_DestinationMerged_Art45" isMarkerVisible="true">
+        <dc:Bounds x="760" y="175" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ConsultAdequacyAuthorization_Art45_di" bpmnElement="ReceiveTask_ConsultAdequacyAuthorization_Art45">
+        <dc:Bounds x="900" y="160" width="290" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AuthorizationInForce_Art45_di" bpmnElement="Gateway_AuthorizationInForce_Art45" isMarkerVisible="true">
+        <dc:Bounds x="1280" y="175" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NoAdequacyTransfer_Art45_di" bpmnElement="EndEvent_NoAdequacyTransfer_Art45">
+        <dc:Bounds x="1460" y="82" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_TransferPersonalData_Art45_di" bpmnElement="SendTask_TransferPersonalData_Art45">
+        <dc:Bounds x="1440" y="160" width="280" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_TransferCompleted_Art45_di" bpmnElement="EndEvent_TransferCompleted_Art45">
+        <dc:Bounds x="1820" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_AssessDestination_Art45_di" bpmnElement="StartEvent_AssessDestination_Art45">
+        <dc:Bounds x="120" y="522" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessProtectionLevel_Art45_di" bpmnElement="Task_AssessProtectionLevel_Art45">
+        <dc:Bounds x="220" y="500" width="280" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AdequateProtection_Art45_di" bpmnElement="Gateway_AdequateProtection_Art45" isMarkerVisible="true">
+        <dc:Bounds x="590" y="515" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NoAuthorizationAdopted_Art45_di" bpmnElement="EndEvent_NoAuthorizationAdopted_Art45">
+        <dc:Bounds x="770" y="422" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_PublishAdequacyAuthorization_Art45_di" bpmnElement="SendTask_PublishAdequacyAuthorization_Art45">
+        <dc:Bounds x="740" y="500" width="300" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="IntermediateCatchEvent_FourYearReview_Art45_di" bpmnElement="IntermediateCatchEvent_FourYearReview_Art45">
+        <dc:Bounds x="1140" y="522" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReviewAuthorization_Art45_di" bpmnElement="Task_ReviewAuthorization_Art45">
+        <dc:Bounds x="1260" y="500" width="310" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_MaintainAuthorization_Art45_di" bpmnElement="Gateway_MaintainAuthorization_Art45" isMarkerVisible="true">
+        <dc:Bounds x="1660" y="515" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_PublishAuthorizationChange_Art45_di" bpmnElement="SendTask_PublishAuthorizationChange_Art45">
+        <dc:Bounds x="1800" y="420" width="320" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_AuthorizationChanged_Art45_di" bpmnElement="EndEvent_AuthorizationChanged_Art45">
+        <dc:Bounds x="2240" y="442" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_PublishContinuedAuthorization_Art45_di" bpmnElement="SendTask_PublishContinuedAuthorization_Art45">
+        <dc:Bounds x="1800" y="550" width="300" height="80" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_GatewayDestinationType_Art45_di" bpmnElement="Flow_Start_To_GatewayDestinationType_Art45">
+        <di:waypoint x="156" y="190" />
+        <di:waypoint x="240" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayDestinationType_To_IdentifyThirdCountry_Art45_di" bpmnElement="Flow_GatewayDestinationType_To_IdentifyThirdCountry_Art45">
+        <di:waypoint x="265" y="165" />
+        <di:waypoint x="265" y="100" />
+        <di:waypoint x="360" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayDestinationType_To_IdentifyCoveredTerritory_Art45_di" bpmnElement="Flow_GatewayDestinationType_To_IdentifyCoveredTerritory_Art45">
+        <di:waypoint x="290" y="190" />
+        <di:waypoint x="360" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayDestinationType_To_IdentifyInternationalOrganisation_Art45_di" bpmnElement="Flow_GatewayDestinationType_To_IdentifyInternationalOrganisation_Art45">
+        <di:waypoint x="265" y="215" />
+        <di:waypoint x="265" y="300" />
+        <di:waypoint x="360" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_IdentifyThirdCountry_To_GatewayDestinationMerged_Art45_di" bpmnElement="Flow_IdentifyThirdCountry_To_GatewayDestinationMerged_Art45">
+        <di:waypoint x="610" y="100" />
+        <di:waypoint x="785" y="100" />
+        <di:waypoint x="785" y="175" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_IdentifyCoveredTerritory_To_GatewayDestinationMerged_Art45_di" bpmnElement="Flow_IdentifyCoveredTerritory_To_GatewayDestinationMerged_Art45">
+        <di:waypoint x="660" y="200" />
+        <di:waypoint x="760" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_IdentifyInternationalOrganisation_To_GatewayDestinationMerged_Art45_di" bpmnElement="Flow_IdentifyInternationalOrganisation_To_GatewayDestinationMerged_Art45">
+        <di:waypoint x="660" y="300" />
+        <di:waypoint x="785" y="300" />
+        <di:waypoint x="785" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayDestinationMerged_To_ConsultAuthorization_Art45_di" bpmnElement="Flow_GatewayDestinationMerged_To_ConsultAuthorization_Art45">
+        <di:waypoint x="810" y="200" />
+        <di:waypoint x="900" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ConsultAuthorization_To_GatewayAuthorizationInForce_Art45_di" bpmnElement="Flow_ConsultAuthorization_To_GatewayAuthorizationInForce_Art45">
+        <di:waypoint x="1190" y="200" />
+        <di:waypoint x="1280" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAuthorizationInForce_To_EndNoAdequacyTransfer_Art45_di" bpmnElement="Flow_GatewayAuthorizationInForce_To_EndNoAdequacyTransfer_Art45">
+        <di:waypoint x="1305" y="175" />
+        <di:waypoint x="1305" y="100" />
+        <di:waypoint x="1460" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAuthorizationInForce_To_TransferPersonalData_Art45_di" bpmnElement="Flow_GatewayAuthorizationInForce_To_TransferPersonalData_Art45">
+        <di:waypoint x="1330" y="200" />
+        <di:waypoint x="1440" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TransferPersonalData_To_EndTransferCompleted_Art45_di" bpmnElement="Flow_TransferPersonalData_To_EndTransferCompleted_Art45">
+        <di:waypoint x="1720" y="200" />
+        <di:waypoint x="1820" y="200" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_StartEU_To_AssessProtection_Art45_di" bpmnElement="Flow_StartEU_To_AssessProtection_Art45">
+        <di:waypoint x="156" y="540" />
+        <di:waypoint x="220" y="540" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AssessProtection_To_GatewayAdequate_Art45_di" bpmnElement="Flow_AssessProtection_To_GatewayAdequate_Art45">
+        <di:waypoint x="500" y="540" />
+        <di:waypoint x="590" y="540" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAdequate_To_EndNoAuthorization_Art45_di" bpmnElement="Flow_GatewayAdequate_To_EndNoAuthorization_Art45">
+        <di:waypoint x="615" y="515" />
+        <di:waypoint x="615" y="440" />
+        <di:waypoint x="770" y="440" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAdequate_To_PublishAuthorization_Art45_di" bpmnElement="Flow_GatewayAdequate_To_PublishAuthorization_Art45">
+        <di:waypoint x="640" y="540" />
+        <di:waypoint x="740" y="540" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_PublishAuthorization_To_FourYearReview_Art45_di" bpmnElement="Flow_PublishAuthorization_To_FourYearReview_Art45">
+        <di:waypoint x="1040" y="540" />
+        <di:waypoint x="1140" y="540" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_FourYearReview_To_ReviewAuthorization_Art45_di" bpmnElement="Flow_FourYearReview_To_ReviewAuthorization_Art45">
+        <di:waypoint x="1176" y="540" />
+        <di:waypoint x="1260" y="540" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReviewAuthorization_To_GatewayMaintainAuthorization_Art45_di" bpmnElement="Flow_ReviewAuthorization_To_GatewayMaintainAuthorization_Art45">
+        <di:waypoint x="1570" y="540" />
+        <di:waypoint x="1660" y="540" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayMaintainAuthorization_To_PublishAuthorizationChange_Art45_di" bpmnElement="Flow_GatewayMaintainAuthorization_To_PublishAuthorizationChange_Art45">
+        <di:waypoint x="1685" y="515" />
+        <di:waypoint x="1685" y="460" />
+        <di:waypoint x="1800" y="460" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayMaintainAuthorization_To_PublishContinuedAuthorization_Art45_di" bpmnElement="Flow_GatewayMaintainAuthorization_To_PublishContinuedAuthorization_Art45">
+        <di:waypoint x="1710" y="540" />
+        <di:waypoint x="1800" y="590" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_PublishAuthorizationChange_To_EndAuthorizationChanged_Art45_di" bpmnElement="Flow_PublishAuthorizationChange_To_EndAuthorizationChanged_Art45">
+        <di:waypoint x="2120" y="460" />
+        <di:waypoint x="2240" y="460" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_PublishContinuedAuthorization_To_FourYearReview_Art45_di" bpmnElement="Flow_PublishContinuedAuthorization_To_FourYearReview_Art45">
+        <di:waypoint x="2100" y="590" />
+        <di:waypoint x="2160" y="590" />
+        <di:waypoint x="2160" y="660" />
+        <di:waypoint x="1158" y="660" />
+        <di:waypoint x="1158" y="558" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_PublishAdequacyAuthorization_Art45_di" bpmnElement="MessageFlow_PublishAdequacyAuthorization_Art45">
+        <di:waypoint x="890" y="500" />
+        <di:waypoint x="890" y="240" />
+        <di:waypoint x="1045" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_TransferPersonalData_Art45_di" bpmnElement="MessageFlow_TransferPersonalData_Art45">
+        <di:waypoint x="1580" y="240" />
+        <di:waypoint x="1580" y="760" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_PublishContinuedAuthorization_Art45_di" bpmnElement="MessageFlow_PublishContinuedAuthorization_Art45">
+        <di:waypoint x="1950" y="550" />
+        <di:waypoint x="1950" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_PublishAuthorizationChange_Art45_di" bpmnElement="MessageFlow_PublishAuthorizationChange_Art45">
+        <di:waypoint x="1960" y="420" />
+        <di:waypoint x="1960" y="340" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art48_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art48_Reviewed">
+    <bpmn:participant id="Participant_ControllerProcessor_Art48"
+                      name="Controller or Processor"
+                      processRef="Process_ControllerProcessor_Art48" />
+    <bpmn:participant id="Participant_ThirdCountryAuthority_Art48"
+                      name="Third-country court or administrative authority" />
+
+    <bpmn:messageFlow id="MessageFlow_RequestDecision_Art48"
+                      sourceRef="Participant_ThirdCountryAuthority_Art48"
+                      targetRef="ReceiveTask_ReceiveThirdCountryRequest_Art48" />
+    <bpmn:messageFlow id="MessageFlow_TransferDisclosure_Art48"
+                      sourceRef="SendTask_TransferOrDiscloseData_Art48"
+                      targetRef="Participant_ThirdCountryAuthority_Art48" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_ControllerProcessor_Art48"
+                name="Handling a third-country request for transfer or disclosure"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 48 based on DAPRECO LegalRuleML
+      statements253 and checked against the official text of Article 48 and the
+      EDPB final Guidelines 02/2024 on Article 48 GDPR dated 5 June 2025. The
+      DAPRECO rule compactly encodes a third-country legal claim that implies a
+      transfer to a third country plus an agreement relation between that third
+      country and the European Union. The BPMN therefore centers on the core
+      Article 48 decision: a third-country judgment or administrative decision is
+      only recognised or enforceable if it is based on an international agreement
+      in force between the requesting third country and the Union or a Member State.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_AssessThirdCountryRequest_Art48"
+                     name="Need to assess a third-country judgment or administrative decision">
+      <bpmn:outgoing>Flow_Start_To_ReceiveThirdCountryRequest_Art48</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveThirdCountryRequest_Art48"
+                      name="Receive the third-country request requiring transfer or disclosure">
+      <bpmn:incoming>Flow_Start_To_ReceiveThirdCountryRequest_Art48</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveThirdCountryRequest_To_GatewayAgreement_Art48</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:exclusiveGateway id="Gateway_InternationalAgreement_Art48"
+                           name="Is the request based on an international agreement in force between the requesting third country and the Union or a Member State?">
+      <bpmn:incoming>Flow_ReceiveThirdCountryRequest_To_GatewayAgreement_Art48</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAgreement_To_EndNotRecognised_Art48</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAgreement_To_ImplementAgreementBasis_Art48</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_NotRecognised_Art48"
+                   name="The request is not recognised or enforceable under Article 48; assess any other Chapter V ground separately">
+      <bpmn:incoming>Flow_GatewayAgreement_To_EndNotRecognised_Art48</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:task id="Task_ImplementAgreementBasis_Art48"
+               name="Implement the legal claim under the applicable international agreement">
+      <bpmn:incoming>Flow_GatewayAgreement_To_ImplementAgreementBasis_Art48</bpmn:incoming>
+      <bpmn:outgoing>Flow_ImplementAgreementBasis_To_TransferOrDiscloseData_Art48</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="SendTask_TransferOrDiscloseData_Art48"
+                   name="Transfer or disclose the personal data as permitted by the agreement">
+      <bpmn:incoming>Flow_ImplementAgreementBasis_To_TransferOrDiscloseData_Art48</bpmn:incoming>
+      <bpmn:outgoing>Flow_TransferOrDiscloseData_To_EndCompleted_Art48</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_Completed_Art48"
+                   name="Transfer or disclosure completed on the agreement basis">
+      <bpmn:incoming>Flow_TransferOrDiscloseData_To_EndCompleted_Art48</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_ReceiveThirdCountryRequest_Art48" sourceRef="StartEvent_AssessThirdCountryRequest_Art48" targetRef="ReceiveTask_ReceiveThirdCountryRequest_Art48" />
+    <bpmn:sequenceFlow id="Flow_ReceiveThirdCountryRequest_To_GatewayAgreement_Art48" sourceRef="ReceiveTask_ReceiveThirdCountryRequest_Art48" targetRef="Gateway_InternationalAgreement_Art48" />
+    <bpmn:sequenceFlow id="Flow_GatewayAgreement_To_EndNotRecognised_Art48" name="No" sourceRef="Gateway_InternationalAgreement_Art48" targetRef="EndEvent_NotRecognised_Art48" />
+    <bpmn:sequenceFlow id="Flow_GatewayAgreement_To_ImplementAgreementBasis_Art48" name="Yes" sourceRef="Gateway_InternationalAgreement_Art48" targetRef="Task_ImplementAgreementBasis_Art48" />
+    <bpmn:sequenceFlow id="Flow_ImplementAgreementBasis_To_TransferOrDiscloseData_Art48" sourceRef="Task_ImplementAgreementBasis_Art48" targetRef="SendTask_TransferOrDiscloseData_Art48" />
+    <bpmn:sequenceFlow id="Flow_TransferOrDiscloseData_To_EndCompleted_Art48" sourceRef="SendTask_TransferOrDiscloseData_Art48" targetRef="EndEvent_Completed_Art48" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art48_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art48_Reviewed"
+                      bpmnElement="Collaboration_Art48_Reviewed">
+      <bpmndi:BPMNShape id="Participant_ControllerProcessor_Art48_di"
+                        bpmnElement="Participant_ControllerProcessor_Art48"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="3100" height="500" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_ThirdCountryAuthority_Art48_di"
+                        bpmnElement="Participant_ThirdCountryAuthority_Art48"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="600" width="3100" height="120" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_AssessThirdCountryRequest_Art48_di" bpmnElement="StartEvent_AssessThirdCountryRequest_Art48">
+        <dc:Bounds x="120" y="272" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveThirdCountryRequest_Art48_di" bpmnElement="ReceiveTask_ReceiveThirdCountryRequest_Art48">
+        <dc:Bounds x="250" y="250" width="350" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_InternationalAgreement_Art48_di" bpmnElement="Gateway_InternationalAgreement_Art48" isMarkerVisible="true">
+        <dc:Bounds x="730" y="265" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NotRecognised_Art48_di" bpmnElement="EndEvent_NotRecognised_Art48">
+        <dc:Bounds x="980" y="112" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ImplementAgreementBasis_Art48_di" bpmnElement="Task_ImplementAgreementBasis_Art48">
+        <dc:Bounds x="940" y="250" width="360" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_TransferOrDiscloseData_Art48_di" bpmnElement="SendTask_TransferOrDiscloseData_Art48">
+        <dc:Bounds x="1450" y="250" width="350" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Completed_Art48_di" bpmnElement="EndEvent_Completed_Art48">
+        <dc:Bounds x="1940" y="272" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_ReceiveThirdCountryRequest_Art48_di" bpmnElement="Flow_Start_To_ReceiveThirdCountryRequest_Art48">
+        <di:waypoint x="156" y="290" />
+        <di:waypoint x="250" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveThirdCountryRequest_To_GatewayAgreement_Art48_di" bpmnElement="Flow_ReceiveThirdCountryRequest_To_GatewayAgreement_Art48">
+        <di:waypoint x="600" y="290" />
+        <di:waypoint x="730" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAgreement_To_EndNotRecognised_Art48_di" bpmnElement="Flow_GatewayAgreement_To_EndNotRecognised_Art48">
+        <di:waypoint x="755" y="265" />
+        <di:waypoint x="755" y="130" />
+        <di:waypoint x="980" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAgreement_To_ImplementAgreementBasis_Art48_di" bpmnElement="Flow_GatewayAgreement_To_ImplementAgreementBasis_Art48">
+        <di:waypoint x="780" y="290" />
+        <di:waypoint x="940" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ImplementAgreementBasis_To_TransferOrDiscloseData_Art48_di" bpmnElement="Flow_ImplementAgreementBasis_To_TransferOrDiscloseData_Art48">
+        <di:waypoint x="1300" y="290" />
+        <di:waypoint x="1450" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TransferOrDiscloseData_To_EndCompleted_Art48_di" bpmnElement="Flow_TransferOrDiscloseData_To_EndCompleted_Art48">
+        <di:waypoint x="1800" y="290" />
+        <di:waypoint x="1940" y="290" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_RequestDecision_Art48_di" bpmnElement="MessageFlow_RequestDecision_Art48">
+        <di:waypoint x="425" y="600" />
+        <di:waypoint x="425" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_TransferDisclosure_Art48_di" bpmnElement="MessageFlow_TransferDisclosure_Art48">
+        <di:waypoint x="1625" y="330" />
+        <di:waypoint x="1625" y="600" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
