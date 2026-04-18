@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art8_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art8_Reviewed">
+    <bpmn:participant id="Participant_Controller_Art8"
+                      name="Controller"
+                      processRef="Process_Controller_Art8" />
+    <bpmn:participant id="Participant_Child_Art8"
+                      name="Child" />
+    <bpmn:participant id="Participant_ParentalResponsibility_Art8"
+                      name="Holder of Parental Responsibility" />
+
+    <bpmn:messageFlow id="MessageFlow_RequestChildConsent_Art8"
+                      sourceRef="SendTask_RequestChildConsent_Art8"
+                      targetRef="Participant_Child_Art8" />
+    <bpmn:messageFlow id="MessageFlow_ReceiveChildConsent_Art8"
+                      sourceRef="Participant_Child_Art8"
+                      targetRef="ReceiveTask_ReceiveChildConsent_Art8" />
+    <bpmn:messageFlow id="MessageFlow_RequestParentalAuthorisation_Art8"
+                      sourceRef="SendTask_RequestParentalAuthorisation_Art8"
+                      targetRef="Participant_ParentalResponsibility_Art8" />
+    <bpmn:messageFlow id="MessageFlow_ReceiveParentalAuthorisation_Art8"
+                      sourceRef="Participant_ParentalResponsibility_Art8"
+                      targetRef="ReceiveTask_ReceiveParentalAuthorisation_Art8" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_Controller_Art8"
+                name="Applying Article 8 child-consent conditions"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 8 based on DAPRECO LegalRuleML
+      statements17-18. The local XML covers the default minimum consent age of 16 in
+      the absence of a Member State exception, the under-age exception path, the
+      lawfulness of consent or authorisation by the holder of parental responsibility,
+      and the controller's duty to make reasonable efforts to verify that consent or
+      authorisation. The BPMN therefore models Article 8(1)-(2). Article 8(3) is not
+      modeled because it is not present in the local XML file.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_AssessArticle8_Art8"
+                     name="Need to assess consent for a child-facing information society service">
+      <bpmn:outgoing>Flow_Start_To_TaskAssessApplicability_Art8</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_AssessApplicabilityAndAge_Art8"
+               name="Assess whether Article 8 applies and determine the applicable minimum consent age">
+      <bpmn:incoming>Flow_Start_To_TaskAssessApplicability_Art8</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskAssessApplicability_To_GatewayArticle8Applies_Art8</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_Article8Applies_Art8"
+                           name="Do Article 8 child-consent conditions apply?">
+      <bpmn:incoming>Flow_TaskAssessApplicability_To_GatewayArticle8Applies_Art8</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayArticle8Applies_To_GatewayChildAge_Art8</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayArticle8Applies_To_EndArticle8NotApplicable_Art8</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_ChildAge_Art8"
+                           name="Is the child at least the applicable minimum consent age?">
+      <bpmn:incoming>Flow_GatewayArticle8Applies_To_GatewayChildAge_Art8</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayChildAge_To_SendTaskRequestChildConsent_Art8</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayChildAge_To_SendTaskRequestParentalAuthorisation_Art8</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="SendTask_RequestChildConsent_Art8"
+                   name="Request consent from the child">
+      <bpmn:incoming>Flow_GatewayChildAge_To_SendTaskRequestChildConsent_Art8</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendTaskRequestChildConsent_To_ReceiveTaskReceiveChildConsent_Art8</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveChildConsent_Art8"
+                      name="Receive the child's consent">
+      <bpmn:incoming>Flow_SendTaskRequestChildConsent_To_ReceiveTaskReceiveChildConsent_Art8</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveTaskReceiveChildConsent_To_GatewayChildConsentReceived_Art8</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:exclusiveGateway id="Gateway_ChildConsentReceived_Art8"
+                           name="Did the child give consent?">
+      <bpmn:incoming>Flow_ReceiveTaskReceiveChildConsent_To_GatewayChildConsentReceived_Art8</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayChildConsentReceived_To_EndLawfulChildConsent_Art8</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayChildConsentReceived_To_EndNoValidConsent_Art8</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="SendTask_RequestParentalAuthorisation_Art8"
+                   name="Request consent or authorisation from the holder of parental responsibility">
+      <bpmn:incoming>Flow_GatewayChildAge_To_SendTaskRequestParentalAuthorisation_Art8</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendTaskRequestParentalAuthorisation_To_ReceiveTaskReceiveParentalAuthorisation_Art8</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveParentalAuthorisation_Art8"
+                      name="Receive consent or authorisation from the holder of parental responsibility">
+      <bpmn:incoming>Flow_SendTaskRequestParentalAuthorisation_To_ReceiveTaskReceiveParentalAuthorisation_Art8</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveTaskReceiveParentalAuthorisation_To_GatewayParentalAuthorisationReceived_Art8</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:exclusiveGateway id="Gateway_ParentalAuthorisationReceived_Art8"
+                           name="Was consent given or authorised by the holder of parental responsibility?">
+      <bpmn:incoming>Flow_ReceiveTaskReceiveParentalAuthorisation_To_GatewayParentalAuthorisationReceived_Art8</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayParentalAuthorisationReceived_To_TaskVerifyReasonableEfforts_Art8</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayParentalAuthorisationReceived_To_EndNoValidConsent_Art8</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_VerifyReasonableEfforts_Art8"
+               name="Verify with reasonable efforts that consent or authorisation was given by the holder of parental responsibility">
+      <bpmn:incoming>Flow_GatewayParentalAuthorisationReceived_To_TaskVerifyReasonableEfforts_Art8</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskVerifyReasonableEfforts_To_EndLawfulParentalAuthorisation_Art8</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_LawfulChildConsent_Art8"
+                   name="Processing is lawful based on the child's consent">
+      <bpmn:incoming>Flow_GatewayChildConsentReceived_To_EndLawfulChildConsent_Art8</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_LawfulParentalAuthorisation_Art8"
+                   name="Processing is lawful based on parental consent or authorisation">
+      <bpmn:incoming>Flow_TaskVerifyReasonableEfforts_To_EndLawfulParentalAuthorisation_Art8</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_NoValidConsent_Art8"
+                   name="No valid Article 8 consent route is available">
+      <bpmn:incoming>Flow_GatewayChildConsentReceived_To_EndNoValidConsent_Art8</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayParentalAuthorisationReceived_To_EndNoValidConsent_Art8</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_Article8NotApplicable_Art8"
+                   name="Article 8 child-consent conditions do not apply">
+      <bpmn:incoming>Flow_GatewayArticle8Applies_To_EndArticle8NotApplicable_Art8</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_TaskAssessApplicability_Art8" sourceRef="StartEvent_AssessArticle8_Art8" targetRef="Task_AssessApplicabilityAndAge_Art8" />
+    <bpmn:sequenceFlow id="Flow_TaskAssessApplicability_To_GatewayArticle8Applies_Art8" sourceRef="Task_AssessApplicabilityAndAge_Art8" targetRef="Gateway_Article8Applies_Art8" />
+    <bpmn:sequenceFlow id="Flow_GatewayArticle8Applies_To_GatewayChildAge_Art8" name="Yes" sourceRef="Gateway_Article8Applies_Art8" targetRef="Gateway_ChildAge_Art8" />
+    <bpmn:sequenceFlow id="Flow_GatewayArticle8Applies_To_EndArticle8NotApplicable_Art8" name="No" sourceRef="Gateway_Article8Applies_Art8" targetRef="EndEvent_Article8NotApplicable_Art8" />
+    <bpmn:sequenceFlow id="Flow_GatewayChildAge_To_SendTaskRequestChildConsent_Art8" name="Yes" sourceRef="Gateway_ChildAge_Art8" targetRef="SendTask_RequestChildConsent_Art8" />
+    <bpmn:sequenceFlow id="Flow_GatewayChildAge_To_SendTaskRequestParentalAuthorisation_Art8" name="No" sourceRef="Gateway_ChildAge_Art8" targetRef="SendTask_RequestParentalAuthorisation_Art8" />
+    <bpmn:sequenceFlow id="Flow_SendTaskRequestChildConsent_To_ReceiveTaskReceiveChildConsent_Art8" sourceRef="SendTask_RequestChildConsent_Art8" targetRef="ReceiveTask_ReceiveChildConsent_Art8" />
+    <bpmn:sequenceFlow id="Flow_ReceiveTaskReceiveChildConsent_To_GatewayChildConsentReceived_Art8" sourceRef="ReceiveTask_ReceiveChildConsent_Art8" targetRef="Gateway_ChildConsentReceived_Art8" />
+    <bpmn:sequenceFlow id="Flow_GatewayChildConsentReceived_To_EndLawfulChildConsent_Art8" name="Yes" sourceRef="Gateway_ChildConsentReceived_Art8" targetRef="EndEvent_LawfulChildConsent_Art8" />
+    <bpmn:sequenceFlow id="Flow_GatewayChildConsentReceived_To_EndNoValidConsent_Art8" name="No" sourceRef="Gateway_ChildConsentReceived_Art8" targetRef="EndEvent_NoValidConsent_Art8" />
+    <bpmn:sequenceFlow id="Flow_SendTaskRequestParentalAuthorisation_To_ReceiveTaskReceiveParentalAuthorisation_Art8" sourceRef="SendTask_RequestParentalAuthorisation_Art8" targetRef="ReceiveTask_ReceiveParentalAuthorisation_Art8" />
+    <bpmn:sequenceFlow id="Flow_ReceiveTaskReceiveParentalAuthorisation_To_GatewayParentalAuthorisationReceived_Art8" sourceRef="ReceiveTask_ReceiveParentalAuthorisation_Art8" targetRef="Gateway_ParentalAuthorisationReceived_Art8" />
+    <bpmn:sequenceFlow id="Flow_GatewayParentalAuthorisationReceived_To_TaskVerifyReasonableEfforts_Art8" name="Yes" sourceRef="Gateway_ParentalAuthorisationReceived_Art8" targetRef="Task_VerifyReasonableEfforts_Art8" />
+    <bpmn:sequenceFlow id="Flow_GatewayParentalAuthorisationReceived_To_EndNoValidConsent_Art8" name="No" sourceRef="Gateway_ParentalAuthorisationReceived_Art8" targetRef="EndEvent_NoValidConsent_Art8" />
+    <bpmn:sequenceFlow id="Flow_TaskVerifyReasonableEfforts_To_EndLawfulParentalAuthorisation_Art8" sourceRef="Task_VerifyReasonableEfforts_Art8" targetRef="EndEvent_LawfulParentalAuthorisation_Art8" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art8_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art8_Reviewed"
+                      bpmnElement="Collaboration_Art8_Reviewed">
+      <bpmndi:BPMNShape id="Participant_Controller_Art8_di" bpmnElement="Participant_Controller_Art8" isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="4200" height="620" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Child_Art8_di" bpmnElement="Participant_Child_Art8" isHorizontal="true">
+        <dc:Bounds x="60" y="720" width="4200" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_ParentalResponsibility_Art8_di" bpmnElement="Participant_ParentalResponsibility_Art8" isHorizontal="true">
+        <dc:Bounds x="60" y="880" width="4200" height="120" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_AssessArticle8_Art8_di" bpmnElement="StartEvent_AssessArticle8_Art8">
+        <dc:Bounds x="120" y="312" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessApplicabilityAndAge_Art8_di" bpmnElement="Task_AssessApplicabilityAndAge_Art8">
+        <dc:Bounds x="230" y="290" width="410" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Article8Applies_Art8_di" bpmnElement="Gateway_Article8Applies_Art8" isMarkerVisible="true">
+        <dc:Bounds x="770" y="305" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ChildAge_Art8_di" bpmnElement="Gateway_ChildAge_Art8" isMarkerVisible="true">
+        <dc:Bounds x="1010" y="305" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_RequestChildConsent_Art8_di" bpmnElement="SendTask_RequestChildConsent_Art8">
+        <dc:Bounds x="1220" y="120" width="280" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveChildConsent_Art8_di" bpmnElement="ReceiveTask_ReceiveChildConsent_Art8">
+        <dc:Bounds x="1620" y="120" width="260" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ChildConsentReceived_Art8_di" bpmnElement="Gateway_ChildConsentReceived_Art8" isMarkerVisible="true">
+        <dc:Bounds x="2010" y="135" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_RequestParentalAuthorisation_Art8_di" bpmnElement="SendTask_RequestParentalAuthorisation_Art8">
+        <dc:Bounds x="1220" y="420" width="360" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveParentalAuthorisation_Art8_di" bpmnElement="ReceiveTask_ReceiveParentalAuthorisation_Art8">
+        <dc:Bounds x="1700" y="420" width="360" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ParentalAuthorisationReceived_Art8_di" bpmnElement="Gateway_ParentalAuthorisationReceived_Art8" isMarkerVisible="true">
+        <dc:Bounds x="2200" y="435" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_VerifyReasonableEfforts_Art8_di" bpmnElement="Task_VerifyReasonableEfforts_Art8">
+        <dc:Bounds x="2400" y="420" width="450" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_LawfulChildConsent_Art8_di" bpmnElement="EndEvent_LawfulChildConsent_Art8">
+        <dc:Bounds x="2247" y="82" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_LawfulParentalAuthorisation_Art8_di" bpmnElement="EndEvent_LawfulParentalAuthorisation_Art8">
+        <dc:Bounds x="2960" y="442" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NoValidConsent_Art8_di" bpmnElement="EndEvent_NoValidConsent_Art8">
+        <dc:Bounds x="2477" y="262" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Article8NotApplicable_Art8_di" bpmnElement="EndEvent_Article8NotApplicable_Art8">
+        <dc:Bounds x="947" y="522" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_TaskAssessApplicability_Art8_di" bpmnElement="Flow_Start_To_TaskAssessApplicability_Art8">
+        <di:waypoint x="156" y="330" />
+        <di:waypoint x="230" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskAssessApplicability_To_GatewayArticle8Applies_Art8_di" bpmnElement="Flow_TaskAssessApplicability_To_GatewayArticle8Applies_Art8">
+        <di:waypoint x="640" y="330" />
+        <di:waypoint x="770" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayArticle8Applies_To_GatewayChildAge_Art8_di" bpmnElement="Flow_GatewayArticle8Applies_To_GatewayChildAge_Art8">
+        <di:waypoint x="820" y="330" />
+        <di:waypoint x="1010" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayArticle8Applies_To_EndArticle8NotApplicable_Art8_di" bpmnElement="Flow_GatewayArticle8Applies_To_EndArticle8NotApplicable_Art8">
+        <di:waypoint x="795" y="355" />
+        <di:waypoint x="795" y="540" />
+        <di:waypoint x="947" y="540" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayChildAge_To_SendTaskRequestChildConsent_Art8_di" bpmnElement="Flow_GatewayChildAge_To_SendTaskRequestChildConsent_Art8">
+        <di:waypoint x="1035" y="305" />
+        <di:waypoint x="1035" y="160" />
+        <di:waypoint x="1220" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayChildAge_To_SendTaskRequestParentalAuthorisation_Art8_di" bpmnElement="Flow_GatewayChildAge_To_SendTaskRequestParentalAuthorisation_Art8">
+        <di:waypoint x="1035" y="355" />
+        <di:waypoint x="1035" y="460" />
+        <di:waypoint x="1220" y="460" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendTaskRequestChildConsent_To_ReceiveTaskReceiveChildConsent_Art8_di" bpmnElement="Flow_SendTaskRequestChildConsent_To_ReceiveTaskReceiveChildConsent_Art8">
+        <di:waypoint x="1500" y="160" />
+        <di:waypoint x="1620" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveTaskReceiveChildConsent_To_GatewayChildConsentReceived_Art8_di" bpmnElement="Flow_ReceiveTaskReceiveChildConsent_To_GatewayChildConsentReceived_Art8">
+        <di:waypoint x="1880" y="160" />
+        <di:waypoint x="2010" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayChildConsentReceived_To_EndLawfulChildConsent_Art8_di" bpmnElement="Flow_GatewayChildConsentReceived_To_EndLawfulChildConsent_Art8">
+        <di:waypoint x="2035" y="135" />
+        <di:waypoint x="2035" y="100" />
+        <di:waypoint x="2247" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayChildConsentReceived_To_EndNoValidConsent_Art8_di" bpmnElement="Flow_GatewayChildConsentReceived_To_EndNoValidConsent_Art8">
+        <di:waypoint x="2060" y="160" />
+        <di:waypoint x="2495" y="160" />
+        <di:waypoint x="2495" y="262" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendTaskRequestParentalAuthorisation_To_ReceiveTaskReceiveParentalAuthorisation_Art8_di" bpmnElement="Flow_SendTaskRequestParentalAuthorisation_To_ReceiveTaskReceiveParentalAuthorisation_Art8">
+        <di:waypoint x="1580" y="460" />
+        <di:waypoint x="1700" y="460" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveTaskReceiveParentalAuthorisation_To_GatewayParentalAuthorisationReceived_Art8_di" bpmnElement="Flow_ReceiveTaskReceiveParentalAuthorisation_To_GatewayParentalAuthorisationReceived_Art8">
+        <di:waypoint x="2060" y="460" />
+        <di:waypoint x="2200" y="460" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayParentalAuthorisationReceived_To_TaskVerifyReasonableEfforts_Art8_di" bpmnElement="Flow_GatewayParentalAuthorisationReceived_To_TaskVerifyReasonableEfforts_Art8">
+        <di:waypoint x="2250" y="460" />
+        <di:waypoint x="2400" y="460" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayParentalAuthorisationReceived_To_EndNoValidConsent_Art8_di" bpmnElement="Flow_GatewayParentalAuthorisationReceived_To_EndNoValidConsent_Art8">
+        <di:waypoint x="2225" y="435" />
+        <di:waypoint x="2225" y="280" />
+        <di:waypoint x="2477" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskVerifyReasonableEfforts_To_EndLawfulParentalAuthorisation_Art8_di" bpmnElement="Flow_TaskVerifyReasonableEfforts_To_EndLawfulParentalAuthorisation_Art8">
+        <di:waypoint x="2850" y="460" />
+        <di:waypoint x="2960" y="460" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_RequestChildConsent_Art8_di" bpmnElement="MessageFlow_RequestChildConsent_Art8">
+        <di:waypoint x="1360" y="200" />
+        <di:waypoint x="1360" y="720" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ReceiveChildConsent_Art8_di" bpmnElement="MessageFlow_ReceiveChildConsent_Art8">
+        <di:waypoint x="1750" y="720" />
+        <di:waypoint x="1750" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_RequestParentalAuthorisation_Art8_di" bpmnElement="MessageFlow_RequestParentalAuthorisation_Art8">
+        <di:waypoint x="1400" y="500" />
+        <di:waypoint x="1400" y="880" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ReceiveParentalAuthorisation_Art8_di" bpmnElement="MessageFlow_ReceiveParentalAuthorisation_Art8">
+        <di:waypoint x="1880" y="880" />
+        <di:waypoint x="1880" y="500" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art77_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art77_Reviewed">
+    <bpmn:participant id="Participant_DataSubject_Art77"
+                      name="Data Subject"
+                      processRef="Process_DataSubject_Art77" />
+    <bpmn:participant id="Participant_SupervisoryAuthority_Art77"
+                      name="Supervisory Authority" />
+
+    <bpmn:messageFlow id="MessageFlow_LodgeResidenceComplaint_Art77"
+                      sourceRef="SendTask_LodgeResidenceComplaint_Art77"
+                      targetRef="Participant_SupervisoryAuthority_Art77" />
+    <bpmn:messageFlow id="MessageFlow_LodgeWorkComplaint_Art77"
+                      sourceRef="SendTask_LodgeWorkComplaint_Art77"
+                      targetRef="Participant_SupervisoryAuthority_Art77" />
+    <bpmn:messageFlow id="MessageFlow_LodgeInfringementComplaint_Art77"
+                      sourceRef="SendTask_LodgeInfringementComplaint_Art77"
+                      targetRef="Participant_SupervisoryAuthority_Art77" />
+    <bpmn:messageFlow id="MessageFlow_ReceiveOutcomeInfo_Art77"
+                      sourceRef="Participant_SupervisoryAuthority_Art77"
+                      targetRef="ReceiveTask_ReceiveOutcomeInfo_Art77" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_DataSubject_Art77"
+                name="Lodging a complaint with a supervisory authority"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 77 based on DAPRECO LegalRuleML
+      statements264 and checked against the current Article 77 text. The XML clearly
+      encodes the permission to lodge a complaint with the supervisory authority of
+      the habitual residence, place of work, or place of the alleged infringement.
+      Article 77(2), which requires the supervisory authority to inform the complainant
+      on progress and outcome including the possibility of a judicial remedy under
+      Article 78, is not explicitly serialized in this XML file and is therefore added
+      here as a source-transparent legal inference from the official article text.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_ConsiderComplaint_Art77"
+                     name="Consider that the processing infringes the GDPR">
+      <bpmn:outgoing>Flow_Start_To_PrepareComplaint_Art77</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_PrepareComplaint_Art77"
+               name="Prepare the complaint about the alleged infringement">
+      <bpmn:incoming>Flow_Start_To_PrepareComplaint_Art77</bpmn:incoming>
+      <bpmn:outgoing>Flow_PrepareComplaint_To_GatewayVenue_Art77</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_ComplaintVenue_Art77"
+                           name="Which supervisory authority will receive the complaint?">
+      <bpmn:incoming>Flow_PrepareComplaint_To_GatewayVenue_Art77</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayVenue_To_LodgeResidenceComplaint_Art77</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayVenue_To_LodgeWorkComplaint_Art77</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayVenue_To_LodgeInfringementComplaint_Art77</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="SendTask_LodgeResidenceComplaint_Art77"
+                   name="Lodge the complaint with the supervisory authority of the habitual residence">
+      <bpmn:incoming>Flow_GatewayVenue_To_LodgeResidenceComplaint_Art77</bpmn:incoming>
+      <bpmn:outgoing>Flow_LodgeResidenceComplaint_To_GatewayComplaintLodged_Art77</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:sendTask id="SendTask_LodgeWorkComplaint_Art77"
+                   name="Lodge the complaint with the supervisory authority of the place of work">
+      <bpmn:incoming>Flow_GatewayVenue_To_LodgeWorkComplaint_Art77</bpmn:incoming>
+      <bpmn:outgoing>Flow_LodgeWorkComplaint_To_GatewayComplaintLodged_Art77</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:sendTask id="SendTask_LodgeInfringementComplaint_Art77"
+                   name="Lodge the complaint with the supervisory authority of the place of the alleged infringement">
+      <bpmn:incoming>Flow_GatewayVenue_To_LodgeInfringementComplaint_Art77</bpmn:incoming>
+      <bpmn:outgoing>Flow_LodgeInfringementComplaint_To_GatewayComplaintLodged_Art77</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:exclusiveGateway id="Gateway_ComplaintLodged_Art77">
+      <bpmn:incoming>Flow_LodgeResidenceComplaint_To_GatewayComplaintLodged_Art77</bpmn:incoming>
+      <bpmn:incoming>Flow_LodgeWorkComplaint_To_GatewayComplaintLodged_Art77</bpmn:incoming>
+      <bpmn:incoming>Flow_LodgeInfringementComplaint_To_GatewayComplaintLodged_Art77</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayComplaintLodged_To_ReceiveOutcomeInfo_Art77</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveOutcomeInfo_Art77"
+                      name="Receive information on the progress, outcome, and judicial remedy option">
+      <bpmn:incoming>Flow_GatewayComplaintLodged_To_ReceiveOutcomeInfo_Art77</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveOutcomeInfo_To_EndComplaintHandled_Art77</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:endEvent id="EndEvent_ComplaintHandled_Art77"
+                   name="Article 77 complaint route completed">
+      <bpmn:incoming>Flow_ReceiveOutcomeInfo_To_EndComplaintHandled_Art77</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_PrepareComplaint_Art77" sourceRef="StartEvent_ConsiderComplaint_Art77" targetRef="Task_PrepareComplaint_Art77" />
+    <bpmn:sequenceFlow id="Flow_PrepareComplaint_To_GatewayVenue_Art77" sourceRef="Task_PrepareComplaint_Art77" targetRef="Gateway_ComplaintVenue_Art77" />
+    <bpmn:sequenceFlow id="Flow_GatewayVenue_To_LodgeResidenceComplaint_Art77" name="Habitual residence" sourceRef="Gateway_ComplaintVenue_Art77" targetRef="SendTask_LodgeResidenceComplaint_Art77" />
+    <bpmn:sequenceFlow id="Flow_GatewayVenue_To_LodgeWorkComplaint_Art77" name="Place of work" sourceRef="Gateway_ComplaintVenue_Art77" targetRef="SendTask_LodgeWorkComplaint_Art77" />
+    <bpmn:sequenceFlow id="Flow_GatewayVenue_To_LodgeInfringementComplaint_Art77" name="Place of alleged infringement" sourceRef="Gateway_ComplaintVenue_Art77" targetRef="SendTask_LodgeInfringementComplaint_Art77" />
+    <bpmn:sequenceFlow id="Flow_LodgeResidenceComplaint_To_GatewayComplaintLodged_Art77" sourceRef="SendTask_LodgeResidenceComplaint_Art77" targetRef="Gateway_ComplaintLodged_Art77" />
+    <bpmn:sequenceFlow id="Flow_LodgeWorkComplaint_To_GatewayComplaintLodged_Art77" sourceRef="SendTask_LodgeWorkComplaint_Art77" targetRef="Gateway_ComplaintLodged_Art77" />
+    <bpmn:sequenceFlow id="Flow_LodgeInfringementComplaint_To_GatewayComplaintLodged_Art77" sourceRef="SendTask_LodgeInfringementComplaint_Art77" targetRef="Gateway_ComplaintLodged_Art77" />
+    <bpmn:sequenceFlow id="Flow_GatewayComplaintLodged_To_ReceiveOutcomeInfo_Art77" sourceRef="Gateway_ComplaintLodged_Art77" targetRef="ReceiveTask_ReceiveOutcomeInfo_Art77" />
+    <bpmn:sequenceFlow id="Flow_ReceiveOutcomeInfo_To_EndComplaintHandled_Art77" sourceRef="ReceiveTask_ReceiveOutcomeInfo_Art77" targetRef="EndEvent_ComplaintHandled_Art77" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art77_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art77_Reviewed"
+                      bpmnElement="Collaboration_Art77_Reviewed">
+      <bpmndi:BPMNShape id="Participant_DataSubject_Art77_di" bpmnElement="Participant_DataSubject_Art77" isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="2800" height="620" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_SupervisoryAuthority_Art77_di" bpmnElement="Participant_SupervisoryAuthority_Art77" isHorizontal="true">
+        <dc:Bounds x="60" y="720" width="2800" height="120" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_ConsiderComplaint_Art77_di" bpmnElement="StartEvent_ConsiderComplaint_Art77">
+        <dc:Bounds x="120" y="312" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareComplaint_Art77_di" bpmnElement="Task_PrepareComplaint_Art77">
+        <dc:Bounds x="250" y="290" width="320" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ComplaintVenue_Art77_di" bpmnElement="Gateway_ComplaintVenue_Art77" isMarkerVisible="true">
+        <dc:Bounds x="670" y="305" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_LodgeResidenceComplaint_Art77_di" bpmnElement="SendTask_LodgeResidenceComplaint_Art77">
+        <dc:Bounds x="860" y="120" width="430" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_LodgeWorkComplaint_Art77_di" bpmnElement="SendTask_LodgeWorkComplaint_Art77">
+        <dc:Bounds x="860" y="290" width="410" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_LodgeInfringementComplaint_Art77_di" bpmnElement="SendTask_LodgeInfringementComplaint_Art77">
+        <dc:Bounds x="860" y="460" width="460" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ComplaintLodged_Art77_di" bpmnElement="Gateway_ComplaintLodged_Art77" isMarkerVisible="true">
+        <dc:Bounds x="1460" y="305" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveOutcomeInfo_Art77_di" bpmnElement="ReceiveTask_ReceiveOutcomeInfo_Art77">
+        <dc:Bounds x="1650" y="290" width="460" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ComplaintHandled_Art77_di" bpmnElement="EndEvent_ComplaintHandled_Art77">
+        <dc:Bounds x="2250" y="312" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_PrepareComplaint_Art77_di" bpmnElement="Flow_Start_To_PrepareComplaint_Art77">
+        <di:waypoint x="156" y="330" />
+        <di:waypoint x="250" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_PrepareComplaint_To_GatewayVenue_Art77_di" bpmnElement="Flow_PrepareComplaint_To_GatewayVenue_Art77">
+        <di:waypoint x="570" y="330" />
+        <di:waypoint x="670" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayVenue_To_LodgeResidenceComplaint_Art77_di" bpmnElement="Flow_GatewayVenue_To_LodgeResidenceComplaint_Art77">
+        <di:waypoint x="695" y="305" />
+        <di:waypoint x="695" y="160" />
+        <di:waypoint x="860" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayVenue_To_LodgeWorkComplaint_Art77_di" bpmnElement="Flow_GatewayVenue_To_LodgeWorkComplaint_Art77">
+        <di:waypoint x="720" y="330" />
+        <di:waypoint x="860" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayVenue_To_LodgeInfringementComplaint_Art77_di" bpmnElement="Flow_GatewayVenue_To_LodgeInfringementComplaint_Art77">
+        <di:waypoint x="695" y="355" />
+        <di:waypoint x="695" y="500" />
+        <di:waypoint x="860" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_LodgeResidenceComplaint_To_GatewayComplaintLodged_Art77_di" bpmnElement="Flow_LodgeResidenceComplaint_To_GatewayComplaintLodged_Art77">
+        <di:waypoint x="1290" y="160" />
+        <di:waypoint x="1485" y="160" />
+        <di:waypoint x="1485" y="305" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_LodgeWorkComplaint_To_GatewayComplaintLodged_Art77_di" bpmnElement="Flow_LodgeWorkComplaint_To_GatewayComplaintLodged_Art77">
+        <di:waypoint x="1270" y="330" />
+        <di:waypoint x="1460" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_LodgeInfringementComplaint_To_GatewayComplaintLodged_Art77_di" bpmnElement="Flow_LodgeInfringementComplaint_To_GatewayComplaintLodged_Art77">
+        <di:waypoint x="1320" y="500" />
+        <di:waypoint x="1485" y="500" />
+        <di:waypoint x="1485" y="355" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayComplaintLodged_To_ReceiveOutcomeInfo_Art77_di" bpmnElement="Flow_GatewayComplaintLodged_To_ReceiveOutcomeInfo_Art77">
+        <di:waypoint x="1510" y="330" />
+        <di:waypoint x="1650" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveOutcomeInfo_To_EndComplaintHandled_Art77_di" bpmnElement="Flow_ReceiveOutcomeInfo_To_EndComplaintHandled_Art77">
+        <di:waypoint x="2110" y="330" />
+        <di:waypoint x="2250" y="330" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_LodgeResidenceComplaint_Art77_di" bpmnElement="MessageFlow_LodgeResidenceComplaint_Art77">
+        <di:waypoint x="1075" y="200" />
+        <di:waypoint x="1075" y="720" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_LodgeWorkComplaint_Art77_di" bpmnElement="MessageFlow_LodgeWorkComplaint_Art77">
+        <di:waypoint x="1065" y="370" />
+        <di:waypoint x="1065" y="720" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_LodgeInfringementComplaint_Art77_di" bpmnElement="MessageFlow_LodgeInfringementComplaint_Art77">
+        <di:waypoint x="1090" y="540" />
+        <di:waypoint x="1090" y="720" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ReceiveOutcomeInfo_Art77_di" bpmnElement="MessageFlow_ReceiveOutcomeInfo_Art77">
+        <di:waypoint x="1880" y="720" />
+        <di:waypoint x="1880" y="370" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

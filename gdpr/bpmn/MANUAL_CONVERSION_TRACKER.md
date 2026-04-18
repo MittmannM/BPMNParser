@@ -17,14 +17,14 @@ Existing auto-generated BPMN files in this folder are drafts only and do not cou
 
 | Article | Reviewed BPMN | Status | Notes |
 | --- | --- | --- | --- |
-| Art. 5 | `GDPR_art_5_reviewed.bpmn` | pending |  |
-| Art. 6 | `GDPR_art_6_reviewed.bpmn` | pending |  |
-| Art. 7 | `GDPR_art_7_reviewed.bpmn` | pending |  |
-| Art. 8 | `GDPR_art_8_reviewed.bpmn` | pending |  |
-| Art. 9 | `GDPR_art_9_reviewed.bpmn` | pending |  |
-| Art. 10 | `GDPR_art_10_reviewed.bpmn` | pending |  |
-| Art. 11 | `GDPR_art_11_reviewed.bpmn` | pending |  |
-| Art. 12 | `GDPR_art_12_reviewed.bpmn` | pending |  |
+| Art. 5 | `GDPR_art_5_reviewed.bpmn` | done | Manual review completed from statements1-6; six processing-principle branches, explicit accuracy rectification-or-erasure path, and non-overlapping DI layout checked against the master checklist |
+| Art. 6 | `GDPR_art_6_reviewed.bpmn` | done | Manual review completed from statements7-13; six legal-basis branches, Article 6(4) compatibility-factor block, and non-overlapping DI layout checked against the master checklist |
+| Art. 7 | `GDPR_art_7_reviewed.bpmn` | done | Manual review completed from statements14-16; clear consent-request path, withdrawal-right information, easy-withdrawal mechanism, demonstrability, and non-overlapping DI layout checked against the master checklist |
+| Art. 8 | `GDPR_art_8_reviewed.bpmn` | done | Manual review completed from statements17-18; Article 8 applicability gate, applicable-age split, child-consent path, parental-authorisation plus reasonable-efforts verification path, and non-overlapping DI layout checked against the master checklist |
+| Art. 9 | `GDPR_art_9_reviewed.bpmn` | done | Manual review completed from statements19-28; Article 9(1) special-category gate, default prohibition, explicit Article 9(2)(a)-(i) exception block, and non-overlapping DI layout checked against the master checklist |
+| Art. 10 | `GDPR_art_10_reviewed.bpmn` | done | Manual review completed from statements29; Article 10 applicability gate, comprehensive-register special rule, official-authority path, Union-or-Member-State-law authorization path with safeguards, and non-overlapping DI layout checked against the master checklist |
+| Art. 11 | `GDPR_art_11_reviewed.bpmn` | done | Manual review completed from statements30-31; no-identification path, Article 11(2) information duty, Articles 15 to 20 exception with additional-identification-information fallback, and non-overlapping DI layout checked against the master checklist |
+| Art. 12 | `GDPR_art_12_reviewed.bpmn` | done | Manual review completed from statements32-38; general information path for Article 12(1) and (7), request-handling path for Article 12(2)-(6), identity-check and Article 11(2) branch, extension and no-action notices, fee-or-refusal exception, and non-overlapping DI layout checked against the master checklist |
 | Art. 13 | `GDPR_art_13_reviewed.bpmn` | pending |  |
 | Art. 14 | `GDPR_art_14_reviewed.bpmn` | pending |  |
 | Art. 15 | `GDPR_art_15_reviewed.bpmn` | pending |  |
@@ -60,10 +60,10 @@ Existing auto-generated BPMN files in this folder are drafts only and do not cou
 | Art. 47 | `GDPR_art_47_reviewed.bpmn` | done | Manual review completed from statements251-252; grouped BCR content duties, supervisory-authority approval, data-subject availability, and ongoing governance obligations checked against the master checklist |
 | Art. 48 | `GDPR_art_48_reviewed.bpmn` | done | Manual review completed from statements253; third-country request, Article 48 agreement check, non-recognition path, and agreement-based transfer path checked against the master checklist |
 | Art. 49 | `GDPR_art_49_reviewed.bpmn` | done | Manual review completed from statements254-263; full derogation tree, public-authority restriction, public-register limitation, and fallback information plus documentation duties checked against the master checklist |
-| Art. 77 | `GDPR_art_77_reviewed.bpmn` | pending |  |
-| Art. 78 | `GDPR_art_78_reviewed.bpmn` | pending |  |
-| Art. 79 | `GDPR_art_79_reviewed.bpmn` | pending |  |
-| Art. 80 | `GDPR_art_80_reviewed.bpmn` | pending |  |
-| Art. 82 | `GDPR_art_82_reviewed.bpmn` | pending |  |
-| Art. 86 | `GDPR_art_86_reviewed.bpmn` | pending |  |
-| Art. 89 | `GDPR_art_89_reviewed.bpmn` | pending |  |
+| Art. 77 | `GDPR_art_77_reviewed.bpmn` | done | Manual review completed from statements264 plus Article 77(2) follow-up inference; complaint venue options, authority feedback path, and non-overlapping DI layout checked against the master checklist |
+| Art. 78 | `GDPR_art_78_reviewed.bpmn` | done | Manual review completed from statements265-266 plus Article 78(3)-(4) legal-text supplementation; decision path, complaint-inactivity path, court venue, Board-material forwarding, and non-overlapping DI layout checked against the master checklist |
+| Art. 79 | `GDPR_art_79_reviewed.bpmn` | done | Manual review completed from statements267 plus Article 79(2) venue supplementation; infringement-based remedy path, public-authority venue restriction, and non-overlapping DI layout checked against the master checklist |
+| Art. 80 | `GDPR_art_80_reviewed.bpmn` | done | Manual review completed from statements268 plus transparent Article 80(2) legal-text supplementation; mandate path, optional Member-State no-mandate path, complaint/judicial-remedy/compensation action scope, and non-overlapping DI layout checked against the master checklist |
+| Art. 82 | `GDPR_art_82_reviewed.bpmn` | done | Manual review completed from statements269-273; compensation right, controller liability, processor-specific liability, exemption, full-compensation path, recourse claim, and non-overlapping DI layout checked against the master checklist |
+| Art. 86 | `GDPR_art_86_reviewed.bpmn` | done | Manual review completed from statements274; official-document access request, public-interest holder check, reconciliation with access law, disclosure decision, and non-overlapping DI layout checked against the master checklist |
+| Art. 89 | `GDPR_art_89_reviewed.bpmn` | done | Manual review completed from statements275; Article 89 purpose gate, safeguards and measures path, pseudonymisation and non-identifying processing checks, and non-overlapping DI layout checked against the master checklist |

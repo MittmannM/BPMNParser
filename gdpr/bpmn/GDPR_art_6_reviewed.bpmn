@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art6_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:process id="Process_Controller_Art6"
+                name="Establishing lawfulness under Article 6"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 6 based on DAPRECO LegalRuleML
+      statements7-13. The local XML covers the six legal bases in Article 6(1) and the
+      five compatibility factors in Article 6(4). It does not separately serialize the
+      Article 6(2)-(3) legislative-detail regime, so this BPMN focuses on selecting a
+      lawful basis and, where further processing for another purpose is planned without
+      consent or a specific legal basis, taking the five Article 6(4) factors into
+      account.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_AssessLawfulness_Art6"
+                     name="Need to establish a lawful basis for processing">
+      <bpmn:outgoing>Flow_Start_To_GatewayLegalBasis_Art6</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_LegalBasis_Art6"
+                           name="Which Article 6 legal basis applies?">
+      <bpmn:incoming>Flow_Start_To_GatewayLegalBasis_Art6</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayLegalBasis_To_TaskConsent_Art6</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayLegalBasis_To_TaskContract_Art6</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayLegalBasis_To_TaskLegalObligation_Art6</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayLegalBasis_To_TaskVitalInterests_Art6</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayLegalBasis_To_TaskPublicInterest_Art6</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayLegalBasis_To_TaskLegitimateInterests_Art6</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_Consent_Art6"
+               name="Confirm that the data subject gave consent for one or more specific purposes">
+      <bpmn:incoming>Flow_GatewayLegalBasis_To_TaskConsent_Art6</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskConsent_To_GatewayLegalBasisJoin_Art6</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_Contract_Art6"
+               name="Confirm that the processing is necessary for a contract or for pre-contract steps requested by the data subject">
+      <bpmn:incoming>Flow_GatewayLegalBasis_To_TaskContract_Art6</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskContract_To_GatewayLegalBasisJoin_Art6</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_LegalObligation_Art6"
+               name="Confirm that the processing is necessary for compliance with a legal obligation">
+      <bpmn:incoming>Flow_GatewayLegalBasis_To_TaskLegalObligation_Art6</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskLegalObligation_To_GatewayLegalBasisJoin_Art6</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_VitalInterests_Art6"
+               name="Confirm that the processing is necessary to protect vital interests">
+      <bpmn:incoming>Flow_GatewayLegalBasis_To_TaskVitalInterests_Art6</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskVitalInterests_To_GatewayLegalBasisJoin_Art6</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_PublicInterest_Art6"
+               name="Confirm that the processing is necessary for a public-interest task or the exercise of official authority">
+      <bpmn:incoming>Flow_GatewayLegalBasis_To_TaskPublicInterest_Art6</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPublicInterest_To_GatewayLegalBasisJoin_Art6</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_LegitimateInterests_Art6"
+               name="Confirm legitimate interests and weigh them against the interests and rights of the data subject">
+      <bpmn:incoming>Flow_GatewayLegalBasis_To_TaskLegitimateInterests_Art6</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskLegitimateInterests_To_GatewayLegalBasisJoin_Art6</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_LegalBasisJoin_Art6">
+      <bpmn:incoming>Flow_TaskConsent_To_GatewayLegalBasisJoin_Art6</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskContract_To_GatewayLegalBasisJoin_Art6</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskLegalObligation_To_GatewayLegalBasisJoin_Art6</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskVitalInterests_To_GatewayLegalBasisJoin_Art6</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskPublicInterest_To_GatewayLegalBasisJoin_Art6</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskLegitimateInterests_To_GatewayLegalBasisJoin_Art6</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayLegalBasisJoin_To_GatewayFurtherProcessing_Art6</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_FurtherProcessing_Art6"
+                           name="Is further processing for another purpose planned without consent or a specific Union or Member State legal basis?">
+      <bpmn:incoming>Flow_GatewayLegalBasisJoin_To_GatewayFurtherProcessing_Art6</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayFurtherProcessing_To_GatewaySplitCompatibilityFactors_Art6</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayFurtherProcessing_To_EndLawfulnessEstablished_Art6</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:parallelGateway id="Gateway_SplitCompatibilityFactors_Art6">
+      <bpmn:incoming>Flow_GatewayFurtherProcessing_To_GatewaySplitCompatibilityFactors_Art6</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplitCompatibilityFactors_To_TaskLinkBetweenPurposes_Art6</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitCompatibilityFactors_To_TaskCollectionContext_Art6</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitCompatibilityFactors_To_TaskNatureOfData_Art6</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitCompatibilityFactors_To_TaskConsequences_Art6</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitCompatibilityFactors_To_TaskSafeguards_Art6</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_LinkBetweenPurposes_Art6"
+               name="Take into account the link between the original purpose and the intended further purpose">
+      <bpmn:incoming>Flow_GatewaySplitCompatibilityFactors_To_TaskLinkBetweenPurposes_Art6</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskLinkBetweenPurposes_To_GatewayJoinCompatibilityFactors_Art6</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_CollectionContext_Art6"
+               name="Take into account the context in which the personal data were collected">
+      <bpmn:incoming>Flow_GatewaySplitCompatibilityFactors_To_TaskCollectionContext_Art6</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskCollectionContext_To_GatewayJoinCompatibilityFactors_Art6</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_NatureOfData_Art6"
+               name="Take into account the nature of the personal data">
+      <bpmn:incoming>Flow_GatewaySplitCompatibilityFactors_To_TaskNatureOfData_Art6</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskNatureOfData_To_GatewayJoinCompatibilityFactors_Art6</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_Consequences_Art6"
+               name="Take into account the possible consequences of the intended further processing for data subjects">
+      <bpmn:incoming>Flow_GatewaySplitCompatibilityFactors_To_TaskConsequences_Art6</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskConsequences_To_GatewayJoinCompatibilityFactors_Art6</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_Safeguards_Art6"
+               name="Take into account appropriate safeguards such as encryption or pseudonymisation">
+      <bpmn:incoming>Flow_GatewaySplitCompatibilityFactors_To_TaskSafeguards_Art6</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskSafeguards_To_GatewayJoinCompatibilityFactors_Art6</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_JoinCompatibilityFactors_Art6">
+      <bpmn:incoming>Flow_TaskLinkBetweenPurposes_To_GatewayJoinCompatibilityFactors_Art6</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskCollectionContext_To_GatewayJoinCompatibilityFactors_Art6</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskNatureOfData_To_GatewayJoinCompatibilityFactors_Art6</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskConsequences_To_GatewayJoinCompatibilityFactors_Art6</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskSafeguards_To_GatewayJoinCompatibilityFactors_Art6</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinCompatibilityFactors_To_EndLawfulnessEstablished_Art6</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:endEvent id="EndEvent_LawfulnessEstablished_Art6"
+                   name="Article 6 lawfulness assessment completed">
+      <bpmn:incoming>Flow_GatewayFurtherProcessing_To_EndLawfulnessEstablished_Art6</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayJoinCompatibilityFactors_To_EndLawfulnessEstablished_Art6</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_GatewayLegalBasis_Art6" sourceRef="StartEvent_AssessLawfulness_Art6" targetRef="Gateway_LegalBasis_Art6" />
+    <bpmn:sequenceFlow id="Flow_GatewayLegalBasis_To_TaskConsent_Art6" name="Consent" sourceRef="Gateway_LegalBasis_Art6" targetRef="Task_Consent_Art6" />
+    <bpmn:sequenceFlow id="Flow_GatewayLegalBasis_To_TaskContract_Art6" name="Contract or pre-contract request" sourceRef="Gateway_LegalBasis_Art6" targetRef="Task_Contract_Art6" />
+    <bpmn:sequenceFlow id="Flow_GatewayLegalBasis_To_TaskLegalObligation_Art6" name="Legal obligation" sourceRef="Gateway_LegalBasis_Art6" targetRef="Task_LegalObligation_Art6" />
+    <bpmn:sequenceFlow id="Flow_GatewayLegalBasis_To_TaskVitalInterests_Art6" name="Vital interests" sourceRef="Gateway_LegalBasis_Art6" targetRef="Task_VitalInterests_Art6" />
+    <bpmn:sequenceFlow id="Flow_GatewayLegalBasis_To_TaskPublicInterest_Art6" name="Public interest or official authority" sourceRef="Gateway_LegalBasis_Art6" targetRef="Task_PublicInterest_Art6" />
+    <bpmn:sequenceFlow id="Flow_GatewayLegalBasis_To_TaskLegitimateInterests_Art6" name="Legitimate interests" sourceRef="Gateway_LegalBasis_Art6" targetRef="Task_LegitimateInterests_Art6" />
+    <bpmn:sequenceFlow id="Flow_TaskConsent_To_GatewayLegalBasisJoin_Art6" sourceRef="Task_Consent_Art6" targetRef="Gateway_LegalBasisJoin_Art6" />
+    <bpmn:sequenceFlow id="Flow_TaskContract_To_GatewayLegalBasisJoin_Art6" sourceRef="Task_Contract_Art6" targetRef="Gateway_LegalBasisJoin_Art6" />
+    <bpmn:sequenceFlow id="Flow_TaskLegalObligation_To_GatewayLegalBasisJoin_Art6" sourceRef="Task_LegalObligation_Art6" targetRef="Gateway_LegalBasisJoin_Art6" />
+    <bpmn:sequenceFlow id="Flow_TaskVitalInterests_To_GatewayLegalBasisJoin_Art6" sourceRef="Task_VitalInterests_Art6" targetRef="Gateway_LegalBasisJoin_Art6" />
+    <bpmn:sequenceFlow id="Flow_TaskPublicInterest_To_GatewayLegalBasisJoin_Art6" sourceRef="Task_PublicInterest_Art6" targetRef="Gateway_LegalBasisJoin_Art6" />
+    <bpmn:sequenceFlow id="Flow_TaskLegitimateInterests_To_GatewayLegalBasisJoin_Art6" sourceRef="Task_LegitimateInterests_Art6" targetRef="Gateway_LegalBasisJoin_Art6" />
+    <bpmn:sequenceFlow id="Flow_GatewayLegalBasisJoin_To_GatewayFurtherProcessing_Art6" sourceRef="Gateway_LegalBasisJoin_Art6" targetRef="Gateway_FurtherProcessing_Art6" />
+    <bpmn:sequenceFlow id="Flow_GatewayFurtherProcessing_To_GatewaySplitCompatibilityFactors_Art6" name="Yes" sourceRef="Gateway_FurtherProcessing_Art6" targetRef="Gateway_SplitCompatibilityFactors_Art6" />
+    <bpmn:sequenceFlow id="Flow_GatewayFurtherProcessing_To_EndLawfulnessEstablished_Art6" name="No" sourceRef="Gateway_FurtherProcessing_Art6" targetRef="EndEvent_LawfulnessEstablished_Art6" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitCompatibilityFactors_To_TaskLinkBetweenPurposes_Art6" sourceRef="Gateway_SplitCompatibilityFactors_Art6" targetRef="Task_LinkBetweenPurposes_Art6" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitCompatibilityFactors_To_TaskCollectionContext_Art6" sourceRef="Gateway_SplitCompatibilityFactors_Art6" targetRef="Task_CollectionContext_Art6" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitCompatibilityFactors_To_TaskNatureOfData_Art6" sourceRef="Gateway_SplitCompatibilityFactors_Art6" targetRef="Task_NatureOfData_Art6" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitCompatibilityFactors_To_TaskConsequences_Art6" sourceRef="Gateway_SplitCompatibilityFactors_Art6" targetRef="Task_Consequences_Art6" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitCompatibilityFactors_To_TaskSafeguards_Art6" sourceRef="Gateway_SplitCompatibilityFactors_Art6" targetRef="Task_Safeguards_Art6" />
+    <bpmn:sequenceFlow id="Flow_TaskLinkBetweenPurposes_To_GatewayJoinCompatibilityFactors_Art6" sourceRef="Task_LinkBetweenPurposes_Art6" targetRef="Gateway_JoinCompatibilityFactors_Art6" />
+    <bpmn:sequenceFlow id="Flow_TaskCollectionContext_To_GatewayJoinCompatibilityFactors_Art6" sourceRef="Task_CollectionContext_Art6" targetRef="Gateway_JoinCompatibilityFactors_Art6" />
+    <bpmn:sequenceFlow id="Flow_TaskNatureOfData_To_GatewayJoinCompatibilityFactors_Art6" sourceRef="Task_NatureOfData_Art6" targetRef="Gateway_JoinCompatibilityFactors_Art6" />
+    <bpmn:sequenceFlow id="Flow_TaskConsequences_To_GatewayJoinCompatibilityFactors_Art6" sourceRef="Task_Consequences_Art6" targetRef="Gateway_JoinCompatibilityFactors_Art6" />
+    <bpmn:sequenceFlow id="Flow_TaskSafeguards_To_GatewayJoinCompatibilityFactors_Art6" sourceRef="Task_Safeguards_Art6" targetRef="Gateway_JoinCompatibilityFactors_Art6" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoinCompatibilityFactors_To_EndLawfulnessEstablished_Art6" sourceRef="Gateway_JoinCompatibilityFactors_Art6" targetRef="EndEvent_LawfulnessEstablished_Art6" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art6_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art6_Reviewed" bpmnElement="Process_Controller_Art6">
+      <bpmndi:BPMNShape id="StartEvent_AssessLawfulness_Art6_di" bpmnElement="StartEvent_AssessLawfulness_Art6"><dc:Bounds x="120" y="382" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_LegalBasis_Art6_di" bpmnElement="Gateway_LegalBasis_Art6" isMarkerVisible="true"><dc:Bounds x="270" y="375" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Consent_Art6_di" bpmnElement="Task_Consent_Art6"><dc:Bounds x="480" y="20" width="480" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Contract_Art6_di" bpmnElement="Task_Contract_Art6"><dc:Bounds x="480" y="140" width="540" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_LegalObligation_Art6_di" bpmnElement="Task_LegalObligation_Art6"><dc:Bounds x="480" y="260" width="440" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_VitalInterests_Art6_di" bpmnElement="Task_VitalInterests_Art6"><dc:Bounds x="480" y="380" width="410" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PublicInterest_Art6_di" bpmnElement="Task_PublicInterest_Art6"><dc:Bounds x="480" y="500" width="520" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_LegitimateInterests_Art6_di" bpmnElement="Task_LegitimateInterests_Art6"><dc:Bounds x="480" y="620" width="500" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_LegalBasisJoin_Art6_di" bpmnElement="Gateway_LegalBasisJoin_Art6" isMarkerVisible="true"><dc:Bounds x="1230" y="375" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_FurtherProcessing_Art6_di" bpmnElement="Gateway_FurtherProcessing_Art6" isMarkerVisible="true"><dc:Bounds x="1460" y="375" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SplitCompatibilityFactors_Art6_di" bpmnElement="Gateway_SplitCompatibilityFactors_Art6" isMarkerVisible="true"><dc:Bounds x="1720" y="375" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_LinkBetweenPurposes_Art6_di" bpmnElement="Task_LinkBetweenPurposes_Art6"><dc:Bounds x="1940" y="20" width="470" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CollectionContext_Art6_di" bpmnElement="Task_CollectionContext_Art6"><dc:Bounds x="1940" y="150" width="420" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_NatureOfData_Art6_di" bpmnElement="Task_NatureOfData_Art6"><dc:Bounds x="1940" y="280" width="340" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Consequences_Art6_di" bpmnElement="Task_Consequences_Art6"><dc:Bounds x="1940" y="410" width="500" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Safeguards_Art6_di" bpmnElement="Task_Safeguards_Art6"><dc:Bounds x="1940" y="540" width="450" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinCompatibilityFactors_Art6_di" bpmnElement="Gateway_JoinCompatibilityFactors_Art6" isMarkerVisible="true"><dc:Bounds x="2670" y="375" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_LawfulnessEstablished_Art6_di" bpmnElement="EndEvent_LawfulnessEstablished_Art6"><dc:Bounds x="2910" y="382" width="36" height="36" /></bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_GatewayLegalBasis_Art6_di" bpmnElement="Flow_Start_To_GatewayLegalBasis_Art6"><di:waypoint x="156" y="400" /><di:waypoint x="270" y="400" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayLegalBasis_To_TaskConsent_Art6_di" bpmnElement="Flow_GatewayLegalBasis_To_TaskConsent_Art6"><di:waypoint x="295" y="375" /><di:waypoint x="295" y="60" /><di:waypoint x="480" y="60" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayLegalBasis_To_TaskContract_Art6_di" bpmnElement="Flow_GatewayLegalBasis_To_TaskContract_Art6"><di:waypoint x="295" y="375" /><di:waypoint x="295" y="180" /><di:waypoint x="480" y="180" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayLegalBasis_To_TaskLegalObligation_Art6_di" bpmnElement="Flow_GatewayLegalBasis_To_TaskLegalObligation_Art6"><di:waypoint x="295" y="375" /><di:waypoint x="295" y="300" /><di:waypoint x="480" y="300" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayLegalBasis_To_TaskVitalInterests_Art6_di" bpmnElement="Flow_GatewayLegalBasis_To_TaskVitalInterests_Art6"><di:waypoint x="320" y="400" /><di:waypoint x="480" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayLegalBasis_To_TaskPublicInterest_Art6_di" bpmnElement="Flow_GatewayLegalBasis_To_TaskPublicInterest_Art6"><di:waypoint x="295" y="425" /><di:waypoint x="295" y="540" /><di:waypoint x="480" y="540" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayLegalBasis_To_TaskLegitimateInterests_Art6_di" bpmnElement="Flow_GatewayLegalBasis_To_TaskLegitimateInterests_Art6"><di:waypoint x="295" y="425" /><di:waypoint x="295" y="660" /><di:waypoint x="480" y="660" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskConsent_To_GatewayLegalBasisJoin_Art6_di" bpmnElement="Flow_TaskConsent_To_GatewayLegalBasisJoin_Art6"><di:waypoint x="960" y="60" /><di:waypoint x="1255" y="60" /><di:waypoint x="1255" y="375" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskContract_To_GatewayLegalBasisJoin_Art6_di" bpmnElement="Flow_TaskContract_To_GatewayLegalBasisJoin_Art6"><di:waypoint x="1020" y="180" /><di:waypoint x="1255" y="180" /><di:waypoint x="1255" y="375" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskLegalObligation_To_GatewayLegalBasisJoin_Art6_di" bpmnElement="Flow_TaskLegalObligation_To_GatewayLegalBasisJoin_Art6"><di:waypoint x="920" y="300" /><di:waypoint x="1255" y="300" /><di:waypoint x="1255" y="375" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskVitalInterests_To_GatewayLegalBasisJoin_Art6_di" bpmnElement="Flow_TaskVitalInterests_To_GatewayLegalBasisJoin_Art6"><di:waypoint x="890" y="420" /><di:waypoint x="1230" y="400" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPublicInterest_To_GatewayLegalBasisJoin_Art6_di" bpmnElement="Flow_TaskPublicInterest_To_GatewayLegalBasisJoin_Art6"><di:waypoint x="1000" y="540" /><di:waypoint x="1255" y="540" /><di:waypoint x="1255" y="425" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskLegitimateInterests_To_GatewayLegalBasisJoin_Art6_di" bpmnElement="Flow_TaskLegitimateInterests_To_GatewayLegalBasisJoin_Art6"><di:waypoint x="980" y="660" /><di:waypoint x="1255" y="660" /><di:waypoint x="1255" y="425" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayLegalBasisJoin_To_GatewayFurtherProcessing_Art6_di" bpmnElement="Flow_GatewayLegalBasisJoin_To_GatewayFurtherProcessing_Art6"><di:waypoint x="1280" y="400" /><di:waypoint x="1460" y="400" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayFurtherProcessing_To_GatewaySplitCompatibilityFactors_Art6_di" bpmnElement="Flow_GatewayFurtherProcessing_To_GatewaySplitCompatibilityFactors_Art6"><di:waypoint x="1510" y="400" /><di:waypoint x="1720" y="400" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayFurtherProcessing_To_EndLawfulnessEstablished_Art6_di" bpmnElement="Flow_GatewayFurtherProcessing_To_EndLawfulnessEstablished_Art6"><di:waypoint x="1485" y="425" /><di:waypoint x="1485" y="700" /><di:waypoint x="2928" y="700" /><di:waypoint x="2928" y="418" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitCompatibilityFactors_To_TaskLinkBetweenPurposes_Art6_di" bpmnElement="Flow_GatewaySplitCompatibilityFactors_To_TaskLinkBetweenPurposes_Art6"><di:waypoint x="1745" y="375" /><di:waypoint x="1745" y="60" /><di:waypoint x="1940" y="60" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitCompatibilityFactors_To_TaskCollectionContext_Art6_di" bpmnElement="Flow_GatewaySplitCompatibilityFactors_To_TaskCollectionContext_Art6"><di:waypoint x="1745" y="375" /><di:waypoint x="1745" y="190" /><di:waypoint x="1940" y="190" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitCompatibilityFactors_To_TaskNatureOfData_Art6_di" bpmnElement="Flow_GatewaySplitCompatibilityFactors_To_TaskNatureOfData_Art6"><di:waypoint x="1745" y="375" /><di:waypoint x="1745" y="320" /><di:waypoint x="1940" y="320" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitCompatibilityFactors_To_TaskConsequences_Art6_di" bpmnElement="Flow_GatewaySplitCompatibilityFactors_To_TaskConsequences_Art6"><di:waypoint x="1770" y="400" /><di:waypoint x="1940" y="450" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitCompatibilityFactors_To_TaskSafeguards_Art6_di" bpmnElement="Flow_GatewaySplitCompatibilityFactors_To_TaskSafeguards_Art6"><di:waypoint x="1745" y="425" /><di:waypoint x="1745" y="580" /><di:waypoint x="1940" y="580" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskLinkBetweenPurposes_To_GatewayJoinCompatibilityFactors_Art6_di" bpmnElement="Flow_TaskLinkBetweenPurposes_To_GatewayJoinCompatibilityFactors_Art6"><di:waypoint x="2410" y="60" /><di:waypoint x="2695" y="60" /><di:waypoint x="2695" y="375" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskCollectionContext_To_GatewayJoinCompatibilityFactors_Art6_di" bpmnElement="Flow_TaskCollectionContext_To_GatewayJoinCompatibilityFactors_Art6"><di:waypoint x="2360" y="190" /><di:waypoint x="2695" y="190" /><di:waypoint x="2695" y="375" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskNatureOfData_To_GatewayJoinCompatibilityFactors_Art6_di" bpmnElement="Flow_TaskNatureOfData_To_GatewayJoinCompatibilityFactors_Art6"><di:waypoint x="2280" y="320" /><di:waypoint x="2695" y="320" /><di:waypoint x="2695" y="375" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskConsequences_To_GatewayJoinCompatibilityFactors_Art6_di" bpmnElement="Flow_TaskConsequences_To_GatewayJoinCompatibilityFactors_Art6"><di:waypoint x="2440" y="450" /><di:waypoint x="2695" y="450" /><di:waypoint x="2695" y="425" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskSafeguards_To_GatewayJoinCompatibilityFactors_Art6_di" bpmnElement="Flow_TaskSafeguards_To_GatewayJoinCompatibilityFactors_Art6"><di:waypoint x="2390" y="580" /><di:waypoint x="2695" y="580" /><di:waypoint x="2695" y="425" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinCompatibilityFactors_To_EndLawfulnessEstablished_Art6_di" bpmnElement="Flow_GatewayJoinCompatibilityFactors_To_EndLawfulnessEstablished_Art6"><di:waypoint x="2720" y="400" /><di:waypoint x="2910" y="400" /></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

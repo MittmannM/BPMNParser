@@ -24,6 +24,10 @@ Sie dient zwei Zwecken:
   - `rioOnto:permissionRule`
   - `rioOnto:constitutiveRule`
 - Auch wenn Regeln als `lrml:ConstitutiveStatement` serialisiert sind, muessen sie semantisch als Pflicht, Erlaubnis, Ausnahme oder konstitutive Definition gelesen werden.
+- Die jeweilige Artikel-XML ist die primaere Transformationsquelle fuer das BPMN in diesem Projekt.
+- Der offizielle GDPR-Artikeltext dient als juristische Kontroll-, Plausibilisierungs- und Ergaenzungsquelle.
+- Wenn XML und Artikeltext nicht deckungsgleich wirken, wird die Abweichung bewusst geprueft und transparent im BPMN oder in der `bpmn:documentation` beruecksichtigt.
+- Der Artikeltext allein reicht nicht als Ersatz fuer die XML, weil DAPRECO die Normen teilweise anders komprimiert, gewichtet oder nur teilweise serialisiert.
 - Beim Modellieren ist nicht die XML-Form allein entscheidend, sondern die normative Wirkung:
   - Pflicht
   - Ausnahme
@@ -164,6 +168,10 @@ Diese Punkte muessen immer erfuellt sein.
 
 - Alle sichtbaren Elemente muessen innerhalb des passenden Pools liegen.
 - Ein End Event darf nicht optisch ausserhalb des Pools stehen.
+- Sichtbare Diagrammelemente duerfen sich nicht ueberlappen.
+- Das gilt insbesondere fuer Tasks, Events, Gateways, Text Annotations, Notes und deren Beschriftungsraum.
+- Notizen oder sonstige Annotationen duerfen nicht auf Tasks oder andere BPMN-Elemente gelegt werden.
+- Sequence Flows zu End Events muessen visuell sauber andocken; der letzte Waypoint darf nicht so gesetzt sein, dass der Pfeil sichtbar zu tief in das Endereignis hineinragt.
 - Message Flows sollen moeglichst klar und nicht irrefuehrend verlaufen.
 - Der Hauptfluss soll moeglichst von links nach rechts lesbar sein.
 - Ausnahme- und Alternativpfade duerfen nach oben oder unten ausweichen, sollen aber lesbar bleiben.
@@ -206,6 +214,7 @@ Diese Liste ist vor jeder neuen reviewed-Datei aktiv abzuhaken.
 - Wurde die Artikel-XML unveraendert gelassen?
 - Wurde die BPMN-Datei als neue `*_reviewed.bpmn` gespeichert?
 - Wurde die semantische Logik direkt aus LegalRuleML hergeleitet?
+- Wurde die XML als primaere Quelle verwendet und der offizielle Artikeltext nur als Kontroll- oder Ergaenzungsquelle eingesetzt?
 - Sind Pflichten, Ausnahmen und Alternativen korrekt im Prozessverlauf abgebildet?
 - Sind die richtigen Teilnehmer modelliert?
 - Sind externe Interaktionen als Message Flows und nicht als Sequence Flows modelliert?
@@ -224,6 +233,8 @@ Diese Liste ist vor jeder neuen reviewed-Datei aktiv abzuhaken.
 - Enthaelt die Datei BPMN-DI, damit sie im Modeler oeffnet?
 - Liegen alle sichtbaren Elemente innerhalb der richtigen Pools?
 - Ragt kein End Event oder Task optisch aus einem Pool heraus?
+- Ueberlappt kein sichtbares Element ein anderes, insbesondere keine Notiz eine Task oder ein Event?
+- Docken Sequence Flows an End Events visuell sauber an, ohne dass der Pfeil zu weit in das Ereignis hineinragt?
 - Wuerde ich dieselbe Datei ohne Erklaerung noch immer als sauber modelliert akzeptieren?
 
 ## Verbindliche Arbeitsregel fuer kommende Aufgaben

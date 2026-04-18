@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art78_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art78_Reviewed">
+    <bpmn:participant id="Participant_Applicant_Art78"
+                      name="Applicant"
+                      processRef="Process_Applicant_Art78" />
+    <bpmn:participant id="Participant_SupervisoryAuthority_Art78"
+                      name="Supervisory Authority"
+                      processRef="Process_SupervisoryAuthority_Art78" />
+    <bpmn:participant id="Participant_Court_Art78"
+                      name="Court" />
+    <bpmn:messageFlow id="MessageFlow_BringProceedingsToCourt_Art78"
+                      sourceRef="SendTask_BringProceedingsToCourt_Art78"
+                      targetRef="Participant_Court_Art78" />
+    <bpmn:messageFlow id="MessageFlow_CourtNotifiesAuthority_Art78"
+                      sourceRef="Participant_Court_Art78"
+                      targetRef="ReceiveTask_ReceiveNoticeOfProceedings_Art78" />
+    <bpmn:messageFlow id="MessageFlow_ForwardBoardMaterial_Art78"
+                      sourceRef="SendTask_ForwardBoardMaterial_Art78"
+                      targetRef="Participant_Court_Art78" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_Applicant_Art78"
+                name="Requesting a judicial remedy against a supervisory authority"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 78 based on DAPRECO LegalRuleML
+      statements265-266 and checked against the current Article 78 text. The XML
+      directly encodes two remedy triggers: a legally binding supervisory-authority
+      decision concerning a natural or legal person, and the Article 77 complaint path
+      where the competent supervisory authority does not handle the complaint or does
+      not inform the data subject within three months on the progress or outcome. The
+      court venue rule in Article 78(3) and the forwarding duty in Article 78(4) are
+      added transparently from the official article text because they are not serialized
+      in the local XML file.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_AssessJudicialRemedy_Art78"
+                     name="Need to assess a judicial remedy against a supervisory authority">
+      <bpmn:outgoing>Flow_Start_To_GatewayTrigger_Art78</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_RemedyTrigger_Art78"
+                           name="What triggers the judicial remedy?">
+      <bpmn:incoming>Flow_Start_To_GatewayTrigger_Art78</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayTrigger_To_VerifyNaturalPersonDecision_Art78</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayTrigger_To_VerifyLegalPersonDecision_Art78</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayTrigger_To_VerifyComplaintNotHandled_Art78</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayTrigger_To_VerifyNoThreeMonthInfo_Art78</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayTrigger_To_EndNoRemedy_Art78</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_VerifyNaturalPersonDecision_Art78"
+               name="Verify that a legally binding supervisory-authority decision concerns the natural person">
+      <bpmn:incoming>Flow_GatewayTrigger_To_VerifyNaturalPersonDecision_Art78</bpmn:incoming>
+      <bpmn:outgoing>Flow_VerifyNaturalPersonDecision_To_GatewayGroundReady_Art78</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_VerifyLegalPersonDecision_Art78"
+               name="Verify that a legally binding supervisory-authority decision concerns the legal person">
+      <bpmn:incoming>Flow_GatewayTrigger_To_VerifyLegalPersonDecision_Art78</bpmn:incoming>
+      <bpmn:outgoing>Flow_VerifyLegalPersonDecision_To_GatewayGroundReady_Art78</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_VerifyComplaintNotHandled_Art78"
+               name="Verify that the competent supervisory authority did not handle the Article 77 complaint">
+      <bpmn:incoming>Flow_GatewayTrigger_To_VerifyComplaintNotHandled_Art78</bpmn:incoming>
+      <bpmn:outgoing>Flow_VerifyComplaintNotHandled_To_GatewayGroundReady_Art78</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_VerifyNoThreeMonthInfo_Art78"
+               name="Verify that no progress or outcome information was received within three months">
+      <bpmn:incoming>Flow_GatewayTrigger_To_VerifyNoThreeMonthInfo_Art78</bpmn:incoming>
+      <bpmn:outgoing>Flow_VerifyNoThreeMonthInfo_To_GatewayGroundReady_Art78</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_NoRemedyRoute_Art78"
+                   name="No Article 78 judicial remedy route is available">
+      <bpmn:incoming>Flow_GatewayTrigger_To_EndNoRemedy_Art78</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_RemedyGroundReady_Art78">
+      <bpmn:incoming>Flow_VerifyNaturalPersonDecision_To_GatewayGroundReady_Art78</bpmn:incoming>
+      <bpmn:incoming>Flow_VerifyLegalPersonDecision_To_GatewayGroundReady_Art78</bpmn:incoming>
+      <bpmn:incoming>Flow_VerifyComplaintNotHandled_To_GatewayGroundReady_Art78</bpmn:incoming>
+      <bpmn:incoming>Flow_VerifyNoThreeMonthInfo_To_GatewayGroundReady_Art78</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayGroundReady_To_BringProceedingsToCourt_Art78</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="SendTask_BringProceedingsToCourt_Art78"
+                   name="Bring proceedings before the court of the Member State where the supervisory authority is established">
+      <bpmn:incoming>Flow_GatewayGroundReady_To_BringProceedingsToCourt_Art78</bpmn:incoming>
+      <bpmn:outgoing>Flow_BringProceedingsToCourt_To_EndRemedyRequested_Art78</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_RemedyRequested_Art78"
+                   name="Judicial remedy requested before the competent court">
+      <bpmn:incoming>Flow_BringProceedingsToCourt_To_EndRemedyRequested_Art78</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_GatewayTrigger_Art78" sourceRef="StartEvent_AssessJudicialRemedy_Art78" targetRef="Gateway_RemedyTrigger_Art78" />
+    <bpmn:sequenceFlow id="Flow_GatewayTrigger_To_VerifyNaturalPersonDecision_Art78" name="Binding decision concerning a natural person" sourceRef="Gateway_RemedyTrigger_Art78" targetRef="Task_VerifyNaturalPersonDecision_Art78" />
+    <bpmn:sequenceFlow id="Flow_GatewayTrigger_To_VerifyLegalPersonDecision_Art78" name="Binding decision concerning a legal person" sourceRef="Gateway_RemedyTrigger_Art78" targetRef="Task_VerifyLegalPersonDecision_Art78" />
+    <bpmn:sequenceFlow id="Flow_GatewayTrigger_To_VerifyComplaintNotHandled_Art78" name="Complaint not handled" sourceRef="Gateway_RemedyTrigger_Art78" targetRef="Task_VerifyComplaintNotHandled_Art78" />
+    <bpmn:sequenceFlow id="Flow_GatewayTrigger_To_VerifyNoThreeMonthInfo_Art78" name="No information within three months" sourceRef="Gateway_RemedyTrigger_Art78" targetRef="Task_VerifyNoThreeMonthInfo_Art78" />
+    <bpmn:sequenceFlow id="Flow_GatewayTrigger_To_EndNoRemedy_Art78" name="None" sourceRef="Gateway_RemedyTrigger_Art78" targetRef="EndEvent_NoRemedyRoute_Art78" />
+    <bpmn:sequenceFlow id="Flow_VerifyNaturalPersonDecision_To_GatewayGroundReady_Art78" sourceRef="Task_VerifyNaturalPersonDecision_Art78" targetRef="Gateway_RemedyGroundReady_Art78" />
+    <bpmn:sequenceFlow id="Flow_VerifyLegalPersonDecision_To_GatewayGroundReady_Art78" sourceRef="Task_VerifyLegalPersonDecision_Art78" targetRef="Gateway_RemedyGroundReady_Art78" />
+    <bpmn:sequenceFlow id="Flow_VerifyComplaintNotHandled_To_GatewayGroundReady_Art78" sourceRef="Task_VerifyComplaintNotHandled_Art78" targetRef="Gateway_RemedyGroundReady_Art78" />
+    <bpmn:sequenceFlow id="Flow_VerifyNoThreeMonthInfo_To_GatewayGroundReady_Art78" sourceRef="Task_VerifyNoThreeMonthInfo_Art78" targetRef="Gateway_RemedyGroundReady_Art78" />
+    <bpmn:sequenceFlow id="Flow_GatewayGroundReady_To_BringProceedingsToCourt_Art78" sourceRef="Gateway_RemedyGroundReady_Art78" targetRef="SendTask_BringProceedingsToCourt_Art78" />
+    <bpmn:sequenceFlow id="Flow_BringProceedingsToCourt_To_EndRemedyRequested_Art78" sourceRef="SendTask_BringProceedingsToCourt_Art78" targetRef="EndEvent_RemedyRequested_Art78" />
+  </bpmn:process>
+
+  <bpmn:process id="Process_SupervisoryAuthority_Art78"
+                name="Forwarding Board material to the court when required"
+                isExecutable="false">
+    <bpmn:startEvent id="StartEvent_ProceedingsNotice_Art78"
+                     name="Proceedings against a supervisory-authority decision are pending before the court">
+      <bpmn:outgoing>Flow_StartAuthority_To_ReceiveNoticeOfProceedings_Art78</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveNoticeOfProceedings_Art78"
+                      name="Receive notice that proceedings concern a supervisory-authority decision">
+      <bpmn:incoming>Flow_StartAuthority_To_ReceiveNoticeOfProceedings_Art78</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveNoticeOfProceedings_To_GatewayBoardMaterial_Art78</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:exclusiveGateway id="Gateway_BoardMaterial_Art78"
+                           name="Was the contested decision preceded by a Board opinion or decision?">
+      <bpmn:incoming>Flow_ReceiveNoticeOfProceedings_To_GatewayBoardMaterial_Art78</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayBoardMaterial_To_EndNoForwarding_Art78</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayBoardMaterial_To_ForwardBoardMaterial_Art78</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_NoForwardingNeeded_Art78"
+                   name="No Board opinion or decision must be forwarded">
+      <bpmn:incoming>Flow_GatewayBoardMaterial_To_EndNoForwarding_Art78</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sendTask id="SendTask_ForwardBoardMaterial_Art78"
+                   name="Forward the Board opinion or decision to the court">
+      <bpmn:incoming>Flow_GatewayBoardMaterial_To_ForwardBoardMaterial_Art78</bpmn:incoming>
+      <bpmn:outgoing>Flow_ForwardBoardMaterial_To_EndForwardingCompleted_Art78</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_ForwardingCompleted_Art78"
+                   name="Board opinion or decision forwarded to the court">
+      <bpmn:incoming>Flow_ForwardBoardMaterial_To_EndForwardingCompleted_Art78</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartAuthority_To_ReceiveNoticeOfProceedings_Art78" sourceRef="StartEvent_ProceedingsNotice_Art78" targetRef="ReceiveTask_ReceiveNoticeOfProceedings_Art78" />
+    <bpmn:sequenceFlow id="Flow_ReceiveNoticeOfProceedings_To_GatewayBoardMaterial_Art78" sourceRef="ReceiveTask_ReceiveNoticeOfProceedings_Art78" targetRef="Gateway_BoardMaterial_Art78" />
+    <bpmn:sequenceFlow id="Flow_GatewayBoardMaterial_To_EndNoForwarding_Art78" name="No" sourceRef="Gateway_BoardMaterial_Art78" targetRef="EndEvent_NoForwardingNeeded_Art78" />
+    <bpmn:sequenceFlow id="Flow_GatewayBoardMaterial_To_ForwardBoardMaterial_Art78" name="Yes" sourceRef="Gateway_BoardMaterial_Art78" targetRef="SendTask_ForwardBoardMaterial_Art78" />
+    <bpmn:sequenceFlow id="Flow_ForwardBoardMaterial_To_EndForwardingCompleted_Art78" sourceRef="SendTask_ForwardBoardMaterial_Art78" targetRef="EndEvent_ForwardingCompleted_Art78" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art78_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art78_Reviewed"
+                      bpmnElement="Collaboration_Art78_Reviewed">
+      <bpmndi:BPMNShape id="Participant_Applicant_Art78_di" bpmnElement="Participant_Applicant_Art78" isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="4300" height="820" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_SupervisoryAuthority_Art78_di" bpmnElement="Participant_SupervisoryAuthority_Art78" isHorizontal="true">
+        <dc:Bounds x="60" y="900" width="4300" height="260" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Court_Art78_di" bpmnElement="Participant_Court_Art78" isHorizontal="true">
+        <dc:Bounds x="60" y="1220" width="4300" height="120" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_AssessJudicialRemedy_Art78_di" bpmnElement="StartEvent_AssessJudicialRemedy_Art78">
+        <dc:Bounds x="120" y="392" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_RemedyTrigger_Art78_di" bpmnElement="Gateway_RemedyTrigger_Art78" isMarkerVisible="true">
+        <dc:Bounds x="260" y="385" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_VerifyNaturalPersonDecision_Art78_di" bpmnElement="Task_VerifyNaturalPersonDecision_Art78">
+        <dc:Bounds x="480" y="80" width="420" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_VerifyLegalPersonDecision_Art78_di" bpmnElement="Task_VerifyLegalPersonDecision_Art78">
+        <dc:Bounds x="480" y="210" width="410" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_VerifyComplaintNotHandled_Art78_di" bpmnElement="Task_VerifyComplaintNotHandled_Art78">
+        <dc:Bounds x="480" y="340" width="420" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_VerifyNoThreeMonthInfo_Art78_di" bpmnElement="Task_VerifyNoThreeMonthInfo_Art78">
+        <dc:Bounds x="480" y="470" width="400" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NoRemedyRoute_Art78_di" bpmnElement="EndEvent_NoRemedyRoute_Art78">
+        <dc:Bounds x="540" y="652" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_RemedyGroundReady_Art78_di" bpmnElement="Gateway_RemedyGroundReady_Art78" isMarkerVisible="true">
+        <dc:Bounds x="1070" y="385" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_BringProceedingsToCourt_Art78_di" bpmnElement="SendTask_BringProceedingsToCourt_Art78">
+        <dc:Bounds x="1280" y="370" width="470" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_RemedyRequested_Art78_di" bpmnElement="EndEvent_RemedyRequested_Art78">
+        <dc:Bounds x="1910" y="392" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_ProceedingsNotice_Art78_di" bpmnElement="StartEvent_ProceedingsNotice_Art78">
+        <dc:Bounds x="120" y="1002" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveNoticeOfProceedings_Art78_di" bpmnElement="ReceiveTask_ReceiveNoticeOfProceedings_Art78">
+        <dc:Bounds x="240" y="980" width="430" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_BoardMaterial_Art78_di" bpmnElement="Gateway_BoardMaterial_Art78" isMarkerVisible="true">
+        <dc:Bounds x="800" y="995" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NoForwardingNeeded_Art78_di" bpmnElement="EndEvent_NoForwardingNeeded_Art78">
+        <dc:Bounds x="1010" y="922" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_ForwardBoardMaterial_Art78_di" bpmnElement="SendTask_ForwardBoardMaterial_Art78">
+        <dc:Bounds x="1000" y="980" width="330" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ForwardingCompleted_Art78_di" bpmnElement="EndEvent_ForwardingCompleted_Art78">
+        <dc:Bounds x="1490" y="1002" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_Start_To_GatewayTrigger_Art78_di" bpmnElement="Flow_Start_To_GatewayTrigger_Art78">
+        <di:waypoint x="156" y="410" />
+        <di:waypoint x="260" y="410" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayTrigger_To_VerifyNaturalPersonDecision_Art78_di" bpmnElement="Flow_GatewayTrigger_To_VerifyNaturalPersonDecision_Art78">
+        <di:waypoint x="285" y="385" />
+        <di:waypoint x="285" y="120" />
+        <di:waypoint x="480" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayTrigger_To_VerifyLegalPersonDecision_Art78_di" bpmnElement="Flow_GatewayTrigger_To_VerifyLegalPersonDecision_Art78">
+        <di:waypoint x="285" y="385" />
+        <di:waypoint x="285" y="250" />
+        <di:waypoint x="480" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayTrigger_To_VerifyComplaintNotHandled_Art78_di" bpmnElement="Flow_GatewayTrigger_To_VerifyComplaintNotHandled_Art78">
+        <di:waypoint x="310" y="410" />
+        <di:waypoint x="480" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayTrigger_To_VerifyNoThreeMonthInfo_Art78_di" bpmnElement="Flow_GatewayTrigger_To_VerifyNoThreeMonthInfo_Art78">
+        <di:waypoint x="310" y="410" />
+        <di:waypoint x="480" y="510" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayTrigger_To_EndNoRemedy_Art78_di" bpmnElement="Flow_GatewayTrigger_To_EndNoRemedy_Art78">
+        <di:waypoint x="285" y="435" />
+        <di:waypoint x="285" y="670" />
+        <di:waypoint x="540" y="670" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_VerifyNaturalPersonDecision_To_GatewayGroundReady_Art78_di" bpmnElement="Flow_VerifyNaturalPersonDecision_To_GatewayGroundReady_Art78">
+        <di:waypoint x="900" y="120" />
+        <di:waypoint x="1095" y="120" />
+        <di:waypoint x="1095" y="385" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_VerifyLegalPersonDecision_To_GatewayGroundReady_Art78_di" bpmnElement="Flow_VerifyLegalPersonDecision_To_GatewayGroundReady_Art78">
+        <di:waypoint x="890" y="250" />
+        <di:waypoint x="1095" y="250" />
+        <di:waypoint x="1095" y="385" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_VerifyComplaintNotHandled_To_GatewayGroundReady_Art78_di" bpmnElement="Flow_VerifyComplaintNotHandled_To_GatewayGroundReady_Art78">
+        <di:waypoint x="900" y="380" />
+        <di:waypoint x="1070" y="410" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_VerifyNoThreeMonthInfo_To_GatewayGroundReady_Art78_di" bpmnElement="Flow_VerifyNoThreeMonthInfo_To_GatewayGroundReady_Art78">
+        <di:waypoint x="880" y="510" />
+        <di:waypoint x="1095" y="510" />
+        <di:waypoint x="1095" y="435" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayGroundReady_To_BringProceedingsToCourt_Art78_di" bpmnElement="Flow_GatewayGroundReady_To_BringProceedingsToCourt_Art78">
+        <di:waypoint x="1120" y="410" />
+        <di:waypoint x="1280" y="410" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_BringProceedingsToCourt_To_EndRemedyRequested_Art78_di" bpmnElement="Flow_BringProceedingsToCourt_To_EndRemedyRequested_Art78">
+        <di:waypoint x="1750" y="410" />
+        <di:waypoint x="1910" y="410" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_StartAuthority_To_ReceiveNoticeOfProceedings_Art78_di" bpmnElement="Flow_StartAuthority_To_ReceiveNoticeOfProceedings_Art78">
+        <di:waypoint x="156" y="1020" />
+        <di:waypoint x="240" y="1020" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveNoticeOfProceedings_To_GatewayBoardMaterial_Art78_di" bpmnElement="Flow_ReceiveNoticeOfProceedings_To_GatewayBoardMaterial_Art78">
+        <di:waypoint x="670" y="1020" />
+        <di:waypoint x="800" y="1020" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayBoardMaterial_To_EndNoForwarding_Art78_di" bpmnElement="Flow_GatewayBoardMaterial_To_EndNoForwarding_Art78">
+        <di:waypoint x="825" y="995" />
+        <di:waypoint x="825" y="940" />
+        <di:waypoint x="1010" y="940" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayBoardMaterial_To_ForwardBoardMaterial_Art78_di" bpmnElement="Flow_GatewayBoardMaterial_To_ForwardBoardMaterial_Art78">
+        <di:waypoint x="850" y="1020" />
+        <di:waypoint x="1000" y="1020" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ForwardBoardMaterial_To_EndForwardingCompleted_Art78_di" bpmnElement="Flow_ForwardBoardMaterial_To_EndForwardingCompleted_Art78">
+        <di:waypoint x="1330" y="1020" />
+        <di:waypoint x="1490" y="1020" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_BringProceedingsToCourt_Art78_di" bpmnElement="MessageFlow_BringProceedingsToCourt_Art78">
+        <di:waypoint x="1515" y="450" />
+        <di:waypoint x="1515" y="1220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_CourtNotifiesAuthority_Art78_di" bpmnElement="MessageFlow_CourtNotifiesAuthority_Art78">
+        <di:waypoint x="460" y="1220" />
+        <di:waypoint x="460" y="1060" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ForwardBoardMaterial_Art78_di" bpmnElement="MessageFlow_ForwardBoardMaterial_Art78">
+        <di:waypoint x="1165" y="1060" />
+        <di:waypoint x="1165" y="1220" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
