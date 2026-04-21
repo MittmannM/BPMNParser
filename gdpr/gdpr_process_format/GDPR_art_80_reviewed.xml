@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Court_Art80" name="Court" poolType="passive" />
+    <pool id="Participant_DataSubject_Art80" name="Data Subject" poolType="passive" />
+    <pool id="Participant_NotForProfitBody_Art80" name="Not-for-profit body, organisation, or association" poolType="active" processRef="Process_NotForProfitBody_Art80" />
+    <pool id="Participant_SupervisoryAuthority_Art80" name="Supervisory Authority" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="ReceiveTask_ReceiveMandate_Art80" name="Receive the data subject's mandate" type="receiveTask" poolRef="Participant_NotForProfitBody_Art80" />
+    <task id="SendTask_LodgeComplaint_Art80" name="Lodge the complaint on behalf of the data subject or independently where Member State law allows it" type="sendTask" poolRef="Participant_NotForProfitBody_Art80" />
+    <task id="SendTask_RequestCompensation_Art80" name="Request compensation on behalf of the data subject where Member State law provides for it" type="sendTask" poolRef="Participant_NotForProfitBody_Art80" />
+    <task id="SendTask_RequestJudicialRemedy_Art80" name="Request the judicial remedy on behalf of the data subject" type="sendTask" poolRef="Participant_NotForProfitBody_Art80" />
+    <task id="SendTask_RequestMandate_Art80" name="Request a mandate from the data subject" type="sendTask" poolRef="Participant_NotForProfitBody_Art80" />
+    <task id="Task_AssessIndependentComplaint_Art80" name="Assess whether rights of a data subject were infringed so that an independent complaint or remedy may be pursued" type="task" poolRef="Participant_NotForProfitBody_Art80" />
+    <task id="Task_VerifyBodyCriteria_Art80" name="Verify that the body is not-for-profit, properly constituted, in the public interest, and active in data-protection rights" type="task" poolRef="Participant_NotForProfitBody_Art80" />
+  </tasks>
+  <events>
+    <event id="EndEvent_NoRepresentation_Art80" name="No Article 80 representation route is available" type="endEvent" poolRef="Participant_NotForProfitBody_Art80" />
+    <event id="EndEvent_RepresentationCompleted_Art80" name="Article 80 representation action completed" type="endEvent" poolRef="Participant_NotForProfitBody_Art80" />
+    <event id="StartEvent_AssessRepresentation_Art80" name="Need to assess representation of a data subject" type="startEvent" poolRef="Participant_NotForProfitBody_Art80" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_ActionCompleted_Art80" type="exclusiveGateway" poolRef="Participant_NotForProfitBody_Art80" />
+    <gateway id="Gateway_ActionScope_Art80" name="Which Article 80 action will be exercised?" type="exclusiveGateway" poolRef="Participant_NotForProfitBody_Art80" />
+    <gateway id="Gateway_MandateStatus_Art80" name="Is there a mandate from the data subject?" type="exclusiveGateway" poolRef="Participant_NotForProfitBody_Art80" />
+    <gateway id="Gateway_MemberStateOption_Art80" name="Does Member State law allow representation without a mandate?" type="exclusiveGateway" poolRef="Participant_NotForProfitBody_Art80" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AssessIndependentComplaint_To_GatewayActionScope_Art80" sourceRef="Task_AssessIndependentComplaint_Art80" targetRef="Gateway_ActionScope_Art80" />
+    <sequenceFlow id="Flow_GatewayActionCompleted_To_EndRepresentationCompleted_Art80" sourceRef="Gateway_ActionCompleted_Art80" targetRef="EndEvent_RepresentationCompleted_Art80" />
+    <sequenceFlow id="Flow_GatewayActionScope_To_LodgeComplaint_Art80" name="Complaint under Article 77" sourceRef="Gateway_ActionScope_Art80" targetRef="SendTask_LodgeComplaint_Art80" />
+    <sequenceFlow id="Flow_GatewayActionScope_To_RequestCompensation_Art80" name="Compensation under Article 82" sourceRef="Gateway_ActionScope_Art80" targetRef="SendTask_RequestCompensation_Art80" />
+    <sequenceFlow id="Flow_GatewayActionScope_To_RequestJudicialRemedy_Art80" name="Judicial remedy under Articles 78 or 79" sourceRef="Gateway_ActionScope_Art80" targetRef="SendTask_RequestJudicialRemedy_Art80" />
+    <sequenceFlow id="Flow_GatewayMandate_To_GatewayMemberStateOption_Art80" name="No mandate available" sourceRef="Gateway_MandateStatus_Art80" targetRef="Gateway_MemberStateOption_Art80" />
+    <sequenceFlow id="Flow_GatewayMandate_To_RequestMandate_Art80" name="Yes, obtain or confirm mandate" sourceRef="Gateway_MandateStatus_Art80" targetRef="SendTask_RequestMandate_Art80" />
+    <sequenceFlow id="Flow_GatewayMemberStateOption_To_EndNoRepresentation_Art80" name="No" sourceRef="Gateway_MemberStateOption_Art80" targetRef="EndEvent_NoRepresentation_Art80" />
+    <sequenceFlow id="Flow_GatewayMemberStateOption_To_TaskAssessIndependentComplaint_Art80" name="Yes" sourceRef="Gateway_MemberStateOption_Art80" targetRef="Task_AssessIndependentComplaint_Art80" />
+    <sequenceFlow id="Flow_LodgeComplaint_To_EndActionCompleted_Art80" sourceRef="SendTask_LodgeComplaint_Art80" targetRef="Gateway_ActionCompleted_Art80" />
+    <sequenceFlow id="Flow_ReceiveMandate_To_GatewayActionScope_Art80" sourceRef="ReceiveTask_ReceiveMandate_Art80" targetRef="Gateway_ActionScope_Art80" />
+    <sequenceFlow id="Flow_RequestCompensation_To_EndActionCompleted_Art80" sourceRef="SendTask_RequestCompensation_Art80" targetRef="Gateway_ActionCompleted_Art80" />
+    <sequenceFlow id="Flow_RequestJudicialRemedy_To_EndActionCompleted_Art80" sourceRef="SendTask_RequestJudicialRemedy_Art80" targetRef="Gateway_ActionCompleted_Art80" />
+    <sequenceFlow id="Flow_RequestMandate_To_ReceiveMandate_Art80" sourceRef="SendTask_RequestMandate_Art80" targetRef="ReceiveTask_ReceiveMandate_Art80" />
+    <sequenceFlow id="Flow_Start_To_VerifyBodyCriteria_Art80" sourceRef="StartEvent_AssessRepresentation_Art80" targetRef="Task_VerifyBodyCriteria_Art80" />
+    <sequenceFlow id="Flow_VerifyBodyCriteria_To_GatewayMandate_Art80" sourceRef="Task_VerifyBodyCriteria_Art80" targetRef="Gateway_MandateStatus_Art80" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_LodgeComplaint_Art80" sourceRef="SendTask_LodgeComplaint_Art80" targetRef="Participant_SupervisoryAuthority_Art80" />
+    <messageFlow id="MessageFlow_ReceiveMandate_Art80" sourceRef="Participant_DataSubject_Art80" targetRef="ReceiveTask_ReceiveMandate_Art80" />
+    <messageFlow id="MessageFlow_RequestCompensation_Art80" sourceRef="SendTask_RequestCompensation_Art80" targetRef="Participant_Court_Art80" />
+    <messageFlow id="MessageFlow_RequestJudicialRemedy_Art80" sourceRef="SendTask_RequestJudicialRemedy_Art80" targetRef="Participant_Court_Art80" />
+    <messageFlow id="MessageFlow_RequestMandate_Art80" sourceRef="SendTask_RequestMandate_Art80" targetRef="Participant_DataSubject_Art80" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

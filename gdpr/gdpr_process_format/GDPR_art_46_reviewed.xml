@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_ControllerProcessor_Art46" name="Controller or Processor" poolType="active" processRef="Process_ControllerProcessor_Art46" />
+    <pool id="Participant_Counterparty_Art46" name="Recipient or public-body counterparty" poolType="passive" />
+    <pool id="Participant_SupervisoryAuthority_Art46" name="Supervisory Authority" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="ReceiveTask_ReceiveArrangementAuthorizationDecision_Art46" name="Receive the authorization decision for the administrative arrangements" type="receiveTask" poolRef="Participant_ControllerProcessor_Art46" />
+    <task id="ReceiveTask_ReceiveClauseAuthorizationDecision_Art46" name="Receive the authorization decision for the contractual clauses" type="receiveTask" poolRef="Participant_ControllerProcessor_Art46" />
+    <task id="SendTask_AgreeCertificationCommitments_Art46" name="Agree an approved certification mechanism with binding commitments" type="sendTask" poolRef="Participant_ControllerProcessor_Art46" />
+    <task id="SendTask_AgreeCodeCommitments_Art46" name="Agree adherence to an approved code of conduct with binding commitments" type="sendTask" poolRef="Participant_ControllerProcessor_Art46" />
+    <task id="SendTask_ConcludeAuthorizedArrangement_Art46" name="Conclude the authorized administrative arrangements with the public-body counterparty" type="sendTask" poolRef="Participant_ControllerProcessor_Art46" />
+    <task id="SendTask_ConcludeAuthorizedClauses_Art46" name="Conclude the authorized contractual clauses with the counterparty" type="sendTask" poolRef="Participant_ControllerProcessor_Art46" />
+    <task id="SendTask_ConcludePublicBodyInstrument_Art46" name="Conclude a legally binding and enforceable public-body instrument" type="sendTask" poolRef="Participant_ControllerProcessor_Art46" />
+    <task id="SendTask_RequestArrangementAuthorization_Art46" name="Request supervisory-authority authorization for the administrative arrangements" type="sendTask" poolRef="Participant_ControllerProcessor_Art46" />
+    <task id="SendTask_RequestClauseAuthorization_Art46" name="Request supervisory-authority authorization for the contractual clauses" type="sendTask" poolRef="Participant_ControllerProcessor_Art46" />
+    <task id="SendTask_TransferPersonalData_Art46" name="Transfer personal data under the selected safeguards" type="sendTask" poolRef="Participant_ControllerProcessor_Art46" />
+    <task id="Task_AdoptBindingCorporateRules_Art46" name="Adopt binding corporate rules for the transfer" type="task" poolRef="Participant_ControllerProcessor_Art46" />
+    <task id="Task_AssessProtection_Art46" name="Assess enforceable rights, legal remedies, and residual risk for the transfer" type="task" poolRef="Participant_ControllerProcessor_Art46" />
+    <task id="Task_ImplementSafeguards_Art46" name="Implement the selected safeguards, commitments, and supplementary measures" type="task" poolRef="Participant_ControllerProcessor_Art46" />
+    <task id="Task_PrepareAdHocClauses_Art46" name="Prepare ad hoc contractual clauses for supervisory-authority authorization" type="task" poolRef="Participant_ControllerProcessor_Art46" />
+    <task id="Task_PrepareAdministrativeArrangement_Art46" name="Prepare administrative arrangements for supervisory-authority authorization" type="task" poolRef="Participant_ControllerProcessor_Art46" />
+  </tasks>
+  <events>
+    <event id="EndEvent_ArrangementRejected_Art46" name="The administrative arrangements were not authorized" type="endEvent" poolRef="Participant_ControllerProcessor_Art46" />
+    <event id="EndEvent_ClausesRejected_Art46" name="The contractual clauses were not authorized" type="endEvent" poolRef="Participant_ControllerProcessor_Art46" />
+    <event id="EndEvent_TransferBlocked_Art46" name="The transfer is blocked because the safeguards are insufficient" type="endEvent" poolRef="Participant_ControllerProcessor_Art46" />
+    <event id="EndEvent_TransferCompleted_Art46" name="Transfer completed with appropriate safeguards" type="endEvent" poolRef="Participant_ControllerProcessor_Art46" />
+    <event id="EndEvent_UseAdequacyRoute_Art46" name="Use the adequacy route instead of Article 46 safeguards" type="endEvent" poolRef="Participant_ControllerProcessor_Art46" />
+    <event id="StartEvent_NeedTransfer_Art46" name="Need to transfer personal data to a third country or international organisation" type="startEvent" poolRef="Participant_ControllerProcessor_Art46" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_ArrangementAuthorized_Art46" name="Did the supervisory authority authorize the administrative arrangements?" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art46" />
+    <gateway id="Gateway_ClausesAuthorized_Art46" name="Did the supervisory authority authorize the contractual clauses?" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art46" />
+    <gateway id="Gateway_NoAdequacyDecision_Art46" name="Is there no adequacy decision for the destination?" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art46" />
+    <gateway id="Gateway_ResidualRiskControlled_Art46" name="Do the safeguards and measures prevent residual risk to the data subject?" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art46" />
+    <gateway id="Gateway_SafeguardInstrument_Art46" name="Which safeguard instrument will be used?" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art46" />
+    <gateway id="Gateway_SafeguardReady_Art46" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art46" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AssessProtection_To_GatewayResidualRisk_Art46" sourceRef="Task_AssessProtection_Art46" targetRef="Gateway_ResidualRiskControlled_Art46" />
+    <sequenceFlow id="Flow_BindingCorporateRules_To_GatewaySafeguardReady_Art46" sourceRef="Task_AdoptBindingCorporateRules_Art46" targetRef="Gateway_SafeguardReady_Art46" />
+    <sequenceFlow id="Flow_CertificationCommitments_To_GatewaySafeguardReady_Art46" sourceRef="SendTask_AgreeCertificationCommitments_Art46" targetRef="Gateway_SafeguardReady_Art46" />
+    <sequenceFlow id="Flow_CodeCommitments_To_GatewaySafeguardReady_Art46" sourceRef="SendTask_AgreeCodeCommitments_Art46" targetRef="Gateway_SafeguardReady_Art46" />
+    <sequenceFlow id="Flow_ConcludeAuthorizedArrangement_To_GatewaySafeguardReady_Art46" sourceRef="SendTask_ConcludeAuthorizedArrangement_Art46" targetRef="Gateway_SafeguardReady_Art46" />
+    <sequenceFlow id="Flow_ConcludeAuthorizedClauses_To_GatewaySafeguardReady_Art46" sourceRef="SendTask_ConcludeAuthorizedClauses_Art46" targetRef="Gateway_SafeguardReady_Art46" />
+    <sequenceFlow id="Flow_GatewayArrangementAuthorized_To_ConcludeAuthorizedArrangement_Art46" name="Yes" sourceRef="Gateway_ArrangementAuthorized_Art46" targetRef="SendTask_ConcludeAuthorizedArrangement_Art46" />
+    <sequenceFlow id="Flow_GatewayArrangementAuthorized_To_EndArrangementRejected_Art46" name="No" sourceRef="Gateway_ArrangementAuthorized_Art46" targetRef="EndEvent_ArrangementRejected_Art46" />
+    <sequenceFlow id="Flow_GatewayClausesAuthorized_To_ConcludeAuthorizedClauses_Art46" name="Yes" sourceRef="Gateway_ClausesAuthorized_Art46" targetRef="SendTask_ConcludeAuthorizedClauses_Art46" />
+    <sequenceFlow id="Flow_GatewayClausesAuthorized_To_EndClausesRejected_Art46" name="No" sourceRef="Gateway_ClausesAuthorized_Art46" targetRef="EndEvent_ClausesRejected_Art46" />
+    <sequenceFlow id="Flow_GatewayInstrument_To_BindingCorporateRules_Art46" name="Binding corporate rules" sourceRef="Gateway_SafeguardInstrument_Art46" targetRef="Task_AdoptBindingCorporateRules_Art46" />
+    <sequenceFlow id="Flow_GatewayInstrument_To_CertificationCommitments_Art46" name="Approved certification mechanism" sourceRef="Gateway_SafeguardInstrument_Art46" targetRef="SendTask_AgreeCertificationCommitments_Art46" />
+    <sequenceFlow id="Flow_GatewayInstrument_To_CodeCommitments_Art46" name="Approved code of conduct" sourceRef="Gateway_SafeguardInstrument_Art46" targetRef="SendTask_AgreeCodeCommitments_Art46" />
+    <sequenceFlow id="Flow_GatewayInstrument_To_PrepareArrangement_Art46" name="Authorized administrative arrangements" sourceRef="Gateway_SafeguardInstrument_Art46" targetRef="Task_PrepareAdministrativeArrangement_Art46" />
+    <sequenceFlow id="Flow_GatewayInstrument_To_PrepareClauses_Art46" name="Authorized contractual clauses" sourceRef="Gateway_SafeguardInstrument_Art46" targetRef="Task_PrepareAdHocClauses_Art46" />
+    <sequenceFlow id="Flow_GatewayInstrument_To_PublicBodyInstrument_Art46" name="Public-body instrument" sourceRef="Gateway_SafeguardInstrument_Art46" targetRef="SendTask_ConcludePublicBodyInstrument_Art46" />
+    <sequenceFlow id="Flow_GatewayNoAdequacy_To_EndUseAdequacyRoute_Art46" name="No" sourceRef="Gateway_NoAdequacyDecision_Art46" targetRef="EndEvent_UseAdequacyRoute_Art46" />
+    <sequenceFlow id="Flow_GatewayNoAdequacy_To_GatewayInstrument_Art46" name="Yes" sourceRef="Gateway_NoAdequacyDecision_Art46" targetRef="Gateway_SafeguardInstrument_Art46" />
+    <sequenceFlow id="Flow_GatewayResidualRisk_To_EndTransferBlocked_Art46" name="No" sourceRef="Gateway_ResidualRiskControlled_Art46" targetRef="EndEvent_TransferBlocked_Art46" />
+    <sequenceFlow id="Flow_GatewayResidualRisk_To_TransferPersonalData_Art46" name="Yes" sourceRef="Gateway_ResidualRiskControlled_Art46" targetRef="SendTask_TransferPersonalData_Art46" />
+    <sequenceFlow id="Flow_GatewaySafeguardReady_To_ImplementSafeguards_Art46" sourceRef="Gateway_SafeguardReady_Art46" targetRef="Task_ImplementSafeguards_Art46" />
+    <sequenceFlow id="Flow_ImplementSafeguards_To_AssessProtection_Art46" sourceRef="Task_ImplementSafeguards_Art46" targetRef="Task_AssessProtection_Art46" />
+    <sequenceFlow id="Flow_PrepareArrangement_To_RequestArrangementAuthorization_Art46" sourceRef="Task_PrepareAdministrativeArrangement_Art46" targetRef="SendTask_RequestArrangementAuthorization_Art46" />
+    <sequenceFlow id="Flow_PrepareClauses_To_RequestClauseAuthorization_Art46" sourceRef="Task_PrepareAdHocClauses_Art46" targetRef="SendTask_RequestClauseAuthorization_Art46" />
+    <sequenceFlow id="Flow_PublicBodyInstrument_To_GatewaySafeguardReady_Art46" sourceRef="SendTask_ConcludePublicBodyInstrument_Art46" targetRef="Gateway_SafeguardReady_Art46" />
+    <sequenceFlow id="Flow_ReceiveArrangementDecision_To_GatewayArrangementAuthorized_Art46" sourceRef="ReceiveTask_ReceiveArrangementAuthorizationDecision_Art46" targetRef="Gateway_ArrangementAuthorized_Art46" />
+    <sequenceFlow id="Flow_ReceiveClauseDecision_To_GatewayClausesAuthorized_Art46" sourceRef="ReceiveTask_ReceiveClauseAuthorizationDecision_Art46" targetRef="Gateway_ClausesAuthorized_Art46" />
+    <sequenceFlow id="Flow_RequestArrangementAuthorization_To_ReceiveArrangementDecision_Art46" sourceRef="SendTask_RequestArrangementAuthorization_Art46" targetRef="ReceiveTask_ReceiveArrangementAuthorizationDecision_Art46" />
+    <sequenceFlow id="Flow_RequestClauseAuthorization_To_ReceiveClauseDecision_Art46" sourceRef="SendTask_RequestClauseAuthorization_Art46" targetRef="ReceiveTask_ReceiveClauseAuthorizationDecision_Art46" />
+    <sequenceFlow id="Flow_Start_To_GatewayNoAdequacy_Art46" sourceRef="StartEvent_NeedTransfer_Art46" targetRef="Gateway_NoAdequacyDecision_Art46" />
+    <sequenceFlow id="Flow_TransferPersonalData_To_EndTransferCompleted_Art46" sourceRef="SendTask_TransferPersonalData_Art46" targetRef="EndEvent_TransferCompleted_Art46" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_ArrangementAuthorizationDecision_Art46" sourceRef="Participant_SupervisoryAuthority_Art46" targetRef="ReceiveTask_ReceiveArrangementAuthorizationDecision_Art46" />
+    <messageFlow id="MessageFlow_CertificationCommitments_Art46" sourceRef="SendTask_AgreeCertificationCommitments_Art46" targetRef="Participant_Counterparty_Art46" />
+    <messageFlow id="MessageFlow_ClauseAuthorizationDecision_Art46" sourceRef="Participant_SupervisoryAuthority_Art46" targetRef="ReceiveTask_ReceiveClauseAuthorizationDecision_Art46" />
+    <messageFlow id="MessageFlow_CodeCommitments_Art46" sourceRef="SendTask_AgreeCodeCommitments_Art46" targetRef="Participant_Counterparty_Art46" />
+    <messageFlow id="MessageFlow_ConcludeAuthorizedArrangement_Art46" sourceRef="SendTask_ConcludeAuthorizedArrangement_Art46" targetRef="Participant_Counterparty_Art46" />
+    <messageFlow id="MessageFlow_ConcludeAuthorizedClauses_Art46" sourceRef="SendTask_ConcludeAuthorizedClauses_Art46" targetRef="Participant_Counterparty_Art46" />
+    <messageFlow id="MessageFlow_PublicBodyInstrument_Art46" sourceRef="SendTask_ConcludePublicBodyInstrument_Art46" targetRef="Participant_Counterparty_Art46" />
+    <messageFlow id="MessageFlow_RequestArrangementAuthorization_Art46" sourceRef="SendTask_RequestArrangementAuthorization_Art46" targetRef="Participant_SupervisoryAuthority_Art46" />
+    <messageFlow id="MessageFlow_RequestClauseAuthorization_Art46" sourceRef="SendTask_RequestClauseAuthorization_Art46" targetRef="Participant_SupervisoryAuthority_Art46" />
+    <messageFlow id="MessageFlow_TransferPersonalData_Art46" sourceRef="SendTask_TransferPersonalData_Art46" targetRef="Participant_Counterparty_Art46" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

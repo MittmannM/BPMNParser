@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Controller_Art11" name="Controller" poolType="active" processRef="Process_Controller_Art11" />
+    <pool id="Participant_DataSubject_Art11" name="Data Subject" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="ReceiveTask_ReceiveRightsRequest_Art11" name="Receive the rights request and any additional identifying information from the data subject" type="receiveTask" poolRef="Participant_Controller_Art11" />
+    <task id="SendTask_InformDataSubject_Art11" name="Inform the data subject that the controller is not in a position to identify him or her" type="sendTask" poolRef="Participant_Controller_Art11" />
+    <task id="Task_AssessIdentificationNeed_Art11" name="Assess whether the processing purpose requires identification of the data subject" type="task" poolRef="Participant_Controller_Art11" />
+    <task id="Task_AvoidAdditionalIdentification_Art11" name="Avoid maintaining, acquiring, or processing additional information solely to identify the data subject" type="task" poolRef="Participant_Controller_Art11" />
+  </tasks>
+  <events>
+    <event id="EndEvent_Article11NotApplicable_Art11" name="Article 11 does not relieve the controller from identification steps" type="endEvent" poolRef="Participant_Controller_Art11" />
+    <event id="EndEvent_NoArt11Par2Relief_Art11" name="No additional identification is required solely for compliance, but Article 11(2) relief is not established" type="endEvent" poolRef="Participant_Controller_Art11" />
+    <event id="EndEvent_NoFurtherIdentificationNeeded_Art11" name="No additional identification is required for compliance and no rights request is pursued" type="endEvent" poolRef="Participant_Controller_Art11" />
+    <event id="EndEvent_RightsDoNotApply_Art11" name="Articles 15 to 20 do not apply because identification remains impossible" type="endEvent" poolRef="Participant_Controller_Art11" />
+    <event id="EndEvent_RightsMayProceed_Art11" name="The rights request may proceed because identification becomes possible" type="endEvent" poolRef="Participant_Controller_Art11" />
+    <event id="StartEvent_AssessArticle11_Art11" name="Need to assess whether identification is required for the processing purpose" type="startEvent" poolRef="Participant_Controller_Art11" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_AdditionalInfo_Art11" name="Did the data subject provide additional information enabling identification?" type="exclusiveGateway" poolRef="Participant_Controller_Art11" />
+    <gateway id="Gateway_CanDemonstrateInability_Art11" name="Can the controller demonstrate that it is not in a position to identify the data subject?" type="exclusiveGateway" poolRef="Participant_Controller_Art11" />
+    <gateway id="Gateway_InformPossible_Art11" name="Is it possible to inform the data subject accordingly?" type="exclusiveGateway" poolRef="Participant_Controller_Art11" />
+    <gateway id="Gateway_PurposeRequiresIdentification_Art11" name="Do the processing purposes require identification of the data subject?" type="exclusiveGateway" poolRef="Participant_Controller_Art11" />
+    <gateway id="Gateway_RightsRequest_Art11" name="Does the data subject seek to exercise rights under Articles 15 to 20?" type="exclusiveGateway" poolRef="Participant_Controller_Art11" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_GatewayAdditionalInfo_To_EndRightsDoNotApply_Art11" name="No" sourceRef="Gateway_AdditionalInfo_Art11" targetRef="EndEvent_RightsDoNotApply_Art11" />
+    <sequenceFlow id="Flow_GatewayAdditionalInfo_To_EndRightsMayProceed_Art11" name="Yes" sourceRef="Gateway_AdditionalInfo_Art11" targetRef="EndEvent_RightsMayProceed_Art11" />
+    <sequenceFlow id="Flow_GatewayCanDemonstrateInability_To_EndNoArt11Par2Relief_Art11" name="No" sourceRef="Gateway_CanDemonstrateInability_Art11" targetRef="EndEvent_NoArt11Par2Relief_Art11" />
+    <sequenceFlow id="Flow_GatewayCanDemonstrateInability_To_GatewayInformPossible_Art11" name="Yes" sourceRef="Gateway_CanDemonstrateInability_Art11" targetRef="Gateway_InformPossible_Art11" />
+    <sequenceFlow id="Flow_GatewayInformPossible_To_GatewayRightsRequest_Art11" name="No" sourceRef="Gateway_InformPossible_Art11" targetRef="Gateway_RightsRequest_Art11" />
+    <sequenceFlow id="Flow_GatewayInformPossible_To_SendTaskInformDataSubject_Art11" name="Yes" sourceRef="Gateway_InformPossible_Art11" targetRef="SendTask_InformDataSubject_Art11" />
+    <sequenceFlow id="Flow_GatewayPurposeRequiresIdentification_To_EndArticle11NotApplicable_Art11" name="Yes" sourceRef="Gateway_PurposeRequiresIdentification_Art11" targetRef="EndEvent_Article11NotApplicable_Art11" />
+    <sequenceFlow id="Flow_GatewayPurposeRequiresIdentification_To_TaskAvoidAdditionalIdentification_Art11" name="No" sourceRef="Gateway_PurposeRequiresIdentification_Art11" targetRef="Task_AvoidAdditionalIdentification_Art11" />
+    <sequenceFlow id="Flow_GatewayRightsRequest_To_EndNoFurtherIdentificationNeeded_Art11" name="No" sourceRef="Gateway_RightsRequest_Art11" targetRef="EndEvent_NoFurtherIdentificationNeeded_Art11" />
+    <sequenceFlow id="Flow_GatewayRightsRequest_To_ReceiveTaskReceiveRightsRequest_Art11" name="Yes" sourceRef="Gateway_RightsRequest_Art11" targetRef="ReceiveTask_ReceiveRightsRequest_Art11" />
+    <sequenceFlow id="Flow_ReceiveTaskReceiveRightsRequest_To_GatewayAdditionalInfo_Art11" sourceRef="ReceiveTask_ReceiveRightsRequest_Art11" targetRef="Gateway_AdditionalInfo_Art11" />
+    <sequenceFlow id="Flow_SendTaskInformDataSubject_To_GatewayRightsRequest_Art11" sourceRef="SendTask_InformDataSubject_Art11" targetRef="Gateway_RightsRequest_Art11" />
+    <sequenceFlow id="Flow_Start_To_TaskAssessIdentificationNeed_Art11" sourceRef="StartEvent_AssessArticle11_Art11" targetRef="Task_AssessIdentificationNeed_Art11" />
+    <sequenceFlow id="Flow_TaskAssessIdentificationNeed_To_GatewayPurposeRequiresIdentification_Art11" sourceRef="Task_AssessIdentificationNeed_Art11" targetRef="Gateway_PurposeRequiresIdentification_Art11" />
+    <sequenceFlow id="Flow_TaskAvoidAdditionalIdentification_To_GatewayCanDemonstrateInability_Art11" sourceRef="Task_AvoidAdditionalIdentification_Art11" targetRef="Gateway_CanDemonstrateInability_Art11" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_InformDataSubject_Art11" sourceRef="SendTask_InformDataSubject_Art11" targetRef="Participant_DataSubject_Art11" />
+    <messageFlow id="MessageFlow_RightsRequest_Art11" sourceRef="Participant_DataSubject_Art11" targetRef="ReceiveTask_ReceiveRightsRequest_Art11" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

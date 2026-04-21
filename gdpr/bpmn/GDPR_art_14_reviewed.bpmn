@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art14_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:collaboration id="Collaboration_Art14_Reviewed">
+    <bpmn:participant id="Participant_Controller_Art14" name="Controller" processRef="Process_Controller_Art14" />
+    <bpmn:participant id="Participant_DataSubject_Art14" name="Data Subject" />
+
+    <bpmn:messageFlow id="MessageFlow_SendArticle14Notice_Art14" sourceRef="SendTask_SendArticle14Notice_Art14" targetRef="Participant_DataSubject_Art14" />
+    <bpmn:messageFlow id="MessageFlow_SendFurtherPurposeNotice_Art14" sourceRef="SendTask_SendFurtherPurposeNotice_Art14" targetRef="Participant_DataSubject_Art14" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_Controller_Art14" name="Providing information where data are not obtained from the data subject" isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 14 based on DAPRECO LegalRuleML
+      statements52-71. The local XML models the Article 14 information duties for
+      indirectly obtained data, including controller and DPO details, purposes and
+      legal basis, categories of personal data, recipients, transfer information,
+      retention information, rights and complaint information, source information
+      including public-source status, automated decision-making information, the three
+      timing options in Article 14(3), the duty to inform before further processing
+      for another purpose, and the Article 14(5)(b)-(d) exception structure as
+      serialised in the local file.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_ObtainData_Art14" name="Obtain personal data from a source other than the data subject">
+      <bpmn:outgoing>Flow_Start_To_GatewayExceptionB_Art14</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_ExceptionB_Art14" name="Would providing the information prove impossible or involve a disproportionate effort?">
+      <bpmn:incoming>Flow_Start_To_GatewayExceptionB_Art14</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayExceptionB_To_TaskImplementMeasuresEffort_Art14</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayExceptionB_To_GatewayExceptionC_Art14</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ImplementMeasuresEffort_Art14" name="Implement appropriate measures to protect the data subject's rights and freedoms and legitimate interests">
+      <bpmn:incoming>Flow_GatewayExceptionB_To_TaskImplementMeasuresEffort_Art14</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskImplementMeasuresEffort_To_EndNoDirectNotice_Art14</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_ExceptionC_Art14" name="Is obtaining or disclosure expressly laid down by Union or Member State law with appropriate protective measures?">
+      <bpmn:incoming>Flow_GatewayExceptionB_To_GatewayExceptionC_Art14</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayExceptionC_To_TaskImplementMeasuresLaw_Art14</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayExceptionC_To_GatewayExceptionD_Art14</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ImplementMeasuresLaw_Art14" name="Implement measures required by law to protect the data subject's legitimate interests">
+      <bpmn:incoming>Flow_GatewayExceptionC_To_TaskImplementMeasuresLaw_Art14</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskImplementMeasuresLaw_To_EndNoDirectNotice_Art14</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_ExceptionD_Art14" name="Is the data covered by an obligation of professional secrecy or another confidentiality obligation?">
+      <bpmn:incoming>Flow_GatewayExceptionC_To_GatewayExceptionD_Art14</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayExceptionD_To_EndNoDirectNotice_Art14</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayExceptionD_To_TaskPrepareIdentity_Art14</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_PrepareIdentity_Art14" name="Prepare the controller's identity and contact details and the representative's details where applicable">
+      <bpmn:incoming>Flow_GatewayExceptionD_To_TaskPrepareIdentity_Art14</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPrepareIdentity_To_TaskPrepareDPO_Art14</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_PrepareDPO_Art14" name="Prepare the data protection officer's contact details where applicable">
+      <bpmn:incoming>Flow_TaskPrepareIdentity_To_TaskPrepareDPO_Art14</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPrepareDPO_To_TaskPreparePurposeBasis_Art14</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_PreparePurposeBasis_Art14" name="Prepare the purposes of processing and the legal basis for the processing">
+      <bpmn:incoming>Flow_TaskPrepareDPO_To_TaskPreparePurposeBasis_Art14</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPreparePurposeBasis_To_GatewayLegitimateInterests_Art14</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_LegitimateInterests_Art14" name="Is the processing based on Article 6(1)(f)?">
+      <bpmn:incoming>Flow_TaskPreparePurposeBasis_To_GatewayLegitimateInterests_Art14</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayLegitimateInterests_To_TaskPrepareLegitimateInterests_Art14</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayLegitimateInterests_To_TaskPrepareCategories_Art14</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_PrepareLegitimateInterests_Art14" name="Prepare the legitimate interests pursued by the controller or by a third party">
+      <bpmn:incoming>Flow_GatewayLegitimateInterests_To_TaskPrepareLegitimateInterests_Art14</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPrepareLegitimateInterests_To_TaskPrepareCategories_Art14</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_PrepareCategories_Art14" name="Prepare the categories of personal data concerned">
+      <bpmn:incoming>Flow_GatewayLegitimateInterests_To_TaskPrepareCategories_Art14</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskPrepareLegitimateInterests_To_TaskPrepareCategories_Art14</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPrepareCategories_To_TaskPrepareRecipients_Art14</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_PrepareRecipients_Art14" name="Prepare the recipients or categories of recipients where applicable">
+      <bpmn:incoming>Flow_TaskPrepareCategories_To_TaskPrepareRecipients_Art14</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPrepareRecipients_To_GatewayThirdCountryTransfer_Art14</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_ThirdCountryTransfer_Art14" name="Is a transfer to a third country or international organisation intended?">
+      <bpmn:incoming>Flow_TaskPrepareRecipients_To_GatewayThirdCountryTransfer_Art14</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayThirdCountryTransfer_To_TaskPrepareTransferInfo_Art14</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayThirdCountryTransfer_To_GatewaySplitAdditionalInfo_Art14</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_PrepareTransferInfo_Art14" name="Prepare transfer information, adequacy-decision status, safeguards, and how to obtain a copy or where they are available">
+      <bpmn:incoming>Flow_GatewayThirdCountryTransfer_To_TaskPrepareTransferInfo_Art14</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPrepareTransferInfo_To_GatewaySplitAdditionalInfo_Art14</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_SplitAdditionalInfo_Art14">
+      <bpmn:incoming>Flow_GatewayThirdCountryTransfer_To_GatewaySplitAdditionalInfo_Art14</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskPrepareTransferInfo_To_GatewaySplitAdditionalInfo_Art14</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplitAdditionalInfo_To_TaskPrepareRetentionInfo_Art14</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitAdditionalInfo_To_TaskPrepareRightsInfo_Art14</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitAdditionalInfo_To_TaskPrepareSourceInfo_Art14</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitAdditionalInfo_To_TaskPrepareAutomatedDecisionInfo_Art14</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_PrepareRetentionInfo_Art14" name="Prepare the storage period or, if that is not possible, the criteria used to determine it">
+      <bpmn:incoming>Flow_GatewaySplitAdditionalInfo_To_TaskPrepareRetentionInfo_Art14</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPrepareRetentionInfo_To_GatewayJoinAdditionalInfo_Art14</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_PrepareRightsInfo_Art14" name="Prepare rights information including access, rectification, erasure, restriction, portability, objection, withdrawal of consent where relevant, and the right to lodge a complaint">
+      <bpmn:incoming>Flow_GatewaySplitAdditionalInfo_To_TaskPrepareRightsInfo_Art14</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPrepareRightsInfo_To_GatewayJoinAdditionalInfo_Art14</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_PrepareSourceInfo_Art14" name="Prepare information about the source of the personal data and whether it came from publicly accessible sources">
+      <bpmn:incoming>Flow_GatewaySplitAdditionalInfo_To_TaskPrepareSourceInfo_Art14</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPrepareSourceInfo_To_GatewayJoinAdditionalInfo_Art14</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_PrepareAutomatedDecisionInfo_Art14" name="Prepare information about automated decision-making, including profiling, the logic involved, and the significance and envisaged consequences">
+      <bpmn:incoming>Flow_GatewaySplitAdditionalInfo_To_TaskPrepareAutomatedDecisionInfo_Art14</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPrepareAutomatedDecisionInfo_To_GatewayJoinAdditionalInfo_Art14</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_JoinAdditionalInfo_Art14">
+      <bpmn:incoming>Flow_TaskPrepareRetentionInfo_To_GatewayJoinAdditionalInfo_Art14</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskPrepareRightsInfo_To_GatewayJoinAdditionalInfo_Art14</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskPrepareSourceInfo_To_GatewayJoinAdditionalInfo_Art14</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskPrepareAutomatedDecisionInfo_To_GatewayJoinAdditionalInfo_Art14</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinAdditionalInfo_To_GatewayTimingCommunication_Art14</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_TimingCommunication_Art14" name="Will the personal data be used to communicate with the data subject before one month has passed?">
+      <bpmn:incoming>Flow_GatewayJoinAdditionalInfo_To_GatewayTimingCommunication_Art14</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayTimingCommunication_To_SendTaskSendArticle14Notice_Art14</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayTimingCommunication_To_GatewayTimingDisclosure_Art14</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_TimingDisclosure_Art14" name="Will the personal data be disclosed to another recipient before one month has passed?">
+      <bpmn:incoming>Flow_GatewayTimingCommunication_To_GatewayTimingDisclosure_Art14</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayTimingDisclosure_To_SendTaskSendArticle14Notice_Art14</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayTimingDisclosure_To_TaskSendNoticeWithinOneMonth_Art14</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_SendNoticeWithinOneMonth_Art14" name="Ensure the Article 14 information is ready to be sent within one month after obtaining the personal data">
+      <bpmn:incoming>Flow_GatewayTimingDisclosure_To_TaskSendNoticeWithinOneMonth_Art14</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskSendNoticeWithinOneMonth_To_SendTaskSendArticle14Notice_Art14</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="SendTask_SendArticle14Notice_Art14" name="Provide the Article 14 information at the applicable Article 14(3) timing point">
+      <bpmn:incoming>Flow_GatewayTimingCommunication_To_SendTaskSendArticle14Notice_Art14</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayTimingDisclosure_To_SendTaskSendArticle14Notice_Art14</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskSendNoticeWithinOneMonth_To_SendTaskSendArticle14Notice_Art14</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendTaskSendArticle14Notice_To_GatewayFurtherPurpose_Art14</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:exclusiveGateway id="Gateway_FurtherPurpose_Art14" name="Will the personal data later be processed for another purpose?">
+      <bpmn:incoming>Flow_SendTaskSendArticle14Notice_To_GatewayFurtherPurpose_Art14</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayFurtherPurpose_To_SendTaskSendFurtherPurposeNotice_Art14</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayFurtherPurpose_To_EndArticle14Completed_Art14</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="SendTask_SendFurtherPurposeNotice_Art14" name="Inform the data subject of the new purpose and provide relevant further information before the further processing">
+      <bpmn:incoming>Flow_GatewayFurtherPurpose_To_SendTaskSendFurtherPurposeNotice_Art14</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendTaskSendFurtherPurposeNotice_To_EndArticle14Completed_Art14</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_NoDirectNotice_Art14" name="No direct Article 14 notice is sent because an Article 14(5) exception applies">
+      <bpmn:incoming>Flow_TaskImplementMeasuresEffort_To_EndNoDirectNotice_Art14</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskImplementMeasuresLaw_To_EndNoDirectNotice_Art14</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayExceptionD_To_EndNoDirectNotice_Art14</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_Article14Completed_Art14" name="Article 14 information duties are completed">
+      <bpmn:incoming>Flow_GatewayFurtherPurpose_To_EndArticle14Completed_Art14</bpmn:incoming>
+      <bpmn:incoming>Flow_SendTaskSendFurtherPurposeNotice_To_EndArticle14Completed_Art14</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_GatewayExceptionB_Art14" sourceRef="StartEvent_ObtainData_Art14" targetRef="Gateway_ExceptionB_Art14" />
+    <bpmn:sequenceFlow id="Flow_GatewayExceptionB_To_TaskImplementMeasuresEffort_Art14" name="Yes" sourceRef="Gateway_ExceptionB_Art14" targetRef="Task_ImplementMeasuresEffort_Art14" />
+    <bpmn:sequenceFlow id="Flow_GatewayExceptionB_To_GatewayExceptionC_Art14" name="No" sourceRef="Gateway_ExceptionB_Art14" targetRef="Gateway_ExceptionC_Art14" />
+    <bpmn:sequenceFlow id="Flow_TaskImplementMeasuresEffort_To_EndNoDirectNotice_Art14" sourceRef="Task_ImplementMeasuresEffort_Art14" targetRef="EndEvent_NoDirectNotice_Art14" />
+    <bpmn:sequenceFlow id="Flow_GatewayExceptionC_To_TaskImplementMeasuresLaw_Art14" name="Yes" sourceRef="Gateway_ExceptionC_Art14" targetRef="Task_ImplementMeasuresLaw_Art14" />
+    <bpmn:sequenceFlow id="Flow_GatewayExceptionC_To_GatewayExceptionD_Art14" name="No" sourceRef="Gateway_ExceptionC_Art14" targetRef="Gateway_ExceptionD_Art14" />
+    <bpmn:sequenceFlow id="Flow_TaskImplementMeasuresLaw_To_EndNoDirectNotice_Art14" sourceRef="Task_ImplementMeasuresLaw_Art14" targetRef="EndEvent_NoDirectNotice_Art14" />
+    <bpmn:sequenceFlow id="Flow_GatewayExceptionD_To_EndNoDirectNotice_Art14" name="Yes" sourceRef="Gateway_ExceptionD_Art14" targetRef="EndEvent_NoDirectNotice_Art14" />
+    <bpmn:sequenceFlow id="Flow_GatewayExceptionD_To_TaskPrepareIdentity_Art14" name="No" sourceRef="Gateway_ExceptionD_Art14" targetRef="Task_PrepareIdentity_Art14" />
+    <bpmn:sequenceFlow id="Flow_TaskPrepareIdentity_To_TaskPrepareDPO_Art14" sourceRef="Task_PrepareIdentity_Art14" targetRef="Task_PrepareDPO_Art14" />
+    <bpmn:sequenceFlow id="Flow_TaskPrepareDPO_To_TaskPreparePurposeBasis_Art14" sourceRef="Task_PrepareDPO_Art14" targetRef="Task_PreparePurposeBasis_Art14" />
+    <bpmn:sequenceFlow id="Flow_TaskPreparePurposeBasis_To_GatewayLegitimateInterests_Art14" sourceRef="Task_PreparePurposeBasis_Art14" targetRef="Gateway_LegitimateInterests_Art14" />
+    <bpmn:sequenceFlow id="Flow_GatewayLegitimateInterests_To_TaskPrepareLegitimateInterests_Art14" name="Yes" sourceRef="Gateway_LegitimateInterests_Art14" targetRef="Task_PrepareLegitimateInterests_Art14" />
+    <bpmn:sequenceFlow id="Flow_GatewayLegitimateInterests_To_TaskPrepareCategories_Art14" name="No" sourceRef="Gateway_LegitimateInterests_Art14" targetRef="Task_PrepareCategories_Art14" />
+    <bpmn:sequenceFlow id="Flow_TaskPrepareLegitimateInterests_To_TaskPrepareCategories_Art14" sourceRef="Task_PrepareLegitimateInterests_Art14" targetRef="Task_PrepareCategories_Art14" />
+    <bpmn:sequenceFlow id="Flow_TaskPrepareCategories_To_TaskPrepareRecipients_Art14" sourceRef="Task_PrepareCategories_Art14" targetRef="Task_PrepareRecipients_Art14" />
+    <bpmn:sequenceFlow id="Flow_TaskPrepareRecipients_To_GatewayThirdCountryTransfer_Art14" sourceRef="Task_PrepareRecipients_Art14" targetRef="Gateway_ThirdCountryTransfer_Art14" />
+    <bpmn:sequenceFlow id="Flow_GatewayThirdCountryTransfer_To_TaskPrepareTransferInfo_Art14" name="Yes" sourceRef="Gateway_ThirdCountryTransfer_Art14" targetRef="Task_PrepareTransferInfo_Art14" />
+    <bpmn:sequenceFlow id="Flow_GatewayThirdCountryTransfer_To_GatewaySplitAdditionalInfo_Art14" name="No" sourceRef="Gateway_ThirdCountryTransfer_Art14" targetRef="Gateway_SplitAdditionalInfo_Art14" />
+    <bpmn:sequenceFlow id="Flow_TaskPrepareTransferInfo_To_GatewaySplitAdditionalInfo_Art14" sourceRef="Task_PrepareTransferInfo_Art14" targetRef="Gateway_SplitAdditionalInfo_Art14" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitAdditionalInfo_To_TaskPrepareRetentionInfo_Art14" sourceRef="Gateway_SplitAdditionalInfo_Art14" targetRef="Task_PrepareRetentionInfo_Art14" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitAdditionalInfo_To_TaskPrepareRightsInfo_Art14" sourceRef="Gateway_SplitAdditionalInfo_Art14" targetRef="Task_PrepareRightsInfo_Art14" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitAdditionalInfo_To_TaskPrepareSourceInfo_Art14" sourceRef="Gateway_SplitAdditionalInfo_Art14" targetRef="Task_PrepareSourceInfo_Art14" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitAdditionalInfo_To_TaskPrepareAutomatedDecisionInfo_Art14" sourceRef="Gateway_SplitAdditionalInfo_Art14" targetRef="Task_PrepareAutomatedDecisionInfo_Art14" />
+    <bpmn:sequenceFlow id="Flow_TaskPrepareRetentionInfo_To_GatewayJoinAdditionalInfo_Art14" sourceRef="Task_PrepareRetentionInfo_Art14" targetRef="Gateway_JoinAdditionalInfo_Art14" />
+    <bpmn:sequenceFlow id="Flow_TaskPrepareRightsInfo_To_GatewayJoinAdditionalInfo_Art14" sourceRef="Task_PrepareRightsInfo_Art14" targetRef="Gateway_JoinAdditionalInfo_Art14" />
+    <bpmn:sequenceFlow id="Flow_TaskPrepareSourceInfo_To_GatewayJoinAdditionalInfo_Art14" sourceRef="Task_PrepareSourceInfo_Art14" targetRef="Gateway_JoinAdditionalInfo_Art14" />
+    <bpmn:sequenceFlow id="Flow_TaskPrepareAutomatedDecisionInfo_To_GatewayJoinAdditionalInfo_Art14" sourceRef="Task_PrepareAutomatedDecisionInfo_Art14" targetRef="Gateway_JoinAdditionalInfo_Art14" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoinAdditionalInfo_To_GatewayTimingCommunication_Art14" sourceRef="Gateway_JoinAdditionalInfo_Art14" targetRef="Gateway_TimingCommunication_Art14" />
+    <bpmn:sequenceFlow id="Flow_GatewayTimingCommunication_To_SendTaskSendArticle14Notice_Art14" name="Yes" sourceRef="Gateway_TimingCommunication_Art14" targetRef="SendTask_SendArticle14Notice_Art14" />
+    <bpmn:sequenceFlow id="Flow_GatewayTimingCommunication_To_GatewayTimingDisclosure_Art14" name="No" sourceRef="Gateway_TimingCommunication_Art14" targetRef="Gateway_TimingDisclosure_Art14" />
+    <bpmn:sequenceFlow id="Flow_GatewayTimingDisclosure_To_SendTaskSendArticle14Notice_Art14" name="Yes" sourceRef="Gateway_TimingDisclosure_Art14" targetRef="SendTask_SendArticle14Notice_Art14" />
+    <bpmn:sequenceFlow id="Flow_GatewayTimingDisclosure_To_TaskSendNoticeWithinOneMonth_Art14" name="No" sourceRef="Gateway_TimingDisclosure_Art14" targetRef="Task_SendNoticeWithinOneMonth_Art14" />
+    <bpmn:sequenceFlow id="Flow_TaskSendNoticeWithinOneMonth_To_SendTaskSendArticle14Notice_Art14" sourceRef="Task_SendNoticeWithinOneMonth_Art14" targetRef="SendTask_SendArticle14Notice_Art14" />
+    <bpmn:sequenceFlow id="Flow_SendTaskSendArticle14Notice_To_GatewayFurtherPurpose_Art14" sourceRef="SendTask_SendArticle14Notice_Art14" targetRef="Gateway_FurtherPurpose_Art14" />
+    <bpmn:sequenceFlow id="Flow_GatewayFurtherPurpose_To_SendTaskSendFurtherPurposeNotice_Art14" name="Yes" sourceRef="Gateway_FurtherPurpose_Art14" targetRef="SendTask_SendFurtherPurposeNotice_Art14" />
+    <bpmn:sequenceFlow id="Flow_GatewayFurtherPurpose_To_EndArticle14Completed_Art14" name="No" sourceRef="Gateway_FurtherPurpose_Art14" targetRef="EndEvent_Article14Completed_Art14" />
+    <bpmn:sequenceFlow id="Flow_SendTaskSendFurtherPurposeNotice_To_EndArticle14Completed_Art14" sourceRef="SendTask_SendFurtherPurposeNotice_Art14" targetRef="EndEvent_Article14Completed_Art14" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art14_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art14_Reviewed" bpmnElement="Collaboration_Art14_Reviewed">
+      <bpmndi:BPMNShape id="Participant_Controller_Art14_di" bpmnElement="Participant_Controller_Art14" isHorizontal="true"><dc:Bounds x="60" y="40" width="6400" height="900" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_DataSubject_Art14_di" bpmnElement="Participant_DataSubject_Art14" isHorizontal="true"><dc:Bounds x="60" y="980" width="6400" height="120" /></bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_ObtainData_Art14_di" bpmnElement="StartEvent_ObtainData_Art14"><dc:Bounds x="120" y="452" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ExceptionB_Art14_di" bpmnElement="Gateway_ExceptionB_Art14" isMarkerVisible="true"><dc:Bounds x="260" y="445" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ImplementMeasuresEffort_Art14_di" bpmnElement="Task_ImplementMeasuresEffort_Art14"><dc:Bounds x="410" y="320" width="430" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ExceptionC_Art14_di" bpmnElement="Gateway_ExceptionC_Art14" isMarkerVisible="true"><dc:Bounds x="410" y="445" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ImplementMeasuresLaw_Art14_di" bpmnElement="Task_ImplementMeasuresLaw_Art14"><dc:Bounds x="570" y="560" width="410" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ExceptionD_Art14_di" bpmnElement="Gateway_ExceptionD_Art14" isMarkerVisible="true"><dc:Bounds x="570" y="445" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareIdentity_Art14_di" bpmnElement="Task_PrepareIdentity_Art14"><dc:Bounds x="770" y="430" width="420" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareDPO_Art14_di" bpmnElement="Task_PrepareDPO_Art14"><dc:Bounds x="1290" y="430" width="330" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PreparePurposeBasis_Art14_di" bpmnElement="Task_PreparePurposeBasis_Art14"><dc:Bounds x="1720" y="430" width="360" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_LegitimateInterests_Art14_di" bpmnElement="Gateway_LegitimateInterests_Art14" isMarkerVisible="true"><dc:Bounds x="2200" y="445" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareLegitimateInterests_Art14_di" bpmnElement="Task_PrepareLegitimateInterests_Art14"><dc:Bounds x="2360" y="280" width="380" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareCategories_Art14_di" bpmnElement="Task_PrepareCategories_Art14"><dc:Bounds x="2360" y="430" width="330" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareRecipients_Art14_di" bpmnElement="Task_PrepareRecipients_Art14"><dc:Bounds x="2800" y="430" width="360" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ThirdCountryTransfer_Art14_di" bpmnElement="Gateway_ThirdCountryTransfer_Art14" isMarkerVisible="true"><dc:Bounds x="3270" y="445" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareTransferInfo_Art14_di" bpmnElement="Task_PrepareTransferInfo_Art14"><dc:Bounds x="3430" y="600" width="460" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SplitAdditionalInfo_Art14_di" bpmnElement="Gateway_SplitAdditionalInfo_Art14" isMarkerVisible="true"><dc:Bounds x="3430" y="445" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareRetentionInfo_Art14_di" bpmnElement="Task_PrepareRetentionInfo_Art14"><dc:Bounds x="3660" y="80" width="380" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareRightsInfo_Art14_di" bpmnElement="Task_PrepareRightsInfo_Art14"><dc:Bounds x="3660" y="210" width="560" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareSourceInfo_Art14_di" bpmnElement="Task_PrepareSourceInfo_Art14"><dc:Bounds x="3660" y="340" width="470" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareAutomatedDecisionInfo_Art14_di" bpmnElement="Task_PrepareAutomatedDecisionInfo_Art14"><dc:Bounds x="3660" y="470" width="520" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinAdditionalInfo_Art14_di" bpmnElement="Gateway_JoinAdditionalInfo_Art14" isMarkerVisible="true"><dc:Bounds x="4420" y="445" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_TimingCommunication_Art14_di" bpmnElement="Gateway_TimingCommunication_Art14" isMarkerVisible="true"><dc:Bounds x="4630" y="445" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_TimingDisclosure_Art14_di" bpmnElement="Gateway_TimingDisclosure_Art14" isMarkerVisible="true"><dc:Bounds x="4850" y="445" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SendNoticeWithinOneMonth_Art14_di" bpmnElement="Task_SendNoticeWithinOneMonth_Art14"><dc:Bounds x="5050" y="560" width="470" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_SendArticle14Notice_Art14_di" bpmnElement="SendTask_SendArticle14Notice_Art14"><dc:Bounds x="5300" y="430" width="420" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_FurtherPurpose_Art14_di" bpmnElement="Gateway_FurtherPurpose_Art14" isMarkerVisible="true"><dc:Bounds x="5840" y="445" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_SendFurtherPurposeNotice_Art14_di" bpmnElement="SendTask_SendFurtherPurposeNotice_Art14"><dc:Bounds x="6030" y="280" width="460" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NoDirectNotice_Art14_di" bpmnElement="EndEvent_NoDirectNotice_Art14"><dc:Bounds x="1122" y="742" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Article14Completed_Art14_di" bpmnElement="EndEvent_Article14Completed_Art14"><dc:Bounds x="6112" y="452" width="36" height="36" /></bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_GatewayExceptionB_Art14_di" bpmnElement="Flow_Start_To_GatewayExceptionB_Art14"><di:waypoint x="156" y="470" /><di:waypoint x="260" y="470" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExceptionB_To_TaskImplementMeasuresEffort_Art14_di" bpmnElement="Flow_GatewayExceptionB_To_TaskImplementMeasuresEffort_Art14"><di:waypoint x="285" y="445" /><di:waypoint x="285" y="360" /><di:waypoint x="410" y="360" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExceptionB_To_GatewayExceptionC_Art14_di" bpmnElement="Flow_GatewayExceptionB_To_GatewayExceptionC_Art14"><di:waypoint x="310" y="470" /><di:waypoint x="410" y="470" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskImplementMeasuresEffort_To_EndNoDirectNotice_Art14_di" bpmnElement="Flow_TaskImplementMeasuresEffort_To_EndNoDirectNotice_Art14"><di:waypoint x="840" y="360" /><di:waypoint x="910" y="360" /><di:waypoint x="910" y="760" /><di:waypoint x="1122" y="760" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExceptionC_To_TaskImplementMeasuresLaw_Art14_di" bpmnElement="Flow_GatewayExceptionC_To_TaskImplementMeasuresLaw_Art14"><di:waypoint x="435" y="495" /><di:waypoint x="435" y="600" /><di:waypoint x="570" y="600" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExceptionC_To_GatewayExceptionD_Art14_di" bpmnElement="Flow_GatewayExceptionC_To_GatewayExceptionD_Art14"><di:waypoint x="460" y="470" /><di:waypoint x="570" y="470" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskImplementMeasuresLaw_To_EndNoDirectNotice_Art14_di" bpmnElement="Flow_TaskImplementMeasuresLaw_To_EndNoDirectNotice_Art14"><di:waypoint x="980" y="600" /><di:waypoint x="1040" y="600" /><di:waypoint x="1040" y="760" /><di:waypoint x="1122" y="760" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExceptionD_To_EndNoDirectNotice_Art14_di" bpmnElement="Flow_GatewayExceptionD_To_EndNoDirectNotice_Art14"><di:waypoint x="595" y="495" /><di:waypoint x="595" y="760" /><di:waypoint x="1122" y="760" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExceptionD_To_TaskPrepareIdentity_Art14_di" bpmnElement="Flow_GatewayExceptionD_To_TaskPrepareIdentity_Art14"><di:waypoint x="620" y="470" /><di:waypoint x="770" y="470" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPrepareIdentity_To_TaskPrepareDPO_Art14_di" bpmnElement="Flow_TaskPrepareIdentity_To_TaskPrepareDPO_Art14"><di:waypoint x="1190" y="470" /><di:waypoint x="1290" y="470" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPrepareDPO_To_TaskPreparePurposeBasis_Art14_di" bpmnElement="Flow_TaskPrepareDPO_To_TaskPreparePurposeBasis_Art14"><di:waypoint x="1620" y="470" /><di:waypoint x="1720" y="470" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPreparePurposeBasis_To_GatewayLegitimateInterests_Art14_di" bpmnElement="Flow_TaskPreparePurposeBasis_To_GatewayLegitimateInterests_Art14"><di:waypoint x="2080" y="470" /><di:waypoint x="2200" y="470" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayLegitimateInterests_To_TaskPrepareLegitimateInterests_Art14_di" bpmnElement="Flow_GatewayLegitimateInterests_To_TaskPrepareLegitimateInterests_Art14"><di:waypoint x="2225" y="445" /><di:waypoint x="2225" y="320" /><di:waypoint x="2360" y="320" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayLegitimateInterests_To_TaskPrepareCategories_Art14_di" bpmnElement="Flow_GatewayLegitimateInterests_To_TaskPrepareCategories_Art14"><di:waypoint x="2250" y="470" /><di:waypoint x="2360" y="470" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPrepareLegitimateInterests_To_TaskPrepareCategories_Art14_di" bpmnElement="Flow_TaskPrepareLegitimateInterests_To_TaskPrepareCategories_Art14"><di:waypoint x="2740" y="320" /><di:waypoint x="2770" y="320" /><di:waypoint x="2770" y="470" /><di:waypoint x="2360" y="470" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPrepareCategories_To_TaskPrepareRecipients_Art14_di" bpmnElement="Flow_TaskPrepareCategories_To_TaskPrepareRecipients_Art14"><di:waypoint x="2690" y="470" /><di:waypoint x="2800" y="470" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPrepareRecipients_To_GatewayThirdCountryTransfer_Art14_di" bpmnElement="Flow_TaskPrepareRecipients_To_GatewayThirdCountryTransfer_Art14"><di:waypoint x="3160" y="470" /><di:waypoint x="3270" y="470" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayThirdCountryTransfer_To_TaskPrepareTransferInfo_Art14_di" bpmnElement="Flow_GatewayThirdCountryTransfer_To_TaskPrepareTransferInfo_Art14"><di:waypoint x="3295" y="495" /><di:waypoint x="3295" y="640" /><di:waypoint x="3430" y="640" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayThirdCountryTransfer_To_GatewaySplitAdditionalInfo_Art14_di" bpmnElement="Flow_GatewayThirdCountryTransfer_To_GatewaySplitAdditionalInfo_Art14"><di:waypoint x="3320" y="470" /><di:waypoint x="3430" y="470" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPrepareTransferInfo_To_GatewaySplitAdditionalInfo_Art14_di" bpmnElement="Flow_TaskPrepareTransferInfo_To_GatewaySplitAdditionalInfo_Art14"><di:waypoint x="3660" y="600" /><di:waypoint x="3660" y="540" /><di:waypoint x="3455" y="540" /><di:waypoint x="3455" y="495" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitAdditionalInfo_To_TaskPrepareRetentionInfo_Art14_di" bpmnElement="Flow_GatewaySplitAdditionalInfo_To_TaskPrepareRetentionInfo_Art14"><di:waypoint x="3455" y="445" /><di:waypoint x="3455" y="120" /><di:waypoint x="3660" y="120" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitAdditionalInfo_To_TaskPrepareRightsInfo_Art14_di" bpmnElement="Flow_GatewaySplitAdditionalInfo_To_TaskPrepareRightsInfo_Art14"><di:waypoint x="3455" y="445" /><di:waypoint x="3455" y="250" /><di:waypoint x="3660" y="250" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitAdditionalInfo_To_TaskPrepareSourceInfo_Art14_di" bpmnElement="Flow_GatewaySplitAdditionalInfo_To_TaskPrepareSourceInfo_Art14"><di:waypoint x="3480" y="470" /><di:waypoint x="3660" y="380" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitAdditionalInfo_To_TaskPrepareAutomatedDecisionInfo_Art14_di" bpmnElement="Flow_GatewaySplitAdditionalInfo_To_TaskPrepareAutomatedDecisionInfo_Art14"><di:waypoint x="3455" y="495" /><di:waypoint x="3455" y="510" /><di:waypoint x="3660" y="510" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPrepareRetentionInfo_To_GatewayJoinAdditionalInfo_Art14_di" bpmnElement="Flow_TaskPrepareRetentionInfo_To_GatewayJoinAdditionalInfo_Art14"><di:waypoint x="4040" y="120" /><di:waypoint x="4445" y="120" /><di:waypoint x="4445" y="445" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPrepareRightsInfo_To_GatewayJoinAdditionalInfo_Art14_di" bpmnElement="Flow_TaskPrepareRightsInfo_To_GatewayJoinAdditionalInfo_Art14"><di:waypoint x="4220" y="250" /><di:waypoint x="4445" y="250" /><di:waypoint x="4445" y="445" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPrepareSourceInfo_To_GatewayJoinAdditionalInfo_Art14_di" bpmnElement="Flow_TaskPrepareSourceInfo_To_GatewayJoinAdditionalInfo_Art14"><di:waypoint x="4130" y="380" /><di:waypoint x="4445" y="380" /><di:waypoint x="4445" y="445" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPrepareAutomatedDecisionInfo_To_GatewayJoinAdditionalInfo_Art14_di" bpmnElement="Flow_TaskPrepareAutomatedDecisionInfo_To_GatewayJoinAdditionalInfo_Art14"><di:waypoint x="4180" y="510" /><di:waypoint x="4445" y="510" /><di:waypoint x="4445" y="495" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinAdditionalInfo_To_GatewayTimingCommunication_Art14_di" bpmnElement="Flow_GatewayJoinAdditionalInfo_To_GatewayTimingCommunication_Art14"><di:waypoint x="4470" y="470" /><di:waypoint x="4630" y="470" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayTimingCommunication_To_SendTaskSendArticle14Notice_Art14_di" bpmnElement="Flow_GatewayTimingCommunication_To_SendTaskSendArticle14Notice_Art14"><di:waypoint x="4655" y="495" /><di:waypoint x="4655" y="610" /><di:waypoint x="5510" y="610" /><di:waypoint x="5510" y="510" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayTimingCommunication_To_GatewayTimingDisclosure_Art14_di" bpmnElement="Flow_GatewayTimingCommunication_To_GatewayTimingDisclosure_Art14"><di:waypoint x="4680" y="470" /><di:waypoint x="4850" y="470" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayTimingDisclosure_To_SendTaskSendArticle14Notice_Art14_di" bpmnElement="Flow_GatewayTimingDisclosure_To_SendTaskSendArticle14Notice_Art14"><di:waypoint x="4875" y="445" /><di:waypoint x="4875" y="410" /><di:waypoint x="5510" y="410" /><di:waypoint x="5510" y="430" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayTimingDisclosure_To_TaskSendNoticeWithinOneMonth_Art14_di" bpmnElement="Flow_GatewayTimingDisclosure_To_TaskSendNoticeWithinOneMonth_Art14"><di:waypoint x="4875" y="495" /><di:waypoint x="4875" y="600" /><di:waypoint x="5050" y="600" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskSendNoticeWithinOneMonth_To_SendTaskSendArticle14Notice_Art14_di" bpmnElement="Flow_TaskSendNoticeWithinOneMonth_To_SendTaskSendArticle14Notice_Art14"><di:waypoint x="5520" y="600" /><di:waypoint x="5520" y="510" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendTaskSendArticle14Notice_To_GatewayFurtherPurpose_Art14_di" bpmnElement="Flow_SendTaskSendArticle14Notice_To_GatewayFurtherPurpose_Art14"><di:waypoint x="5720" y="470" /><di:waypoint x="5840" y="470" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayFurtherPurpose_To_SendTaskSendFurtherPurposeNotice_Art14_di" bpmnElement="Flow_GatewayFurtherPurpose_To_SendTaskSendFurtherPurposeNotice_Art14"><di:waypoint x="5865" y="445" /><di:waypoint x="5865" y="320" /><di:waypoint x="6030" y="320" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayFurtherPurpose_To_EndArticle14Completed_Art14_di" bpmnElement="Flow_GatewayFurtherPurpose_To_EndArticle14Completed_Art14"><di:waypoint x="5890" y="470" /><di:waypoint x="6112" y="470" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendTaskSendFurtherPurposeNotice_To_EndArticle14Completed_Art14_di" bpmnElement="Flow_SendTaskSendFurtherPurposeNotice_To_EndArticle14Completed_Art14"><di:waypoint x="6490" y="320" /><di:waypoint x="6530" y="320" /><di:waypoint x="6530" y="470" /><di:waypoint x="6112" y="470" /></bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_SendArticle14Notice_Art14_di" bpmnElement="MessageFlow_SendArticle14Notice_Art14"><di:waypoint x="5510" y="510" /><di:waypoint x="5510" y="980" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SendFurtherPurposeNotice_Art14_di" bpmnElement="MessageFlow_SendFurtherPurposeNotice_Art14"><di:waypoint x="6260" y="360" /><di:waypoint x="6260" y="980" /></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

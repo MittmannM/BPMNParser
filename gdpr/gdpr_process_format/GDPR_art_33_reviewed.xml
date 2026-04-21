@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Controller" name="Controller" poolType="active" processRef="Process_Controller_Art33" />
+    <pool id="Participant_Processor" name="Processor" poolType="active" processRef="Process_Processor_Art33" />
+    <pool id="Participant_SupervisoryAuthority" name="Supervisory Authority" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_AssessRisk" name="Assess risk to rights and freedoms" type="task" poolRef="Participant_Controller" />
+    <task id="Task_CollectRemainingInformation" name="Collect remaining information" type="task" poolRef="Participant_Controller" />
+    <task id="Task_DescribeConsequences" name="Describe likely consequences" type="task" poolRef="Participant_Controller" />
+    <task id="Task_DescribeMeasures" name="Describe taken or proposed measures, including mitigation" type="task" poolRef="Participant_Controller" />
+    <task id="Task_DescribeNature" name="Describe breach nature, affected categories, and approximate counts" type="task" poolRef="Participant_Controller" />
+    <task id="Task_DocumentBreach" name="Document breach, effects, and remedial action" type="task" poolRef="Participant_Controller" />
+    <task id="Task_ProcessorNotifyController" name="Notify controller of personal data breach" type="sendTask" poolRef="Participant_Processor" />
+    <task id="Task_ProvideContact" name="Provide DPO or contact point details" type="task" poolRef="Participant_Controller" />
+    <task id="Task_RecordDelayReasonsFull" name="Record reasons for delay" type="task" poolRef="Participant_Controller" />
+    <task id="Task_RecordDelayReasonsInitial" name="Record reasons for delay" type="task" poolRef="Participant_Controller" />
+    <task id="Task_SendFollowUpInformation" name="Send follow-up information without undue delay" type="sendTask" poolRef="Participant_Controller" />
+    <task id="Task_SendFullNotification" name="Notify supervisory authority" type="sendTask" poolRef="Participant_Controller" />
+    <task id="Task_SendInitialNotification" name="Send initial breach notification" type="sendTask" poolRef="Participant_Controller" />
+  </tasks>
+  <events>
+    <event id="EndEvent_ControllerHandled" name="Article 33 obligations documented" type="endEvent" poolRef="Participant_Controller" />
+    <event id="EndEvent_ProcessorHandled" name="Controller notified" type="endEvent" poolRef="Participant_Processor" />
+    <event id="Event_ControllerDetectsInternally" name="Internal breach detection raised" type="intermediateCatchEvent" poolRef="Participant_Controller" eventDefinition="signal" />
+    <event id="Event_ControllerReceivesProcessorNotice" name="Processor breach notice received" type="intermediateCatchEvent" poolRef="Participant_Controller" eventDefinition="message" />
+    <event id="StartEvent_ControllerHandlingStarted" name="Article 33 handling started" type="startEvent" poolRef="Participant_Controller" />
+    <event id="StartEvent_ProcessorAware" name="Processor becomes aware of personal data breach" type="startEvent" poolRef="Participant_Processor" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_AllInfoAvailable" name="All required information available now?" type="exclusiveGateway" poolRef="Participant_Controller" />
+    <gateway id="Gateway_AwarenessMerge" type="exclusiveGateway" poolRef="Participant_Controller" />
+    <gateway id="Gateway_CompileJoin" type="parallelGateway" poolRef="Participant_Controller" />
+    <gateway id="Gateway_CompileSplit" type="parallelGateway" poolRef="Participant_Controller" />
+    <gateway id="Gateway_ControllerAwareness" type="eventBasedGateway" poolRef="Participant_Controller" />
+    <gateway id="Gateway_FullWithin72h" name="72 hours elapsed since awareness?" type="exclusiveGateway" poolRef="Participant_Controller" />
+    <gateway id="Gateway_PhasedWithin72h" name="72 hours elapsed since awareness?" type="exclusiveGateway" poolRef="Participant_Controller" />
+    <gateway id="Gateway_RiskUnlikely" name="Risk to rights and freedoms unlikely?" type="exclusiveGateway" poolRef="Participant_Controller" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AllInfoGateway_To_FullWithin72h" name="Yes" sourceRef="Gateway_AllInfoAvailable" targetRef="Gateway_FullWithin72h" />
+    <sequenceFlow id="Flow_AllInfoGateway_To_PhasedWithin72h" name="No" sourceRef="Gateway_AllInfoAvailable" targetRef="Gateway_PhasedWithin72h" />
+    <sequenceFlow id="Flow_AssessRisk_To_RiskGateway" sourceRef="Task_AssessRisk" targetRef="Gateway_RiskUnlikely" />
+    <sequenceFlow id="Flow_AwarenessGateway_To_InternalDetection" sourceRef="Gateway_ControllerAwareness" targetRef="Event_ControllerDetectsInternally" />
+    <sequenceFlow id="Flow_AwarenessGateway_To_ProcessorNotice" sourceRef="Gateway_ControllerAwareness" targetRef="Event_ControllerReceivesProcessorNotice" />
+    <sequenceFlow id="Flow_AwarenessMerge_To_AssessRisk" sourceRef="Gateway_AwarenessMerge" targetRef="Task_AssessRisk" />
+    <sequenceFlow id="Flow_CollectRemaining_To_SendFollowUp" sourceRef="Task_CollectRemainingInformation" targetRef="Task_SendFollowUpInformation" />
+    <sequenceFlow id="Flow_CompileJoin_To_AllInfoGateway" sourceRef="Gateway_CompileJoin" targetRef="Gateway_AllInfoAvailable" />
+    <sequenceFlow id="Flow_CompileSplit_To_DescribeConsequences" sourceRef="Gateway_CompileSplit" targetRef="Task_DescribeConsequences" />
+    <sequenceFlow id="Flow_CompileSplit_To_DescribeMeasures" sourceRef="Gateway_CompileSplit" targetRef="Task_DescribeMeasures" />
+    <sequenceFlow id="Flow_CompileSplit_To_DescribeNature" sourceRef="Gateway_CompileSplit" targetRef="Task_DescribeNature" />
+    <sequenceFlow id="Flow_CompileSplit_To_ProvideContact" sourceRef="Gateway_CompileSplit" targetRef="Task_ProvideContact" />
+    <sequenceFlow id="Flow_Controller_Start_To_AwarenessGateway" sourceRef="StartEvent_ControllerHandlingStarted" targetRef="Gateway_ControllerAwareness" />
+    <sequenceFlow id="Flow_DescribeConsequences_To_CompileJoin" sourceRef="Task_DescribeConsequences" targetRef="Gateway_CompileJoin" />
+    <sequenceFlow id="Flow_DescribeMeasures_To_CompileJoin" sourceRef="Task_DescribeMeasures" targetRef="Gateway_CompileJoin" />
+    <sequenceFlow id="Flow_DescribeNature_To_CompileJoin" sourceRef="Task_DescribeNature" targetRef="Gateway_CompileJoin" />
+    <sequenceFlow id="Flow_DocumentBreach_To_End" sourceRef="Task_DocumentBreach" targetRef="EndEvent_ControllerHandled" />
+    <sequenceFlow id="Flow_FullWithin72h_To_RecordDelayFull" name="Yes" sourceRef="Gateway_FullWithin72h" targetRef="Task_RecordDelayReasonsFull" />
+    <sequenceFlow id="Flow_FullWithin72h_To_SendFull" name="No" sourceRef="Gateway_FullWithin72h" targetRef="Task_SendFullNotification" />
+    <sequenceFlow id="Flow_InternalDetection_To_AwarenessMerge" sourceRef="Event_ControllerDetectsInternally" targetRef="Gateway_AwarenessMerge" />
+    <sequenceFlow id="Flow_NotifyController_To_ProcessorEnd" sourceRef="Task_ProcessorNotifyController" targetRef="EndEvent_ProcessorHandled" />
+    <sequenceFlow id="Flow_PhasedWithin72h_To_RecordDelayInitial" name="Yes" sourceRef="Gateway_PhasedWithin72h" targetRef="Task_RecordDelayReasonsInitial" />
+    <sequenceFlow id="Flow_PhasedWithin72h_To_SendInitial" name="No" sourceRef="Gateway_PhasedWithin72h" targetRef="Task_SendInitialNotification" />
+    <sequenceFlow id="Flow_ProcessorNotice_To_AwarenessMerge" sourceRef="Event_ControllerReceivesProcessorNotice" targetRef="Gateway_AwarenessMerge" />
+    <sequenceFlow id="Flow_ProcessorStart_To_NotifyController" sourceRef="StartEvent_ProcessorAware" targetRef="Task_ProcessorNotifyController" />
+    <sequenceFlow id="Flow_ProvideContact_To_CompileJoin" sourceRef="Task_ProvideContact" targetRef="Gateway_CompileJoin" />
+    <sequenceFlow id="Flow_RecordDelayFull_To_SendFull" sourceRef="Task_RecordDelayReasonsFull" targetRef="Task_SendFullNotification" />
+    <sequenceFlow id="Flow_RecordDelayInitial_To_SendInitial" sourceRef="Task_RecordDelayReasonsInitial" targetRef="Task_SendInitialNotification" />
+    <sequenceFlow id="Flow_RiskGateway_To_CompileSplit" name="No" sourceRef="Gateway_RiskUnlikely" targetRef="Gateway_CompileSplit" />
+    <sequenceFlow id="Flow_RiskGateway_To_DocumentOnly" name="Yes" sourceRef="Gateway_RiskUnlikely" targetRef="Task_DocumentBreach" />
+    <sequenceFlow id="Flow_SendFollowUp_To_DocumentBreach" sourceRef="Task_SendFollowUpInformation" targetRef="Task_DocumentBreach" />
+    <sequenceFlow id="Flow_SendFull_To_DocumentBreach" sourceRef="Task_SendFullNotification" targetRef="Task_DocumentBreach" />
+    <sequenceFlow id="Flow_SendInitial_To_CollectRemaining" sourceRef="Task_SendInitialNotification" targetRef="Task_CollectRemainingInformation" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_ControllerFollowUpNotification" sourceRef="Task_SendFollowUpInformation" targetRef="Participant_SupervisoryAuthority" />
+    <messageFlow id="MessageFlow_ControllerFullNotification" sourceRef="Task_SendFullNotification" targetRef="Participant_SupervisoryAuthority" />
+    <messageFlow id="MessageFlow_ControllerInitialNotification" sourceRef="Task_SendInitialNotification" targetRef="Participant_SupervisoryAuthority" />
+    <messageFlow id="MessageFlow_ProcessorToController" sourceRef="Task_ProcessorNotifyController" targetRef="Event_ControllerReceivesProcessorNotice" />
+  </messageFlows>
+  <dataObjects>
+    <dataObject id="DataObject_BreachRegister" name="Breach register entry" />
+    <dataObject id="DataObject_NotificationDossier" name="Notification dossier" />
+    <dataObjectReference id="DataRef_BreachRegister" name="Breach register entry" dataObjectRef="DataObject_BreachRegister" />
+    <dataObjectReference id="DataRef_NotificationDossier" name="Notification dossier" dataObjectRef="DataObject_NotificationDossier" />
+  </dataObjects>
+  <dataStores />
+  <dataAssociations>
+    <dataInputAssociation id="DataInputAssoc_SendFollowUpInformation" sourceRef="DataRef_NotificationDossier" />
+    <dataInputAssociation id="DataInputAssoc_SendFullNotification" sourceRef="DataRef_NotificationDossier" />
+    <dataInputAssociation id="DataInputAssoc_SendInitialNotification" sourceRef="DataRef_NotificationDossier" />
+    <dataOutputAssociation id="DataOutputAssoc_DocumentBreach" targetRef="DataRef_BreachRegister" />
+  </dataAssociations>
+  <annotations>
+    <textAnnotation id="Annotation_DocumentationDuty" text="Article 33(5): document every personal data breach, including facts, effects, and remedial action, so the supervisory authority can verify compliance." />
+  </annotations>
+  <associations>
+    <association id="Association_DocumentationDuty" sourceRef="Task_DocumentBreach" targetRef="Annotation_DocumentationDuty" />
+  </associations>
+</processModel>

@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Applicant_Art78" name="Applicant" poolType="active" processRef="Process_Applicant_Art78" />
+    <pool id="Participant_Court_Art78" name="Court" poolType="passive" />
+    <pool id="Participant_SupervisoryAuthority_Art78" name="Supervisory Authority" poolType="active" processRef="Process_SupervisoryAuthority_Art78" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="ReceiveTask_ReceiveNoticeOfProceedings_Art78" name="Receive notice that proceedings concern a supervisory-authority decision" type="receiveTask" poolRef="Participant_SupervisoryAuthority_Art78" />
+    <task id="SendTask_BringProceedingsToCourt_Art78" name="Bring proceedings before the court of the Member State where the supervisory authority is established" type="sendTask" poolRef="Participant_Applicant_Art78" />
+    <task id="SendTask_ForwardBoardMaterial_Art78" name="Forward the Board opinion or decision to the court" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art78" />
+    <task id="Task_VerifyComplaintNotHandled_Art78" name="Verify that the competent supervisory authority did not handle the Article 77 complaint" type="task" poolRef="Participant_Applicant_Art78" />
+    <task id="Task_VerifyLegalPersonDecision_Art78" name="Verify that a legally binding supervisory-authority decision concerns the legal person" type="task" poolRef="Participant_Applicant_Art78" />
+    <task id="Task_VerifyNaturalPersonDecision_Art78" name="Verify that a legally binding supervisory-authority decision concerns the natural person" type="task" poolRef="Participant_Applicant_Art78" />
+    <task id="Task_VerifyNoThreeMonthInfo_Art78" name="Verify that no progress or outcome information was received within three months" type="task" poolRef="Participant_Applicant_Art78" />
+  </tasks>
+  <events>
+    <event id="EndEvent_ForwardingCompleted_Art78" name="Board opinion or decision forwarded to the court" type="endEvent" poolRef="Participant_SupervisoryAuthority_Art78" />
+    <event id="EndEvent_NoForwardingNeeded_Art78" name="No Board opinion or decision must be forwarded" type="endEvent" poolRef="Participant_SupervisoryAuthority_Art78" />
+    <event id="EndEvent_NoRemedyRoute_Art78" name="No Article 78 judicial remedy route is available" type="endEvent" poolRef="Participant_Applicant_Art78" />
+    <event id="EndEvent_RemedyRequested_Art78" name="Judicial remedy requested before the competent court" type="endEvent" poolRef="Participant_Applicant_Art78" />
+    <event id="StartEvent_AssessJudicialRemedy_Art78" name="Need to assess a judicial remedy against a supervisory authority" type="startEvent" poolRef="Participant_Applicant_Art78" />
+    <event id="StartEvent_ProceedingsNotice_Art78" name="Proceedings against a supervisory-authority decision are pending before the court" type="startEvent" poolRef="Participant_SupervisoryAuthority_Art78" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_BoardMaterial_Art78" name="Was the contested decision preceded by a Board opinion or decision?" type="exclusiveGateway" poolRef="Participant_SupervisoryAuthority_Art78" />
+    <gateway id="Gateway_RemedyGroundReady_Art78" type="exclusiveGateway" poolRef="Participant_Applicant_Art78" />
+    <gateway id="Gateway_RemedyTrigger_Art78" name="What triggers the judicial remedy?" type="exclusiveGateway" poolRef="Participant_Applicant_Art78" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_BringProceedingsToCourt_To_EndRemedyRequested_Art78" sourceRef="SendTask_BringProceedingsToCourt_Art78" targetRef="EndEvent_RemedyRequested_Art78" />
+    <sequenceFlow id="Flow_ForwardBoardMaterial_To_EndForwardingCompleted_Art78" sourceRef="SendTask_ForwardBoardMaterial_Art78" targetRef="EndEvent_ForwardingCompleted_Art78" />
+    <sequenceFlow id="Flow_GatewayBoardMaterial_To_EndNoForwarding_Art78" name="No" sourceRef="Gateway_BoardMaterial_Art78" targetRef="EndEvent_NoForwardingNeeded_Art78" />
+    <sequenceFlow id="Flow_GatewayBoardMaterial_To_ForwardBoardMaterial_Art78" name="Yes" sourceRef="Gateway_BoardMaterial_Art78" targetRef="SendTask_ForwardBoardMaterial_Art78" />
+    <sequenceFlow id="Flow_GatewayGroundReady_To_BringProceedingsToCourt_Art78" sourceRef="Gateway_RemedyGroundReady_Art78" targetRef="SendTask_BringProceedingsToCourt_Art78" />
+    <sequenceFlow id="Flow_GatewayTrigger_To_EndNoRemedy_Art78" name="None" sourceRef="Gateway_RemedyTrigger_Art78" targetRef="EndEvent_NoRemedyRoute_Art78" />
+    <sequenceFlow id="Flow_GatewayTrigger_To_VerifyComplaintNotHandled_Art78" name="Complaint not handled" sourceRef="Gateway_RemedyTrigger_Art78" targetRef="Task_VerifyComplaintNotHandled_Art78" />
+    <sequenceFlow id="Flow_GatewayTrigger_To_VerifyLegalPersonDecision_Art78" name="Binding decision concerning a legal person" sourceRef="Gateway_RemedyTrigger_Art78" targetRef="Task_VerifyLegalPersonDecision_Art78" />
+    <sequenceFlow id="Flow_GatewayTrigger_To_VerifyNaturalPersonDecision_Art78" name="Binding decision concerning a natural person" sourceRef="Gateway_RemedyTrigger_Art78" targetRef="Task_VerifyNaturalPersonDecision_Art78" />
+    <sequenceFlow id="Flow_GatewayTrigger_To_VerifyNoThreeMonthInfo_Art78" name="No information within three months" sourceRef="Gateway_RemedyTrigger_Art78" targetRef="Task_VerifyNoThreeMonthInfo_Art78" />
+    <sequenceFlow id="Flow_ReceiveNoticeOfProceedings_To_GatewayBoardMaterial_Art78" sourceRef="ReceiveTask_ReceiveNoticeOfProceedings_Art78" targetRef="Gateway_BoardMaterial_Art78" />
+    <sequenceFlow id="Flow_StartAuthority_To_ReceiveNoticeOfProceedings_Art78" sourceRef="StartEvent_ProceedingsNotice_Art78" targetRef="ReceiveTask_ReceiveNoticeOfProceedings_Art78" />
+    <sequenceFlow id="Flow_Start_To_GatewayTrigger_Art78" sourceRef="StartEvent_AssessJudicialRemedy_Art78" targetRef="Gateway_RemedyTrigger_Art78" />
+    <sequenceFlow id="Flow_VerifyComplaintNotHandled_To_GatewayGroundReady_Art78" sourceRef="Task_VerifyComplaintNotHandled_Art78" targetRef="Gateway_RemedyGroundReady_Art78" />
+    <sequenceFlow id="Flow_VerifyLegalPersonDecision_To_GatewayGroundReady_Art78" sourceRef="Task_VerifyLegalPersonDecision_Art78" targetRef="Gateway_RemedyGroundReady_Art78" />
+    <sequenceFlow id="Flow_VerifyNaturalPersonDecision_To_GatewayGroundReady_Art78" sourceRef="Task_VerifyNaturalPersonDecision_Art78" targetRef="Gateway_RemedyGroundReady_Art78" />
+    <sequenceFlow id="Flow_VerifyNoThreeMonthInfo_To_GatewayGroundReady_Art78" sourceRef="Task_VerifyNoThreeMonthInfo_Art78" targetRef="Gateway_RemedyGroundReady_Art78" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_BringProceedingsToCourt_Art78" sourceRef="SendTask_BringProceedingsToCourt_Art78" targetRef="Participant_Court_Art78" />
+    <messageFlow id="MessageFlow_CourtNotifiesAuthority_Art78" sourceRef="Participant_Court_Art78" targetRef="ReceiveTask_ReceiveNoticeOfProceedings_Art78" />
+    <messageFlow id="MessageFlow_ForwardBoardMaterial_Art78" sourceRef="SendTask_ForwardBoardMaterial_Art78" targetRef="Participant_Court_Art78" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

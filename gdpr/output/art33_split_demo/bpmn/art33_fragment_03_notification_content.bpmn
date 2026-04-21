@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+  id="Definitions_Art33_Fragment_03"
+  targetNamespace="https://example.org/gdpr/bpmn/art33/fragment03">
+  <bpmn:process id="Process_Controller_F03" name="Compile minimum notification content" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_NotificationRequired_F03" name="Authority notification required">
+      <bpmn:outgoing>Flow_Start_To_CompileSplit_F03</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:parallelGateway id="Gateway_CompileSplit_F03">
+      <bpmn:incoming>Flow_Start_To_CompileSplit_F03</bpmn:incoming>
+      <bpmn:outgoing>Flow_CompileSplit_To_DescribeNature_F03</bpmn:outgoing>
+      <bpmn:outgoing>Flow_CompileSplit_To_ProvideContact_F03</bpmn:outgoing>
+      <bpmn:outgoing>Flow_CompileSplit_To_DescribeConsequences_F03</bpmn:outgoing>
+      <bpmn:outgoing>Flow_CompileSplit_To_DescribeMeasures_F03</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="Task_DescribeNature_F03" name="Describe breach nature and approximate counts">
+      <bpmn:incoming>Flow_CompileSplit_To_DescribeNature_F03</bpmn:incoming>
+      <bpmn:outgoing>Flow_DescribeNature_To_CompileJoin_F03</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_ProvideContact_F03" name="Provide DPO or contact point details">
+      <bpmn:incoming>Flow_CompileSplit_To_ProvideContact_F03</bpmn:incoming>
+      <bpmn:outgoing>Flow_ProvideContact_To_CompileJoin_F03</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_DescribeConsequences_F03" name="Describe likely consequences">
+      <bpmn:incoming>Flow_CompileSplit_To_DescribeConsequences_F03</bpmn:incoming>
+      <bpmn:outgoing>Flow_DescribeConsequences_To_CompileJoin_F03</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_DescribeMeasures_F03" name="Describe taken or proposed measures">
+      <bpmn:incoming>Flow_CompileSplit_To_DescribeMeasures_F03</bpmn:incoming>
+      <bpmn:outgoing>Flow_DescribeMeasures_To_CompileJoin_F03</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:parallelGateway id="Gateway_CompileJoin_F03">
+      <bpmn:incoming>Flow_DescribeNature_To_CompileJoin_F03</bpmn:incoming>
+      <bpmn:incoming>Flow_ProvideContact_To_CompileJoin_F03</bpmn:incoming>
+      <bpmn:incoming>Flow_DescribeConsequences_To_CompileJoin_F03</bpmn:incoming>
+      <bpmn:incoming>Flow_DescribeMeasures_To_CompileJoin_F03</bpmn:incoming>
+      <bpmn:outgoing>Flow_CompileJoin_To_AllInfoGateway_F03</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:exclusiveGateway id="Gateway_AllInfoAvailable_F03" name="All required information available now?">
+      <bpmn:incoming>Flow_CompileJoin_To_AllInfoGateway_F03</bpmn:incoming>
+      <bpmn:outgoing>Flow_AllInfoGateway_To_CompleteDossier_F03</bpmn:outgoing>
+      <bpmn:outgoing>Flow_AllInfoGateway_To_PhasedNotification_F03</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="EndEvent_CompleteDossierReady_F03" name="Complete dossier ready">
+      <bpmn:incoming>Flow_AllInfoGateway_To_CompleteDossier_F03</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:endEvent id="EndEvent_PhasedNotificationNeeded_F03" name="Phased notification needed">
+      <bpmn:incoming>Flow_AllInfoGateway_To_PhasedNotification_F03</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_Start_To_CompileSplit_F03" sourceRef="StartEvent_NotificationRequired_F03" targetRef="Gateway_CompileSplit_F03" />
+    <bpmn:sequenceFlow id="Flow_CompileSplit_To_DescribeNature_F03" sourceRef="Gateway_CompileSplit_F03" targetRef="Task_DescribeNature_F03" />
+    <bpmn:sequenceFlow id="Flow_CompileSplit_To_ProvideContact_F03" sourceRef="Gateway_CompileSplit_F03" targetRef="Task_ProvideContact_F03" />
+    <bpmn:sequenceFlow id="Flow_CompileSplit_To_DescribeConsequences_F03" sourceRef="Gateway_CompileSplit_F03" targetRef="Task_DescribeConsequences_F03" />
+    <bpmn:sequenceFlow id="Flow_CompileSplit_To_DescribeMeasures_F03" sourceRef="Gateway_CompileSplit_F03" targetRef="Task_DescribeMeasures_F03" />
+    <bpmn:sequenceFlow id="Flow_DescribeNature_To_CompileJoin_F03" sourceRef="Task_DescribeNature_F03" targetRef="Gateway_CompileJoin_F03" />
+    <bpmn:sequenceFlow id="Flow_ProvideContact_To_CompileJoin_F03" sourceRef="Task_ProvideContact_F03" targetRef="Gateway_CompileJoin_F03" />
+    <bpmn:sequenceFlow id="Flow_DescribeConsequences_To_CompileJoin_F03" sourceRef="Task_DescribeConsequences_F03" targetRef="Gateway_CompileJoin_F03" />
+    <bpmn:sequenceFlow id="Flow_DescribeMeasures_To_CompileJoin_F03" sourceRef="Task_DescribeMeasures_F03" targetRef="Gateway_CompileJoin_F03" />
+    <bpmn:sequenceFlow id="Flow_CompileJoin_To_AllInfoGateway_F03" sourceRef="Gateway_CompileJoin_F03" targetRef="Gateway_AllInfoAvailable_F03" />
+    <bpmn:sequenceFlow id="Flow_AllInfoGateway_To_CompleteDossier_F03" name="Yes" sourceRef="Gateway_AllInfoAvailable_F03" targetRef="EndEvent_CompleteDossierReady_F03" />
+    <bpmn:sequenceFlow id="Flow_AllInfoGateway_To_PhasedNotification_F03" name="No" sourceRef="Gateway_AllInfoAvailable_F03" targetRef="EndEvent_PhasedNotificationNeeded_F03" />
+  </bpmn:process>
+</bpmn:definitions>

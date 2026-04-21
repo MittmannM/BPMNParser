@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_DamagedPerson_Art82" name="Damaged Person" poolType="passive" />
+    <pool id="Participant_OtherResponsibleParty_Art82" name="Other Responsible Controller or Processor" poolType="passive" />
+    <pool id="Participant_ReceivingParty_Art82" name="Controller or Processor receiving the compensation claim" poolType="active" processRef="Process_ReceivingParty_Art82" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="ReceiveTask_ReceiveCompensationClaim_Art82" name="Receive the compensation claim from the damaged person" type="receiveTask" poolRef="Participant_ReceivingParty_Art82" />
+    <task id="SendTask_PayCompensation_Art82" name="Pay compensation for the damage suffered" type="sendTask" poolRef="Participant_ReceivingParty_Art82" />
+    <task id="SendTask_PayFullCompensation_Art82" name="Pay full compensation for the entire damage to ensure effective compensation" type="sendTask" poolRef="Participant_ReceivingParty_Art82" />
+    <task id="SendTask_RequestRecourse_Art82" name="Request reimbursement of the other responsible party's share" type="sendTask" poolRef="Participant_ReceivingParty_Art82" />
+    <task id="Task_AcceptControllerLiability_Art82" name="Accept liability for the damage as the controller involved in the processing" type="task" poolRef="Participant_ReceivingParty_Art82" />
+    <task id="Task_AcceptProcessorLiability_Art82" name="Accept liability for the damage as the processor" type="task" poolRef="Participant_ReceivingParty_Art82" />
+    <task id="Task_AssessDamageLink_Art82" name="Assess whether material or non-material damage resulted from a GDPR infringement" type="task" poolRef="Participant_ReceivingParty_Art82" />
+    <task id="Task_AssessProcessorCondition_Art82" name="Assess whether the processor failed processor-specific GDPR duties or acted outside lawful instructions" type="task" poolRef="Participant_ReceivingParty_Art82" />
+    <task id="Task_DetermineOtherShare_Art82" name="Determine the share corresponding to the other responsible party" type="task" poolRef="Participant_ReceivingParty_Art82" />
+  </tasks>
+  <events>
+    <event id="EndEvent_CompensationPaid_Art82" name="Compensation paid" type="endEvent" poolRef="Participant_ReceivingParty_Art82" />
+    <event id="EndEvent_ControllerExempt_Art82" name="Controller is exempt from liability" type="endEvent" poolRef="Participant_ReceivingParty_Art82" />
+    <event id="EndEvent_NoCompensationRight_Art82" name="No Article 82 compensation right is established" type="endEvent" poolRef="Participant_ReceivingParty_Art82" />
+    <event id="EndEvent_ProcessorExempt_Art82" name="Processor is exempt from liability" type="endEvent" poolRef="Participant_ReceivingParty_Art82" />
+    <event id="EndEvent_ProcessorNotLiable_Art82" name="Processor is not liable under Article 82(2)" type="endEvent" poolRef="Participant_ReceivingParty_Art82" />
+    <event id="EndEvent_RecourseInitiated_Art82" name="Full compensation paid and recourse claim initiated" type="endEvent" poolRef="Participant_ReceivingParty_Art82" />
+    <event id="StartEvent_DamageReported_Art82" name="Need to handle a compensation claim for damage" type="startEvent" poolRef="Participant_ReceivingParty_Art82" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_ControllerCheck_Art82" name="Is the receiving party a controller involved in the processing?" type="exclusiveGateway" poolRef="Participant_ReceivingParty_Art82" />
+    <gateway id="Gateway_ControllerExemption_Art82" name="Can the controller prove that it was not responsible for the event giving rise to the damage?" type="exclusiveGateway" poolRef="Participant_ReceivingParty_Art82" />
+    <gateway id="Gateway_DamageLink_Art82" name="Did damage result from an infringement of the GDPR?" type="exclusiveGateway" poolRef="Participant_ReceivingParty_Art82" />
+    <gateway id="Gateway_LiableJoin_Art82" type="exclusiveGateway" poolRef="Participant_ReceivingParty_Art82" />
+    <gateway id="Gateway_MultipleResponsible_Art82" name="Are other controllers or processors also responsible for the same damage?" type="exclusiveGateway" poolRef="Participant_ReceivingParty_Art82" />
+    <gateway id="Gateway_ProcessorExemption_Art82" name="Can the processor prove that it was not responsible for the event giving rise to the damage?" type="exclusiveGateway" poolRef="Participant_ReceivingParty_Art82" />
+    <gateway id="Gateway_ProcessorTrigger_Art82" name="Did the processor fail processor-specific GDPR duties or act outside lawful instructions?" type="exclusiveGateway" poolRef="Participant_ReceivingParty_Art82" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AssessDamageLink_To_GatewayDamageLink_Art82" sourceRef="Task_AssessDamageLink_Art82" targetRef="Gateway_DamageLink_Art82" />
+    <sequenceFlow id="Flow_GatewayControllerCheck_To_GatewayControllerExemption_Art82" name="Yes" sourceRef="Gateway_ControllerCheck_Art82" targetRef="Gateway_ControllerExemption_Art82" />
+    <sequenceFlow id="Flow_GatewayControllerCheck_To_TaskAssessProcessorCondition_Art82" name="No" sourceRef="Gateway_ControllerCheck_Art82" targetRef="Task_AssessProcessorCondition_Art82" />
+    <sequenceFlow id="Flow_GatewayControllerExemption_To_EndControllerExempt_Art82" name="Yes" sourceRef="Gateway_ControllerExemption_Art82" targetRef="EndEvent_ControllerExempt_Art82" />
+    <sequenceFlow id="Flow_GatewayControllerExemption_To_TaskAcceptControllerLiability_Art82" name="No" sourceRef="Gateway_ControllerExemption_Art82" targetRef="Task_AcceptControllerLiability_Art82" />
+    <sequenceFlow id="Flow_GatewayDamageLink_To_EndNoCompensationRight_Art82" name="No" sourceRef="Gateway_DamageLink_Art82" targetRef="EndEvent_NoCompensationRight_Art82" />
+    <sequenceFlow id="Flow_GatewayDamageLink_To_GatewayControllerCheck_Art82" name="Yes" sourceRef="Gateway_DamageLink_Art82" targetRef="Gateway_ControllerCheck_Art82" />
+    <sequenceFlow id="Flow_GatewayLiableJoin_To_GatewayMultipleResponsible_Art82" sourceRef="Gateway_LiableJoin_Art82" targetRef="Gateway_MultipleResponsible_Art82" />
+    <sequenceFlow id="Flow_GatewayMultipleResponsible_To_SendTaskPayCompensation_Art82" name="No" sourceRef="Gateway_MultipleResponsible_Art82" targetRef="SendTask_PayCompensation_Art82" />
+    <sequenceFlow id="Flow_GatewayMultipleResponsible_To_SendTaskPayFullCompensation_Art82" name="Yes" sourceRef="Gateway_MultipleResponsible_Art82" targetRef="SendTask_PayFullCompensation_Art82" />
+    <sequenceFlow id="Flow_GatewayProcessorExemption_To_EndProcessorExempt_Art82" name="Yes" sourceRef="Gateway_ProcessorExemption_Art82" targetRef="EndEvent_ProcessorExempt_Art82" />
+    <sequenceFlow id="Flow_GatewayProcessorExemption_To_TaskAcceptProcessorLiability_Art82" name="No" sourceRef="Gateway_ProcessorExemption_Art82" targetRef="Task_AcceptProcessorLiability_Art82" />
+    <sequenceFlow id="Flow_GatewayProcessorTrigger_To_EndProcessorNotLiable_Art82" name="No" sourceRef="Gateway_ProcessorTrigger_Art82" targetRef="EndEvent_ProcessorNotLiable_Art82" />
+    <sequenceFlow id="Flow_GatewayProcessorTrigger_To_GatewayProcessorExemption_Art82" name="Yes" sourceRef="Gateway_ProcessorTrigger_Art82" targetRef="Gateway_ProcessorExemption_Art82" />
+    <sequenceFlow id="Flow_ReceiveClaim_To_AssessDamageLink_Art82" sourceRef="ReceiveTask_ReceiveCompensationClaim_Art82" targetRef="Task_AssessDamageLink_Art82" />
+    <sequenceFlow id="Flow_SendTaskPayCompensation_To_EndCompensationPaid_Art82" sourceRef="SendTask_PayCompensation_Art82" targetRef="EndEvent_CompensationPaid_Art82" />
+    <sequenceFlow id="Flow_SendTaskPayFullCompensation_To_TaskDetermineOtherShare_Art82" sourceRef="SendTask_PayFullCompensation_Art82" targetRef="Task_DetermineOtherShare_Art82" />
+    <sequenceFlow id="Flow_SendTaskRequestRecourse_To_EndRecourseInitiated_Art82" sourceRef="SendTask_RequestRecourse_Art82" targetRef="EndEvent_RecourseInitiated_Art82" />
+    <sequenceFlow id="Flow_Start_To_ReceiveClaim_Art82" sourceRef="StartEvent_DamageReported_Art82" targetRef="ReceiveTask_ReceiveCompensationClaim_Art82" />
+    <sequenceFlow id="Flow_TaskAcceptControllerLiability_To_GatewayLiableJoin_Art82" sourceRef="Task_AcceptControllerLiability_Art82" targetRef="Gateway_LiableJoin_Art82" />
+    <sequenceFlow id="Flow_TaskAcceptProcessorLiability_To_GatewayLiableJoin_Art82" sourceRef="Task_AcceptProcessorLiability_Art82" targetRef="Gateway_LiableJoin_Art82" />
+    <sequenceFlow id="Flow_TaskAssessProcessorCondition_To_GatewayProcessorTrigger_Art82" sourceRef="Task_AssessProcessorCondition_Art82" targetRef="Gateway_ProcessorTrigger_Art82" />
+    <sequenceFlow id="Flow_TaskDetermineOtherShare_To_SendTaskRequestRecourse_Art82" sourceRef="Task_DetermineOtherShare_Art82" targetRef="SendTask_RequestRecourse_Art82" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_Claim_Art82" sourceRef="Participant_DamagedPerson_Art82" targetRef="ReceiveTask_ReceiveCompensationClaim_Art82" />
+    <messageFlow id="MessageFlow_PayCompensation_Art82" sourceRef="SendTask_PayCompensation_Art82" targetRef="Participant_DamagedPerson_Art82" />
+    <messageFlow id="MessageFlow_PayFullCompensation_Art82" sourceRef="SendTask_PayFullCompensation_Art82" targetRef="Participant_DamagedPerson_Art82" />
+    <messageFlow id="MessageFlow_RequestRecourse_Art82" sourceRef="SendTask_RequestRecourse_Art82" targetRef="Participant_OtherResponsibleParty_Art82" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

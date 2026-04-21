@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art19_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:collaboration id="Collaboration_Art19_Reviewed">
+    <bpmn:participant id="Participant_Controller_Art19" name="Controller" processRef="Process_Controller_Art19" />
+    <bpmn:participant id="Participant_DataSubject_Art19" name="Data Subject" />
+    <bpmn:participant id="Participant_Recipients_Art19" name="Recipients" />
+
+    <bpmn:messageFlow id="MessageFlow_NotifyRecipients_Art19" sourceRef="SendTask_NotifyRecipients_Art19" targetRef="Participant_Recipients_Art19" />
+    <bpmn:messageFlow id="MessageFlow_InformDataSubjectAboutRecipients_Art19" sourceRef="SendTask_InformDataSubjectAboutRecipients_Art19" targetRef="Participant_DataSubject_Art19" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_Controller_Art19" name="Handling Article 19 notification obligations" isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 19 based on DAPRECO LegalRuleML
+      statements103Formula1-4. The local XML models one shared change event for
+      rectification, erasure, or restriction, an exception path where notifying
+      recipients requires too much effort, and a separate follow-up duty to inform the
+      data subject about recipients if the data subject requests that information after
+      recipient communication has occurred. The BPMN therefore keeps the model compact
+      and XML-grounded: change event, exception gateway, recipient notification path,
+      optional request from the data subject, and notification-back path.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_ChangeOccurred_Art19" name="Personal data were rectified, erased, or their processing was restricted">
+      <bpmn:outgoing>Flow_Start_To_GatewayChangeType_Art19</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_ChangeType_Art19" name="Which Article 19 change occurred?">
+      <bpmn:incoming>Flow_Start_To_GatewayChangeType_Art19</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayChangeType_To_TaskRectificationOccurred_Art19</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayChangeType_To_TaskErasureOccurred_Art19</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayChangeType_To_TaskRestrictionOccurred_Art19</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_RectificationOccurred_Art19" name="Register that personal data were rectified">
+      <bpmn:incoming>Flow_GatewayChangeType_To_TaskRectificationOccurred_Art19</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskRectificationOccurred_To_GatewayJoinChange_Art19</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ErasureOccurred_Art19" name="Register that personal data were erased">
+      <bpmn:incoming>Flow_GatewayChangeType_To_TaskErasureOccurred_Art19</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskErasureOccurred_To_GatewayJoinChange_Art19</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_RestrictionOccurred_Art19" name="Register that processing was restricted">
+      <bpmn:incoming>Flow_GatewayChangeType_To_TaskRestrictionOccurred_Art19</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskRestrictionOccurred_To_GatewayJoinChange_Art19</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_JoinChange_Art19">
+      <bpmn:incoming>Flow_TaskRectificationOccurred_To_GatewayJoinChange_Art19</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskErasureOccurred_To_GatewayJoinChange_Art19</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskRestrictionOccurred_To_GatewayJoinChange_Art19</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinChange_To_GatewayRequestExceptions_Art19</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_RequestExceptions_Art19" name="Do Article 12(2) or Article 11(2) exceptions prevent handling the Article 19 duty?">
+      <bpmn:incoming>Flow_GatewayJoinChange_To_GatewayRequestExceptions_Art19</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayRequestExceptions_To_EndRequestBlocked_Art19</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayRequestExceptions_To_GatewayRecipientNotificationEffort_Art19</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_RecipientNotificationEffort_Art19" name="Would notifying recipients require too much effort?">
+      <bpmn:incoming>Flow_GatewayRequestExceptions_To_GatewayRecipientNotificationEffort_Art19</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayRecipientNotificationEffort_To_EndRecipientNotificationExcused_Art19</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayRecipientNotificationEffort_To_SendTaskNotifyRecipients_Art19</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="SendTask_NotifyRecipients_Art19" name="Communicate the rectification, erasure, or restriction to each recipient">
+      <bpmn:incoming>Flow_GatewayRecipientNotificationEffort_To_SendTaskNotifyRecipients_Art19</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendTaskNotifyRecipients_To_GatewayRecipientInfoRequested_Art19</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:exclusiveGateway id="Gateway_RecipientInfoRequested_Art19" name="Did the data subject request information about those recipients?">
+      <bpmn:incoming>Flow_SendTaskNotifyRecipients_To_GatewayRecipientInfoRequested_Art19</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayRecipientInfoRequested_To_SendTaskInformDataSubjectAboutRecipients_Art19</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayRecipientInfoRequested_To_EndRecipientNotificationCompleted_Art19</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="SendTask_InformDataSubjectAboutRecipients_Art19" name="Inform the data subject about the recipients who were notified">
+      <bpmn:incoming>Flow_GatewayRecipientInfoRequested_To_SendTaskInformDataSubjectAboutRecipients_Art19</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendTaskInformDataSubjectAboutRecipients_To_EndRecipientNotificationCompleted_Art19</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_RequestBlocked_Art19" name="The Article 19 duty is not handled because Article 12(2) or Article 11(2) blocks the request context">
+      <bpmn:incoming>Flow_GatewayRequestExceptions_To_EndRequestBlocked_Art19</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_RecipientNotificationExcused_Art19" name="Recipient notification is excused because it would require too much effort">
+      <bpmn:incoming>Flow_GatewayRecipientNotificationEffort_To_EndRecipientNotificationExcused_Art19</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_RecipientNotificationCompleted_Art19" name="Article 19 notification handling is completed">
+      <bpmn:incoming>Flow_GatewayRecipientInfoRequested_To_EndRecipientNotificationCompleted_Art19</bpmn:incoming>
+      <bpmn:incoming>Flow_SendTaskInformDataSubjectAboutRecipients_To_EndRecipientNotificationCompleted_Art19</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_GatewayChangeType_Art19" sourceRef="StartEvent_ChangeOccurred_Art19" targetRef="Gateway_ChangeType_Art19" />
+    <bpmn:sequenceFlow id="Flow_GatewayChangeType_To_TaskRectificationOccurred_Art19" name="Rectification occurred" sourceRef="Gateway_ChangeType_Art19" targetRef="Task_RectificationOccurred_Art19" />
+    <bpmn:sequenceFlow id="Flow_GatewayChangeType_To_TaskErasureOccurred_Art19" name="Erasure occurred" sourceRef="Gateway_ChangeType_Art19" targetRef="Task_ErasureOccurred_Art19" />
+    <bpmn:sequenceFlow id="Flow_GatewayChangeType_To_TaskRestrictionOccurred_Art19" name="Restriction occurred" sourceRef="Gateway_ChangeType_Art19" targetRef="Task_RestrictionOccurred_Art19" />
+    <bpmn:sequenceFlow id="Flow_TaskRectificationOccurred_To_GatewayJoinChange_Art19" sourceRef="Task_RectificationOccurred_Art19" targetRef="Gateway_JoinChange_Art19" />
+    <bpmn:sequenceFlow id="Flow_TaskErasureOccurred_To_GatewayJoinChange_Art19" sourceRef="Task_ErasureOccurred_Art19" targetRef="Gateway_JoinChange_Art19" />
+    <bpmn:sequenceFlow id="Flow_TaskRestrictionOccurred_To_GatewayJoinChange_Art19" sourceRef="Task_RestrictionOccurred_Art19" targetRef="Gateway_JoinChange_Art19" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoinChange_To_GatewayRequestExceptions_Art19" sourceRef="Gateway_JoinChange_Art19" targetRef="Gateway_RequestExceptions_Art19" />
+    <bpmn:sequenceFlow id="Flow_GatewayRequestExceptions_To_EndRequestBlocked_Art19" name="Yes" sourceRef="Gateway_RequestExceptions_Art19" targetRef="EndEvent_RequestBlocked_Art19" />
+    <bpmn:sequenceFlow id="Flow_GatewayRequestExceptions_To_GatewayRecipientNotificationEffort_Art19" name="No" sourceRef="Gateway_RequestExceptions_Art19" targetRef="Gateway_RecipientNotificationEffort_Art19" />
+    <bpmn:sequenceFlow id="Flow_GatewayRecipientNotificationEffort_To_EndRecipientNotificationExcused_Art19" name="Yes" sourceRef="Gateway_RecipientNotificationEffort_Art19" targetRef="EndEvent_RecipientNotificationExcused_Art19" />
+    <bpmn:sequenceFlow id="Flow_GatewayRecipientNotificationEffort_To_SendTaskNotifyRecipients_Art19" name="No" sourceRef="Gateway_RecipientNotificationEffort_Art19" targetRef="SendTask_NotifyRecipients_Art19" />
+    <bpmn:sequenceFlow id="Flow_SendTaskNotifyRecipients_To_GatewayRecipientInfoRequested_Art19" sourceRef="SendTask_NotifyRecipients_Art19" targetRef="Gateway_RecipientInfoRequested_Art19" />
+    <bpmn:sequenceFlow id="Flow_GatewayRecipientInfoRequested_To_SendTaskInformDataSubjectAboutRecipients_Art19" name="Yes" sourceRef="Gateway_RecipientInfoRequested_Art19" targetRef="SendTask_InformDataSubjectAboutRecipients_Art19" />
+    <bpmn:sequenceFlow id="Flow_GatewayRecipientInfoRequested_To_EndRecipientNotificationCompleted_Art19" name="No" sourceRef="Gateway_RecipientInfoRequested_Art19" targetRef="EndEvent_RecipientNotificationCompleted_Art19" />
+    <bpmn:sequenceFlow id="Flow_SendTaskInformDataSubjectAboutRecipients_To_EndRecipientNotificationCompleted_Art19" sourceRef="SendTask_InformDataSubjectAboutRecipients_Art19" targetRef="EndEvent_RecipientNotificationCompleted_Art19" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art19_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art19_Reviewed" bpmnElement="Collaboration_Art19_Reviewed">
+      <bpmndi:BPMNShape id="Participant_Controller_Art19_di" bpmnElement="Participant_Controller_Art19" isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="4300" height="900" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_DataSubject_Art19_di" bpmnElement="Participant_DataSubject_Art19" isHorizontal="true">
+        <dc:Bounds x="60" y="980" width="4300" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Recipients_Art19_di" bpmnElement="Participant_Recipients_Art19" isHorizontal="true">
+        <dc:Bounds x="60" y="1120" width="4300" height="120" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_ChangeOccurred_Art19_di" bpmnElement="StartEvent_ChangeOccurred_Art19">
+        <dc:Bounds x="120" y="432" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ChangeType_Art19_di" bpmnElement="Gateway_ChangeType_Art19" isMarkerVisible="true">
+        <dc:Bounds x="240" y="425" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RectificationOccurred_Art19_di" bpmnElement="Task_RectificationOccurred_Art19">
+        <dc:Bounds x="430" y="120" width="300" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ErasureOccurred_Art19_di" bpmnElement="Task_ErasureOccurred_Art19">
+        <dc:Bounds x="430" y="240" width="300" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RestrictionOccurred_Art19_di" bpmnElement="Task_RestrictionOccurred_Art19">
+        <dc:Bounds x="430" y="360" width="320" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinChange_Art19_di" bpmnElement="Gateway_JoinChange_Art19" isMarkerVisible="true">
+        <dc:Bounds x="900" y="425" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_RequestExceptions_Art19_di" bpmnElement="Gateway_RequestExceptions_Art19" isMarkerVisible="true">
+        <dc:Bounds x="1120" y="425" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_RecipientNotificationEffort_Art19_di" bpmnElement="Gateway_RecipientNotificationEffort_Art19" isMarkerVisible="true">
+        <dc:Bounds x="1380" y="425" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_NotifyRecipients_Art19_di" bpmnElement="SendTask_NotifyRecipients_Art19">
+        <dc:Bounds x="1600" y="410" width="430" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_RecipientInfoRequested_Art19_di" bpmnElement="Gateway_RecipientInfoRequested_Art19" isMarkerVisible="true">
+        <dc:Bounds x="2210" y="425" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_InformDataSubjectAboutRecipients_Art19_di" bpmnElement="SendTask_InformDataSubjectAboutRecipients_Art19">
+        <dc:Bounds x="2430" y="410" width="430" height="80" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="EndEvent_RequestBlocked_Art19_di" bpmnElement="EndEvent_RequestBlocked_Art19">
+        <dc:Bounds x="1217" y="707" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_RecipientNotificationExcused_Art19_di" bpmnElement="EndEvent_RecipientNotificationExcused_Art19">
+        <dc:Bounds x="1477" y="707" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_RecipientNotificationCompleted_Art19_di" bpmnElement="EndEvent_RecipientNotificationCompleted_Art19">
+        <dc:Bounds x="3052" y="432" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_GatewayChangeType_Art19_di" bpmnElement="Flow_Start_To_GatewayChangeType_Art19">
+        <di:waypoint x="156" y="450" />
+        <di:waypoint x="240" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayChangeType_To_TaskRectificationOccurred_Art19_di" bpmnElement="Flow_GatewayChangeType_To_TaskRectificationOccurred_Art19">
+        <di:waypoint x="265" y="425" />
+        <di:waypoint x="265" y="160" />
+        <di:waypoint x="430" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayChangeType_To_TaskErasureOccurred_Art19_di" bpmnElement="Flow_GatewayChangeType_To_TaskErasureOccurred_Art19">
+        <di:waypoint x="265" y="425" />
+        <di:waypoint x="265" y="280" />
+        <di:waypoint x="430" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayChangeType_To_TaskRestrictionOccurred_Art19_di" bpmnElement="Flow_GatewayChangeType_To_TaskRestrictionOccurred_Art19">
+        <di:waypoint x="265" y="425" />
+        <di:waypoint x="265" y="400" />
+        <di:waypoint x="430" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskRectificationOccurred_To_GatewayJoinChange_Art19_di" bpmnElement="Flow_TaskRectificationOccurred_To_GatewayJoinChange_Art19">
+        <di:waypoint x="730" y="160" />
+        <di:waypoint x="925" y="160" />
+        <di:waypoint x="925" y="425" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskErasureOccurred_To_GatewayJoinChange_Art19_di" bpmnElement="Flow_TaskErasureOccurred_To_GatewayJoinChange_Art19">
+        <di:waypoint x="730" y="280" />
+        <di:waypoint x="925" y="280" />
+        <di:waypoint x="925" y="425" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskRestrictionOccurred_To_GatewayJoinChange_Art19_di" bpmnElement="Flow_TaskRestrictionOccurred_To_GatewayJoinChange_Art19">
+        <di:waypoint x="750" y="400" />
+        <di:waypoint x="900" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinChange_To_GatewayRequestExceptions_Art19_di" bpmnElement="Flow_GatewayJoinChange_To_GatewayRequestExceptions_Art19">
+        <di:waypoint x="950" y="450" />
+        <di:waypoint x="1120" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRequestExceptions_To_EndRequestBlocked_Art19_di" bpmnElement="Flow_GatewayRequestExceptions_To_EndRequestBlocked_Art19">
+        <di:waypoint x="1145" y="475" />
+        <di:waypoint x="1145" y="725" />
+        <di:waypoint x="1217" y="725" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRequestExceptions_To_GatewayRecipientNotificationEffort_Art19_di" bpmnElement="Flow_GatewayRequestExceptions_To_GatewayRecipientNotificationEffort_Art19">
+        <di:waypoint x="1170" y="450" />
+        <di:waypoint x="1380" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRecipientNotificationEffort_To_EndRecipientNotificationExcused_Art19_di" bpmnElement="Flow_GatewayRecipientNotificationEffort_To_EndRecipientNotificationExcused_Art19">
+        <di:waypoint x="1405" y="475" />
+        <di:waypoint x="1405" y="725" />
+        <di:waypoint x="1477" y="725" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRecipientNotificationEffort_To_SendTaskNotifyRecipients_Art19_di" bpmnElement="Flow_GatewayRecipientNotificationEffort_To_SendTaskNotifyRecipients_Art19">
+        <di:waypoint x="1430" y="450" />
+        <di:waypoint x="1600" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendTaskNotifyRecipients_To_GatewayRecipientInfoRequested_Art19_di" bpmnElement="Flow_SendTaskNotifyRecipients_To_GatewayRecipientInfoRequested_Art19">
+        <di:waypoint x="2030" y="450" />
+        <di:waypoint x="2210" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRecipientInfoRequested_To_SendTaskInformDataSubjectAboutRecipients_Art19_di" bpmnElement="Flow_GatewayRecipientInfoRequested_To_SendTaskInformDataSubjectAboutRecipients_Art19">
+        <di:waypoint x="2260" y="450" />
+        <di:waypoint x="2430" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRecipientInfoRequested_To_EndRecipientNotificationCompleted_Art19_di" bpmnElement="Flow_GatewayRecipientInfoRequested_To_EndRecipientNotificationCompleted_Art19">
+        <di:waypoint x="2235" y="475" />
+        <di:waypoint x="2235" y="620" />
+        <di:waypoint x="3070" y="620" />
+        <di:waypoint x="3070" y="468" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendTaskInformDataSubjectAboutRecipients_To_EndRecipientNotificationCompleted_Art19_di" bpmnElement="Flow_SendTaskInformDataSubjectAboutRecipients_To_EndRecipientNotificationCompleted_Art19">
+        <di:waypoint x="2860" y="450" />
+        <di:waypoint x="3052" y="450" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_NotifyRecipients_Art19_di" bpmnElement="MessageFlow_NotifyRecipients_Art19">
+        <di:waypoint x="1815" y="490" />
+        <di:waypoint x="1815" y="1120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_InformDataSubjectAboutRecipients_Art19_di" bpmnElement="MessageFlow_InformDataSubjectAboutRecipients_Art19">
+        <di:waypoint x="2645" y="490" />
+        <di:waypoint x="2645" y="980" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

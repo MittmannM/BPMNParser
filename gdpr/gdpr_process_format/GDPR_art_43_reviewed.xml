@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_CertificationBody_Art43" name="Accredited Certification Body" poolType="active" processRef="Process_CertificationBody_Art43" />
+    <pool id="Participant_SupervisoryAuthority_Art43" name="Supervisory Authority" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="SendTask_NotifyGrantOrRenewal_Art43" name="Notify the supervisory authority of the granted or renewed certification" type="sendTask" poolRef="Participant_CertificationBody_Art43" />
+    <task id="SendTask_NotifyWithdrawal_Art43" name="Notify the supervisory authority of the withdrawn certification" type="sendTask" poolRef="Participant_CertificationBody_Art43" />
+    <task id="SendTask_SendGrantOrRenewalReasons_Art43" name="Send the reasons for the grant or renewal decision to the supervisory authority" type="sendTask" poolRef="Participant_CertificationBody_Art43" />
+    <task id="SendTask_SendWithdrawalReasons_Art43" name="Send the reasons for the withdrawal decision to the supervisory authority" type="sendTask" poolRef="Participant_CertificationBody_Art43" />
+    <task id="Task_ConfirmResponsibility_Art43" name="Confirm responsibility for the approved certification mechanism" type="task" poolRef="Participant_CertificationBody_Art43" />
+    <task id="Task_IssueOrRenewCertification_Art43" name="Issue or renew certification under the approved certification mechanism" type="task" poolRef="Participant_CertificationBody_Art43" />
+    <task id="Task_PrepareGrantOrRenewalReasons_Art43" name="Prepare the reasons for the grant or renewal decision" type="task" poolRef="Participant_CertificationBody_Art43" />
+    <task id="Task_PrepareWithdrawalReasons_Art43" name="Prepare the reasons for the withdrawal decision" type="task" poolRef="Participant_CertificationBody_Art43" />
+    <task id="Task_ReviewCertificationCase_Art43" name="Review whether the certification requirements are fulfilled or still fulfilled" type="task" poolRef="Participant_CertificationBody_Art43" />
+    <task id="Task_WithdrawCertification_Art43" name="Withdraw certification under the approved certification mechanism" type="task" poolRef="Participant_CertificationBody_Art43" />
+  </tasks>
+  <events>
+    <event id="EndEvent_GrantOrRenewalCompleted_Art43" name="Grant or renewal notification completed" type="endEvent" poolRef="Participant_CertificationBody_Art43" />
+    <event id="EndEvent_NotAccredited_Art43" name="No accredited certification action can be taken" type="endEvent" poolRef="Participant_CertificationBody_Art43" />
+    <event id="EndEvent_WithdrawalCompleted_Art43" name="Withdrawal notification completed" type="endEvent" poolRef="Participant_CertificationBody_Art43" />
+    <event id="StartEvent_CertificationCase_Art43" name="Certification body handles a certification case" type="startEvent" poolRef="Participant_CertificationBody_Art43" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_Accredited_Art43" name="Is the body accredited by the supervisory authority?" type="exclusiveGateway" poolRef="Participant_CertificationBody_Art43" />
+    <gateway id="Gateway_RequirementsFulfilled_Art43" name="Are the certification requirements fulfilled or still fulfilled?" type="exclusiveGateway" poolRef="Participant_CertificationBody_Art43" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_ConfirmResponsibility_To_GatewayAccredited_Art43" sourceRef="Task_ConfirmResponsibility_Art43" targetRef="Gateway_Accredited_Art43" />
+    <sequenceFlow id="Flow_GatewayAccredited_To_EndNotAccredited_Art43" name="No" sourceRef="Gateway_Accredited_Art43" targetRef="EndEvent_NotAccredited_Art43" />
+    <sequenceFlow id="Flow_GatewayAccredited_To_ReviewCase_Art43" name="Yes" sourceRef="Gateway_Accredited_Art43" targetRef="Task_ReviewCertificationCase_Art43" />
+    <sequenceFlow id="Flow_GatewayRequirements_To_IssueOrRenew_Art43" name="Yes" sourceRef="Gateway_RequirementsFulfilled_Art43" targetRef="Task_IssueOrRenewCertification_Art43" />
+    <sequenceFlow id="Flow_GatewayRequirements_To_Withdraw_Art43" name="No" sourceRef="Gateway_RequirementsFulfilled_Art43" targetRef="Task_WithdrawCertification_Art43" />
+    <sequenceFlow id="Flow_IssueOrRenew_To_NotifyGrantOrRenewal_Art43" sourceRef="Task_IssueOrRenewCertification_Art43" targetRef="SendTask_NotifyGrantOrRenewal_Art43" />
+    <sequenceFlow id="Flow_NotifyGrantOrRenewal_To_PrepareGrantReasons_Art43" sourceRef="SendTask_NotifyGrantOrRenewal_Art43" targetRef="Task_PrepareGrantOrRenewalReasons_Art43" />
+    <sequenceFlow id="Flow_NotifyWithdrawal_To_PrepareWithdrawalReasons_Art43" sourceRef="SendTask_NotifyWithdrawal_Art43" targetRef="Task_PrepareWithdrawalReasons_Art43" />
+    <sequenceFlow id="Flow_PrepareGrantReasons_To_SendGrantReasons_Art43" sourceRef="Task_PrepareGrantOrRenewalReasons_Art43" targetRef="SendTask_SendGrantOrRenewalReasons_Art43" />
+    <sequenceFlow id="Flow_PrepareWithdrawalReasons_To_SendWithdrawalReasons_Art43" sourceRef="Task_PrepareWithdrawalReasons_Art43" targetRef="SendTask_SendWithdrawalReasons_Art43" />
+    <sequenceFlow id="Flow_ReviewCase_To_GatewayRequirements_Art43" sourceRef="Task_ReviewCertificationCase_Art43" targetRef="Gateway_RequirementsFulfilled_Art43" />
+    <sequenceFlow id="Flow_SendGrantReasons_To_EndGrantNotified_Art43" sourceRef="SendTask_SendGrantOrRenewalReasons_Art43" targetRef="EndEvent_GrantOrRenewalCompleted_Art43" />
+    <sequenceFlow id="Flow_SendWithdrawalReasons_To_EndWithdrawalNotified_Art43" sourceRef="SendTask_SendWithdrawalReasons_Art43" targetRef="EndEvent_WithdrawalCompleted_Art43" />
+    <sequenceFlow id="Flow_Start_To_ConfirmResponsibility_Art43" sourceRef="StartEvent_CertificationCase_Art43" targetRef="Task_ConfirmResponsibility_Art43" />
+    <sequenceFlow id="Flow_Withdraw_To_NotifyWithdrawal_Art43" sourceRef="Task_WithdrawCertification_Art43" targetRef="SendTask_NotifyWithdrawal_Art43" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_NotifyGrantOrRenewal_Art43" sourceRef="SendTask_NotifyGrantOrRenewal_Art43" targetRef="Participant_SupervisoryAuthority_Art43" />
+    <messageFlow id="MessageFlow_NotifyWithdrawal_Art43" sourceRef="SendTask_NotifyWithdrawal_Art43" targetRef="Participant_SupervisoryAuthority_Art43" />
+    <messageFlow id="MessageFlow_SendGrantOrRenewalReasons_Art43" sourceRef="SendTask_SendGrantOrRenewalReasons_Art43" targetRef="Participant_SupervisoryAuthority_Art43" />
+    <messageFlow id="MessageFlow_SendWithdrawalReasons_Art43" sourceRef="SendTask_SendWithdrawalReasons_Art43" targetRef="Participant_SupervisoryAuthority_Art43" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_ControllerProcessor_Art48" name="Controller or Processor" poolType="active" processRef="Process_ControllerProcessor_Art48" />
+    <pool id="Participant_ThirdCountryAuthority_Art48" name="Third-country court or administrative authority" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="ReceiveTask_ReceiveThirdCountryRequest_Art48" name="Receive the third-country request requiring transfer or disclosure" type="receiveTask" poolRef="Participant_ControllerProcessor_Art48" />
+    <task id="SendTask_TransferOrDiscloseData_Art48" name="Transfer or disclose the personal data as permitted by the agreement" type="sendTask" poolRef="Participant_ControllerProcessor_Art48" />
+    <task id="Task_ImplementAgreementBasis_Art48" name="Implement the legal claim under the applicable international agreement" type="task" poolRef="Participant_ControllerProcessor_Art48" />
+  </tasks>
+  <events>
+    <event id="EndEvent_Completed_Art48" name="Transfer or disclosure completed on the agreement basis" type="endEvent" poolRef="Participant_ControllerProcessor_Art48" />
+    <event id="EndEvent_NotRecognised_Art48" name="The request is not recognised or enforceable under Article 48; assess any other Chapter V ground separately" type="endEvent" poolRef="Participant_ControllerProcessor_Art48" />
+    <event id="StartEvent_AssessThirdCountryRequest_Art48" name="Need to assess a third-country judgment or administrative decision" type="startEvent" poolRef="Participant_ControllerProcessor_Art48" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_InternationalAgreement_Art48" name="Is the request based on an international agreement in force between the requesting third country and the Union or a Member State?" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art48" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_GatewayAgreement_To_EndNotRecognised_Art48" name="No" sourceRef="Gateway_InternationalAgreement_Art48" targetRef="EndEvent_NotRecognised_Art48" />
+    <sequenceFlow id="Flow_GatewayAgreement_To_ImplementAgreementBasis_Art48" name="Yes" sourceRef="Gateway_InternationalAgreement_Art48" targetRef="Task_ImplementAgreementBasis_Art48" />
+    <sequenceFlow id="Flow_ImplementAgreementBasis_To_TransferOrDiscloseData_Art48" sourceRef="Task_ImplementAgreementBasis_Art48" targetRef="SendTask_TransferOrDiscloseData_Art48" />
+    <sequenceFlow id="Flow_ReceiveThirdCountryRequest_To_GatewayAgreement_Art48" sourceRef="ReceiveTask_ReceiveThirdCountryRequest_Art48" targetRef="Gateway_InternationalAgreement_Art48" />
+    <sequenceFlow id="Flow_Start_To_ReceiveThirdCountryRequest_Art48" sourceRef="StartEvent_AssessThirdCountryRequest_Art48" targetRef="ReceiveTask_ReceiveThirdCountryRequest_Art48" />
+    <sequenceFlow id="Flow_TransferOrDiscloseData_To_EndCompleted_Art48" sourceRef="SendTask_TransferOrDiscloseData_Art48" targetRef="EndEvent_Completed_Art48" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_RequestDecision_Art48" sourceRef="Participant_ThirdCountryAuthority_Art48" targetRef="ReceiveTask_ReceiveThirdCountryRequest_Art48" />
+    <messageFlow id="MessageFlow_TransferDisclosure_Art48" sourceRef="SendTask_TransferOrDiscloseData_Art48" targetRef="Participant_ThirdCountryAuthority_Art48" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

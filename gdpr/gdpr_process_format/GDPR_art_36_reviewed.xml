@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Controller" name="Controller" poolType="active" processRef="Process_Controller_Art36" />
+    <pool id="Participant_SupervisoryAuthority" name="Supervisory Authority" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_AssessResidualHighRisk" name="Assess whether the DPIA indicates residual high risk" type="task" poolRef="Participant_Controller" />
+    <task id="Task_AttachDPIA" name="Attach the data protection impact assessment" type="task" poolRef="Participant_Controller" />
+    <task id="Task_CollectAdditionalInformation" name="Collect additional information requested by the supervisory authority" type="task" poolRef="Participant_Controller" />
+    <task id="Task_DocumentDPOContact" name="Provide the DPO contact details" type="task" poolRef="Participant_Controller" />
+    <task id="Task_DocumentMeasuresSafeguards" name="Document measures and safeguards for protecting rights and freedoms" type="task" poolRef="Participant_Controller" />
+    <task id="Task_DocumentPurposesMeans" name="Document the purposes and means of the intended processing" type="task" poolRef="Participant_Controller" />
+    <task id="Task_DocumentResponsibilities" name="Document controller and processor responsibilities" type="task" poolRef="Participant_Controller" />
+    <task id="Task_ReceiveAdditionalInfoRequest" name="Receive additional information request from the supervisory authority" type="receiveTask" poolRef="Participant_Controller" />
+    <task id="Task_SendAdditionalInformation" name="Send additional requested information to the supervisory authority" type="sendTask" poolRef="Participant_Controller" />
+    <task id="Task_SendPriorConsultation" name="Send prior consultation request to the supervisory authority" type="sendTask" poolRef="Participant_Controller" />
+  </tasks>
+  <events>
+    <event id="EndEvent_ConsultationSubmitted" name="Prior consultation submitted" type="endEvent" poolRef="Participant_Controller" />
+    <event id="EndEvent_NoConsultationRequired" name="No prior consultation required" type="endEvent" poolRef="Participant_Controller" />
+    <event id="StartEvent_DPIACompleted" name="Controller completed the impact assessment" type="startEvent" poolRef="Participant_Controller" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_AdditionalInfoRequested" name="Additional information requested by the supervisory authority?" type="exclusiveGateway" poolRef="Participant_Controller" />
+    <gateway id="Gateway_CompileJoin" type="parallelGateway" poolRef="Participant_Controller" />
+    <gateway id="Gateway_CompileSplit" type="parallelGateway" poolRef="Participant_Controller" />
+    <gateway id="Gateway_DPODesignated" name="Is a DPO designated?" type="exclusiveGateway" poolRef="Participant_Controller" />
+    <gateway id="Gateway_ResidualHighRisk" name="Residual high risk remains without sufficient mitigation?" type="exclusiveGateway" poolRef="Participant_Controller" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AssessResidualHighRisk_To_GatewayResidualHighRisk" sourceRef="Task_AssessResidualHighRisk" targetRef="Gateway_ResidualHighRisk" />
+    <sequenceFlow id="Flow_AttachDPIA_To_GatewayCompileJoin" sourceRef="Task_AttachDPIA" targetRef="Gateway_CompileJoin" />
+    <sequenceFlow id="Flow_CollectAdditionalInformation_To_SendAdditionalInformation" sourceRef="Task_CollectAdditionalInformation" targetRef="Task_SendAdditionalInformation" />
+    <sequenceFlow id="Flow_DocumentMeasuresSafeguards_To_GatewayCompileJoin" sourceRef="Task_DocumentMeasuresSafeguards" targetRef="Gateway_CompileJoin" />
+    <sequenceFlow id="Flow_DocumentPurposesMeans_To_GatewayCompileJoin" sourceRef="Task_DocumentPurposesMeans" targetRef="Gateway_CompileJoin" />
+    <sequenceFlow id="Flow_DocumentResponsibilities_To_GatewayCompileJoin" sourceRef="Task_DocumentResponsibilities" targetRef="Gateway_CompileJoin" />
+    <sequenceFlow id="Flow_GatewayAdditionalInfoRequested_To_EndConsultationSubmitted" name="No" sourceRef="Gateway_AdditionalInfoRequested" targetRef="EndEvent_ConsultationSubmitted" />
+    <sequenceFlow id="Flow_GatewayAdditionalInfoRequested_To_ReceiveAdditionalInfoRequest" name="Yes" sourceRef="Gateway_AdditionalInfoRequested" targetRef="Task_ReceiveAdditionalInfoRequest" />
+    <sequenceFlow id="Flow_GatewayCompileJoin_To_GatewayDPODesignated" sourceRef="Gateway_CompileJoin" targetRef="Gateway_DPODesignated" />
+    <sequenceFlow id="Flow_GatewayCompileSplit_To_AttachDPIA" sourceRef="Gateway_CompileSplit" targetRef="Task_AttachDPIA" />
+    <sequenceFlow id="Flow_GatewayCompileSplit_To_DocumentMeasuresSafeguards" sourceRef="Gateway_CompileSplit" targetRef="Task_DocumentMeasuresSafeguards" />
+    <sequenceFlow id="Flow_GatewayCompileSplit_To_DocumentPurposesMeans" sourceRef="Gateway_CompileSplit" targetRef="Task_DocumentPurposesMeans" />
+    <sequenceFlow id="Flow_GatewayCompileSplit_To_DocumentResponsibilities" sourceRef="Gateway_CompileSplit" targetRef="Task_DocumentResponsibilities" />
+    <sequenceFlow id="Flow_GatewayDPODesignated_To_SendPriorConsultation" name="No" sourceRef="Gateway_DPODesignated" targetRef="Task_SendPriorConsultation" />
+    <sequenceFlow id="Flow_GatewayDPODesignated_To_TaskDocumentDPOContact" name="Yes" sourceRef="Gateway_DPODesignated" targetRef="Task_DocumentDPOContact" />
+    <sequenceFlow id="Flow_GatewayResidualHighRisk_To_EndNoConsultation" name="No" sourceRef="Gateway_ResidualHighRisk" targetRef="EndEvent_NoConsultationRequired" />
+    <sequenceFlow id="Flow_GatewayResidualHighRisk_To_GatewayCompileSplit" name="Yes" sourceRef="Gateway_ResidualHighRisk" targetRef="Gateway_CompileSplit" />
+    <sequenceFlow id="Flow_ReceiveAdditionalInfoRequest_To_CollectAdditionalInformation" sourceRef="Task_ReceiveAdditionalInfoRequest" targetRef="Task_CollectAdditionalInformation" />
+    <sequenceFlow id="Flow_SendAdditionalInformation_To_EndConsultationSubmitted" sourceRef="Task_SendAdditionalInformation" targetRef="EndEvent_ConsultationSubmitted" />
+    <sequenceFlow id="Flow_SendPriorConsultation_To_GatewayAdditionalInfoRequested" sourceRef="Task_SendPriorConsultation" targetRef="Gateway_AdditionalInfoRequested" />
+    <sequenceFlow id="Flow_Start_To_AssessResidualHighRisk" sourceRef="StartEvent_DPIACompleted" targetRef="Task_AssessResidualHighRisk" />
+    <sequenceFlow id="Flow_TaskDocumentDPOContact_To_SendPriorConsultation" sourceRef="Task_DocumentDPOContact" targetRef="Task_SendPriorConsultation" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_ControllerToSA_AdditionalInfo" sourceRef="Task_SendAdditionalInformation" targetRef="Participant_SupervisoryAuthority" />
+    <messageFlow id="MessageFlow_ControllerToSA_Consultation" sourceRef="Task_SendPriorConsultation" targetRef="Participant_SupervisoryAuthority" />
+    <messageFlow id="MessageFlow_SAToController_AdditionalInfoRequest" sourceRef="Participant_SupervisoryAuthority" targetRef="Task_ReceiveAdditionalInfoRequest" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Authority_Art86" name="Public authority or body" poolType="active" processRef="Process_Authority_Art86" />
+    <pool id="Participant_Requester_Art86" name="Requester or member of the public" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="ReceiveTask_ReceiveAccessRequest_Art86" name="Receive a request for access to an official document" type="receiveTask" poolRef="Participant_Authority_Art86" />
+    <task id="SendTask_DisclosePersonalData_Art86" name="Disclose the personal data from the official document" type="sendTask" poolRef="Participant_Authority_Art86" />
+    <task id="Task_AssessApplicableAccessLaw_Art86" name="Assess the applicable Union or Member State access law" type="task" poolRef="Participant_Authority_Art86" />
+    <task id="Task_IdentifyDocumentAndPersonalData_Art86" name="Identify the held official document and the personal data contained in it" type="task" poolRef="Participant_Authority_Art86" />
+    <task id="Task_ReconcileAccessAndProtection_Art86" name="Reconcile public access to official documents with the right to data protection" type="task" poolRef="Participant_Authority_Art86" />
+  </tasks>
+  <events>
+    <event id="EndEvent_DisclosureCompleted_Art86" name="Article 86 disclosure completed" type="endEvent" poolRef="Participant_Authority_Art86" />
+    <event id="EndEvent_NoArt86Route_Art86" name="No Article 86 disclosure route is available" type="endEvent" poolRef="Participant_Authority_Art86" />
+    <event id="EndEvent_NoDisclosure_Art86" name="Disclosure is not permitted under the applicable law" type="endEvent" poolRef="Participant_Authority_Art86" />
+    <event id="StartEvent_AssessAccess_Art86" name="Need to assess access to an official document" type="startEvent" poolRef="Participant_Authority_Art86" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_LawAllowsDisclosure_Art86" name="Does the applicable law allow disclosure of the personal data in the document?" type="exclusiveGateway" poolRef="Participant_Authority_Art86" />
+    <gateway id="Gateway_PublicInterestHolder_Art86" name="Is the document held by an authority or body for a task carried out in the public interest?" type="exclusiveGateway" poolRef="Participant_Authority_Art86" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_GatewayLawAllowsDisclosure_To_EndNoDisclosure_Art86" name="No" sourceRef="Gateway_LawAllowsDisclosure_Art86" targetRef="EndEvent_NoDisclosure_Art86" />
+    <sequenceFlow id="Flow_GatewayLawAllowsDisclosure_To_SendTaskDisclose_Art86" name="Yes" sourceRef="Gateway_LawAllowsDisclosure_Art86" targetRef="SendTask_DisclosePersonalData_Art86" />
+    <sequenceFlow id="Flow_GatewayPublicInterestHolder_To_EndNoArt86Route_Art86" name="No" sourceRef="Gateway_PublicInterestHolder_Art86" targetRef="EndEvent_NoArt86Route_Art86" />
+    <sequenceFlow id="Flow_GatewayPublicInterestHolder_To_TaskAssessLaw_Art86" name="Yes" sourceRef="Gateway_PublicInterestHolder_Art86" targetRef="Task_AssessApplicableAccessLaw_Art86" />
+    <sequenceFlow id="Flow_IdentifyDocument_To_GatewayPublicInterestHolder_Art86" sourceRef="Task_IdentifyDocumentAndPersonalData_Art86" targetRef="Gateway_PublicInterestHolder_Art86" />
+    <sequenceFlow id="Flow_ReceiveAccessRequest_To_IdentifyDocument_Art86" sourceRef="ReceiveTask_ReceiveAccessRequest_Art86" targetRef="Task_IdentifyDocumentAndPersonalData_Art86" />
+    <sequenceFlow id="Flow_SendTaskDisclose_To_EndDisclosureCompleted_Art86" sourceRef="SendTask_DisclosePersonalData_Art86" targetRef="EndEvent_DisclosureCompleted_Art86" />
+    <sequenceFlow id="Flow_Start_To_ReceiveAccessRequest_Art86" sourceRef="StartEvent_AssessAccess_Art86" targetRef="ReceiveTask_ReceiveAccessRequest_Art86" />
+    <sequenceFlow id="Flow_TaskAssessLaw_To_TaskReconcileAccessAndProtection_Art86" sourceRef="Task_AssessApplicableAccessLaw_Art86" targetRef="Task_ReconcileAccessAndProtection_Art86" />
+    <sequenceFlow id="Flow_TaskReconcileAccessAndProtection_To_GatewayLawAllowsDisclosure_Art86" sourceRef="Task_ReconcileAccessAndProtection_Art86" targetRef="Gateway_LawAllowsDisclosure_Art86" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_DiscloseDocumentData_Art86" sourceRef="SendTask_DisclosePersonalData_Art86" targetRef="Participant_Requester_Art86" />
+    <messageFlow id="MessageFlow_RequestAccess_Art86" sourceRef="Participant_Requester_Art86" targetRef="ReceiveTask_ReceiveAccessRequest_Art86" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Controller_Art12" name="Controller" poolType="active" processRef="Process_Controller_Art12" />
+    <pool id="Participant_DataSubject_Art12" name="Data Subject" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="ReceiveTask_ReceiveAdditionalIdentityInfo_Art12" name="Receive additional identifying information from the data subject" type="receiveTask" poolRef="Participant_Controller_Art12" />
+    <task id="ReceiveTask_ReceiveRequest_Art12" name="Receive the request from the data subject" type="receiveTask" poolRef="Participant_Controller_Art12" />
+    <task id="SendTask_InformUnableToIdentify_Art12" name="Inform the data subject that the controller is not in a position to identify him or her" type="sendTask" poolRef="Participant_Controller_Art12" />
+    <task id="SendTask_ProvideInformationOrally_Art12" name="Provide the information orally" type="sendTask" poolRef="Participant_Controller_Art12" />
+    <task id="SendTask_ProvideResponseOrally_Art12" name="Provide the response or notice orally" type="sendTask" poolRef="Participant_Controller_Art12" />
+    <task id="SendTask_RequestAdditionalIdentityInfo_Art12" name="Request additional information necessary to confirm the data subject's identity" type="sendTask" poolRef="Participant_Controller_Art12" />
+    <task id="SendTask_SendElectronicInformation_Art12" name="Send the information electronically" type="sendTask" poolRef="Participant_Controller_Art12" />
+    <task id="SendTask_SendElectronicResponse_Art12" name="Send the response or notice electronically" type="sendTask" poolRef="Participant_Controller_Art12" />
+    <task id="SendTask_SendExtensionNotice_Art12" name="Inform the data subject within one month about the extension and the reasons for the delay" type="sendTask" poolRef="Participant_Controller_Art12" />
+    <task id="SendTask_SendWrittenInformation_Art12" name="Provide the information in writing or by other means" type="sendTask" poolRef="Participant_Controller_Art12" />
+    <task id="SendTask_SendWrittenResponse_Art12" name="Send the response or notice in writing or by other means" type="sendTask" poolRef="Participant_Controller_Art12" />
+    <task id="Task_AssessInabilityToIdentify_Art12" name="Assess whether the controller can demonstrate inability to identify the data subject under Article 11(2)" type="task" poolRef="Participant_Controller_Art12" />
+    <task id="Task_AttachIconsElectronic_Art12" name="Attach standardized icons to the electronic information and ensure they are machine-readable" type="task" poolRef="Participant_Controller_Art12" />
+    <task id="Task_AttachIconsWritten_Art12" name="Attach standardized icons to the written or other non-electronic information" type="task" poolRef="Participant_Controller_Art12" />
+    <task id="Task_ChargeReasonableFee_Art12" name="Charge a reasonable fee based on the administrative costs of handling the request" type="task" poolRef="Participant_Controller_Art12" />
+    <task id="Task_DemonstrateManifestlyUnfoundedExcessive_Art12" name="Demonstrate that the request is manifestly unfounded or excessive" type="task" poolRef="Participant_Controller_Art12" />
+    <task id="Task_FacilitateRights_Art12" name="Facilitate the exercise of the data subject's rights" type="task" poolRef="Participant_Controller_Art12" />
+    <task id="Task_HandleFreeOfCharge_Art12" name="Handle the request free of charge" type="task" poolRef="Participant_Controller_Art12" />
+    <task id="Task_PrepareGeneralInformation_Art12" name="Prepare concise, transparent, intelligible and easily accessible information in clear and plain language" type="task" poolRef="Participant_Controller_Art12" />
+    <task id="Task_PrepareNoActionNotice_Art12" name="Prepare a notice that no action will be taken, including reasons and information about the right to lodge a complaint and seek a judicial remedy" type="task" poolRef="Participant_Controller_Art12" />
+    <task id="Task_PrepareRefusalNotice_Art12" name="Prepare a refusal notice including reasons and information about the right to lodge a complaint and seek a judicial remedy" type="task" poolRef="Participant_Controller_Art12" />
+    <task id="Task_PrepareRequestCommunication_Art12" name="Prepare concise, transparent, intelligible and easily accessible request-related communication in clear and plain language" type="task" poolRef="Participant_Controller_Art12" />
+    <task id="Task_TakeActionWithinOneMonth_Art12" name="Take action on the request without undue delay and within one month of receipt" type="task" poolRef="Participant_Controller_Art12" />
+    <task id="Task_TakeActionWithinThreeMonths_Art12" name="Take action on the request without undue delay and within three months of receipt" type="task" poolRef="Participant_Controller_Art12" />
+  </tasks>
+  <events>
+    <event id="EndEvent_InformationProvided_Art12" name="Article 12 information has been provided" type="endEvent" poolRef="Participant_Controller_Art12" />
+    <event id="EndEvent_RequestHandled_Art12" name="The Article 12 request-handling path is completed" type="endEvent" poolRef="Participant_Controller_Art12" />
+    <event id="EndEvent_UnableToIdentify_Art12" name="No action is taken because inability to identify was demonstrated under Article 11(2)" type="endEvent" poolRef="Participant_Controller_Art12" />
+    <event id="StartEvent_HandleRequest_Art12" name="Receive a data subject request" type="startEvent" poolRef="Participant_Controller_Art12" />
+    <event id="StartEvent_ProvideInformation_Art12" name="Need to provide GDPR information to the data subject" type="startEvent" poolRef="Participant_Controller_Art12" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_ElectronicInfo_Art12" name="Should the information be provided electronically?" type="exclusiveGateway" poolRef="Participant_Controller_Art12" />
+    <gateway id="Gateway_ElectronicResponse_Art12" name="Was the request made electronically and has no other format been requested?" type="exclusiveGateway" poolRef="Participant_Controller_Art12" />
+    <gateway id="Gateway_ExtensionNecessary_Art12" name="Is an extension beyond one month necessary because of the complexity or number of requests?" type="exclusiveGateway" poolRef="Participant_Controller_Art12" />
+    <gateway id="Gateway_FeeOrRefuse_Art12" name="Charge a reasonable fee or refuse to act on the request?" type="exclusiveGateway" poolRef="Participant_Controller_Art12" />
+    <gateway id="Gateway_HandlingChargeJoin_Art12" type="exclusiveGateway" poolRef="Participant_Controller_Art12" />
+    <gateway id="Gateway_IdentificationPossible_Art12" name="Is identification possible after the additional information is received?" type="exclusiveGateway" poolRef="Participant_Controller_Art12" />
+    <gateway id="Gateway_IdentityDoubts_Art12" name="Are there reasonable doubts concerning the identity of the requestor?" type="exclusiveGateway" poolRef="Participant_Controller_Art12" />
+    <gateway id="Gateway_InabilityDemonstrated_Art12" name="Can the controller demonstrate inability to identify the data subject?" type="exclusiveGateway" poolRef="Participant_Controller_Art12" />
+    <gateway id="Gateway_InformUnableIdentify_Art12" name="Is it possible to inform the data subject accordingly?" type="exclusiveGateway" poolRef="Participant_Controller_Art12" />
+    <gateway id="Gateway_OralInfo_Art12" name="Was oral delivery requested and is the data subject's identity proven by other means?" type="exclusiveGateway" poolRef="Participant_Controller_Art12" />
+    <gateway id="Gateway_OralResponse_Art12" name="Was oral communication requested and is the data subject's identity proven by other means?" type="exclusiveGateway" poolRef="Participant_Controller_Art12" />
+    <gateway id="Gateway_RequestAssessmentJoin_Art12" type="exclusiveGateway" poolRef="Participant_Controller_Art12" />
+    <gateway id="Gateway_TakeAction_Art12" name="Will the controller take action on the request?" type="exclusiveGateway" poolRef="Participant_Controller_Art12" />
+    <gateway id="Gateway_UnfoundedExcessive_Art12" name="Is the request manifestly unfounded or excessive?" type="exclusiveGateway" poolRef="Participant_Controller_Art12" />
+    <gateway id="Gateway_UseIconsElectronic_Art12" name="Use standardized icons with the electronic information?" type="exclusiveGateway" poolRef="Participant_Controller_Art12" />
+    <gateway id="Gateway_UseIconsWritten_Art12" name="Use standardized icons with the written or other non-electronic information?" type="exclusiveGateway" poolRef="Participant_Controller_Art12" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_GatewayElectronicInfo_To_GatewayUseIconsElectronic_Art12" name="Yes" sourceRef="Gateway_ElectronicInfo_Art12" targetRef="Gateway_UseIconsElectronic_Art12" />
+    <sequenceFlow id="Flow_GatewayElectronicInfo_To_GatewayUseIconsWritten_Art12" name="No" sourceRef="Gateway_ElectronicInfo_Art12" targetRef="Gateway_UseIconsWritten_Art12" />
+    <sequenceFlow id="Flow_GatewayElectronicResponse_To_GatewayOralResponse_Art12" name="No" sourceRef="Gateway_ElectronicResponse_Art12" targetRef="Gateway_OralResponse_Art12" />
+    <sequenceFlow id="Flow_GatewayElectronicResponse_To_SendTaskSendElectronicResponse_Art12" name="Yes" sourceRef="Gateway_ElectronicResponse_Art12" targetRef="SendTask_SendElectronicResponse_Art12" />
+    <sequenceFlow id="Flow_GatewayExtensionNecessary_To_SendTaskSendExtensionNotice_Art12" name="Yes" sourceRef="Gateway_ExtensionNecessary_Art12" targetRef="SendTask_SendExtensionNotice_Art12" />
+    <sequenceFlow id="Flow_GatewayExtensionNecessary_To_TaskTakeActionWithinOneMonth_Art12" name="No" sourceRef="Gateway_ExtensionNecessary_Art12" targetRef="Task_TakeActionWithinOneMonth_Art12" />
+    <sequenceFlow id="Flow_GatewayFeeOrRefuse_To_TaskChargeReasonableFee_Art12" name="Charge fee" sourceRef="Gateway_FeeOrRefuse_Art12" targetRef="Task_ChargeReasonableFee_Art12" />
+    <sequenceFlow id="Flow_GatewayFeeOrRefuse_To_TaskPrepareRefusalNotice_Art12" name="Refuse to act" sourceRef="Gateway_FeeOrRefuse_Art12" targetRef="Task_PrepareRefusalNotice_Art12" />
+    <sequenceFlow id="Flow_GatewayHandlingChargeJoin_To_GatewayTakeAction_Art12" sourceRef="Gateway_HandlingChargeJoin_Art12" targetRef="Gateway_TakeAction_Art12" />
+    <sequenceFlow id="Flow_GatewayIdentificationPossible_To_GatewayRequestAssessmentJoin_Art12" name="Yes" sourceRef="Gateway_IdentificationPossible_Art12" targetRef="Gateway_RequestAssessmentJoin_Art12" />
+    <sequenceFlow id="Flow_GatewayIdentificationPossible_To_TaskAssessInabilityToIdentify_Art12" name="No" sourceRef="Gateway_IdentificationPossible_Art12" targetRef="Task_AssessInabilityToIdentify_Art12" />
+    <sequenceFlow id="Flow_GatewayIdentityDoubts_To_GatewayRequestAssessmentJoin_Art12" name="No" sourceRef="Gateway_IdentityDoubts_Art12" targetRef="Gateway_RequestAssessmentJoin_Art12" />
+    <sequenceFlow id="Flow_GatewayIdentityDoubts_To_SendTaskRequestAdditionalIdentityInfo_Art12" name="Yes" sourceRef="Gateway_IdentityDoubts_Art12" targetRef="SendTask_RequestAdditionalIdentityInfo_Art12" />
+    <sequenceFlow id="Flow_GatewayInabilityDemonstrated_To_GatewayInformUnableIdentify_Art12" name="Yes" sourceRef="Gateway_InabilityDemonstrated_Art12" targetRef="Gateway_InformUnableIdentify_Art12" />
+    <sequenceFlow id="Flow_GatewayInabilityDemonstrated_To_GatewayRequestAssessmentJoin_Art12" name="No" sourceRef="Gateway_InabilityDemonstrated_Art12" targetRef="Gateway_RequestAssessmentJoin_Art12" />
+    <sequenceFlow id="Flow_GatewayInformUnableIdentify_To_EndUnableToIdentify_Art12" name="No" sourceRef="Gateway_InformUnableIdentify_Art12" targetRef="EndEvent_UnableToIdentify_Art12" />
+    <sequenceFlow id="Flow_GatewayInformUnableIdentify_To_SendTaskInformUnableToIdentify_Art12" name="Yes" sourceRef="Gateway_InformUnableIdentify_Art12" targetRef="SendTask_InformUnableToIdentify_Art12" />
+    <sequenceFlow id="Flow_GatewayOralInfo_To_GatewayElectronicInfo_Art12" name="No" sourceRef="Gateway_OralInfo_Art12" targetRef="Gateway_ElectronicInfo_Art12" />
+    <sequenceFlow id="Flow_GatewayOralInfo_To_SendTaskProvideInformationOrally_Art12" name="Yes" sourceRef="Gateway_OralInfo_Art12" targetRef="SendTask_ProvideInformationOrally_Art12" />
+    <sequenceFlow id="Flow_GatewayOralResponse_To_SendTaskProvideResponseOrally_Art12" name="Yes" sourceRef="Gateway_OralResponse_Art12" targetRef="SendTask_ProvideResponseOrally_Art12" />
+    <sequenceFlow id="Flow_GatewayOralResponse_To_SendTaskSendWrittenResponse_Art12" name="No" sourceRef="Gateway_OralResponse_Art12" targetRef="SendTask_SendWrittenResponse_Art12" />
+    <sequenceFlow id="Flow_GatewayRequestAssessmentJoin_To_GatewayUnfoundedExcessive_Art12" sourceRef="Gateway_RequestAssessmentJoin_Art12" targetRef="Gateway_UnfoundedExcessive_Art12" />
+    <sequenceFlow id="Flow_GatewayTakeAction_To_GatewayExtensionNecessary_Art12" name="Yes" sourceRef="Gateway_TakeAction_Art12" targetRef="Gateway_ExtensionNecessary_Art12" />
+    <sequenceFlow id="Flow_GatewayTakeAction_To_TaskPrepareNoActionNotice_Art12" name="No" sourceRef="Gateway_TakeAction_Art12" targetRef="Task_PrepareNoActionNotice_Art12" />
+    <sequenceFlow id="Flow_GatewayUnfoundedExcessive_To_TaskDemonstrateManifestlyUnfoundedExcessive_Art12" name="Yes" sourceRef="Gateway_UnfoundedExcessive_Art12" targetRef="Task_DemonstrateManifestlyUnfoundedExcessive_Art12" />
+    <sequenceFlow id="Flow_GatewayUnfoundedExcessive_To_TaskHandleFreeOfCharge_Art12" name="No" sourceRef="Gateway_UnfoundedExcessive_Art12" targetRef="Task_HandleFreeOfCharge_Art12" />
+    <sequenceFlow id="Flow_GatewayUseIconsElectronic_To_SendTaskSendElectronicInformation_Art12" name="No" sourceRef="Gateway_UseIconsElectronic_Art12" targetRef="SendTask_SendElectronicInformation_Art12" />
+    <sequenceFlow id="Flow_GatewayUseIconsElectronic_To_TaskAttachIconsElectronic_Art12" name="Yes" sourceRef="Gateway_UseIconsElectronic_Art12" targetRef="Task_AttachIconsElectronic_Art12" />
+    <sequenceFlow id="Flow_GatewayUseIconsWritten_To_SendTaskSendWrittenInformation_Art12" name="No" sourceRef="Gateway_UseIconsWritten_Art12" targetRef="SendTask_SendWrittenInformation_Art12" />
+    <sequenceFlow id="Flow_GatewayUseIconsWritten_To_TaskAttachIconsWritten_Art12" name="Yes" sourceRef="Gateway_UseIconsWritten_Art12" targetRef="Task_AttachIconsWritten_Art12" />
+    <sequenceFlow id="Flow_ReceiveTaskReceiveAdditionalIdentityInfo_To_GatewayIdentificationPossible_Art12" sourceRef="ReceiveTask_ReceiveAdditionalIdentityInfo_Art12" targetRef="Gateway_IdentificationPossible_Art12" />
+    <sequenceFlow id="Flow_ReceiveTaskReceiveRequest_To_TaskFacilitateRights_Art12" sourceRef="ReceiveTask_ReceiveRequest_Art12" targetRef="Task_FacilitateRights_Art12" />
+    <sequenceFlow id="Flow_SendTaskInformUnableToIdentify_To_EndUnableToIdentify_Art12" sourceRef="SendTask_InformUnableToIdentify_Art12" targetRef="EndEvent_UnableToIdentify_Art12" />
+    <sequenceFlow id="Flow_SendTaskProvideInformationOrally_To_EndInformationProvided_Art12" sourceRef="SendTask_ProvideInformationOrally_Art12" targetRef="EndEvent_InformationProvided_Art12" />
+    <sequenceFlow id="Flow_SendTaskProvideResponseOrally_To_EndRequestHandled_Art12" sourceRef="SendTask_ProvideResponseOrally_Art12" targetRef="EndEvent_RequestHandled_Art12" />
+    <sequenceFlow id="Flow_SendTaskRequestAdditionalIdentityInfo_To_ReceiveTaskReceiveAdditionalIdentityInfo_Art12" sourceRef="SendTask_RequestAdditionalIdentityInfo_Art12" targetRef="ReceiveTask_ReceiveAdditionalIdentityInfo_Art12" />
+    <sequenceFlow id="Flow_SendTaskSendElectronicInformation_To_EndInformationProvided_Art12" sourceRef="SendTask_SendElectronicInformation_Art12" targetRef="EndEvent_InformationProvided_Art12" />
+    <sequenceFlow id="Flow_SendTaskSendElectronicResponse_To_EndRequestHandled_Art12" sourceRef="SendTask_SendElectronicResponse_Art12" targetRef="EndEvent_RequestHandled_Art12" />
+    <sequenceFlow id="Flow_SendTaskSendExtensionNotice_To_TaskTakeActionWithinThreeMonths_Art12" sourceRef="SendTask_SendExtensionNotice_Art12" targetRef="Task_TakeActionWithinThreeMonths_Art12" />
+    <sequenceFlow id="Flow_SendTaskSendWrittenInformation_To_EndInformationProvided_Art12" sourceRef="SendTask_SendWrittenInformation_Art12" targetRef="EndEvent_InformationProvided_Art12" />
+    <sequenceFlow id="Flow_SendTaskSendWrittenResponse_To_EndRequestHandled_Art12" sourceRef="SendTask_SendWrittenResponse_Art12" targetRef="EndEvent_RequestHandled_Art12" />
+    <sequenceFlow id="Flow_StartHandleRequest_To_ReceiveTaskReceiveRequest_Art12" sourceRef="StartEvent_HandleRequest_Art12" targetRef="ReceiveTask_ReceiveRequest_Art12" />
+    <sequenceFlow id="Flow_StartProvideInformation_To_TaskPrepareGeneralInformation_Art12" sourceRef="StartEvent_ProvideInformation_Art12" targetRef="Task_PrepareGeneralInformation_Art12" />
+    <sequenceFlow id="Flow_TaskAssessInabilityToIdentify_To_GatewayInabilityDemonstrated_Art12" sourceRef="Task_AssessInabilityToIdentify_Art12" targetRef="Gateway_InabilityDemonstrated_Art12" />
+    <sequenceFlow id="Flow_TaskAttachIconsElectronic_To_SendTaskSendElectronicInformation_Art12" sourceRef="Task_AttachIconsElectronic_Art12" targetRef="SendTask_SendElectronicInformation_Art12" />
+    <sequenceFlow id="Flow_TaskAttachIconsWritten_To_SendTaskSendWrittenInformation_Art12" sourceRef="Task_AttachIconsWritten_Art12" targetRef="SendTask_SendWrittenInformation_Art12" />
+    <sequenceFlow id="Flow_TaskChargeReasonableFee_To_GatewayHandlingChargeJoin_Art12" sourceRef="Task_ChargeReasonableFee_Art12" targetRef="Gateway_HandlingChargeJoin_Art12" />
+    <sequenceFlow id="Flow_TaskDemonstrateManifestlyUnfoundedExcessive_To_GatewayFeeOrRefuse_Art12" sourceRef="Task_DemonstrateManifestlyUnfoundedExcessive_Art12" targetRef="Gateway_FeeOrRefuse_Art12" />
+    <sequenceFlow id="Flow_TaskFacilitateRights_To_GatewayIdentityDoubts_Art12" sourceRef="Task_FacilitateRights_Art12" targetRef="Gateway_IdentityDoubts_Art12" />
+    <sequenceFlow id="Flow_TaskHandleFreeOfCharge_To_GatewayHandlingChargeJoin_Art12" sourceRef="Task_HandleFreeOfCharge_Art12" targetRef="Gateway_HandlingChargeJoin_Art12" />
+    <sequenceFlow id="Flow_TaskPrepareGeneralInformation_To_GatewayOralInfo_Art12" sourceRef="Task_PrepareGeneralInformation_Art12" targetRef="Gateway_OralInfo_Art12" />
+    <sequenceFlow id="Flow_TaskPrepareNoActionNotice_To_TaskPrepareRequestCommunication_Art12" sourceRef="Task_PrepareNoActionNotice_Art12" targetRef="Task_PrepareRequestCommunication_Art12" />
+    <sequenceFlow id="Flow_TaskPrepareRefusalNotice_To_TaskPrepareRequestCommunication_Art12" sourceRef="Task_PrepareRefusalNotice_Art12" targetRef="Task_PrepareRequestCommunication_Art12" />
+    <sequenceFlow id="Flow_TaskPrepareRequestCommunication_To_GatewayElectronicResponse_Art12" sourceRef="Task_PrepareRequestCommunication_Art12" targetRef="Gateway_ElectronicResponse_Art12" />
+    <sequenceFlow id="Flow_TaskTakeActionWithinOneMonth_To_TaskPrepareRequestCommunication_Art12" sourceRef="Task_TakeActionWithinOneMonth_Art12" targetRef="Task_PrepareRequestCommunication_Art12" />
+    <sequenceFlow id="Flow_TaskTakeActionWithinThreeMonths_To_TaskPrepareRequestCommunication_Art12" sourceRef="Task_TakeActionWithinThreeMonths_Art12" targetRef="Task_PrepareRequestCommunication_Art12" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_InformUnableToIdentify_Art12" sourceRef="SendTask_InformUnableToIdentify_Art12" targetRef="Participant_DataSubject_Art12" />
+    <messageFlow id="MessageFlow_ProvideInformationOrally_Art12" sourceRef="SendTask_ProvideInformationOrally_Art12" targetRef="Participant_DataSubject_Art12" />
+    <messageFlow id="MessageFlow_ProvideResponseOrally_Art12" sourceRef="SendTask_ProvideResponseOrally_Art12" targetRef="Participant_DataSubject_Art12" />
+    <messageFlow id="MessageFlow_ReceiveAdditionalIdentityInfo_Art12" sourceRef="Participant_DataSubject_Art12" targetRef="ReceiveTask_ReceiveAdditionalIdentityInfo_Art12" />
+    <messageFlow id="MessageFlow_ReceiveRequest_Art12" sourceRef="Participant_DataSubject_Art12" targetRef="ReceiveTask_ReceiveRequest_Art12" />
+    <messageFlow id="MessageFlow_RequestAdditionalIdentityInfo_Art12" sourceRef="SendTask_RequestAdditionalIdentityInfo_Art12" targetRef="Participant_DataSubject_Art12" />
+    <messageFlow id="MessageFlow_SendElectronicInformation_Art12" sourceRef="SendTask_SendElectronicInformation_Art12" targetRef="Participant_DataSubject_Art12" />
+    <messageFlow id="MessageFlow_SendElectronicResponse_Art12" sourceRef="SendTask_SendElectronicResponse_Art12" targetRef="Participant_DataSubject_Art12" />
+    <messageFlow id="MessageFlow_SendExtensionNotice_Art12" sourceRef="SendTask_SendExtensionNotice_Art12" targetRef="Participant_DataSubject_Art12" />
+    <messageFlow id="MessageFlow_SendWrittenInformation_Art12" sourceRef="SendTask_SendWrittenInformation_Art12" targetRef="Participant_DataSubject_Art12" />
+    <messageFlow id="MessageFlow_SendWrittenResponse_Art12" sourceRef="SendTask_SendWrittenResponse_Art12" targetRef="Participant_DataSubject_Art12" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

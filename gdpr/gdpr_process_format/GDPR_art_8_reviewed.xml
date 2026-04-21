@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Child_Art8" name="Child" poolType="passive" />
+    <pool id="Participant_Controller_Art8" name="Controller" poolType="active" processRef="Process_Controller_Art8" />
+    <pool id="Participant_ParentalResponsibility_Art8" name="Holder of Parental Responsibility" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="ReceiveTask_ReceiveChildConsent_Art8" name="Receive the child's consent" type="receiveTask" poolRef="Participant_Controller_Art8" />
+    <task id="ReceiveTask_ReceiveParentalAuthorisation_Art8" name="Receive consent or authorisation from the holder of parental responsibility" type="receiveTask" poolRef="Participant_Controller_Art8" />
+    <task id="SendTask_RequestChildConsent_Art8" name="Request consent from the child" type="sendTask" poolRef="Participant_Controller_Art8" />
+    <task id="SendTask_RequestParentalAuthorisation_Art8" name="Request consent or authorisation from the holder of parental responsibility" type="sendTask" poolRef="Participant_Controller_Art8" />
+    <task id="Task_AssessApplicabilityAndAge_Art8" name="Assess whether Article 8 applies and determine the applicable minimum consent age" type="task" poolRef="Participant_Controller_Art8" />
+    <task id="Task_VerifyReasonableEfforts_Art8" name="Verify with reasonable efforts that consent or authorisation was given by the holder of parental responsibility" type="task" poolRef="Participant_Controller_Art8" />
+  </tasks>
+  <events>
+    <event id="EndEvent_Article8NotApplicable_Art8" name="Article 8 child-consent conditions do not apply" type="endEvent" poolRef="Participant_Controller_Art8" />
+    <event id="EndEvent_LawfulChildConsent_Art8" name="Processing is lawful based on the child's consent" type="endEvent" poolRef="Participant_Controller_Art8" />
+    <event id="EndEvent_LawfulParentalAuthorisation_Art8" name="Processing is lawful based on parental consent or authorisation" type="endEvent" poolRef="Participant_Controller_Art8" />
+    <event id="EndEvent_NoValidConsent_Art8" name="No valid Article 8 consent route is available" type="endEvent" poolRef="Participant_Controller_Art8" />
+    <event id="StartEvent_AssessArticle8_Art8" name="Need to assess consent for a child-facing information society service" type="startEvent" poolRef="Participant_Controller_Art8" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_Article8Applies_Art8" name="Do Article 8 child-consent conditions apply?" type="exclusiveGateway" poolRef="Participant_Controller_Art8" />
+    <gateway id="Gateway_ChildAge_Art8" name="Is the child at least the applicable minimum consent age?" type="exclusiveGateway" poolRef="Participant_Controller_Art8" />
+    <gateway id="Gateway_ChildConsentReceived_Art8" name="Did the child give consent?" type="exclusiveGateway" poolRef="Participant_Controller_Art8" />
+    <gateway id="Gateway_ParentalAuthorisationReceived_Art8" name="Was consent given or authorised by the holder of parental responsibility?" type="exclusiveGateway" poolRef="Participant_Controller_Art8" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_GatewayArticle8Applies_To_EndArticle8NotApplicable_Art8" name="No" sourceRef="Gateway_Article8Applies_Art8" targetRef="EndEvent_Article8NotApplicable_Art8" />
+    <sequenceFlow id="Flow_GatewayArticle8Applies_To_GatewayChildAge_Art8" name="Yes" sourceRef="Gateway_Article8Applies_Art8" targetRef="Gateway_ChildAge_Art8" />
+    <sequenceFlow id="Flow_GatewayChildAge_To_SendTaskRequestChildConsent_Art8" name="Yes" sourceRef="Gateway_ChildAge_Art8" targetRef="SendTask_RequestChildConsent_Art8" />
+    <sequenceFlow id="Flow_GatewayChildAge_To_SendTaskRequestParentalAuthorisation_Art8" name="No" sourceRef="Gateway_ChildAge_Art8" targetRef="SendTask_RequestParentalAuthorisation_Art8" />
+    <sequenceFlow id="Flow_GatewayChildConsentReceived_To_EndLawfulChildConsent_Art8" name="Yes" sourceRef="Gateway_ChildConsentReceived_Art8" targetRef="EndEvent_LawfulChildConsent_Art8" />
+    <sequenceFlow id="Flow_GatewayChildConsentReceived_To_EndNoValidConsent_Art8" name="No" sourceRef="Gateway_ChildConsentReceived_Art8" targetRef="EndEvent_NoValidConsent_Art8" />
+    <sequenceFlow id="Flow_GatewayParentalAuthorisationReceived_To_EndNoValidConsent_Art8" name="No" sourceRef="Gateway_ParentalAuthorisationReceived_Art8" targetRef="EndEvent_NoValidConsent_Art8" />
+    <sequenceFlow id="Flow_GatewayParentalAuthorisationReceived_To_TaskVerifyReasonableEfforts_Art8" name="Yes" sourceRef="Gateway_ParentalAuthorisationReceived_Art8" targetRef="Task_VerifyReasonableEfforts_Art8" />
+    <sequenceFlow id="Flow_ReceiveTaskReceiveChildConsent_To_GatewayChildConsentReceived_Art8" sourceRef="ReceiveTask_ReceiveChildConsent_Art8" targetRef="Gateway_ChildConsentReceived_Art8" />
+    <sequenceFlow id="Flow_ReceiveTaskReceiveParentalAuthorisation_To_GatewayParentalAuthorisationReceived_Art8" sourceRef="ReceiveTask_ReceiveParentalAuthorisation_Art8" targetRef="Gateway_ParentalAuthorisationReceived_Art8" />
+    <sequenceFlow id="Flow_SendTaskRequestChildConsent_To_ReceiveTaskReceiveChildConsent_Art8" sourceRef="SendTask_RequestChildConsent_Art8" targetRef="ReceiveTask_ReceiveChildConsent_Art8" />
+    <sequenceFlow id="Flow_SendTaskRequestParentalAuthorisation_To_ReceiveTaskReceiveParentalAuthorisation_Art8" sourceRef="SendTask_RequestParentalAuthorisation_Art8" targetRef="ReceiveTask_ReceiveParentalAuthorisation_Art8" />
+    <sequenceFlow id="Flow_Start_To_TaskAssessApplicability_Art8" sourceRef="StartEvent_AssessArticle8_Art8" targetRef="Task_AssessApplicabilityAndAge_Art8" />
+    <sequenceFlow id="Flow_TaskAssessApplicability_To_GatewayArticle8Applies_Art8" sourceRef="Task_AssessApplicabilityAndAge_Art8" targetRef="Gateway_Article8Applies_Art8" />
+    <sequenceFlow id="Flow_TaskVerifyReasonableEfforts_To_EndLawfulParentalAuthorisation_Art8" sourceRef="Task_VerifyReasonableEfforts_Art8" targetRef="EndEvent_LawfulParentalAuthorisation_Art8" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_ReceiveChildConsent_Art8" sourceRef="Participant_Child_Art8" targetRef="ReceiveTask_ReceiveChildConsent_Art8" />
+    <messageFlow id="MessageFlow_ReceiveParentalAuthorisation_Art8" sourceRef="Participant_ParentalResponsibility_Art8" targetRef="ReceiveTask_ReceiveParentalAuthorisation_Art8" />
+    <messageFlow id="MessageFlow_RequestChildConsent_Art8" sourceRef="SendTask_RequestChildConsent_Art8" targetRef="Participant_Child_Art8" />
+    <messageFlow id="MessageFlow_RequestParentalAuthorisation_Art8" sourceRef="SendTask_RequestParentalAuthorisation_Art8" targetRef="Participant_ParentalResponsibility_Art8" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

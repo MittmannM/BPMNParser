@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_ControllerProcessor_Art39" name="Controller or Processor" poolType="passive" />
+    <pool id="Participant_DPO_Art39" name="Data Protection Officer" poolType="active" processRef="Process_DPO_Art39" />
+    <pool id="Participant_SupervisoryAuthority_Art39" name="Supervisory Authority" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_AdviseDPIA" name="Advise on DPIAs and monitor their performance" type="task" poolRef="Participant_DPO_Art39" />
+    <task id="Task_AssessRisk" name="Assess the risk to rights and freedoms of data subjects" type="task" poolRef="Participant_DPO_Art39" />
+    <task id="Task_ContactPointAuthority" name="Act as the contact point for the supervisory authority and consult on related matters" type="task" poolRef="Participant_DPO_Art39" />
+    <task id="Task_CooperateAuthority" name="Cooperate with the supervisory authority" type="task" poolRef="Participant_DPO_Art39" />
+    <task id="Task_InformControllerProcessor" name="Inform and advise the controller or processor on applicable obligations" type="sendTask" poolRef="Participant_DPO_Art39" />
+    <task id="Task_InformEmployees" name="Inform and advise employees involved in processing on applicable obligations" type="sendTask" poolRef="Participant_DPO_Art39" />
+    <task id="Task_MonitorCompliance" name="Monitor compliance with GDPR, Union, Member-State law, and data protection policies" type="task" poolRef="Participant_DPO_Art39" />
+  </tasks>
+  <events>
+    <event id="EndEvent_DPOTasksCompleted_Art39" name="DPO tasks performed with a risk-based approach" type="endEvent" poolRef="Participant_DPO_Art39" />
+    <event id="StartEvent_DPOTasks_Art39" name="DPO tasks are triggered" type="startEvent" poolRef="Participant_DPO_Art39" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_TasksJoin_Art39" type="parallelGateway" poolRef="Participant_DPO_Art39" />
+    <gateway id="Gateway_TasksSplit_Art39" type="parallelGateway" poolRef="Participant_DPO_Art39" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AdviseDPIA_To_GatewayJoin" sourceRef="Task_AdviseDPIA" targetRef="Gateway_TasksJoin_Art39" />
+    <sequenceFlow id="Flow_AssessRisk_To_GatewaySplit" sourceRef="Task_AssessRisk" targetRef="Gateway_TasksSplit_Art39" />
+    <sequenceFlow id="Flow_ContactPointAuthority_To_GatewayJoin" sourceRef="Task_ContactPointAuthority" targetRef="Gateway_TasksJoin_Art39" />
+    <sequenceFlow id="Flow_CooperateAuthority_To_GatewayJoin" sourceRef="Task_CooperateAuthority" targetRef="Gateway_TasksJoin_Art39" />
+    <sequenceFlow id="Flow_GatewayJoin_To_End" sourceRef="Gateway_TasksJoin_Art39" targetRef="EndEvent_DPOTasksCompleted_Art39" />
+    <sequenceFlow id="Flow_GatewaySplit_To_AdviseDPIA" sourceRef="Gateway_TasksSplit_Art39" targetRef="Task_AdviseDPIA" />
+    <sequenceFlow id="Flow_GatewaySplit_To_ContactPointAuthority" sourceRef="Gateway_TasksSplit_Art39" targetRef="Task_ContactPointAuthority" />
+    <sequenceFlow id="Flow_GatewaySplit_To_CooperateAuthority" sourceRef="Gateway_TasksSplit_Art39" targetRef="Task_CooperateAuthority" />
+    <sequenceFlow id="Flow_GatewaySplit_To_InformControllerProcessor" sourceRef="Gateway_TasksSplit_Art39" targetRef="Task_InformControllerProcessor" />
+    <sequenceFlow id="Flow_GatewaySplit_To_InformEmployees" sourceRef="Gateway_TasksSplit_Art39" targetRef="Task_InformEmployees" />
+    <sequenceFlow id="Flow_GatewaySplit_To_MonitorCompliance" sourceRef="Gateway_TasksSplit_Art39" targetRef="Task_MonitorCompliance" />
+    <sequenceFlow id="Flow_InformControllerProcessor_To_GatewayJoin" sourceRef="Task_InformControllerProcessor" targetRef="Gateway_TasksJoin_Art39" />
+    <sequenceFlow id="Flow_InformEmployees_To_GatewayJoin" sourceRef="Task_InformEmployees" targetRef="Gateway_TasksJoin_Art39" />
+    <sequenceFlow id="Flow_MonitorCompliance_To_GatewayJoin" sourceRef="Task_MonitorCompliance" targetRef="Gateway_TasksJoin_Art39" />
+    <sequenceFlow id="Flow_Start_To_AssessRisk" sourceRef="StartEvent_DPOTasks_Art39" targetRef="Task_AssessRisk" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_ContactPointAuthority" sourceRef="Task_ContactPointAuthority" targetRef="Participant_SupervisoryAuthority_Art39" />
+    <messageFlow id="MessageFlow_CooperateAuthority" sourceRef="Task_CooperateAuthority" targetRef="Participant_SupervisoryAuthority_Art39" />
+    <messageFlow id="MessageFlow_InformControllerProcessor" sourceRef="Task_InformControllerProcessor" targetRef="Participant_ControllerProcessor_Art39" />
+    <messageFlow id="MessageFlow_InformEmployees" sourceRef="Task_InformEmployees" targetRef="Participant_ControllerProcessor_Art39" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

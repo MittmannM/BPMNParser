@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="P_Controller" name="Controller" poolType="active" processRef="Process_Art35" />
+    <pool id="P_DPO" name="Data Protection Officer" poolType="passive" />
+    <pool id="P_DataSubjects" name="Data Subjects" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="T_AssessException" name="Assess whether the Article 35(10) exception applies" type="task" poolRef="P_Controller" />
+    <task id="T_AssessHighRisk" name="Assess whether processing is likely to result in high risk" type="task" poolRef="P_Controller" />
+    <task id="T_AutoDecision" name="Assess whether automated decision-making has legal or similar significant effects" type="task" poolRef="P_Controller" />
+    <task id="T_Finalize" name="Finalize the data protection impact assessment" type="task" poolRef="P_Controller" />
+    <task id="T_Initiate" name="Initiate the data protection impact assessment" type="task" poolRef="P_Controller" />
+    <task id="T_LegitimateInterests" name="Describe legitimate interests where applicable" type="task" poolRef="P_Controller" />
+    <task id="T_Measures" name="Describe measures, safeguards, security, and compliance mechanisms" type="task" poolRef="P_Controller" />
+    <task id="T_Monitoring" name="Assess whether large-scale monitoring of a public area occurs" type="task" poolRef="P_Controller" />
+    <task id="T_NecessityProportionality" name="Assess necessity and proportionality" type="task" poolRef="P_Controller" />
+    <task id="T_OperationsPurposes" name="Describe processing operations and purposes" type="task" poolRef="P_Controller" />
+    <task id="T_RequestViews" name="Request data subject views for the assessment" type="sendTask" poolRef="P_Controller" />
+    <task id="T_ReviewAssessment" name="Review whether processing still complies with the impact assessment" type="task" poolRef="P_Controller" />
+    <task id="T_Risks" name="Assess risks to rights and freedoms" type="task" poolRef="P_Controller" />
+    <task id="T_SeekDPOAdvice" name="Seek advice from the data protection officer" type="sendTask" poolRef="P_Controller" />
+    <task id="T_SensitiveData" name="Assess whether large-scale special-category or criminal-data processing occurs" type="task" poolRef="P_Controller" />
+  </tasks>
+  <events>
+    <event id="End_Completed" name="DPIA handling completed" type="endEvent" poolRef="P_Controller" />
+    <event id="End_NoDPIA" name="No DPIA required under Article 35" type="endEvent" poolRef="P_Controller" />
+    <event id="Start_Review" name="Controller reviews a processing operation" type="startEvent" poolRef="P_Controller" />
+  </events>
+  <gateways>
+    <gateway id="GW_AutoDecision" name="Automated decision trigger applies?" type="exclusiveGateway" poolRef="P_Controller" />
+    <gateway id="GW_Compile_Join" type="parallelGateway" poolRef="P_Controller" />
+    <gateway id="GW_Compile_Split" type="parallelGateway" poolRef="P_Controller" />
+    <gateway id="GW_DPO" name="Data protection officer designated?" type="exclusiveGateway" poolRef="P_Controller" />
+    <gateway id="GW_DPO_Merge" name="DPO advice path merged" type="exclusiveGateway" poolRef="P_Controller" />
+    <gateway id="GW_Exception" name="Article 35(10) exception applies?" type="exclusiveGateway" poolRef="P_Controller" />
+    <gateway id="GW_HighRisk" name="High risk to rights and freedoms likely?" type="exclusiveGateway" poolRef="P_Controller" />
+    <gateway id="GW_Monitoring" name="Public-area monitoring trigger applies?" type="exclusiveGateway" poolRef="P_Controller" />
+    <gateway id="GW_Review" name="Review necessary later because conditions changed?" type="exclusiveGateway" poolRef="P_Controller" />
+    <gateway id="GW_SensitiveData" name="Large-scale sensitive-data trigger applies?" type="exclusiveGateway" poolRef="P_Controller" />
+    <gateway id="GW_Views" name="Seek data subject views without prejudicing protected interests?" type="exclusiveGateway" poolRef="P_Controller" />
+    <gateway id="GW_Views_Merge" name="Data subject views path merged" type="exclusiveGateway" poolRef="P_Controller" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="F_AssessException_GW_Exception" sourceRef="T_AssessException" targetRef="GW_Exception" />
+    <sequenceFlow id="F_GW_AutoDecision_T_Initiate" name="Yes" sourceRef="GW_AutoDecision" targetRef="T_Initiate" />
+    <sequenceFlow id="F_GW_AutoDecision_T_SensitiveData" name="No" sourceRef="GW_AutoDecision" targetRef="T_SensitiveData" />
+    <sequenceFlow id="F_GW_Compile_Join_GW_Views" sourceRef="GW_Compile_Join" targetRef="GW_Views" />
+    <sequenceFlow id="F_GW_Compile_Split_T_LegitimateInterests" sourceRef="GW_Compile_Split" targetRef="T_LegitimateInterests" />
+    <sequenceFlow id="F_GW_Compile_Split_T_Measures" sourceRef="GW_Compile_Split" targetRef="T_Measures" />
+    <sequenceFlow id="F_GW_Compile_Split_T_NecessityProportionality" sourceRef="GW_Compile_Split" targetRef="T_NecessityProportionality" />
+    <sequenceFlow id="F_GW_Compile_Split_T_OperationsPurposes" sourceRef="GW_Compile_Split" targetRef="T_OperationsPurposes" />
+    <sequenceFlow id="F_GW_Compile_Split_T_Risks" sourceRef="GW_Compile_Split" targetRef="T_Risks" />
+    <sequenceFlow id="F_GW_DPO_GW_DPO_Merge" name="No" sourceRef="GW_DPO" targetRef="GW_DPO_Merge" />
+    <sequenceFlow id="F_GW_DPO_Merge_GW_Compile_Split" sourceRef="GW_DPO_Merge" targetRef="GW_Compile_Split" />
+    <sequenceFlow id="F_GW_DPO_T_SeekDPOAdvice" name="Yes" sourceRef="GW_DPO" targetRef="T_SeekDPOAdvice" />
+    <sequenceFlow id="F_GW_Exception_End_NoDPIA" name="Yes" sourceRef="GW_Exception" targetRef="End_NoDPIA" />
+    <sequenceFlow id="F_GW_Exception_T_HighRisk" name="No" sourceRef="GW_Exception" targetRef="T_AssessHighRisk" />
+    <sequenceFlow id="F_GW_HighRisk_T_AutoDecision" name="No" sourceRef="GW_HighRisk" targetRef="T_AutoDecision" />
+    <sequenceFlow id="F_GW_HighRisk_T_Initiate" name="Yes" sourceRef="GW_HighRisk" targetRef="T_Initiate" />
+    <sequenceFlow id="F_GW_Monitoring_End_NoDPIA" name="No" sourceRef="GW_Monitoring" targetRef="End_NoDPIA" />
+    <sequenceFlow id="F_GW_Monitoring_T_Initiate" name="Yes" sourceRef="GW_Monitoring" targetRef="T_Initiate" />
+    <sequenceFlow id="F_GW_Review_End_Completed" name="No" sourceRef="GW_Review" targetRef="End_Completed" />
+    <sequenceFlow id="F_GW_Review_T_ReviewAssessment" name="Yes" sourceRef="GW_Review" targetRef="T_ReviewAssessment" />
+    <sequenceFlow id="F_GW_SensitiveData_T_Initiate" name="Yes" sourceRef="GW_SensitiveData" targetRef="T_Initiate" />
+    <sequenceFlow id="F_GW_SensitiveData_T_Monitoring" name="No" sourceRef="GW_SensitiveData" targetRef="T_Monitoring" />
+    <sequenceFlow id="F_GW_Views_GW_Views_Merge" name="No" sourceRef="GW_Views" targetRef="GW_Views_Merge" />
+    <sequenceFlow id="F_GW_Views_Merge_T_Finalize" sourceRef="GW_Views_Merge" targetRef="T_Finalize" />
+    <sequenceFlow id="F_GW_Views_T_RequestViews" name="Yes" sourceRef="GW_Views" targetRef="T_RequestViews" />
+    <sequenceFlow id="F_Start_AssessException" sourceRef="Start_Review" targetRef="T_AssessException" />
+    <sequenceFlow id="F_T_AutoDecision_GW_AutoDecision" sourceRef="T_AutoDecision" targetRef="GW_AutoDecision" />
+    <sequenceFlow id="F_T_Finalize_GW_Review" sourceRef="T_Finalize" targetRef="GW_Review" />
+    <sequenceFlow id="F_T_HighRisk_GW_HighRisk" sourceRef="T_AssessHighRisk" targetRef="GW_HighRisk" />
+    <sequenceFlow id="F_T_Initiate_GW_DPO" sourceRef="T_Initiate" targetRef="GW_DPO" />
+    <sequenceFlow id="F_T_LegitimateInterests_GW_Compile_Join" sourceRef="T_LegitimateInterests" targetRef="GW_Compile_Join" />
+    <sequenceFlow id="F_T_Measures_GW_Compile_Join" sourceRef="T_Measures" targetRef="GW_Compile_Join" />
+    <sequenceFlow id="F_T_Monitoring_GW_Monitoring" sourceRef="T_Monitoring" targetRef="GW_Monitoring" />
+    <sequenceFlow id="F_T_NecessityProportionality_GW_Compile_Join" sourceRef="T_NecessityProportionality" targetRef="GW_Compile_Join" />
+    <sequenceFlow id="F_T_OperationsPurposes_GW_Compile_Join" sourceRef="T_OperationsPurposes" targetRef="GW_Compile_Join" />
+    <sequenceFlow id="F_T_RequestViews_GW_Views_Merge" sourceRef="T_RequestViews" targetRef="GW_Views_Merge" />
+    <sequenceFlow id="F_T_ReviewAssessment_End_Completed" sourceRef="T_ReviewAssessment" targetRef="End_Completed" />
+    <sequenceFlow id="F_T_Risks_GW_Compile_Join" sourceRef="T_Risks" targetRef="GW_Compile_Join" />
+    <sequenceFlow id="F_T_SeekDPOAdvice_GW_DPO_Merge" sourceRef="T_SeekDPOAdvice" targetRef="GW_DPO_Merge" />
+    <sequenceFlow id="F_T_SensitiveData_GW_SensitiveData" sourceRef="T_SensitiveData" targetRef="GW_SensitiveData" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MF_DPO" sourceRef="T_SeekDPOAdvice" targetRef="P_DPO" />
+    <messageFlow id="MF_DataSubjects" sourceRef="T_RequestViews" targetRef="P_DataSubjects" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

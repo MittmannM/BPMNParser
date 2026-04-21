@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Controller_Art15" name="Controller" poolType="active" processRef="Process_Controller_Art15" />
+    <pool id="Participant_DataSubject_Art15" name="Data Subject" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="ReceiveTask_ReceiveAccessRequest_Art15" name="Receive the access request" type="receiveTask" poolRef="Participant_Controller_Art15" />
+    <task id="SendTask_SendElectronicAccessResponse_Art15" name="Send the access response and the copy in a commonly used electronic form" type="sendTask" poolRef="Participant_Controller_Art15" />
+    <task id="SendTask_SendNoProcessingConfirmation_Art15" name="Confirm that no personal data concerning the data subject are being processed" type="sendTask" poolRef="Participant_Controller_Art15" />
+    <task id="SendTask_SendRequestedFormatAccessResponse_Art15" name="Send the access response and the copy in the requested non-electronic format" type="sendTask" poolRef="Participant_Controller_Art15" />
+    <task id="Task_AssessProcessing_Art15" name="Assess whether personal data concerning the data subject are being processed" type="task" poolRef="Participant_Controller_Art15" />
+    <task id="Task_ChargeReasonableFee_Art15" name="Charge a reasonable fee for additional copies based on administrative costs" type="task" poolRef="Participant_Controller_Art15" />
+    <task id="Task_LimitCopy_Art15" name="Limit or protect the copy so that the rights and freedoms of others are not adversely affected" type="task" poolRef="Participant_Controller_Art15" />
+    <task id="Task_PrepareAutomatedDecisionInfo_Art15" name="Prepare information about automated decision-making, including profiling, the logic involved, and the significance and envisaged consequences" type="task" poolRef="Participant_Controller_Art15" />
+    <task id="Task_PrepareCategories_Art15" name="Prepare information about the categories of personal data concerned" type="task" poolRef="Participant_Controller_Art15" />
+    <task id="Task_PrepareComplaintInfo_Art15" name="Prepare information about the right to lodge a complaint with a supervisory authority" type="task" poolRef="Participant_Controller_Art15" />
+    <task id="Task_PrepareCopy_Art15" name="Prepare a copy of the personal data undergoing processing" type="task" poolRef="Participant_Controller_Art15" />
+    <task id="Task_PreparePurposes_Art15" name="Prepare information about the purposes of the processing" type="task" poolRef="Participant_Controller_Art15" />
+    <task id="Task_PrepareRecipients_Art15" name="Prepare information about recipients or categories of recipients, including recipients in third countries or international organisations where relevant" type="task" poolRef="Participant_Controller_Art15" />
+    <task id="Task_PrepareRightsInfo_Art15" name="Prepare information about rectification, erasure, restriction, and objection rights" type="task" poolRef="Participant_Controller_Art15" />
+    <task id="Task_PrepareSourceInfo_Art15" name="Prepare information about the source of the personal data if the data were not collected from the data subject" type="task" poolRef="Participant_Controller_Art15" />
+    <task id="Task_PrepareStorageInfo_Art15" name="Prepare the envisaged storage period or, if not possible, the criteria used to determine it" type="task" poolRef="Participant_Controller_Art15" />
+    <task id="Task_PrepareTransferSafeguards_Art15" name="Prepare information about the appropriate safeguards for the transfer" type="task" poolRef="Participant_Controller_Art15" />
+  </tasks>
+  <events>
+    <event id="EndEvent_AccessHandled_Art15" name="Article 15 access handling is completed" type="endEvent" poolRef="Participant_Controller_Art15" />
+    <event id="EndEvent_ExceptionBlocksAccess_Art15" name="The access request is not handled because Article 12(2) or Article 11(2) blocks the request" type="endEvent" poolRef="Participant_Controller_Art15" />
+    <event id="StartEvent_AccessRequest_Art15" name="Data subject seeks access to personal data" type="startEvent" poolRef="Participant_Controller_Art15" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_AdditionalCopies_Art15" name="Did the data subject request additional copies?" type="exclusiveGateway" poolRef="Participant_Controller_Art15" />
+    <gateway id="Gateway_ElectronicRequest_Art15" name="Was the request made by electronic means and has no other format been requested?" type="exclusiveGateway" poolRef="Participant_Controller_Art15" />
+    <gateway id="Gateway_Exceptions_Art15" name="Do Article 12(2) or Article 11(2) exceptions prevent handling the access request?" type="exclusiveGateway" poolRef="Participant_Controller_Art15" />
+    <gateway id="Gateway_JoinAccessInfo_Art15" type="parallelGateway" poolRef="Participant_Controller_Art15" />
+    <gateway id="Gateway_ProcessingOccurs_Art15" name="Are personal data concerning the data subject being processed?" type="exclusiveGateway" poolRef="Participant_Controller_Art15" />
+    <gateway id="Gateway_ProtectOthers_Art15" name="Would providing the copy adversely affect the rights and freedoms of others?" type="exclusiveGateway" poolRef="Participant_Controller_Art15" />
+    <gateway id="Gateway_SplitAccessInfo_Art15" type="parallelGateway" poolRef="Participant_Controller_Art15" />
+    <gateway id="Gateway_TransferSafeguards_Art15" name="Were personal data transferred to a third country or an international organisation?" type="exclusiveGateway" poolRef="Participant_Controller_Art15" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_GatewayAdditionalCopies_To_GatewayElectronicRequest_Art15" name="No" sourceRef="Gateway_AdditionalCopies_Art15" targetRef="Gateway_ElectronicRequest_Art15" />
+    <sequenceFlow id="Flow_GatewayAdditionalCopies_To_TaskChargeReasonableFee_Art15" name="Yes" sourceRef="Gateway_AdditionalCopies_Art15" targetRef="Task_ChargeReasonableFee_Art15" />
+    <sequenceFlow id="Flow_GatewayElectronicRequest_To_SendTaskSendElectronicAccessResponse_Art15" name="Yes" sourceRef="Gateway_ElectronicRequest_Art15" targetRef="SendTask_SendElectronicAccessResponse_Art15" />
+    <sequenceFlow id="Flow_GatewayElectronicRequest_To_SendTaskSendRequestedFormatAccessResponse_Art15" name="No" sourceRef="Gateway_ElectronicRequest_Art15" targetRef="SendTask_SendRequestedFormatAccessResponse_Art15" />
+    <sequenceFlow id="Flow_GatewayExceptions_To_EndExceptionBlocksAccess_Art15" name="Yes" sourceRef="Gateway_Exceptions_Art15" targetRef="EndEvent_ExceptionBlocksAccess_Art15" />
+    <sequenceFlow id="Flow_GatewayExceptions_To_TaskAssessProcessing_Art15" name="No" sourceRef="Gateway_Exceptions_Art15" targetRef="Task_AssessProcessing_Art15" />
+    <sequenceFlow id="Flow_GatewayJoinAccessInfo_To_GatewayTransferSafeguards_Art15" sourceRef="Gateway_JoinAccessInfo_Art15" targetRef="Gateway_TransferSafeguards_Art15" />
+    <sequenceFlow id="Flow_GatewayProcessingOccurs_To_GatewaySplitAccessInfo_Art15" name="Yes" sourceRef="Gateway_ProcessingOccurs_Art15" targetRef="Gateway_SplitAccessInfo_Art15" />
+    <sequenceFlow id="Flow_GatewayProcessingOccurs_To_SendTaskSendNoProcessingConfirmation_Art15" name="No" sourceRef="Gateway_ProcessingOccurs_Art15" targetRef="SendTask_SendNoProcessingConfirmation_Art15" />
+    <sequenceFlow id="Flow_GatewayProtectOthers_To_GatewayAdditionalCopies_Art15" name="No" sourceRef="Gateway_ProtectOthers_Art15" targetRef="Gateway_AdditionalCopies_Art15" />
+    <sequenceFlow id="Flow_GatewayProtectOthers_To_TaskLimitCopy_Art15" name="Yes" sourceRef="Gateway_ProtectOthers_Art15" targetRef="Task_LimitCopy_Art15" />
+    <sequenceFlow id="Flow_GatewaySplitAccessInfo_To_TaskPrepareAutomatedDecisionInfo_Art15" sourceRef="Gateway_SplitAccessInfo_Art15" targetRef="Task_PrepareAutomatedDecisionInfo_Art15" />
+    <sequenceFlow id="Flow_GatewaySplitAccessInfo_To_TaskPrepareCategories_Art15" sourceRef="Gateway_SplitAccessInfo_Art15" targetRef="Task_PrepareCategories_Art15" />
+    <sequenceFlow id="Flow_GatewaySplitAccessInfo_To_TaskPrepareComplaintInfo_Art15" sourceRef="Gateway_SplitAccessInfo_Art15" targetRef="Task_PrepareComplaintInfo_Art15" />
+    <sequenceFlow id="Flow_GatewaySplitAccessInfo_To_TaskPreparePurposes_Art15" sourceRef="Gateway_SplitAccessInfo_Art15" targetRef="Task_PreparePurposes_Art15" />
+    <sequenceFlow id="Flow_GatewaySplitAccessInfo_To_TaskPrepareRecipients_Art15" sourceRef="Gateway_SplitAccessInfo_Art15" targetRef="Task_PrepareRecipients_Art15" />
+    <sequenceFlow id="Flow_GatewaySplitAccessInfo_To_TaskPrepareRightsInfo_Art15" sourceRef="Gateway_SplitAccessInfo_Art15" targetRef="Task_PrepareRightsInfo_Art15" />
+    <sequenceFlow id="Flow_GatewaySplitAccessInfo_To_TaskPrepareSourceInfo_Art15" sourceRef="Gateway_SplitAccessInfo_Art15" targetRef="Task_PrepareSourceInfo_Art15" />
+    <sequenceFlow id="Flow_GatewaySplitAccessInfo_To_TaskPrepareStorageInfo_Art15" sourceRef="Gateway_SplitAccessInfo_Art15" targetRef="Task_PrepareStorageInfo_Art15" />
+    <sequenceFlow id="Flow_GatewayTransferSafeguards_To_TaskPrepareCopy_Art15" name="No" sourceRef="Gateway_TransferSafeguards_Art15" targetRef="Task_PrepareCopy_Art15" />
+    <sequenceFlow id="Flow_GatewayTransferSafeguards_To_TaskPrepareTransferSafeguards_Art15" name="Yes" sourceRef="Gateway_TransferSafeguards_Art15" targetRef="Task_PrepareTransferSafeguards_Art15" />
+    <sequenceFlow id="Flow_ReceiveTaskReceiveAccessRequest_To_GatewayExceptions_Art15" sourceRef="ReceiveTask_ReceiveAccessRequest_Art15" targetRef="Gateway_Exceptions_Art15" />
+    <sequenceFlow id="Flow_SendTaskSendElectronicAccessResponse_To_EndAccessHandled_Art15" sourceRef="SendTask_SendElectronicAccessResponse_Art15" targetRef="EndEvent_AccessHandled_Art15" />
+    <sequenceFlow id="Flow_SendTaskSendNoProcessingConfirmation_To_EndAccessHandled_Art15" sourceRef="SendTask_SendNoProcessingConfirmation_Art15" targetRef="EndEvent_AccessHandled_Art15" />
+    <sequenceFlow id="Flow_SendTaskSendRequestedFormatAccessResponse_To_EndAccessHandled_Art15" sourceRef="SendTask_SendRequestedFormatAccessResponse_Art15" targetRef="EndEvent_AccessHandled_Art15" />
+    <sequenceFlow id="Flow_Start_To_ReceiveTaskReceiveAccessRequest_Art15" sourceRef="StartEvent_AccessRequest_Art15" targetRef="ReceiveTask_ReceiveAccessRequest_Art15" />
+    <sequenceFlow id="Flow_TaskAssessProcessing_To_GatewayProcessingOccurs_Art15" sourceRef="Task_AssessProcessing_Art15" targetRef="Gateway_ProcessingOccurs_Art15" />
+    <sequenceFlow id="Flow_TaskChargeReasonableFee_To_GatewayElectronicRequest_Art15" sourceRef="Task_ChargeReasonableFee_Art15" targetRef="Gateway_ElectronicRequest_Art15" />
+    <sequenceFlow id="Flow_TaskLimitCopy_To_GatewayAdditionalCopies_Art15" sourceRef="Task_LimitCopy_Art15" targetRef="Gateway_AdditionalCopies_Art15" />
+    <sequenceFlow id="Flow_TaskPrepareAutomatedDecisionInfo_To_GatewayJoinAccessInfo_Art15" sourceRef="Task_PrepareAutomatedDecisionInfo_Art15" targetRef="Gateway_JoinAccessInfo_Art15" />
+    <sequenceFlow id="Flow_TaskPrepareCategories_To_GatewayJoinAccessInfo_Art15" sourceRef="Task_PrepareCategories_Art15" targetRef="Gateway_JoinAccessInfo_Art15" />
+    <sequenceFlow id="Flow_TaskPrepareComplaintInfo_To_GatewayJoinAccessInfo_Art15" sourceRef="Task_PrepareComplaintInfo_Art15" targetRef="Gateway_JoinAccessInfo_Art15" />
+    <sequenceFlow id="Flow_TaskPrepareCopy_To_GatewayProtectOthers_Art15" sourceRef="Task_PrepareCopy_Art15" targetRef="Gateway_ProtectOthers_Art15" />
+    <sequenceFlow id="Flow_TaskPreparePurposes_To_GatewayJoinAccessInfo_Art15" sourceRef="Task_PreparePurposes_Art15" targetRef="Gateway_JoinAccessInfo_Art15" />
+    <sequenceFlow id="Flow_TaskPrepareRecipients_To_GatewayJoinAccessInfo_Art15" sourceRef="Task_PrepareRecipients_Art15" targetRef="Gateway_JoinAccessInfo_Art15" />
+    <sequenceFlow id="Flow_TaskPrepareRightsInfo_To_GatewayJoinAccessInfo_Art15" sourceRef="Task_PrepareRightsInfo_Art15" targetRef="Gateway_JoinAccessInfo_Art15" />
+    <sequenceFlow id="Flow_TaskPrepareSourceInfo_To_GatewayJoinAccessInfo_Art15" sourceRef="Task_PrepareSourceInfo_Art15" targetRef="Gateway_JoinAccessInfo_Art15" />
+    <sequenceFlow id="Flow_TaskPrepareStorageInfo_To_GatewayJoinAccessInfo_Art15" sourceRef="Task_PrepareStorageInfo_Art15" targetRef="Gateway_JoinAccessInfo_Art15" />
+    <sequenceFlow id="Flow_TaskPrepareTransferSafeguards_To_TaskPrepareCopy_Art15" sourceRef="Task_PrepareTransferSafeguards_Art15" targetRef="Task_PrepareCopy_Art15" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_ReceiveAccessRequest_Art15" sourceRef="Participant_DataSubject_Art15" targetRef="ReceiveTask_ReceiveAccessRequest_Art15" />
+    <messageFlow id="MessageFlow_SendElectronicAccessResponse_Art15" sourceRef="SendTask_SendElectronicAccessResponse_Art15" targetRef="Participant_DataSubject_Art15" />
+    <messageFlow id="MessageFlow_SendNoProcessingConfirmation_Art15" sourceRef="SendTask_SendNoProcessingConfirmation_Art15" targetRef="Participant_DataSubject_Art15" />
+    <messageFlow id="MessageFlow_SendRequestedFormatAccessResponse_Art15" sourceRef="SendTask_SendRequestedFormatAccessResponse_Art15" targetRef="Participant_DataSubject_Art15" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

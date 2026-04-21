@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Association_Art40" name="Association or Other Body" poolType="active" processRef="Process_Association_Art40" />
+    <pool id="Participant_SupervisoryAuthority_Art40" name="Supervisory Authority" poolType="active" processRef="Process_SupervisoryAuthority_Art40" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="ReceiveTask_ReceiveAuthorityDecision_Art40" name="Receive the supervisory authority decision" type="receiveTask" poolRef="Participant_Association_Art40" />
+    <task id="ReceiveTask_ReceiveDraft_Art40" name="Receive the draft, amendment, or extension" type="receiveTask" poolRef="Participant_SupervisoryAuthority_Art40" />
+    <task id="SendTask_IssueRejection_Art40" name="Issue a negative opinion or request revisions" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art40" />
+    <task id="SendTask_NotifyApproval_Art40" name="Notify the body that the draft was approved" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art40" />
+    <task id="SendTask_NotifyCrossBorderPath_Art40" name="Notify the body that the approved draft requires the multi-state path" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art40" />
+    <task id="SendTask_SubmitDraft_Art40" name="Submit the draft, amendment, or extension to the competent supervisory authority" type="sendTask" poolRef="Participant_Association_Art40" />
+    <task id="Task_ApproveDraft_Art40" name="Approve the draft, amendment, or extension" type="task" poolRef="Participant_SupervisoryAuthority_Art40" />
+    <task id="Task_AssessDraftCompliance_Art40" name="Assess whether the draft complies with GDPR and provides sufficient safeguards" type="task" poolRef="Participant_SupervisoryAuthority_Art40" />
+    <task id="Task_BreachProcedures_Art40" name="Define personal data breach notification and communication procedures" type="task" poolRef="Participant_Association_Art40" />
+    <task id="Task_ChildrenConsent_Art40" name="Define child-protection information and consent mechanisms" type="task" poolRef="Participant_Association_Art40" />
+    <task id="Task_CollectData_Art40" name="Define rules for collecting personal data" type="task" poolRef="Participant_Association_Art40" />
+    <task id="Task_ControllerMeasures_Art40" name="Define controller, privacy-by-design, and security measures" type="task" poolRef="Participant_Association_Art40" />
+    <task id="Task_DisputeResolution_Art40" name="Define out-of-court and dispute-resolution procedures" type="task" poolRef="Participant_Association_Art40" />
+    <task id="Task_DraftCode_Art40" name="Draft, amend, or extend the code of conduct" type="task" poolRef="Participant_Association_Art40" />
+    <task id="Task_ExerciseRights_Art40" name="Define how data subject rights are exercised" type="task" poolRef="Participant_Association_Art40" />
+    <task id="Task_FairTransparent_Art40" name="Define fair and transparent processing practices" type="task" poolRef="Participant_Association_Art40" />
+    <task id="Task_LegitimateInterests_Art40" name="Define the handling of legitimate interests in specific contexts" type="task" poolRef="Participant_Association_Art40" />
+    <task id="Task_MonitoringMeasures_Art40" name="Include measures that enable an accredited body to monitor compliance with the code" type="task" poolRef="Participant_Association_Art40" />
+    <task id="Task_Pseudonymisation_Art40" name="Define pseudonymisation safeguards" type="task" poolRef="Participant_Association_Art40" />
+    <task id="Task_PublicInformation_Art40" name="Define information duties towards the public and data subjects" type="task" poolRef="Participant_Association_Art40" />
+    <task id="Task_RegisterAndPublishCode_Art40" name="Register and publish the approved code" type="task" poolRef="Participant_SupervisoryAuthority_Art40" />
+    <task id="Task_ReviseDraft_Art40" name="Revise the draft code based on the authority feedback" type="task" poolRef="Participant_Association_Art40" />
+    <task id="Task_Transfers_Art40" name="Define safeguards for transfers to third countries or international organisations" type="task" poolRef="Participant_Association_Art40" />
+  </tasks>
+  <events>
+    <event id="EndEvent_ApprovalCompleted_Art40" name="Approval, registration, and publication completed" type="endEvent" poolRef="Participant_SupervisoryAuthority_Art40" />
+    <event id="EndEvent_ApprovedCodeAvailable_Art40" name="Approved code is available" type="endEvent" poolRef="Participant_Association_Art40" />
+    <event id="EndEvent_CannotSubmit_Art40" name="Draft cannot be submitted under Article 40(3)" type="endEvent" poolRef="Participant_Association_Art40" />
+    <event id="EndEvent_CrossBorderPath_Art40" name="Cross-border follow-up continues outside this article slice" type="endEvent" poolRef="Participant_SupervisoryAuthority_Art40" />
+    <event id="EndEvent_NotApproved_Art40" name="Draft not approved" type="endEvent" poolRef="Participant_SupervisoryAuthority_Art40" />
+    <event id="StartEvent_NeedCode_Art40" name="Need to improve GDPR application through a code of conduct" type="startEvent" poolRef="Participant_Association_Art40" />
+    <event id="StartEvent_ReviewTriggered_Art40" name="Authority review is triggered" type="startEvent" poolRef="Participant_SupervisoryAuthority_Art40" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_Approved_Art40" name="Was the draft approved?" type="exclusiveGateway" poolRef="Participant_Association_Art40" />
+    <gateway id="Gateway_Compliance_Art40" name="Does the draft comply and provide sufficient safeguards?" type="exclusiveGateway" poolRef="Participant_SupervisoryAuthority_Art40" />
+    <gateway id="Gateway_ContentJoin_Art40" type="parallelGateway" poolRef="Participant_Association_Art40" />
+    <gateway id="Gateway_ContentSplit_Art40" type="parallelGateway" poolRef="Participant_Association_Art40" />
+    <gateway id="Gateway_RepresentCategories_Art40" name="Does the body represent categories of controllers or processors?" type="exclusiveGateway" poolRef="Participant_Association_Art40" />
+    <gateway id="Gateway_SeveralMemberStates_Art40" name="Does the approved code relate to several Member States?" type="exclusiveGateway" poolRef="Participant_SupervisoryAuthority_Art40" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_ApproveDraft_To_GatewaySeveralStates_Art40" sourceRef="Task_ApproveDraft_Art40" targetRef="Gateway_SeveralMemberStates_Art40" />
+    <sequenceFlow id="Flow_Assess_To_GatewayCompliance_Art40" sourceRef="Task_AssessDraftCompliance_Art40" targetRef="Gateway_Compliance_Art40" />
+    <sequenceFlow id="Flow_AuthorityStart_To_ReceiveDraft_Art40" sourceRef="StartEvent_ReviewTriggered_Art40" targetRef="ReceiveTask_ReceiveDraft_Art40" />
+    <sequenceFlow id="Flow_BreachProcedures_To_ContentJoin_Art40" sourceRef="Task_BreachProcedures_Art40" targetRef="Gateway_ContentJoin_Art40" />
+    <sequenceFlow id="Flow_ChildrenConsent_To_ContentJoin_Art40" sourceRef="Task_ChildrenConsent_Art40" targetRef="Gateway_ContentJoin_Art40" />
+    <sequenceFlow id="Flow_CollectData_To_ContentJoin_Art40" sourceRef="Task_CollectData_Art40" targetRef="Gateway_ContentJoin_Art40" />
+    <sequenceFlow id="Flow_ContentJoin_To_GatewayRepresent_Art40" sourceRef="Gateway_ContentJoin_Art40" targetRef="Gateway_RepresentCategories_Art40" />
+    <sequenceFlow id="Flow_ContentSplit_To_BreachProcedures_Art40" sourceRef="Gateway_ContentSplit_Art40" targetRef="Task_BreachProcedures_Art40" />
+    <sequenceFlow id="Flow_ContentSplit_To_ChildrenConsent_Art40" sourceRef="Gateway_ContentSplit_Art40" targetRef="Task_ChildrenConsent_Art40" />
+    <sequenceFlow id="Flow_ContentSplit_To_CollectData_Art40" sourceRef="Gateway_ContentSplit_Art40" targetRef="Task_CollectData_Art40" />
+    <sequenceFlow id="Flow_ContentSplit_To_ControllerMeasures_Art40" sourceRef="Gateway_ContentSplit_Art40" targetRef="Task_ControllerMeasures_Art40" />
+    <sequenceFlow id="Flow_ContentSplit_To_DisputeResolution_Art40" sourceRef="Gateway_ContentSplit_Art40" targetRef="Task_DisputeResolution_Art40" />
+    <sequenceFlow id="Flow_ContentSplit_To_ExerciseRights_Art40" sourceRef="Gateway_ContentSplit_Art40" targetRef="Task_ExerciseRights_Art40" />
+    <sequenceFlow id="Flow_ContentSplit_To_FairTransparent_Art40" sourceRef="Gateway_ContentSplit_Art40" targetRef="Task_FairTransparent_Art40" />
+    <sequenceFlow id="Flow_ContentSplit_To_LegitimateInterests_Art40" sourceRef="Gateway_ContentSplit_Art40" targetRef="Task_LegitimateInterests_Art40" />
+    <sequenceFlow id="Flow_ContentSplit_To_MonitoringMeasures_Art40" sourceRef="Gateway_ContentSplit_Art40" targetRef="Task_MonitoringMeasures_Art40" />
+    <sequenceFlow id="Flow_ContentSplit_To_Pseudonymisation_Art40" sourceRef="Gateway_ContentSplit_Art40" targetRef="Task_Pseudonymisation_Art40" />
+    <sequenceFlow id="Flow_ContentSplit_To_PublicInformation_Art40" sourceRef="Gateway_ContentSplit_Art40" targetRef="Task_PublicInformation_Art40" />
+    <sequenceFlow id="Flow_ContentSplit_To_Transfers_Art40" sourceRef="Gateway_ContentSplit_Art40" targetRef="Task_Transfers_Art40" />
+    <sequenceFlow id="Flow_ControllerMeasures_To_ContentJoin_Art40" sourceRef="Task_ControllerMeasures_Art40" targetRef="Gateway_ContentJoin_Art40" />
+    <sequenceFlow id="Flow_DisputeResolution_To_ContentJoin_Art40" sourceRef="Task_DisputeResolution_Art40" targetRef="Gateway_ContentJoin_Art40" />
+    <sequenceFlow id="Flow_Draft_To_ContentSplit_Art40" sourceRef="Task_DraftCode_Art40" targetRef="Gateway_ContentSplit_Art40" />
+    <sequenceFlow id="Flow_ExerciseRights_To_ContentJoin_Art40" sourceRef="Task_ExerciseRights_Art40" targetRef="Gateway_ContentJoin_Art40" />
+    <sequenceFlow id="Flow_FairTransparent_To_ContentJoin_Art40" sourceRef="Task_FairTransparent_Art40" targetRef="Gateway_ContentJoin_Art40" />
+    <sequenceFlow id="Flow_GatewayApproved_To_EndApproved_Art40" name="Yes" sourceRef="Gateway_Approved_Art40" targetRef="EndEvent_ApprovedCodeAvailable_Art40" />
+    <sequenceFlow id="Flow_GatewayApproved_To_ReviseDraft_Art40" name="No" sourceRef="Gateway_Approved_Art40" targetRef="Task_ReviseDraft_Art40" />
+    <sequenceFlow id="Flow_GatewayCompliance_To_ApproveDraft_Art40" name="Yes" sourceRef="Gateway_Compliance_Art40" targetRef="Task_ApproveDraft_Art40" />
+    <sequenceFlow id="Flow_GatewayCompliance_To_IssueRejection_Art40" name="No" sourceRef="Gateway_Compliance_Art40" targetRef="SendTask_IssueRejection_Art40" />
+    <sequenceFlow id="Flow_GatewayRepresent_To_EndCannotSubmit_Art40" name="No" sourceRef="Gateway_RepresentCategories_Art40" targetRef="EndEvent_CannotSubmit_Art40" />
+    <sequenceFlow id="Flow_GatewayRepresent_To_SubmitDraft_Art40" name="Yes" sourceRef="Gateway_RepresentCategories_Art40" targetRef="SendTask_SubmitDraft_Art40" />
+    <sequenceFlow id="Flow_GatewaySeveralStates_To_NotifyCrossBorder_Art40" name="Yes" sourceRef="Gateway_SeveralMemberStates_Art40" targetRef="SendTask_NotifyCrossBorderPath_Art40" />
+    <sequenceFlow id="Flow_GatewaySeveralStates_To_RegisterPublish_Art40" name="No" sourceRef="Gateway_SeveralMemberStates_Art40" targetRef="Task_RegisterAndPublishCode_Art40" />
+    <sequenceFlow id="Flow_IssueRejection_To_EndNotApproved_Art40" sourceRef="SendTask_IssueRejection_Art40" targetRef="EndEvent_NotApproved_Art40" />
+    <sequenceFlow id="Flow_LegitimateInterests_To_ContentJoin_Art40" sourceRef="Task_LegitimateInterests_Art40" targetRef="Gateway_ContentJoin_Art40" />
+    <sequenceFlow id="Flow_MonitoringMeasures_To_ContentJoin_Art40" sourceRef="Task_MonitoringMeasures_Art40" targetRef="Gateway_ContentJoin_Art40" />
+    <sequenceFlow id="Flow_NotifyApproval_To_EndApprovalCompleted_Art40" sourceRef="SendTask_NotifyApproval_Art40" targetRef="EndEvent_ApprovalCompleted_Art40" />
+    <sequenceFlow id="Flow_NotifyCrossBorder_To_EndCrossBorder_Art40" sourceRef="SendTask_NotifyCrossBorderPath_Art40" targetRef="EndEvent_CrossBorderPath_Art40" />
+    <sequenceFlow id="Flow_Pseudonymisation_To_ContentJoin_Art40" sourceRef="Task_Pseudonymisation_Art40" targetRef="Gateway_ContentJoin_Art40" />
+    <sequenceFlow id="Flow_PublicInformation_To_ContentJoin_Art40" sourceRef="Task_PublicInformation_Art40" targetRef="Gateway_ContentJoin_Art40" />
+    <sequenceFlow id="Flow_ReceiveDecision_To_GatewayApproved_Art40" sourceRef="ReceiveTask_ReceiveAuthorityDecision_Art40" targetRef="Gateway_Approved_Art40" />
+    <sequenceFlow id="Flow_ReceiveDraft_To_Assess_Art40" sourceRef="ReceiveTask_ReceiveDraft_Art40" targetRef="Task_AssessDraftCompliance_Art40" />
+    <sequenceFlow id="Flow_RegisterPublish_To_NotifyApproval_Art40" sourceRef="Task_RegisterAndPublishCode_Art40" targetRef="SendTask_NotifyApproval_Art40" />
+    <sequenceFlow id="Flow_ReviseDraft_To_Draft_Art40" sourceRef="Task_ReviseDraft_Art40" targetRef="Task_DraftCode_Art40" />
+    <sequenceFlow id="Flow_Start_To_Draft_Art40" sourceRef="StartEvent_NeedCode_Art40" targetRef="Task_DraftCode_Art40" />
+    <sequenceFlow id="Flow_SubmitDraft_To_ReceiveDecision_Art40" sourceRef="SendTask_SubmitDraft_Art40" targetRef="ReceiveTask_ReceiveAuthorityDecision_Art40" />
+    <sequenceFlow id="Flow_Transfers_To_ContentJoin_Art40" sourceRef="Task_Transfers_Art40" targetRef="Gateway_ContentJoin_Art40" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_ApprovalDecision_Art40" sourceRef="SendTask_NotifyApproval_Art40" targetRef="ReceiveTask_ReceiveAuthorityDecision_Art40" />
+    <messageFlow id="MessageFlow_CrossBorderDecision_Art40" sourceRef="SendTask_NotifyCrossBorderPath_Art40" targetRef="ReceiveTask_ReceiveAuthorityDecision_Art40" />
+    <messageFlow id="MessageFlow_RejectionDecision_Art40" sourceRef="SendTask_IssueRejection_Art40" targetRef="ReceiveTask_ReceiveAuthorityDecision_Art40" />
+    <messageFlow id="MessageFlow_SubmitDraft_Art40" sourceRef="SendTask_SubmitDraft_Art40" targetRef="ReceiveTask_ReceiveDraft_Art40" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

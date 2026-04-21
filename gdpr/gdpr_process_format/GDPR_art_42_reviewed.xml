@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_CertificationBody_Art42" name="Accredited Certification Body" poolType="active" processRef="Process_CertificationBody_Art42" />
+    <pool id="Participant_ControllerProcessor_Art42" name="Controller or Processor" poolType="active" processRef="Process_ControllerProcessor_Art42" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="ReceiveTask_ReceiveCertificationDecision_Art42" name="Receive the certification decision" type="receiveTask" poolRef="Participant_ControllerProcessor_Art42" />
+    <task id="ReceiveTask_ReceiveCertificationRequest_Art42" name="Receive the certification request" type="receiveTask" poolRef="Participant_CertificationBody_Art42" />
+    <task id="ReceiveTask_ReceiveInformation_Art42" name="Receive the required information and access" type="receiveTask" poolRef="Participant_CertificationBody_Art42" />
+    <task id="ReceiveTask_ReceiveRenewalDecision_Art42" name="Receive the renewal decision" type="receiveTask" poolRef="Participant_ControllerProcessor_Art42" />
+    <task id="ReceiveTask_ReceiveRenewalInformation_Art42" name="Receive the updated information and access" type="receiveTask" poolRef="Participant_CertificationBody_Art42" />
+    <task id="SendTask_GrantCertification_Art42" name="Grant certification, seal, or mark for up to three years" type="sendTask" poolRef="Participant_CertificationBody_Art42" />
+    <task id="SendTask_RejectCertification_Art42" name="Reject the certification request" type="sendTask" poolRef="Participant_CertificationBody_Art42" />
+    <task id="SendTask_RejectRenewal_Art42" name="Reject the certification renewal request" type="sendTask" poolRef="Participant_CertificationBody_Art42" />
+    <task id="SendTask_RenewCertification_Art42" name="Renew certification for up to three years" type="sendTask" poolRef="Participant_CertificationBody_Art42" />
+    <task id="SendTask_RequestCertification_Art42" name="Request certification under an approved certification mechanism" type="sendTask" poolRef="Participant_ControllerProcessor_Art42" />
+    <task id="SendTask_RequestInformation_Art42" name="Request all information and access needed for the certification procedure" type="sendTask" poolRef="Participant_CertificationBody_Art42" />
+    <task id="SendTask_RequestRenewalInformation_Art42" name="Request updated information and access for the renewal assessment" type="sendTask" poolRef="Participant_CertificationBody_Art42" />
+    <task id="Task_AssessRenewal_Art42" name="Assess whether the certification requirements are still met" type="task" poolRef="Participant_CertificationBody_Art42" />
+    <task id="Task_AssessRequirements_Art42" name="Assess the certification requirements under the approved mechanism" type="task" poolRef="Participant_CertificationBody_Art42" />
+    <task id="Task_ProvideInformationAccess_Art42" name="Provide all information and access required for the initial certification procedure" type="task" poolRef="Participant_ControllerProcessor_Art42" />
+    <task id="Task_ProvideUpdatedInformation_Art42" name="Provide updated information and access for the renewal assessment" type="task" poolRef="Participant_ControllerProcessor_Art42" />
+    <task id="Task_UseCertification_Art42" name="Use the certification, seal, or mark to demonstrate compliance" type="task" poolRef="Participant_ControllerProcessor_Art42" />
+  </tasks>
+  <events>
+    <event id="EndEvent_CertificationExpires_Art42" name="Certification term ends without renewal" type="endEvent" poolRef="Participant_ControllerProcessor_Art42" />
+    <event id="EndEvent_NoCertification_Art42" name="No certification is sought" type="endEvent" poolRef="Participant_ControllerProcessor_Art42" />
+    <event id="EndEvent_NotCertified_Art42" name="Certification was not granted" type="endEvent" poolRef="Participant_ControllerProcessor_Art42" />
+    <event id="EndEvent_RenewalDenied_Art42" name="Renewal denied" type="endEvent" poolRef="Participant_CertificationBody_Art42" />
+    <event id="EndEvent_RenewalRejected_Art42" name="Certification renewal was not granted" type="endEvent" poolRef="Participant_ControllerProcessor_Art42" />
+    <event id="EndEvent_RequestRejected_Art42" name="Certification request rejected" type="endEvent" poolRef="Participant_CertificationBody_Art42" />
+    <event id="EndEvent_TermEnded_Art42" name="Certification term ended without renewal" type="endEvent" poolRef="Participant_CertificationBody_Art42" />
+    <event id="StartEvent_DemonstrateCompliance_Art42" name="Need to demonstrate GDPR compliance" type="startEvent" poolRef="Participant_ControllerProcessor_Art42" />
+    <event id="StartEvent_RequestReceived_Art42" name="Certification case is opened" type="startEvent" poolRef="Participant_CertificationBody_Art42" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_CertificationGranted_Art42" name="Was certification granted?" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art42" />
+    <gateway id="Gateway_RenewalAssessment_Art42" name="Does a renewal request arrive before the three-year term ends?" type="exclusiveGateway" poolRef="Participant_CertificationBody_Art42" />
+    <gateway id="Gateway_RenewalGranted_Art42" name="Are the certification requirements still met for renewal?" type="exclusiveGateway" poolRef="Participant_CertificationBody_Art42" />
+    <gateway id="Gateway_RenewalRequested_Art42" name="Is renewal requested before the certification expires?" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art42" />
+    <gateway id="Gateway_Renewed_Art42" name="Was certification renewed?" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art42" />
+    <gateway id="Gateway_RequirementsMet_Art42" name="Are the certification requirements met?" type="exclusiveGateway" poolRef="Participant_CertificationBody_Art42" />
+    <gateway id="Gateway_VoluntaryCertification_Art42" name="Will certification be sought voluntarily?" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art42" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AssessRenewal_To_GatewayRenewalGranted_Art42" sourceRef="Task_AssessRenewal_Art42" targetRef="Gateway_RenewalGranted_Art42" />
+    <sequenceFlow id="Flow_AssessRequirements_To_GatewayRequirementsMet_Art42" sourceRef="Task_AssessRequirements_Art42" targetRef="Gateway_RequirementsMet_Art42" />
+    <sequenceFlow id="Flow_BodyStart_To_ReceiveRequest_Art42" sourceRef="StartEvent_RequestReceived_Art42" targetRef="ReceiveTask_ReceiveCertificationRequest_Art42" />
+    <sequenceFlow id="Flow_GatewayGranted_To_EndNotCertified_Art42" name="No" sourceRef="Gateway_CertificationGranted_Art42" targetRef="EndEvent_NotCertified_Art42" />
+    <sequenceFlow id="Flow_GatewayGranted_To_UseCertification_Art42" name="Yes" sourceRef="Gateway_CertificationGranted_Art42" targetRef="Task_UseCertification_Art42" />
+    <sequenceFlow id="Flow_GatewayRenewalAssessment_To_EndTermEnded_Art42" name="No" sourceRef="Gateway_RenewalAssessment_Art42" targetRef="EndEvent_TermEnded_Art42" />
+    <sequenceFlow id="Flow_GatewayRenewalAssessment_To_RequestRenewalInformation_Art42" name="Yes" sourceRef="Gateway_RenewalAssessment_Art42" targetRef="SendTask_RequestRenewalInformation_Art42" />
+    <sequenceFlow id="Flow_GatewayRenewalGranted_To_RejectRenewal_Art42" name="No" sourceRef="Gateway_RenewalGranted_Art42" targetRef="SendTask_RejectRenewal_Art42" />
+    <sequenceFlow id="Flow_GatewayRenewalGranted_To_RenewCertification_Art42" name="Yes" sourceRef="Gateway_RenewalGranted_Art42" targetRef="SendTask_RenewCertification_Art42" />
+    <sequenceFlow id="Flow_GatewayRenewal_To_EndCertificationExpires_Art42" name="No" sourceRef="Gateway_RenewalRequested_Art42" targetRef="EndEvent_CertificationExpires_Art42" />
+    <sequenceFlow id="Flow_GatewayRenewal_To_ProvideUpdatedInformation_Art42" name="Yes" sourceRef="Gateway_RenewalRequested_Art42" targetRef="Task_ProvideUpdatedInformation_Art42" />
+    <sequenceFlow id="Flow_GatewayRenewed_To_EndRenewalRejected_Art42" name="No" sourceRef="Gateway_Renewed_Art42" targetRef="EndEvent_RenewalRejected_Art42" />
+    <sequenceFlow id="Flow_GatewayRenewed_To_UseCertification_Art42" name="Yes" sourceRef="Gateway_Renewed_Art42" targetRef="Task_UseCertification_Art42" />
+    <sequenceFlow id="Flow_GatewayRequirementsMet_To_GrantCertification_Art42" name="Yes" sourceRef="Gateway_RequirementsMet_Art42" targetRef="SendTask_GrantCertification_Art42" />
+    <sequenceFlow id="Flow_GatewayRequirementsMet_To_RejectCertification_Art42" name="No" sourceRef="Gateway_RequirementsMet_Art42" targetRef="SendTask_RejectCertification_Art42" />
+    <sequenceFlow id="Flow_GatewayVoluntary_To_EndNoCertification_Art42" name="No" sourceRef="Gateway_VoluntaryCertification_Art42" targetRef="EndEvent_NoCertification_Art42" />
+    <sequenceFlow id="Flow_GatewayVoluntary_To_RequestCertification_Art42" name="Yes" sourceRef="Gateway_VoluntaryCertification_Art42" targetRef="SendTask_RequestCertification_Art42" />
+    <sequenceFlow id="Flow_GrantCertification_To_GatewayRenewalAssessment_Art42" sourceRef="SendTask_GrantCertification_Art42" targetRef="Gateway_RenewalAssessment_Art42" />
+    <sequenceFlow id="Flow_ProvideInformation_To_ReceiveDecision_Art42" sourceRef="Task_ProvideInformationAccess_Art42" targetRef="ReceiveTask_ReceiveCertificationDecision_Art42" />
+    <sequenceFlow id="Flow_ProvideUpdatedInformation_To_ReceiveRenewalDecision_Art42" sourceRef="Task_ProvideUpdatedInformation_Art42" targetRef="ReceiveTask_ReceiveRenewalDecision_Art42" />
+    <sequenceFlow id="Flow_ReceiveDecision_To_GatewayGranted_Art42" sourceRef="ReceiveTask_ReceiveCertificationDecision_Art42" targetRef="Gateway_CertificationGranted_Art42" />
+    <sequenceFlow id="Flow_ReceiveInformation_To_AssessRequirements_Art42" sourceRef="ReceiveTask_ReceiveInformation_Art42" targetRef="Task_AssessRequirements_Art42" />
+    <sequenceFlow id="Flow_ReceiveRenewalDecision_To_GatewayRenewed_Art42" sourceRef="ReceiveTask_ReceiveRenewalDecision_Art42" targetRef="Gateway_Renewed_Art42" />
+    <sequenceFlow id="Flow_ReceiveRenewalInformation_To_AssessRenewal_Art42" sourceRef="ReceiveTask_ReceiveRenewalInformation_Art42" targetRef="Task_AssessRenewal_Art42" />
+    <sequenceFlow id="Flow_ReceiveRequest_To_RequestInformation_Art42" sourceRef="ReceiveTask_ReceiveCertificationRequest_Art42" targetRef="SendTask_RequestInformation_Art42" />
+    <sequenceFlow id="Flow_RejectCertification_To_EndRejected_Art42" sourceRef="SendTask_RejectCertification_Art42" targetRef="EndEvent_RequestRejected_Art42" />
+    <sequenceFlow id="Flow_RejectRenewal_To_EndRenewalDenied_Art42" sourceRef="SendTask_RejectRenewal_Art42" targetRef="EndEvent_RenewalDenied_Art42" />
+    <sequenceFlow id="Flow_RenewCertification_To_GatewayRenewalAssessment_Art42" sourceRef="SendTask_RenewCertification_Art42" targetRef="Gateway_RenewalAssessment_Art42" />
+    <sequenceFlow id="Flow_RequestCertification_To_ProvideInformation_Art42" sourceRef="SendTask_RequestCertification_Art42" targetRef="Task_ProvideInformationAccess_Art42" />
+    <sequenceFlow id="Flow_RequestInformation_To_ReceiveInformation_Art42" sourceRef="SendTask_RequestInformation_Art42" targetRef="ReceiveTask_ReceiveInformation_Art42" />
+    <sequenceFlow id="Flow_RequestRenewalInformation_To_ReceiveRenewalInformation_Art42" sourceRef="SendTask_RequestRenewalInformation_Art42" targetRef="ReceiveTask_ReceiveRenewalInformation_Art42" />
+    <sequenceFlow id="Flow_Start_To_GatewayVoluntary_Art42" sourceRef="StartEvent_DemonstrateCompliance_Art42" targetRef="Gateway_VoluntaryCertification_Art42" />
+    <sequenceFlow id="Flow_UseCertification_To_GatewayRenewal_Art42" sourceRef="Task_UseCertification_Art42" targetRef="Gateway_RenewalRequested_Art42" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_GrantCertification_Art42" sourceRef="SendTask_GrantCertification_Art42" targetRef="ReceiveTask_ReceiveCertificationDecision_Art42" />
+    <messageFlow id="MessageFlow_ProvideInformation_Art42" sourceRef="Task_ProvideInformationAccess_Art42" targetRef="ReceiveTask_ReceiveInformation_Art42" />
+    <messageFlow id="MessageFlow_ProvideUpdatedInformation_Art42" sourceRef="Task_ProvideUpdatedInformation_Art42" targetRef="ReceiveTask_ReceiveRenewalInformation_Art42" />
+    <messageFlow id="MessageFlow_RejectCertification_Art42" sourceRef="SendTask_RejectCertification_Art42" targetRef="ReceiveTask_ReceiveCertificationDecision_Art42" />
+    <messageFlow id="MessageFlow_RejectRenewal_Art42" sourceRef="SendTask_RejectRenewal_Art42" targetRef="ReceiveTask_ReceiveRenewalDecision_Art42" />
+    <messageFlow id="MessageFlow_RenewCertification_Art42" sourceRef="SendTask_RenewCertification_Art42" targetRef="ReceiveTask_ReceiveRenewalDecision_Art42" />
+    <messageFlow id="MessageFlow_RequestCertification_Art42" sourceRef="SendTask_RequestCertification_Art42" targetRef="ReceiveTask_ReceiveCertificationRequest_Art42" />
+    <messageFlow id="MessageFlow_RequestInformation_Art42" sourceRef="SendTask_RequestInformation_Art42" targetRef="Task_ProvideInformationAccess_Art42" />
+    <messageFlow id="MessageFlow_RequestRenewalInformation_Art42" sourceRef="SendTask_RequestRenewalInformation_Art42" targetRef="Task_ProvideUpdatedInformation_Art42" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

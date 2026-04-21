@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_DataSubject_Art47" name="Data Subject" poolType="passive" />
+    <pool id="Participant_GroupMember_Art47" name="Group BCR participant" poolType="active" processRef="Process_GroupMember_Art47" />
+    <pool id="Participant_SupervisoryAuthority_Art47" name="Supervisory Authority" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="ReceiveTask_ReceiveBCRApprovalDecision_Art47" name="Receive the approval decision for the binding corporate rules" type="receiveTask" poolRef="Participant_GroupMember_Art47" />
+    <task id="SendTask_MakeBCRAvailable_Art47" name="Make the binding corporate rules and complaint route available to data subjects" type="sendTask" poolRef="Participant_GroupMember_Art47" />
+    <task id="SendTask_NotifyDataSubjectsAboutChanges_Art47" name="Notify data subjects about relevant changes to the binding corporate rules" type="sendTask" poolRef="Participant_GroupMember_Art47" />
+    <task id="SendTask_NotifySupervisoryAuthority_Art47" name="Notify the supervisory authority about changes and conflicting legal requirements" type="sendTask" poolRef="Participant_GroupMember_Art47" />
+    <task id="SendTask_SubmitBCRApproval_Art47" name="Submit the binding corporate rules for supervisory-authority approval" type="sendTask" poolRef="Participant_GroupMember_Art47" />
+    <task id="Task_AssessBCRProtection_Art47" name="Assess enforceable rights, effective remedies, and legal binding effect" type="task" poolRef="Participant_GroupMember_Art47" />
+    <task id="Task_DefineAuditAndComplaints_Art47" name="Define audit, complaint, liability, and redress arrangements" type="task" poolRef="Participant_GroupMember_Art47" />
+    <task id="Task_DefineNotificationsAndCooperation_Art47" name="Define change-notification and supervisory-authority cooperation arrangements" type="task" poolRef="Participant_GroupMember_Art47" />
+    <task id="Task_DefineRightsAndContacts_Art47" name="Define data protection principles, rights, and third-country contact details" type="task" poolRef="Participant_GroupMember_Art47" />
+    <task id="Task_DescribeTransfers_Art47" name="Describe the group, transfers, and protected data categories" type="task" poolRef="Participant_GroupMember_Art47" />
+    <task id="Task_DraftBCRPackage_Art47" name="Draft the binding corporate rules package" type="task" poolRef="Participant_GroupMember_Art47" />
+    <task id="Task_HandleComplaints_Art47" name="Handle complaints and ensure liability and redress" type="task" poolRef="Participant_GroupMember_Art47" />
+    <task id="Task_ImplementCompliance_Art47" name="Implement GDPR compliance, safeguards, audits, and internal monitoring" type="task" poolRef="Participant_GroupMember_Art47" />
+    <task id="Task_MakeBCRBinding_Art47" name="Make the approved binding corporate rules binding on all relevant group members" type="task" poolRef="Participant_GroupMember_Art47" />
+    <task id="Task_PlanTrainingAndMonitoring_Art47" name="Plan GDPR training and internal compliance monitoring" type="task" poolRef="Participant_GroupMember_Art47" />
+    <task id="Task_ProvideTraining_Art47" name="Provide GDPR training to personnel involved in the transfers" type="task" poolRef="Participant_GroupMember_Art47" />
+    <task id="Task_ReviseBCRPackage_Art47" name="Revise the binding corporate rules package" type="task" poolRef="Participant_GroupMember_Art47" />
+  </tasks>
+  <events>
+    <event id="EndEvent_BCRNotApproved_Art47" name="The binding corporate rules were not approved" type="endEvent" poolRef="Participant_GroupMember_Art47" />
+    <event id="EndEvent_GovernanceOperating_Art47" name="Approved binding corporate rules governance is in operation" type="endEvent" poolRef="Participant_GroupMember_Art47" />
+    <event id="StartEvent_NeedBCRTransfer_Art47" name="Need to rely on binding corporate rules for an intra-group transfer" type="startEvent" poolRef="Participant_GroupMember_Art47" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_BCRApproved_Art47" name="Did the supervisory authority approve the binding corporate rules?" type="exclusiveGateway" poolRef="Participant_GroupMember_Art47" />
+    <gateway id="Gateway_BCRContentPrepared_Art47" type="parallelGateway" poolRef="Participant_GroupMember_Art47" />
+    <gateway id="Gateway_BCRProtectionAdequate_Art47" name="Do the binding corporate rules provide enforceable rights and effective remedies?" type="exclusiveGateway" poolRef="Participant_GroupMember_Art47" />
+    <gateway id="Gateway_OperationalDutiesCompleted_Art47" type="parallelGateway" poolRef="Participant_GroupMember_Art47" />
+    <gateway id="Gateway_OperationalDuties_Art47" type="parallelGateway" poolRef="Participant_GroupMember_Art47" />
+    <gateway id="Gateway_PrepareBCRContent_Art47" type="parallelGateway" poolRef="Participant_GroupMember_Art47" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AssessBCRProtection_To_GatewayAdequate_Art47" sourceRef="Task_AssessBCRProtection_Art47" targetRef="Gateway_BCRProtectionAdequate_Art47" />
+    <sequenceFlow id="Flow_DefineAuditAndComplaints_To_GatewayContentPrepared_Art47" sourceRef="Task_DefineAuditAndComplaints_Art47" targetRef="Gateway_BCRContentPrepared_Art47" />
+    <sequenceFlow id="Flow_DefineNotificationsAndCooperation_To_GatewayContentPrepared_Art47" sourceRef="Task_DefineNotificationsAndCooperation_Art47" targetRef="Gateway_BCRContentPrepared_Art47" />
+    <sequenceFlow id="Flow_DefineRightsAndContacts_To_GatewayContentPrepared_Art47" sourceRef="Task_DefineRightsAndContacts_Art47" targetRef="Gateway_BCRContentPrepared_Art47" />
+    <sequenceFlow id="Flow_DescribeTransfers_To_GatewayContentPrepared_Art47" sourceRef="Task_DescribeTransfers_Art47" targetRef="Gateway_BCRContentPrepared_Art47" />
+    <sequenceFlow id="Flow_DraftBCRPackage_To_GatewayPrepareContent_Art47" sourceRef="Task_DraftBCRPackage_Art47" targetRef="Gateway_PrepareBCRContent_Art47" />
+    <sequenceFlow id="Flow_GatewayAdequate_To_ReviseBCRPackage_Art47" name="No" sourceRef="Gateway_BCRProtectionAdequate_Art47" targetRef="Task_ReviseBCRPackage_Art47" />
+    <sequenceFlow id="Flow_GatewayAdequate_To_SubmitBCRApproval_Art47" name="Yes" sourceRef="Gateway_BCRProtectionAdequate_Art47" targetRef="SendTask_SubmitBCRApproval_Art47" />
+    <sequenceFlow id="Flow_GatewayApproved_To_EndBCRNotApproved_Art47" name="No" sourceRef="Gateway_BCRApproved_Art47" targetRef="EndEvent_BCRNotApproved_Art47" />
+    <sequenceFlow id="Flow_GatewayApproved_To_MakeBCRBinding_Art47" name="Yes" sourceRef="Gateway_BCRApproved_Art47" targetRef="Task_MakeBCRBinding_Art47" />
+    <sequenceFlow id="Flow_GatewayContentPrepared_To_AssessBCRProtection_Art47" sourceRef="Gateway_BCRContentPrepared_Art47" targetRef="Task_AssessBCRProtection_Art47" />
+    <sequenceFlow id="Flow_GatewayOperationalDutiesCompleted_To_EndGovernanceOperating_Art47" sourceRef="Gateway_OperationalDutiesCompleted_Art47" targetRef="EndEvent_GovernanceOperating_Art47" />
+    <sequenceFlow id="Flow_GatewayOperationalDuties_To_HandleComplaints_Art47" sourceRef="Gateway_OperationalDuties_Art47" targetRef="Task_HandleComplaints_Art47" />
+    <sequenceFlow id="Flow_GatewayOperationalDuties_To_ImplementCompliance_Art47" sourceRef="Gateway_OperationalDuties_Art47" targetRef="Task_ImplementCompliance_Art47" />
+    <sequenceFlow id="Flow_GatewayOperationalDuties_To_NotifyDataSubjectsAboutChanges_Art47" sourceRef="Gateway_OperationalDuties_Art47" targetRef="SendTask_NotifyDataSubjectsAboutChanges_Art47" />
+    <sequenceFlow id="Flow_GatewayOperationalDuties_To_NotifySupervisoryAuthority_Art47" sourceRef="Gateway_OperationalDuties_Art47" targetRef="SendTask_NotifySupervisoryAuthority_Art47" />
+    <sequenceFlow id="Flow_GatewayOperationalDuties_To_ProvideTraining_Art47" sourceRef="Gateway_OperationalDuties_Art47" targetRef="Task_ProvideTraining_Art47" />
+    <sequenceFlow id="Flow_GatewayPrepareContent_To_DefineAuditAndComplaints_Art47" sourceRef="Gateway_PrepareBCRContent_Art47" targetRef="Task_DefineAuditAndComplaints_Art47" />
+    <sequenceFlow id="Flow_GatewayPrepareContent_To_DefineNotificationsAndCooperation_Art47" sourceRef="Gateway_PrepareBCRContent_Art47" targetRef="Task_DefineNotificationsAndCooperation_Art47" />
+    <sequenceFlow id="Flow_GatewayPrepareContent_To_DefineRightsAndContacts_Art47" sourceRef="Gateway_PrepareBCRContent_Art47" targetRef="Task_DefineRightsAndContacts_Art47" />
+    <sequenceFlow id="Flow_GatewayPrepareContent_To_DescribeTransfers_Art47" sourceRef="Gateway_PrepareBCRContent_Art47" targetRef="Task_DescribeTransfers_Art47" />
+    <sequenceFlow id="Flow_GatewayPrepareContent_To_PlanTrainingAndMonitoring_Art47" sourceRef="Gateway_PrepareBCRContent_Art47" targetRef="Task_PlanTrainingAndMonitoring_Art47" />
+    <sequenceFlow id="Flow_HandleComplaints_To_GatewayOperationalDutiesCompleted_Art47" sourceRef="Task_HandleComplaints_Art47" targetRef="Gateway_OperationalDutiesCompleted_Art47" />
+    <sequenceFlow id="Flow_ImplementCompliance_To_GatewayOperationalDutiesCompleted_Art47" sourceRef="Task_ImplementCompliance_Art47" targetRef="Gateway_OperationalDutiesCompleted_Art47" />
+    <sequenceFlow id="Flow_MakeBCRAvailable_To_GatewayOperationalDuties_Art47" sourceRef="SendTask_MakeBCRAvailable_Art47" targetRef="Gateway_OperationalDuties_Art47" />
+    <sequenceFlow id="Flow_MakeBCRBinding_To_MakeBCRAvailable_Art47" sourceRef="Task_MakeBCRBinding_Art47" targetRef="SendTask_MakeBCRAvailable_Art47" />
+    <sequenceFlow id="Flow_NotifyDataSubjectsAboutChanges_To_GatewayOperationalDutiesCompleted_Art47" sourceRef="SendTask_NotifyDataSubjectsAboutChanges_Art47" targetRef="Gateway_OperationalDutiesCompleted_Art47" />
+    <sequenceFlow id="Flow_NotifySupervisoryAuthority_To_GatewayOperationalDutiesCompleted_Art47" sourceRef="SendTask_NotifySupervisoryAuthority_Art47" targetRef="Gateway_OperationalDutiesCompleted_Art47" />
+    <sequenceFlow id="Flow_PlanTrainingAndMonitoring_To_GatewayContentPrepared_Art47" sourceRef="Task_PlanTrainingAndMonitoring_Art47" targetRef="Gateway_BCRContentPrepared_Art47" />
+    <sequenceFlow id="Flow_ProvideTraining_To_GatewayOperationalDutiesCompleted_Art47" sourceRef="Task_ProvideTraining_Art47" targetRef="Gateway_OperationalDutiesCompleted_Art47" />
+    <sequenceFlow id="Flow_ReceiveBCRApprovalDecision_To_GatewayApproved_Art47" sourceRef="ReceiveTask_ReceiveBCRApprovalDecision_Art47" targetRef="Gateway_BCRApproved_Art47" />
+    <sequenceFlow id="Flow_ReviseBCRPackage_To_DraftBCRPackage_Art47" sourceRef="Task_ReviseBCRPackage_Art47" targetRef="Task_DraftBCRPackage_Art47" />
+    <sequenceFlow id="Flow_Start_To_DraftBCRPackage_Art47" sourceRef="StartEvent_NeedBCRTransfer_Art47" targetRef="Task_DraftBCRPackage_Art47" />
+    <sequenceFlow id="Flow_SubmitBCRApproval_To_ReceiveBCRApprovalDecision_Art47" sourceRef="SendTask_SubmitBCRApproval_Art47" targetRef="ReceiveTask_ReceiveBCRApprovalDecision_Art47" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_ApprovalDecision_Art47" sourceRef="Participant_SupervisoryAuthority_Art47" targetRef="ReceiveTask_ReceiveBCRApprovalDecision_Art47" />
+    <messageFlow id="MessageFlow_MakeBCRAvailable_Art47" sourceRef="SendTask_MakeBCRAvailable_Art47" targetRef="Participant_DataSubject_Art47" />
+    <messageFlow id="MessageFlow_NotifyDataSubjectsAboutChanges_Art47" sourceRef="SendTask_NotifyDataSubjectsAboutChanges_Art47" targetRef="Participant_DataSubject_Art47" />
+    <messageFlow id="MessageFlow_NotifySupervisoryAuthority_Art47" sourceRef="SendTask_NotifySupervisoryAuthority_Art47" targetRef="Participant_SupervisoryAuthority_Art47" />
+    <messageFlow id="MessageFlow_SubmitBCRApproval_Art47" sourceRef="SendTask_SubmitBCRApproval_Art47" targetRef="Participant_SupervisoryAuthority_Art47" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

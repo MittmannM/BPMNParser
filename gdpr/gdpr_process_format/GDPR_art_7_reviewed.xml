@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Controller_Art7" name="Controller" poolType="active" processRef="Process_Controller_Art7" />
+    <pool id="Participant_DataSubject_Art7" name="Data Subject" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="ReceiveTask_ReceiveConsent_Art7" name="Receive the data subject's consent" type="receiveTask" poolRef="Participant_Controller_Art7" />
+    <task id="ReceiveTask_ReceiveWithdrawal_Art7" name="Receive the withdrawal of consent" type="receiveTask" poolRef="Participant_Controller_Art7" />
+    <task id="SendTask_InformWithdrawalRight_Art7" name="Inform the data subject of the right to withdraw consent" type="sendTask" poolRef="Participant_Controller_Art7" />
+    <task id="SendTask_PresentConsentRequest_Art7" name="Present the consent request to the data subject" type="sendTask" poolRef="Participant_Controller_Art7" />
+    <task id="Task_DraftClearRequest_Art7" name="Draft a consent request that is clearly distinguishable and clear" type="task" poolRef="Participant_Controller_Art7" />
+    <task id="Task_ProvideEasyMechanism_Art7" name="Provide a withdrawal mechanism that is as easy as giving consent" type="task" poolRef="Participant_Controller_Art7" />
+    <task id="Task_RecordEvidence_Art7" name="Record evidence so that consent can be demonstrated" type="task" poolRef="Participant_Controller_Art7" />
+  </tasks>
+  <events>
+    <event id="EndEvent_ConsentMaintained_Art7" name="Consent remains available for the processing" type="endEvent" poolRef="Participant_Controller_Art7" />
+    <event id="EndEvent_ConsentWithdrawn_Art7" name="Consent withdrawn" type="endEvent" poolRef="Participant_Controller_Art7" />
+    <event id="StartEvent_ManageConsent_Art7" name="Need to manage consent-based processing" type="startEvent" poolRef="Participant_Controller_Art7" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_Withdrawal_Art7" name="Is consent later withdrawn by the data subject?" type="exclusiveGateway" poolRef="Participant_Controller_Art7" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_GatewayWithdrawal_To_EndConsentMaintained_Art7" name="No" sourceRef="Gateway_Withdrawal_Art7" targetRef="EndEvent_ConsentMaintained_Art7" />
+    <sequenceFlow id="Flow_GatewayWithdrawal_To_ReceiveTaskReceiveWithdrawal_Art7" name="Yes" sourceRef="Gateway_Withdrawal_Art7" targetRef="ReceiveTask_ReceiveWithdrawal_Art7" />
+    <sequenceFlow id="Flow_ReceiveTaskReceiveConsent_To_TaskRecordEvidence_Art7" sourceRef="ReceiveTask_ReceiveConsent_Art7" targetRef="Task_RecordEvidence_Art7" />
+    <sequenceFlow id="Flow_ReceiveTaskReceiveWithdrawal_To_EndConsentWithdrawn_Art7" sourceRef="ReceiveTask_ReceiveWithdrawal_Art7" targetRef="EndEvent_ConsentWithdrawn_Art7" />
+    <sequenceFlow id="Flow_SendTaskInformWithdrawalRight_To_TaskProvideEasyMechanism_Art7" sourceRef="SendTask_InformWithdrawalRight_Art7" targetRef="Task_ProvideEasyMechanism_Art7" />
+    <sequenceFlow id="Flow_SendTaskPresentConsentRequest_To_SendTaskInformWithdrawalRight_Art7" sourceRef="SendTask_PresentConsentRequest_Art7" targetRef="SendTask_InformWithdrawalRight_Art7" />
+    <sequenceFlow id="Flow_Start_To_TaskDraftClearRequest_Art7" sourceRef="StartEvent_ManageConsent_Art7" targetRef="Task_DraftClearRequest_Art7" />
+    <sequenceFlow id="Flow_TaskDraftClearRequest_To_SendTaskPresentConsentRequest_Art7" sourceRef="Task_DraftClearRequest_Art7" targetRef="SendTask_PresentConsentRequest_Art7" />
+    <sequenceFlow id="Flow_TaskProvideEasyMechanism_To_ReceiveTaskReceiveConsent_Art7" sourceRef="Task_ProvideEasyMechanism_Art7" targetRef="ReceiveTask_ReceiveConsent_Art7" />
+    <sequenceFlow id="Flow_TaskRecordEvidence_To_GatewayWithdrawal_Art7" sourceRef="Task_RecordEvidence_Art7" targetRef="Gateway_Withdrawal_Art7" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_GiveConsent_Art7" sourceRef="Participant_DataSubject_Art7" targetRef="ReceiveTask_ReceiveConsent_Art7" />
+    <messageFlow id="MessageFlow_InformWithdrawalRight_Art7" sourceRef="SendTask_InformWithdrawalRight_Art7" targetRef="Participant_DataSubject_Art7" />
+    <messageFlow id="MessageFlow_PresentConsentRequest_Art7" sourceRef="SendTask_PresentConsentRequest_Art7" targetRef="Participant_DataSubject_Art7" />
+    <messageFlow id="MessageFlow_WithdrawConsent_Art7" sourceRef="Participant_DataSubject_Art7" targetRef="ReceiveTask_ReceiveWithdrawal_Art7" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

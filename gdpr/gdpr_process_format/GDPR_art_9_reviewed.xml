@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools />
+  <lanes />
+  <tasks>
+    <task id="Task_ApplyDefaultProhibition_Art9" name="Apply the default prohibition on processing the special-category data" type="task" poolRef="Process_Controller_Art9" />
+    <task id="Task_EmploymentLaw_Art9" name="Confirm necessity under employment, social security, or social protection law with appropriate safeguards" type="task" poolRef="Process_Controller_Art9" />
+    <task id="Task_ExplicitConsent_Art9" name="Confirm explicit consent for one or more specified purposes" type="task" poolRef="Process_Controller_Art9" />
+    <task id="Task_HealthOrSocialCare_Art9" name="Confirm necessity for preventive or occupational medicine, medical diagnosis, health or social care, or health-system management under secrecy conditions" type="task" poolRef="Process_Controller_Art9" />
+    <task id="Task_IdentifySpecialCategoryData_Art9" name="Identify whether the processing involves personal data revealing a special category under Article 9(1)" type="task" poolRef="Process_Controller_Art9" />
+    <task id="Task_LegalClaims_Art9" name="Confirm necessity for legal claims or for courts acting in their judicial capacity" type="task" poolRef="Process_Controller_Art9" />
+    <task id="Task_ManifestlyPublic_Art9" name="Confirm that the data subject manifestly made the personal data public" type="task" poolRef="Process_Controller_Art9" />
+    <task id="Task_NotForProfitBody_Art9" name="Confirm that a not-for-profit body processes the data with appropriate safeguards and without external disclosure absent consent" type="task" poolRef="Process_Controller_Art9" />
+    <task id="Task_PublicHealth_Art9" name="Confirm public-health necessity with suitable and specific safeguards including professional secrecy where required" type="task" poolRef="Process_Controller_Art9" />
+    <task id="Task_SubstantialPublicInterest_Art9" name="Confirm substantial public interest under Union or Member State law with suitable and specific safeguards" type="task" poolRef="Process_Controller_Art9" />
+    <task id="Task_VitalInterests_Art9" name="Confirm necessity to protect vital interests where the data subject is physically or legally incapable of giving consent" type="task" poolRef="Process_Controller_Art9" />
+  </tasks>
+  <events>
+    <event id="EndEvent_Article9NotTriggered_Art9" name="Article 9 special-category prohibition does not apply" type="endEvent" poolRef="Process_Controller_Art9" />
+    <event id="EndEvent_ExceptionApplies_Art9" name="Processing may proceed under an Article 9 exception" type="endEvent" poolRef="Process_Controller_Art9" />
+    <event id="EndEvent_Prohibited_Art9" name="Processing of the special-category data remains prohibited" type="endEvent" poolRef="Process_Controller_Art9" />
+    <event id="StartEvent_AssessArticle9_Art9" name="Need to assess planned processing involving personal data" type="startEvent" poolRef="Process_Controller_Art9" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_ExceptionJoin_Art9" type="exclusiveGateway" poolRef="Process_Controller_Art9" />
+    <gateway id="Gateway_Exception_Art9" name="Which Article 9(2) exception applies?" type="exclusiveGateway" poolRef="Process_Controller_Art9" />
+    <gateway id="Gateway_SpecialCategory_Art9" name="Does the processing involve a special category of personal data?" type="exclusiveGateway" poolRef="Process_Controller_Art9" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_GatewayExceptionJoin_To_EndExceptionApplies_Art9" sourceRef="Gateway_ExceptionJoin_Art9" targetRef="EndEvent_ExceptionApplies_Art9" />
+    <sequenceFlow id="Flow_GatewayException_To_EndProhibited_Art9" name="No exception" sourceRef="Gateway_Exception_Art9" targetRef="EndEvent_Prohibited_Art9" />
+    <sequenceFlow id="Flow_GatewayException_To_TaskEmploymentLaw_Art9" name="Employment, social security, or social protection law" sourceRef="Gateway_Exception_Art9" targetRef="Task_EmploymentLaw_Art9" />
+    <sequenceFlow id="Flow_GatewayException_To_TaskExplicitConsent_Art9" name="Explicit consent" sourceRef="Gateway_Exception_Art9" targetRef="Task_ExplicitConsent_Art9" />
+    <sequenceFlow id="Flow_GatewayException_To_TaskHealthOrSocialCare_Art9" name="Health or social care" sourceRef="Gateway_Exception_Art9" targetRef="Task_HealthOrSocialCare_Art9" />
+    <sequenceFlow id="Flow_GatewayException_To_TaskLegalClaims_Art9" name="Legal claims or courts" sourceRef="Gateway_Exception_Art9" targetRef="Task_LegalClaims_Art9" />
+    <sequenceFlow id="Flow_GatewayException_To_TaskManifestlyPublic_Art9" name="Manifestly public data" sourceRef="Gateway_Exception_Art9" targetRef="Task_ManifestlyPublic_Art9" />
+    <sequenceFlow id="Flow_GatewayException_To_TaskNotForProfitBody_Art9" name="Not-for-profit body" sourceRef="Gateway_Exception_Art9" targetRef="Task_NotForProfitBody_Art9" />
+    <sequenceFlow id="Flow_GatewayException_To_TaskPublicHealth_Art9" name="Public health" sourceRef="Gateway_Exception_Art9" targetRef="Task_PublicHealth_Art9" />
+    <sequenceFlow id="Flow_GatewayException_To_TaskSubstantialPublicInterest_Art9" name="Substantial public interest" sourceRef="Gateway_Exception_Art9" targetRef="Task_SubstantialPublicInterest_Art9" />
+    <sequenceFlow id="Flow_GatewayException_To_TaskVitalInterests_Art9" name="Vital interests" sourceRef="Gateway_Exception_Art9" targetRef="Task_VitalInterests_Art9" />
+    <sequenceFlow id="Flow_GatewaySpecialCategory_To_EndArticle9NotTriggered_Art9" name="No" sourceRef="Gateway_SpecialCategory_Art9" targetRef="EndEvent_Article9NotTriggered_Art9" />
+    <sequenceFlow id="Flow_GatewaySpecialCategory_To_TaskApplyDefaultProhibition_Art9" name="Yes" sourceRef="Gateway_SpecialCategory_Art9" targetRef="Task_ApplyDefaultProhibition_Art9" />
+    <sequenceFlow id="Flow_Start_To_TaskIdentifyData_Art9" sourceRef="StartEvent_AssessArticle9_Art9" targetRef="Task_IdentifySpecialCategoryData_Art9" />
+    <sequenceFlow id="Flow_TaskApplyDefaultProhibition_To_GatewayException_Art9" sourceRef="Task_ApplyDefaultProhibition_Art9" targetRef="Gateway_Exception_Art9" />
+    <sequenceFlow id="Flow_TaskEmploymentLaw_To_GatewayExceptionJoin_Art9" sourceRef="Task_EmploymentLaw_Art9" targetRef="Gateway_ExceptionJoin_Art9" />
+    <sequenceFlow id="Flow_TaskExplicitConsent_To_GatewayExceptionJoin_Art9" sourceRef="Task_ExplicitConsent_Art9" targetRef="Gateway_ExceptionJoin_Art9" />
+    <sequenceFlow id="Flow_TaskHealthOrSocialCare_To_GatewayExceptionJoin_Art9" sourceRef="Task_HealthOrSocialCare_Art9" targetRef="Gateway_ExceptionJoin_Art9" />
+    <sequenceFlow id="Flow_TaskIdentifyData_To_GatewaySpecialCategory_Art9" sourceRef="Task_IdentifySpecialCategoryData_Art9" targetRef="Gateway_SpecialCategory_Art9" />
+    <sequenceFlow id="Flow_TaskLegalClaims_To_GatewayExceptionJoin_Art9" sourceRef="Task_LegalClaims_Art9" targetRef="Gateway_ExceptionJoin_Art9" />
+    <sequenceFlow id="Flow_TaskManifestlyPublic_To_GatewayExceptionJoin_Art9" sourceRef="Task_ManifestlyPublic_Art9" targetRef="Gateway_ExceptionJoin_Art9" />
+    <sequenceFlow id="Flow_TaskNotForProfitBody_To_GatewayExceptionJoin_Art9" sourceRef="Task_NotForProfitBody_Art9" targetRef="Gateway_ExceptionJoin_Art9" />
+    <sequenceFlow id="Flow_TaskPublicHealth_To_GatewayExceptionJoin_Art9" sourceRef="Task_PublicHealth_Art9" targetRef="Gateway_ExceptionJoin_Art9" />
+    <sequenceFlow id="Flow_TaskSubstantialPublicInterest_To_GatewayExceptionJoin_Art9" sourceRef="Task_SubstantialPublicInterest_Art9" targetRef="Gateway_ExceptionJoin_Art9" />
+    <sequenceFlow id="Flow_TaskVitalInterests_To_GatewayExceptionJoin_Art9" sourceRef="Task_VitalInterests_Art9" targetRef="Gateway_ExceptionJoin_Art9" />
+  </sequenceFlows>
+  <messageFlows />
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_ControllerOrProcessor" name="Controller or Processor" poolType="active" processRef="Process_Art37_Reviewed" />
+    <pool id="Participant_SupervisoryAuthority" name="Supervisory Authority" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_AppointDPO" name="Appoint the selected DPO as staff member or external service provider" type="task" poolRef="Participant_ControllerOrProcessor" />
+    <task id="Task_AssessLargeScale" name="Assess whether core activities involve large-scale special-category or criminal-data processing" type="task" poolRef="Participant_ControllerOrProcessor" />
+    <task id="Task_AssessMonitoring" name="Assess whether core activities involve regular and systematic monitoring on a large scale" type="task" poolRef="Participant_ControllerOrProcessor" />
+    <task id="Task_AssessPublic" name="Assess whether the controller or processor is a public authority or body" type="task" poolRef="Participant_ControllerOrProcessor" />
+    <task id="Task_CheckCourt" name="Check whether the authority acts in a judicial capacity" type="task" poolRef="Participant_ControllerOrProcessor" />
+    <task id="Task_CommunicateAuthority" name="Communicate the DPO contact details to the supervisory authority" type="sendTask" poolRef="Participant_ControllerOrProcessor" />
+    <task id="Task_PrepareDesignation" name="Prepare the DPO designation arrangement" type="task" poolRef="Participant_ControllerOrProcessor" />
+    <task id="Task_PublishContactDetails" name="Publish the DPO contact details" type="task" poolRef="Participant_ControllerOrProcessor" />
+    <task id="Task_SelectDPO" name="Select a DPO with expert knowledge of data protection law and practices" type="task" poolRef="Participant_ControllerOrProcessor" />
+    <task id="Task_SharedArrangement" name="Arrange one DPO for several entities and ensure easy accessibility" type="task" poolRef="Participant_ControllerOrProcessor" />
+  </tasks>
+  <events>
+    <event id="EndEvent_Completed" name="DPO designation completed" type="endEvent" poolRef="Participant_ControllerOrProcessor" />
+    <event id="EndEvent_NoDesignation" name="No DPO designation required" type="endEvent" poolRef="Participant_ControllerOrProcessor" />
+    <event id="StartEvent_AssessDuty" name="Assess DPO designation duty" type="startEvent" poolRef="Participant_ControllerOrProcessor" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_Court" name="Does the authority act in a judicial capacity?" type="exclusiveGateway" poolRef="Participant_ControllerOrProcessor" />
+    <gateway id="Gateway_LargeScale" name="Does the processing involve large-scale special-category or criminal-data processing?" type="exclusiveGateway" poolRef="Participant_ControllerOrProcessor" />
+    <gateway id="Gateway_Monitoring" name="Do the core activities involve regular and systematic monitoring on a large scale?" type="exclusiveGateway" poolRef="Participant_ControllerOrProcessor" />
+    <gateway id="Gateway_Public" name="Is the controller or processor a public authority or body?" type="exclusiveGateway" poolRef="Participant_ControllerOrProcessor" />
+    <gateway id="Gateway_Shared" name="Shared DPO arrangement needed?" type="exclusiveGateway" poolRef="Participant_ControllerOrProcessor" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AppointDPO_TaskPublishContactDetails" sourceRef="Task_AppointDPO" targetRef="Task_PublishContactDetails" />
+    <sequenceFlow id="Flow_AssessLargeScale_GatewayLargeScale" sourceRef="Task_AssessLargeScale" targetRef="Gateway_LargeScale" />
+    <sequenceFlow id="Flow_AssessMonitoring_GatewayMonitoring" sourceRef="Task_AssessMonitoring" targetRef="Gateway_Monitoring" />
+    <sequenceFlow id="Flow_AssessPublic_GatewayPublic" sourceRef="Task_AssessPublic" targetRef="Gateway_Public" />
+    <sequenceFlow id="Flow_CheckCourt_GatewayCourt" sourceRef="Task_CheckCourt" targetRef="Gateway_Court" />
+    <sequenceFlow id="Flow_CommunicateAuthority_EndCompleted" sourceRef="Task_CommunicateAuthority" targetRef="EndEvent_Completed" />
+    <sequenceFlow id="Flow_GatewayCourt_EndNoDesignation" name="Yes" sourceRef="Gateway_Court" targetRef="EndEvent_NoDesignation" />
+    <sequenceFlow id="Flow_GatewayCourt_TaskDesignate" name="No" sourceRef="Gateway_Court" targetRef="Task_PrepareDesignation" />
+    <sequenceFlow id="Flow_GatewayLargeScale_EndNoDesignation" name="No" sourceRef="Gateway_LargeScale" targetRef="EndEvent_NoDesignation" />
+    <sequenceFlow id="Flow_GatewayLargeScale_TaskDesignate" name="Yes" sourceRef="Gateway_LargeScale" targetRef="Task_PrepareDesignation" />
+    <sequenceFlow id="Flow_GatewayMonitoring_TaskAssessLargeScale" name="No" sourceRef="Gateway_Monitoring" targetRef="Task_AssessLargeScale" />
+    <sequenceFlow id="Flow_GatewayMonitoring_TaskDesignate" name="Yes" sourceRef="Gateway_Monitoring" targetRef="Task_PrepareDesignation" />
+    <sequenceFlow id="Flow_GatewayPublic_TaskAssessMonitoring" name="No" sourceRef="Gateway_Public" targetRef="Task_AssessMonitoring" />
+    <sequenceFlow id="Flow_GatewayPublic_TaskCourt" name="Yes" sourceRef="Gateway_Public" targetRef="Task_CheckCourt" />
+    <sequenceFlow id="Flow_GatewayShared_TaskSelectDPO" name="No" sourceRef="Gateway_Shared" targetRef="Task_SelectDPO" />
+    <sequenceFlow id="Flow_GatewayShared_TaskSharedArrangement" name="Yes" sourceRef="Gateway_Shared" targetRef="Task_SharedArrangement" />
+    <sequenceFlow id="Flow_PrepareDesignation_GatewayShared" sourceRef="Task_PrepareDesignation" targetRef="Gateway_Shared" />
+    <sequenceFlow id="Flow_PublishContactDetails_TaskCommunicateAuthority" sourceRef="Task_PublishContactDetails" targetRef="Task_CommunicateAuthority" />
+    <sequenceFlow id="Flow_SelectDPO_TaskAppointDPO" sourceRef="Task_SelectDPO" targetRef="Task_AppointDPO" />
+    <sequenceFlow id="Flow_SharedArrangement_TaskSelectDPO" sourceRef="Task_SharedArrangement" targetRef="Task_SelectDPO" />
+    <sequenceFlow id="Flow_Start_AssessPublic" sourceRef="StartEvent_AssessDuty" targetRef="Task_AssessPublic" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_CommunicateDPOContactDetails" sourceRef="Task_CommunicateAuthority" targetRef="Participant_SupervisoryAuthority" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

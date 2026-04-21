@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_DataSubject_Art77" name="Data Subject" poolType="active" processRef="Process_DataSubject_Art77" />
+    <pool id="Participant_SupervisoryAuthority_Art77" name="Supervisory Authority" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="ReceiveTask_ReceiveOutcomeInfo_Art77" name="Receive information on the progress, outcome, and judicial remedy option" type="receiveTask" poolRef="Participant_DataSubject_Art77" />
+    <task id="SendTask_LodgeInfringementComplaint_Art77" name="Lodge the complaint with the supervisory authority of the place of the alleged infringement" type="sendTask" poolRef="Participant_DataSubject_Art77" />
+    <task id="SendTask_LodgeResidenceComplaint_Art77" name="Lodge the complaint with the supervisory authority of the habitual residence" type="sendTask" poolRef="Participant_DataSubject_Art77" />
+    <task id="SendTask_LodgeWorkComplaint_Art77" name="Lodge the complaint with the supervisory authority of the place of work" type="sendTask" poolRef="Participant_DataSubject_Art77" />
+    <task id="Task_PrepareComplaint_Art77" name="Prepare the complaint about the alleged infringement" type="task" poolRef="Participant_DataSubject_Art77" />
+  </tasks>
+  <events>
+    <event id="EndEvent_ComplaintHandled_Art77" name="Article 77 complaint route completed" type="endEvent" poolRef="Participant_DataSubject_Art77" />
+    <event id="StartEvent_ConsiderComplaint_Art77" name="Consider that the processing infringes the GDPR" type="startEvent" poolRef="Participant_DataSubject_Art77" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_ComplaintLodged_Art77" type="exclusiveGateway" poolRef="Participant_DataSubject_Art77" />
+    <gateway id="Gateway_ComplaintVenue_Art77" name="Which supervisory authority will receive the complaint?" type="exclusiveGateway" poolRef="Participant_DataSubject_Art77" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_GatewayComplaintLodged_To_ReceiveOutcomeInfo_Art77" sourceRef="Gateway_ComplaintLodged_Art77" targetRef="ReceiveTask_ReceiveOutcomeInfo_Art77" />
+    <sequenceFlow id="Flow_GatewayVenue_To_LodgeInfringementComplaint_Art77" name="Place of alleged infringement" sourceRef="Gateway_ComplaintVenue_Art77" targetRef="SendTask_LodgeInfringementComplaint_Art77" />
+    <sequenceFlow id="Flow_GatewayVenue_To_LodgeResidenceComplaint_Art77" name="Habitual residence" sourceRef="Gateway_ComplaintVenue_Art77" targetRef="SendTask_LodgeResidenceComplaint_Art77" />
+    <sequenceFlow id="Flow_GatewayVenue_To_LodgeWorkComplaint_Art77" name="Place of work" sourceRef="Gateway_ComplaintVenue_Art77" targetRef="SendTask_LodgeWorkComplaint_Art77" />
+    <sequenceFlow id="Flow_LodgeInfringementComplaint_To_GatewayComplaintLodged_Art77" sourceRef="SendTask_LodgeInfringementComplaint_Art77" targetRef="Gateway_ComplaintLodged_Art77" />
+    <sequenceFlow id="Flow_LodgeResidenceComplaint_To_GatewayComplaintLodged_Art77" sourceRef="SendTask_LodgeResidenceComplaint_Art77" targetRef="Gateway_ComplaintLodged_Art77" />
+    <sequenceFlow id="Flow_LodgeWorkComplaint_To_GatewayComplaintLodged_Art77" sourceRef="SendTask_LodgeWorkComplaint_Art77" targetRef="Gateway_ComplaintLodged_Art77" />
+    <sequenceFlow id="Flow_PrepareComplaint_To_GatewayVenue_Art77" sourceRef="Task_PrepareComplaint_Art77" targetRef="Gateway_ComplaintVenue_Art77" />
+    <sequenceFlow id="Flow_ReceiveOutcomeInfo_To_EndComplaintHandled_Art77" sourceRef="ReceiveTask_ReceiveOutcomeInfo_Art77" targetRef="EndEvent_ComplaintHandled_Art77" />
+    <sequenceFlow id="Flow_Start_To_PrepareComplaint_Art77" sourceRef="StartEvent_ConsiderComplaint_Art77" targetRef="Task_PrepareComplaint_Art77" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_LodgeInfringementComplaint_Art77" sourceRef="SendTask_LodgeInfringementComplaint_Art77" targetRef="Participant_SupervisoryAuthority_Art77" />
+    <messageFlow id="MessageFlow_LodgeResidenceComplaint_Art77" sourceRef="SendTask_LodgeResidenceComplaint_Art77" targetRef="Participant_SupervisoryAuthority_Art77" />
+    <messageFlow id="MessageFlow_LodgeWorkComplaint_Art77" sourceRef="SendTask_LodgeWorkComplaint_Art77" targetRef="Participant_SupervisoryAuthority_Art77" />
+    <messageFlow id="MessageFlow_ReceiveOutcomeInfo_Art77" sourceRef="Participant_SupervisoryAuthority_Art77" targetRef="ReceiveTask_ReceiveOutcomeInfo_Art77" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

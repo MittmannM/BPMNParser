@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art15_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:collaboration id="Collaboration_Art15_Reviewed">
+    <bpmn:participant id="Participant_Controller_Art15" name="Controller" processRef="Process_Controller_Art15" />
+    <bpmn:participant id="Participant_DataSubject_Art15" name="Data Subject" />
+
+    <bpmn:messageFlow id="MessageFlow_ReceiveAccessRequest_Art15" sourceRef="Participant_DataSubject_Art15" targetRef="ReceiveTask_ReceiveAccessRequest_Art15" />
+    <bpmn:messageFlow id="MessageFlow_SendNoProcessingConfirmation_Art15" sourceRef="SendTask_SendNoProcessingConfirmation_Art15" targetRef="Participant_DataSubject_Art15" />
+    <bpmn:messageFlow id="MessageFlow_SendElectronicAccessResponse_Art15" sourceRef="SendTask_SendElectronicAccessResponse_Art15" targetRef="Participant_DataSubject_Art15" />
+    <bpmn:messageFlow id="MessageFlow_SendRequestedFormatAccessResponse_Art15" sourceRef="SendTask_SendRequestedFormatAccessResponse_Art15" targetRef="Participant_DataSubject_Art15" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_Controller_Art15" name="Handling the data subject's right of access" isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 15 based on DAPRECO LegalRuleML
+      statements72-82. The local XML mainly serializes the positive access-response
+      path once the controller is aware of the request and Articles 12(2) and 11(2)
+      do not block the request. The BPMN therefore models the detailed Article 15(1)
+      information bundle, the Article 15(2) safeguards information for transfers, the
+      Article 15(3) copy path with first-copy and additional-copy handling plus the
+      electronic-format rule, and the Article 15(4) limitation based on the rights and
+      freedoms of others. A no-processing confirmation branch is included as a
+      transparent supplement from the Article 15 text because the local XML focuses on
+      the positive access case.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_AccessRequest_Art15" name="Data subject seeks access to personal data">
+      <bpmn:outgoing>Flow_Start_To_ReceiveTaskReceiveAccessRequest_Art15</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveAccessRequest_Art15" name="Receive the access request">
+      <bpmn:incoming>Flow_Start_To_ReceiveTaskReceiveAccessRequest_Art15</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveTaskReceiveAccessRequest_To_GatewayExceptions_Art15</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:exclusiveGateway id="Gateway_Exceptions_Art15" name="Do Article 12(2) or Article 11(2) exceptions prevent handling the access request?">
+      <bpmn:incoming>Flow_ReceiveTaskReceiveAccessRequest_To_GatewayExceptions_Art15</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayExceptions_To_EndExceptionBlocksAccess_Art15</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayExceptions_To_TaskAssessProcessing_Art15</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_AssessProcessing_Art15" name="Assess whether personal data concerning the data subject are being processed">
+      <bpmn:incoming>Flow_GatewayExceptions_To_TaskAssessProcessing_Art15</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskAssessProcessing_To_GatewayProcessingOccurs_Art15</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_ProcessingOccurs_Art15" name="Are personal data concerning the data subject being processed?">
+      <bpmn:incoming>Flow_TaskAssessProcessing_To_GatewayProcessingOccurs_Art15</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayProcessingOccurs_To_GatewaySplitAccessInfo_Art15</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayProcessingOccurs_To_SendTaskSendNoProcessingConfirmation_Art15</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="SendTask_SendNoProcessingConfirmation_Art15" name="Confirm that no personal data concerning the data subject are being processed">
+      <bpmn:incoming>Flow_GatewayProcessingOccurs_To_SendTaskSendNoProcessingConfirmation_Art15</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendTaskSendNoProcessingConfirmation_To_EndAccessHandled_Art15</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:parallelGateway id="Gateway_SplitAccessInfo_Art15">
+      <bpmn:incoming>Flow_GatewayProcessingOccurs_To_GatewaySplitAccessInfo_Art15</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplitAccessInfo_To_TaskPreparePurposes_Art15</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitAccessInfo_To_TaskPrepareCategories_Art15</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitAccessInfo_To_TaskPrepareRecipients_Art15</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitAccessInfo_To_TaskPrepareStorageInfo_Art15</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitAccessInfo_To_TaskPrepareRightsInfo_Art15</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitAccessInfo_To_TaskPrepareComplaintInfo_Art15</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitAccessInfo_To_TaskPrepareSourceInfo_Art15</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitAccessInfo_To_TaskPrepareAutomatedDecisionInfo_Art15</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_PreparePurposes_Art15" name="Prepare information about the purposes of the processing">
+      <bpmn:incoming>Flow_GatewaySplitAccessInfo_To_TaskPreparePurposes_Art15</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPreparePurposes_To_GatewayJoinAccessInfo_Art15</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_PrepareCategories_Art15" name="Prepare information about the categories of personal data concerned">
+      <bpmn:incoming>Flow_GatewaySplitAccessInfo_To_TaskPrepareCategories_Art15</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPrepareCategories_To_GatewayJoinAccessInfo_Art15</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_PrepareRecipients_Art15" name="Prepare information about recipients or categories of recipients, including recipients in third countries or international organisations where relevant">
+      <bpmn:incoming>Flow_GatewaySplitAccessInfo_To_TaskPrepareRecipients_Art15</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPrepareRecipients_To_GatewayJoinAccessInfo_Art15</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_PrepareStorageInfo_Art15" name="Prepare the envisaged storage period or, if not possible, the criteria used to determine it">
+      <bpmn:incoming>Flow_GatewaySplitAccessInfo_To_TaskPrepareStorageInfo_Art15</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPrepareStorageInfo_To_GatewayJoinAccessInfo_Art15</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_PrepareRightsInfo_Art15" name="Prepare information about rectification, erasure, restriction, and objection rights">
+      <bpmn:incoming>Flow_GatewaySplitAccessInfo_To_TaskPrepareRightsInfo_Art15</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPrepareRightsInfo_To_GatewayJoinAccessInfo_Art15</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_PrepareComplaintInfo_Art15" name="Prepare information about the right to lodge a complaint with a supervisory authority">
+      <bpmn:incoming>Flow_GatewaySplitAccessInfo_To_TaskPrepareComplaintInfo_Art15</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPrepareComplaintInfo_To_GatewayJoinAccessInfo_Art15</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_PrepareSourceInfo_Art15" name="Prepare information about the source of the personal data if the data were not collected from the data subject">
+      <bpmn:incoming>Flow_GatewaySplitAccessInfo_To_TaskPrepareSourceInfo_Art15</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPrepareSourceInfo_To_GatewayJoinAccessInfo_Art15</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_PrepareAutomatedDecisionInfo_Art15" name="Prepare information about automated decision-making, including profiling, the logic involved, and the significance and envisaged consequences">
+      <bpmn:incoming>Flow_GatewaySplitAccessInfo_To_TaskPrepareAutomatedDecisionInfo_Art15</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPrepareAutomatedDecisionInfo_To_GatewayJoinAccessInfo_Art15</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_JoinAccessInfo_Art15">
+      <bpmn:incoming>Flow_TaskPreparePurposes_To_GatewayJoinAccessInfo_Art15</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskPrepareCategories_To_GatewayJoinAccessInfo_Art15</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskPrepareRecipients_To_GatewayJoinAccessInfo_Art15</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskPrepareStorageInfo_To_GatewayJoinAccessInfo_Art15</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskPrepareRightsInfo_To_GatewayJoinAccessInfo_Art15</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskPrepareComplaintInfo_To_GatewayJoinAccessInfo_Art15</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskPrepareSourceInfo_To_GatewayJoinAccessInfo_Art15</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskPrepareAutomatedDecisionInfo_To_GatewayJoinAccessInfo_Art15</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinAccessInfo_To_GatewayTransferSafeguards_Art15</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_TransferSafeguards_Art15" name="Were personal data transferred to a third country or an international organisation?">
+      <bpmn:incoming>Flow_GatewayJoinAccessInfo_To_GatewayTransferSafeguards_Art15</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayTransferSafeguards_To_TaskPrepareTransferSafeguards_Art15</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayTransferSafeguards_To_TaskPrepareCopy_Art15</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_PrepareTransferSafeguards_Art15" name="Prepare information about the appropriate safeguards for the transfer">
+      <bpmn:incoming>Flow_GatewayTransferSafeguards_To_TaskPrepareTransferSafeguards_Art15</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPrepareTransferSafeguards_To_TaskPrepareCopy_Art15</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_PrepareCopy_Art15" name="Prepare a copy of the personal data undergoing processing">
+      <bpmn:incoming>Flow_GatewayTransferSafeguards_To_TaskPrepareCopy_Art15</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskPrepareTransferSafeguards_To_TaskPrepareCopy_Art15</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPrepareCopy_To_GatewayProtectOthers_Art15</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_ProtectOthers_Art15" name="Would providing the copy adversely affect the rights and freedoms of others?">
+      <bpmn:incoming>Flow_TaskPrepareCopy_To_GatewayProtectOthers_Art15</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayProtectOthers_To_TaskLimitCopy_Art15</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayProtectOthers_To_GatewayAdditionalCopies_Art15</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_LimitCopy_Art15" name="Limit or protect the copy so that the rights and freedoms of others are not adversely affected">
+      <bpmn:incoming>Flow_GatewayProtectOthers_To_TaskLimitCopy_Art15</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskLimitCopy_To_GatewayAdditionalCopies_Art15</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_AdditionalCopies_Art15" name="Did the data subject request additional copies?">
+      <bpmn:incoming>Flow_GatewayProtectOthers_To_GatewayAdditionalCopies_Art15</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskLimitCopy_To_GatewayAdditionalCopies_Art15</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAdditionalCopies_To_TaskChargeReasonableFee_Art15</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAdditionalCopies_To_GatewayElectronicRequest_Art15</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ChargeReasonableFee_Art15" name="Charge a reasonable fee for additional copies based on administrative costs">
+      <bpmn:incoming>Flow_GatewayAdditionalCopies_To_TaskChargeReasonableFee_Art15</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskChargeReasonableFee_To_GatewayElectronicRequest_Art15</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_ElectronicRequest_Art15" name="Was the request made by electronic means and has no other format been requested?">
+      <bpmn:incoming>Flow_GatewayAdditionalCopies_To_GatewayElectronicRequest_Art15</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskChargeReasonableFee_To_GatewayElectronicRequest_Art15</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayElectronicRequest_To_SendTaskSendElectronicAccessResponse_Art15</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayElectronicRequest_To_SendTaskSendRequestedFormatAccessResponse_Art15</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="SendTask_SendElectronicAccessResponse_Art15" name="Send the access response and the copy in a commonly used electronic form">
+      <bpmn:incoming>Flow_GatewayElectronicRequest_To_SendTaskSendElectronicAccessResponse_Art15</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendTaskSendElectronicAccessResponse_To_EndAccessHandled_Art15</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:sendTask id="SendTask_SendRequestedFormatAccessResponse_Art15" name="Send the access response and the copy in the requested non-electronic format">
+      <bpmn:incoming>Flow_GatewayElectronicRequest_To_SendTaskSendRequestedFormatAccessResponse_Art15</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendTaskSendRequestedFormatAccessResponse_To_EndAccessHandled_Art15</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_ExceptionBlocksAccess_Art15" name="The access request is not handled because Article 12(2) or Article 11(2) blocks the request">
+      <bpmn:incoming>Flow_GatewayExceptions_To_EndExceptionBlocksAccess_Art15</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_AccessHandled_Art15" name="Article 15 access handling is completed">
+      <bpmn:incoming>Flow_SendTaskSendNoProcessingConfirmation_To_EndAccessHandled_Art15</bpmn:incoming>
+      <bpmn:incoming>Flow_SendTaskSendElectronicAccessResponse_To_EndAccessHandled_Art15</bpmn:incoming>
+      <bpmn:incoming>Flow_SendTaskSendRequestedFormatAccessResponse_To_EndAccessHandled_Art15</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_ReceiveTaskReceiveAccessRequest_Art15" sourceRef="StartEvent_AccessRequest_Art15" targetRef="ReceiveTask_ReceiveAccessRequest_Art15" />
+    <bpmn:sequenceFlow id="Flow_ReceiveTaskReceiveAccessRequest_To_GatewayExceptions_Art15" sourceRef="ReceiveTask_ReceiveAccessRequest_Art15" targetRef="Gateway_Exceptions_Art15" />
+    <bpmn:sequenceFlow id="Flow_GatewayExceptions_To_EndExceptionBlocksAccess_Art15" name="Yes" sourceRef="Gateway_Exceptions_Art15" targetRef="EndEvent_ExceptionBlocksAccess_Art15" />
+    <bpmn:sequenceFlow id="Flow_GatewayExceptions_To_TaskAssessProcessing_Art15" name="No" sourceRef="Gateway_Exceptions_Art15" targetRef="Task_AssessProcessing_Art15" />
+    <bpmn:sequenceFlow id="Flow_TaskAssessProcessing_To_GatewayProcessingOccurs_Art15" sourceRef="Task_AssessProcessing_Art15" targetRef="Gateway_ProcessingOccurs_Art15" />
+    <bpmn:sequenceFlow id="Flow_GatewayProcessingOccurs_To_GatewaySplitAccessInfo_Art15" name="Yes" sourceRef="Gateway_ProcessingOccurs_Art15" targetRef="Gateway_SplitAccessInfo_Art15" />
+    <bpmn:sequenceFlow id="Flow_GatewayProcessingOccurs_To_SendTaskSendNoProcessingConfirmation_Art15" name="No" sourceRef="Gateway_ProcessingOccurs_Art15" targetRef="SendTask_SendNoProcessingConfirmation_Art15" />
+    <bpmn:sequenceFlow id="Flow_SendTaskSendNoProcessingConfirmation_To_EndAccessHandled_Art15" sourceRef="SendTask_SendNoProcessingConfirmation_Art15" targetRef="EndEvent_AccessHandled_Art15" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitAccessInfo_To_TaskPreparePurposes_Art15" sourceRef="Gateway_SplitAccessInfo_Art15" targetRef="Task_PreparePurposes_Art15" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitAccessInfo_To_TaskPrepareCategories_Art15" sourceRef="Gateway_SplitAccessInfo_Art15" targetRef="Task_PrepareCategories_Art15" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitAccessInfo_To_TaskPrepareRecipients_Art15" sourceRef="Gateway_SplitAccessInfo_Art15" targetRef="Task_PrepareRecipients_Art15" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitAccessInfo_To_TaskPrepareStorageInfo_Art15" sourceRef="Gateway_SplitAccessInfo_Art15" targetRef="Task_PrepareStorageInfo_Art15" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitAccessInfo_To_TaskPrepareRightsInfo_Art15" sourceRef="Gateway_SplitAccessInfo_Art15" targetRef="Task_PrepareRightsInfo_Art15" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitAccessInfo_To_TaskPrepareComplaintInfo_Art15" sourceRef="Gateway_SplitAccessInfo_Art15" targetRef="Task_PrepareComplaintInfo_Art15" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitAccessInfo_To_TaskPrepareSourceInfo_Art15" sourceRef="Gateway_SplitAccessInfo_Art15" targetRef="Task_PrepareSourceInfo_Art15" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitAccessInfo_To_TaskPrepareAutomatedDecisionInfo_Art15" sourceRef="Gateway_SplitAccessInfo_Art15" targetRef="Task_PrepareAutomatedDecisionInfo_Art15" />
+    <bpmn:sequenceFlow id="Flow_TaskPreparePurposes_To_GatewayJoinAccessInfo_Art15" sourceRef="Task_PreparePurposes_Art15" targetRef="Gateway_JoinAccessInfo_Art15" />
+    <bpmn:sequenceFlow id="Flow_TaskPrepareCategories_To_GatewayJoinAccessInfo_Art15" sourceRef="Task_PrepareCategories_Art15" targetRef="Gateway_JoinAccessInfo_Art15" />
+    <bpmn:sequenceFlow id="Flow_TaskPrepareRecipients_To_GatewayJoinAccessInfo_Art15" sourceRef="Task_PrepareRecipients_Art15" targetRef="Gateway_JoinAccessInfo_Art15" />
+    <bpmn:sequenceFlow id="Flow_TaskPrepareStorageInfo_To_GatewayJoinAccessInfo_Art15" sourceRef="Task_PrepareStorageInfo_Art15" targetRef="Gateway_JoinAccessInfo_Art15" />
+    <bpmn:sequenceFlow id="Flow_TaskPrepareRightsInfo_To_GatewayJoinAccessInfo_Art15" sourceRef="Task_PrepareRightsInfo_Art15" targetRef="Gateway_JoinAccessInfo_Art15" />
+    <bpmn:sequenceFlow id="Flow_TaskPrepareComplaintInfo_To_GatewayJoinAccessInfo_Art15" sourceRef="Task_PrepareComplaintInfo_Art15" targetRef="Gateway_JoinAccessInfo_Art15" />
+    <bpmn:sequenceFlow id="Flow_TaskPrepareSourceInfo_To_GatewayJoinAccessInfo_Art15" sourceRef="Task_PrepareSourceInfo_Art15" targetRef="Gateway_JoinAccessInfo_Art15" />
+    <bpmn:sequenceFlow id="Flow_TaskPrepareAutomatedDecisionInfo_To_GatewayJoinAccessInfo_Art15" sourceRef="Task_PrepareAutomatedDecisionInfo_Art15" targetRef="Gateway_JoinAccessInfo_Art15" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoinAccessInfo_To_GatewayTransferSafeguards_Art15" sourceRef="Gateway_JoinAccessInfo_Art15" targetRef="Gateway_TransferSafeguards_Art15" />
+    <bpmn:sequenceFlow id="Flow_GatewayTransferSafeguards_To_TaskPrepareTransferSafeguards_Art15" name="Yes" sourceRef="Gateway_TransferSafeguards_Art15" targetRef="Task_PrepareTransferSafeguards_Art15" />
+    <bpmn:sequenceFlow id="Flow_GatewayTransferSafeguards_To_TaskPrepareCopy_Art15" name="No" sourceRef="Gateway_TransferSafeguards_Art15" targetRef="Task_PrepareCopy_Art15" />
+    <bpmn:sequenceFlow id="Flow_TaskPrepareTransferSafeguards_To_TaskPrepareCopy_Art15" sourceRef="Task_PrepareTransferSafeguards_Art15" targetRef="Task_PrepareCopy_Art15" />
+    <bpmn:sequenceFlow id="Flow_TaskPrepareCopy_To_GatewayProtectOthers_Art15" sourceRef="Task_PrepareCopy_Art15" targetRef="Gateway_ProtectOthers_Art15" />
+    <bpmn:sequenceFlow id="Flow_GatewayProtectOthers_To_TaskLimitCopy_Art15" name="Yes" sourceRef="Gateway_ProtectOthers_Art15" targetRef="Task_LimitCopy_Art15" />
+    <bpmn:sequenceFlow id="Flow_GatewayProtectOthers_To_GatewayAdditionalCopies_Art15" name="No" sourceRef="Gateway_ProtectOthers_Art15" targetRef="Gateway_AdditionalCopies_Art15" />
+    <bpmn:sequenceFlow id="Flow_TaskLimitCopy_To_GatewayAdditionalCopies_Art15" sourceRef="Task_LimitCopy_Art15" targetRef="Gateway_AdditionalCopies_Art15" />
+    <bpmn:sequenceFlow id="Flow_GatewayAdditionalCopies_To_TaskChargeReasonableFee_Art15" name="Yes" sourceRef="Gateway_AdditionalCopies_Art15" targetRef="Task_ChargeReasonableFee_Art15" />
+    <bpmn:sequenceFlow id="Flow_GatewayAdditionalCopies_To_GatewayElectronicRequest_Art15" name="No" sourceRef="Gateway_AdditionalCopies_Art15" targetRef="Gateway_ElectronicRequest_Art15" />
+    <bpmn:sequenceFlow id="Flow_TaskChargeReasonableFee_To_GatewayElectronicRequest_Art15" sourceRef="Task_ChargeReasonableFee_Art15" targetRef="Gateway_ElectronicRequest_Art15" />
+    <bpmn:sequenceFlow id="Flow_GatewayElectronicRequest_To_SendTaskSendElectronicAccessResponse_Art15" name="Yes" sourceRef="Gateway_ElectronicRequest_Art15" targetRef="SendTask_SendElectronicAccessResponse_Art15" />
+    <bpmn:sequenceFlow id="Flow_GatewayElectronicRequest_To_SendTaskSendRequestedFormatAccessResponse_Art15" name="No" sourceRef="Gateway_ElectronicRequest_Art15" targetRef="SendTask_SendRequestedFormatAccessResponse_Art15" />
+    <bpmn:sequenceFlow id="Flow_SendTaskSendElectronicAccessResponse_To_EndAccessHandled_Art15" sourceRef="SendTask_SendElectronicAccessResponse_Art15" targetRef="EndEvent_AccessHandled_Art15" />
+    <bpmn:sequenceFlow id="Flow_SendTaskSendRequestedFormatAccessResponse_To_EndAccessHandled_Art15" sourceRef="SendTask_SendRequestedFormatAccessResponse_Art15" targetRef="EndEvent_AccessHandled_Art15" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art15_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art15_Reviewed" bpmnElement="Collaboration_Art15_Reviewed">
+      <bpmndi:BPMNShape id="Participant_Controller_Art15_di" bpmnElement="Participant_Controller_Art15" isHorizontal="true"><dc:Bounds x="60" y="40" width="6400" height="860" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_DataSubject_Art15_di" bpmnElement="Participant_DataSubject_Art15" isHorizontal="true"><dc:Bounds x="60" y="940" width="6400" height="120" /></bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_AccessRequest_Art15_di" bpmnElement="StartEvent_AccessRequest_Art15"><dc:Bounds x="120" y="432" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveAccessRequest_Art15_di" bpmnElement="ReceiveTask_ReceiveAccessRequest_Art15"><dc:Bounds x="240" y="410" width="240" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Exceptions_Art15_di" bpmnElement="Gateway_Exceptions_Art15" isMarkerVisible="true"><dc:Bounds x="620" y="425" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessProcessing_Art15_di" bpmnElement="Task_AssessProcessing_Art15"><dc:Bounds x="820" y="410" width="350" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ProcessingOccurs_Art15_di" bpmnElement="Gateway_ProcessingOccurs_Art15" isMarkerVisible="true"><dc:Bounds x="1310" y="425" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_SendNoProcessingConfirmation_Art15_di" bpmnElement="SendTask_SendNoProcessingConfirmation_Art15"><dc:Bounds x="820" y="760" width="390" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SplitAccessInfo_Art15_di" bpmnElement="Gateway_SplitAccessInfo_Art15" isMarkerVisible="true"><dc:Bounds x="1480" y="425" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PreparePurposes_Art15_di" bpmnElement="Task_PreparePurposes_Art15"><dc:Bounds x="1700" y="40" width="320" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareCategories_Art15_di" bpmnElement="Task_PrepareCategories_Art15"><dc:Bounds x="1700" y="140" width="360" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareRecipients_Art15_di" bpmnElement="Task_PrepareRecipients_Art15"><dc:Bounds x="1700" y="240" width="520" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareStorageInfo_Art15_di" bpmnElement="Task_PrepareStorageInfo_Art15"><dc:Bounds x="1700" y="340" width="430" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareRightsInfo_Art15_di" bpmnElement="Task_PrepareRightsInfo_Art15"><dc:Bounds x="1700" y="440" width="420" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareComplaintInfo_Art15_di" bpmnElement="Task_PrepareComplaintInfo_Art15"><dc:Bounds x="1700" y="540" width="420" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareSourceInfo_Art15_di" bpmnElement="Task_PrepareSourceInfo_Art15"><dc:Bounds x="1700" y="640" width="450" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareAutomatedDecisionInfo_Art15_di" bpmnElement="Task_PrepareAutomatedDecisionInfo_Art15"><dc:Bounds x="1700" y="740" width="520" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinAccessInfo_Art15_di" bpmnElement="Gateway_JoinAccessInfo_Art15" isMarkerVisible="true"><dc:Bounds x="2430" y="425" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_TransferSafeguards_Art15_di" bpmnElement="Gateway_TransferSafeguards_Art15" isMarkerVisible="true"><dc:Bounds x="2650" y="425" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareTransferSafeguards_Art15_di" bpmnElement="Task_PrepareTransferSafeguards_Art15"><dc:Bounds x="2840" y="280" width="380" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareCopy_Art15_di" bpmnElement="Task_PrepareCopy_Art15"><dc:Bounds x="2840" y="425" width="360" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ProtectOthers_Art15_di" bpmnElement="Gateway_ProtectOthers_Art15" isMarkerVisible="true"><dc:Bounds x="3360" y="440" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_LimitCopy_Art15_di" bpmnElement="Task_LimitCopy_Art15"><dc:Bounds x="3540" y="280" width="470" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AdditionalCopies_Art15_di" bpmnElement="Gateway_AdditionalCopies_Art15" isMarkerVisible="true"><dc:Bounds x="3540" y="440" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ChargeReasonableFee_Art15_di" bpmnElement="Task_ChargeReasonableFee_Art15"><dc:Bounds x="3740" y="560" width="400" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ElectronicRequest_Art15_di" bpmnElement="Gateway_ElectronicRequest_Art15" isMarkerVisible="true"><dc:Bounds x="4310" y="440" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_SendElectronicAccessResponse_Art15_di" bpmnElement="SendTask_SendElectronicAccessResponse_Art15"><dc:Bounds x="4510" y="340" width="430" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_SendRequestedFormatAccessResponse_Art15_di" bpmnElement="SendTask_SendRequestedFormatAccessResponse_Art15"><dc:Bounds x="4510" y="520" width="430" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ExceptionBlocksAccess_Art15_di" bpmnElement="EndEvent_ExceptionBlocksAccess_Art15"><dc:Bounds x="712" y="562" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_AccessHandled_Art15_di" bpmnElement="EndEvent_AccessHandled_Art15"><dc:Bounds x="5062" y="432" width="36" height="36" /></bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_ReceiveTaskReceiveAccessRequest_Art15_di" bpmnElement="Flow_Start_To_ReceiveTaskReceiveAccessRequest_Art15"><di:waypoint x="156" y="450" /><di:waypoint x="240" y="450" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveTaskReceiveAccessRequest_To_GatewayExceptions_Art15_di" bpmnElement="Flow_ReceiveTaskReceiveAccessRequest_To_GatewayExceptions_Art15"><di:waypoint x="480" y="450" /><di:waypoint x="620" y="450" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExceptions_To_EndExceptionBlocksAccess_Art15_di" bpmnElement="Flow_GatewayExceptions_To_EndExceptionBlocksAccess_Art15"><di:waypoint x="645" y="475" /><di:waypoint x="645" y="580" /><di:waypoint x="712" y="580" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExceptions_To_TaskAssessProcessing_Art15_di" bpmnElement="Flow_GatewayExceptions_To_TaskAssessProcessing_Art15"><di:waypoint x="670" y="450" /><di:waypoint x="820" y="450" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskAssessProcessing_To_GatewayProcessingOccurs_Art15_di" bpmnElement="Flow_TaskAssessProcessing_To_GatewayProcessingOccurs_Art15"><di:waypoint x="1170" y="450" /><di:waypoint x="1310" y="450" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayProcessingOccurs_To_GatewaySplitAccessInfo_Art15_di" bpmnElement="Flow_GatewayProcessingOccurs_To_GatewaySplitAccessInfo_Art15"><di:waypoint x="1360" y="450" /><di:waypoint x="1480" y="450" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayProcessingOccurs_To_SendTaskSendNoProcessingConfirmation_Art15_di" bpmnElement="Flow_GatewayProcessingOccurs_To_SendTaskSendNoProcessingConfirmation_Art15"><di:waypoint x="1335" y="475" /><di:waypoint x="1335" y="800" /><di:waypoint x="1210" y="800" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendTaskSendNoProcessingConfirmation_To_EndAccessHandled_Art15_di" bpmnElement="Flow_SendTaskSendNoProcessingConfirmation_To_EndAccessHandled_Art15"><di:waypoint x="1210" y="800" /><di:waypoint x="1260" y="800" /><di:waypoint x="1260" y="450" /><di:waypoint x="5062" y="450" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitAccessInfo_To_TaskPreparePurposes_Art15_di" bpmnElement="Flow_GatewaySplitAccessInfo_To_TaskPreparePurposes_Art15"><di:waypoint x="1505" y="425" /><di:waypoint x="1505" y="80" /><di:waypoint x="1700" y="80" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitAccessInfo_To_TaskPrepareCategories_Art15_di" bpmnElement="Flow_GatewaySplitAccessInfo_To_TaskPrepareCategories_Art15"><di:waypoint x="1505" y="425" /><di:waypoint x="1505" y="180" /><di:waypoint x="1700" y="180" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitAccessInfo_To_TaskPrepareRecipients_Art15_di" bpmnElement="Flow_GatewaySplitAccessInfo_To_TaskPrepareRecipients_Art15"><di:waypoint x="1505" y="425" /><di:waypoint x="1505" y="280" /><di:waypoint x="1700" y="280" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitAccessInfo_To_TaskPrepareStorageInfo_Art15_di" bpmnElement="Flow_GatewaySplitAccessInfo_To_TaskPrepareStorageInfo_Art15"><di:waypoint x="1505" y="425" /><di:waypoint x="1505" y="380" /><di:waypoint x="1700" y="380" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitAccessInfo_To_TaskPrepareRightsInfo_Art15_di" bpmnElement="Flow_GatewaySplitAccessInfo_To_TaskPrepareRightsInfo_Art15"><di:waypoint x="1530" y="450" /><di:waypoint x="1700" y="480" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitAccessInfo_To_TaskPrepareComplaintInfo_Art15_di" bpmnElement="Flow_GatewaySplitAccessInfo_To_TaskPrepareComplaintInfo_Art15"><di:waypoint x="1505" y="475" /><di:waypoint x="1505" y="580" /><di:waypoint x="1700" y="580" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitAccessInfo_To_TaskPrepareSourceInfo_Art15_di" bpmnElement="Flow_GatewaySplitAccessInfo_To_TaskPrepareSourceInfo_Art15"><di:waypoint x="1505" y="475" /><di:waypoint x="1505" y="680" /><di:waypoint x="1700" y="680" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitAccessInfo_To_TaskPrepareAutomatedDecisionInfo_Art15_di" bpmnElement="Flow_GatewaySplitAccessInfo_To_TaskPrepareAutomatedDecisionInfo_Art15"><di:waypoint x="1505" y="475" /><di:waypoint x="1505" y="780" /><di:waypoint x="1700" y="780" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPreparePurposes_To_GatewayJoinAccessInfo_Art15_di" bpmnElement="Flow_TaskPreparePurposes_To_GatewayJoinAccessInfo_Art15"><di:waypoint x="2020" y="80" /><di:waypoint x="2455" y="80" /><di:waypoint x="2455" y="425" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPrepareCategories_To_GatewayJoinAccessInfo_Art15_di" bpmnElement="Flow_TaskPrepareCategories_To_GatewayJoinAccessInfo_Art15"><di:waypoint x="2060" y="180" /><di:waypoint x="2455" y="180" /><di:waypoint x="2455" y="425" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPrepareRecipients_To_GatewayJoinAccessInfo_Art15_di" bpmnElement="Flow_TaskPrepareRecipients_To_GatewayJoinAccessInfo_Art15"><di:waypoint x="2220" y="280" /><di:waypoint x="2455" y="280" /><di:waypoint x="2455" y="425" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPrepareStorageInfo_To_GatewayJoinAccessInfo_Art15_di" bpmnElement="Flow_TaskPrepareStorageInfo_To_GatewayJoinAccessInfo_Art15"><di:waypoint x="2130" y="380" /><di:waypoint x="2455" y="380" /><di:waypoint x="2455" y="425" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPrepareRightsInfo_To_GatewayJoinAccessInfo_Art15_di" bpmnElement="Flow_TaskPrepareRightsInfo_To_GatewayJoinAccessInfo_Art15"><di:waypoint x="2120" y="480" /><di:waypoint x="2455" y="480" /><di:waypoint x="2455" y="475" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPrepareComplaintInfo_To_GatewayJoinAccessInfo_Art15_di" bpmnElement="Flow_TaskPrepareComplaintInfo_To_GatewayJoinAccessInfo_Art15"><di:waypoint x="2120" y="580" /><di:waypoint x="2455" y="580" /><di:waypoint x="2455" y="475" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPrepareSourceInfo_To_GatewayJoinAccessInfo_Art15_di" bpmnElement="Flow_TaskPrepareSourceInfo_To_GatewayJoinAccessInfo_Art15"><di:waypoint x="2150" y="680" /><di:waypoint x="2455" y="680" /><di:waypoint x="2455" y="475" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPrepareAutomatedDecisionInfo_To_GatewayJoinAccessInfo_Art15_di" bpmnElement="Flow_TaskPrepareAutomatedDecisionInfo_To_GatewayJoinAccessInfo_Art15"><di:waypoint x="2220" y="780" /><di:waypoint x="2455" y="780" /><di:waypoint x="2455" y="475" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinAccessInfo_To_GatewayTransferSafeguards_Art15_di" bpmnElement="Flow_GatewayJoinAccessInfo_To_GatewayTransferSafeguards_Art15"><di:waypoint x="2480" y="450" /><di:waypoint x="2650" y="450" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayTransferSafeguards_To_TaskPrepareTransferSafeguards_Art15_di" bpmnElement="Flow_GatewayTransferSafeguards_To_TaskPrepareTransferSafeguards_Art15"><di:waypoint x="2675" y="425" /><di:waypoint x="2675" y="320" /><di:waypoint x="2840" y="320" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayTransferSafeguards_To_TaskPrepareCopy_Art15_di" bpmnElement="Flow_GatewayTransferSafeguards_To_TaskPrepareCopy_Art15"><di:waypoint x="2700" y="450" /><di:waypoint x="2840" y="465" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPrepareTransferSafeguards_To_TaskPrepareCopy_Art15_di" bpmnElement="Flow_TaskPrepareTransferSafeguards_To_TaskPrepareCopy_Art15"><di:waypoint x="3220" y="320" /><di:waypoint x="3250" y="320" /><di:waypoint x="3250" y="465" /><di:waypoint x="3200" y="465" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPrepareCopy_To_GatewayProtectOthers_Art15_di" bpmnElement="Flow_TaskPrepareCopy_To_GatewayProtectOthers_Art15"><di:waypoint x="3200" y="465" /><di:waypoint x="3360" y="465" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayProtectOthers_To_TaskLimitCopy_Art15_di" bpmnElement="Flow_GatewayProtectOthers_To_TaskLimitCopy_Art15"><di:waypoint x="3385" y="440" /><di:waypoint x="3385" y="320" /><di:waypoint x="3540" y="320" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayProtectOthers_To_GatewayAdditionalCopies_Art15_di" bpmnElement="Flow_GatewayProtectOthers_To_GatewayAdditionalCopies_Art15"><di:waypoint x="3410" y="465" /><di:waypoint x="3540" y="465" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskLimitCopy_To_GatewayAdditionalCopies_Art15_di" bpmnElement="Flow_TaskLimitCopy_To_GatewayAdditionalCopies_Art15"><di:waypoint x="4010" y="320" /><di:waypoint x="4060" y="320" /><di:waypoint x="4060" y="465" /><di:waypoint x="3590" y="465" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAdditionalCopies_To_TaskChargeReasonableFee_Art15_di" bpmnElement="Flow_GatewayAdditionalCopies_To_TaskChargeReasonableFee_Art15"><di:waypoint x="3565" y="490" /><di:waypoint x="3565" y="600" /><di:waypoint x="3740" y="600" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAdditionalCopies_To_GatewayElectronicRequest_Art15_di" bpmnElement="Flow_GatewayAdditionalCopies_To_GatewayElectronicRequest_Art15"><di:waypoint x="3590" y="465" /><di:waypoint x="4310" y="465" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskChargeReasonableFee_To_GatewayElectronicRequest_Art15_di" bpmnElement="Flow_TaskChargeReasonableFee_To_GatewayElectronicRequest_Art15"><di:waypoint x="4140" y="600" /><di:waypoint x="4180" y="600" /><di:waypoint x="4180" y="465" /><di:waypoint x="4310" y="465" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayElectronicRequest_To_SendTaskSendElectronicAccessResponse_Art15_di" bpmnElement="Flow_GatewayElectronicRequest_To_SendTaskSendElectronicAccessResponse_Art15"><di:waypoint x="4335" y="440" /><di:waypoint x="4335" y="380" /><di:waypoint x="4510" y="380" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayElectronicRequest_To_SendTaskSendRequestedFormatAccessResponse_Art15_di" bpmnElement="Flow_GatewayElectronicRequest_To_SendTaskSendRequestedFormatAccessResponse_Art15"><di:waypoint x="4335" y="490" /><di:waypoint x="4335" y="560" /><di:waypoint x="4510" y="560" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendTaskSendElectronicAccessResponse_To_EndAccessHandled_Art15_di" bpmnElement="Flow_SendTaskSendElectronicAccessResponse_To_EndAccessHandled_Art15"><di:waypoint x="4940" y="380" /><di:waypoint x="5000" y="380" /><di:waypoint x="5000" y="450" /><di:waypoint x="5062" y="450" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendTaskSendRequestedFormatAccessResponse_To_EndAccessHandled_Art15_di" bpmnElement="Flow_SendTaskSendRequestedFormatAccessResponse_To_EndAccessHandled_Art15"><di:waypoint x="4940" y="560" /><di:waypoint x="5000" y="560" /><di:waypoint x="5000" y="450" /><di:waypoint x="5062" y="450" /></bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_ReceiveAccessRequest_Art15_di" bpmnElement="MessageFlow_ReceiveAccessRequest_Art15"><di:waypoint x="360" y="940" /><di:waypoint x="360" y="490" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SendNoProcessingConfirmation_Art15_di" bpmnElement="MessageFlow_SendNoProcessingConfirmation_Art15"><di:waypoint x="1015" y="840" /><di:waypoint x="1015" y="940" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SendElectronicAccessResponse_Art15_di" bpmnElement="MessageFlow_SendElectronicAccessResponse_Art15"><di:waypoint x="4725" y="420" /><di:waypoint x="4725" y="940" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SendRequestedFormatAccessResponse_Art15_di" bpmnElement="MessageFlow_SendRequestedFormatAccessResponse_Art15"><di:waypoint x="4725" y="600" /><di:waypoint x="4725" y="940" /></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

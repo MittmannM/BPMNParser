@@ -25,13 +25,13 @@ Existing auto-generated BPMN files in this folder are drafts only and do not cou
 | Art. 10 | `GDPR_art_10_reviewed.bpmn` | done | Manual review completed from statements29; Article 10 applicability gate, comprehensive-register special rule, official-authority path, Union-or-Member-State-law authorization path with safeguards, and non-overlapping DI layout checked against the master checklist |
 | Art. 11 | `GDPR_art_11_reviewed.bpmn` | done | Manual review completed from statements30-31; no-identification path, Article 11(2) information duty, Articles 15 to 20 exception with additional-identification-information fallback, and non-overlapping DI layout checked against the master checklist |
 | Art. 12 | `GDPR_art_12_reviewed.bpmn` | done | Manual review completed from statements32-38; general information path for Article 12(1) and (7), request-handling path for Article 12(2)-(6), identity-check and Article 11(2) branch, extension and no-action notices, fee-or-refusal exception, and non-overlapping DI layout checked against the master checklist |
-| Art. 13 | `GDPR_art_13_reviewed.bpmn` | pending |  |
-| Art. 14 | `GDPR_art_14_reviewed.bpmn` | pending |  |
-| Art. 15 | `GDPR_art_15_reviewed.bpmn` | pending |  |
-| Art. 16 | `GDPR_art_16_reviewed.bpmn` | pending |  |
-| Art. 17 | `GDPR_art_17_reviewed.bpmn` | pending |  |
-| Art. 18 | `GDPR_art_18_reviewed.bpmn` | pending |  |
-| Art. 19 | `GDPR_art_19_reviewed.bpmn` | pending |  |
+| Art. 13 | `GDPR_art_13_reviewed.bpmn` | done | Manual review completed from statements39-51; direct-collection information duties, legitimate-interest and transfer-safeguard branches, supplementary information block, and further-purpose notice path checked against the master checklist |
+| Art. 14 | `GDPR_art_14_reviewed.bpmn` | done | Manual review completed from statements52-71; indirect-collection information duties, Article 14(5) exception chain, timing alternatives, source-category duties, and further-purpose notice path checked against the master checklist |
+| Art. 15 | `GDPR_art_15_reviewed.bpmn` | done | Manual review completed from statements72-82 plus transparent no-processing supplement from the legal text; Article 15(1) access-information bundle, transfer-safeguards branch, copy and additional-copy handling, electronic-format split, and Article 15(4) protective limitation checked against the master checklist |
+| Art. 16 | `GDPR_art_16_reviewed.bpmn` | done | Manual review completed from statements83; shared request intake, Article 12(2) and Article 11(2) exception gate, inaccurate-data rectification path, incomplete-data completion path with supplementary-statement handling, and non-overlapping DI layout checked against the master checklist |
+| Art. 17 | `GDPR_art_17_reviewed.bpmn` | done | Manual review completed from statements84-96; six Article 17(1) erasure grounds, Article 17(3) exception block, public-data notification path under Article 17(2), and non-overlapping DI layout checked against the master checklist |
+| Art. 18 | `GDPR_art_18_reviewed.bpmn` | done | Manual review completed from statements97-102; four Article 18(1) restriction grounds, Article 18(2) limited-processing block, prior-information path before lifting the restriction, and non-overlapping DI layout checked against the master checklist |
+| Art. 19 | `GDPR_art_19_reviewed.bpmn` | done | Manual review completed from statements103; rectification-erasure-restriction trigger split, recipient-notification duty, too-much-effort exception path, optional data-subject recipient-information path, and non-overlapping DI layout checked against the master checklist |
 | Art. 20 | `GDPR_art_20_reviewed.bpmn` | pending |  |
 | Art. 21 | `GDPR_art_21_reviewed.bpmn` | pending |  |
 | Art. 22 | `GDPR_art_22_reviewed.bpmn` | pending |  |

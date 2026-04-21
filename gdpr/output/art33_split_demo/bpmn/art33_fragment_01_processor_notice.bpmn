@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+  id="Definitions_Art33_Fragment_01"
+  targetNamespace="https://example.org/gdpr/bpmn/art33/fragment01">
+  <bpmn:message id="Message_ProcessorBreachNotice_F01" name="Processor breach notice" />
+
+  <bpmn:collaboration id="Collaboration_Art33_Fragment_01">
+    <bpmn:participant id="Participant_Controller_F01" name="Controller" processRef="Process_Controller_F01" />
+    <bpmn:participant id="Participant_Processor_F01" name="Processor" processRef="Process_Processor_F01" />
+    <bpmn:messageFlow id="MessageFlow_ProcessorToController_F01" sourceRef="Task_ProcessorNotifyController_F01" targetRef="Event_ControllerReceivesProcessorNotice_F01" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_Processor_F01" name="Processor breach notice handling" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_ProcessorAware_F01" name="Processor becomes aware of personal data breach">
+      <bpmn:outgoing>Flow_ProcessorAware_To_NotifyController_F01</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sendTask id="Task_ProcessorNotifyController_F01" name="Notify controller without undue delay">
+      <bpmn:incoming>Flow_ProcessorAware_To_NotifyController_F01</bpmn:incoming>
+      <bpmn:outgoing>Flow_NotifyController_To_ProcessorEnd_F01</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:endEvent id="EndEvent_ProcessorHandled_F01" name="Controller notified">
+      <bpmn:incoming>Flow_NotifyController_To_ProcessorEnd_F01</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_ProcessorAware_To_NotifyController_F01" sourceRef="StartEvent_ProcessorAware_F01" targetRef="Task_ProcessorNotifyController_F01" />
+    <bpmn:sequenceFlow id="Flow_NotifyController_To_ProcessorEnd_F01" sourceRef="Task_ProcessorNotifyController_F01" targetRef="EndEvent_ProcessorHandled_F01" />
+  </bpmn:process>
+
+  <bpmn:process id="Process_Controller_F01" name="Controller receives processor notice" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_ControllerWaiting_F01" name="Controller awaits breach notice">
+      <bpmn:outgoing>Flow_ControllerWaiting_To_Notice_F01</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:intermediateCatchEvent id="Event_ControllerReceivesProcessorNotice_F01" name="Processor breach notice received">
+      <bpmn:incoming>Flow_ControllerWaiting_To_Notice_F01</bpmn:incoming>
+      <bpmn:outgoing>Flow_Notice_To_ControllerEnd_F01</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_ProcessorNotice_F01" messageRef="Message_ProcessorBreachNotice_F01" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:endEvent id="EndEvent_ControllerAware_F01" name="Controller aware of breach">
+      <bpmn:incoming>Flow_Notice_To_ControllerEnd_F01</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_ControllerWaiting_To_Notice_F01" sourceRef="StartEvent_ControllerWaiting_F01" targetRef="Event_ControllerReceivesProcessorNotice_F01" />
+    <bpmn:sequenceFlow id="Flow_Notice_To_ControllerEnd_F01" sourceRef="Event_ControllerReceivesProcessorNotice_F01" targetRef="EndEvent_ControllerAware_F01" />
+  </bpmn:process>
+</bpmn:definitions>
