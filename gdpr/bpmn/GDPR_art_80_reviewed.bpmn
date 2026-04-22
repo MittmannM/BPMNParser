@@ -38,61 +38,58 @@
                 name="Representing a data subject under Article 80"
                 isExecutable="false">
     <bpmn:documentation>
-      Manual BPMN conversion for GDPR Article 80 based on DAPRECO LegalRuleML
-      statements268 and checked against the current Article 80 text. The XML strongly
-      encodes the mandated representation route in Article 80(1): a not-for-profit
-      body, organisation, or association related to GDPR and compliant with Member
-      State law may act on behalf of the data subject to lodge a complaint, request a
-      judicial remedy, and request compensation. Article 80(2), which is optional for
-      Member States and allows action without a mandate, is added transparently as a
-      distinct Member-State-option path because it is part of the official article text
-      but not fully separated as such in the local XML serialization.
+      Manual BPMN conversion for GDPR Article 80 based on the real English legal text from
+      gdpr_articles/article_80.txt. The model shows the mandated representation route in
+      Article 80(1) and the optional Member-State no-mandate route in Article 80(2).
+      The no-mandate route is limited to complaints and the exercise of rights under
+      Articles 78 and 79; compensation under Article 82 remains only on the mandated
+      route and only where Member State law provides for it.
     </bpmn:documentation>
 
     <bpmn:startEvent id="StartEvent_AssessRepresentation_Art80"
-                     name="Need to assess representation of a data subject">
+                     name="Need representation">
       <bpmn:outgoing>Flow_Start_To_VerifyBodyCriteria_Art80</bpmn:outgoing>
     </bpmn:startEvent>
 
     <bpmn:task id="Task_VerifyBodyCriteria_Art80"
-               name="Verify that the body is not-for-profit, properly constituted, in the public interest, and active in data-protection rights">
+               name="Check body criteria">
       <bpmn:incoming>Flow_Start_To_VerifyBodyCriteria_Art80</bpmn:incoming>
       <bpmn:outgoing>Flow_VerifyBodyCriteria_To_GatewayMandate_Art80</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:exclusiveGateway id="Gateway_MandateStatus_Art80"
-                           name="Is there a mandate from the data subject?">
+                           name="Is there a data-subject mandate?">
       <bpmn:incoming>Flow_VerifyBodyCriteria_To_GatewayMandate_Art80</bpmn:incoming>
       <bpmn:outgoing>Flow_GatewayMandate_To_RequestMandate_Art80</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewayMandate_To_GatewayMemberStateOption_Art80</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
     <bpmn:sendTask id="SendTask_RequestMandate_Art80"
-                   name="Request a mandate from the data subject">
+                   name="Request mandate">
       <bpmn:incoming>Flow_GatewayMandate_To_RequestMandate_Art80</bpmn:incoming>
       <bpmn:outgoing>Flow_RequestMandate_To_ReceiveMandate_Art80</bpmn:outgoing>
     </bpmn:sendTask>
 
     <bpmn:receiveTask id="ReceiveTask_ReceiveMandate_Art80"
-                      name="Receive the data subject's mandate">
+                      name="Receive mandate">
       <bpmn:incoming>Flow_RequestMandate_To_ReceiveMandate_Art80</bpmn:incoming>
       <bpmn:outgoing>Flow_ReceiveMandate_To_GatewayActionScope_Art80</bpmn:outgoing>
     </bpmn:receiveTask>
 
     <bpmn:exclusiveGateway id="Gateway_MemberStateOption_Art80"
-                           name="Does Member State law allow representation without a mandate?">
+                           name="Does Member State law allow a no-mandate route?">
       <bpmn:incoming>Flow_GatewayMandate_To_GatewayMemberStateOption_Art80</bpmn:incoming>
       <bpmn:outgoing>Flow_GatewayMemberStateOption_To_EndNoRepresentation_Art80</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewayMemberStateOption_To_TaskAssessIndependentComplaint_Art80</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
     <bpmn:endEvent id="EndEvent_NoRepresentation_Art80"
-                   name="No Article 80 representation route is available">
+                   name="No Article 80 route available">
       <bpmn:incoming>Flow_GatewayMemberStateOption_To_EndNoRepresentation_Art80</bpmn:incoming>
     </bpmn:endEvent>
 
     <bpmn:task id="Task_AssessIndependentComplaint_Art80"
-               name="Assess whether rights of a data subject were infringed so that an independent complaint or remedy may be pursued">
+               name="Check no-mandate action basis">
       <bpmn:incoming>Flow_GatewayMemberStateOption_To_TaskAssessIndependentComplaint_Art80</bpmn:incoming>
       <bpmn:outgoing>Flow_AssessIndependentComplaint_To_GatewayActionScope_Art80</bpmn:outgoing>
     </bpmn:task>
@@ -100,26 +97,33 @@
     <bpmn:exclusiveGateway id="Gateway_ActionScope_Art80"
                            name="Which Article 80 action will be exercised?">
       <bpmn:incoming>Flow_ReceiveMandate_To_GatewayActionScope_Art80</bpmn:incoming>
-      <bpmn:incoming>Flow_AssessIndependentComplaint_To_GatewayActionScope_Art80</bpmn:incoming>
       <bpmn:outgoing>Flow_GatewayActionScope_To_LodgeComplaint_Art80</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewayActionScope_To_RequestJudicialRemedy_Art80</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewayActionScope_To_RequestCompensation_Art80</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
+    <bpmn:exclusiveGateway id="Gateway_NoMandateActionScope_Art80"
+                           name="Which no-mandate action will be exercised?">
+      <bpmn:incoming>Flow_AssessIndependentComplaint_To_GatewayNoMandateActionScope_Art80</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayNoMandateActionScope_To_LodgeComplaint_Art80</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayNoMandateActionScope_To_RequestJudicialRemedy_Art80</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayNoMandateActionScope_To_EndNoRepresentation_Art80</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
     <bpmn:sendTask id="SendTask_LodgeComplaint_Art80"
-                   name="Lodge the complaint on behalf of the data subject or independently where Member State law allows it">
+                   name="Lodge complaint">
       <bpmn:incoming>Flow_GatewayActionScope_To_LodgeComplaint_Art80</bpmn:incoming>
       <bpmn:outgoing>Flow_LodgeComplaint_To_EndActionCompleted_Art80</bpmn:outgoing>
     </bpmn:sendTask>
 
     <bpmn:sendTask id="SendTask_RequestJudicialRemedy_Art80"
-                   name="Request the judicial remedy on behalf of the data subject">
+                   name="Request judicial remedy">
       <bpmn:incoming>Flow_GatewayActionScope_To_RequestJudicialRemedy_Art80</bpmn:incoming>
       <bpmn:outgoing>Flow_RequestJudicialRemedy_To_EndActionCompleted_Art80</bpmn:outgoing>
     </bpmn:sendTask>
 
     <bpmn:sendTask id="SendTask_RequestCompensation_Art80"
-                   name="Request compensation on behalf of the data subject where Member State law provides for it">
+                   name="Request compensation">
       <bpmn:incoming>Flow_GatewayActionScope_To_RequestCompensation_Art80</bpmn:incoming>
       <bpmn:outgoing>Flow_RequestCompensation_To_EndActionCompleted_Art80</bpmn:outgoing>
     </bpmn:sendTask>
@@ -132,7 +136,7 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:endEvent id="EndEvent_RepresentationCompleted_Art80"
-                   name="Article 80 representation action completed">
+                   name="Representation action completed">
       <bpmn:incoming>Flow_GatewayActionCompleted_To_EndRepresentationCompleted_Art80</bpmn:incoming>
     </bpmn:endEvent>
 
@@ -144,10 +148,13 @@
     <bpmn:sequenceFlow id="Flow_ReceiveMandate_To_GatewayActionScope_Art80" sourceRef="ReceiveTask_ReceiveMandate_Art80" targetRef="Gateway_ActionScope_Art80" />
     <bpmn:sequenceFlow id="Flow_GatewayMemberStateOption_To_EndNoRepresentation_Art80" name="No" sourceRef="Gateway_MemberStateOption_Art80" targetRef="EndEvent_NoRepresentation_Art80" />
     <bpmn:sequenceFlow id="Flow_GatewayMemberStateOption_To_TaskAssessIndependentComplaint_Art80" name="Yes" sourceRef="Gateway_MemberStateOption_Art80" targetRef="Task_AssessIndependentComplaint_Art80" />
-    <bpmn:sequenceFlow id="Flow_AssessIndependentComplaint_To_GatewayActionScope_Art80" sourceRef="Task_AssessIndependentComplaint_Art80" targetRef="Gateway_ActionScope_Art80" />
+    <bpmn:sequenceFlow id="Flow_AssessIndependentComplaint_To_GatewayNoMandateActionScope_Art80" sourceRef="Task_AssessIndependentComplaint_Art80" targetRef="Gateway_NoMandateActionScope_Art80" />
     <bpmn:sequenceFlow id="Flow_GatewayActionScope_To_LodgeComplaint_Art80" name="Complaint under Article 77" sourceRef="Gateway_ActionScope_Art80" targetRef="SendTask_LodgeComplaint_Art80" />
     <bpmn:sequenceFlow id="Flow_GatewayActionScope_To_RequestJudicialRemedy_Art80" name="Judicial remedy under Articles 78 or 79" sourceRef="Gateway_ActionScope_Art80" targetRef="SendTask_RequestJudicialRemedy_Art80" />
     <bpmn:sequenceFlow id="Flow_GatewayActionScope_To_RequestCompensation_Art80" name="Compensation under Article 82" sourceRef="Gateway_ActionScope_Art80" targetRef="SendTask_RequestCompensation_Art80" />
+    <bpmn:sequenceFlow id="Flow_GatewayNoMandateActionScope_To_LodgeComplaint_Art80" name="Complaint under Article 77" sourceRef="Gateway_NoMandateActionScope_Art80" targetRef="SendTask_LodgeComplaint_Art80" />
+    <bpmn:sequenceFlow id="Flow_GatewayNoMandateActionScope_To_RequestJudicialRemedy_Art80" name="Judicial remedy under Articles 78 or 79" sourceRef="Gateway_NoMandateActionScope_Art80" targetRef="SendTask_RequestJudicialRemedy_Art80" />
+    <bpmn:sequenceFlow id="Flow_GatewayNoMandateActionScope_To_EndNoRepresentation_Art80" name="None" sourceRef="Gateway_NoMandateActionScope_Art80" targetRef="EndEvent_NoRepresentation_Art80" />
     <bpmn:sequenceFlow id="Flow_LodgeComplaint_To_EndActionCompleted_Art80" sourceRef="SendTask_LodgeComplaint_Art80" targetRef="Gateway_ActionCompleted_Art80" />
     <bpmn:sequenceFlow id="Flow_RequestJudicialRemedy_To_EndActionCompleted_Art80" sourceRef="SendTask_RequestJudicialRemedy_Art80" targetRef="Gateway_ActionCompleted_Art80" />
     <bpmn:sequenceFlow id="Flow_RequestCompensation_To_EndActionCompleted_Art80" sourceRef="SendTask_RequestCompensation_Art80" targetRef="Gateway_ActionCompleted_Art80" />
@@ -196,6 +203,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_ActionScope_Art80_di" bpmnElement="Gateway_ActionScope_Art80" isMarkerVisible="true">
         <dc:Bounds x="2010" y="375" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_NoMandateActionScope_Art80_di" bpmnElement="Gateway_NoMandateActionScope_Art80" isMarkerVisible="true">
+        <dc:Bounds x="2010" y="535" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="SendTask_LodgeComplaint_Art80_di" bpmnElement="SendTask_LodgeComplaint_Art80">
         <dc:Bounds x="2230" y="120" width="450" height="80" />
@@ -249,10 +259,9 @@
         <di:waypoint x="1140" y="560" />
         <di:waypoint x="1280" y="560" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_AssessIndependentComplaint_To_GatewayActionScope_Art80_di" bpmnElement="Flow_AssessIndependentComplaint_To_GatewayActionScope_Art80">
+      <bpmndi:BPMNEdge id="Flow_AssessIndependentComplaint_To_GatewayNoMandateActionScope_Art80_di" bpmnElement="Flow_AssessIndependentComplaint_To_GatewayNoMandateActionScope_Art80">
         <di:waypoint x="1800" y="560" />
-        <di:waypoint x="2035" y="560" />
-        <di:waypoint x="2035" y="425" />
+        <di:waypoint x="2010" y="560" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_GatewayActionScope_To_LodgeComplaint_Art80_di" bpmnElement="Flow_GatewayActionScope_To_LodgeComplaint_Art80">
         <di:waypoint x="2035" y="375" />
@@ -267,6 +276,20 @@
         <di:waypoint x="2035" y="425" />
         <di:waypoint x="2035" y="580" />
         <di:waypoint x="2230" y="580" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayNoMandateActionScope_To_LodgeComplaint_Art80_di" bpmnElement="Flow_GatewayNoMandateActionScope_To_LodgeComplaint_Art80">
+        <di:waypoint x="2035" y="535" />
+        <di:waypoint x="2035" y="160" />
+        <di:waypoint x="2230" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayNoMandateActionScope_To_RequestJudicialRemedy_Art80_di" bpmnElement="Flow_GatewayNoMandateActionScope_To_RequestJudicialRemedy_Art80">
+        <di:waypoint x="2060" y="560" />
+        <di:waypoint x="2230" y="370" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayNoMandateActionScope_To_EndNoRepresentation_Art80_di" bpmnElement="Flow_GatewayNoMandateActionScope_To_EndNoRepresentation_Art80">
+        <di:waypoint x="2035" y="585" />
+        <di:waypoint x="2035" y="680" />
+        <di:waypoint x="1326" y="680" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_LodgeComplaint_To_EndActionCompleted_Art80_di" bpmnElement="Flow_LodgeComplaint_To_EndActionCompleted_Art80">
         <di:waypoint x="2680" y="160" />

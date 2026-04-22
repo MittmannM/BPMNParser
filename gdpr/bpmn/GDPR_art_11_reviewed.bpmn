@@ -22,29 +22,25 @@
   </bpmn:collaboration>
 
   <bpmn:process id="Process_Controller_Art11"
-                name="Applying Article 11 where identification is not required"
+                name="Apply Article 11"
                 isExecutable="false">
     <bpmn:documentation>
-      Manual BPMN conversion for GDPR Article 11 based on DAPRECO LegalRuleML
-      statements30-31. The local XML models Article 11(1) as the controller not being
-      obliged, and therefore permitted not, to maintain, acquire, or process
-      additional information solely in order to identify the data subject when the
-      processing purposes do not or no longer require identification. It also models
-      Article 11(2) as an information duty where the controller is able to demonstrate
-      inability to identify the data subject, together with the exception that Articles
-      15 to 20 do not apply unless the data subject provides additional information
-      enabling identification. The BPMN therefore includes the no-identification path,
-      the 'inform the data subject accordingly, if possible' step, and the rights-
-      request branch that turns on additional identifying information.
+      Manual BPMN conversion for GDPR Article 11 based on the real English legal text.
+      The model covers the Article 11(1) rule that no additional identification
+      information must be maintained, acquired, or processed solely for GDPR
+      compliance when identification is not or no longer required for the purposes.
+      It also covers the Article 11(2) demonstrable inability-to-identify branch, the
+      if-possible information duty, and the rule that Articles 15 to 20 do not apply
+      unless the data subject provides additional information enabling identification.
     </bpmn:documentation>
 
     <bpmn:startEvent id="StartEvent_AssessArticle11_Art11"
-                     name="Need to assess whether identification is required for the processing purpose">
+                     name="Need Article 11 assessment">
       <bpmn:outgoing>Flow_Start_To_TaskAssessIdentificationNeed_Art11</bpmn:outgoing>
     </bpmn:startEvent>
 
     <bpmn:task id="Task_AssessIdentificationNeed_Art11"
-               name="Assess whether the processing purpose requires identification of the data subject">
+               name="Check identification need">
       <bpmn:incoming>Flow_Start_To_TaskAssessIdentificationNeed_Art11</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskAssessIdentificationNeed_To_GatewayPurposeRequiresIdentification_Art11</bpmn:outgoing>
     </bpmn:task>
@@ -57,7 +53,7 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:task id="Task_AvoidAdditionalIdentification_Art11"
-               name="Avoid maintaining, acquiring, or processing additional information solely to identify the data subject">
+               name="Avoid extra identification data">
       <bpmn:incoming>Flow_GatewayPurposeRequiresIdentification_To_TaskAvoidAdditionalIdentification_Art11</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskAvoidAdditionalIdentification_To_GatewayCanDemonstrateInability_Art11</bpmn:outgoing>
     </bpmn:task>
@@ -77,7 +73,7 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:sendTask id="SendTask_InformDataSubject_Art11"
-                   name="Inform the data subject that the controller is not in a position to identify him or her">
+                   name="Inform inability to identify">
       <bpmn:incoming>Flow_GatewayInformPossible_To_SendTaskInformDataSubject_Art11</bpmn:incoming>
       <bpmn:outgoing>Flow_SendTaskInformDataSubject_To_GatewayRightsRequest_Art11</bpmn:outgoing>
     </bpmn:sendTask>
@@ -91,7 +87,7 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:receiveTask id="ReceiveTask_ReceiveRightsRequest_Art11"
-                      name="Receive the rights request and any additional identifying information from the data subject">
+                      name="Receive rights request and added information">
       <bpmn:incoming>Flow_GatewayRightsRequest_To_ReceiveTaskReceiveRightsRequest_Art11</bpmn:incoming>
       <bpmn:outgoing>Flow_ReceiveTaskReceiveRightsRequest_To_GatewayAdditionalInfo_Art11</bpmn:outgoing>
     </bpmn:receiveTask>
@@ -104,27 +100,27 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:endEvent id="EndEvent_Article11NotApplicable_Art11"
-                   name="Article 11 does not relieve the controller from identification steps">
+                   name="Article 11 not applicable">
       <bpmn:incoming>Flow_GatewayPurposeRequiresIdentification_To_EndArticle11NotApplicable_Art11</bpmn:incoming>
     </bpmn:endEvent>
 
     <bpmn:endEvent id="EndEvent_NoArt11Par2Relief_Art11"
-                   name="No additional identification is required solely for compliance, but Article 11(2) relief is not established">
+                   name="Article 11(2) relief not established">
       <bpmn:incoming>Flow_GatewayCanDemonstrateInability_To_EndNoArt11Par2Relief_Art11</bpmn:incoming>
     </bpmn:endEvent>
 
     <bpmn:endEvent id="EndEvent_NoFurtherIdentificationNeeded_Art11"
-                   name="No additional identification is required for compliance and no rights request is pursued">
+                   name="No further identification needed">
       <bpmn:incoming>Flow_GatewayRightsRequest_To_EndNoFurtherIdentificationNeeded_Art11</bpmn:incoming>
     </bpmn:endEvent>
 
     <bpmn:endEvent id="EndEvent_RightsMayProceed_Art11"
-                   name="The rights request may proceed because identification becomes possible">
+                   name="Rights request may proceed">
       <bpmn:incoming>Flow_GatewayAdditionalInfo_To_EndRightsMayProceed_Art11</bpmn:incoming>
     </bpmn:endEvent>
 
     <bpmn:endEvent id="EndEvent_RightsDoNotApply_Art11"
-                   name="Articles 15 to 20 do not apply because identification remains impossible">
+                   name="Articles 15 to 20 do not apply">
       <bpmn:incoming>Flow_GatewayAdditionalInfo_To_EndRightsDoNotApply_Art11</bpmn:incoming>
     </bpmn:endEvent>
 

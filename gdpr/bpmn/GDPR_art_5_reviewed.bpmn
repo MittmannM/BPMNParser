@@ -7,24 +7,22 @@
                   targetNamespace="http://bpmn.io/schema/bpmn">
 
   <bpmn:process id="Process_Controller_Art5"
-                name="Applying the Article 5 processing principles"
+                name="Applying Article 5 principles"
                 isExecutable="false">
     <bpmn:documentation>
-      Manual BPMN conversion for GDPR Article 5 based on DAPRECO LegalRuleML
-      statements1-6. The local XML covers only Article 5(1)(a)-(f), not the separate
-      accountability duty in Article 5(2). This BPMN therefore models the six core
-      processing principles as a structured implementation flow, including the special
-      accuracy branch for rectification or erasure without delay where inaccurate data
-      are identified.
+      Manual BPMN conversion for GDPR Article 5 based on the real English legal text from
+      gdpr_articles/article_5.txt. The model covers the six principles in Article 5(1),
+      including the Article 89(1) compatibility and longer-storage qualifications in
+      points (b) and (e), and the separate accountability duty in Article 5(2).
     </bpmn:documentation>
 
     <bpmn:startEvent id="StartEvent_PlanProcessing_Art5"
-                     name="Need to define a personal-data processing operation">
+                     name="Need processing design">
       <bpmn:outgoing>Flow_Start_To_TaskPlanProcessing_Art5</bpmn:outgoing>
     </bpmn:startEvent>
 
     <bpmn:task id="Task_PlanProcessing_Art5"
-               name="Plan the processing operation and its purposes">
+               name="Define processing and purposes">
       <bpmn:incoming>Flow_Start_To_TaskPlanProcessing_Art5</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskPlanProcessing_To_GatewaySplitPrinciples_Art5</bpmn:outgoing>
     </bpmn:task>
@@ -40,25 +38,25 @@
     </bpmn:parallelGateway>
 
     <bpmn:task id="Task_LawfulnessFairnessTransparency_Art5"
-               name="Ensure that the processing is lawful, fair, and transparent in relation to the data subject">
+               name="Ensure lawful, fair, and transparent processing">
       <bpmn:incoming>Flow_GatewaySplitPrinciples_To_TaskLawfulnessFairnessTransparency_Art5</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskLawfulnessFairnessTransparency_To_GatewayJoinPrinciples_Art5</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_PurposeLimitation_Art5"
-               name="Specify explicit legitimate purposes and verify the compatibility of any further processing">
+               name="Define purposes and check further-processing compatibility">
       <bpmn:incoming>Flow_GatewaySplitPrinciples_To_TaskPurposeLimitation_Art5</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskPurposeLimitation_To_GatewayJoinPrinciples_Art5</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_DataMinimisation_Art5"
-               name="Limit the personal data to what is adequate, relevant, and necessary for the purpose">
+               name="Limit data to what is necessary">
       <bpmn:incoming>Flow_GatewaySplitPrinciples_To_TaskDataMinimisation_Art5</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskDataMinimisation_To_GatewayJoinPrinciples_Art5</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_Accuracy_Art5"
-               name="Keep personal data accurate and up to date for the processing purpose">
+               name="Keep data accurate and up to date">
       <bpmn:incoming>Flow_GatewaySplitPrinciples_To_TaskAccuracy_Art5</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskAccuracy_To_GatewayInaccurateData_Art5</bpmn:outgoing>
     </bpmn:task>
@@ -71,7 +69,7 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:task id="Task_RectifyOrErase_Art5"
-               name="Rectify or erase inaccurate personal data without delay">
+               name="Rectify or erase inaccurate data">
       <bpmn:incoming>Flow_GatewayInaccurateData_To_TaskRectifyOrErase_Art5</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskRectifyOrErase_To_GatewayAccuracyJoin_Art5</bpmn:outgoing>
     </bpmn:task>
@@ -83,13 +81,13 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:task id="Task_StorageLimitation_Art5"
-               name="Limit storage so data subjects are identifiable for no longer than necessary">
+               name="Limit retention and apply Article 89 safeguards for longer storage">
       <bpmn:incoming>Flow_GatewaySplitPrinciples_To_TaskStorageLimitation_Art5</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskStorageLimitation_To_GatewayJoinPrinciples_Art5</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_Security_Art5"
-               name="Ensure integrity and confidentiality with appropriate technical and organisational security measures">
+               name="Protect data with appropriate security measures">
       <bpmn:incoming>Flow_GatewaySplitPrinciples_To_TaskSecurity_Art5</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskSecurity_To_GatewayJoinPrinciples_Art5</bpmn:outgoing>
     </bpmn:task>
@@ -101,12 +99,18 @@
       <bpmn:incoming>Flow_GatewayAccuracyJoin_To_GatewayJoinPrinciples_Art5</bpmn:incoming>
       <bpmn:incoming>Flow_TaskStorageLimitation_To_GatewayJoinPrinciples_Art5</bpmn:incoming>
       <bpmn:incoming>Flow_TaskSecurity_To_GatewayJoinPrinciples_Art5</bpmn:incoming>
-      <bpmn:outgoing>Flow_GatewayJoinPrinciples_To_EndPrinciplesConfigured_Art5</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayJoinPrinciples_To_DemonstrateCompliance_Art5</bpmn:outgoing>
     </bpmn:parallelGateway>
 
+    <bpmn:task id="Task_DemonstrateCompliance_Art5"
+               name="Demonstrate compliance">
+      <bpmn:incoming>Flow_GatewayJoinPrinciples_To_DemonstrateCompliance_Art5</bpmn:incoming>
+      <bpmn:outgoing>Flow_DemonstrateCompliance_To_EndPrinciplesConfigured_Art5</bpmn:outgoing>
+    </bpmn:task>
+
     <bpmn:endEvent id="EndEvent_PrinciplesConfigured_Art5"
-                   name="Article 5 processing principles configured">
-      <bpmn:incoming>Flow_GatewayJoinPrinciples_To_EndPrinciplesConfigured_Art5</bpmn:incoming>
+                   name="Article 5 principles applied">
+      <bpmn:incoming>Flow_DemonstrateCompliance_To_EndPrinciplesConfigured_Art5</bpmn:incoming>
     </bpmn:endEvent>
 
     <bpmn:sequenceFlow id="Flow_Start_To_TaskPlanProcessing_Art5" sourceRef="StartEvent_PlanProcessing_Art5" targetRef="Task_PlanProcessing_Art5" />
@@ -127,7 +131,8 @@
     <bpmn:sequenceFlow id="Flow_GatewayAccuracyJoin_To_GatewayJoinPrinciples_Art5" sourceRef="Gateway_AccuracyJoin_Art5" targetRef="Gateway_JoinPrinciples_Art5" />
     <bpmn:sequenceFlow id="Flow_TaskStorageLimitation_To_GatewayJoinPrinciples_Art5" sourceRef="Task_StorageLimitation_Art5" targetRef="Gateway_JoinPrinciples_Art5" />
     <bpmn:sequenceFlow id="Flow_TaskSecurity_To_GatewayJoinPrinciples_Art5" sourceRef="Task_Security_Art5" targetRef="Gateway_JoinPrinciples_Art5" />
-    <bpmn:sequenceFlow id="Flow_GatewayJoinPrinciples_To_EndPrinciplesConfigured_Art5" sourceRef="Gateway_JoinPrinciples_Art5" targetRef="EndEvent_PrinciplesConfigured_Art5" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoinPrinciples_To_DemonstrateCompliance_Art5" sourceRef="Gateway_JoinPrinciples_Art5" targetRef="Task_DemonstrateCompliance_Art5" />
+    <bpmn:sequenceFlow id="Flow_DemonstrateCompliance_To_EndPrinciplesConfigured_Art5" sourceRef="Task_DemonstrateCompliance_Art5" targetRef="EndEvent_PrinciplesConfigured_Art5" />
   </bpmn:process>
 
   <bpmndi:BPMNDiagram id="BPMNDiagram_Art5_Reviewed">
@@ -145,7 +150,8 @@
       <bpmndi:BPMNShape id="Task_StorageLimitation_Art5_di" bpmnElement="Task_StorageLimitation_Art5"><dc:Bounds x="890" y="540" width="430" height="80" /></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Task_Security_Art5_di" bpmnElement="Task_Security_Art5"><dc:Bounds x="890" y="660" width="500" height="80" /></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_JoinPrinciples_Art5_di" bpmnElement="Gateway_JoinPrinciples_Art5" isMarkerVisible="true"><dc:Bounds x="2470" y="375" width="50" height="50" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="EndEvent_PrinciplesConfigured_Art5_di" bpmnElement="EndEvent_PrinciplesConfigured_Art5"><dc:Bounds x="2680" y="382" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DemonstrateCompliance_Art5_di" bpmnElement="Task_DemonstrateCompliance_Art5"><dc:Bounds x="2650" y="360" width="230" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_PrinciplesConfigured_Art5_di" bpmnElement="EndEvent_PrinciplesConfigured_Art5"><dc:Bounds x="3010" y="382" width="36" height="36" /></bpmndi:BPMNShape>
 
       <bpmndi:BPMNEdge id="Flow_Start_To_TaskPlanProcessing_Art5_di" bpmnElement="Flow_Start_To_TaskPlanProcessing_Art5"><di:waypoint x="156" y="400" /><di:waypoint x="230" y="400" /></bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_TaskPlanProcessing_To_GatewaySplitPrinciples_Art5_di" bpmnElement="Flow_TaskPlanProcessing_To_GatewaySplitPrinciples_Art5"><di:waypoint x="550" y="400" /><di:waypoint x="660" y="400" /></bpmndi:BPMNEdge>
@@ -165,7 +171,8 @@
       <bpmndi:BPMNEdge id="Flow_GatewayAccuracyJoin_To_GatewayJoinPrinciples_Art5_di" bpmnElement="Flow_GatewayAccuracyJoin_To_GatewayJoinPrinciples_Art5"><di:waypoint x="2190" y="440" /><di:waypoint x="2470" y="400" /></bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_TaskStorageLimitation_To_GatewayJoinPrinciples_Art5_di" bpmnElement="Flow_TaskStorageLimitation_To_GatewayJoinPrinciples_Art5"><di:waypoint x="1320" y="580" /><di:waypoint x="2495" y="580" /><di:waypoint x="2495" y="425" /></bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_TaskSecurity_To_GatewayJoinPrinciples_Art5_di" bpmnElement="Flow_TaskSecurity_To_GatewayJoinPrinciples_Art5"><di:waypoint x="1390" y="700" /><di:waypoint x="2495" y="700" /><di:waypoint x="2495" y="425" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayJoinPrinciples_To_EndPrinciplesConfigured_Art5_di" bpmnElement="Flow_GatewayJoinPrinciples_To_EndPrinciplesConfigured_Art5"><di:waypoint x="2520" y="400" /><di:waypoint x="2680" y="400" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinPrinciples_To_DemonstrateCompliance_Art5_di" bpmnElement="Flow_GatewayJoinPrinciples_To_DemonstrateCompliance_Art5"><di:waypoint x="2520" y="400" /><di:waypoint x="2650" y="400" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_DemonstrateCompliance_To_EndPrinciplesConfigured_Art5_di" bpmnElement="Flow_DemonstrateCompliance_To_EndPrinciplesConfigured_Art5"><di:waypoint x="2880" y="400" /><di:waypoint x="3010" y="400" /></bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>

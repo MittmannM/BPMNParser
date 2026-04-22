@@ -30,19 +30,16 @@
                 name="Requesting a judicial remedy against a supervisory authority"
                 isExecutable="false">
     <bpmn:documentation>
-      Manual BPMN conversion for GDPR Article 78 based on DAPRECO LegalRuleML
-      statements265-266 and checked against the current Article 78 text. The XML
-      directly encodes two remedy triggers: a legally binding supervisory-authority
-      decision concerning a natural or legal person, and the Article 77 complaint path
-      where the competent supervisory authority does not handle the complaint or does
-      not inform the data subject within three months on the progress or outcome. The
-      court venue rule in Article 78(3) and the forwarding duty in Article 78(4) are
-      added transparently from the official article text because they are not serialized
-      in the local XML file.
+      Manual BPMN conversion for GDPR Article 78 based on the real English legal text from
+      gdpr_articles/article_78.txt. The model shows the Article 78(1) remedy against a
+      legally binding supervisory-authority decision, the Article 78(2) remedy where the
+      competent authority does not handle an Article 77 complaint or does not inform the
+      data subject within three months, the Article 78(3) court-venue rule, and the
+      Article 78(4) duty to forward Board material to the court where applicable.
     </bpmn:documentation>
 
     <bpmn:startEvent id="StartEvent_AssessJudicialRemedy_Art78"
-                     name="Need to assess a judicial remedy against a supervisory authority">
+                     name="Need judicial remedy">
       <bpmn:outgoing>Flow_Start_To_GatewayTrigger_Art78</bpmn:outgoing>
     </bpmn:startEvent>
 
@@ -57,31 +54,31 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:task id="Task_VerifyNaturalPersonDecision_Art78"
-               name="Verify that a legally binding supervisory-authority decision concerns the natural person">
+               name="Check binding decision concerning natural person">
       <bpmn:incoming>Flow_GatewayTrigger_To_VerifyNaturalPersonDecision_Art78</bpmn:incoming>
       <bpmn:outgoing>Flow_VerifyNaturalPersonDecision_To_GatewayGroundReady_Art78</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_VerifyLegalPersonDecision_Art78"
-               name="Verify that a legally binding supervisory-authority decision concerns the legal person">
+               name="Check binding decision concerning legal person">
       <bpmn:incoming>Flow_GatewayTrigger_To_VerifyLegalPersonDecision_Art78</bpmn:incoming>
       <bpmn:outgoing>Flow_VerifyLegalPersonDecision_To_GatewayGroundReady_Art78</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_VerifyComplaintNotHandled_Art78"
-               name="Verify that the competent supervisory authority did not handle the Article 77 complaint">
+               name="Check complaint not handled">
       <bpmn:incoming>Flow_GatewayTrigger_To_VerifyComplaintNotHandled_Art78</bpmn:incoming>
       <bpmn:outgoing>Flow_VerifyComplaintNotHandled_To_GatewayGroundReady_Art78</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_VerifyNoThreeMonthInfo_Art78"
-               name="Verify that no progress or outcome information was received within three months">
+               name="Check no information within three months">
       <bpmn:incoming>Flow_GatewayTrigger_To_VerifyNoThreeMonthInfo_Art78</bpmn:incoming>
       <bpmn:outgoing>Flow_VerifyNoThreeMonthInfo_To_GatewayGroundReady_Art78</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:endEvent id="EndEvent_NoRemedyRoute_Art78"
-                   name="No Article 78 judicial remedy route is available">
+                   name="No Article 78 route available">
       <bpmn:incoming>Flow_GatewayTrigger_To_EndNoRemedy_Art78</bpmn:incoming>
     </bpmn:endEvent>
 
@@ -94,13 +91,13 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:sendTask id="SendTask_BringProceedingsToCourt_Art78"
-                   name="Bring proceedings before the court of the Member State where the supervisory authority is established">
+                   name="Bring proceedings before SA Member-State court">
       <bpmn:incoming>Flow_GatewayGroundReady_To_BringProceedingsToCourt_Art78</bpmn:incoming>
       <bpmn:outgoing>Flow_BringProceedingsToCourt_To_EndRemedyRequested_Art78</bpmn:outgoing>
     </bpmn:sendTask>
 
     <bpmn:endEvent id="EndEvent_RemedyRequested_Art78"
-                   name="Judicial remedy requested before the competent court">
+                   name="Judicial remedy requested">
       <bpmn:incoming>Flow_BringProceedingsToCourt_To_EndRemedyRequested_Art78</bpmn:incoming>
     </bpmn:endEvent>
 
@@ -119,39 +116,39 @@
   </bpmn:process>
 
   <bpmn:process id="Process_SupervisoryAuthority_Art78"
-                name="Forwarding Board material to the court when required"
+                name="Forwarding Board material"
                 isExecutable="false">
     <bpmn:startEvent id="StartEvent_ProceedingsNotice_Art78"
-                     name="Proceedings against a supervisory-authority decision are pending before the court">
+                     name="Proceedings pending before court">
       <bpmn:outgoing>Flow_StartAuthority_To_ReceiveNoticeOfProceedings_Art78</bpmn:outgoing>
     </bpmn:startEvent>
 
     <bpmn:receiveTask id="ReceiveTask_ReceiveNoticeOfProceedings_Art78"
-                      name="Receive notice that proceedings concern a supervisory-authority decision">
+                      name="Receive notice of proceedings">
       <bpmn:incoming>Flow_StartAuthority_To_ReceiveNoticeOfProceedings_Art78</bpmn:incoming>
       <bpmn:outgoing>Flow_ReceiveNoticeOfProceedings_To_GatewayBoardMaterial_Art78</bpmn:outgoing>
     </bpmn:receiveTask>
 
     <bpmn:exclusiveGateway id="Gateway_BoardMaterial_Art78"
-                           name="Was the contested decision preceded by a Board opinion or decision?">
+                           name="Was the contested decision preceded by Board material?">
       <bpmn:incoming>Flow_ReceiveNoticeOfProceedings_To_GatewayBoardMaterial_Art78</bpmn:incoming>
       <bpmn:outgoing>Flow_GatewayBoardMaterial_To_EndNoForwarding_Art78</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewayBoardMaterial_To_ForwardBoardMaterial_Art78</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
     <bpmn:endEvent id="EndEvent_NoForwardingNeeded_Art78"
-                   name="No Board opinion or decision must be forwarded">
+                   name="No Board material to forward">
       <bpmn:incoming>Flow_GatewayBoardMaterial_To_EndNoForwarding_Art78</bpmn:incoming>
     </bpmn:endEvent>
 
     <bpmn:sendTask id="SendTask_ForwardBoardMaterial_Art78"
-                   name="Forward the Board opinion or decision to the court">
+                   name="Forward Board material to court">
       <bpmn:incoming>Flow_GatewayBoardMaterial_To_ForwardBoardMaterial_Art78</bpmn:incoming>
       <bpmn:outgoing>Flow_ForwardBoardMaterial_To_EndForwardingCompleted_Art78</bpmn:outgoing>
     </bpmn:sendTask>
 
     <bpmn:endEvent id="EndEvent_ForwardingCompleted_Art78"
-                   name="Board opinion or decision forwarded to the court">
+                   name="Board material forwarded">
       <bpmn:incoming>Flow_ForwardBoardMaterial_To_EndForwardingCompleted_Art78</bpmn:incoming>
     </bpmn:endEvent>
 

@@ -3,7 +3,6 @@
                   xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
                   xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
                   xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
-                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   id="Definitions_Art42_Reviewed"
                   targetNamespace="http://bpmn.io/schema/bpmn">
 
@@ -14,56 +13,109 @@
     <bpmn:participant id="Participant_CertificationBody_Art42"
                       name="Accredited Certification Body"
                       processRef="Process_CertificationBody_Art42" />
+    <bpmn:participant id="Participant_SupervisoryAuthority_Art42"
+                      name="Supervisory Authority"
+                      processRef="Process_SupervisoryAuthority_Art42" />
+    <bpmn:participant id="Participant_Board_Art42"
+                      name="Board" />
 
-    <bpmn:messageFlow id="MessageFlow_RequestCertification_Art42"
-                      sourceRef="SendTask_RequestCertification_Art42"
-                      targetRef="ReceiveTask_ReceiveCertificationRequest_Art42" />
-    <bpmn:messageFlow id="MessageFlow_RequestInformation_Art42"
-                      sourceRef="SendTask_RequestInformation_Art42"
-                      targetRef="Task_ProvideInformationAccess_Art42" />
-    <bpmn:messageFlow id="MessageFlow_ProvideInformation_Art42"
-                      sourceRef="Task_ProvideInformationAccess_Art42"
-                      targetRef="ReceiveTask_ReceiveInformation_Art42" />
-    <bpmn:messageFlow id="MessageFlow_RequestRenewalInformation_Art42"
-                      sourceRef="SendTask_RequestRenewalInformation_Art42"
-                      targetRef="Task_ProvideUpdatedInformation_Art42" />
-    <bpmn:messageFlow id="MessageFlow_ProvideUpdatedInformation_Art42"
-                      sourceRef="Task_ProvideUpdatedInformation_Art42"
-                      targetRef="ReceiveTask_ReceiveRenewalInformation_Art42" />
-    <bpmn:messageFlow id="MessageFlow_RejectRenewal_Art42"
-                      sourceRef="SendTask_RejectRenewal_Art42"
-                      targetRef="ReceiveTask_ReceiveRenewalDecision_Art42" />
-    <bpmn:messageFlow id="MessageFlow_RejectCertification_Art42"
-                      sourceRef="SendTask_RejectCertification_Art42"
-                      targetRef="ReceiveTask_ReceiveCertificationDecision_Art42" />
-    <bpmn:messageFlow id="MessageFlow_GrantCertification_Art42"
-                      sourceRef="SendTask_GrantCertification_Art42"
-                      targetRef="ReceiveTask_ReceiveCertificationDecision_Art42" />
-    <bpmn:messageFlow id="MessageFlow_RenewCertification_Art42"
-                      sourceRef="SendTask_RenewCertification_Art42"
-                      targetRef="ReceiveTask_ReceiveRenewalDecision_Art42" />
+    <bpmn:messageFlow id="MessageFlow_RequestBodyCertification_Art42"
+                      sourceRef="SendTask_RequestBodyCertification_Art42"
+                      targetRef="ReceiveTask_ReceiveBodyCertificationRequest_Art42" />
+    <bpmn:messageFlow id="MessageFlow_RequestAuthorityCertification_Art42"
+                      sourceRef="SendTask_RequestAuthorityCertification_Art42"
+                      targetRef="ReceiveTask_ReceiveAuthorityCertificationRequest_Art42" />
+    <bpmn:messageFlow id="MessageFlow_RequestBodyInfo_Art42"
+                      sourceRef="SendTask_RequestBodyInfo_Art42"
+                      targetRef="Task_ProvideBodyInfo_Art42" />
+    <bpmn:messageFlow id="MessageFlow_RequestAuthorityInfo_Art42"
+                      sourceRef="SendTask_RequestAuthorityInfo_Art42"
+                      targetRef="Task_ProvideAuthorityInfo_Art42" />
+    <bpmn:messageFlow id="MessageFlow_ProvideBodyInfo_Art42"
+                      sourceRef="Task_ProvideBodyInfo_Art42"
+                      targetRef="ReceiveTask_ReceiveBodyInfo_Art42" />
+    <bpmn:messageFlow id="MessageFlow_ProvideAuthorityInfo_Art42"
+                      sourceRef="Task_ProvideAuthorityInfo_Art42"
+                      targetRef="ReceiveTask_ReceiveAuthorityInfo_Art42" />
+    <bpmn:messageFlow id="MessageFlow_RejectBodyCertification_Art42"
+                      sourceRef="SendTask_RejectBodyCertification_Art42"
+                      targetRef="ReceiveTask_ReceiveBodyStatus_Art42" />
+    <bpmn:messageFlow id="MessageFlow_IssueBodyCertification_Art42"
+                      sourceRef="SendTask_IssueBodyCertification_Art42"
+                      targetRef="ReceiveTask_ReceiveBodyStatus_Art42" />
+    <bpmn:messageFlow id="MessageFlow_RequestBodyRenewal_Art42"
+                      sourceRef="SendTask_RequestBodyRenewal_Art42"
+                      targetRef="ReceiveTask_ReceiveBodyRenewalRequest_Art42" />
+    <bpmn:messageFlow id="MessageFlow_RequestBodyRenewalInfo_Art42"
+                      sourceRef="SendTask_RequestBodyRenewalInfo_Art42"
+                      targetRef="Task_ProvideBodyRenewalInfo_Art42" />
+    <bpmn:messageFlow id="MessageFlow_ProvideBodyRenewalInfo_Art42"
+                      sourceRef="Task_ProvideBodyRenewalInfo_Art42"
+                      targetRef="ReceiveTask_ReceiveBodyRenewalInfo_Art42" />
+    <bpmn:messageFlow id="MessageFlow_RenewBodyCertification_Art42"
+                      sourceRef="SendTask_RenewBodyCertification_Art42"
+                      targetRef="ReceiveTask_ReceiveBodyRenewalStatus_Art42" />
+    <bpmn:messageFlow id="MessageFlow_WithdrawBodyCertification_Art42"
+                      sourceRef="SendTask_WithdrawBodyCertification_Art42"
+                      targetRef="Participant_ControllerProcessor_Art42" />
+    <bpmn:messageFlow id="MessageFlow_RejectAuthorityCertification_Art42"
+                      sourceRef="SendTask_RejectAuthorityCertification_Art42"
+                      targetRef="ReceiveTask_ReceiveAuthorityStatus_Art42" />
+    <bpmn:messageFlow id="MessageFlow_IssueAuthorityCertification_Art42"
+                      sourceRef="SendTask_IssueAuthorityCertification_Art42"
+                      targetRef="ReceiveTask_ReceiveAuthorityStatus_Art42" />
+    <bpmn:messageFlow id="MessageFlow_RequestAuthorityRenewal_Art42"
+                      sourceRef="SendTask_RequestAuthorityRenewal_Art42"
+                      targetRef="ReceiveTask_ReceiveAuthorityRenewalRequest_Art42" />
+    <bpmn:messageFlow id="MessageFlow_RequestAuthorityRenewalInfo_Art42"
+                      sourceRef="SendTask_RequestAuthorityRenewalInfo_Art42"
+                      targetRef="Task_ProvideAuthorityRenewalInfo_Art42" />
+    <bpmn:messageFlow id="MessageFlow_ProvideAuthorityRenewalInfo_Art42"
+                      sourceRef="Task_ProvideAuthorityRenewalInfo_Art42"
+                      targetRef="ReceiveTask_ReceiveAuthorityRenewalInfo_Art42" />
+    <bpmn:messageFlow id="MessageFlow_RenewAuthorityCertification_Art42"
+                      sourceRef="SendTask_RenewAuthorityCertification_Art42"
+                      targetRef="ReceiveTask_ReceiveAuthorityRenewalStatus_Art42" />
+    <bpmn:messageFlow id="MessageFlow_WithdrawAuthorityCertification_Art42"
+                      sourceRef="SendTask_WithdrawAuthorityCertification_Art42"
+                      targetRef="Participant_ControllerProcessor_Art42" />
+    <bpmn:messageFlow id="MessageFlow_IssueBodyCertificationToBoard_Art42"
+                      sourceRef="SendTask_IssueBodyCertification_Art42"
+                      targetRef="Participant_Board_Art42" />
+    <bpmn:messageFlow id="MessageFlow_IssueAuthorityCertificationToBoard_Art42"
+                      sourceRef="SendTask_IssueAuthorityCertification_Art42"
+                      targetRef="Participant_Board_Art42" />
   </bpmn:collaboration>
 
   <bpmn:process id="Process_ControllerProcessor_Art42"
-                name="Seeking and using certification"
+                name="Seeking certification under Article 42"
                 isExecutable="false">
     <bpmn:documentation>
-      Manual BPMN conversion for GDPR Article 42 based on DAPRECO LegalRuleML statements235-238.
-      The model reflects the voluntary use of an approved certification mechanism, the duty to
-      provide all information and access needed for the certification procedure, and the grant,
-      duration, and renewal handling of certification, seals, or marks.
+      Manual BPMN conversion for GDPR Article 42 based on the real English legal text
+      copied into gdpr_articles/article_42.txt. This model captures the voluntary and
+      transparent certification route, the Article 42(2) safeguard option for non-
+      Article-3 entities under Article 46(2)(f), the rule that certification does not
+      reduce compliance responsibility, the alternative certification-body and
+      supervisory-authority issuance routes, the information-and-access duty, and the
+      renewal handling for certifications issued for up to three years.
     </bpmn:documentation>
 
-    <bpmn:startEvent id="StartEvent_DemonstrateCompliance_Art42"
-                     name="Need to demonstrate GDPR compliance">
-      <bpmn:outgoing>Flow_Start_To_GatewayVoluntary_Art42</bpmn:outgoing>
+    <bpmn:startEvent id="StartEvent_NeedComplianceSignal_Art42"
+                     name="Need compliance signal">
+      <bpmn:outgoing>Flow_Start_To_TaskRetainResponsibility_Art42</bpmn:outgoing>
     </bpmn:startEvent>
+
+    <bpmn:task id="Task_RetainResponsibility_Art42"
+               name="Retain compliance responsibility">
+      <bpmn:incoming>Flow_Start_To_TaskRetainResponsibility_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskRetainResponsibility_To_GatewayVoluntary_Art42</bpmn:outgoing>
+    </bpmn:task>
 
     <bpmn:exclusiveGateway id="Gateway_VoluntaryCertification_Art42"
                            name="Will certification be sought voluntarily?">
-      <bpmn:incoming>Flow_Start_To_GatewayVoluntary_Art42</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskRetainResponsibility_To_GatewayVoluntary_Art42</bpmn:incoming>
       <bpmn:outgoing>Flow_GatewayVoluntary_To_EndNoCertification_Art42</bpmn:outgoing>
-      <bpmn:outgoing>Flow_GatewayVoluntary_To_RequestCertification_Art42</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayVoluntary_To_GatewayTransferSafeguards_Art42</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
     <bpmn:endEvent id="EndEvent_NoCertification_Art42"
@@ -71,659 +123,906 @@
       <bpmn:incoming>Flow_GatewayVoluntary_To_EndNoCertification_Art42</bpmn:incoming>
     </bpmn:endEvent>
 
-    <bpmn:sendTask id="SendTask_RequestCertification_Art42"
-                   name="Request certification under an approved certification mechanism">
-      <bpmn:incoming>Flow_GatewayVoluntary_To_RequestCertification_Art42</bpmn:incoming>
-      <bpmn:outgoing>Flow_RequestCertification_To_ProvideInformation_Art42</bpmn:outgoing>
+    <bpmn:exclusiveGateway id="Gateway_TransferSafeguards_Art42"
+                           name="Is Article 46(2)(f) safeguard certification needed?">
+      <bpmn:incoming>Flow_GatewayVoluntary_To_GatewayTransferSafeguards_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayTransferSafeguards_To_TaskBindingCommitments_Art42</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayTransferSafeguards_To_GatewayIssuingRoute_Art42</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_MakeBindingCommitments_Art42"
+               name="Make binding commitments">
+      <bpmn:incoming>Flow_GatewayTransferSafeguards_To_TaskBindingCommitments_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskBindingCommitments_To_GatewayIssuingRoute_Art42</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_IssuingRoute_Art42"
+                           name="Will an accredited certification body handle the certification?">
+      <bpmn:incoming>Flow_GatewayTransferSafeguards_To_GatewayIssuingRoute_Art42</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskBindingCommitments_To_GatewayIssuingRoute_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayIssuingRoute_To_SendBodyRequest_Art42</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayIssuingRoute_To_SendAuthorityRequest_Art42</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="SendTask_RequestBodyCertification_Art42"
+                   name="Request body certification">
+      <bpmn:incoming>Flow_GatewayIssuingRoute_To_SendBodyRequest_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendBodyRequest_To_TaskProvideBodyInfo_Art42</bpmn:outgoing>
     </bpmn:sendTask>
 
-    <bpmn:task id="Task_ProvideInformationAccess_Art42"
-               name="Provide all information and access required for the initial certification procedure">
-      <bpmn:incoming>Flow_RequestCertification_To_ProvideInformation_Art42</bpmn:incoming>
-      <bpmn:outgoing>Flow_ProvideInformation_To_ReceiveDecision_Art42</bpmn:outgoing>
+    <bpmn:task id="Task_ProvideBodyInfo_Art42"
+               name="Provide body information and access">
+      <bpmn:incoming>Flow_SendBodyRequest_To_TaskProvideBodyInfo_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskProvideBodyInfo_To_ReceiveBodyStatus_Art42</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:receiveTask id="ReceiveTask_ReceiveCertificationDecision_Art42"
-                      name="Receive the certification decision">
-      <bpmn:incoming>Flow_ProvideInformation_To_ReceiveDecision_Art42</bpmn:incoming>
-      <bpmn:outgoing>Flow_ReceiveDecision_To_GatewayGranted_Art42</bpmn:outgoing>
+    <bpmn:receiveTask id="ReceiveTask_ReceiveBodyStatus_Art42"
+                      name="Receive body certification status">
+      <bpmn:incoming>Flow_TaskProvideBodyInfo_To_ReceiveBodyStatus_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveBodyStatus_To_GatewayBodyCertified_Art42</bpmn:outgoing>
     </bpmn:receiveTask>
 
-    <bpmn:exclusiveGateway id="Gateway_CertificationGranted_Art42"
-                           name="Was certification granted?">
-      <bpmn:incoming>Flow_ReceiveDecision_To_GatewayGranted_Art42</bpmn:incoming>
-      <bpmn:outgoing>Flow_GatewayGranted_To_EndNotCertified_Art42</bpmn:outgoing>
-      <bpmn:outgoing>Flow_GatewayGranted_To_UseCertification_Art42</bpmn:outgoing>
+    <bpmn:exclusiveGateway id="Gateway_BodyCertified_Art42"
+                           name="Was body certification issued?">
+      <bpmn:incoming>Flow_ReceiveBodyStatus_To_GatewayBodyCertified_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayBodyCertified_To_EndBodyNotCertified_Art42</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayBodyCertified_To_TaskUseBodyCertification_Art42</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
-    <bpmn:endEvent id="EndEvent_NotCertified_Art42"
-                   name="Certification was not granted">
-      <bpmn:incoming>Flow_GatewayGranted_To_EndNotCertified_Art42</bpmn:incoming>
+    <bpmn:endEvent id="EndEvent_BodyNotCertified_Art42"
+                   name="Body certification not issued">
+      <bpmn:incoming>Flow_GatewayBodyCertified_To_EndBodyNotCertified_Art42</bpmn:incoming>
     </bpmn:endEvent>
 
-    <bpmn:task id="Task_UseCertification_Art42"
-               name="Use the certification, seal, or mark to demonstrate compliance">
-      <bpmn:incoming>Flow_GatewayGranted_To_UseCertification_Art42</bpmn:incoming>
-      <bpmn:incoming>Flow_GatewayRenewed_To_UseCertification_Art42</bpmn:incoming>
-      <bpmn:outgoing>Flow_UseCertification_To_GatewayRenewal_Art42</bpmn:outgoing>
+    <bpmn:task id="Task_UseBodyCertification_Art42"
+               name="Use body certification">
+      <bpmn:incoming>Flow_GatewayBodyCertified_To_TaskUseBodyCertification_Art42</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayBodyRenewed_To_TaskUseBodyCertification_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskUseBodyCertification_To_GatewayBodyRenewalRequested_Art42</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:exclusiveGateway id="Gateway_RenewalRequested_Art42"
-                           name="Is renewal requested before the certification expires?">
-      <bpmn:incoming>Flow_UseCertification_To_GatewayRenewal_Art42</bpmn:incoming>
-      <bpmn:outgoing>Flow_GatewayRenewal_To_EndCertificationExpires_Art42</bpmn:outgoing>
-      <bpmn:outgoing>Flow_GatewayRenewal_To_ProvideUpdatedInformation_Art42</bpmn:outgoing>
+    <bpmn:exclusiveGateway id="Gateway_BodyRenewalRequested_Art42"
+                           name="Will renewal be requested before expiry?">
+      <bpmn:incoming>Flow_TaskUseBodyCertification_To_GatewayBodyRenewalRequested_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayBodyRenewalRequested_To_EndBodyTermEnded_Art42</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayBodyRenewalRequested_To_SendBodyRenewalRequest_Art42</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
-    <bpmn:endEvent id="EndEvent_CertificationExpires_Art42"
-                   name="Certification term ends without renewal">
-      <bpmn:incoming>Flow_GatewayRenewal_To_EndCertificationExpires_Art42</bpmn:incoming>
+    <bpmn:endEvent id="EndEvent_BodyTermEnded_Art42"
+                   name="Body certification term ended">
+      <bpmn:incoming>Flow_GatewayBodyRenewalRequested_To_EndBodyTermEnded_Art42</bpmn:incoming>
     </bpmn:endEvent>
 
-    <bpmn:task id="Task_ProvideUpdatedInformation_Art42"
-               name="Provide updated information and access for the renewal assessment">
-      <bpmn:incoming>Flow_GatewayRenewal_To_ProvideUpdatedInformation_Art42</bpmn:incoming>
-      <bpmn:outgoing>Flow_ProvideUpdatedInformation_To_ReceiveRenewalDecision_Art42</bpmn:outgoing>
+    <bpmn:sendTask id="SendTask_RequestBodyRenewal_Art42"
+                   name="Request body renewal">
+      <bpmn:incoming>Flow_GatewayBodyRenewalRequested_To_SendBodyRenewalRequest_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendBodyRenewalRequest_To_TaskProvideBodyRenewalInfo_Art42</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:task id="Task_ProvideBodyRenewalInfo_Art42"
+               name="Provide body renewal information">
+      <bpmn:incoming>Flow_SendBodyRenewalRequest_To_TaskProvideBodyRenewalInfo_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskProvideBodyRenewalInfo_To_ReceiveBodyRenewalStatus_Art42</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:receiveTask id="ReceiveTask_ReceiveRenewalDecision_Art42"
-                      name="Receive the renewal decision">
-      <bpmn:incoming>Flow_ProvideUpdatedInformation_To_ReceiveRenewalDecision_Art42</bpmn:incoming>
-      <bpmn:outgoing>Flow_ReceiveRenewalDecision_To_GatewayRenewed_Art42</bpmn:outgoing>
+    <bpmn:receiveTask id="ReceiveTask_ReceiveBodyRenewalStatus_Art42"
+                      name="Receive body renewal status">
+      <bpmn:incoming>Flow_TaskProvideBodyRenewalInfo_To_ReceiveBodyRenewalStatus_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveBodyRenewalStatus_To_GatewayBodyRenewed_Art42</bpmn:outgoing>
     </bpmn:receiveTask>
 
-    <bpmn:exclusiveGateway id="Gateway_Renewed_Art42"
-                           name="Was certification renewed?">
-      <bpmn:incoming>Flow_ReceiveRenewalDecision_To_GatewayRenewed_Art42</bpmn:incoming>
-      <bpmn:outgoing>Flow_GatewayRenewed_To_EndRenewalRejected_Art42</bpmn:outgoing>
-      <bpmn:outgoing>Flow_GatewayRenewed_To_UseCertification_Art42</bpmn:outgoing>
+    <bpmn:exclusiveGateway id="Gateway_BodyRenewed_Art42"
+                           name="Was body certification renewed?">
+      <bpmn:incoming>Flow_ReceiveBodyRenewalStatus_To_GatewayBodyRenewed_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayBodyRenewed_To_EndBodyCertificationInvalid_Art42</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayBodyRenewed_To_TaskUseBodyCertification_Art42</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
-    <bpmn:endEvent id="EndEvent_RenewalRejected_Art42"
-                   name="Certification renewal was not granted">
-      <bpmn:incoming>Flow_GatewayRenewed_To_EndRenewalRejected_Art42</bpmn:incoming>
+    <bpmn:endEvent id="EndEvent_BodyCertificationInvalid_Art42"
+                   name="Body certification no longer valid">
+      <bpmn:incoming>Flow_GatewayBodyRenewed_To_EndBodyCertificationInvalid_Art42</bpmn:incoming>
     </bpmn:endEvent>
 
-    <bpmn:sequenceFlow id="Flow_Start_To_GatewayVoluntary_Art42"
-                       sourceRef="StartEvent_DemonstrateCompliance_Art42"
-                       targetRef="Gateway_VoluntaryCertification_Art42" />
-    <bpmn:sequenceFlow id="Flow_GatewayVoluntary_To_EndNoCertification_Art42"
-                       name="No"
-                       sourceRef="Gateway_VoluntaryCertification_Art42"
-                       targetRef="EndEvent_NoCertification_Art42" />
-    <bpmn:sequenceFlow id="Flow_GatewayVoluntary_To_RequestCertification_Art42"
-                       name="Yes"
-                       sourceRef="Gateway_VoluntaryCertification_Art42"
-                       targetRef="SendTask_RequestCertification_Art42" />
-    <bpmn:sequenceFlow id="Flow_RequestCertification_To_ProvideInformation_Art42"
-                       sourceRef="SendTask_RequestCertification_Art42"
-                       targetRef="Task_ProvideInformationAccess_Art42" />
-    <bpmn:sequenceFlow id="Flow_ProvideInformation_To_ReceiveDecision_Art42"
-                       sourceRef="Task_ProvideInformationAccess_Art42"
-                       targetRef="ReceiveTask_ReceiveCertificationDecision_Art42" />
-    <bpmn:sequenceFlow id="Flow_ReceiveDecision_To_GatewayGranted_Art42"
-                       sourceRef="ReceiveTask_ReceiveCertificationDecision_Art42"
-                       targetRef="Gateway_CertificationGranted_Art42" />
-    <bpmn:sequenceFlow id="Flow_GatewayGranted_To_EndNotCertified_Art42"
-                       name="No"
-                       sourceRef="Gateway_CertificationGranted_Art42"
-                       targetRef="EndEvent_NotCertified_Art42" />
-    <bpmn:sequenceFlow id="Flow_GatewayGranted_To_UseCertification_Art42"
-                       name="Yes"
-                       sourceRef="Gateway_CertificationGranted_Art42"
-                       targetRef="Task_UseCertification_Art42" />
-    <bpmn:sequenceFlow id="Flow_UseCertification_To_GatewayRenewal_Art42"
-                       sourceRef="Task_UseCertification_Art42"
-                       targetRef="Gateway_RenewalRequested_Art42" />
-    <bpmn:sequenceFlow id="Flow_GatewayRenewal_To_EndCertificationExpires_Art42"
-                       name="No"
-                       sourceRef="Gateway_RenewalRequested_Art42"
-                       targetRef="EndEvent_CertificationExpires_Art42" />
-    <bpmn:sequenceFlow id="Flow_GatewayRenewal_To_ProvideUpdatedInformation_Art42"
-                       name="Yes"
-                       sourceRef="Gateway_RenewalRequested_Art42"
-                       targetRef="Task_ProvideUpdatedInformation_Art42" />
-    <bpmn:sequenceFlow id="Flow_ProvideUpdatedInformation_To_ReceiveRenewalDecision_Art42"
-                       sourceRef="Task_ProvideUpdatedInformation_Art42"
-                       targetRef="ReceiveTask_ReceiveRenewalDecision_Art42" />
-    <bpmn:sequenceFlow id="Flow_ReceiveRenewalDecision_To_GatewayRenewed_Art42"
-                       sourceRef="ReceiveTask_ReceiveRenewalDecision_Art42"
-                       targetRef="Gateway_Renewed_Art42" />
-    <bpmn:sequenceFlow id="Flow_GatewayRenewed_To_EndRenewalRejected_Art42"
-                       name="No"
-                       sourceRef="Gateway_Renewed_Art42"
-                       targetRef="EndEvent_RenewalRejected_Art42" />
-    <bpmn:sequenceFlow id="Flow_GatewayRenewed_To_UseCertification_Art42"
-                       name="Yes"
-                       sourceRef="Gateway_Renewed_Art42"
-                       targetRef="Task_UseCertification_Art42" />
+    <bpmn:sendTask id="SendTask_RequestAuthorityCertification_Art42"
+                   name="Request authority certification">
+      <bpmn:incoming>Flow_GatewayIssuingRoute_To_SendAuthorityRequest_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendAuthorityRequest_To_TaskProvideAuthorityInfo_Art42</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:task id="Task_ProvideAuthorityInfo_Art42"
+               name="Provide authority information and access">
+      <bpmn:incoming>Flow_SendAuthorityRequest_To_TaskProvideAuthorityInfo_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskProvideAuthorityInfo_To_ReceiveAuthorityStatus_Art42</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveAuthorityStatus_Art42"
+                      name="Receive authority certification status">
+      <bpmn:incoming>Flow_TaskProvideAuthorityInfo_To_ReceiveAuthorityStatus_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveAuthorityStatus_To_GatewayAuthorityCertified_Art42</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:exclusiveGateway id="Gateway_AuthorityCertified_Art42"
+                           name="Was authority certification issued?">
+      <bpmn:incoming>Flow_ReceiveAuthorityStatus_To_GatewayAuthorityCertified_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAuthorityCertified_To_EndAuthorityNotCertified_Art42</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAuthorityCertified_To_TaskUseAuthorityCertification_Art42</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_AuthorityNotCertified_Art42"
+                   name="Authority certification not issued">
+      <bpmn:incoming>Flow_GatewayAuthorityCertified_To_EndAuthorityNotCertified_Art42</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:task id="Task_UseAuthorityCertification_Art42"
+               name="Use authority certification">
+      <bpmn:incoming>Flow_GatewayAuthorityCertified_To_TaskUseAuthorityCertification_Art42</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayAuthorityRenewed_To_TaskUseAuthorityCertification_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskUseAuthorityCertification_To_GatewayAuthorityRenewalRequested_Art42</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_AuthorityRenewalRequested_Art42"
+                           name="Will authority renewal be requested before expiry?">
+      <bpmn:incoming>Flow_TaskUseAuthorityCertification_To_GatewayAuthorityRenewalRequested_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAuthorityRenewalRequested_To_EndAuthorityTermEnded_Art42</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAuthorityRenewalRequested_To_SendAuthorityRenewalRequest_Art42</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_AuthorityTermEnded_Art42"
+                   name="Authority certification term ended">
+      <bpmn:incoming>Flow_GatewayAuthorityRenewalRequested_To_EndAuthorityTermEnded_Art42</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sendTask id="SendTask_RequestAuthorityRenewal_Art42"
+                   name="Request authority renewal">
+      <bpmn:incoming>Flow_GatewayAuthorityRenewalRequested_To_SendAuthorityRenewalRequest_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendAuthorityRenewalRequest_To_TaskProvideAuthorityRenewalInfo_Art42</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:task id="Task_ProvideAuthorityRenewalInfo_Art42"
+               name="Provide authority renewal information">
+      <bpmn:incoming>Flow_SendAuthorityRenewalRequest_To_TaskProvideAuthorityRenewalInfo_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskProvideAuthorityRenewalInfo_To_ReceiveAuthorityRenewalStatus_Art42</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveAuthorityRenewalStatus_Art42"
+                      name="Receive authority renewal status">
+      <bpmn:incoming>Flow_TaskProvideAuthorityRenewalInfo_To_ReceiveAuthorityRenewalStatus_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveAuthorityRenewalStatus_To_GatewayAuthorityRenewed_Art42</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:exclusiveGateway id="Gateway_AuthorityRenewed_Art42"
+                           name="Was authority certification renewed?">
+      <bpmn:incoming>Flow_ReceiveAuthorityRenewalStatus_To_GatewayAuthorityRenewed_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAuthorityRenewed_To_EndAuthorityCertificationInvalid_Art42</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAuthorityRenewed_To_TaskUseAuthorityCertification_Art42</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_AuthorityCertificationInvalid_Art42"
+                   name="Authority certification no longer valid">
+      <bpmn:incoming>Flow_GatewayAuthorityRenewed_To_EndAuthorityCertificationInvalid_Art42</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_TaskRetainResponsibility_Art42" sourceRef="StartEvent_NeedComplianceSignal_Art42" targetRef="Task_RetainResponsibility_Art42" />
+    <bpmn:sequenceFlow id="Flow_TaskRetainResponsibility_To_GatewayVoluntary_Art42" sourceRef="Task_RetainResponsibility_Art42" targetRef="Gateway_VoluntaryCertification_Art42" />
+    <bpmn:sequenceFlow id="Flow_GatewayVoluntary_To_EndNoCertification_Art42" name="No" sourceRef="Gateway_VoluntaryCertification_Art42" targetRef="EndEvent_NoCertification_Art42" />
+    <bpmn:sequenceFlow id="Flow_GatewayVoluntary_To_GatewayTransferSafeguards_Art42" name="Yes" sourceRef="Gateway_VoluntaryCertification_Art42" targetRef="Gateway_TransferSafeguards_Art42" />
+    <bpmn:sequenceFlow id="Flow_GatewayTransferSafeguards_To_TaskBindingCommitments_Art42" name="Yes" sourceRef="Gateway_TransferSafeguards_Art42" targetRef="Task_MakeBindingCommitments_Art42" />
+    <bpmn:sequenceFlow id="Flow_GatewayTransferSafeguards_To_GatewayIssuingRoute_Art42" name="No" sourceRef="Gateway_TransferSafeguards_Art42" targetRef="Gateway_IssuingRoute_Art42" />
+    <bpmn:sequenceFlow id="Flow_TaskBindingCommitments_To_GatewayIssuingRoute_Art42" sourceRef="Task_MakeBindingCommitments_Art42" targetRef="Gateway_IssuingRoute_Art42" />
+    <bpmn:sequenceFlow id="Flow_GatewayIssuingRoute_To_SendBodyRequest_Art42" name="Yes" sourceRef="Gateway_IssuingRoute_Art42" targetRef="SendTask_RequestBodyCertification_Art42" />
+    <bpmn:sequenceFlow id="Flow_GatewayIssuingRoute_To_SendAuthorityRequest_Art42" name="No" sourceRef="Gateway_IssuingRoute_Art42" targetRef="SendTask_RequestAuthorityCertification_Art42" />
+    <bpmn:sequenceFlow id="Flow_SendBodyRequest_To_TaskProvideBodyInfo_Art42" sourceRef="SendTask_RequestBodyCertification_Art42" targetRef="Task_ProvideBodyInfo_Art42" />
+    <bpmn:sequenceFlow id="Flow_TaskProvideBodyInfo_To_ReceiveBodyStatus_Art42" sourceRef="Task_ProvideBodyInfo_Art42" targetRef="ReceiveTask_ReceiveBodyStatus_Art42" />
+    <bpmn:sequenceFlow id="Flow_ReceiveBodyStatus_To_GatewayBodyCertified_Art42" sourceRef="ReceiveTask_ReceiveBodyStatus_Art42" targetRef="Gateway_BodyCertified_Art42" />
+    <bpmn:sequenceFlow id="Flow_GatewayBodyCertified_To_EndBodyNotCertified_Art42" name="No" sourceRef="Gateway_BodyCertified_Art42" targetRef="EndEvent_BodyNotCertified_Art42" />
+    <bpmn:sequenceFlow id="Flow_GatewayBodyCertified_To_TaskUseBodyCertification_Art42" name="Yes" sourceRef="Gateway_BodyCertified_Art42" targetRef="Task_UseBodyCertification_Art42" />
+    <bpmn:sequenceFlow id="Flow_TaskUseBodyCertification_To_GatewayBodyRenewalRequested_Art42" sourceRef="Task_UseBodyCertification_Art42" targetRef="Gateway_BodyRenewalRequested_Art42" />
+    <bpmn:sequenceFlow id="Flow_GatewayBodyRenewalRequested_To_EndBodyTermEnded_Art42" name="No" sourceRef="Gateway_BodyRenewalRequested_Art42" targetRef="EndEvent_BodyTermEnded_Art42" />
+    <bpmn:sequenceFlow id="Flow_GatewayBodyRenewalRequested_To_SendBodyRenewalRequest_Art42" name="Yes" sourceRef="Gateway_BodyRenewalRequested_Art42" targetRef="SendTask_RequestBodyRenewal_Art42" />
+    <bpmn:sequenceFlow id="Flow_SendBodyRenewalRequest_To_TaskProvideBodyRenewalInfo_Art42" sourceRef="SendTask_RequestBodyRenewal_Art42" targetRef="Task_ProvideBodyRenewalInfo_Art42" />
+    <bpmn:sequenceFlow id="Flow_TaskProvideBodyRenewalInfo_To_ReceiveBodyRenewalStatus_Art42" sourceRef="Task_ProvideBodyRenewalInfo_Art42" targetRef="ReceiveTask_ReceiveBodyRenewalStatus_Art42" />
+    <bpmn:sequenceFlow id="Flow_ReceiveBodyRenewalStatus_To_GatewayBodyRenewed_Art42" sourceRef="ReceiveTask_ReceiveBodyRenewalStatus_Art42" targetRef="Gateway_BodyRenewed_Art42" />
+    <bpmn:sequenceFlow id="Flow_GatewayBodyRenewed_To_EndBodyCertificationInvalid_Art42" name="No" sourceRef="Gateway_BodyRenewed_Art42" targetRef="EndEvent_BodyCertificationInvalid_Art42" />
+    <bpmn:sequenceFlow id="Flow_GatewayBodyRenewed_To_TaskUseBodyCertification_Art42" name="Yes" sourceRef="Gateway_BodyRenewed_Art42" targetRef="Task_UseBodyCertification_Art42" />
+    <bpmn:sequenceFlow id="Flow_SendAuthorityRequest_To_TaskProvideAuthorityInfo_Art42" sourceRef="SendTask_RequestAuthorityCertification_Art42" targetRef="Task_ProvideAuthorityInfo_Art42" />
+    <bpmn:sequenceFlow id="Flow_TaskProvideAuthorityInfo_To_ReceiveAuthorityStatus_Art42" sourceRef="Task_ProvideAuthorityInfo_Art42" targetRef="ReceiveTask_ReceiveAuthorityStatus_Art42" />
+    <bpmn:sequenceFlow id="Flow_ReceiveAuthorityStatus_To_GatewayAuthorityCertified_Art42" sourceRef="ReceiveTask_ReceiveAuthorityStatus_Art42" targetRef="Gateway_AuthorityCertified_Art42" />
+    <bpmn:sequenceFlow id="Flow_GatewayAuthorityCertified_To_EndAuthorityNotCertified_Art42" name="No" sourceRef="Gateway_AuthorityCertified_Art42" targetRef="EndEvent_AuthorityNotCertified_Art42" />
+    <bpmn:sequenceFlow id="Flow_GatewayAuthorityCertified_To_TaskUseAuthorityCertification_Art42" name="Yes" sourceRef="Gateway_AuthorityCertified_Art42" targetRef="Task_UseAuthorityCertification_Art42" />
+    <bpmn:sequenceFlow id="Flow_TaskUseAuthorityCertification_To_GatewayAuthorityRenewalRequested_Art42" sourceRef="Task_UseAuthorityCertification_Art42" targetRef="Gateway_AuthorityRenewalRequested_Art42" />
+    <bpmn:sequenceFlow id="Flow_GatewayAuthorityRenewalRequested_To_EndAuthorityTermEnded_Art42" name="No" sourceRef="Gateway_AuthorityRenewalRequested_Art42" targetRef="EndEvent_AuthorityTermEnded_Art42" />
+    <bpmn:sequenceFlow id="Flow_GatewayAuthorityRenewalRequested_To_SendAuthorityRenewalRequest_Art42" name="Yes" sourceRef="Gateway_AuthorityRenewalRequested_Art42" targetRef="SendTask_RequestAuthorityRenewal_Art42" />
+    <bpmn:sequenceFlow id="Flow_SendAuthorityRenewalRequest_To_TaskProvideAuthorityRenewalInfo_Art42" sourceRef="SendTask_RequestAuthorityRenewal_Art42" targetRef="Task_ProvideAuthorityRenewalInfo_Art42" />
+    <bpmn:sequenceFlow id="Flow_TaskProvideAuthorityRenewalInfo_To_ReceiveAuthorityRenewalStatus_Art42" sourceRef="Task_ProvideAuthorityRenewalInfo_Art42" targetRef="ReceiveTask_ReceiveAuthorityRenewalStatus_Art42" />
+    <bpmn:sequenceFlow id="Flow_ReceiveAuthorityRenewalStatus_To_GatewayAuthorityRenewed_Art42" sourceRef="ReceiveTask_ReceiveAuthorityRenewalStatus_Art42" targetRef="Gateway_AuthorityRenewed_Art42" />
+    <bpmn:sequenceFlow id="Flow_GatewayAuthorityRenewed_To_EndAuthorityCertificationInvalid_Art42" name="No" sourceRef="Gateway_AuthorityRenewed_Art42" targetRef="EndEvent_AuthorityCertificationInvalid_Art42" />
+    <bpmn:sequenceFlow id="Flow_GatewayAuthorityRenewed_To_TaskUseAuthorityCertification_Art42" name="Yes" sourceRef="Gateway_AuthorityRenewed_Art42" targetRef="Task_UseAuthorityCertification_Art42" />
   </bpmn:process>
 
   <bpmn:process id="Process_CertificationBody_Art42"
-                name="Assessing, issuing, and renewing certification"
+                name="Issuing certification through an accredited body"
                 isExecutable="false">
     <bpmn:documentation>
-      The certification-body process covers receiving the request, asking for all information and
-      access needed for the procedure, assessing the applicable criteria under the approved
-      mechanism, and granting, rejecting, or renewing certification for up to three years.
+      This process captures the Article 42(3), (5), (6), and (7) certification-body
+      route: transparent assessment against approved criteria, issuance for up to three
+      years, renewal under the same conditions, and withdrawal where the requirements
+      are not or are no longer met.
     </bpmn:documentation>
 
-    <bpmn:startEvent id="StartEvent_RequestReceived_Art42"
-                     name="Certification case is opened">
-      <bpmn:outgoing>Flow_BodyStart_To_ReceiveRequest_Art42</bpmn:outgoing>
+    <bpmn:startEvent id="StartEvent_HandleBodyCertification_Art42"
+                     name="Handle body certification">
+      <bpmn:outgoing>Flow_StartBodyCertification_To_ReceiveBodyRequest_Art42</bpmn:outgoing>
     </bpmn:startEvent>
 
-    <bpmn:receiveTask id="ReceiveTask_ReceiveCertificationRequest_Art42"
-                      name="Receive the certification request">
-      <bpmn:incoming>Flow_BodyStart_To_ReceiveRequest_Art42</bpmn:incoming>
-      <bpmn:outgoing>Flow_ReceiveRequest_To_RequestInformation_Art42</bpmn:outgoing>
+    <bpmn:receiveTask id="ReceiveTask_ReceiveBodyCertificationRequest_Art42"
+                      name="Receive body certification request">
+      <bpmn:incoming>Flow_StartBodyCertification_To_ReceiveBodyRequest_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveBodyRequest_To_SendBodyInfoRequest_Art42</bpmn:outgoing>
     </bpmn:receiveTask>
 
-    <bpmn:sendTask id="SendTask_RequestInformation_Art42"
-                   name="Request all information and access needed for the certification procedure">
-      <bpmn:incoming>Flow_ReceiveRequest_To_RequestInformation_Art42</bpmn:incoming>
-      <bpmn:outgoing>Flow_RequestInformation_To_ReceiveInformation_Art42</bpmn:outgoing>
+    <bpmn:sendTask id="SendTask_RequestBodyInfo_Art42"
+                   name="Request body information and access">
+      <bpmn:incoming>Flow_ReceiveBodyRequest_To_SendBodyInfoRequest_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendBodyInfoRequest_To_ReceiveBodyInfo_Art42</bpmn:outgoing>
     </bpmn:sendTask>
 
-    <bpmn:receiveTask id="ReceiveTask_ReceiveInformation_Art42"
-                      name="Receive the required information and access">
-      <bpmn:incoming>Flow_RequestInformation_To_ReceiveInformation_Art42</bpmn:incoming>
-      <bpmn:outgoing>Flow_ReceiveInformation_To_AssessRequirements_Art42</bpmn:outgoing>
+    <bpmn:receiveTask id="ReceiveTask_ReceiveBodyInfo_Art42"
+                      name="Receive body information and access">
+      <bpmn:incoming>Flow_SendBodyInfoRequest_To_ReceiveBodyInfo_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveBodyInfo_To_TaskRunBodyAssessment_Art42</bpmn:outgoing>
     </bpmn:receiveTask>
 
-    <bpmn:task id="Task_AssessRequirements_Art42"
-               name="Assess the certification requirements under the approved mechanism">
-      <bpmn:incoming>Flow_ReceiveInformation_To_AssessRequirements_Art42</bpmn:incoming>
-      <bpmn:outgoing>Flow_AssessRequirements_To_GatewayRequirementsMet_Art42</bpmn:outgoing>
+    <bpmn:task id="Task_RunBodyAssessment_Art42"
+               name="Run transparent body assessment">
+      <bpmn:incoming>Flow_ReceiveBodyInfo_To_TaskRunBodyAssessment_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskRunBodyAssessment_To_GatewayBodyCriteriaMet_Art42</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:exclusiveGateway id="Gateway_RequirementsMet_Art42"
-                           name="Are the certification requirements met?">
-      <bpmn:incoming>Flow_AssessRequirements_To_GatewayRequirementsMet_Art42</bpmn:incoming>
-      <bpmn:outgoing>Flow_GatewayRequirementsMet_To_RejectCertification_Art42</bpmn:outgoing>
-      <bpmn:outgoing>Flow_GatewayRequirementsMet_To_GrantCertification_Art42</bpmn:outgoing>
+    <bpmn:exclusiveGateway id="Gateway_BodyCriteriaMet_Art42"
+                           name="Are the approved criteria met?">
+      <bpmn:incoming>Flow_TaskRunBodyAssessment_To_GatewayBodyCriteriaMet_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayBodyCriteriaMet_To_SendRejectBodyCertification_Art42</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayBodyCriteriaMet_To_SendIssueBodyCertification_Art42</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
-    <bpmn:sendTask id="SendTask_RejectCertification_Art42"
-                   name="Reject the certification request">
-      <bpmn:incoming>Flow_GatewayRequirementsMet_To_RejectCertification_Art42</bpmn:incoming>
-      <bpmn:outgoing>Flow_RejectCertification_To_EndRejected_Art42</bpmn:outgoing>
+    <bpmn:sendTask id="SendTask_RejectBodyCertification_Art42"
+                   name="Reject body certification">
+      <bpmn:incoming>Flow_GatewayBodyCriteriaMet_To_SendRejectBodyCertification_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendRejectBodyCertification_To_EndBodyRejected_Art42</bpmn:outgoing>
     </bpmn:sendTask>
 
-    <bpmn:endEvent id="EndEvent_RequestRejected_Art42"
-                   name="Certification request rejected">
-      <bpmn:incoming>Flow_RejectCertification_To_EndRejected_Art42</bpmn:incoming>
+    <bpmn:endEvent id="EndEvent_BodyRejected_Art42"
+                   name="Body certification rejected">
+      <bpmn:incoming>Flow_SendRejectBodyCertification_To_EndBodyRejected_Art42</bpmn:incoming>
     </bpmn:endEvent>
 
-    <bpmn:sendTask id="SendTask_GrantCertification_Art42"
-                   name="Grant certification, seal, or mark for up to three years">
-      <bpmn:incoming>Flow_GatewayRequirementsMet_To_GrantCertification_Art42</bpmn:incoming>
-      <bpmn:outgoing>Flow_GrantCertification_To_GatewayRenewalAssessment_Art42</bpmn:outgoing>
+    <bpmn:sendTask id="SendTask_IssueBodyCertification_Art42"
+                   name="Issue body certification">
+      <bpmn:incoming>Flow_GatewayBodyCriteriaMet_To_SendIssueBodyCertification_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendIssueBodyCertification_To_EndBodyIssued_Art42</bpmn:outgoing>
     </bpmn:sendTask>
 
-    <bpmn:exclusiveGateway id="Gateway_RenewalAssessment_Art42"
-                           name="Does a renewal request arrive before the three-year term ends?">
-      <bpmn:incoming>Flow_GrantCertification_To_GatewayRenewalAssessment_Art42</bpmn:incoming>
-      <bpmn:incoming>Flow_RenewCertification_To_GatewayRenewalAssessment_Art42</bpmn:incoming>
-      <bpmn:outgoing>Flow_GatewayRenewalAssessment_To_EndTermEnded_Art42</bpmn:outgoing>
-      <bpmn:outgoing>Flow_GatewayRenewalAssessment_To_RequestRenewalInformation_Art42</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
-
-    <bpmn:endEvent id="EndEvent_TermEnded_Art42"
-                   name="Certification term ended without renewal">
-      <bpmn:incoming>Flow_GatewayRenewalAssessment_To_EndTermEnded_Art42</bpmn:incoming>
+    <bpmn:endEvent id="EndEvent_BodyIssued_Art42"
+                   name="Body certification issued">
+      <bpmn:incoming>Flow_SendIssueBodyCertification_To_EndBodyIssued_Art42</bpmn:incoming>
     </bpmn:endEvent>
 
-    <bpmn:sendTask id="SendTask_RequestRenewalInformation_Art42"
-                   name="Request updated information and access for the renewal assessment">
-      <bpmn:incoming>Flow_GatewayRenewalAssessment_To_RequestRenewalInformation_Art42</bpmn:incoming>
-      <bpmn:outgoing>Flow_RequestRenewalInformation_To_ReceiveRenewalInformation_Art42</bpmn:outgoing>
-    </bpmn:sendTask>
+    <bpmn:startEvent id="StartEvent_HandleBodyRenewal_Art42"
+                     name="Handle body renewal">
+      <bpmn:outgoing>Flow_StartBodyRenewal_To_ReceiveBodyRenewalRequest_Art42</bpmn:outgoing>
+    </bpmn:startEvent>
 
-    <bpmn:receiveTask id="ReceiveTask_ReceiveRenewalInformation_Art42"
-                      name="Receive the updated information and access">
-      <bpmn:incoming>Flow_RequestRenewalInformation_To_ReceiveRenewalInformation_Art42</bpmn:incoming>
-      <bpmn:outgoing>Flow_ReceiveRenewalInformation_To_AssessRenewal_Art42</bpmn:outgoing>
+    <bpmn:receiveTask id="ReceiveTask_ReceiveBodyRenewalRequest_Art42"
+                      name="Receive body renewal request">
+      <bpmn:incoming>Flow_StartBodyRenewal_To_ReceiveBodyRenewalRequest_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveBodyRenewalRequest_To_SendBodyRenewalInfoRequest_Art42</bpmn:outgoing>
     </bpmn:receiveTask>
 
-    <bpmn:task id="Task_AssessRenewal_Art42"
-               name="Assess whether the certification requirements are still met">
-      <bpmn:incoming>Flow_ReceiveRenewalInformation_To_AssessRenewal_Art42</bpmn:incoming>
-      <bpmn:outgoing>Flow_AssessRenewal_To_GatewayRenewalGranted_Art42</bpmn:outgoing>
+    <bpmn:sendTask id="SendTask_RequestBodyRenewalInfo_Art42"
+                   name="Request body renewal information">
+      <bpmn:incoming>Flow_ReceiveBodyRenewalRequest_To_SendBodyRenewalInfoRequest_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendBodyRenewalInfoRequest_To_ReceiveBodyRenewalInfo_Art42</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveBodyRenewalInfo_Art42"
+                      name="Receive body renewal information">
+      <bpmn:incoming>Flow_SendBodyRenewalInfoRequest_To_ReceiveBodyRenewalInfo_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveBodyRenewalInfo_To_TaskAssessBodyRenewal_Art42</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:task id="Task_AssessBodyRenewal_Art42"
+               name="Assess continued body requirements">
+      <bpmn:incoming>Flow_ReceiveBodyRenewalInfo_To_TaskAssessBodyRenewal_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskAssessBodyRenewal_To_GatewayBodyRequirementsContinue_Art42</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:exclusiveGateway id="Gateway_RenewalGranted_Art42"
-                           name="Are the certification requirements still met for renewal?">
-      <bpmn:incoming>Flow_AssessRenewal_To_GatewayRenewalGranted_Art42</bpmn:incoming>
-      <bpmn:outgoing>Flow_GatewayRenewalGranted_To_RejectRenewal_Art42</bpmn:outgoing>
-      <bpmn:outgoing>Flow_GatewayRenewalGranted_To_RenewCertification_Art42</bpmn:outgoing>
+    <bpmn:exclusiveGateway id="Gateway_BodyRequirementsContinue_Art42"
+                           name="Do the requirements continue to be met?">
+      <bpmn:incoming>Flow_TaskAssessBodyRenewal_To_GatewayBodyRequirementsContinue_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayBodyRequirementsContinue_To_SendWithdrawBodyCertification_Art42</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayBodyRequirementsContinue_To_SendRenewBodyCertification_Art42</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
-    <bpmn:sendTask id="SendTask_RejectRenewal_Art42"
-                   name="Reject the certification renewal request">
-      <bpmn:incoming>Flow_GatewayRenewalGranted_To_RejectRenewal_Art42</bpmn:incoming>
-      <bpmn:outgoing>Flow_RejectRenewal_To_EndRenewalDenied_Art42</bpmn:outgoing>
+    <bpmn:sendTask id="SendTask_WithdrawBodyCertification_Art42"
+                   name="Withdraw body certification">
+      <bpmn:incoming>Flow_GatewayBodyRequirementsContinue_To_SendWithdrawBodyCertification_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendWithdrawBodyCertification_To_EndBodyWithdrawn_Art42</bpmn:outgoing>
     </bpmn:sendTask>
 
-    <bpmn:endEvent id="EndEvent_RenewalDenied_Art42"
-                   name="Renewal denied">
-      <bpmn:incoming>Flow_RejectRenewal_To_EndRenewalDenied_Art42</bpmn:incoming>
+    <bpmn:endEvent id="EndEvent_BodyWithdrawn_Art42"
+                   name="Body certification withdrawn">
+      <bpmn:incoming>Flow_SendWithdrawBodyCertification_To_EndBodyWithdrawn_Art42</bpmn:incoming>
     </bpmn:endEvent>
 
-    <bpmn:sendTask id="SendTask_RenewCertification_Art42"
-                   name="Renew certification for up to three years">
-      <bpmn:incoming>Flow_GatewayRenewalGranted_To_RenewCertification_Art42</bpmn:incoming>
-      <bpmn:outgoing>Flow_RenewCertification_To_GatewayRenewalAssessment_Art42</bpmn:outgoing>
+    <bpmn:sendTask id="SendTask_RenewBodyCertification_Art42"
+                   name="Renew body certification">
+      <bpmn:incoming>Flow_GatewayBodyRequirementsContinue_To_SendRenewBodyCertification_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendRenewBodyCertification_To_EndBodyRenewed_Art42</bpmn:outgoing>
     </bpmn:sendTask>
 
-    <bpmn:sequenceFlow id="Flow_BodyStart_To_ReceiveRequest_Art42"
-                       sourceRef="StartEvent_RequestReceived_Art42"
-                       targetRef="ReceiveTask_ReceiveCertificationRequest_Art42" />
-    <bpmn:sequenceFlow id="Flow_ReceiveRequest_To_RequestInformation_Art42"
-                       sourceRef="ReceiveTask_ReceiveCertificationRequest_Art42"
-                       targetRef="SendTask_RequestInformation_Art42" />
-    <bpmn:sequenceFlow id="Flow_RequestInformation_To_ReceiveInformation_Art42"
-                       sourceRef="SendTask_RequestInformation_Art42"
-                       targetRef="ReceiveTask_ReceiveInformation_Art42" />
-    <bpmn:sequenceFlow id="Flow_ReceiveInformation_To_AssessRequirements_Art42"
-                       sourceRef="ReceiveTask_ReceiveInformation_Art42"
-                       targetRef="Task_AssessRequirements_Art42" />
-    <bpmn:sequenceFlow id="Flow_AssessRequirements_To_GatewayRequirementsMet_Art42"
-                       sourceRef="Task_AssessRequirements_Art42"
-                       targetRef="Gateway_RequirementsMet_Art42" />
-    <bpmn:sequenceFlow id="Flow_GatewayRequirementsMet_To_RejectCertification_Art42"
-                       name="No"
-                       sourceRef="Gateway_RequirementsMet_Art42"
-                       targetRef="SendTask_RejectCertification_Art42" />
-    <bpmn:sequenceFlow id="Flow_GatewayRequirementsMet_To_GrantCertification_Art42"
-                       name="Yes"
-                       sourceRef="Gateway_RequirementsMet_Art42"
-                       targetRef="SendTask_GrantCertification_Art42" />
-    <bpmn:sequenceFlow id="Flow_RejectCertification_To_EndRejected_Art42"
-                       sourceRef="SendTask_RejectCertification_Art42"
-                       targetRef="EndEvent_RequestRejected_Art42" />
-    <bpmn:sequenceFlow id="Flow_GrantCertification_To_GatewayRenewalAssessment_Art42"
-                       sourceRef="SendTask_GrantCertification_Art42"
-                       targetRef="Gateway_RenewalAssessment_Art42" />
-    <bpmn:sequenceFlow id="Flow_GatewayRenewalAssessment_To_EndTermEnded_Art42"
-                       name="No"
-                       sourceRef="Gateway_RenewalAssessment_Art42"
-                       targetRef="EndEvent_TermEnded_Art42" />
-    <bpmn:sequenceFlow id="Flow_GatewayRenewalAssessment_To_RequestRenewalInformation_Art42"
-                       name="Yes"
-                       sourceRef="Gateway_RenewalAssessment_Art42"
-                       targetRef="SendTask_RequestRenewalInformation_Art42" />
-    <bpmn:sequenceFlow id="Flow_RequestRenewalInformation_To_ReceiveRenewalInformation_Art42"
-                       sourceRef="SendTask_RequestRenewalInformation_Art42"
-                       targetRef="ReceiveTask_ReceiveRenewalInformation_Art42" />
-    <bpmn:sequenceFlow id="Flow_ReceiveRenewalInformation_To_AssessRenewal_Art42"
-                       sourceRef="ReceiveTask_ReceiveRenewalInformation_Art42"
-                       targetRef="Task_AssessRenewal_Art42" />
-    <bpmn:sequenceFlow id="Flow_AssessRenewal_To_GatewayRenewalGranted_Art42"
-                       sourceRef="Task_AssessRenewal_Art42"
-                       targetRef="Gateway_RenewalGranted_Art42" />
-    <bpmn:sequenceFlow id="Flow_GatewayRenewalGranted_To_RejectRenewal_Art42"
-                       name="No"
-                       sourceRef="Gateway_RenewalGranted_Art42"
-                       targetRef="SendTask_RejectRenewal_Art42" />
-    <bpmn:sequenceFlow id="Flow_RejectRenewal_To_EndRenewalDenied_Art42"
-                       sourceRef="SendTask_RejectRenewal_Art42"
-                       targetRef="EndEvent_RenewalDenied_Art42" />
-    <bpmn:sequenceFlow id="Flow_GatewayRenewalGranted_To_RenewCertification_Art42"
-                       name="Yes"
-                       sourceRef="Gateway_RenewalGranted_Art42"
-                       targetRef="SendTask_RenewCertification_Art42" />
-    <bpmn:sequenceFlow id="Flow_RenewCertification_To_GatewayRenewalAssessment_Art42"
-                       sourceRef="SendTask_RenewCertification_Art42"
-                       targetRef="Gateway_RenewalAssessment_Art42" />
+    <bpmn:endEvent id="EndEvent_BodyRenewed_Art42"
+                   name="Body certification renewed">
+      <bpmn:incoming>Flow_SendRenewBodyCertification_To_EndBodyRenewed_Art42</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartBodyCertification_To_ReceiveBodyRequest_Art42" sourceRef="StartEvent_HandleBodyCertification_Art42" targetRef="ReceiveTask_ReceiveBodyCertificationRequest_Art42" />
+    <bpmn:sequenceFlow id="Flow_ReceiveBodyRequest_To_SendBodyInfoRequest_Art42" sourceRef="ReceiveTask_ReceiveBodyCertificationRequest_Art42" targetRef="SendTask_RequestBodyInfo_Art42" />
+    <bpmn:sequenceFlow id="Flow_SendBodyInfoRequest_To_ReceiveBodyInfo_Art42" sourceRef="SendTask_RequestBodyInfo_Art42" targetRef="ReceiveTask_ReceiveBodyInfo_Art42" />
+    <bpmn:sequenceFlow id="Flow_ReceiveBodyInfo_To_TaskRunBodyAssessment_Art42" sourceRef="ReceiveTask_ReceiveBodyInfo_Art42" targetRef="Task_RunBodyAssessment_Art42" />
+    <bpmn:sequenceFlow id="Flow_TaskRunBodyAssessment_To_GatewayBodyCriteriaMet_Art42" sourceRef="Task_RunBodyAssessment_Art42" targetRef="Gateway_BodyCriteriaMet_Art42" />
+    <bpmn:sequenceFlow id="Flow_GatewayBodyCriteriaMet_To_SendRejectBodyCertification_Art42" name="No" sourceRef="Gateway_BodyCriteriaMet_Art42" targetRef="SendTask_RejectBodyCertification_Art42" />
+    <bpmn:sequenceFlow id="Flow_GatewayBodyCriteriaMet_To_SendIssueBodyCertification_Art42" name="Yes" sourceRef="Gateway_BodyCriteriaMet_Art42" targetRef="SendTask_IssueBodyCertification_Art42" />
+    <bpmn:sequenceFlow id="Flow_SendRejectBodyCertification_To_EndBodyRejected_Art42" sourceRef="SendTask_RejectBodyCertification_Art42" targetRef="EndEvent_BodyRejected_Art42" />
+    <bpmn:sequenceFlow id="Flow_SendIssueBodyCertification_To_EndBodyIssued_Art42" sourceRef="SendTask_IssueBodyCertification_Art42" targetRef="EndEvent_BodyIssued_Art42" />
+    <bpmn:sequenceFlow id="Flow_StartBodyRenewal_To_ReceiveBodyRenewalRequest_Art42" sourceRef="StartEvent_HandleBodyRenewal_Art42" targetRef="ReceiveTask_ReceiveBodyRenewalRequest_Art42" />
+    <bpmn:sequenceFlow id="Flow_ReceiveBodyRenewalRequest_To_SendBodyRenewalInfoRequest_Art42" sourceRef="ReceiveTask_ReceiveBodyRenewalRequest_Art42" targetRef="SendTask_RequestBodyRenewalInfo_Art42" />
+    <bpmn:sequenceFlow id="Flow_SendBodyRenewalInfoRequest_To_ReceiveBodyRenewalInfo_Art42" sourceRef="SendTask_RequestBodyRenewalInfo_Art42" targetRef="ReceiveTask_ReceiveBodyRenewalInfo_Art42" />
+    <bpmn:sequenceFlow id="Flow_ReceiveBodyRenewalInfo_To_TaskAssessBodyRenewal_Art42" sourceRef="ReceiveTask_ReceiveBodyRenewalInfo_Art42" targetRef="Task_AssessBodyRenewal_Art42" />
+    <bpmn:sequenceFlow id="Flow_TaskAssessBodyRenewal_To_GatewayBodyRequirementsContinue_Art42" sourceRef="Task_AssessBodyRenewal_Art42" targetRef="Gateway_BodyRequirementsContinue_Art42" />
+    <bpmn:sequenceFlow id="Flow_GatewayBodyRequirementsContinue_To_SendWithdrawBodyCertification_Art42" name="No" sourceRef="Gateway_BodyRequirementsContinue_Art42" targetRef="SendTask_WithdrawBodyCertification_Art42" />
+    <bpmn:sequenceFlow id="Flow_GatewayBodyRequirementsContinue_To_SendRenewBodyCertification_Art42" name="Yes" sourceRef="Gateway_BodyRequirementsContinue_Art42" targetRef="SendTask_RenewBodyCertification_Art42" />
+    <bpmn:sequenceFlow id="Flow_SendWithdrawBodyCertification_To_EndBodyWithdrawn_Art42" sourceRef="SendTask_WithdrawBodyCertification_Art42" targetRef="EndEvent_BodyWithdrawn_Art42" />
+    <bpmn:sequenceFlow id="Flow_SendRenewBodyCertification_To_EndBodyRenewed_Art42" sourceRef="SendTask_RenewBodyCertification_Art42" targetRef="EndEvent_BodyRenewed_Art42" />
+  </bpmn:process>
+
+  <bpmn:process id="Process_SupervisoryAuthority_Art42"
+                name="Issuing certification through the supervisory authority"
+                isExecutable="false">
+    <bpmn:documentation>
+      This process captures the Article 42(5) supervisory-authority route: authority-
+      approved or Board-approved criteria, transparent assessment, issuance for up to
+      three years, renewal under the same conditions, and withdrawal where the
+      requirements are not or are no longer met.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_SetAuthorityCriteria_Art42"
+                     name="Set certification criteria">
+      <bpmn:outgoing>Flow_StartAuthorityCriteria_To_GatewayBoardCriteria_Art42</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_BoardCriteria_Art42"
+                           name="Are Board-approved criteria applied?">
+      <bpmn:incoming>Flow_StartAuthorityCriteria_To_GatewayBoardCriteria_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayBoardCriteria_To_TaskUseAuthorityCriteria_Art42</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayBoardCriteria_To_TaskUseBoardCriteria_Art42</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_UseAuthorityCriteria_Art42"
+               name="Use authority-approved criteria">
+      <bpmn:incoming>Flow_GatewayBoardCriteria_To_TaskUseAuthorityCriteria_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskUseAuthorityCriteria_To_EndAuthorityCriteriaReady_Art42</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_UseBoardCriteria_Art42"
+               name="Use Board-approved criteria">
+      <bpmn:incoming>Flow_GatewayBoardCriteria_To_TaskUseBoardCriteria_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskUseBoardCriteria_To_EndAuthorityCriteriaReady_Art42</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_AuthorityCriteriaReady_Art42"
+                   name="Certification criteria ready">
+      <bpmn:incoming>Flow_TaskUseAuthorityCriteria_To_EndAuthorityCriteriaReady_Art42</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskUseBoardCriteria_To_EndAuthorityCriteriaReady_Art42</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:startEvent id="StartEvent_HandleAuthorityCertification_Art42"
+                     name="Handle authority certification">
+      <bpmn:outgoing>Flow_StartAuthorityCertification_To_ReceiveAuthorityRequest_Art42</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveAuthorityCertificationRequest_Art42"
+                      name="Receive authority certification request">
+      <bpmn:incoming>Flow_StartAuthorityCertification_To_ReceiveAuthorityRequest_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveAuthorityRequest_To_SendAuthorityInfoRequest_Art42</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:sendTask id="SendTask_RequestAuthorityInfo_Art42"
+                   name="Request authority information and access">
+      <bpmn:incoming>Flow_ReceiveAuthorityRequest_To_SendAuthorityInfoRequest_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendAuthorityInfoRequest_To_ReceiveAuthorityInfo_Art42</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveAuthorityInfo_Art42"
+                      name="Receive authority information and access">
+      <bpmn:incoming>Flow_SendAuthorityInfoRequest_To_ReceiveAuthorityInfo_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveAuthorityInfo_To_TaskRunAuthorityAssessment_Art42</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:task id="Task_RunAuthorityAssessment_Art42"
+               name="Run transparent authority assessment">
+      <bpmn:incoming>Flow_ReceiveAuthorityInfo_To_TaskRunAuthorityAssessment_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskRunAuthorityAssessment_To_GatewayAuthorityCriteriaMet_Art42</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_AuthorityCriteriaMet_Art42"
+                           name="Are the approved criteria met?">
+      <bpmn:incoming>Flow_TaskRunAuthorityAssessment_To_GatewayAuthorityCriteriaMet_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAuthorityCriteriaMet_To_SendRejectAuthorityCertification_Art42</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAuthorityCriteriaMet_To_SendIssueAuthorityCertification_Art42</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="SendTask_RejectAuthorityCertification_Art42"
+                   name="Reject authority certification">
+      <bpmn:incoming>Flow_GatewayAuthorityCriteriaMet_To_SendRejectAuthorityCertification_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendRejectAuthorityCertification_To_EndAuthorityRejected_Art42</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_AuthorityRejected_Art42"
+                   name="Authority certification rejected">
+      <bpmn:incoming>Flow_SendRejectAuthorityCertification_To_EndAuthorityRejected_Art42</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sendTask id="SendTask_IssueAuthorityCertification_Art42"
+                   name="Issue authority certification">
+      <bpmn:incoming>Flow_GatewayAuthorityCriteriaMet_To_SendIssueAuthorityCertification_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendIssueAuthorityCertification_To_EndAuthorityIssued_Art42</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_AuthorityIssued_Art42"
+                   name="Authority certification issued">
+      <bpmn:incoming>Flow_SendIssueAuthorityCertification_To_EndAuthorityIssued_Art42</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:startEvent id="StartEvent_HandleAuthorityRenewal_Art42"
+                     name="Handle authority renewal">
+      <bpmn:outgoing>Flow_StartAuthorityRenewal_To_ReceiveAuthorityRenewalRequest_Art42</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveAuthorityRenewalRequest_Art42"
+                      name="Receive authority renewal request">
+      <bpmn:incoming>Flow_StartAuthorityRenewal_To_ReceiveAuthorityRenewalRequest_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveAuthorityRenewalRequest_To_SendAuthorityRenewalInfoRequest_Art42</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:sendTask id="SendTask_RequestAuthorityRenewalInfo_Art42"
+                   name="Request authority renewal information">
+      <bpmn:incoming>Flow_ReceiveAuthorityRenewalRequest_To_SendAuthorityRenewalInfoRequest_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendAuthorityRenewalInfoRequest_To_ReceiveAuthorityRenewalInfo_Art42</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveAuthorityRenewalInfo_Art42"
+                      name="Receive authority renewal information">
+      <bpmn:incoming>Flow_SendAuthorityRenewalInfoRequest_To_ReceiveAuthorityRenewalInfo_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveAuthorityRenewalInfo_To_TaskAssessAuthorityRenewal_Art42</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:task id="Task_AssessAuthorityRenewal_Art42"
+               name="Assess continued authority requirements">
+      <bpmn:incoming>Flow_ReceiveAuthorityRenewalInfo_To_TaskAssessAuthorityRenewal_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskAssessAuthorityRenewal_To_GatewayAuthorityRequirementsContinue_Art42</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_AuthorityRequirementsContinue_Art42"
+                           name="Do the requirements continue to be met?">
+      <bpmn:incoming>Flow_TaskAssessAuthorityRenewal_To_GatewayAuthorityRequirementsContinue_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAuthorityRequirementsContinue_To_SendWithdrawAuthorityCertification_Art42</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAuthorityRequirementsContinue_To_SendRenewAuthorityCertification_Art42</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="SendTask_WithdrawAuthorityCertification_Art42"
+                   name="Withdraw authority certification">
+      <bpmn:incoming>Flow_GatewayAuthorityRequirementsContinue_To_SendWithdrawAuthorityCertification_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendWithdrawAuthorityCertification_To_EndAuthorityWithdrawn_Art42</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_AuthorityWithdrawn_Art42"
+                   name="Authority certification withdrawn">
+      <bpmn:incoming>Flow_SendWithdrawAuthorityCertification_To_EndAuthorityWithdrawn_Art42</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sendTask id="SendTask_RenewAuthorityCertification_Art42"
+                   name="Renew authority certification">
+      <bpmn:incoming>Flow_GatewayAuthorityRequirementsContinue_To_SendRenewAuthorityCertification_Art42</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendRenewAuthorityCertification_To_EndAuthorityRenewed_Art42</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_AuthorityRenewed_Art42"
+                   name="Authority certification renewed">
+      <bpmn:incoming>Flow_SendRenewAuthorityCertification_To_EndAuthorityRenewed_Art42</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartAuthorityCriteria_To_GatewayBoardCriteria_Art42" sourceRef="StartEvent_SetAuthorityCriteria_Art42" targetRef="Gateway_BoardCriteria_Art42" />
+    <bpmn:sequenceFlow id="Flow_GatewayBoardCriteria_To_TaskUseAuthorityCriteria_Art42" name="No" sourceRef="Gateway_BoardCriteria_Art42" targetRef="Task_UseAuthorityCriteria_Art42" />
+    <bpmn:sequenceFlow id="Flow_GatewayBoardCriteria_To_TaskUseBoardCriteria_Art42" name="Yes" sourceRef="Gateway_BoardCriteria_Art42" targetRef="Task_UseBoardCriteria_Art42" />
+    <bpmn:sequenceFlow id="Flow_TaskUseAuthorityCriteria_To_EndAuthorityCriteriaReady_Art42" sourceRef="Task_UseAuthorityCriteria_Art42" targetRef="EndEvent_AuthorityCriteriaReady_Art42" />
+    <bpmn:sequenceFlow id="Flow_TaskUseBoardCriteria_To_EndAuthorityCriteriaReady_Art42" sourceRef="Task_UseBoardCriteria_Art42" targetRef="EndEvent_AuthorityCriteriaReady_Art42" />
+    <bpmn:sequenceFlow id="Flow_StartAuthorityCertification_To_ReceiveAuthorityRequest_Art42" sourceRef="StartEvent_HandleAuthorityCertification_Art42" targetRef="ReceiveTask_ReceiveAuthorityCertificationRequest_Art42" />
+    <bpmn:sequenceFlow id="Flow_ReceiveAuthorityRequest_To_SendAuthorityInfoRequest_Art42" sourceRef="ReceiveTask_ReceiveAuthorityCertificationRequest_Art42" targetRef="SendTask_RequestAuthorityInfo_Art42" />
+    <bpmn:sequenceFlow id="Flow_SendAuthorityInfoRequest_To_ReceiveAuthorityInfo_Art42" sourceRef="SendTask_RequestAuthorityInfo_Art42" targetRef="ReceiveTask_ReceiveAuthorityInfo_Art42" />
+    <bpmn:sequenceFlow id="Flow_ReceiveAuthorityInfo_To_TaskRunAuthorityAssessment_Art42" sourceRef="ReceiveTask_ReceiveAuthorityInfo_Art42" targetRef="Task_RunAuthorityAssessment_Art42" />
+    <bpmn:sequenceFlow id="Flow_TaskRunAuthorityAssessment_To_GatewayAuthorityCriteriaMet_Art42" sourceRef="Task_RunAuthorityAssessment_Art42" targetRef="Gateway_AuthorityCriteriaMet_Art42" />
+    <bpmn:sequenceFlow id="Flow_GatewayAuthorityCriteriaMet_To_SendRejectAuthorityCertification_Art42" name="No" sourceRef="Gateway_AuthorityCriteriaMet_Art42" targetRef="SendTask_RejectAuthorityCertification_Art42" />
+    <bpmn:sequenceFlow id="Flow_GatewayAuthorityCriteriaMet_To_SendIssueAuthorityCertification_Art42" name="Yes" sourceRef="Gateway_AuthorityCriteriaMet_Art42" targetRef="SendTask_IssueAuthorityCertification_Art42" />
+    <bpmn:sequenceFlow id="Flow_SendRejectAuthorityCertification_To_EndAuthorityRejected_Art42" sourceRef="SendTask_RejectAuthorityCertification_Art42" targetRef="EndEvent_AuthorityRejected_Art42" />
+    <bpmn:sequenceFlow id="Flow_SendIssueAuthorityCertification_To_EndAuthorityIssued_Art42" sourceRef="SendTask_IssueAuthorityCertification_Art42" targetRef="EndEvent_AuthorityIssued_Art42" />
+    <bpmn:sequenceFlow id="Flow_StartAuthorityRenewal_To_ReceiveAuthorityRenewalRequest_Art42" sourceRef="StartEvent_HandleAuthorityRenewal_Art42" targetRef="ReceiveTask_ReceiveAuthorityRenewalRequest_Art42" />
+    <bpmn:sequenceFlow id="Flow_ReceiveAuthorityRenewalRequest_To_SendAuthorityRenewalInfoRequest_Art42" sourceRef="ReceiveTask_ReceiveAuthorityRenewalRequest_Art42" targetRef="SendTask_RequestAuthorityRenewalInfo_Art42" />
+    <bpmn:sequenceFlow id="Flow_SendAuthorityRenewalInfoRequest_To_ReceiveAuthorityRenewalInfo_Art42" sourceRef="SendTask_RequestAuthorityRenewalInfo_Art42" targetRef="ReceiveTask_ReceiveAuthorityRenewalInfo_Art42" />
+    <bpmn:sequenceFlow id="Flow_ReceiveAuthorityRenewalInfo_To_TaskAssessAuthorityRenewal_Art42" sourceRef="ReceiveTask_ReceiveAuthorityRenewalInfo_Art42" targetRef="Task_AssessAuthorityRenewal_Art42" />
+    <bpmn:sequenceFlow id="Flow_TaskAssessAuthorityRenewal_To_GatewayAuthorityRequirementsContinue_Art42" sourceRef="Task_AssessAuthorityRenewal_Art42" targetRef="Gateway_AuthorityRequirementsContinue_Art42" />
+    <bpmn:sequenceFlow id="Flow_GatewayAuthorityRequirementsContinue_To_SendWithdrawAuthorityCertification_Art42" name="No" sourceRef="Gateway_AuthorityRequirementsContinue_Art42" targetRef="SendTask_WithdrawAuthorityCertification_Art42" />
+    <bpmn:sequenceFlow id="Flow_GatewayAuthorityRequirementsContinue_To_SendRenewAuthorityCertification_Art42" name="Yes" sourceRef="Gateway_AuthorityRequirementsContinue_Art42" targetRef="SendTask_RenewAuthorityCertification_Art42" />
+    <bpmn:sequenceFlow id="Flow_SendWithdrawAuthorityCertification_To_EndAuthorityWithdrawn_Art42" sourceRef="SendTask_WithdrawAuthorityCertification_Art42" targetRef="EndEvent_AuthorityWithdrawn_Art42" />
+    <bpmn:sequenceFlow id="Flow_SendRenewAuthorityCertification_To_EndAuthorityRenewed_Art42" sourceRef="SendTask_RenewAuthorityCertification_Art42" targetRef="EndEvent_AuthorityRenewed_Art42" />
   </bpmn:process>
 
   <bpmndi:BPMNDiagram id="BPMNDiagram_Art42_Reviewed">
     <bpmndi:BPMNPlane id="BPMNPlane_Art42_Reviewed"
                       bpmnElement="Collaboration_Art42_Reviewed">
-      <bpmndi:BPMNShape id="Participant_ControllerProcessor_Art42_di"
-                        bpmnElement="Participant_ControllerProcessor_Art42"
-                        isHorizontal="true">
-        <dc:Bounds x="60" y="40" width="4380" height="360" />
+      <bpmndi:BPMNShape id="Participant_ControllerProcessor_Art42_di" bpmnElement="Participant_ControllerProcessor_Art42" isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="5200" height="560" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Participant_CertificationBody_Art42_di"
-                        bpmnElement="Participant_CertificationBody_Art42"
-                        isHorizontal="true">
-        <dc:Bounds x="60" y="460" width="4380" height="420" />
+      <bpmndi:BPMNShape id="Participant_CertificationBody_Art42_di" bpmnElement="Participant_CertificationBody_Art42" isHorizontal="true">
+        <dc:Bounds x="60" y="640" width="5200" height="300" />
       </bpmndi:BPMNShape>
-
-      <bpmndi:BPMNShape id="StartEvent_DemonstrateCompliance_Art42_di"
-                        bpmnElement="StartEvent_DemonstrateCompliance_Art42">
-        <dc:Bounds x="120" y="192" width="36" height="36" />
+      <bpmndi:BPMNShape id="Participant_SupervisoryAuthority_Art42_di" bpmnElement="Participant_SupervisoryAuthority_Art42" isHorizontal="true">
+        <dc:Bounds x="60" y="980" width="5200" height="380" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_VoluntaryCertification_Art42_di"
-                        bpmnElement="Gateway_VoluntaryCertification_Art42"
-                        isMarkerVisible="true">
-        <dc:Bounds x="250" y="185" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="EndEvent_NoCertification_Art42_di"
-                        bpmnElement="EndEvent_NoCertification_Art42">
-        <dc:Bounds x="390" y="92" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="SendTask_RequestCertification_Art42_di"
-                        bpmnElement="SendTask_RequestCertification_Art42">
-        <dc:Bounds x="370" y="170" width="240" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Task_ProvideInformationAccess_Art42_di"
-                        bpmnElement="Task_ProvideInformationAccess_Art42">
-        <dc:Bounds x="690" y="170" width="270" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ReceiveTask_ReceiveCertificationDecision_Art42_di"
-                        bpmnElement="ReceiveTask_ReceiveCertificationDecision_Art42">
-        <dc:Bounds x="1070" y="170" width="220" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_CertificationGranted_Art42_di"
-                        bpmnElement="Gateway_CertificationGranted_Art42"
-                        isMarkerVisible="true">
-        <dc:Bounds x="1380" y="185" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="EndEvent_NotCertified_Art42_di"
-                        bpmnElement="EndEvent_NotCertified_Art42">
-        <dc:Bounds x="1530" y="92" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Task_UseCertification_Art42_di"
-                        bpmnElement="Task_UseCertification_Art42">
-        <dc:Bounds x="1530" y="170" width="250" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_RenewalRequested_Art42_di"
-                        bpmnElement="Gateway_RenewalRequested_Art42"
-                        isMarkerVisible="true">
-        <dc:Bounds x="1870" y="185" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="EndEvent_CertificationExpires_Art42_di"
-                        bpmnElement="EndEvent_CertificationExpires_Art42">
-        <dc:Bounds x="2020" y="92" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Task_ProvideUpdatedInformation_Art42_di"
-                        bpmnElement="Task_ProvideUpdatedInformation_Art42">
-        <dc:Bounds x="2020" y="170" width="260" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ReceiveTask_ReceiveRenewalDecision_Art42_di"
-                        bpmnElement="ReceiveTask_ReceiveRenewalDecision_Art42">
-        <dc:Bounds x="2390" y="170" width="220" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_Renewed_Art42_di"
-                        bpmnElement="Gateway_Renewed_Art42"
-                        isMarkerVisible="true">
-        <dc:Bounds x="2700" y="185" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="EndEvent_RenewalRejected_Art42_di"
-                        bpmnElement="EndEvent_RenewalRejected_Art42">
-        <dc:Bounds x="2850" y="92" width="36" height="36" />
+      <bpmndi:BPMNShape id="Participant_Board_Art42_di" bpmnElement="Participant_Board_Art42" isHorizontal="true">
+        <dc:Bounds x="60" y="1400" width="5200" height="110" />
       </bpmndi:BPMNShape>
 
-      <bpmndi:BPMNShape id="StartEvent_RequestReceived_Art42_di"
-                        bpmnElement="StartEvent_RequestReceived_Art42">
-        <dc:Bounds x="390" y="652" width="36" height="36" />
+      <bpmndi:BPMNShape id="StartEvent_NeedComplianceSignal_Art42_di" bpmnElement="StartEvent_NeedComplianceSignal_Art42">
+        <dc:Bounds x="120" y="142" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ReceiveTask_ReceiveCertificationRequest_Art42_di"
-                        bpmnElement="ReceiveTask_ReceiveCertificationRequest_Art42">
-        <dc:Bounds x="490" y="630" width="220" height="80" />
+      <bpmndi:BPMNShape id="Task_RetainResponsibility_Art42_di" bpmnElement="Task_RetainResponsibility_Art42">
+        <dc:Bounds x="210" y="120" width="180" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="SendTask_RequestInformation_Art42_di"
-                        bpmnElement="SendTask_RequestInformation_Art42">
-        <dc:Bounds x="800" y="630" width="250" height="80" />
+      <bpmndi:BPMNShape id="Gateway_VoluntaryCertification_Art42_di" bpmnElement="Gateway_VoluntaryCertification_Art42" isMarkerVisible="true">
+        <dc:Bounds x="470" y="135" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ReceiveTask_ReceiveInformation_Art42_di"
-                        bpmnElement="ReceiveTask_ReceiveInformation_Art42">
-        <dc:Bounds x="1130" y="630" width="220" height="80" />
+      <bpmndi:BPMNShape id="EndEvent_NoCertification_Art42_di" bpmnElement="EndEvent_NoCertification_Art42">
+        <dc:Bounds x="612" y="72" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Task_AssessRequirements_Art42_di"
-                        bpmnElement="Task_AssessRequirements_Art42">
-        <dc:Bounds x="1440" y="630" width="240" height="80" />
+      <bpmndi:BPMNShape id="Gateway_TransferSafeguards_Art42_di" bpmnElement="Gateway_TransferSafeguards_Art42" isMarkerVisible="true">
+        <dc:Bounds x="620" y="135" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_RequirementsMet_Art42_di"
-                        bpmnElement="Gateway_RequirementsMet_Art42"
-                        isMarkerVisible="true">
-        <dc:Bounds x="1760" y="645" width="50" height="50" />
+      <bpmndi:BPMNShape id="Task_MakeBindingCommitments_Art42_di" bpmnElement="Task_MakeBindingCommitments_Art42">
+        <dc:Bounds x="760" y="60" width="180" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="SendTask_RejectCertification_Art42_di"
-                        bpmnElement="SendTask_RejectCertification_Art42">
-        <dc:Bounds x="1910" y="540" width="210" height="80" />
+      <bpmndi:BPMNShape id="Gateway_IssuingRoute_Art42_di" bpmnElement="Gateway_IssuingRoute_Art42" isMarkerVisible="true">
+        <dc:Bounds x="1060" y="135" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="EndEvent_RequestRejected_Art42_di"
-                        bpmnElement="EndEvent_RequestRejected_Art42">
-        <dc:Bounds x="2210" y="562" width="36" height="36" />
+      <bpmndi:BPMNShape id="SendTask_RequestBodyCertification_Art42_di" bpmnElement="SendTask_RequestBodyCertification_Art42">
+        <dc:Bounds x="1210" y="120" width="170" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="SendTask_GrantCertification_Art42_di"
-                        bpmnElement="SendTask_GrantCertification_Art42">
-        <dc:Bounds x="1910" y="700" width="240" height="80" />
+      <bpmndi:BPMNShape id="Task_ProvideBodyInfo_Art42_di" bpmnElement="Task_ProvideBodyInfo_Art42">
+        <dc:Bounds x="1460" y="120" width="190" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_RenewalAssessment_Art42_di"
-                        bpmnElement="Gateway_RenewalAssessment_Art42"
-                        isMarkerVisible="true">
-        <dc:Bounds x="2250" y="715" width="50" height="50" />
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveBodyStatus_Art42_di" bpmnElement="ReceiveTask_ReceiveBodyStatus_Art42">
+        <dc:Bounds x="1730" y="120" width="180" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="EndEvent_TermEnded_Art42_di"
-                        bpmnElement="EndEvent_TermEnded_Art42">
-        <dc:Bounds x="2400" y="812" width="36" height="36" />
+      <bpmndi:BPMNShape id="Gateway_BodyCertified_Art42_di" bpmnElement="Gateway_BodyCertified_Art42" isMarkerVisible="true">
+        <dc:Bounds x="1990" y="135" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="SendTask_RequestRenewalInformation_Art42_di"
-                        bpmnElement="SendTask_RequestRenewalInformation_Art42">
-        <dc:Bounds x="2400" y="700" width="260" height="80" />
+      <bpmndi:BPMNShape id="EndEvent_BodyNotCertified_Art42_di" bpmnElement="EndEvent_BodyNotCertified_Art42">
+        <dc:Bounds x="2142" y="72" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ReceiveTask_ReceiveRenewalInformation_Art42_di"
-                        bpmnElement="ReceiveTask_ReceiveRenewalInformation_Art42">
-        <dc:Bounds x="2750" y="700" width="230" height="80" />
+      <bpmndi:BPMNShape id="Task_UseBodyCertification_Art42_di" bpmnElement="Task_UseBodyCertification_Art42">
+        <dc:Bounds x="2140" y="120" width="170" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Task_AssessRenewal_Art42_di"
-                        bpmnElement="Task_AssessRenewal_Art42">
-        <dc:Bounds x="3070" y="700" width="240" height="80" />
+      <bpmndi:BPMNShape id="Gateway_BodyRenewalRequested_Art42_di" bpmnElement="Gateway_BodyRenewalRequested_Art42" isMarkerVisible="true">
+        <dc:Bounds x="2390" y="135" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_RenewalGranted_Art42_di"
-                        bpmnElement="Gateway_RenewalGranted_Art42"
-                        isMarkerVisible="true">
-        <dc:Bounds x="3390" y="715" width="50" height="50" />
+      <bpmndi:BPMNShape id="EndEvent_BodyTermEnded_Art42_di" bpmnElement="EndEvent_BodyTermEnded_Art42">
+        <dc:Bounds x="2542" y="72" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="SendTask_RejectRenewal_Art42_di"
-                        bpmnElement="SendTask_RejectRenewal_Art42">
-        <dc:Bounds x="3540" y="790" width="230" height="80" />
+      <bpmndi:BPMNShape id="SendTask_RequestBodyRenewal_Art42_di" bpmnElement="SendTask_RequestBodyRenewal_Art42">
+        <dc:Bounds x="2540" y="120" width="160" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="EndEvent_RenewalDenied_Art42_di"
-                        bpmnElement="EndEvent_RenewalDenied_Art42">
-        <dc:Bounds x="3850" y="812" width="36" height="36" />
+      <bpmndi:BPMNShape id="Task_ProvideBodyRenewalInfo_Art42_di" bpmnElement="Task_ProvideBodyRenewalInfo_Art42">
+        <dc:Bounds x="2780" y="120" width="180" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="SendTask_RenewCertification_Art42_di"
-                        bpmnElement="SendTask_RenewCertification_Art42">
-        <dc:Bounds x="3540" y="700" width="220" height="80" />
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveBodyRenewalStatus_Art42_di" bpmnElement="ReceiveTask_ReceiveBodyRenewalStatus_Art42">
+        <dc:Bounds x="3040" y="120" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_BodyRenewed_Art42_di" bpmnElement="Gateway_BodyRenewed_Art42" isMarkerVisible="true">
+        <dc:Bounds x="3290" y="135" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_BodyCertificationInvalid_Art42_di" bpmnElement="EndEvent_BodyCertificationInvalid_Art42">
+        <dc:Bounds x="3442" y="72" width="36" height="36" />
       </bpmndi:BPMNShape>
 
-      <bpmndi:BPMNEdge id="Flow_Start_To_GatewayVoluntary_Art42_di" bpmnElement="Flow_Start_To_GatewayVoluntary_Art42">
-        <di:waypoint x="156" y="210" />
-        <di:waypoint x="250" y="210" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayVoluntary_To_EndNoCertification_Art42_di" bpmnElement="Flow_GatewayVoluntary_To_EndNoCertification_Art42">
-        <di:waypoint x="275" y="185" />
-        <di:waypoint x="275" y="110" />
-        <di:waypoint x="390" y="110" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayVoluntary_To_RequestCertification_Art42_di" bpmnElement="Flow_GatewayVoluntary_To_RequestCertification_Art42">
-        <di:waypoint x="300" y="210" />
-        <di:waypoint x="370" y="210" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_RequestCertification_To_ProvideInformation_Art42_di" bpmnElement="Flow_RequestCertification_To_ProvideInformation_Art42">
-        <di:waypoint x="610" y="210" />
-        <di:waypoint x="690" y="210" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_ProvideInformation_To_ReceiveDecision_Art42_di" bpmnElement="Flow_ProvideInformation_To_ReceiveDecision_Art42">
-        <di:waypoint x="960" y="210" />
-        <di:waypoint x="1070" y="210" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_ReceiveDecision_To_GatewayGranted_Art42_di" bpmnElement="Flow_ReceiveDecision_To_GatewayGranted_Art42">
-        <di:waypoint x="1290" y="210" />
-        <di:waypoint x="1380" y="210" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayGranted_To_EndNotCertified_Art42_di" bpmnElement="Flow_GatewayGranted_To_EndNotCertified_Art42">
-        <di:waypoint x="1405" y="185" />
-        <di:waypoint x="1405" y="110" />
-        <di:waypoint x="1530" y="110" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayGranted_To_UseCertification_Art42_di" bpmnElement="Flow_GatewayGranted_To_UseCertification_Art42">
-        <di:waypoint x="1430" y="210" />
-        <di:waypoint x="1530" y="210" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_UseCertification_To_GatewayRenewal_Art42_di" bpmnElement="Flow_UseCertification_To_GatewayRenewal_Art42">
-        <di:waypoint x="1780" y="210" />
-        <di:waypoint x="1870" y="210" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayRenewal_To_EndCertificationExpires_Art42_di" bpmnElement="Flow_GatewayRenewal_To_EndCertificationExpires_Art42">
-        <di:waypoint x="1895" y="185" />
-        <di:waypoint x="1895" y="110" />
-        <di:waypoint x="2020" y="110" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayRenewal_To_ProvideUpdatedInformation_Art42_di" bpmnElement="Flow_GatewayRenewal_To_ProvideUpdatedInformation_Art42">
-        <di:waypoint x="1920" y="210" />
-        <di:waypoint x="2020" y="210" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_ProvideUpdatedInformation_To_ReceiveRenewalDecision_Art42_di" bpmnElement="Flow_ProvideUpdatedInformation_To_ReceiveRenewalDecision_Art42">
-        <di:waypoint x="2280" y="210" />
-        <di:waypoint x="2390" y="210" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_ReceiveRenewalDecision_To_GatewayRenewed_Art42_di" bpmnElement="Flow_ReceiveRenewalDecision_To_GatewayRenewed_Art42">
-        <di:waypoint x="2610" y="210" />
-        <di:waypoint x="2700" y="210" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayRenewed_To_EndRenewalRejected_Art42_di" bpmnElement="Flow_GatewayRenewed_To_EndRenewalRejected_Art42">
-        <di:waypoint x="2725" y="185" />
-        <di:waypoint x="2725" y="110" />
-        <di:waypoint x="2850" y="110" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayRenewed_To_UseCertification_Art42_di" bpmnElement="Flow_GatewayRenewed_To_UseCertification_Art42">
-        <di:waypoint x="2725" y="235" />
-        <di:waypoint x="2725" y="310" />
-        <di:waypoint x="1655" y="310" />
-        <di:waypoint x="1655" y="250" />
-      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="SendTask_RequestAuthorityCertification_Art42_di" bpmnElement="SendTask_RequestAuthorityCertification_Art42">
+        <dc:Bounds x="1210" y="340" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ProvideAuthorityInfo_Art42_di" bpmnElement="Task_ProvideAuthorityInfo_Art42">
+        <dc:Bounds x="1460" y="340" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveAuthorityStatus_Art42_di" bpmnElement="ReceiveTask_ReceiveAuthorityStatus_Art42">
+        <dc:Bounds x="1750" y="340" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AuthorityCertified_Art42_di" bpmnElement="Gateway_AuthorityCertified_Art42" isMarkerVisible="true">
+        <dc:Bounds x="2020" y="355" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_AuthorityNotCertified_Art42_di" bpmnElement="EndEvent_AuthorityNotCertified_Art42">
+        <dc:Bounds x="2172" y="472" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_UseAuthorityCertification_Art42_di" bpmnElement="Task_UseAuthorityCertification_Art42">
+        <dc:Bounds x="2170" y="340" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AuthorityRenewalRequested_Art42_di" bpmnElement="Gateway_AuthorityRenewalRequested_Art42" isMarkerVisible="true">
+        <dc:Bounds x="2430" y="355" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_AuthorityTermEnded_Art42_di" bpmnElement="EndEvent_AuthorityTermEnded_Art42">
+        <dc:Bounds x="2582" y="472" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_RequestAuthorityRenewal_Art42_di" bpmnElement="SendTask_RequestAuthorityRenewal_Art42">
+        <dc:Bounds x="2580" y="340" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ProvideAuthorityRenewalInfo_Art42_di" bpmnElement="Task_ProvideAuthorityRenewalInfo_Art42">
+        <dc:Bounds x="2840" y="340" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveAuthorityRenewalStatus_Art42_di" bpmnElement="ReceiveTask_ReceiveAuthorityRenewalStatus_Art42">
+        <dc:Bounds x="3120" y="340" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AuthorityRenewed_Art42_di" bpmnElement="Gateway_AuthorityRenewed_Art42" isMarkerVisible="true">
+        <dc:Bounds x="3390" y="355" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_AuthorityCertificationInvalid_Art42_di" bpmnElement="EndEvent_AuthorityCertificationInvalid_Art42">
+        <dc:Bounds x="3542" y="472" width="36" height="36" />
+      </bpmndi:BPMNShape>
 
-      <bpmndi:BPMNEdge id="Flow_BodyStart_To_ReceiveRequest_Art42_di" bpmnElement="Flow_BodyStart_To_ReceiveRequest_Art42">
-        <di:waypoint x="426" y="670" />
-        <di:waypoint x="490" y="670" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_ReceiveRequest_To_RequestInformation_Art42_di" bpmnElement="Flow_ReceiveRequest_To_RequestInformation_Art42">
-        <di:waypoint x="710" y="670" />
-        <di:waypoint x="800" y="670" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_RequestInformation_To_ReceiveInformation_Art42_di" bpmnElement="Flow_RequestInformation_To_ReceiveInformation_Art42">
-        <di:waypoint x="1050" y="670" />
-        <di:waypoint x="1130" y="670" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_ReceiveInformation_To_AssessRequirements_Art42_di" bpmnElement="Flow_ReceiveInformation_To_AssessRequirements_Art42">
-        <di:waypoint x="1350" y="670" />
-        <di:waypoint x="1440" y="670" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_AssessRequirements_To_GatewayRequirementsMet_Art42_di" bpmnElement="Flow_AssessRequirements_To_GatewayRequirementsMet_Art42">
-        <di:waypoint x="1680" y="670" />
-        <di:waypoint x="1760" y="670" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayRequirementsMet_To_RejectCertification_Art42_di" bpmnElement="Flow_GatewayRequirementsMet_To_RejectCertification_Art42">
-        <di:waypoint x="1785" y="645" />
-        <di:waypoint x="1785" y="580" />
-        <di:waypoint x="1910" y="580" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayRequirementsMet_To_GrantCertification_Art42_di" bpmnElement="Flow_GatewayRequirementsMet_To_GrantCertification_Art42">
-        <di:waypoint x="1810" y="670" />
-        <di:waypoint x="1910" y="740" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_RejectCertification_To_EndRejected_Art42_di" bpmnElement="Flow_RejectCertification_To_EndRejected_Art42">
-        <di:waypoint x="2120" y="580" />
-        <di:waypoint x="2210" y="580" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GrantCertification_To_GatewayRenewalAssessment_Art42_di" bpmnElement="Flow_GrantCertification_To_GatewayRenewalAssessment_Art42">
-        <di:waypoint x="2150" y="740" />
-        <di:waypoint x="2250" y="740" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayRenewalAssessment_To_EndTermEnded_Art42_di" bpmnElement="Flow_GatewayRenewalAssessment_To_EndTermEnded_Art42">
-        <di:waypoint x="2275" y="765" />
-        <di:waypoint x="2275" y="830" />
-        <di:waypoint x="2400" y="830" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayRenewalAssessment_To_RequestRenewalInformation_Art42_di" bpmnElement="Flow_GatewayRenewalAssessment_To_RequestRenewalInformation_Art42">
-        <di:waypoint x="2300" y="740" />
-        <di:waypoint x="2400" y="740" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_RequestRenewalInformation_To_ReceiveRenewalInformation_Art42_di" bpmnElement="Flow_RequestRenewalInformation_To_ReceiveRenewalInformation_Art42">
-        <di:waypoint x="2660" y="740" />
-        <di:waypoint x="2750" y="740" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_ReceiveRenewalInformation_To_AssessRenewal_Art42_di" bpmnElement="Flow_ReceiveRenewalInformation_To_AssessRenewal_Art42">
-        <di:waypoint x="2980" y="740" />
-        <di:waypoint x="3070" y="740" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_AssessRenewal_To_GatewayRenewalGranted_Art42_di" bpmnElement="Flow_AssessRenewal_To_GatewayRenewalGranted_Art42">
-        <di:waypoint x="3310" y="740" />
-        <di:waypoint x="3390" y="740" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayRenewalGranted_To_RejectRenewal_Art42_di" bpmnElement="Flow_GatewayRenewalGranted_To_RejectRenewal_Art42">
-        <di:waypoint x="3415" y="765" />
-        <di:waypoint x="3415" y="830" />
-        <di:waypoint x="3540" y="830" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_RejectRenewal_To_EndRenewalDenied_Art42_di" bpmnElement="Flow_RejectRenewal_To_EndRenewalDenied_Art42">
-        <di:waypoint x="3770" y="830" />
-        <di:waypoint x="3850" y="830" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayRenewalGranted_To_RenewCertification_Art42_di" bpmnElement="Flow_GatewayRenewalGranted_To_RenewCertification_Art42">
-        <di:waypoint x="3440" y="740" />
-        <di:waypoint x="3540" y="740" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_RenewCertification_To_GatewayRenewalAssessment_Art42_di" bpmnElement="Flow_RenewCertification_To_GatewayRenewalAssessment_Art42">
-        <di:waypoint x="3760" y="740" />
-        <di:waypoint x="3880" y="740" />
-        <di:waypoint x="3880" y="540" />
-        <di:waypoint x="2275" y="540" />
-        <di:waypoint x="2275" y="715" />
-      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_HandleBodyCertification_Art42_di" bpmnElement="StartEvent_HandleBodyCertification_Art42">
+        <dc:Bounds x="120" y="752" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveBodyCertificationRequest_Art42_di" bpmnElement="ReceiveTask_ReceiveBodyCertificationRequest_Art42">
+        <dc:Bounds x="210" y="730" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_RequestBodyInfo_Art42_di" bpmnElement="SendTask_RequestBodyInfo_Art42">
+        <dc:Bounds x="480" y="730" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveBodyInfo_Art42_di" bpmnElement="ReceiveTask_ReceiveBodyInfo_Art42">
+        <dc:Bounds x="740" y="730" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RunBodyAssessment_Art42_di" bpmnElement="Task_RunBodyAssessment_Art42">
+        <dc:Bounds x="1000" y="730" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_BodyCriteriaMet_Art42_di" bpmnElement="Gateway_BodyCriteriaMet_Art42" isMarkerVisible="true">
+        <dc:Bounds x="1270" y="745" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_RejectBodyCertification_Art42_di" bpmnElement="SendTask_RejectBodyCertification_Art42">
+        <dc:Bounds x="1410" y="660" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_BodyRejected_Art42_di" bpmnElement="EndEvent_BodyRejected_Art42">
+        <dc:Bounds x="1662" y="682" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_IssueBodyCertification_Art42_di" bpmnElement="SendTask_IssueBodyCertification_Art42">
+        <dc:Bounds x="1410" y="820" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_BodyIssued_Art42_di" bpmnElement="EndEvent_BodyIssued_Art42">
+        <dc:Bounds x="1662" y="842" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_HandleBodyRenewal_Art42_di" bpmnElement="StartEvent_HandleBodyRenewal_Art42">
+        <dc:Bounds x="1940" y="752" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveBodyRenewalRequest_Art42_di" bpmnElement="ReceiveTask_ReceiveBodyRenewalRequest_Art42">
+        <dc:Bounds x="2030" y="730" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_RequestBodyRenewalInfo_Art42_di" bpmnElement="SendTask_RequestBodyRenewalInfo_Art42">
+        <dc:Bounds x="2280" y="730" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveBodyRenewalInfo_Art42_di" bpmnElement="ReceiveTask_ReceiveBodyRenewalInfo_Art42">
+        <dc:Bounds x="2540" y="730" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessBodyRenewal_Art42_di" bpmnElement="Task_AssessBodyRenewal_Art42">
+        <dc:Bounds x="2800" y="730" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_BodyRequirementsContinue_Art42_di" bpmnElement="Gateway_BodyRequirementsContinue_Art42" isMarkerVisible="true">
+        <dc:Bounds x="3070" y="745" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_WithdrawBodyCertification_Art42_di" bpmnElement="SendTask_WithdrawBodyCertification_Art42">
+        <dc:Bounds x="3210" y="660" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_BodyWithdrawn_Art42_di" bpmnElement="EndEvent_BodyWithdrawn_Art42">
+        <dc:Bounds x="3472" y="682" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_RenewBodyCertification_Art42_di" bpmnElement="SendTask_RenewBodyCertification_Art42">
+        <dc:Bounds x="3210" y="820" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_BodyRenewed_Art42_di" bpmnElement="EndEvent_BodyRenewed_Art42">
+        <dc:Bounds x="3462" y="842" width="36" height="36" />
+      </bpmndi:BPMNShape>
 
-      <bpmndi:BPMNEdge id="MessageFlow_RequestCertification_Art42_di" bpmnElement="MessageFlow_RequestCertification_Art42">
-        <di:waypoint x="520" y="250" />
-        <di:waypoint x="520" y="630" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="MessageFlow_RequestInformation_Art42_di" bpmnElement="MessageFlow_RequestInformation_Art42">
-        <di:waypoint x="925" y="630" />
-        <di:waypoint x="925" y="250" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="MessageFlow_ProvideInformation_Art42_di" bpmnElement="MessageFlow_ProvideInformation_Art42">
-        <di:waypoint x="1145" y="250" />
-        <di:waypoint x="1145" y="630" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="MessageFlow_RequestRenewalInformation_Art42_di" bpmnElement="MessageFlow_RequestRenewalInformation_Art42">
-        <di:waypoint x="2530" y="700" />
-        <di:waypoint x="2530" y="250" />
-        <di:waypoint x="2150" y="250" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="MessageFlow_ProvideUpdatedInformation_Art42_di" bpmnElement="MessageFlow_ProvideUpdatedInformation_Art42">
-        <di:waypoint x="2510" y="250" />
-        <di:waypoint x="2510" y="700" />
-        <di:waypoint x="2865" y="700" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="MessageFlow_RejectRenewal_Art42_di" bpmnElement="MessageFlow_RejectRenewal_Art42">
-        <di:waypoint x="3655" y="790" />
-        <di:waypoint x="3655" y="330" />
-        <di:waypoint x="2500" y="330" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="MessageFlow_RejectCertification_Art42_di" bpmnElement="MessageFlow_RejectCertification_Art42">
-        <di:waypoint x="2020" y="540" />
-        <di:waypoint x="2020" y="360" />
-        <di:waypoint x="1180" y="360" />
-        <di:waypoint x="1180" y="250" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="MessageFlow_GrantCertification_Art42_di" bpmnElement="MessageFlow_GrantCertification_Art42">
-        <di:waypoint x="2030" y="700" />
-        <di:waypoint x="2030" y="280" />
-        <di:waypoint x="1180" y="280" />
-        <di:waypoint x="1180" y="250" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="MessageFlow_RenewCertification_Art42_di" bpmnElement="MessageFlow_RenewCertification_Art42">
-        <di:waypoint x="3650" y="700" />
-        <di:waypoint x="3650" y="330" />
-        <di:waypoint x="2500" y="330" />
-        <di:waypoint x="2500" y="250" />
-      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_SetAuthorityCriteria_Art42_di" bpmnElement="StartEvent_SetAuthorityCriteria_Art42">
+        <dc:Bounds x="120" y="1122" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_BoardCriteria_Art42_di" bpmnElement="Gateway_BoardCriteria_Art42" isMarkerVisible="true">
+        <dc:Bounds x="240" y="1115" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_UseAuthorityCriteria_Art42_di" bpmnElement="Task_UseAuthorityCriteria_Art42">
+        <dc:Bounds x="380" y="1030" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_UseBoardCriteria_Art42_di" bpmnElement="Task_UseBoardCriteria_Art42">
+        <dc:Bounds x="380" y="1190" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_AuthorityCriteriaReady_Art42_di" bpmnElement="EndEvent_AuthorityCriteriaReady_Art42">
+        <dc:Bounds x="642" y="1122" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_HandleAuthorityCertification_Art42_di" bpmnElement="StartEvent_HandleAuthorityCertification_Art42">
+        <dc:Bounds x="820" y="1122" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveAuthorityCertificationRequest_Art42_di" bpmnElement="ReceiveTask_ReceiveAuthorityCertificationRequest_Art42">
+        <dc:Bounds x="920" y="1100" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_RequestAuthorityInfo_Art42_di" bpmnElement="SendTask_RequestAuthorityInfo_Art42">
+        <dc:Bounds x="1190" y="1100" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveAuthorityInfo_Art42_di" bpmnElement="ReceiveTask_ReceiveAuthorityInfo_Art42">
+        <dc:Bounds x="1460" y="1100" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RunAuthorityAssessment_Art42_di" bpmnElement="Task_RunAuthorityAssessment_Art42">
+        <dc:Bounds x="1720" y="1100" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AuthorityCriteriaMet_Art42_di" bpmnElement="Gateway_AuthorityCriteriaMet_Art42" isMarkerVisible="true">
+        <dc:Bounds x="2000" y="1115" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_RejectAuthorityCertification_Art42_di" bpmnElement="SendTask_RejectAuthorityCertification_Art42">
+        <dc:Bounds x="2140" y="1030" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_AuthorityRejected_Art42_di" bpmnElement="EndEvent_AuthorityRejected_Art42">
+        <dc:Bounds x="2402" y="1052" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_IssueAuthorityCertification_Art42_di" bpmnElement="SendTask_IssueAuthorityCertification_Art42">
+        <dc:Bounds x="2140" y="1190" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_AuthorityIssued_Art42_di" bpmnElement="EndEvent_AuthorityIssued_Art42">
+        <dc:Bounds x="2402" y="1212" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_HandleAuthorityRenewal_Art42_di" bpmnElement="StartEvent_HandleAuthorityRenewal_Art42">
+        <dc:Bounds x="2660" y="1122" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveAuthorityRenewalRequest_Art42_di" bpmnElement="ReceiveTask_ReceiveAuthorityRenewalRequest_Art42">
+        <dc:Bounds x="2760" y="1100" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_RequestAuthorityRenewalInfo_Art42_di" bpmnElement="SendTask_RequestAuthorityRenewalInfo_Art42">
+        <dc:Bounds x="3020" y="1100" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveAuthorityRenewalInfo_Art42_di" bpmnElement="ReceiveTask_ReceiveAuthorityRenewalInfo_Art42">
+        <dc:Bounds x="3290" y="1100" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessAuthorityRenewal_Art42_di" bpmnElement="Task_AssessAuthorityRenewal_Art42">
+        <dc:Bounds x="3550" y="1100" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AuthorityRequirementsContinue_Art42_di" bpmnElement="Gateway_AuthorityRequirementsContinue_Art42" isMarkerVisible="true">
+        <dc:Bounds x="3830" y="1115" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_WithdrawAuthorityCertification_Art42_di" bpmnElement="SendTask_WithdrawAuthorityCertification_Art42">
+        <dc:Bounds x="3970" y="1030" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_AuthorityWithdrawn_Art42_di" bpmnElement="EndEvent_AuthorityWithdrawn_Art42">
+        <dc:Bounds x="4242" y="1052" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_RenewAuthorityCertification_Art42_di" bpmnElement="SendTask_RenewAuthorityCertification_Art42">
+        <dc:Bounds x="3970" y="1190" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_AuthorityRenewed_Art42_di" bpmnElement="EndEvent_AuthorityRenewed_Art42">
+        <dc:Bounds x="4232" y="1212" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_TaskRetainResponsibility_Art42_di" bpmnElement="Flow_Start_To_TaskRetainResponsibility_Art42"><di:waypoint x="156" y="160" /><di:waypoint x="210" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskRetainResponsibility_To_GatewayVoluntary_Art42_di" bpmnElement="Flow_TaskRetainResponsibility_To_GatewayVoluntary_Art42"><di:waypoint x="390" y="160" /><di:waypoint x="470" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayVoluntary_To_EndNoCertification_Art42_di" bpmnElement="Flow_GatewayVoluntary_To_EndNoCertification_Art42"><di:waypoint x="495" y="135" /><di:waypoint x="495" y="90" /><di:waypoint x="612" y="90" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayVoluntary_To_GatewayTransferSafeguards_Art42_di" bpmnElement="Flow_GatewayVoluntary_To_GatewayTransferSafeguards_Art42"><di:waypoint x="520" y="160" /><di:waypoint x="620" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayTransferSafeguards_To_TaskBindingCommitments_Art42_di" bpmnElement="Flow_GatewayTransferSafeguards_To_TaskBindingCommitments_Art42"><di:waypoint x="645" y="135" /><di:waypoint x="645" y="100" /><di:waypoint x="760" y="100" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayTransferSafeguards_To_GatewayIssuingRoute_Art42_di" bpmnElement="Flow_GatewayTransferSafeguards_To_GatewayIssuingRoute_Art42"><di:waypoint x="670" y="160" /><di:waypoint x="1060" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskBindingCommitments_To_GatewayIssuingRoute_Art42_di" bpmnElement="Flow_TaskBindingCommitments_To_GatewayIssuingRoute_Art42"><di:waypoint x="940" y="100" /><di:waypoint x="1085" y="100" /><di:waypoint x="1085" y="135" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayIssuingRoute_To_SendBodyRequest_Art42_di" bpmnElement="Flow_GatewayIssuingRoute_To_SendBodyRequest_Art42"><di:waypoint x="1110" y="160" /><di:waypoint x="1210" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayIssuingRoute_To_SendAuthorityRequest_Art42_di" bpmnElement="Flow_GatewayIssuingRoute_To_SendAuthorityRequest_Art42"><di:waypoint x="1085" y="185" /><di:waypoint x="1085" y="380" /><di:waypoint x="1210" y="380" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendBodyRequest_To_TaskProvideBodyInfo_Art42_di" bpmnElement="Flow_SendBodyRequest_To_TaskProvideBodyInfo_Art42"><di:waypoint x="1380" y="160" /><di:waypoint x="1460" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskProvideBodyInfo_To_ReceiveBodyStatus_Art42_di" bpmnElement="Flow_TaskProvideBodyInfo_To_ReceiveBodyStatus_Art42"><di:waypoint x="1650" y="160" /><di:waypoint x="1730" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveBodyStatus_To_GatewayBodyCertified_Art42_di" bpmnElement="Flow_ReceiveBodyStatus_To_GatewayBodyCertified_Art42"><di:waypoint x="1910" y="160" /><di:waypoint x="1990" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayBodyCertified_To_EndBodyNotCertified_Art42_di" bpmnElement="Flow_GatewayBodyCertified_To_EndBodyNotCertified_Art42"><di:waypoint x="2015" y="135" /><di:waypoint x="2015" y="90" /><di:waypoint x="2142" y="90" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayBodyCertified_To_TaskUseBodyCertification_Art42_di" bpmnElement="Flow_GatewayBodyCertified_To_TaskUseBodyCertification_Art42"><di:waypoint x="2040" y="160" /><di:waypoint x="2140" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskUseBodyCertification_To_GatewayBodyRenewalRequested_Art42_di" bpmnElement="Flow_TaskUseBodyCertification_To_GatewayBodyRenewalRequested_Art42"><di:waypoint x="2310" y="160" /><di:waypoint x="2390" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayBodyRenewalRequested_To_EndBodyTermEnded_Art42_di" bpmnElement="Flow_GatewayBodyRenewalRequested_To_EndBodyTermEnded_Art42"><di:waypoint x="2415" y="135" /><di:waypoint x="2415" y="90" /><di:waypoint x="2542" y="90" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayBodyRenewalRequested_To_SendBodyRenewalRequest_Art42_di" bpmnElement="Flow_GatewayBodyRenewalRequested_To_SendBodyRenewalRequest_Art42"><di:waypoint x="2440" y="160" /><di:waypoint x="2540" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendBodyRenewalRequest_To_TaskProvideBodyRenewalInfo_Art42_di" bpmnElement="Flow_SendBodyRenewalRequest_To_TaskProvideBodyRenewalInfo_Art42"><di:waypoint x="2700" y="160" /><di:waypoint x="2780" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskProvideBodyRenewalInfo_To_ReceiveBodyRenewalStatus_Art42_di" bpmnElement="Flow_TaskProvideBodyRenewalInfo_To_ReceiveBodyRenewalStatus_Art42"><di:waypoint x="2960" y="160" /><di:waypoint x="3040" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveBodyRenewalStatus_To_GatewayBodyRenewed_Art42_di" bpmnElement="Flow_ReceiveBodyRenewalStatus_To_GatewayBodyRenewed_Art42"><di:waypoint x="3210" y="160" /><di:waypoint x="3290" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayBodyRenewed_To_EndBodyCertificationInvalid_Art42_di" bpmnElement="Flow_GatewayBodyRenewed_To_EndBodyCertificationInvalid_Art42"><di:waypoint x="3315" y="135" /><di:waypoint x="3315" y="90" /><di:waypoint x="3442" y="90" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayBodyRenewed_To_TaskUseBodyCertification_Art42_di" bpmnElement="Flow_GatewayBodyRenewed_To_TaskUseBodyCertification_Art42"><di:waypoint x="3315" y="185" /><di:waypoint x="3315" y="250" /><di:waypoint x="2225" y="250" /><di:waypoint x="2225" y="200" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendAuthorityRequest_To_TaskProvideAuthorityInfo_Art42_di" bpmnElement="Flow_SendAuthorityRequest_To_TaskProvideAuthorityInfo_Art42"><di:waypoint x="1390" y="380" /><di:waypoint x="1460" y="380" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskProvideAuthorityInfo_To_ReceiveAuthorityStatus_Art42_di" bpmnElement="Flow_TaskProvideAuthorityInfo_To_ReceiveAuthorityStatus_Art42"><di:waypoint x="1670" y="380" /><di:waypoint x="1750" y="380" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveAuthorityStatus_To_GatewayAuthorityCertified_Art42_di" bpmnElement="Flow_ReceiveAuthorityStatus_To_GatewayAuthorityCertified_Art42"><di:waypoint x="1940" y="380" /><di:waypoint x="2020" y="380" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAuthorityCertified_To_EndAuthorityNotCertified_Art42_di" bpmnElement="Flow_GatewayAuthorityCertified_To_EndAuthorityNotCertified_Art42"><di:waypoint x="2045" y="405" /><di:waypoint x="2045" y="490" /><di:waypoint x="2172" y="490" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAuthorityCertified_To_TaskUseAuthorityCertification_Art42_di" bpmnElement="Flow_GatewayAuthorityCertified_To_TaskUseAuthorityCertification_Art42"><di:waypoint x="2070" y="380" /><di:waypoint x="2170" y="380" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskUseAuthorityCertification_To_GatewayAuthorityRenewalRequested_Art42_di" bpmnElement="Flow_TaskUseAuthorityCertification_To_GatewayAuthorityRenewalRequested_Art42"><di:waypoint x="2350" y="380" /><di:waypoint x="2430" y="380" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAuthorityRenewalRequested_To_EndAuthorityTermEnded_Art42_di" bpmnElement="Flow_GatewayAuthorityRenewalRequested_To_EndAuthorityTermEnded_Art42"><di:waypoint x="2455" y="405" /><di:waypoint x="2455" y="490" /><di:waypoint x="2582" y="490" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAuthorityRenewalRequested_To_SendAuthorityRenewalRequest_Art42_di" bpmnElement="Flow_GatewayAuthorityRenewalRequested_To_SendAuthorityRenewalRequest_Art42"><di:waypoint x="2480" y="380" /><di:waypoint x="2580" y="380" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendAuthorityRenewalRequest_To_TaskProvideAuthorityRenewalInfo_Art42_di" bpmnElement="Flow_SendAuthorityRenewalRequest_To_TaskProvideAuthorityRenewalInfo_Art42"><di:waypoint x="2760" y="380" /><di:waypoint x="2840" y="380" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskProvideAuthorityRenewalInfo_To_ReceiveAuthorityRenewalStatus_Art42_di" bpmnElement="Flow_TaskProvideAuthorityRenewalInfo_To_ReceiveAuthorityRenewalStatus_Art42"><di:waypoint x="3040" y="380" /><di:waypoint x="3120" y="380" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveAuthorityRenewalStatus_To_GatewayAuthorityRenewed_Art42_di" bpmnElement="Flow_ReceiveAuthorityRenewalStatus_To_GatewayAuthorityRenewed_Art42"><di:waypoint x="3310" y="380" /><di:waypoint x="3390" y="380" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAuthorityRenewed_To_EndAuthorityCertificationInvalid_Art42_di" bpmnElement="Flow_GatewayAuthorityRenewed_To_EndAuthorityCertificationInvalid_Art42"><di:waypoint x="3415" y="405" /><di:waypoint x="3415" y="490" /><di:waypoint x="3542" y="490" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAuthorityRenewed_To_TaskUseAuthorityCertification_Art42_di" bpmnElement="Flow_GatewayAuthorityRenewed_To_TaskUseAuthorityCertification_Art42"><di:waypoint x="3415" y="355" /><di:waypoint x="3415" y="290" /><di:waypoint x="2260" y="290" /><di:waypoint x="2260" y="340" /></bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_StartBodyCertification_To_ReceiveBodyRequest_Art42_di" bpmnElement="Flow_StartBodyCertification_To_ReceiveBodyRequest_Art42"><di:waypoint x="156" y="770" /><di:waypoint x="210" y="770" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveBodyRequest_To_SendBodyInfoRequest_Art42_di" bpmnElement="Flow_ReceiveBodyRequest_To_SendBodyInfoRequest_Art42"><di:waypoint x="400" y="770" /><di:waypoint x="480" y="770" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendBodyInfoRequest_To_ReceiveBodyInfo_Art42_di" bpmnElement="Flow_SendBodyInfoRequest_To_ReceiveBodyInfo_Art42"><di:waypoint x="660" y="770" /><di:waypoint x="740" y="770" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveBodyInfo_To_TaskRunBodyAssessment_Art42_di" bpmnElement="Flow_ReceiveBodyInfo_To_TaskRunBodyAssessment_Art42"><di:waypoint x="920" y="770" /><di:waypoint x="1000" y="770" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskRunBodyAssessment_To_GatewayBodyCriteriaMet_Art42_di" bpmnElement="Flow_TaskRunBodyAssessment_To_GatewayBodyCriteriaMet_Art42"><di:waypoint x="1190" y="770" /><di:waypoint x="1270" y="770" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayBodyCriteriaMet_To_SendRejectBodyCertification_Art42_di" bpmnElement="Flow_GatewayBodyCriteriaMet_To_SendRejectBodyCertification_Art42"><di:waypoint x="1295" y="745" /><di:waypoint x="1295" y="700" /><di:waypoint x="1410" y="700" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayBodyCriteriaMet_To_SendIssueBodyCertification_Art42_di" bpmnElement="Flow_GatewayBodyCriteriaMet_To_SendIssueBodyCertification_Art42"><di:waypoint x="1295" y="795" /><di:waypoint x="1295" y="860" /><di:waypoint x="1410" y="860" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendRejectBodyCertification_To_EndBodyRejected_Art42_di" bpmnElement="Flow_SendRejectBodyCertification_To_EndBodyRejected_Art42"><di:waypoint x="1580" y="700" /><di:waypoint x="1662" y="700" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendIssueBodyCertification_To_EndBodyIssued_Art42_di" bpmnElement="Flow_SendIssueBodyCertification_To_EndBodyIssued_Art42"><di:waypoint x="1580" y="860" /><di:waypoint x="1662" y="860" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_StartBodyRenewal_To_ReceiveBodyRenewalRequest_Art42_di" bpmnElement="Flow_StartBodyRenewal_To_ReceiveBodyRenewalRequest_Art42"><di:waypoint x="1976" y="770" /><di:waypoint x="2030" y="770" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveBodyRenewalRequest_To_SendBodyRenewalInfoRequest_Art42_di" bpmnElement="Flow_ReceiveBodyRenewalRequest_To_SendBodyRenewalInfoRequest_Art42"><di:waypoint x="2200" y="770" /><di:waypoint x="2280" y="770" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendBodyRenewalInfoRequest_To_ReceiveBodyRenewalInfo_Art42_di" bpmnElement="Flow_SendBodyRenewalInfoRequest_To_ReceiveBodyRenewalInfo_Art42"><di:waypoint x="2460" y="770" /><di:waypoint x="2540" y="770" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveBodyRenewalInfo_To_TaskAssessBodyRenewal_Art42_di" bpmnElement="Flow_ReceiveBodyRenewalInfo_To_TaskAssessBodyRenewal_Art42"><di:waypoint x="2720" y="770" /><di:waypoint x="2800" y="770" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskAssessBodyRenewal_To_GatewayBodyRequirementsContinue_Art42_di" bpmnElement="Flow_TaskAssessBodyRenewal_To_GatewayBodyRequirementsContinue_Art42"><di:waypoint x="2990" y="770" /><di:waypoint x="3070" y="770" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayBodyRequirementsContinue_To_SendWithdrawBodyCertification_Art42_di" bpmnElement="Flow_GatewayBodyRequirementsContinue_To_SendWithdrawBodyCertification_Art42"><di:waypoint x="3095" y="745" /><di:waypoint x="3095" y="700" /><di:waypoint x="3210" y="700" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayBodyRequirementsContinue_To_SendRenewBodyCertification_Art42_di" bpmnElement="Flow_GatewayBodyRequirementsContinue_To_SendRenewBodyCertification_Art42"><di:waypoint x="3095" y="795" /><di:waypoint x="3095" y="860" /><di:waypoint x="3210" y="860" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendWithdrawBodyCertification_To_EndBodyWithdrawn_Art42_di" bpmnElement="Flow_SendWithdrawBodyCertification_To_EndBodyWithdrawn_Art42"><di:waypoint x="3390" y="700" /><di:waypoint x="3472" y="700" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendRenewBodyCertification_To_EndBodyRenewed_Art42_di" bpmnElement="Flow_SendRenewBodyCertification_To_EndBodyRenewed_Art42"><di:waypoint x="3380" y="860" /><di:waypoint x="3462" y="860" /></bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_StartAuthorityCriteria_To_GatewayBoardCriteria_Art42_di" bpmnElement="Flow_StartAuthorityCriteria_To_GatewayBoardCriteria_Art42"><di:waypoint x="156" y="1140" /><di:waypoint x="240" y="1140" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayBoardCriteria_To_TaskUseAuthorityCriteria_Art42_di" bpmnElement="Flow_GatewayBoardCriteria_To_TaskUseAuthorityCriteria_Art42"><di:waypoint x="265" y="1115" /><di:waypoint x="265" y="1070" /><di:waypoint x="380" y="1070" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayBoardCriteria_To_TaskUseBoardCriteria_Art42_di" bpmnElement="Flow_GatewayBoardCriteria_To_TaskUseBoardCriteria_Art42"><di:waypoint x="265" y="1165" /><di:waypoint x="265" y="1230" /><di:waypoint x="380" y="1230" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskUseAuthorityCriteria_To_EndAuthorityCriteriaReady_Art42_di" bpmnElement="Flow_TaskUseAuthorityCriteria_To_EndAuthorityCriteriaReady_Art42"><di:waypoint x="560" y="1070" /><di:waypoint x="660" y="1070" /><di:waypoint x="660" y="1122" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskUseBoardCriteria_To_EndAuthorityCriteriaReady_Art42_di" bpmnElement="Flow_TaskUseBoardCriteria_To_EndAuthorityCriteriaReady_Art42"><di:waypoint x="560" y="1230" /><di:waypoint x="660" y="1230" /><di:waypoint x="660" y="1158" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_StartAuthorityCertification_To_ReceiveAuthorityRequest_Art42_di" bpmnElement="Flow_StartAuthorityCertification_To_ReceiveAuthorityRequest_Art42"><di:waypoint x="856" y="1140" /><di:waypoint x="920" y="1140" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveAuthorityRequest_To_SendAuthorityInfoRequest_Art42_di" bpmnElement="Flow_ReceiveAuthorityRequest_To_SendAuthorityInfoRequest_Art42"><di:waypoint x="1110" y="1140" /><di:waypoint x="1190" y="1140" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendAuthorityInfoRequest_To_ReceiveAuthorityInfo_Art42_di" bpmnElement="Flow_SendAuthorityInfoRequest_To_ReceiveAuthorityInfo_Art42"><di:waypoint x="1380" y="1140" /><di:waypoint x="1460" y="1140" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveAuthorityInfo_To_TaskRunAuthorityAssessment_Art42_di" bpmnElement="Flow_ReceiveAuthorityInfo_To_TaskRunAuthorityAssessment_Art42"><di:waypoint x="1640" y="1140" /><di:waypoint x="1720" y="1140" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskRunAuthorityAssessment_To_GatewayAuthorityCriteriaMet_Art42_di" bpmnElement="Flow_TaskRunAuthorityAssessment_To_GatewayAuthorityCriteriaMet_Art42"><di:waypoint x="1920" y="1140" /><di:waypoint x="2000" y="1140" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAuthorityCriteriaMet_To_SendRejectAuthorityCertification_Art42_di" bpmnElement="Flow_GatewayAuthorityCriteriaMet_To_SendRejectAuthorityCertification_Art42"><di:waypoint x="2025" y="1115" /><di:waypoint x="2025" y="1070" /><di:waypoint x="2140" y="1070" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAuthorityCriteriaMet_To_SendIssueAuthorityCertification_Art42_di" bpmnElement="Flow_GatewayAuthorityCriteriaMet_To_SendIssueAuthorityCertification_Art42"><di:waypoint x="2025" y="1165" /><di:waypoint x="2025" y="1230" /><di:waypoint x="2140" y="1230" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendRejectAuthorityCertification_To_EndAuthorityRejected_Art42_di" bpmnElement="Flow_SendRejectAuthorityCertification_To_EndAuthorityRejected_Art42"><di:waypoint x="2320" y="1070" /><di:waypoint x="2402" y="1070" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendIssueAuthorityCertification_To_EndAuthorityIssued_Art42_di" bpmnElement="Flow_SendIssueAuthorityCertification_To_EndAuthorityIssued_Art42"><di:waypoint x="2320" y="1230" /><di:waypoint x="2402" y="1230" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_StartAuthorityRenewal_To_ReceiveAuthorityRenewalRequest_Art42_di" bpmnElement="Flow_StartAuthorityRenewal_To_ReceiveAuthorityRenewalRequest_Art42"><di:waypoint x="2696" y="1140" /><di:waypoint x="2760" y="1140" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveAuthorityRenewalRequest_To_SendAuthorityRenewalInfoRequest_Art42_di" bpmnElement="Flow_ReceiveAuthorityRenewalRequest_To_SendAuthorityRenewalInfoRequest_Art42"><di:waypoint x="2940" y="1140" /><di:waypoint x="3020" y="1140" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendAuthorityRenewalInfoRequest_To_ReceiveAuthorityRenewalInfo_Art42_di" bpmnElement="Flow_SendAuthorityRenewalInfoRequest_To_ReceiveAuthorityRenewalInfo_Art42"><di:waypoint x="3210" y="1140" /><di:waypoint x="3290" y="1140" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveAuthorityRenewalInfo_To_TaskAssessAuthorityRenewal_Art42_di" bpmnElement="Flow_ReceiveAuthorityRenewalInfo_To_TaskAssessAuthorityRenewal_Art42"><di:waypoint x="3470" y="1140" /><di:waypoint x="3550" y="1140" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskAssessAuthorityRenewal_To_GatewayAuthorityRequirementsContinue_Art42_di" bpmnElement="Flow_TaskAssessAuthorityRenewal_To_GatewayAuthorityRequirementsContinue_Art42"><di:waypoint x="3750" y="1140" /><di:waypoint x="3830" y="1140" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAuthorityRequirementsContinue_To_SendWithdrawAuthorityCertification_Art42_di" bpmnElement="Flow_GatewayAuthorityRequirementsContinue_To_SendWithdrawAuthorityCertification_Art42"><di:waypoint x="3855" y="1115" /><di:waypoint x="3855" y="1070" /><di:waypoint x="3970" y="1070" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAuthorityRequirementsContinue_To_SendRenewAuthorityCertification_Art42_di" bpmnElement="Flow_GatewayAuthorityRequirementsContinue_To_SendRenewAuthorityCertification_Art42"><di:waypoint x="3855" y="1165" /><di:waypoint x="3855" y="1230" /><di:waypoint x="3970" y="1230" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendWithdrawAuthorityCertification_To_EndAuthorityWithdrawn_Art42_di" bpmnElement="Flow_SendWithdrawAuthorityCertification_To_EndAuthorityWithdrawn_Art42"><di:waypoint x="4160" y="1070" /><di:waypoint x="4242" y="1070" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendRenewAuthorityCertification_To_EndAuthorityRenewed_Art42_di" bpmnElement="Flow_SendRenewAuthorityCertification_To_EndAuthorityRenewed_Art42"><di:waypoint x="4150" y="1230" /><di:waypoint x="4232" y="1230" /></bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_RequestBodyCertification_Art42_di" bpmnElement="MessageFlow_RequestBodyCertification_Art42"><di:waypoint x="1295" y="200" /><di:waypoint x="1295" y="730" /><di:waypoint x="305" y="730" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_RequestAuthorityCertification_Art42_di" bpmnElement="MessageFlow_RequestAuthorityCertification_Art42"><di:waypoint x="1300" y="420" /><di:waypoint x="1015" y="1100" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_RequestBodyInfo_Art42_di" bpmnElement="MessageFlow_RequestBodyInfo_Art42"><di:waypoint x="570" y="730" /><di:waypoint x="570" y="220" /><di:waypoint x="1555" y="220" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_RequestAuthorityInfo_Art42_di" bpmnElement="MessageFlow_RequestAuthorityInfo_Art42"><di:waypoint x="1285" y="1100" /><di:waypoint x="1285" y="420" /><di:waypoint x="1565" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ProvideBodyInfo_Art42_di" bpmnElement="MessageFlow_ProvideBodyInfo_Art42"><di:waypoint x="1565" y="120" /><di:waypoint x="1565" y="810" /><di:waypoint x="830" y="810" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ProvideAuthorityInfo_Art42_di" bpmnElement="MessageFlow_ProvideAuthorityInfo_Art42"><di:waypoint x="1565" y="420" /><di:waypoint x="1565" y="1180" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_RejectBodyCertification_Art42_di" bpmnElement="MessageFlow_RejectBodyCertification_Art42"><di:waypoint x="1495" y="660" /><di:waypoint x="1495" y="200" /><di:waypoint x="1820" y="200" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_IssueBodyCertification_Art42_di" bpmnElement="MessageFlow_IssueBodyCertification_Art42"><di:waypoint x="1495" y="820" /><di:waypoint x="1495" y="200" /><di:waypoint x="1820" y="200" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_RequestBodyRenewal_Art42_di" bpmnElement="MessageFlow_RequestBodyRenewal_Art42"><di:waypoint x="2620" y="200" /><di:waypoint x="2620" y="730" /><di:waypoint x="2115" y="730" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_RequestBodyRenewalInfo_Art42_di" bpmnElement="MessageFlow_RequestBodyRenewalInfo_Art42"><di:waypoint x="2370" y="730" /><di:waypoint x="2370" y="220" /><di:waypoint x="2870" y="220" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ProvideBodyRenewalInfo_Art42_di" bpmnElement="MessageFlow_ProvideBodyRenewalInfo_Art42"><di:waypoint x="2870" y="200" /><di:waypoint x="2870" y="810" /><di:waypoint x="2630" y="810" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_RenewBodyCertification_Art42_di" bpmnElement="MessageFlow_RenewBodyCertification_Art42"><di:waypoint x="3295" y="820" /><di:waypoint x="3295" y="200" /><di:waypoint x="3125" y="200" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_WithdrawBodyCertification_Art42_di" bpmnElement="MessageFlow_WithdrawBodyCertification_Art42"><di:waypoint x="3300" y="660" /><di:waypoint x="3300" y="460" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_RejectAuthorityCertification_Art42_di" bpmnElement="MessageFlow_RejectAuthorityCertification_Art42"><di:waypoint x="2230" y="1030" /><di:waypoint x="2230" y="420" /><di:waypoint x="1845" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_IssueAuthorityCertification_Art42_di" bpmnElement="MessageFlow_IssueAuthorityCertification_Art42"><di:waypoint x="2230" y="1190" /><di:waypoint x="2230" y="420" /><di:waypoint x="1845" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_RequestAuthorityRenewal_Art42_di" bpmnElement="MessageFlow_RequestAuthorityRenewal_Art42"><di:waypoint x="2670" y="420" /><di:waypoint x="2670" y="1100" /><di:waypoint x="2850" y="1100" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_RequestAuthorityRenewalInfo_Art42_di" bpmnElement="MessageFlow_RequestAuthorityRenewalInfo_Art42"><di:waypoint x="3115" y="1100" /><di:waypoint x="3115" y="420" /><di:waypoint x="2940" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ProvideAuthorityRenewalInfo_Art42_di" bpmnElement="MessageFlow_ProvideAuthorityRenewalInfo_Art42"><di:waypoint x="2940" y="340" /><di:waypoint x="2940" y="1180" /><di:waypoint x="3380" y="1180" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_RenewAuthorityCertification_Art42_di" bpmnElement="MessageFlow_RenewAuthorityCertification_Art42"><di:waypoint x="4060" y="1190" /><di:waypoint x="4060" y="420" /><di:waypoint x="3215" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_WithdrawAuthorityCertification_Art42_di" bpmnElement="MessageFlow_WithdrawAuthorityCertification_Art42"><di:waypoint x="4065" y="1030" /><di:waypoint x="4065" y="460" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_IssueBodyCertificationToBoard_Art42_di" bpmnElement="MessageFlow_IssueBodyCertificationToBoard_Art42"><di:waypoint x="1495" y="900" /><di:waypoint x="1495" y="1400" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_IssueAuthorityCertificationToBoard_Art42_di" bpmnElement="MessageFlow_IssueAuthorityCertificationToBoard_Art42"><di:waypoint x="2230" y="1270" /><di:waypoint x="2230" y="1400" /></bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>

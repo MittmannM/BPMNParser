@@ -8,343 +8,539 @@
 
   <bpmn:collaboration id="Collaboration_Art43_Reviewed">
     <bpmn:participant id="Participant_CertificationBody_Art43"
-                      name="Accredited Certification Body"
+                      name="Certification Body"
                       processRef="Process_CertificationBody_Art43" />
     <bpmn:participant id="Participant_SupervisoryAuthority_Art43"
-                      name="Supervisory Authority" />
+                      name="Supervisory Authority"
+                      processRef="Process_SupervisoryAuthority_Art43" />
+    <bpmn:participant id="Participant_NationalAccreditationBody_Art43"
+                      name="National Accreditation Body" />
+    <bpmn:participant id="Participant_Board_Art43"
+                      name="Board" />
+    <bpmn:participant id="Participant_Commission_Art43"
+                      name="Commission" />
 
-    <bpmn:messageFlow id="MessageFlow_NotifyGrantOrRenewal_Art43"
-                      sourceRef="SendTask_NotifyGrantOrRenewal_Art43"
-                      targetRef="Participant_SupervisoryAuthority_Art43" />
-    <bpmn:messageFlow id="MessageFlow_SendGrantOrRenewalReasons_Art43"
-                      sourceRef="SendTask_SendGrantOrRenewalReasons_Art43"
-                      targetRef="Participant_SupervisoryAuthority_Art43" />
-    <bpmn:messageFlow id="MessageFlow_NotifyWithdrawal_Art43"
-                      sourceRef="SendTask_NotifyWithdrawal_Art43"
-                      targetRef="Participant_SupervisoryAuthority_Art43" />
+    <bpmn:messageFlow id="MessageFlow_RequestSAAccreditation_Art43"
+                      sourceRef="SendTask_RequestSAAccreditation_Art43"
+                      targetRef="ReceiveTask_ReceiveSAAccreditationRequest_Art43" />
+    <bpmn:messageFlow id="MessageFlow_RequestNABAccreditation_Art43"
+                      sourceRef="SendTask_RequestNABAccreditation_Art43"
+                      targetRef="Participant_NationalAccreditationBody_Art43" />
+    <bpmn:messageFlow id="MessageFlow_InformAuthorityBeforeIssuing_Art43"
+                      sourceRef="SendTask_InformAuthorityBeforeIssuing_Art43"
+                      targetRef="ReceiveTask_ReceiveIssuanceInformation_Art43" />
+    <bpmn:messageFlow id="MessageFlow_SendGrantReasons_Art43"
+                      sourceRef="SendTask_SendGrantReasons_Art43"
+                      targetRef="ReceiveTask_ReceiveGrantReasons_Art43" />
     <bpmn:messageFlow id="MessageFlow_SendWithdrawalReasons_Art43"
                       sourceRef="SendTask_SendWithdrawalReasons_Art43"
-                      targetRef="Participant_SupervisoryAuthority_Art43" />
+                      targetRef="ReceiveTask_ReceiveWithdrawalReasons_Art43" />
+    <bpmn:messageFlow id="MessageFlow_SubmitRequirementsToBoard_Art43"
+                      sourceRef="SendTask_SubmitRequirementsToBoard_Art43"
+                      targetRef="Participant_Board_Art43" />
+    <bpmn:messageFlow id="MessageFlow_SendPublicRequirementsToBoard_Art43"
+                      sourceRef="SendTask_SendPublicRequirementsToBoard_Art43"
+                      targetRef="Participant_Board_Art43" />
+    <bpmn:messageFlow id="MessageFlow_RequestCommissionSpecifications_Art43"
+                      sourceRef="SendTask_RequestCommissionSpecifications_Art43"
+                      targetRef="Participant_Commission_Art43" />
+    <bpmn:messageFlow id="MessageFlow_RequestCommissionStandards_Art43"
+                      sourceRef="SendTask_RequestCommissionStandards_Art43"
+                      targetRef="Participant_Commission_Art43" />
+    <bpmn:messageFlow id="MessageFlow_RevokeByAuthority_Art43"
+                      sourceRef="SendTask_RevokeAccreditation_Art43"
+                      targetRef="Participant_CertificationBody_Art43" />
   </bpmn:collaboration>
 
   <bpmn:process id="Process_CertificationBody_Art43"
-                name="Issuing, renewing, or withdrawing certification"
+                name="Operating as a certification body under Article 43"
                 isExecutable="false">
     <bpmn:documentation>
-      Manual BPMN conversion for GDPR Article 43 based on DAPRECO LegalRuleML statements239-241.
-      The model focuses on an accredited certification body that is responsible for certification
-      decisions under an approved certification mechanism and must communicate granted or
-      withdrawn certification, together with the reasons for that decision, to the supervisory
-      authority. The assessment step is included as an operational bridge so that the withdrawal
-      and grant-or-renew paths remain process-readable.
+      Manual BPMN conversion for GDPR Article 43 based on the real English legal text
+      from gdpr_articles/article_43.txt. This model captures the accreditation routes,
+      the Article 43(2) eligibility requirements, issuing and renewing certification
+      after informing the supervisory authority, the duty to provide reasons for
+      granting or withdrawing certification, the proper-assessment responsibility, and
+      the five-year accreditation lifecycle with renewal.
     </bpmn:documentation>
 
-    <bpmn:startEvent id="StartEvent_CertificationCase_Art43"
-                     name="Certification body handles a certification case">
-      <bpmn:outgoing>Flow_Start_To_ConfirmResponsibility_Art43</bpmn:outgoing>
+    <bpmn:startEvent id="StartEvent_SeekAccreditation_Art43"
+                     name="Seek accreditation">
+      <bpmn:outgoing>Flow_StartSeekAccreditation_To_GatewayAccreditationRoute_Art43</bpmn:outgoing>
     </bpmn:startEvent>
 
-    <bpmn:task id="Task_ConfirmResponsibility_Art43"
-               name="Confirm responsibility for the approved certification mechanism">
-      <bpmn:incoming>Flow_Start_To_ConfirmResponsibility_Art43</bpmn:incoming>
-      <bpmn:outgoing>Flow_ConfirmResponsibility_To_GatewayAccredited_Art43</bpmn:outgoing>
-    </bpmn:task>
-
-    <bpmn:exclusiveGateway id="Gateway_Accredited_Art43"
-                           name="Is the body accredited by the supervisory authority?">
-      <bpmn:incoming>Flow_ConfirmResponsibility_To_GatewayAccredited_Art43</bpmn:incoming>
-      <bpmn:outgoing>Flow_GatewayAccredited_To_EndNotAccredited_Art43</bpmn:outgoing>
-      <bpmn:outgoing>Flow_GatewayAccredited_To_ReviewCase_Art43</bpmn:outgoing>
+    <bpmn:exclusiveGateway id="Gateway_AccreditationRoute_Art43"
+                           name="Will the supervisory authority accredit the body?">
+      <bpmn:incoming>Flow_StartSeekAccreditation_To_GatewayAccreditationRoute_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAccreditationRoute_To_SendSAAccreditationRequest_Art43</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAccreditationRoute_To_SendNABAccreditationRequest_Art43</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
-    <bpmn:endEvent id="EndEvent_NotAccredited_Art43"
-                   name="No accredited certification action can be taken">
-      <bpmn:incoming>Flow_GatewayAccredited_To_EndNotAccredited_Art43</bpmn:incoming>
-    </bpmn:endEvent>
+    <bpmn:sendTask id="SendTask_RequestSAAccreditation_Art43"
+                   name="Request SA accreditation">
+      <bpmn:incoming>Flow_GatewayAccreditationRoute_To_SendSAAccreditationRequest_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendSAAccreditationRequest_To_TaskDemonstrateRequirements_Art43</bpmn:outgoing>
+    </bpmn:sendTask>
 
-    <bpmn:task id="Task_ReviewCertificationCase_Art43"
-               name="Review whether the certification requirements are fulfilled or still fulfilled">
-      <bpmn:incoming>Flow_GatewayAccredited_To_ReviewCase_Art43</bpmn:incoming>
-      <bpmn:outgoing>Flow_ReviewCase_To_GatewayRequirements_Art43</bpmn:outgoing>
+    <bpmn:sendTask id="SendTask_RequestNABAccreditation_Art43"
+                   name="Request NAB accreditation">
+      <bpmn:incoming>Flow_GatewayAccreditationRoute_To_SendNABAccreditationRequest_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendNABAccreditationRequest_To_TaskDemonstrateRequirements_Art43</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:parallelGateway id="Gateway_SplitRequirements_Art43">
+      <bpmn:incoming>Flow_SendSAAccreditationRequest_To_TaskDemonstrateRequirements_Art43</bpmn:incoming>
+      <bpmn:incoming>Flow_SendNABAccreditationRequest_To_TaskDemonstrateRequirements_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplitRequirements_To_TaskDemonstrateIndependence_Art43</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitRequirements_To_TaskUndertakeApprovedCriteria_Art43</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitRequirements_To_TaskSetReviewWithdrawalProcedures_Art43</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitRequirements_To_TaskSetComplaintProcedures_Art43</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitRequirements_To_TaskShowNoConflicts_Art43</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_DemonstrateIndependence_Art43"
+               name="Demonstrate independence and expertise">
+      <bpmn:incoming>Flow_GatewaySplitRequirements_To_TaskDemonstrateIndependence_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskDemonstrateIndependence_To_GatewayJoinRequirements_Art43</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:exclusiveGateway id="Gateway_RequirementsFulfilled_Art43"
-                           name="Are the certification requirements fulfilled or still fulfilled?">
-      <bpmn:incoming>Flow_ReviewCase_To_GatewayRequirements_Art43</bpmn:incoming>
-      <bpmn:outgoing>Flow_GatewayRequirements_To_IssueOrRenew_Art43</bpmn:outgoing>
-      <bpmn:outgoing>Flow_GatewayRequirements_To_Withdraw_Art43</bpmn:outgoing>
+    <bpmn:task id="Task_UndertakeApprovedCriteria_Art43"
+               name="Undertake approved criteria">
+      <bpmn:incoming>Flow_GatewaySplitRequirements_To_TaskUndertakeApprovedCriteria_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskUndertakeApprovedCriteria_To_GatewayJoinRequirements_Art43</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_SetReviewWithdrawalProcedures_Art43"
+               name="Set review and withdrawal procedures">
+      <bpmn:incoming>Flow_GatewaySplitRequirements_To_TaskSetReviewWithdrawalProcedures_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskSetReviewWithdrawalProcedures_To_GatewayJoinRequirements_Art43</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_SetComplaintProcedures_Art43"
+               name="Set complaint procedures">
+      <bpmn:incoming>Flow_GatewaySplitRequirements_To_TaskSetComplaintProcedures_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskSetComplaintProcedures_To_GatewayJoinRequirements_Art43</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ShowNoConflicts_Art43"
+               name="Show no conflicts">
+      <bpmn:incoming>Flow_GatewaySplitRequirements_To_TaskShowNoConflicts_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskShowNoConflicts_To_GatewayJoinRequirements_Art43</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_JoinRequirements_Art43">
+      <bpmn:incoming>Flow_TaskDemonstrateIndependence_To_GatewayJoinRequirements_Art43</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskUndertakeApprovedCriteria_To_GatewayJoinRequirements_Art43</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskSetReviewWithdrawalProcedures_To_GatewayJoinRequirements_Art43</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskSetComplaintProcedures_To_GatewayJoinRequirements_Art43</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskShowNoConflicts_To_GatewayJoinRequirements_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinRequirements_To_TaskRunProperAssessment_Art43</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_RunProperAssessment_Art43"
+               name="Run proper assessment">
+      <bpmn:incoming>Flow_GatewayJoinRequirements_To_TaskRunProperAssessment_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskRunProperAssessment_To_SendInformAuthority_Art43</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="SendTask_InformAuthorityBeforeIssuing_Art43"
+                   name="Inform authority before issuing">
+      <bpmn:incoming>Flow_TaskRunProperAssessment_To_SendInformAuthority_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendInformAuthority_To_GatewayCertificationOutcome_Art43</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:exclusiveGateway id="Gateway_CertificationOutcome_Art43"
+                           name="Will certification be granted or renewed?">
+      <bpmn:incoming>Flow_SendInformAuthority_To_GatewayCertificationOutcome_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayCertificationOutcome_To_SendGrantReasons_Art43</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayCertificationOutcome_To_SendWithdrawalReasons_Art43</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
-    <bpmn:task id="Task_IssueOrRenewCertification_Art43"
-               name="Issue or renew certification under the approved certification mechanism">
-      <bpmn:incoming>Flow_GatewayRequirements_To_IssueOrRenew_Art43</bpmn:incoming>
-      <bpmn:outgoing>Flow_IssueOrRenew_To_NotifyGrantOrRenewal_Art43</bpmn:outgoing>
-    </bpmn:task>
-
-    <bpmn:sendTask id="SendTask_NotifyGrantOrRenewal_Art43"
-                   name="Notify the supervisory authority of the granted or renewed certification">
-      <bpmn:incoming>Flow_IssueOrRenew_To_NotifyGrantOrRenewal_Art43</bpmn:incoming>
-      <bpmn:outgoing>Flow_NotifyGrantOrRenewal_To_PrepareGrantReasons_Art43</bpmn:outgoing>
+    <bpmn:sendTask id="SendTask_SendGrantReasons_Art43"
+                   name="Send grant or renewal reasons">
+      <bpmn:incoming>Flow_GatewayCertificationOutcome_To_SendGrantReasons_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendGrantReasons_To_TaskManageAccreditationTerm_Art43</bpmn:outgoing>
     </bpmn:sendTask>
 
-    <bpmn:task id="Task_PrepareGrantOrRenewalReasons_Art43"
-               name="Prepare the reasons for the grant or renewal decision">
-      <bpmn:incoming>Flow_NotifyGrantOrRenewal_To_PrepareGrantReasons_Art43</bpmn:incoming>
-      <bpmn:outgoing>Flow_PrepareGrantReasons_To_SendGrantReasons_Art43</bpmn:outgoing>
+    <bpmn:task id="Task_ManageAccreditationTerm_Art43"
+               name="Manage five-year accreditation">
+      <bpmn:incoming>Flow_SendGrantReasons_To_TaskManageAccreditationTerm_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskManageAccreditationTerm_To_GatewayRenewAccreditation_Art43</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:sendTask id="SendTask_SendGrantOrRenewalReasons_Art43"
-                   name="Send the reasons for the grant or renewal decision to the supervisory authority">
-      <bpmn:incoming>Flow_PrepareGrantReasons_To_SendGrantReasons_Art43</bpmn:incoming>
-      <bpmn:outgoing>Flow_SendGrantReasons_To_EndGrantNotified_Art43</bpmn:outgoing>
-    </bpmn:sendTask>
+    <bpmn:exclusiveGateway id="Gateway_RenewAccreditation_Art43"
+                           name="Will accreditation be renewed on the same conditions?">
+      <bpmn:incoming>Flow_TaskManageAccreditationTerm_To_GatewayRenewAccreditation_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayRenewAccreditation_To_EndAccreditationEnded_Art43</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayRenewAccreditation_To_TaskRunProperAssessment_Art43</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
 
-    <bpmn:endEvent id="EndEvent_GrantOrRenewalCompleted_Art43"
-                   name="Grant or renewal notification completed">
-      <bpmn:incoming>Flow_SendGrantReasons_To_EndGrantNotified_Art43</bpmn:incoming>
+    <bpmn:endEvent id="EndEvent_AccreditationEnded_Art43"
+                   name="Accreditation term ended">
+      <bpmn:incoming>Flow_GatewayRenewAccreditation_To_EndAccreditationEnded_Art43</bpmn:incoming>
     </bpmn:endEvent>
-
-    <bpmn:task id="Task_WithdrawCertification_Art43"
-               name="Withdraw certification under the approved certification mechanism">
-      <bpmn:incoming>Flow_GatewayRequirements_To_Withdraw_Art43</bpmn:incoming>
-      <bpmn:outgoing>Flow_Withdraw_To_NotifyWithdrawal_Art43</bpmn:outgoing>
-    </bpmn:task>
-
-    <bpmn:sendTask id="SendTask_NotifyWithdrawal_Art43"
-                   name="Notify the supervisory authority of the withdrawn certification">
-      <bpmn:incoming>Flow_Withdraw_To_NotifyWithdrawal_Art43</bpmn:incoming>
-      <bpmn:outgoing>Flow_NotifyWithdrawal_To_PrepareWithdrawalReasons_Art43</bpmn:outgoing>
-    </bpmn:sendTask>
-
-    <bpmn:task id="Task_PrepareWithdrawalReasons_Art43"
-               name="Prepare the reasons for the withdrawal decision">
-      <bpmn:incoming>Flow_NotifyWithdrawal_To_PrepareWithdrawalReasons_Art43</bpmn:incoming>
-      <bpmn:outgoing>Flow_PrepareWithdrawalReasons_To_SendWithdrawalReasons_Art43</bpmn:outgoing>
-    </bpmn:task>
 
     <bpmn:sendTask id="SendTask_SendWithdrawalReasons_Art43"
-                   name="Send the reasons for the withdrawal decision to the supervisory authority">
-      <bpmn:incoming>Flow_PrepareWithdrawalReasons_To_SendWithdrawalReasons_Art43</bpmn:incoming>
-      <bpmn:outgoing>Flow_SendWithdrawalReasons_To_EndWithdrawalNotified_Art43</bpmn:outgoing>
+                   name="Send withdrawal reasons">
+      <bpmn:incoming>Flow_GatewayCertificationOutcome_To_SendWithdrawalReasons_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendWithdrawalReasons_To_EndCertificationWithdrawn_Art43</bpmn:outgoing>
     </bpmn:sendTask>
 
-    <bpmn:endEvent id="EndEvent_WithdrawalCompleted_Art43"
-                   name="Withdrawal notification completed">
-      <bpmn:incoming>Flow_SendWithdrawalReasons_To_EndWithdrawalNotified_Art43</bpmn:incoming>
+    <bpmn:endEvent id="EndEvent_CertificationWithdrawn_Art43"
+                   name="Certification withdrawn">
+      <bpmn:incoming>Flow_SendWithdrawalReasons_To_EndCertificationWithdrawn_Art43</bpmn:incoming>
     </bpmn:endEvent>
 
-    <bpmn:sequenceFlow id="Flow_Start_To_ConfirmResponsibility_Art43"
-                       sourceRef="StartEvent_CertificationCase_Art43"
-                       targetRef="Task_ConfirmResponsibility_Art43" />
-    <bpmn:sequenceFlow id="Flow_ConfirmResponsibility_To_GatewayAccredited_Art43"
-                       sourceRef="Task_ConfirmResponsibility_Art43"
-                       targetRef="Gateway_Accredited_Art43" />
-    <bpmn:sequenceFlow id="Flow_GatewayAccredited_To_EndNotAccredited_Art43"
-                       name="No"
-                       sourceRef="Gateway_Accredited_Art43"
-                       targetRef="EndEvent_NotAccredited_Art43" />
-    <bpmn:sequenceFlow id="Flow_GatewayAccredited_To_ReviewCase_Art43"
-                       name="Yes"
-                       sourceRef="Gateway_Accredited_Art43"
-                       targetRef="Task_ReviewCertificationCase_Art43" />
-    <bpmn:sequenceFlow id="Flow_ReviewCase_To_GatewayRequirements_Art43"
-                       sourceRef="Task_ReviewCertificationCase_Art43"
-                       targetRef="Gateway_RequirementsFulfilled_Art43" />
-    <bpmn:sequenceFlow id="Flow_GatewayRequirements_To_IssueOrRenew_Art43"
-                       name="Yes"
-                       sourceRef="Gateway_RequirementsFulfilled_Art43"
-                       targetRef="Task_IssueOrRenewCertification_Art43" />
-    <bpmn:sequenceFlow id="Flow_GatewayRequirements_To_Withdraw_Art43"
-                       name="No"
-                       sourceRef="Gateway_RequirementsFulfilled_Art43"
-                       targetRef="Task_WithdrawCertification_Art43" />
-    <bpmn:sequenceFlow id="Flow_IssueOrRenew_To_NotifyGrantOrRenewal_Art43"
-                       sourceRef="Task_IssueOrRenewCertification_Art43"
-                       targetRef="SendTask_NotifyGrantOrRenewal_Art43" />
-    <bpmn:sequenceFlow id="Flow_NotifyGrantOrRenewal_To_PrepareGrantReasons_Art43"
-                       sourceRef="SendTask_NotifyGrantOrRenewal_Art43"
-                       targetRef="Task_PrepareGrantOrRenewalReasons_Art43" />
-    <bpmn:sequenceFlow id="Flow_PrepareGrantReasons_To_SendGrantReasons_Art43"
-                       sourceRef="Task_PrepareGrantOrRenewalReasons_Art43"
-                       targetRef="SendTask_SendGrantOrRenewalReasons_Art43" />
-    <bpmn:sequenceFlow id="Flow_SendGrantReasons_To_EndGrantNotified_Art43"
-                       sourceRef="SendTask_SendGrantOrRenewalReasons_Art43"
-                       targetRef="EndEvent_GrantOrRenewalCompleted_Art43" />
-    <bpmn:sequenceFlow id="Flow_Withdraw_To_NotifyWithdrawal_Art43"
-                       sourceRef="Task_WithdrawCertification_Art43"
-                       targetRef="SendTask_NotifyWithdrawal_Art43" />
-    <bpmn:sequenceFlow id="Flow_NotifyWithdrawal_To_PrepareWithdrawalReasons_Art43"
-                       sourceRef="SendTask_NotifyWithdrawal_Art43"
-                       targetRef="Task_PrepareWithdrawalReasons_Art43" />
-    <bpmn:sequenceFlow id="Flow_PrepareWithdrawalReasons_To_SendWithdrawalReasons_Art43"
-                       sourceRef="Task_PrepareWithdrawalReasons_Art43"
-                       targetRef="SendTask_SendWithdrawalReasons_Art43" />
-    <bpmn:sequenceFlow id="Flow_SendWithdrawalReasons_To_EndWithdrawalNotified_Art43"
-                       sourceRef="SendTask_SendWithdrawalReasons_Art43"
-                       targetRef="EndEvent_WithdrawalCompleted_Art43" />
+    <bpmn:sequenceFlow id="Flow_StartSeekAccreditation_To_GatewayAccreditationRoute_Art43" sourceRef="StartEvent_SeekAccreditation_Art43" targetRef="Gateway_AccreditationRoute_Art43" />
+    <bpmn:sequenceFlow id="Flow_GatewayAccreditationRoute_To_SendSAAccreditationRequest_Art43" name="Yes" sourceRef="Gateway_AccreditationRoute_Art43" targetRef="SendTask_RequestSAAccreditation_Art43" />
+    <bpmn:sequenceFlow id="Flow_GatewayAccreditationRoute_To_SendNABAccreditationRequest_Art43" name="No" sourceRef="Gateway_AccreditationRoute_Art43" targetRef="SendTask_RequestNABAccreditation_Art43" />
+    <bpmn:sequenceFlow id="Flow_SendSAAccreditationRequest_To_TaskDemonstrateRequirements_Art43" sourceRef="SendTask_RequestSAAccreditation_Art43" targetRef="Gateway_SplitRequirements_Art43" />
+    <bpmn:sequenceFlow id="Flow_SendNABAccreditationRequest_To_TaskDemonstrateRequirements_Art43" sourceRef="SendTask_RequestNABAccreditation_Art43" targetRef="Gateway_SplitRequirements_Art43" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitRequirements_To_TaskDemonstrateIndependence_Art43" sourceRef="Gateway_SplitRequirements_Art43" targetRef="Task_DemonstrateIndependence_Art43" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitRequirements_To_TaskUndertakeApprovedCriteria_Art43" sourceRef="Gateway_SplitRequirements_Art43" targetRef="Task_UndertakeApprovedCriteria_Art43" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitRequirements_To_TaskSetReviewWithdrawalProcedures_Art43" sourceRef="Gateway_SplitRequirements_Art43" targetRef="Task_SetReviewWithdrawalProcedures_Art43" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitRequirements_To_TaskSetComplaintProcedures_Art43" sourceRef="Gateway_SplitRequirements_Art43" targetRef="Task_SetComplaintProcedures_Art43" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitRequirements_To_TaskShowNoConflicts_Art43" sourceRef="Gateway_SplitRequirements_Art43" targetRef="Task_ShowNoConflicts_Art43" />
+    <bpmn:sequenceFlow id="Flow_TaskDemonstrateIndependence_To_GatewayJoinRequirements_Art43" sourceRef="Task_DemonstrateIndependence_Art43" targetRef="Gateway_JoinRequirements_Art43" />
+    <bpmn:sequenceFlow id="Flow_TaskUndertakeApprovedCriteria_To_GatewayJoinRequirements_Art43" sourceRef="Task_UndertakeApprovedCriteria_Art43" targetRef="Gateway_JoinRequirements_Art43" />
+    <bpmn:sequenceFlow id="Flow_TaskSetReviewWithdrawalProcedures_To_GatewayJoinRequirements_Art43" sourceRef="Task_SetReviewWithdrawalProcedures_Art43" targetRef="Gateway_JoinRequirements_Art43" />
+    <bpmn:sequenceFlow id="Flow_TaskSetComplaintProcedures_To_GatewayJoinRequirements_Art43" sourceRef="Task_SetComplaintProcedures_Art43" targetRef="Gateway_JoinRequirements_Art43" />
+    <bpmn:sequenceFlow id="Flow_TaskShowNoConflicts_To_GatewayJoinRequirements_Art43" sourceRef="Task_ShowNoConflicts_Art43" targetRef="Gateway_JoinRequirements_Art43" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoinRequirements_To_TaskRunProperAssessment_Art43" sourceRef="Gateway_JoinRequirements_Art43" targetRef="Task_RunProperAssessment_Art43" />
+    <bpmn:sequenceFlow id="Flow_TaskRunProperAssessment_To_SendInformAuthority_Art43" sourceRef="Task_RunProperAssessment_Art43" targetRef="SendTask_InformAuthorityBeforeIssuing_Art43" />
+    <bpmn:sequenceFlow id="Flow_SendInformAuthority_To_GatewayCertificationOutcome_Art43" sourceRef="SendTask_InformAuthorityBeforeIssuing_Art43" targetRef="Gateway_CertificationOutcome_Art43" />
+    <bpmn:sequenceFlow id="Flow_GatewayCertificationOutcome_To_SendGrantReasons_Art43" name="Yes" sourceRef="Gateway_CertificationOutcome_Art43" targetRef="SendTask_SendGrantReasons_Art43" />
+    <bpmn:sequenceFlow id="Flow_GatewayCertificationOutcome_To_SendWithdrawalReasons_Art43" name="No" sourceRef="Gateway_CertificationOutcome_Art43" targetRef="SendTask_SendWithdrawalReasons_Art43" />
+    <bpmn:sequenceFlow id="Flow_SendGrantReasons_To_TaskManageAccreditationTerm_Art43" sourceRef="SendTask_SendGrantReasons_Art43" targetRef="Task_ManageAccreditationTerm_Art43" />
+    <bpmn:sequenceFlow id="Flow_TaskManageAccreditationTerm_To_GatewayRenewAccreditation_Art43" sourceRef="Task_ManageAccreditationTerm_Art43" targetRef="Gateway_RenewAccreditation_Art43" />
+    <bpmn:sequenceFlow id="Flow_GatewayRenewAccreditation_To_EndAccreditationEnded_Art43" name="No" sourceRef="Gateway_RenewAccreditation_Art43" targetRef="EndEvent_AccreditationEnded_Art43" />
+    <bpmn:sequenceFlow id="Flow_GatewayRenewAccreditation_To_TaskRunProperAssessment_Art43" name="Yes" sourceRef="Gateway_RenewAccreditation_Art43" targetRef="Task_RunProperAssessment_Art43" />
+    <bpmn:sequenceFlow id="Flow_SendWithdrawalReasons_To_EndCertificationWithdrawn_Art43" sourceRef="SendTask_SendWithdrawalReasons_Art43" targetRef="EndEvent_CertificationWithdrawn_Art43" />
+  </bpmn:process>
+
+  <bpmn:process id="Process_SupervisoryAuthority_Art43"
+                name="Setting, publishing, and enforcing Article 43 requirements"
+                isExecutable="false">
+    <bpmn:documentation>
+      This process captures the Article 43(3), (6), and (7) supervisory-authority
+      duties: approving accreditation requirements, complementing the national-
+      accreditation route, publishing requirements and Article 42(5) criteria,
+      transmitting them to the Board, receiving reasons for grant or withdrawal, and
+      revoking accreditation where conditions are not or are no longer met or where the
+      certification body's actions infringe the GDPR. It also captures the Article 43(8)
+      and (9) Commission follow-up requests.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_SetRequirements_Art43"
+                     name="Set Article 43 framework">
+      <bpmn:outgoing>Flow_StartSetRequirements_To_GatewayApprovalSource_Art43</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_ApprovalSource_Art43"
+                           name="Will the Board approve the accreditation criteria?">
+      <bpmn:incoming>Flow_StartSetRequirements_To_GatewayApprovalSource_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayApprovalSource_To_TaskApproveRequirements_Art43</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayApprovalSource_To_SendSubmitRequirementsToBoard_Art43</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ApproveRequirements_Art43"
+               name="Approve accreditation requirements">
+      <bpmn:incoming>Flow_GatewayApprovalSource_To_TaskApproveRequirements_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskApproveRequirements_To_TaskComplementNABRequirements_Art43</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="SendTask_SubmitRequirementsToBoard_Art43"
+                   name="Submit requirements to Board">
+      <bpmn:incoming>Flow_GatewayApprovalSource_To_SendSubmitRequirementsToBoard_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendSubmitRequirementsToBoard_To_TaskComplementNABRequirements_Art43</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:task id="Task_ComplementNABRequirements_Art43"
+               name="Complement NAB requirements">
+      <bpmn:incoming>Flow_TaskApproveRequirements_To_TaskComplementNABRequirements_Art43</bpmn:incoming>
+      <bpmn:incoming>Flow_SendSubmitRequirementsToBoard_To_TaskComplementNABRequirements_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskComplementNABRequirements_To_TaskPublishRequirements_Art43</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_PublishRequirements_Art43"
+               name="Publish requirements and criteria">
+      <bpmn:incoming>Flow_TaskComplementNABRequirements_To_TaskPublishRequirements_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPublishRequirements_To_SendPublicRequirementsToBoard_Art43</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="SendTask_SendPublicRequirementsToBoard_Art43"
+                   name="Send public requirements to Board">
+      <bpmn:incoming>Flow_TaskPublishRequirements_To_SendPublicRequirementsToBoard_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendPublicRequirementsToBoard_To_SendRequestCommissionSpecifications_Art43</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:sendTask id="SendTask_RequestCommissionSpecifications_Art43"
+                   name="Request Commission specifications">
+      <bpmn:incoming>Flow_SendPublicRequirementsToBoard_To_SendRequestCommissionSpecifications_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendRequestCommissionSpecifications_To_SendRequestCommissionStandards_Art43</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:sendTask id="SendTask_RequestCommissionStandards_Art43"
+                   name="Request Commission standards">
+      <bpmn:incoming>Flow_SendRequestCommissionSpecifications_To_SendRequestCommissionStandards_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendRequestCommissionStandards_To_ReceiveSAAccreditationRequest_Art43</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveSAAccreditationRequest_Art43"
+                      name="Receive SA accreditation request">
+      <bpmn:incoming>Flow_SendRequestCommissionStandards_To_ReceiveSAAccreditationRequest_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveSAAccreditationRequest_To_ReceiveIssuanceInformation_Art43</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveIssuanceInformation_Art43"
+                      name="Receive issuance information">
+      <bpmn:incoming>Flow_ReceiveSAAccreditationRequest_To_ReceiveIssuanceInformation_Art43</bpmn:incoming>
+      <bpmn:incoming>Flow_SendInformAuthorityBeforeIssuing_To_ReceiveIssuanceInformation_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveIssuanceInformation_To_ReceiveGrantReasons_Art43</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveGrantReasons_Art43"
+                      name="Receive grant or renewal reasons">
+      <bpmn:incoming>Flow_ReceiveIssuanceInformation_To_ReceiveGrantReasons_Art43</bpmn:incoming>
+      <bpmn:incoming>Flow_SendGrantReasonsToAuthority_To_ReceiveGrantReasons_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveGrantReasons_To_ReceiveWithdrawalReasons_Art43</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveWithdrawalReasons_Art43"
+                      name="Receive withdrawal reasons">
+      <bpmn:incoming>Flow_ReceiveGrantReasons_To_ReceiveWithdrawalReasons_Art43</bpmn:incoming>
+      <bpmn:incoming>Flow_SendWithdrawalReasonsToAuthority_To_ReceiveWithdrawalReasons_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveWithdrawalReasons_To_GatewayRevokeAccreditation_Art43</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:exclusiveGateway id="Gateway_RevokeAccreditation_Art43"
+                           name="Should accreditation be revoked?">
+      <bpmn:incoming>Flow_ReceiveWithdrawalReasons_To_GatewayRevokeAccreditation_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayRevokeAccreditation_To_EndAccreditationMaintained_Art43</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayRevokeAccreditation_To_SendRevokeAccreditation_Art43</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_AccreditationMaintained_Art43"
+                   name="Accreditation maintained">
+      <bpmn:incoming>Flow_GatewayRevokeAccreditation_To_EndAccreditationMaintained_Art43</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sendTask id="SendTask_RevokeAccreditation_Art43"
+                   name="Revoke accreditation">
+      <bpmn:incoming>Flow_GatewayRevokeAccreditation_To_SendRevokeAccreditation_Art43</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendRevokeAccreditation_To_EndAccreditationRevoked_Art43</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_AccreditationRevoked_Art43"
+                   name="Accreditation revoked">
+      <bpmn:incoming>Flow_SendRevokeAccreditation_To_EndAccreditationRevoked_Art43</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartSetRequirements_To_GatewayApprovalSource_Art43" sourceRef="StartEvent_SetRequirements_Art43" targetRef="Gateway_ApprovalSource_Art43" />
+    <bpmn:sequenceFlow id="Flow_GatewayApprovalSource_To_TaskApproveRequirements_Art43" name="No" sourceRef="Gateway_ApprovalSource_Art43" targetRef="Task_ApproveRequirements_Art43" />
+    <bpmn:sequenceFlow id="Flow_GatewayApprovalSource_To_SendSubmitRequirementsToBoard_Art43" name="Yes" sourceRef="Gateway_ApprovalSource_Art43" targetRef="SendTask_SubmitRequirementsToBoard_Art43" />
+    <bpmn:sequenceFlow id="Flow_TaskApproveRequirements_To_TaskComplementNABRequirements_Art43" sourceRef="Task_ApproveRequirements_Art43" targetRef="Task_ComplementNABRequirements_Art43" />
+    <bpmn:sequenceFlow id="Flow_SendSubmitRequirementsToBoard_To_TaskComplementNABRequirements_Art43" sourceRef="SendTask_SubmitRequirementsToBoard_Art43" targetRef="Task_ComplementNABRequirements_Art43" />
+    <bpmn:sequenceFlow id="Flow_TaskComplementNABRequirements_To_TaskPublishRequirements_Art43" sourceRef="Task_ComplementNABRequirements_Art43" targetRef="Task_PublishRequirements_Art43" />
+    <bpmn:sequenceFlow id="Flow_TaskPublishRequirements_To_SendPublicRequirementsToBoard_Art43" sourceRef="Task_PublishRequirements_Art43" targetRef="SendTask_SendPublicRequirementsToBoard_Art43" />
+    <bpmn:sequenceFlow id="Flow_SendPublicRequirementsToBoard_To_SendRequestCommissionSpecifications_Art43" sourceRef="SendTask_SendPublicRequirementsToBoard_Art43" targetRef="SendTask_RequestCommissionSpecifications_Art43" />
+    <bpmn:sequenceFlow id="Flow_SendRequestCommissionSpecifications_To_SendRequestCommissionStandards_Art43" sourceRef="SendTask_RequestCommissionSpecifications_Art43" targetRef="SendTask_RequestCommissionStandards_Art43" />
+    <bpmn:sequenceFlow id="Flow_SendRequestCommissionStandards_To_ReceiveSAAccreditationRequest_Art43" sourceRef="SendTask_RequestCommissionStandards_Art43" targetRef="ReceiveTask_ReceiveSAAccreditationRequest_Art43" />
+    <bpmn:sequenceFlow id="Flow_ReceiveSAAccreditationRequest_To_ReceiveIssuanceInformation_Art43" sourceRef="ReceiveTask_ReceiveSAAccreditationRequest_Art43" targetRef="ReceiveTask_ReceiveIssuanceInformation_Art43" />
+    <bpmn:sequenceFlow id="Flow_ReceiveIssuanceInformation_To_ReceiveGrantReasons_Art43" sourceRef="ReceiveTask_ReceiveIssuanceInformation_Art43" targetRef="ReceiveTask_ReceiveGrantReasons_Art43" />
+    <bpmn:sequenceFlow id="Flow_ReceiveGrantReasons_To_ReceiveWithdrawalReasons_Art43" sourceRef="ReceiveTask_ReceiveGrantReasons_Art43" targetRef="ReceiveTask_ReceiveWithdrawalReasons_Art43" />
+    <bpmn:sequenceFlow id="Flow_ReceiveWithdrawalReasons_To_GatewayRevokeAccreditation_Art43" sourceRef="ReceiveTask_ReceiveWithdrawalReasons_Art43" targetRef="Gateway_RevokeAccreditation_Art43" />
+    <bpmn:sequenceFlow id="Flow_GatewayRevokeAccreditation_To_EndAccreditationMaintained_Art43" name="No" sourceRef="Gateway_RevokeAccreditation_Art43" targetRef="EndEvent_AccreditationMaintained_Art43" />
+    <bpmn:sequenceFlow id="Flow_GatewayRevokeAccreditation_To_SendRevokeAccreditation_Art43" name="Yes" sourceRef="Gateway_RevokeAccreditation_Art43" targetRef="SendTask_RevokeAccreditation_Art43" />
+    <bpmn:sequenceFlow id="Flow_SendRevokeAccreditation_To_EndAccreditationRevoked_Art43" sourceRef="SendTask_RevokeAccreditation_Art43" targetRef="EndEvent_AccreditationRevoked_Art43" />
   </bpmn:process>
 
   <bpmndi:BPMNDiagram id="BPMNDiagram_Art43_Reviewed">
     <bpmndi:BPMNPlane id="BPMNPlane_Art43_Reviewed"
                       bpmnElement="Collaboration_Art43_Reviewed">
-      <bpmndi:BPMNShape id="Participant_CertificationBody_Art43_di"
-                        bpmnElement="Participant_CertificationBody_Art43"
-                        isHorizontal="true">
-        <dc:Bounds x="60" y="40" width="3200" height="420" />
+      <bpmndi:BPMNShape id="Participant_CertificationBody_Art43_di" bpmnElement="Participant_CertificationBody_Art43" isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="5000" height="420" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Participant_SupervisoryAuthority_Art43_di"
-                        bpmnElement="Participant_SupervisoryAuthority_Art43"
-                        isHorizontal="true">
-        <dc:Bounds x="60" y="500" width="3200" height="140" />
+      <bpmndi:BPMNShape id="Participant_SupervisoryAuthority_Art43_di" bpmnElement="Participant_SupervisoryAuthority_Art43" isHorizontal="true">
+        <dc:Bounds x="60" y="500" width="5000" height="300" />
       </bpmndi:BPMNShape>
-
-      <bpmndi:BPMNShape id="StartEvent_CertificationCase_Art43_di"
-                        bpmnElement="StartEvent_CertificationCase_Art43">
-        <dc:Bounds x="120" y="222" width="36" height="36" />
+      <bpmndi:BPMNShape id="Participant_NationalAccreditationBody_Art43_di" bpmnElement="Participant_NationalAccreditationBody_Art43" isHorizontal="true">
+        <dc:Bounds x="60" y="840" width="5000" height="110" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Task_ConfirmResponsibility_Art43_di"
-                        bpmnElement="Task_ConfirmResponsibility_Art43">
-        <dc:Bounds x="230" y="200" width="260" height="80" />
+      <bpmndi:BPMNShape id="Participant_Board_Art43_di" bpmnElement="Participant_Board_Art43" isHorizontal="true">
+        <dc:Bounds x="60" y="990" width="5000" height="110" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_Accredited_Art43_di"
-                        bpmnElement="Gateway_Accredited_Art43"
-                        isMarkerVisible="true">
-        <dc:Bounds x="570" y="215" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="EndEvent_NotAccredited_Art43_di"
-                        bpmnElement="EndEvent_NotAccredited_Art43">
-        <dc:Bounds x="740" y="122" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Task_ReviewCertificationCase_Art43_di"
-                        bpmnElement="Task_ReviewCertificationCase_Art43">
-        <dc:Bounds x="710" y="200" width="320" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_RequirementsFulfilled_Art43_di"
-                        bpmnElement="Gateway_RequirementsFulfilled_Art43"
-                        isMarkerVisible="true">
-        <dc:Bounds x="1120" y="215" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Task_IssueOrRenewCertification_Art43_di"
-                        bpmnElement="Task_IssueOrRenewCertification_Art43">
-        <dc:Bounds x="1260" y="120" width="280" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="SendTask_NotifyGrantOrRenewal_Art43_di"
-                        bpmnElement="SendTask_NotifyGrantOrRenewal_Art43">
-        <dc:Bounds x="1640" y="120" width="300" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Task_PrepareGrantOrRenewalReasons_Art43_di"
-                        bpmnElement="Task_PrepareGrantOrRenewalReasons_Art43">
-        <dc:Bounds x="2040" y="120" width="280" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="SendTask_SendGrantOrRenewalReasons_Art43_di"
-                        bpmnElement="SendTask_SendGrantOrRenewalReasons_Art43">
-        <dc:Bounds x="2420" y="120" width="320" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="EndEvent_GrantOrRenewalCompleted_Art43_di"
-                        bpmnElement="EndEvent_GrantOrRenewalCompleted_Art43">
-        <dc:Bounds x="2840" y="142" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Task_WithdrawCertification_Art43_di"
-                        bpmnElement="Task_WithdrawCertification_Art43">
-        <dc:Bounds x="1260" y="290" width="280" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="SendTask_NotifyWithdrawal_Art43_di"
-                        bpmnElement="SendTask_NotifyWithdrawal_Art43">
-        <dc:Bounds x="1640" y="290" width="300" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Task_PrepareWithdrawalReasons_Art43_di"
-                        bpmnElement="Task_PrepareWithdrawalReasons_Art43">
-        <dc:Bounds x="2040" y="290" width="280" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="SendTask_SendWithdrawalReasons_Art43_di"
-                        bpmnElement="SendTask_SendWithdrawalReasons_Art43">
-        <dc:Bounds x="2420" y="290" width="320" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="EndEvent_WithdrawalCompleted_Art43_di"
-                        bpmnElement="EndEvent_WithdrawalCompleted_Art43">
-        <dc:Bounds x="2840" y="312" width="36" height="36" />
+      <bpmndi:BPMNShape id="Participant_Commission_Art43_di" bpmnElement="Participant_Commission_Art43" isHorizontal="true">
+        <dc:Bounds x="60" y="1140" width="5000" height="110" />
       </bpmndi:BPMNShape>
 
-      <bpmndi:BPMNEdge id="Flow_Start_To_ConfirmResponsibility_Art43_di" bpmnElement="Flow_Start_To_ConfirmResponsibility_Art43">
-        <di:waypoint x="156" y="240" />
-        <di:waypoint x="230" y="240" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_ConfirmResponsibility_To_GatewayAccredited_Art43_di" bpmnElement="Flow_ConfirmResponsibility_To_GatewayAccredited_Art43">
-        <di:waypoint x="490" y="240" />
-        <di:waypoint x="570" y="240" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayAccredited_To_EndNotAccredited_Art43_di" bpmnElement="Flow_GatewayAccredited_To_EndNotAccredited_Art43">
-        <di:waypoint x="595" y="215" />
-        <di:waypoint x="595" y="140" />
-        <di:waypoint x="740" y="140" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayAccredited_To_ReviewCase_Art43_di" bpmnElement="Flow_GatewayAccredited_To_ReviewCase_Art43">
-        <di:waypoint x="620" y="240" />
-        <di:waypoint x="710" y="240" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_ReviewCase_To_GatewayRequirements_Art43_di" bpmnElement="Flow_ReviewCase_To_GatewayRequirements_Art43">
-        <di:waypoint x="1030" y="240" />
-        <di:waypoint x="1120" y="240" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayRequirements_To_IssueOrRenew_Art43_di" bpmnElement="Flow_GatewayRequirements_To_IssueOrRenew_Art43">
-        <di:waypoint x="1145" y="215" />
-        <di:waypoint x="1145" y="160" />
-        <di:waypoint x="1260" y="160" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayRequirements_To_Withdraw_Art43_di" bpmnElement="Flow_GatewayRequirements_To_Withdraw_Art43">
-        <di:waypoint x="1145" y="265" />
-        <di:waypoint x="1145" y="330" />
-        <di:waypoint x="1260" y="330" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_IssueOrRenew_To_NotifyGrantOrRenewal_Art43_di" bpmnElement="Flow_IssueOrRenew_To_NotifyGrantOrRenewal_Art43">
-        <di:waypoint x="1540" y="160" />
-        <di:waypoint x="1640" y="160" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_NotifyGrantOrRenewal_To_PrepareGrantReasons_Art43_di" bpmnElement="Flow_NotifyGrantOrRenewal_To_PrepareGrantReasons_Art43">
-        <di:waypoint x="1940" y="160" />
-        <di:waypoint x="2040" y="160" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_PrepareGrantReasons_To_SendGrantReasons_Art43_di" bpmnElement="Flow_PrepareGrantReasons_To_SendGrantReasons_Art43">
-        <di:waypoint x="2320" y="160" />
-        <di:waypoint x="2420" y="160" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_SendGrantReasons_To_EndGrantNotified_Art43_di" bpmnElement="Flow_SendGrantReasons_To_EndGrantNotified_Art43">
-        <di:waypoint x="2740" y="160" />
-        <di:waypoint x="2840" y="160" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_Withdraw_To_NotifyWithdrawal_Art43_di" bpmnElement="Flow_Withdraw_To_NotifyWithdrawal_Art43">
-        <di:waypoint x="1540" y="330" />
-        <di:waypoint x="1640" y="330" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_NotifyWithdrawal_To_PrepareWithdrawalReasons_Art43_di" bpmnElement="Flow_NotifyWithdrawal_To_PrepareWithdrawalReasons_Art43">
-        <di:waypoint x="1940" y="330" />
-        <di:waypoint x="2040" y="330" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_PrepareWithdrawalReasons_To_SendWithdrawalReasons_Art43_di" bpmnElement="Flow_PrepareWithdrawalReasons_To_SendWithdrawalReasons_Art43">
-        <di:waypoint x="2320" y="330" />
-        <di:waypoint x="2420" y="330" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_SendWithdrawalReasons_To_EndWithdrawalNotified_Art43_di" bpmnElement="Flow_SendWithdrawalReasons_To_EndWithdrawalNotified_Art43">
-        <di:waypoint x="2740" y="330" />
-        <di:waypoint x="2840" y="330" />
-      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_SeekAccreditation_Art43_di" bpmnElement="StartEvent_SeekAccreditation_Art43">
+        <dc:Bounds x="120" y="212" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AccreditationRoute_Art43_di" bpmnElement="Gateway_AccreditationRoute_Art43" isMarkerVisible="true">
+        <dc:Bounds x="250" y="205" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_RequestSAAccreditation_Art43_di" bpmnElement="SendTask_RequestSAAccreditation_Art43">
+        <dc:Bounds x="390" y="120" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_RequestNABAccreditation_Art43_di" bpmnElement="SendTask_RequestNABAccreditation_Art43">
+        <dc:Bounds x="390" y="290" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SplitRequirements_Art43_di" bpmnElement="Gateway_SplitRequirements_Art43" isMarkerVisible="true">
+        <dc:Bounds x="660" y="205" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DemonstrateIndependence_Art43_di" bpmnElement="Task_DemonstrateIndependence_Art43">
+        <dc:Bounds x="800" y="60" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_UndertakeApprovedCriteria_Art43_di" bpmnElement="Task_UndertakeApprovedCriteria_Art43">
+        <dc:Bounds x="1040" y="60" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SetReviewWithdrawalProcedures_Art43_di" bpmnElement="Task_SetReviewWithdrawalProcedures_Art43">
+        <dc:Bounds x="1260" y="60" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SetComplaintProcedures_Art43_di" bpmnElement="Task_SetComplaintProcedures_Art43">
+        <dc:Bounds x="800" y="300" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ShowNoConflicts_Art43_di" bpmnElement="Task_ShowNoConflicts_Art43">
+        <dc:Bounds x="1040" y="300" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinRequirements_Art43_di" bpmnElement="Gateway_JoinRequirements_Art43" isMarkerVisible="true">
+        <dc:Bounds x="1520" y="205" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RunProperAssessment_Art43_di" bpmnElement="Task_RunProperAssessment_Art43">
+        <dc:Bounds x="1660" y="190" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_InformAuthorityBeforeIssuing_Art43_di" bpmnElement="SendTask_InformAuthorityBeforeIssuing_Art43">
+        <dc:Bounds x="1900" y="190" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_CertificationOutcome_Art43_di" bpmnElement="Gateway_CertificationOutcome_Art43" isMarkerVisible="true">
+        <dc:Bounds x="2170" y="205" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_SendGrantReasons_Art43_di" bpmnElement="SendTask_SendGrantReasons_Art43">
+        <dc:Bounds x="2310" y="120" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ManageAccreditationTerm_Art43_di" bpmnElement="Task_ManageAccreditationTerm_Art43">
+        <dc:Bounds x="2570" y="120" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_RenewAccreditation_Art43_di" bpmnElement="Gateway_RenewAccreditation_Art43" isMarkerVisible="true">
+        <dc:Bounds x="2820" y="135" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_AccreditationEnded_Art43_di" bpmnElement="EndEvent_AccreditationEnded_Art43">
+        <dc:Bounds x="2962" y="72" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_SendWithdrawalReasons_Art43_di" bpmnElement="SendTask_SendWithdrawalReasons_Art43">
+        <dc:Bounds x="2310" y="290" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_CertificationWithdrawn_Art43_di" bpmnElement="EndEvent_CertificationWithdrawn_Art43">
+        <dc:Bounds x="2572" y="312" width="36" height="36" />
+      </bpmndi:BPMNShape>
 
-      <bpmndi:BPMNEdge id="MessageFlow_NotifyGrantOrRenewal_Art43_di" bpmnElement="MessageFlow_NotifyGrantOrRenewal_Art43">
-        <di:waypoint x="1790" y="200" />
-        <di:waypoint x="1790" y="500" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="MessageFlow_SendGrantOrRenewalReasons_Art43_di" bpmnElement="MessageFlow_SendGrantOrRenewalReasons_Art43">
-        <di:waypoint x="2580" y="200" />
-        <di:waypoint x="2580" y="500" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="MessageFlow_NotifyWithdrawal_Art43_di" bpmnElement="MessageFlow_NotifyWithdrawal_Art43">
-        <di:waypoint x="1790" y="370" />
-        <di:waypoint x="1790" y="500" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="MessageFlow_SendWithdrawalReasons_Art43_di" bpmnElement="MessageFlow_SendWithdrawalReasons_Art43">
-        <di:waypoint x="2580" y="370" />
-        <di:waypoint x="2580" y="500" />
-      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_SetRequirements_Art43_di" bpmnElement="StartEvent_SetRequirements_Art43">
+        <dc:Bounds x="120" y="632" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ApprovalSource_Art43_di" bpmnElement="Gateway_ApprovalSource_Art43" isMarkerVisible="true">
+        <dc:Bounds x="250" y="625" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ApproveRequirements_Art43_di" bpmnElement="Task_ApproveRequirements_Art43">
+        <dc:Bounds x="390" y="540" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_SubmitRequirementsToBoard_Art43_di" bpmnElement="SendTask_SubmitRequirementsToBoard_Art43">
+        <dc:Bounds x="390" y="710" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ComplementNABRequirements_Art43_di" bpmnElement="Task_ComplementNABRequirements_Art43">
+        <dc:Bounds x="650" y="625" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PublishRequirements_Art43_di" bpmnElement="Task_PublishRequirements_Art43">
+        <dc:Bounds x="910" y="625" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_SendPublicRequirementsToBoard_Art43_di" bpmnElement="SendTask_SendPublicRequirementsToBoard_Art43">
+        <dc:Bounds x="1170" y="625" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_RequestCommissionSpecifications_Art43_di" bpmnElement="SendTask_RequestCommissionSpecifications_Art43">
+        <dc:Bounds x="1450" y="625" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_RequestCommissionStandards_Art43_di" bpmnElement="SendTask_RequestCommissionStandards_Art43">
+        <dc:Bounds x="1710" y="625" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveSAAccreditationRequest_Art43_di" bpmnElement="ReceiveTask_ReceiveSAAccreditationRequest_Art43">
+        <dc:Bounds x="1960" y="625" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveIssuanceInformation_Art43_di" bpmnElement="ReceiveTask_ReceiveIssuanceInformation_Art43">
+        <dc:Bounds x="2210" y="625" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveGrantReasons_Art43_di" bpmnElement="ReceiveTask_ReceiveGrantReasons_Art43">
+        <dc:Bounds x="2460" y="540" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveWithdrawalReasons_Art43_di" bpmnElement="ReceiveTask_ReceiveWithdrawalReasons_Art43">
+        <dc:Bounds x="2460" y="710" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_RevokeAccreditation_Art43_di" bpmnElement="Gateway_RevokeAccreditation_Art43" isMarkerVisible="true">
+        <dc:Bounds x="2740" y="625" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_AccreditationMaintained_Art43_di" bpmnElement="EndEvent_AccreditationMaintained_Art43">
+        <dc:Bounds x="2882" y="542" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_RevokeAccreditation_Art43_di" bpmnElement="SendTask_RevokeAccreditation_Art43">
+        <dc:Bounds x="2890" y="690" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_AccreditationRevoked_Art43_di" bpmnElement="EndEvent_AccreditationRevoked_Art43">
+        <dc:Bounds x="3122" y="712" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_StartSeekAccreditation_To_GatewayAccreditationRoute_Art43_di" bpmnElement="Flow_StartSeekAccreditation_To_GatewayAccreditationRoute_Art43"><di:waypoint x="156" y="230" /><di:waypoint x="250" y="230" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAccreditationRoute_To_SendSAAccreditationRequest_Art43_di" bpmnElement="Flow_GatewayAccreditationRoute_To_SendSAAccreditationRequest_Art43"><di:waypoint x="275" y="205" /><di:waypoint x="275" y="160" /><di:waypoint x="390" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAccreditationRoute_To_SendNABAccreditationRequest_Art43_di" bpmnElement="Flow_GatewayAccreditationRoute_To_SendNABAccreditationRequest_Art43"><di:waypoint x="275" y="255" /><di:waypoint x="275" y="330" /><di:waypoint x="390" y="330" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendSAAccreditationRequest_To_TaskDemonstrateRequirements_Art43_di" bpmnElement="Flow_SendSAAccreditationRequest_To_TaskDemonstrateRequirements_Art43"><di:waypoint x="560" y="160" /><di:waypoint x="685" y="160" /><di:waypoint x="685" y="205" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendNABAccreditationRequest_To_TaskDemonstrateRequirements_Art43_di" bpmnElement="Flow_SendNABAccreditationRequest_To_TaskDemonstrateRequirements_Art43"><di:waypoint x="570" y="330" /><di:waypoint x="685" y="330" /><di:waypoint x="685" y="255" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitRequirements_To_TaskDemonstrateIndependence_Art43_di" bpmnElement="Flow_GatewaySplitRequirements_To_TaskDemonstrateIndependence_Art43"><di:waypoint x="685" y="205" /><di:waypoint x="685" y="100" /><di:waypoint x="800" y="100" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitRequirements_To_TaskUndertakeApprovedCriteria_Art43_di" bpmnElement="Flow_GatewaySplitRequirements_To_TaskUndertakeApprovedCriteria_Art43"><di:waypoint x="685" y="205" /><di:waypoint x="685" y="100" /><di:waypoint x="1040" y="100" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitRequirements_To_TaskSetReviewWithdrawalProcedures_Art43_di" bpmnElement="Flow_GatewaySplitRequirements_To_TaskSetReviewWithdrawalProcedures_Art43"><di:waypoint x="685" y="205" /><di:waypoint x="685" y="100" /><di:waypoint x="1260" y="100" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitRequirements_To_TaskSetComplaintProcedures_Art43_di" bpmnElement="Flow_GatewaySplitRequirements_To_TaskSetComplaintProcedures_Art43"><di:waypoint x="685" y="255" /><di:waypoint x="685" y="340" /><di:waypoint x="800" y="340" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitRequirements_To_TaskShowNoConflicts_Art43_di" bpmnElement="Flow_GatewaySplitRequirements_To_TaskShowNoConflicts_Art43"><di:waypoint x="685" y="255" /><di:waypoint x="685" y="340" /><di:waypoint x="1040" y="340" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskDemonstrateIndependence_To_GatewayJoinRequirements_Art43_di" bpmnElement="Flow_TaskDemonstrateIndependence_To_GatewayJoinRequirements_Art43"><di:waypoint x="990" y="100" /><di:waypoint x="1545" y="100" /><di:waypoint x="1545" y="205" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskUndertakeApprovedCriteria_To_GatewayJoinRequirements_Art43_di" bpmnElement="Flow_TaskUndertakeApprovedCriteria_To_GatewayJoinRequirements_Art43"><di:waypoint x="1210" y="100" /><di:waypoint x="1545" y="100" /><di:waypoint x="1545" y="205" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskSetReviewWithdrawalProcedures_To_GatewayJoinRequirements_Art43_di" bpmnElement="Flow_TaskSetReviewWithdrawalProcedures_To_GatewayJoinRequirements_Art43"><di:waypoint x="1460" y="100" /><di:waypoint x="1545" y="100" /><di:waypoint x="1545" y="205" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskSetComplaintProcedures_To_GatewayJoinRequirements_Art43_di" bpmnElement="Flow_TaskSetComplaintProcedures_To_GatewayJoinRequirements_Art43"><di:waypoint x="980" y="340" /><di:waypoint x="1545" y="340" /><di:waypoint x="1545" y="255" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskShowNoConflicts_To_GatewayJoinRequirements_Art43_di" bpmnElement="Flow_TaskShowNoConflicts_To_GatewayJoinRequirements_Art43"><di:waypoint x="1200" y="340" /><di:waypoint x="1545" y="340" /><di:waypoint x="1545" y="255" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinRequirements_To_TaskRunProperAssessment_Art43_di" bpmnElement="Flow_GatewayJoinRequirements_To_TaskRunProperAssessment_Art43"><di:waypoint x="1570" y="230" /><di:waypoint x="1660" y="230" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskRunProperAssessment_To_SendInformAuthority_Art43_di" bpmnElement="Flow_TaskRunProperAssessment_To_SendInformAuthority_Art43"><di:waypoint x="1820" y="230" /><di:waypoint x="1900" y="230" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendInformAuthority_To_GatewayCertificationOutcome_Art43_di" bpmnElement="Flow_SendInformAuthority_To_GatewayCertificationOutcome_Art43"><di:waypoint x="2080" y="230" /><di:waypoint x="2170" y="230" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayCertificationOutcome_To_SendGrantReasons_Art43_di" bpmnElement="Flow_GatewayCertificationOutcome_To_SendGrantReasons_Art43"><di:waypoint x="2195" y="205" /><di:waypoint x="2195" y="160" /><di:waypoint x="2310" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayCertificationOutcome_To_SendWithdrawalReasons_Art43_di" bpmnElement="Flow_GatewayCertificationOutcome_To_SendWithdrawalReasons_Art43"><di:waypoint x="2195" y="255" /><di:waypoint x="2195" y="330" /><di:waypoint x="2310" y="330" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendGrantReasons_To_TaskManageAccreditationTerm_Art43_di" bpmnElement="Flow_SendGrantReasons_To_TaskManageAccreditationTerm_Art43"><di:waypoint x="2490" y="160" /><di:waypoint x="2570" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskManageAccreditationTerm_To_GatewayRenewAccreditation_Art43_di" bpmnElement="Flow_TaskManageAccreditationTerm_To_GatewayRenewAccreditation_Art43"><di:waypoint x="2740" y="160" /><di:waypoint x="2820" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRenewAccreditation_To_EndAccreditationEnded_Art43_di" bpmnElement="Flow_GatewayRenewAccreditation_To_EndAccreditationEnded_Art43"><di:waypoint x="2845" y="135" /><di:waypoint x="2845" y="90" /><di:waypoint x="2962" y="90" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRenewAccreditation_To_TaskRunProperAssessment_Art43_di" bpmnElement="Flow_GatewayRenewAccreditation_To_TaskRunProperAssessment_Art43"><di:waypoint x="2845" y="185" /><di:waypoint x="2845" y="410" /><di:waypoint x="1740" y="410" /><di:waypoint x="1740" y="270" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendWithdrawalReasons_To_EndCertificationWithdrawn_Art43_di" bpmnElement="Flow_SendWithdrawalReasons_To_EndCertificationWithdrawn_Art43"><di:waypoint x="2480" y="330" /><di:waypoint x="2572" y="330" /></bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_StartSetRequirements_To_GatewayApprovalSource_Art43_di" bpmnElement="Flow_StartSetRequirements_To_GatewayApprovalSource_Art43"><di:waypoint x="156" y="650" /><di:waypoint x="250" y="650" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayApprovalSource_To_TaskApproveRequirements_Art43_di" bpmnElement="Flow_GatewayApprovalSource_To_TaskApproveRequirements_Art43"><di:waypoint x="275" y="625" /><di:waypoint x="275" y="580" /><di:waypoint x="390" y="580" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayApprovalSource_To_SendSubmitRequirementsToBoard_Art43_di" bpmnElement="Flow_GatewayApprovalSource_To_SendSubmitRequirementsToBoard_Art43"><di:waypoint x="275" y="675" /><di:waypoint x="275" y="750" /><di:waypoint x="390" y="750" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskApproveRequirements_To_TaskComplementNABRequirements_Art43_di" bpmnElement="Flow_TaskApproveRequirements_To_TaskComplementNABRequirements_Art43"><di:waypoint x="560" y="580" /><di:waypoint x="740" y="580" /><di:waypoint x="740" y="625" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendSubmitRequirementsToBoard_To_TaskComplementNABRequirements_Art43_di" bpmnElement="Flow_SendSubmitRequirementsToBoard_To_TaskComplementNABRequirements_Art43"><di:waypoint x="570" y="750" /><di:waypoint x="740" y="750" /><di:waypoint x="740" y="705" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskComplementNABRequirements_To_TaskPublishRequirements_Art43_di" bpmnElement="Flow_TaskComplementNABRequirements_To_TaskPublishRequirements_Art43"><di:waypoint x="830" y="665" /><di:waypoint x="910" y="665" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPublishRequirements_To_SendPublicRequirementsToBoard_Art43_di" bpmnElement="Flow_TaskPublishRequirements_To_SendPublicRequirementsToBoard_Art43"><di:waypoint x="1090" y="665" /><di:waypoint x="1170" y="665" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendPublicRequirementsToBoard_To_SendRequestCommissionSpecifications_Art43_di" bpmnElement="Flow_SendPublicRequirementsToBoard_To_SendRequestCommissionSpecifications_Art43"><di:waypoint x="1360" y="665" /><di:waypoint x="1450" y="665" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendRequestCommissionSpecifications_To_SendRequestCommissionStandards_Art43_di" bpmnElement="Flow_SendRequestCommissionSpecifications_To_SendRequestCommissionStandards_Art43"><di:waypoint x="1630" y="665" /><di:waypoint x="1710" y="665" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendRequestCommissionStandards_To_ReceiveSAAccreditationRequest_Art43_di" bpmnElement="Flow_SendRequestCommissionStandards_To_ReceiveSAAccreditationRequest_Art43"><di:waypoint x="1880" y="665" /><di:waypoint x="1960" y="665" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveSAAccreditationRequest_To_ReceiveIssuanceInformation_Art43_di" bpmnElement="Flow_ReceiveSAAccreditationRequest_To_ReceiveIssuanceInformation_Art43"><di:waypoint x="2130" y="665" /><di:waypoint x="2210" y="665" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveIssuanceInformation_To_ReceiveGrantReasons_Art43_di" bpmnElement="Flow_ReceiveIssuanceInformation_To_ReceiveGrantReasons_Art43"><di:waypoint x="2380" y="665" /><di:waypoint x="2550" y="665" /><di:waypoint x="2550" y="620" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveGrantReasons_To_ReceiveWithdrawalReasons_Art43_di" bpmnElement="Flow_ReceiveGrantReasons_To_ReceiveWithdrawalReasons_Art43"><di:waypoint x="2550" y="620" /><di:waypoint x="2550" y="710" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveWithdrawalReasons_To_GatewayRevokeAccreditation_Art43_di" bpmnElement="Flow_ReceiveWithdrawalReasons_To_GatewayRevokeAccreditation_Art43"><di:waypoint x="2650" y="750" /><di:waypoint x="2765" y="750" /><di:waypoint x="2765" y="675" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRevokeAccreditation_To_EndAccreditationMaintained_Art43_di" bpmnElement="Flow_GatewayRevokeAccreditation_To_EndAccreditationMaintained_Art43"><di:waypoint x="2765" y="625" /><di:waypoint x="2765" y="560" /><di:waypoint x="2882" y="560" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRevokeAccreditation_To_SendRevokeAccreditation_Art43_di" bpmnElement="Flow_GatewayRevokeAccreditation_To_SendRevokeAccreditation_Art43"><di:waypoint x="2790" y="650" /><di:waypoint x="2890" y="730" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendRevokeAccreditation_To_EndAccreditationRevoked_Art43_di" bpmnElement="Flow_SendRevokeAccreditation_To_EndAccreditationRevoked_Art43"><di:waypoint x="3040" y="730" /><di:waypoint x="3122" y="730" /></bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_RequestSAAccreditation_Art43_di" bpmnElement="MessageFlow_RequestSAAccreditation_Art43"><di:waypoint x="475" y="200" /><di:waypoint x="475" y="625" /><di:waypoint x="2045" y="625" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_RequestNABAccreditation_Art43_di" bpmnElement="MessageFlow_RequestNABAccreditation_Art43"><di:waypoint x="480" y="370" /><di:waypoint x="480" y="840" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_InformAuthorityBeforeIssuing_Art43_di" bpmnElement="MessageFlow_InformAuthorityBeforeIssuing_Art43"><di:waypoint x="1990" y="270" /><di:waypoint x="1990" y="625" /><di:waypoint x="2295" y="625" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SendGrantReasons_Art43_di" bpmnElement="MessageFlow_SendGrantReasons_Art43"><di:waypoint x="2400" y="200" /><di:waypoint x="2400" y="540" /><di:waypoint x="2550" y="540" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SendWithdrawalReasons_Art43_di" bpmnElement="MessageFlow_SendWithdrawalReasons_Art43"><di:waypoint x="2395" y="370" /><di:waypoint x="2395" y="790" /><di:waypoint x="2555" y="790" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SubmitRequirementsToBoard_Art43_di" bpmnElement="MessageFlow_SubmitRequirementsToBoard_Art43"><di:waypoint x="480" y="790" /><di:waypoint x="480" y="990" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SendPublicRequirementsToBoard_Art43_di" bpmnElement="MessageFlow_SendPublicRequirementsToBoard_Art43"><di:waypoint x="1265" y="705" /><di:waypoint x="1265" y="990" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_RequestCommissionSpecifications_Art43_di" bpmnElement="MessageFlow_RequestCommissionSpecifications_Art43"><di:waypoint x="1540" y="705" /><di:waypoint x="1540" y="1140" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_RequestCommissionStandards_Art43_di" bpmnElement="MessageFlow_RequestCommissionStandards_Art43"><di:waypoint x="1795" y="705" /><di:waypoint x="1795" y="1140" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_RevokeByAuthority_Art43_di" bpmnElement="MessageFlow_RevokeByAuthority_Art43"><di:waypoint x="2965" y="690" /><di:waypoint x="2965" y="460" /></bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>

@@ -7,45 +7,42 @@
                   targetNamespace="http://bpmn.io/schema/bpmn">
 
   <bpmn:process id="Process_Controller_Art89"
-                name="Applying Article 89 safeguards"
+                name="Applying Article 89 safeguards and derogations"
                 isExecutable="false">
     <bpmn:documentation>
-      Manual BPMN conversion for GDPR Article 89 based on DAPRECO LegalRuleML
-      statements275. The local XML covers paragraph 1 and emphasizes three elements:
-      the processing must be for archiving in the public interest, research, or
-      statistical purposes; appropriate safeguards for rights and freedoms must be put
-      in place through technical and organisational measures, especially data
-      minimisation; and the controller must use pseudonymisation or a non-identifying
-      mode of processing where the purpose can be fulfilled in that manner. Paragraphs
-      2 to 4 are not modeled because they are not present in the local XML file.
+      Manual BPMN conversion for GDPR Article 89 based on the real English legal text from
+      gdpr_articles/article_89.txt. The model shows the Article 89(1) safeguard regime,
+      including data minimisation, pseudonymisation, and non-identifying processing where
+      possible, and the Article 89(2)-(4) derogation logic for research, statistics,
+      and archiving processing where Union or Member State law provides it.
     </bpmn:documentation>
 
     <bpmn:startEvent id="StartEvent_AssessPurpose_Art89"
-                     name="Need to configure processing for an Article 89 purpose">
+                     name="Need Article 89 processing">
       <bpmn:outgoing>Flow_Start_To_GatewayPurpose_Art89</bpmn:outgoing>
     </bpmn:startEvent>
 
     <bpmn:exclusiveGateway id="Gateway_Article89Purpose_Art89"
-                           name="Is the processing for archiving in the public interest, research, or statistical purposes?">
+                           name="Is the processing for an Article 89 purpose?">
       <bpmn:incoming>Flow_Start_To_GatewayPurpose_Art89</bpmn:incoming>
       <bpmn:outgoing>Flow_GatewayPurpose_To_TaskEstablishSafeguards_Art89</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewayPurpose_To_EndNoArticle89Regime_Art89</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
     <bpmn:task id="Task_EstablishSafeguards_Art89"
-               name="Establish appropriate safeguards for the rights and freedoms of data subjects">
+               name="Establish safeguards">
       <bpmn:incoming>Flow_GatewayPurpose_To_TaskEstablishSafeguards_Art89</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskEstablishSafeguards_To_TaskImplementMeasures_Art89</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_ImplementMeasures_Art89"
-               name="Implement technical and organisational measures for the processing">
+               name="Implement technical and organisational measures">
       <bpmn:incoming>Flow_TaskEstablishSafeguards_To_TaskImplementMeasures_Art89</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskImplementMeasures_To_TaskEnsureMinimisation_Art89</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_EnsureDataMinimisation_Art89"
-               name="Ensure that the measures respect the principle of data minimisation">
+               name="Ensure data minimisation">
       <bpmn:incoming>Flow_TaskImplementMeasures_To_TaskEnsureMinimisation_Art89</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskEnsureMinimisation_To_GatewayPseudonymisation_Art89</bpmn:outgoing>
     </bpmn:task>
@@ -58,33 +55,75 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:task id="Task_UsePseudonymisation_Art89"
-               name="Use pseudonymisation as part of the safeguards">
+               name="Use pseudonymisation">
       <bpmn:incoming>Flow_GatewayPseudonymisation_To_TaskUsePseudonymisation_Art89</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskUsePseudonymisation_To_GatewayNonIdentifyingMode_Art89</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:exclusiveGateway id="Gateway_NonIdentifyingMode_Art89"
-                           name="Can the purpose be fulfilled by processing that does not or no longer identifies data subjects?">
+                           name="Can the purpose be fulfilled without identifying data subjects?">
       <bpmn:incoming>Flow_GatewayPseudonymisation_To_GatewayNonIdentifyingMode_Art89</bpmn:incoming>
       <bpmn:incoming>Flow_TaskUsePseudonymisation_To_GatewayNonIdentifyingMode_Art89</bpmn:incoming>
       <bpmn:outgoing>Flow_GatewayNonIdentifyingMode_To_TaskProcessWithoutIdentification_Art89</bpmn:outgoing>
-      <bpmn:outgoing>Flow_GatewayNonIdentifyingMode_To_EndSafeguardsConfigured_Art89</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayNonIdentifyingMode_To_GatewayDerogationLaw_Art89</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
     <bpmn:task id="Task_ProcessWithoutIdentification_Art89"
-               name="Fulfil the purpose through processing that does not or no longer permits identification">
+               name="Process without identification">
       <bpmn:incoming>Flow_GatewayNonIdentifyingMode_To_TaskProcessWithoutIdentification_Art89</bpmn:incoming>
-      <bpmn:outgoing>Flow_TaskProcessWithoutIdentification_To_EndSafeguardsConfigured_Art89</bpmn:outgoing>
+      <bpmn:outgoing>Flow_TaskProcessWithoutIdentification_To_GatewayDerogationLaw_Art89</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_DerogationLaw_Art89"
+                           name="Does Union or Member State law provide an Article 89 derogation?">
+      <bpmn:incoming>Flow_GatewayNonIdentifyingMode_To_GatewayDerogationLaw_Art89</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskProcessWithoutIdentification_To_GatewayDerogationLaw_Art89</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayDerogationLaw_To_EndSafeguardsConfigured_Art89</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayDerogationLaw_To_GatewayDerogationPurpose_Art89</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_DerogationPurpose_Art89"
+                           name="Which Article 89 derogation context applies?">
+      <bpmn:incoming>Flow_GatewayDerogationLaw_To_GatewayDerogationPurpose_Art89</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayDerogationPurpose_To_CheckResearchDerogation_Art89</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayDerogationPurpose_To_CheckArchivingDerogation_Art89</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_CheckResearchDerogation_Art89"
+               name="Check research or statistics derogation">
+      <bpmn:incoming>Flow_GatewayDerogationPurpose_To_CheckResearchDerogation_Art89</bpmn:incoming>
+      <bpmn:outgoing>Flow_CheckResearchDerogation_To_GatewayOtherPurpose_Art89</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_CheckArchivingDerogation_Art89"
+               name="Check archiving derogation">
+      <bpmn:incoming>Flow_GatewayDerogationPurpose_To_CheckArchivingDerogation_Art89</bpmn:incoming>
+      <bpmn:outgoing>Flow_CheckArchivingDerogation_To_GatewayOtherPurpose_Art89</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_OtherPurpose_Art89"
+                           name="Does the processing also serve another purpose?">
+      <bpmn:incoming>Flow_CheckResearchDerogation_To_GatewayOtherPurpose_Art89</bpmn:incoming>
+      <bpmn:incoming>Flow_CheckArchivingDerogation_To_GatewayOtherPurpose_Art89</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayOtherPurpose_To_EndSafeguardsConfigured_Art89</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayOtherPurpose_To_LimitDerogationScope_Art89</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_LimitDerogationScope_Art89"
+               name="Limit derogation to Article 89 processing">
+      <bpmn:incoming>Flow_GatewayOtherPurpose_To_LimitDerogationScope_Art89</bpmn:incoming>
+      <bpmn:outgoing>Flow_LimitDerogationScope_To_EndSafeguardsConfigured_Art89</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:endEvent id="EndEvent_SafeguardsConfigured_Art89"
                    name="Article 89 safeguards configured">
-      <bpmn:incoming>Flow_GatewayNonIdentifyingMode_To_EndSafeguardsConfigured_Art89</bpmn:incoming>
-      <bpmn:incoming>Flow_TaskProcessWithoutIdentification_To_EndSafeguardsConfigured_Art89</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayDerogationLaw_To_EndSafeguardsConfigured_Art89</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayOtherPurpose_To_EndSafeguardsConfigured_Art89</bpmn:incoming>
+      <bpmn:incoming>Flow_LimitDerogationScope_To_EndSafeguardsConfigured_Art89</bpmn:incoming>
     </bpmn:endEvent>
 
     <bpmn:endEvent id="EndEvent_NoArticle89Regime_Art89"
-                   name="No Article 89 special safeguarding regime applies">
+                   name="No Article 89 regime applies">
       <bpmn:incoming>Flow_GatewayPurpose_To_EndNoArticle89Regime_Art89</bpmn:incoming>
     </bpmn:endEvent>
 
@@ -98,8 +137,17 @@
     <bpmn:sequenceFlow id="Flow_GatewayPseudonymisation_To_GatewayNonIdentifyingMode_Art89" name="No" sourceRef="Gateway_Pseudonymisation_Art89" targetRef="Gateway_NonIdentifyingMode_Art89" />
     <bpmn:sequenceFlow id="Flow_TaskUsePseudonymisation_To_GatewayNonIdentifyingMode_Art89" sourceRef="Task_UsePseudonymisation_Art89" targetRef="Gateway_NonIdentifyingMode_Art89" />
     <bpmn:sequenceFlow id="Flow_GatewayNonIdentifyingMode_To_TaskProcessWithoutIdentification_Art89" name="Yes" sourceRef="Gateway_NonIdentifyingMode_Art89" targetRef="Task_ProcessWithoutIdentification_Art89" />
-    <bpmn:sequenceFlow id="Flow_GatewayNonIdentifyingMode_To_EndSafeguardsConfigured_Art89" name="No" sourceRef="Gateway_NonIdentifyingMode_Art89" targetRef="EndEvent_SafeguardsConfigured_Art89" />
-    <bpmn:sequenceFlow id="Flow_TaskProcessWithoutIdentification_To_EndSafeguardsConfigured_Art89" sourceRef="Task_ProcessWithoutIdentification_Art89" targetRef="EndEvent_SafeguardsConfigured_Art89" />
+    <bpmn:sequenceFlow id="Flow_GatewayNonIdentifyingMode_To_GatewayDerogationLaw_Art89" name="No" sourceRef="Gateway_NonIdentifyingMode_Art89" targetRef="Gateway_DerogationLaw_Art89" />
+    <bpmn:sequenceFlow id="Flow_TaskProcessWithoutIdentification_To_GatewayDerogationLaw_Art89" sourceRef="Task_ProcessWithoutIdentification_Art89" targetRef="Gateway_DerogationLaw_Art89" />
+    <bpmn:sequenceFlow id="Flow_GatewayDerogationLaw_To_EndSafeguardsConfigured_Art89" name="No" sourceRef="Gateway_DerogationLaw_Art89" targetRef="EndEvent_SafeguardsConfigured_Art89" />
+    <bpmn:sequenceFlow id="Flow_GatewayDerogationLaw_To_GatewayDerogationPurpose_Art89" name="Yes" sourceRef="Gateway_DerogationLaw_Art89" targetRef="Gateway_DerogationPurpose_Art89" />
+    <bpmn:sequenceFlow id="Flow_GatewayDerogationPurpose_To_CheckResearchDerogation_Art89" name="Research or statistics" sourceRef="Gateway_DerogationPurpose_Art89" targetRef="Task_CheckResearchDerogation_Art89" />
+    <bpmn:sequenceFlow id="Flow_GatewayDerogationPurpose_To_CheckArchivingDerogation_Art89" name="Archiving in the public interest" sourceRef="Gateway_DerogationPurpose_Art89" targetRef="Task_CheckArchivingDerogation_Art89" />
+    <bpmn:sequenceFlow id="Flow_CheckResearchDerogation_To_GatewayOtherPurpose_Art89" sourceRef="Task_CheckResearchDerogation_Art89" targetRef="Gateway_OtherPurpose_Art89" />
+    <bpmn:sequenceFlow id="Flow_CheckArchivingDerogation_To_GatewayOtherPurpose_Art89" sourceRef="Task_CheckArchivingDerogation_Art89" targetRef="Gateway_OtherPurpose_Art89" />
+    <bpmn:sequenceFlow id="Flow_GatewayOtherPurpose_To_EndSafeguardsConfigured_Art89" name="No" sourceRef="Gateway_OtherPurpose_Art89" targetRef="EndEvent_SafeguardsConfigured_Art89" />
+    <bpmn:sequenceFlow id="Flow_GatewayOtherPurpose_To_LimitDerogationScope_Art89" name="Yes" sourceRef="Gateway_OtherPurpose_Art89" targetRef="Task_LimitDerogationScope_Art89" />
+    <bpmn:sequenceFlow id="Flow_LimitDerogationScope_To_EndSafeguardsConfigured_Art89" sourceRef="Task_LimitDerogationScope_Art89" targetRef="EndEvent_SafeguardsConfigured_Art89" />
   </bpmn:process>
 
   <bpmndi:BPMNDiagram id="BPMNDiagram_Art89_Reviewed">
@@ -112,31 +160,49 @@
         <dc:Bounds x="250" y="255" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Task_EstablishSafeguards_Art89_di" bpmnElement="Task_EstablishSafeguards_Art89">
-        <dc:Bounds x="450" y="120" width="410" height="80" />
+        <dc:Bounds x="430" y="120" width="300" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Task_ImplementMeasures_Art89_di" bpmnElement="Task_ImplementMeasures_Art89">
-        <dc:Bounds x="980" y="120" width="390" height="80" />
+        <dc:Bounds x="860" y="120" width="340" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Task_EnsureDataMinimisation_Art89_di" bpmnElement="Task_EnsureDataMinimisation_Art89">
-        <dc:Bounds x="1490" y="120" width="410" height="80" />
+        <dc:Bounds x="1330" y="120" width="320" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_Pseudonymisation_Art89_di" bpmnElement="Gateway_Pseudonymisation_Art89" isMarkerVisible="true">
-        <dc:Bounds x="2020" y="135" width="50" height="50" />
+        <dc:Bounds x="1780" y="135" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Task_UsePseudonymisation_Art89_di" bpmnElement="Task_UsePseudonymisation_Art89">
-        <dc:Bounds x="2230" y="120" width="310" height="80" />
+        <dc:Bounds x="1970" y="120" width="240" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_NonIdentifyingMode_Art89_di" bpmnElement="Gateway_NonIdentifyingMode_Art89" isMarkerVisible="true">
-        <dc:Bounds x="2690" y="255" width="50" height="50" />
+        <dc:Bounds x="2370" y="255" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Task_ProcessWithoutIdentification_Art89_di" bpmnElement="Task_ProcessWithoutIdentification_Art89">
-        <dc:Bounds x="2900" y="120" width="480" height="80" />
+        <dc:Bounds x="2570" y="120" width="280" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_DerogationLaw_Art89_di" bpmnElement="Gateway_DerogationLaw_Art89" isMarkerVisible="true">
+        <dc:Bounds x="3000" y="255" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_DerogationPurpose_Art89_di" bpmnElement="Gateway_DerogationPurpose_Art89" isMarkerVisible="true">
+        <dc:Bounds x="3230" y="255" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CheckResearchDerogation_Art89_di" bpmnElement="Task_CheckResearchDerogation_Art89">
+        <dc:Bounds x="3440" y="120" width="320" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CheckArchivingDerogation_Art89_di" bpmnElement="Task_CheckArchivingDerogation_Art89">
+        <dc:Bounds x="3440" y="420" width="300" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_OtherPurpose_Art89_di" bpmnElement="Gateway_OtherPurpose_Art89" isMarkerVisible="true">
+        <dc:Bounds x="3920" y="255" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_LimitDerogationScope_Art89_di" bpmnElement="Task_LimitDerogationScope_Art89">
+        <dc:Bounds x="4140" y="420" width="320" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="EndEvent_SafeguardsConfigured_Art89_di" bpmnElement="EndEvent_SafeguardsConfigured_Art89">
-        <dc:Bounds x="3500" y="262" width="36" height="36" />
+        <dc:Bounds x="4600" y="262" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="EndEvent_NoArticle89Regime_Art89_di" bpmnElement="EndEvent_NoArticle89Regime_Art89">
-        <dc:Bounds x="457" y="422" width="36" height="36" />
+        <dc:Bounds x="437" y="422" width="36" height="36" />
       </bpmndi:BPMNShape>
 
       <bpmndi:BPMNEdge id="Flow_Start_To_GatewayPurpose_Art89_di" bpmnElement="Flow_Start_To_GatewayPurpose_Art89">
@@ -146,52 +212,94 @@
       <bpmndi:BPMNEdge id="Flow_GatewayPurpose_To_TaskEstablishSafeguards_Art89_di" bpmnElement="Flow_GatewayPurpose_To_TaskEstablishSafeguards_Art89">
         <di:waypoint x="275" y="255" />
         <di:waypoint x="275" y="160" />
-        <di:waypoint x="450" y="160" />
+        <di:waypoint x="430" y="160" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_GatewayPurpose_To_EndNoArticle89Regime_Art89_di" bpmnElement="Flow_GatewayPurpose_To_EndNoArticle89Regime_Art89">
         <di:waypoint x="275" y="305" />
         <di:waypoint x="275" y="440" />
-        <di:waypoint x="457" y="440" />
+        <di:waypoint x="437" y="440" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_TaskEstablishSafeguards_To_TaskImplementMeasures_Art89_di" bpmnElement="Flow_TaskEstablishSafeguards_To_TaskImplementMeasures_Art89">
+        <di:waypoint x="730" y="160" />
         <di:waypoint x="860" y="160" />
-        <di:waypoint x="980" y="160" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_TaskImplementMeasures_To_TaskEnsureMinimisation_Art89_di" bpmnElement="Flow_TaskImplementMeasures_To_TaskEnsureMinimisation_Art89">
-        <di:waypoint x="1370" y="160" />
-        <di:waypoint x="1490" y="160" />
+        <di:waypoint x="1200" y="160" />
+        <di:waypoint x="1330" y="160" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_TaskEnsureMinimisation_To_GatewayPseudonymisation_Art89_di" bpmnElement="Flow_TaskEnsureMinimisation_To_GatewayPseudonymisation_Art89">
-        <di:waypoint x="1900" y="160" />
-        <di:waypoint x="2020" y="160" />
+        <di:waypoint x="1650" y="160" />
+        <di:waypoint x="1780" y="160" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_GatewayPseudonymisation_To_TaskUsePseudonymisation_Art89_di" bpmnElement="Flow_GatewayPseudonymisation_To_TaskUsePseudonymisation_Art89">
-        <di:waypoint x="2070" y="160" />
-        <di:waypoint x="2230" y="160" />
+        <di:waypoint x="1830" y="160" />
+        <di:waypoint x="1970" y="160" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_GatewayPseudonymisation_To_GatewayNonIdentifyingMode_Art89_di" bpmnElement="Flow_GatewayPseudonymisation_To_GatewayNonIdentifyingMode_Art89">
-        <di:waypoint x="2045" y="185" />
-        <di:waypoint x="2045" y="280" />
-        <di:waypoint x="2690" y="280" />
+        <di:waypoint x="1805" y="185" />
+        <di:waypoint x="1805" y="280" />
+        <di:waypoint x="2370" y="280" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_TaskUsePseudonymisation_To_GatewayNonIdentifyingMode_Art89_di" bpmnElement="Flow_TaskUsePseudonymisation_To_GatewayNonIdentifyingMode_Art89">
-        <di:waypoint x="2540" y="160" />
-        <di:waypoint x="2715" y="160" />
-        <di:waypoint x="2715" y="255" />
+        <di:waypoint x="2210" y="160" />
+        <di:waypoint x="2395" y="160" />
+        <di:waypoint x="2395" y="255" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_GatewayNonIdentifyingMode_To_TaskProcessWithoutIdentification_Art89_di" bpmnElement="Flow_GatewayNonIdentifyingMode_To_TaskProcessWithoutIdentification_Art89">
-        <di:waypoint x="2715" y="255" />
-        <di:waypoint x="2715" y="160" />
-        <di:waypoint x="2900" y="160" />
+        <di:waypoint x="2395" y="255" />
+        <di:waypoint x="2395" y="160" />
+        <di:waypoint x="2570" y="160" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayNonIdentifyingMode_To_EndSafeguardsConfigured_Art89_di" bpmnElement="Flow_GatewayNonIdentifyingMode_To_EndSafeguardsConfigured_Art89">
-        <di:waypoint x="2740" y="280" />
-        <di:waypoint x="3500" y="280" />
+      <bpmndi:BPMNEdge id="Flow_GatewayNonIdentifyingMode_To_GatewayDerogationLaw_Art89_di" bpmnElement="Flow_GatewayNonIdentifyingMode_To_GatewayDerogationLaw_Art89">
+        <di:waypoint x="2420" y="280" />
+        <di:waypoint x="3000" y="280" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_TaskProcessWithoutIdentification_To_EndSafeguardsConfigured_Art89_di" bpmnElement="Flow_TaskProcessWithoutIdentification_To_EndSafeguardsConfigured_Art89">
-        <di:waypoint x="3380" y="160" />
-        <di:waypoint x="3518" y="160" />
-        <di:waypoint x="3518" y="262" />
+      <bpmndi:BPMNEdge id="Flow_TaskProcessWithoutIdentification_To_GatewayDerogationLaw_Art89_di" bpmnElement="Flow_TaskProcessWithoutIdentification_To_GatewayDerogationLaw_Art89">
+        <di:waypoint x="2850" y="160" />
+        <di:waypoint x="3025" y="160" />
+        <di:waypoint x="3025" y="255" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayDerogationLaw_To_EndSafeguardsConfigured_Art89_di" bpmnElement="Flow_GatewayDerogationLaw_To_EndSafeguardsConfigured_Art89">
+        <di:waypoint x="3050" y="280" />
+        <di:waypoint x="4600" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayDerogationLaw_To_GatewayDerogationPurpose_Art89_di" bpmnElement="Flow_GatewayDerogationLaw_To_GatewayDerogationPurpose_Art89">
+        <di:waypoint x="3050" y="280" />
+        <di:waypoint x="3230" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayDerogationPurpose_To_CheckResearchDerogation_Art89_di" bpmnElement="Flow_GatewayDerogationPurpose_To_CheckResearchDerogation_Art89">
+        <di:waypoint x="3255" y="255" />
+        <di:waypoint x="3255" y="160" />
+        <di:waypoint x="3440" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayDerogationPurpose_To_CheckArchivingDerogation_Art89_di" bpmnElement="Flow_GatewayDerogationPurpose_To_CheckArchivingDerogation_Art89">
+        <di:waypoint x="3255" y="305" />
+        <di:waypoint x="3255" y="460" />
+        <di:waypoint x="3440" y="460" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_CheckResearchDerogation_To_GatewayOtherPurpose_Art89_di" bpmnElement="Flow_CheckResearchDerogation_To_GatewayOtherPurpose_Art89">
+        <di:waypoint x="3760" y="160" />
+        <di:waypoint x="3945" y="160" />
+        <di:waypoint x="3945" y="255" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_CheckArchivingDerogation_To_GatewayOtherPurpose_Art89_di" bpmnElement="Flow_CheckArchivingDerogation_To_GatewayOtherPurpose_Art89">
+        <di:waypoint x="3740" y="460" />
+        <di:waypoint x="3945" y="460" />
+        <di:waypoint x="3945" y="305" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayOtherPurpose_To_EndSafeguardsConfigured_Art89_di" bpmnElement="Flow_GatewayOtherPurpose_To_EndSafeguardsConfigured_Art89">
+        <di:waypoint x="3970" y="280" />
+        <di:waypoint x="4600" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayOtherPurpose_To_LimitDerogationScope_Art89_di" bpmnElement="Flow_GatewayOtherPurpose_To_LimitDerogationScope_Art89">
+        <di:waypoint x="3945" y="305" />
+        <di:waypoint x="3945" y="460" />
+        <di:waypoint x="4140" y="460" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_LimitDerogationScope_To_EndSafeguardsConfigured_Art89_di" bpmnElement="Flow_LimitDerogationScope_To_EndSafeguardsConfigured_Art89">
+        <di:waypoint x="4460" y="460" />
+        <di:waypoint x="4618" y="460" />
+        <di:waypoint x="4618" y="298" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

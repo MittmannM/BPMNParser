@@ -31,23 +31,21 @@
                 name="Lodging a complaint with a supervisory authority"
                 isExecutable="false">
     <bpmn:documentation>
-      Manual BPMN conversion for GDPR Article 77 based on DAPRECO LegalRuleML
-      statements264 and checked against the current Article 77 text. The XML clearly
-      encodes the permission to lodge a complaint with the supervisory authority of
-      the habitual residence, place of work, or place of the alleged infringement.
-      Article 77(2), which requires the supervisory authority to inform the complainant
-      on progress and outcome including the possibility of a judicial remedy under
-      Article 78, is not explicitly serialized in this XML file and is therefore added
-      here as a source-transparent legal inference from the official article text.
+      Manual BPMN conversion for GDPR Article 77 based on the real English legal text from
+      gdpr_articles/article_77.txt. The model shows the right to lodge a complaint with
+      a supervisory authority, in particular in the Member State of habitual residence,
+      place of work, or place of the alleged infringement, and the Article 77(2) duty
+      to inform the complainant about the progress and outcome of the complaint,
+      including the possibility of a judicial remedy under Article 78.
     </bpmn:documentation>
 
     <bpmn:startEvent id="StartEvent_ConsiderComplaint_Art77"
-                     name="Consider that the processing infringes the GDPR">
+                     name="Consider GDPR infringement">
       <bpmn:outgoing>Flow_Start_To_PrepareComplaint_Art77</bpmn:outgoing>
     </bpmn:startEvent>
 
     <bpmn:task id="Task_PrepareComplaint_Art77"
-               name="Prepare the complaint about the alleged infringement">
+               name="Prepare complaint">
       <bpmn:incoming>Flow_Start_To_PrepareComplaint_Art77</bpmn:incoming>
       <bpmn:outgoing>Flow_PrepareComplaint_To_GatewayVenue_Art77</bpmn:outgoing>
     </bpmn:task>
@@ -61,19 +59,19 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:sendTask id="SendTask_LodgeResidenceComplaint_Art77"
-                   name="Lodge the complaint with the supervisory authority of the habitual residence">
+                   name="Lodge complaint in habitual-residence Member State">
       <bpmn:incoming>Flow_GatewayVenue_To_LodgeResidenceComplaint_Art77</bpmn:incoming>
       <bpmn:outgoing>Flow_LodgeResidenceComplaint_To_GatewayComplaintLodged_Art77</bpmn:outgoing>
     </bpmn:sendTask>
 
     <bpmn:sendTask id="SendTask_LodgeWorkComplaint_Art77"
-                   name="Lodge the complaint with the supervisory authority of the place of work">
+                   name="Lodge complaint in place-of-work Member State">
       <bpmn:incoming>Flow_GatewayVenue_To_LodgeWorkComplaint_Art77</bpmn:incoming>
       <bpmn:outgoing>Flow_LodgeWorkComplaint_To_GatewayComplaintLodged_Art77</bpmn:outgoing>
     </bpmn:sendTask>
 
     <bpmn:sendTask id="SendTask_LodgeInfringementComplaint_Art77"
-                   name="Lodge the complaint with the supervisory authority of the place of the alleged infringement">
+                   name="Lodge complaint in infringement Member State">
       <bpmn:incoming>Flow_GatewayVenue_To_LodgeInfringementComplaint_Art77</bpmn:incoming>
       <bpmn:outgoing>Flow_LodgeInfringementComplaint_To_GatewayComplaintLodged_Art77</bpmn:outgoing>
     </bpmn:sendTask>
@@ -86,13 +84,13 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:receiveTask id="ReceiveTask_ReceiveOutcomeInfo_Art77"
-                      name="Receive information on the progress, outcome, and judicial remedy option">
+                      name="Receive progress, outcome, and Article 78 remedy information">
       <bpmn:incoming>Flow_GatewayComplaintLodged_To_ReceiveOutcomeInfo_Art77</bpmn:incoming>
       <bpmn:outgoing>Flow_ReceiveOutcomeInfo_To_EndComplaintHandled_Art77</bpmn:outgoing>
     </bpmn:receiveTask>
 
     <bpmn:endEvent id="EndEvent_ComplaintHandled_Art77"
-                   name="Article 77 complaint route completed">
+                   name="Complaint route completed">
       <bpmn:incoming>Flow_ReceiveOutcomeInfo_To_EndComplaintHandled_Art77</bpmn:incoming>
     </bpmn:endEvent>
 

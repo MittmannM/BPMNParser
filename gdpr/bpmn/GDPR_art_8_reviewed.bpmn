@@ -30,51 +30,50 @@
   </bpmn:collaboration>
 
   <bpmn:process id="Process_Controller_Art8"
-                name="Applying Article 8 child-consent conditions"
+                name="Apply Article 8 consent conditions"
                 isExecutable="false">
     <bpmn:documentation>
-      Manual BPMN conversion for GDPR Article 8 based on DAPRECO LegalRuleML
-      statements17-18. The local XML covers the default minimum consent age of 16 in
-      the absence of a Member State exception, the under-age exception path, the
-      lawfulness of consent or authorisation by the holder of parental responsibility,
-      and the controller's duty to make reasonable efforts to verify that consent or
-      authorisation. The BPMN therefore models Article 8(1)-(2). Article 8(3) is not
-      modeled because it is not present in the local XML file.
+      Manual BPMN conversion for GDPR Article 8 based on the real English legal text.
+      The model covers the Article 6(1)(a) and information-society-service trigger,
+      the default age of 16 and Member State lower-age option down to 13, the
+      under-age parental-consent-or-authorisation path, and the reasonable-efforts
+      verification duty from Article 8(2). Article 8(3) is treated as a legal
+      reservation about general contract law rather than as a separate process step.
     </bpmn:documentation>
 
     <bpmn:startEvent id="StartEvent_AssessArticle8_Art8"
-                     name="Need to assess consent for a child-facing information society service">
+                     name="Need child consent assessment">
       <bpmn:outgoing>Flow_Start_To_TaskAssessApplicability_Art8</bpmn:outgoing>
     </bpmn:startEvent>
 
     <bpmn:task id="Task_AssessApplicabilityAndAge_Art8"
-               name="Assess whether Article 8 applies and determine the applicable minimum consent age">
+               name="Check applicability and age threshold">
       <bpmn:incoming>Flow_Start_To_TaskAssessApplicability_Art8</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskAssessApplicability_To_GatewayArticle8Applies_Art8</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:exclusiveGateway id="Gateway_Article8Applies_Art8"
-                           name="Do Article 8 child-consent conditions apply?">
+                           name="Does Article 8 apply?">
       <bpmn:incoming>Flow_TaskAssessApplicability_To_GatewayArticle8Applies_Art8</bpmn:incoming>
       <bpmn:outgoing>Flow_GatewayArticle8Applies_To_GatewayChildAge_Art8</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewayArticle8Applies_To_EndArticle8NotApplicable_Art8</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
     <bpmn:exclusiveGateway id="Gateway_ChildAge_Art8"
-                           name="Is the child at least the applicable minimum consent age?">
+                           name="Is the child at least the age threshold?">
       <bpmn:incoming>Flow_GatewayArticle8Applies_To_GatewayChildAge_Art8</bpmn:incoming>
       <bpmn:outgoing>Flow_GatewayChildAge_To_SendTaskRequestChildConsent_Art8</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewayChildAge_To_SendTaskRequestParentalAuthorisation_Art8</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
     <bpmn:sendTask id="SendTask_RequestChildConsent_Art8"
-                   name="Request consent from the child">
+                   name="Request child consent">
       <bpmn:incoming>Flow_GatewayChildAge_To_SendTaskRequestChildConsent_Art8</bpmn:incoming>
       <bpmn:outgoing>Flow_SendTaskRequestChildConsent_To_ReceiveTaskReceiveChildConsent_Art8</bpmn:outgoing>
     </bpmn:sendTask>
 
     <bpmn:receiveTask id="ReceiveTask_ReceiveChildConsent_Art8"
-                      name="Receive the child's consent">
+                      name="Receive child consent">
       <bpmn:incoming>Flow_SendTaskRequestChildConsent_To_ReceiveTaskReceiveChildConsent_Art8</bpmn:incoming>
       <bpmn:outgoing>Flow_ReceiveTaskReceiveChildConsent_To_GatewayChildConsentReceived_Art8</bpmn:outgoing>
     </bpmn:receiveTask>
@@ -87,48 +86,48 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:sendTask id="SendTask_RequestParentalAuthorisation_Art8"
-                   name="Request consent or authorisation from the holder of parental responsibility">
+                   name="Request parental authorisation">
       <bpmn:incoming>Flow_GatewayChildAge_To_SendTaskRequestParentalAuthorisation_Art8</bpmn:incoming>
       <bpmn:outgoing>Flow_SendTaskRequestParentalAuthorisation_To_ReceiveTaskReceiveParentalAuthorisation_Art8</bpmn:outgoing>
     </bpmn:sendTask>
 
     <bpmn:receiveTask id="ReceiveTask_ReceiveParentalAuthorisation_Art8"
-                      name="Receive consent or authorisation from the holder of parental responsibility">
+                      name="Receive parental authorisation">
       <bpmn:incoming>Flow_SendTaskRequestParentalAuthorisation_To_ReceiveTaskReceiveParentalAuthorisation_Art8</bpmn:incoming>
       <bpmn:outgoing>Flow_ReceiveTaskReceiveParentalAuthorisation_To_GatewayParentalAuthorisationReceived_Art8</bpmn:outgoing>
     </bpmn:receiveTask>
 
     <bpmn:exclusiveGateway id="Gateway_ParentalAuthorisationReceived_Art8"
-                           name="Was consent given or authorised by the holder of parental responsibility?">
+                           name="Was parental authorisation given?">
       <bpmn:incoming>Flow_ReceiveTaskReceiveParentalAuthorisation_To_GatewayParentalAuthorisationReceived_Art8</bpmn:incoming>
       <bpmn:outgoing>Flow_GatewayParentalAuthorisationReceived_To_TaskVerifyReasonableEfforts_Art8</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewayParentalAuthorisationReceived_To_EndNoValidConsent_Art8</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
     <bpmn:task id="Task_VerifyReasonableEfforts_Art8"
-               name="Verify with reasonable efforts that consent or authorisation was given by the holder of parental responsibility">
+               name="Verify parental authorisation">
       <bpmn:incoming>Flow_GatewayParentalAuthorisationReceived_To_TaskVerifyReasonableEfforts_Art8</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskVerifyReasonableEfforts_To_EndLawfulParentalAuthorisation_Art8</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:endEvent id="EndEvent_LawfulChildConsent_Art8"
-                   name="Processing is lawful based on the child's consent">
+                   name="Child consent available">
       <bpmn:incoming>Flow_GatewayChildConsentReceived_To_EndLawfulChildConsent_Art8</bpmn:incoming>
     </bpmn:endEvent>
 
     <bpmn:endEvent id="EndEvent_LawfulParentalAuthorisation_Art8"
-                   name="Processing is lawful based on parental consent or authorisation">
+                   name="Parental authorisation verified">
       <bpmn:incoming>Flow_TaskVerifyReasonableEfforts_To_EndLawfulParentalAuthorisation_Art8</bpmn:incoming>
     </bpmn:endEvent>
 
     <bpmn:endEvent id="EndEvent_NoValidConsent_Art8"
-                   name="No valid Article 8 consent route is available">
+                   name="No valid Article 8 consent">
       <bpmn:incoming>Flow_GatewayChildConsentReceived_To_EndNoValidConsent_Art8</bpmn:incoming>
       <bpmn:incoming>Flow_GatewayParentalAuthorisationReceived_To_EndNoValidConsent_Art8</bpmn:incoming>
     </bpmn:endEvent>
 
     <bpmn:endEvent id="EndEvent_Article8NotApplicable_Art8"
-                   name="Article 8 child-consent conditions do not apply">
+                   name="Article 8 not applicable">
       <bpmn:incoming>Flow_GatewayArticle8Applies_To_EndArticle8NotApplicable_Art8</bpmn:incoming>
     </bpmn:endEvent>
 

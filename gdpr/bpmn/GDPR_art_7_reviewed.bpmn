@@ -14,10 +14,10 @@
                       name="Data Subject" />
 
     <bpmn:messageFlow id="MessageFlow_PresentConsentRequest_Art7"
-                      sourceRef="SendTask_PresentConsentRequest_Art7"
+                      sourceRef="SendTask_RequestConsent_Art7"
                       targetRef="Participant_DataSubject_Art7" />
     <bpmn:messageFlow id="MessageFlow_InformWithdrawalRight_Art7"
-                      sourceRef="SendTask_InformWithdrawalRight_Art7"
+                      sourceRef="SendTask_InformWithdrawal_Art7"
                       targetRef="Participant_DataSubject_Art7" />
     <bpmn:messageFlow id="MessageFlow_GiveConsent_Art7"
                       sourceRef="Participant_DataSubject_Art7"
@@ -28,55 +28,66 @@
   </bpmn:collaboration>
 
   <bpmn:process id="Process_Controller_Art7"
-                name="Managing consent under Article 7"
+                name="Manage consent under Article 7"
                 isExecutable="false">
     <bpmn:documentation>
-      Manual BPMN conversion for GDPR Article 7 based on DAPRECO LegalRuleML
-      statements14-16. The local XML covers the controller's ability to demonstrate
-      consent, the requirement that the consent request be clear when embedded in a
-      broader written declaration, the data subject's right to withdraw consent, the
-      duty to inform the data subject of that right, and the obligation to make
-      withdrawal as easy as giving consent. Article 7(4) is not modeled because it is
-      not present in the local XML file.
+      Manual BPMN conversion for GDPR Article 7 based on the real English legal text.
+      The model covers demonstrable consent under Article 7(1), the clear and
+      distinguishable consent-request requirement from Article 7(2), the prior
+      information and easy withdrawal duties from Article 7(3), and the free-consent
+      assessment from Article 7(4) when contract or service performance is made
+      conditional on unnecessary processing.
     </bpmn:documentation>
 
     <bpmn:startEvent id="StartEvent_ManageConsent_Art7"
-                     name="Need to manage consent-based processing">
-      <bpmn:outgoing>Flow_Start_To_TaskDraftClearRequest_Art7</bpmn:outgoing>
+                     name="Need consent-based processing">
+      <bpmn:outgoing>Flow_Start_To_GatewayFreeConsent_Art7</bpmn:outgoing>
     </bpmn:startEvent>
 
-    <bpmn:task id="Task_DraftClearRequest_Art7"
-               name="Draft a consent request that is clearly distinguishable and clear">
-      <bpmn:incoming>Flow_Start_To_TaskDraftClearRequest_Art7</bpmn:incoming>
-      <bpmn:outgoing>Flow_TaskDraftClearRequest_To_SendTaskPresentConsentRequest_Art7</bpmn:outgoing>
+    <bpmn:exclusiveGateway id="Gateway_FreeConsent_Art7"
+                           name="Is consent tied to a contract or service that does not require the processing?">
+      <bpmn:incoming>Flow_Start_To_GatewayFreeConsent_Art7</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayFreeConsent_To_EndNotFreelyGiven_Art7</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayFreeConsent_To_TaskPrepareConsentRequest_Art7</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_NotFreelyGiven_Art7"
+                   name="Consent not freely given">
+      <bpmn:incoming>Flow_GatewayFreeConsent_To_EndNotFreelyGiven_Art7</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:task id="Task_PrepareConsentRequest_Art7"
+               name="Prepare clear consent request">
+      <bpmn:incoming>Flow_GatewayFreeConsent_To_TaskPrepareConsentRequest_Art7</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPrepareConsentRequest_To_SendTaskRequestConsent_Art7</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:sendTask id="SendTask_PresentConsentRequest_Art7"
-                   name="Present the consent request to the data subject">
-      <bpmn:incoming>Flow_TaskDraftClearRequest_To_SendTaskPresentConsentRequest_Art7</bpmn:incoming>
-      <bpmn:outgoing>Flow_SendTaskPresentConsentRequest_To_SendTaskInformWithdrawalRight_Art7</bpmn:outgoing>
+    <bpmn:sendTask id="SendTask_RequestConsent_Art7"
+                   name="Request consent">
+      <bpmn:incoming>Flow_TaskPrepareConsentRequest_To_SendTaskRequestConsent_Art7</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendTaskRequestConsent_To_SendTaskInformWithdrawal_Art7</bpmn:outgoing>
     </bpmn:sendTask>
 
-    <bpmn:sendTask id="SendTask_InformWithdrawalRight_Art7"
-                   name="Inform the data subject of the right to withdraw consent">
-      <bpmn:incoming>Flow_SendTaskPresentConsentRequest_To_SendTaskInformWithdrawalRight_Art7</bpmn:incoming>
-      <bpmn:outgoing>Flow_SendTaskInformWithdrawalRight_To_TaskProvideEasyMechanism_Art7</bpmn:outgoing>
+    <bpmn:sendTask id="SendTask_InformWithdrawal_Art7"
+                   name="Inform withdrawal right">
+      <bpmn:incoming>Flow_SendTaskRequestConsent_To_SendTaskInformWithdrawal_Art7</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendTaskInformWithdrawal_To_TaskEnableEasyWithdrawal_Art7</bpmn:outgoing>
     </bpmn:sendTask>
 
-    <bpmn:task id="Task_ProvideEasyMechanism_Art7"
-               name="Provide a withdrawal mechanism that is as easy as giving consent">
-      <bpmn:incoming>Flow_SendTaskInformWithdrawalRight_To_TaskProvideEasyMechanism_Art7</bpmn:incoming>
-      <bpmn:outgoing>Flow_TaskProvideEasyMechanism_To_ReceiveTaskReceiveConsent_Art7</bpmn:outgoing>
+    <bpmn:task id="Task_EnableEasyWithdrawal_Art7"
+               name="Enable easy withdrawal">
+      <bpmn:incoming>Flow_SendTaskInformWithdrawal_To_TaskEnableEasyWithdrawal_Art7</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskEnableEasyWithdrawal_To_ReceiveTaskReceiveConsent_Art7</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:receiveTask id="ReceiveTask_ReceiveConsent_Art7"
-                      name="Receive the data subject's consent">
-      <bpmn:incoming>Flow_TaskProvideEasyMechanism_To_ReceiveTaskReceiveConsent_Art7</bpmn:incoming>
+                      name="Receive consent">
+      <bpmn:incoming>Flow_TaskEnableEasyWithdrawal_To_ReceiveTaskReceiveConsent_Art7</bpmn:incoming>
       <bpmn:outgoing>Flow_ReceiveTaskReceiveConsent_To_TaskRecordEvidence_Art7</bpmn:outgoing>
     </bpmn:receiveTask>
 
     <bpmn:task id="Task_RecordEvidence_Art7"
-               name="Record evidence so that consent can be demonstrated">
+               name="Record consent evidence">
       <bpmn:incoming>Flow_ReceiveTaskReceiveConsent_To_TaskRecordEvidence_Art7</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskRecordEvidence_To_GatewayWithdrawal_Art7</bpmn:outgoing>
     </bpmn:task>
@@ -89,7 +100,7 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:receiveTask id="ReceiveTask_ReceiveWithdrawal_Art7"
-                      name="Receive the withdrawal of consent">
+                      name="Receive withdrawal">
       <bpmn:incoming>Flow_GatewayWithdrawal_To_ReceiveTaskReceiveWithdrawal_Art7</bpmn:incoming>
       <bpmn:outgoing>Flow_ReceiveTaskReceiveWithdrawal_To_EndConsentWithdrawn_Art7</bpmn:outgoing>
     </bpmn:receiveTask>
@@ -100,15 +111,17 @@
     </bpmn:endEvent>
 
     <bpmn:endEvent id="EndEvent_ConsentMaintained_Art7"
-                   name="Consent remains available for the processing">
+                   name="Consent available">
       <bpmn:incoming>Flow_GatewayWithdrawal_To_EndConsentMaintained_Art7</bpmn:incoming>
     </bpmn:endEvent>
 
-    <bpmn:sequenceFlow id="Flow_Start_To_TaskDraftClearRequest_Art7" sourceRef="StartEvent_ManageConsent_Art7" targetRef="Task_DraftClearRequest_Art7" />
-    <bpmn:sequenceFlow id="Flow_TaskDraftClearRequest_To_SendTaskPresentConsentRequest_Art7" sourceRef="Task_DraftClearRequest_Art7" targetRef="SendTask_PresentConsentRequest_Art7" />
-    <bpmn:sequenceFlow id="Flow_SendTaskPresentConsentRequest_To_SendTaskInformWithdrawalRight_Art7" sourceRef="SendTask_PresentConsentRequest_Art7" targetRef="SendTask_InformWithdrawalRight_Art7" />
-    <bpmn:sequenceFlow id="Flow_SendTaskInformWithdrawalRight_To_TaskProvideEasyMechanism_Art7" sourceRef="SendTask_InformWithdrawalRight_Art7" targetRef="Task_ProvideEasyMechanism_Art7" />
-    <bpmn:sequenceFlow id="Flow_TaskProvideEasyMechanism_To_ReceiveTaskReceiveConsent_Art7" sourceRef="Task_ProvideEasyMechanism_Art7" targetRef="ReceiveTask_ReceiveConsent_Art7" />
+    <bpmn:sequenceFlow id="Flow_Start_To_GatewayFreeConsent_Art7" sourceRef="StartEvent_ManageConsent_Art7" targetRef="Gateway_FreeConsent_Art7" />
+    <bpmn:sequenceFlow id="Flow_GatewayFreeConsent_To_EndNotFreelyGiven_Art7" name="Yes" sourceRef="Gateway_FreeConsent_Art7" targetRef="EndEvent_NotFreelyGiven_Art7" />
+    <bpmn:sequenceFlow id="Flow_GatewayFreeConsent_To_TaskPrepareConsentRequest_Art7" name="No" sourceRef="Gateway_FreeConsent_Art7" targetRef="Task_PrepareConsentRequest_Art7" />
+    <bpmn:sequenceFlow id="Flow_TaskPrepareConsentRequest_To_SendTaskRequestConsent_Art7" sourceRef="Task_PrepareConsentRequest_Art7" targetRef="SendTask_RequestConsent_Art7" />
+    <bpmn:sequenceFlow id="Flow_SendTaskRequestConsent_To_SendTaskInformWithdrawal_Art7" sourceRef="SendTask_RequestConsent_Art7" targetRef="SendTask_InformWithdrawal_Art7" />
+    <bpmn:sequenceFlow id="Flow_SendTaskInformWithdrawal_To_TaskEnableEasyWithdrawal_Art7" sourceRef="SendTask_InformWithdrawal_Art7" targetRef="Task_EnableEasyWithdrawal_Art7" />
+    <bpmn:sequenceFlow id="Flow_TaskEnableEasyWithdrawal_To_ReceiveTaskReceiveConsent_Art7" sourceRef="Task_EnableEasyWithdrawal_Art7" targetRef="ReceiveTask_ReceiveConsent_Art7" />
     <bpmn:sequenceFlow id="Flow_ReceiveTaskReceiveConsent_To_TaskRecordEvidence_Art7" sourceRef="ReceiveTask_ReceiveConsent_Art7" targetRef="Task_RecordEvidence_Art7" />
     <bpmn:sequenceFlow id="Flow_TaskRecordEvidence_To_GatewayWithdrawal_Art7" sourceRef="Task_RecordEvidence_Art7" targetRef="Gateway_Withdrawal_Art7" />
     <bpmn:sequenceFlow id="Flow_GatewayWithdrawal_To_ReceiveTaskReceiveWithdrawal_Art7" name="Yes" sourceRef="Gateway_Withdrawal_Art7" targetRef="ReceiveTask_ReceiveWithdrawal_Art7" />
@@ -119,36 +132,40 @@
   <bpmndi:BPMNDiagram id="BPMNDiagram_Art7_Reviewed">
     <bpmndi:BPMNPlane id="BPMNPlane_Art7_Reviewed"
                       bpmnElement="Collaboration_Art7_Reviewed">
-      <bpmndi:BPMNShape id="Participant_Controller_Art7_di" bpmnElement="Participant_Controller_Art7" isHorizontal="true"><dc:Bounds x="60" y="40" width="3500" height="520" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Participant_DataSubject_Art7_di" bpmnElement="Participant_DataSubject_Art7" isHorizontal="true"><dc:Bounds x="60" y="620" width="3500" height="120" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Controller_Art7_di" bpmnElement="Participant_Controller_Art7" isHorizontal="true"><dc:Bounds x="60" y="40" width="3700" height="520" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_DataSubject_Art7_di" bpmnElement="Participant_DataSubject_Art7" isHorizontal="true"><dc:Bounds x="60" y="620" width="3700" height="120" /></bpmndi:BPMNShape>
 
       <bpmndi:BPMNShape id="StartEvent_ManageConsent_Art7_di" bpmnElement="StartEvent_ManageConsent_Art7"><dc:Bounds x="120" y="282" width="36" height="36" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Task_DraftClearRequest_Art7_di" bpmnElement="Task_DraftClearRequest_Art7"><dc:Bounds x="230" y="260" width="330" height="80" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="SendTask_PresentConsentRequest_Art7_di" bpmnElement="SendTask_PresentConsentRequest_Art7"><dc:Bounds x="670" y="260" width="290" height="80" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="SendTask_InformWithdrawalRight_Art7_di" bpmnElement="SendTask_InformWithdrawalRight_Art7"><dc:Bounds x="1070" y="260" width="330" height="80" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Task_ProvideEasyMechanism_Art7_di" bpmnElement="Task_ProvideEasyMechanism_Art7"><dc:Bounds x="1510" y="260" width="350" height="80" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ReceiveTask_ReceiveConsent_Art7_di" bpmnElement="ReceiveTask_ReceiveConsent_Art7"><dc:Bounds x="1970" y="260" width="280" height="80" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Task_RecordEvidence_Art7_di" bpmnElement="Task_RecordEvidence_Art7"><dc:Bounds x="2360" y="260" width="300" height="80" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_Withdrawal_Art7_di" bpmnElement="Gateway_Withdrawal_Art7" isMarkerVisible="true"><dc:Bounds x="2770" y="275" width="50" height="50" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ReceiveTask_ReceiveWithdrawal_Art7_di" bpmnElement="ReceiveTask_ReceiveWithdrawal_Art7"><dc:Bounds x="2940" y="120" width="280" height="80" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="EndEvent_ConsentWithdrawn_Art7_di" bpmnElement="EndEvent_ConsentWithdrawn_Art7"><dc:Bounds x="3320" y="142" width="36" height="36" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="EndEvent_ConsentMaintained_Art7_di" bpmnElement="EndEvent_ConsentMaintained_Art7"><dc:Bounds x="2947" y="402" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_FreeConsent_Art7_di" bpmnElement="Gateway_FreeConsent_Art7" isMarkerVisible="true"><dc:Bounds x="230" y="275" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NotFreelyGiven_Art7_di" bpmnElement="EndEvent_NotFreelyGiven_Art7"><dc:Bounds x="237" y="402" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareConsentRequest_Art7_di" bpmnElement="Task_PrepareConsentRequest_Art7"><dc:Bounds x="390" y="260" width="230" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_RequestConsent_Art7_di" bpmnElement="SendTask_RequestConsent_Art7"><dc:Bounds x="730" y="260" width="200" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_InformWithdrawal_Art7_di" bpmnElement="SendTask_InformWithdrawal_Art7"><dc:Bounds x="1040" y="260" width="210" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_EnableEasyWithdrawal_Art7_di" bpmnElement="Task_EnableEasyWithdrawal_Art7"><dc:Bounds x="1360" y="260" width="220" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveConsent_Art7_di" bpmnElement="ReceiveTask_ReceiveConsent_Art7"><dc:Bounds x="1690" y="260" width="180" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RecordEvidence_Art7_di" bpmnElement="Task_RecordEvidence_Art7"><dc:Bounds x="1980" y="260" width="210" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Withdrawal_Art7_di" bpmnElement="Gateway_Withdrawal_Art7" isMarkerVisible="true"><dc:Bounds x="2300" y="275" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveWithdrawal_Art7_di" bpmnElement="ReceiveTask_ReceiveWithdrawal_Art7"><dc:Bounds x="2470" y="120" width="180" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ConsentWithdrawn_Art7_di" bpmnElement="EndEvent_ConsentWithdrawn_Art7"><dc:Bounds x="2750" y="142" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ConsentMaintained_Art7_di" bpmnElement="EndEvent_ConsentMaintained_Art7"><dc:Bounds x="2477" y="402" width="36" height="36" /></bpmndi:BPMNShape>
 
-      <bpmndi:BPMNEdge id="Flow_Start_To_TaskDraftClearRequest_Art7_di" bpmnElement="Flow_Start_To_TaskDraftClearRequest_Art7"><di:waypoint x="156" y="300" /><di:waypoint x="230" y="300" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_TaskDraftClearRequest_To_SendTaskPresentConsentRequest_Art7_di" bpmnElement="Flow_TaskDraftClearRequest_To_SendTaskPresentConsentRequest_Art7"><di:waypoint x="560" y="300" /><di:waypoint x="670" y="300" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_SendTaskPresentConsentRequest_To_SendTaskInformWithdrawalRight_Art7_di" bpmnElement="Flow_SendTaskPresentConsentRequest_To_SendTaskInformWithdrawalRight_Art7"><di:waypoint x="960" y="300" /><di:waypoint x="1070" y="300" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_SendTaskInformWithdrawalRight_To_TaskProvideEasyMechanism_Art7_di" bpmnElement="Flow_SendTaskInformWithdrawalRight_To_TaskProvideEasyMechanism_Art7"><di:waypoint x="1400" y="300" /><di:waypoint x="1510" y="300" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_TaskProvideEasyMechanism_To_ReceiveTaskReceiveConsent_Art7_di" bpmnElement="Flow_TaskProvideEasyMechanism_To_ReceiveTaskReceiveConsent_Art7"><di:waypoint x="1860" y="300" /><di:waypoint x="1970" y="300" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_ReceiveTaskReceiveConsent_To_TaskRecordEvidence_Art7_di" bpmnElement="Flow_ReceiveTaskReceiveConsent_To_TaskRecordEvidence_Art7"><di:waypoint x="2250" y="300" /><di:waypoint x="2360" y="300" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_TaskRecordEvidence_To_GatewayWithdrawal_Art7_di" bpmnElement="Flow_TaskRecordEvidence_To_GatewayWithdrawal_Art7"><di:waypoint x="2660" y="300" /><di:waypoint x="2770" y="300" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayWithdrawal_To_ReceiveTaskReceiveWithdrawal_Art7_di" bpmnElement="Flow_GatewayWithdrawal_To_ReceiveTaskReceiveWithdrawal_Art7"><di:waypoint x="2795" y="275" /><di:waypoint x="2795" y="160" /><di:waypoint x="2940" y="160" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayWithdrawal_To_EndConsentMaintained_Art7_di" bpmnElement="Flow_GatewayWithdrawal_To_EndConsentMaintained_Art7"><di:waypoint x="2795" y="325" /><di:waypoint x="2795" y="420" /><di:waypoint x="2947" y="420" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_ReceiveTaskReceiveWithdrawal_To_EndConsentWithdrawn_Art7_di" bpmnElement="Flow_ReceiveTaskReceiveWithdrawal_To_EndConsentWithdrawn_Art7"><di:waypoint x="3220" y="160" /><di:waypoint x="3320" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Start_To_GatewayFreeConsent_Art7_di" bpmnElement="Flow_Start_To_GatewayFreeConsent_Art7"><di:waypoint x="156" y="300" /><di:waypoint x="230" y="300" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayFreeConsent_To_EndNotFreelyGiven_Art7_di" bpmnElement="Flow_GatewayFreeConsent_To_EndNotFreelyGiven_Art7"><di:waypoint x="255" y="325" /><di:waypoint x="255" y="402" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayFreeConsent_To_TaskPrepareConsentRequest_Art7_di" bpmnElement="Flow_GatewayFreeConsent_To_TaskPrepareConsentRequest_Art7"><di:waypoint x="280" y="300" /><di:waypoint x="390" y="300" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPrepareConsentRequest_To_SendTaskRequestConsent_Art7_di" bpmnElement="Flow_TaskPrepareConsentRequest_To_SendTaskRequestConsent_Art7"><di:waypoint x="620" y="300" /><di:waypoint x="730" y="300" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendTaskRequestConsent_To_SendTaskInformWithdrawal_Art7_di" bpmnElement="Flow_SendTaskRequestConsent_To_SendTaskInformWithdrawal_Art7"><di:waypoint x="930" y="300" /><di:waypoint x="1040" y="300" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendTaskInformWithdrawal_To_TaskEnableEasyWithdrawal_Art7_di" bpmnElement="Flow_SendTaskInformWithdrawal_To_TaskEnableEasyWithdrawal_Art7"><di:waypoint x="1250" y="300" /><di:waypoint x="1360" y="300" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskEnableEasyWithdrawal_To_ReceiveTaskReceiveConsent_Art7_di" bpmnElement="Flow_TaskEnableEasyWithdrawal_To_ReceiveTaskReceiveConsent_Art7"><di:waypoint x="1580" y="300" /><di:waypoint x="1690" y="300" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveTaskReceiveConsent_To_TaskRecordEvidence_Art7_di" bpmnElement="Flow_ReceiveTaskReceiveConsent_To_TaskRecordEvidence_Art7"><di:waypoint x="1870" y="300" /><di:waypoint x="1980" y="300" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskRecordEvidence_To_GatewayWithdrawal_Art7_di" bpmnElement="Flow_TaskRecordEvidence_To_GatewayWithdrawal_Art7"><di:waypoint x="2190" y="300" /><di:waypoint x="2300" y="300" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayWithdrawal_To_ReceiveTaskReceiveWithdrawal_Art7_di" bpmnElement="Flow_GatewayWithdrawal_To_ReceiveTaskReceiveWithdrawal_Art7"><di:waypoint x="2325" y="275" /><di:waypoint x="2325" y="160" /><di:waypoint x="2470" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayWithdrawal_To_EndConsentMaintained_Art7_di" bpmnElement="Flow_GatewayWithdrawal_To_EndConsentMaintained_Art7"><di:waypoint x="2325" y="325" /><di:waypoint x="2325" y="420" /><di:waypoint x="2477" y="420" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveTaskReceiveWithdrawal_To_EndConsentWithdrawn_Art7_di" bpmnElement="Flow_ReceiveTaskReceiveWithdrawal_To_EndConsentWithdrawn_Art7"><di:waypoint x="2650" y="160" /><di:waypoint x="2750" y="160" /></bpmndi:BPMNEdge>
 
-      <bpmndi:BPMNEdge id="MessageFlow_PresentConsentRequest_Art7_di" bpmnElement="MessageFlow_PresentConsentRequest_Art7"><di:waypoint x="815" y="340" /><di:waypoint x="815" y="620" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="MessageFlow_InformWithdrawalRight_Art7_di" bpmnElement="MessageFlow_InformWithdrawalRight_Art7"><di:waypoint x="1235" y="340" /><di:waypoint x="1235" y="620" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="MessageFlow_GiveConsent_Art7_di" bpmnElement="MessageFlow_GiveConsent_Art7"><di:waypoint x="2110" y="620" /><di:waypoint x="2110" y="340" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="MessageFlow_WithdrawConsent_Art7_di" bpmnElement="MessageFlow_WithdrawConsent_Art7"><di:waypoint x="3080" y="620" /><di:waypoint x="3080" y="200" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_PresentConsentRequest_Art7_di" bpmnElement="MessageFlow_PresentConsentRequest_Art7"><di:waypoint x="830" y="340" /><di:waypoint x="830" y="620" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_InformWithdrawalRight_Art7_di" bpmnElement="MessageFlow_InformWithdrawalRight_Art7"><di:waypoint x="1145" y="340" /><di:waypoint x="1145" y="620" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_GiveConsent_Art7_di" bpmnElement="MessageFlow_GiveConsent_Art7"><di:waypoint x="1780" y="620" /><di:waypoint x="1780" y="340" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_WithdrawConsent_Art7_di" bpmnElement="MessageFlow_WithdrawConsent_Art7"><di:waypoint x="2560" y="620" /><di:waypoint x="2560" y="200" /></bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>

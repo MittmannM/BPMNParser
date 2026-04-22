@@ -8,7 +8,7 @@
 
   <bpmn:collaboration id="Collaboration_Art86_Reviewed">
     <bpmn:participant id="Participant_Authority_Art86"
-                      name="Public authority or body"
+                      name="Authority or body"
                       processRef="Process_Authority_Art86" />
     <bpmn:participant id="Participant_Requester_Art86"
                       name="Requester or member of the public" />
@@ -25,78 +25,74 @@
                 name="Disclosing personal data in official documents under Article 86"
                 isExecutable="false">
     <bpmn:documentation>
-      Manual BPMN conversion for GDPR Article 86 based on DAPRECO LegalRuleML
-      statements274. The XML encodes a permission to provide personal data that are
-      part of a held document. The BPMN models the operational path that best matches
-      the article text: receive an access request, identify the official document,
-      confirm that the holder acts in the public interest, reconcile public access
-      with data protection under applicable Union or Member State law, and disclose
-      the personal data only where that law allows it. The local XML uses a compressed
-      representation of the governing legal basis, so the reconciliation step is made
-      explicit here for clarity.
+      Manual BPMN conversion for GDPR Article 86 based on the real English legal text from
+      gdpr_articles/article_86.txt. The model shows disclosure of personal data in
+      official documents held by a public authority, public body, or private body for
+      a task carried out in the public interest, subject to the applicable Union or
+      Member State law that reconciles public access with the right to data protection.
     </bpmn:documentation>
 
     <bpmn:startEvent id="StartEvent_AssessAccess_Art86"
-                     name="Need to assess access to an official document">
+                     name="Need document access assessment">
       <bpmn:outgoing>Flow_Start_To_ReceiveAccessRequest_Art86</bpmn:outgoing>
     </bpmn:startEvent>
 
     <bpmn:receiveTask id="ReceiveTask_ReceiveAccessRequest_Art86"
-                      name="Receive a request for access to an official document">
+                      name="Receive access request">
       <bpmn:incoming>Flow_Start_To_ReceiveAccessRequest_Art86</bpmn:incoming>
       <bpmn:outgoing>Flow_ReceiveAccessRequest_To_IdentifyDocument_Art86</bpmn:outgoing>
     </bpmn:receiveTask>
 
     <bpmn:task id="Task_IdentifyDocumentAndPersonalData_Art86"
-               name="Identify the held official document and the personal data contained in it">
+               name="Identify document and personal data">
       <bpmn:incoming>Flow_ReceiveAccessRequest_To_IdentifyDocument_Art86</bpmn:incoming>
       <bpmn:outgoing>Flow_IdentifyDocument_To_GatewayPublicInterestHolder_Art86</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:exclusiveGateway id="Gateway_PublicInterestHolder_Art86"
-                           name="Is the document held by an authority or body for a task carried out in the public interest?">
+                           name="Is the document held for a public-interest task?">
       <bpmn:incoming>Flow_IdentifyDocument_To_GatewayPublicInterestHolder_Art86</bpmn:incoming>
       <bpmn:outgoing>Flow_GatewayPublicInterestHolder_To_TaskAssessLaw_Art86</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewayPublicInterestHolder_To_EndNoArt86Route_Art86</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
     <bpmn:task id="Task_AssessApplicableAccessLaw_Art86"
-               name="Assess the applicable Union or Member State access law">
+               name="Check applicable access law">
       <bpmn:incoming>Flow_GatewayPublicInterestHolder_To_TaskAssessLaw_Art86</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskAssessLaw_To_TaskReconcileAccessAndProtection_Art86</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_ReconcileAccessAndProtection_Art86"
-               name="Reconcile public access to official documents with the right to data protection">
+               name="Reconcile access and data protection">
       <bpmn:incoming>Flow_TaskAssessLaw_To_TaskReconcileAccessAndProtection_Art86</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskReconcileAccessAndProtection_To_GatewayLawAllowsDisclosure_Art86</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:exclusiveGateway id="Gateway_LawAllowsDisclosure_Art86"
-                           name="Does the applicable law allow disclosure of the personal data in the document?">
+                           name="Does the applicable law allow disclosure?">
       <bpmn:incoming>Flow_TaskReconcileAccessAndProtection_To_GatewayLawAllowsDisclosure_Art86</bpmn:incoming>
       <bpmn:outgoing>Flow_GatewayLawAllowsDisclosure_To_SendTaskDisclose_Art86</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewayLawAllowsDisclosure_To_EndNoDisclosure_Art86</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
     <bpmn:sendTask id="SendTask_DisclosePersonalData_Art86"
-                   name="Disclose the personal data from the official document">
+                   name="Disclose personal data">
       <bpmn:incoming>Flow_GatewayLawAllowsDisclosure_To_SendTaskDisclose_Art86</bpmn:incoming>
       <bpmn:outgoing>Flow_SendTaskDisclose_To_EndDisclosureCompleted_Art86</bpmn:outgoing>
     </bpmn:sendTask>
 
     <bpmn:endEvent id="EndEvent_DisclosureCompleted_Art86"
-                   name="Article 86 disclosure completed">
+                   name="Disclosure completed">
       <bpmn:incoming>Flow_SendTaskDisclose_To_EndDisclosureCompleted_Art86</bpmn:incoming>
     </bpmn:endEvent>
 
     <bpmn:endEvent id="EndEvent_NoDisclosure_Art86"
-                   name="Disclosure is not permitted under the applicable law">
+                   name="Disclosure not permitted">
       <bpmn:incoming>Flow_GatewayLawAllowsDisclosure_To_EndNoDisclosure_Art86</bpmn:incoming>
     </bpmn:endEvent>
 
     <bpmn:endEvent id="EndEvent_NoArt86Route_Art86"
-                   name="No Article 86 disclosure route is available">
+                   name="No Article 86 route available">
       <bpmn:incoming>Flow_GatewayPublicInterestHolder_To_EndNoArt86Route_Art86</bpmn:incoming>
     </bpmn:endEvent>
 

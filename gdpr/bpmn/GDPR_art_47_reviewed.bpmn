@@ -8,7 +8,7 @@
 
   <bpmn:collaboration id="Collaboration_Art47_Reviewed">
     <bpmn:participant id="Participant_GroupMember_Art47"
-                      name="Group BCR participant"
+                      name="Group member"
                       processRef="Process_GroupMember_Art47" />
     <bpmn:participant id="Participant_SupervisoryAuthority_Art47"
                       name="Supervisory Authority" />
@@ -35,21 +35,21 @@
                 name="Establishing and operating binding corporate rules"
                 isExecutable="false">
     <bpmn:documentation>
-      Manual BPMN conversion for GDPR Article 47 based on DAPRECO LegalRuleML
-      statements251-252. The model groups the encoded BCR content requirements into
-      preparation blocks, then represents supervisory-authority approval, binding effect,
-      availability to data subjects, and the continuing governance duties around
-      compliance, complaints, change notifications, legal-conflict notifications,
-      training, and internal monitoring.
+      Manual BPMN conversion for GDPR Article 47 based on the real English legal text from
+      gdpr_articles/article_47.txt. The model shows the Article 47(1) approval conditions,
+      grouped Article 47(2)(a)-(n) minimum BCR content, approval under the Article 63
+      consistency mechanism, post-approval binding effect and information duties, and the
+      continuing governance duties around complaints, audits, change reporting,
+      supervisory-authority cooperation, legal-conflict reporting, and training.
     </bpmn:documentation>
 
     <bpmn:startEvent id="StartEvent_NeedBCRTransfer_Art47"
-                     name="Need to rely on binding corporate rules for an intra-group transfer">
+                     name="Need BCR transfer">
       <bpmn:outgoing>Flow_Start_To_DraftBCRPackage_Art47</bpmn:outgoing>
     </bpmn:startEvent>
 
     <bpmn:task id="Task_DraftBCRPackage_Art47"
-               name="Draft the binding corporate rules package">
+               name="Draft BCR package">
       <bpmn:incoming>Flow_Start_To_DraftBCRPackage_Art47</bpmn:incoming>
       <bpmn:incoming>Flow_ReviseBCRPackage_To_DraftBCRPackage_Art47</bpmn:incoming>
       <bpmn:outgoing>Flow_DraftBCRPackage_To_GatewayPrepareContent_Art47</bpmn:outgoing>
@@ -65,31 +65,31 @@
     </bpmn:parallelGateway>
 
     <bpmn:task id="Task_DescribeTransfers_Art47"
-               name="Describe the group, transfers, and protected data categories">
+               name="Describe group and transfers">
       <bpmn:incoming>Flow_GatewayPrepareContent_To_DescribeTransfers_Art47</bpmn:incoming>
       <bpmn:outgoing>Flow_DescribeTransfers_To_GatewayContentPrepared_Art47</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_DefineRightsAndContacts_Art47"
-               name="Define data protection principles, rights, and third-country contact details">
+               name="Define principles, rights, and notice">
       <bpmn:incoming>Flow_GatewayPrepareContent_To_DefineRightsAndContacts_Art47</bpmn:incoming>
       <bpmn:outgoing>Flow_DefineRightsAndContacts_To_GatewayContentPrepared_Art47</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_DefineAuditAndComplaints_Art47"
-               name="Define audit, complaint, liability, and redress arrangements">
+               name="Define liability, complaints, and redress">
       <bpmn:incoming>Flow_GatewayPrepareContent_To_DefineAuditAndComplaints_Art47</bpmn:incoming>
       <bpmn:outgoing>Flow_DefineAuditAndComplaints_To_GatewayContentPrepared_Art47</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_DefineNotificationsAndCooperation_Art47"
-               name="Define change-notification and supervisory-authority cooperation arrangements">
+               name="Define reporting and SA cooperation">
       <bpmn:incoming>Flow_GatewayPrepareContent_To_DefineNotificationsAndCooperation_Art47</bpmn:incoming>
       <bpmn:outgoing>Flow_DefineNotificationsAndCooperation_To_GatewayContentPrepared_Art47</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_PlanTrainingAndMonitoring_Art47"
-               name="Plan GDPR training and internal compliance monitoring">
+               name="Assign monitoring and training">
       <bpmn:incoming>Flow_GatewayPrepareContent_To_PlanTrainingAndMonitoring_Art47</bpmn:incoming>
       <bpmn:outgoing>Flow_PlanTrainingAndMonitoring_To_GatewayContentPrepared_Art47</bpmn:outgoing>
     </bpmn:task>
@@ -104,56 +104,56 @@
     </bpmn:parallelGateway>
 
     <bpmn:task id="Task_AssessBCRProtection_Art47"
-               name="Assess enforceable rights, effective remedies, and legal binding effect">
+               name="Check binding effect and rights">
       <bpmn:incoming>Flow_GatewayContentPrepared_To_AssessBCRProtection_Art47</bpmn:incoming>
       <bpmn:outgoing>Flow_AssessBCRProtection_To_GatewayAdequate_Art47</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:exclusiveGateway id="Gateway_BCRProtectionAdequate_Art47"
-                           name="Do the binding corporate rules provide enforceable rights and effective remedies?">
+                           name="Do the BCRs provide binding effect, rights, and remedies?">
       <bpmn:incoming>Flow_AssessBCRProtection_To_GatewayAdequate_Art47</bpmn:incoming>
       <bpmn:outgoing>Flow_GatewayAdequate_To_ReviseBCRPackage_Art47</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewayAdequate_To_SubmitBCRApproval_Art47</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
     <bpmn:task id="Task_ReviseBCRPackage_Art47"
-               name="Revise the binding corporate rules package">
+               name="Revise BCR package">
       <bpmn:incoming>Flow_GatewayAdequate_To_ReviseBCRPackage_Art47</bpmn:incoming>
       <bpmn:outgoing>Flow_ReviseBCRPackage_To_DraftBCRPackage_Art47</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:sendTask id="SendTask_SubmitBCRApproval_Art47"
-                   name="Submit the binding corporate rules for supervisory-authority approval">
+                   name="Submit BCRs for Article 63 approval">
       <bpmn:incoming>Flow_GatewayAdequate_To_SubmitBCRApproval_Art47</bpmn:incoming>
       <bpmn:outgoing>Flow_SubmitBCRApproval_To_ReceiveBCRApprovalDecision_Art47</bpmn:outgoing>
     </bpmn:sendTask>
 
     <bpmn:receiveTask id="ReceiveTask_ReceiveBCRApprovalDecision_Art47"
-                      name="Receive the approval decision for the binding corporate rules">
+                      name="Receive BCR approval">
       <bpmn:incoming>Flow_SubmitBCRApproval_To_ReceiveBCRApprovalDecision_Art47</bpmn:incoming>
       <bpmn:outgoing>Flow_ReceiveBCRApprovalDecision_To_GatewayApproved_Art47</bpmn:outgoing>
     </bpmn:receiveTask>
 
     <bpmn:exclusiveGateway id="Gateway_BCRApproved_Art47"
-                           name="Did the supervisory authority approve the binding corporate rules?">
+                           name="Did the supervisory authority approve the BCRs?">
       <bpmn:incoming>Flow_ReceiveBCRApprovalDecision_To_GatewayApproved_Art47</bpmn:incoming>
       <bpmn:outgoing>Flow_GatewayApproved_To_EndBCRNotApproved_Art47</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewayApproved_To_MakeBCRBinding_Art47</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
     <bpmn:endEvent id="EndEvent_BCRNotApproved_Art47"
-                   name="The binding corporate rules were not approved">
+                   name="BCR approval denied">
       <bpmn:incoming>Flow_GatewayApproved_To_EndBCRNotApproved_Art47</bpmn:incoming>
     </bpmn:endEvent>
 
     <bpmn:task id="Task_MakeBCRBinding_Art47"
-               name="Make the approved binding corporate rules binding on all relevant group members">
+               name="Bind all group members">
       <bpmn:incoming>Flow_GatewayApproved_To_MakeBCRBinding_Art47</bpmn:incoming>
       <bpmn:outgoing>Flow_MakeBCRBinding_To_MakeBCRAvailable_Art47</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:sendTask id="SendTask_MakeBCRAvailable_Art47"
-                   name="Make the binding corporate rules and complaint route available to data subjects">
+                   name="Provide BCR information">
       <bpmn:incoming>Flow_MakeBCRBinding_To_MakeBCRAvailable_Art47</bpmn:incoming>
       <bpmn:outgoing>Flow_MakeBCRAvailable_To_GatewayOperationalDuties_Art47</bpmn:outgoing>
     </bpmn:sendTask>
@@ -168,31 +168,31 @@
     </bpmn:parallelGateway>
 
     <bpmn:task id="Task_ImplementCompliance_Art47"
-               name="Implement GDPR compliance, safeguards, audits, and internal monitoring">
+               name="Run audits and corrective actions">
       <bpmn:incoming>Flow_GatewayOperationalDuties_To_ImplementCompliance_Art47</bpmn:incoming>
       <bpmn:outgoing>Flow_ImplementCompliance_To_GatewayOperationalDutiesCompleted_Art47</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_HandleComplaints_Art47"
-               name="Handle complaints and ensure liability and redress">
+               name="Handle BCR complaints">
       <bpmn:incoming>Flow_GatewayOperationalDuties_To_HandleComplaints_Art47</bpmn:incoming>
       <bpmn:outgoing>Flow_HandleComplaints_To_GatewayOperationalDutiesCompleted_Art47</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:sendTask id="SendTask_NotifyDataSubjectsAboutChanges_Art47"
-                   name="Notify data subjects about relevant changes to the binding corporate rules">
+                   name="Notify data subjects of BCR changes">
       <bpmn:incoming>Flow_GatewayOperationalDuties_To_NotifyDataSubjectsAboutChanges_Art47</bpmn:incoming>
       <bpmn:outgoing>Flow_NotifyDataSubjectsAboutChanges_To_GatewayOperationalDutiesCompleted_Art47</bpmn:outgoing>
     </bpmn:sendTask>
 
     <bpmn:sendTask id="SendTask_NotifySupervisoryAuthority_Art47"
-                   name="Notify the supervisory authority about changes and conflicting legal requirements">
+                   name="Report changes and legal conflicts">
       <bpmn:incoming>Flow_GatewayOperationalDuties_To_NotifySupervisoryAuthority_Art47</bpmn:incoming>
       <bpmn:outgoing>Flow_NotifySupervisoryAuthority_To_GatewayOperationalDutiesCompleted_Art47</bpmn:outgoing>
     </bpmn:sendTask>
 
     <bpmn:task id="Task_ProvideTraining_Art47"
-               name="Provide GDPR training to personnel involved in the transfers">
+               name="Provide BCR training">
       <bpmn:incoming>Flow_GatewayOperationalDuties_To_ProvideTraining_Art47</bpmn:incoming>
       <bpmn:outgoing>Flow_ProvideTraining_To_GatewayOperationalDutiesCompleted_Art47</bpmn:outgoing>
     </bpmn:task>
@@ -207,7 +207,7 @@
     </bpmn:parallelGateway>
 
     <bpmn:endEvent id="EndEvent_GovernanceOperating_Art47"
-                   name="Approved binding corporate rules governance is in operation">
+                   name="BCR governance operating">
       <bpmn:incoming>Flow_GatewayOperationalDutiesCompleted_To_EndGovernanceOperating_Art47</bpmn:incoming>
     </bpmn:endEvent>
 

@@ -37,36 +37,35 @@
                 name="Assessing derogations for a transfer without Article 45 or 46 basis"
                 isExecutable="false">
     <bpmn:documentation>
-      Manual BPMN conversion for GDPR Article 49 based on DAPRECO LegalRuleML
-      statements254-263 and cross-checked against the current Article 49 text and
-      EDPB Guidelines 2/2018 on derogations of Article 49. The model represents the
-      exceptional nature of Article 49: first verify that no Article 45 or 46 tool is
-      available, then assess the specific derogation routes in Article 49(1), the
-      additional public-register limitation in Article 49(2), the exclusion of points
-      (a), (b), (c) and the fallback route for public authorities in Article 49(3), and
-      the information plus documentation duties for the compelling-legitimate-interests
-      route reflected in Article 49(1) second subparagraph and Article 49(6).
+      Manual BPMN conversion for GDPR Article 49 based on the real English legal text from
+      gdpr_articles/article_49.txt. The model reflects the exceptional nature of
+      Article 49: first rule out Article 45 and Article 46 transfer tools, then assess
+      the specific derogations in Article 49(1), the register limitation in Article 49(2),
+      the public-authority restriction in Article 49(3), the recognised-public-interest
+      and category-limit aspects in Article 49(4)-(5), and the information and
+      documentation duties for the compelling-legitimate-interests route under
+      Article 49(1) second subparagraph and Article 49(6).
     </bpmn:documentation>
 
     <bpmn:startEvent id="StartEvent_NeedExceptionalTransfer_Art49"
-                     name="Need to assess a transfer to a third country or international organisation">
+                     name="Need transfer">
       <bpmn:outgoing>Flow_Start_To_GatewayPrimaryTool_Art49</bpmn:outgoing>
     </bpmn:startEvent>
 
     <bpmn:exclusiveGateway id="Gateway_PrimaryTransferTool_Art49"
-                           name="Is an Article 45 adequacy decision or an Article 46 safeguard available?">
+                           name="Is an Article 45 or 46 transfer tool available?">
       <bpmn:incoming>Flow_Start_To_GatewayPrimaryTool_Art49</bpmn:incoming>
       <bpmn:outgoing>Flow_GatewayPrimaryTool_To_EndUsePrimaryTool_Art49</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewayPrimaryTool_To_GatewayPublicAuthority_Art49</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
     <bpmn:endEvent id="EndEvent_UsePrimaryTool_Art49"
-                   name="Use the Article 45 or 46 transfer route instead of Article 49">
+                   name="Use Article 45 or 46 route">
       <bpmn:incoming>Flow_GatewayPrimaryTool_To_EndUsePrimaryTool_Art49</bpmn:incoming>
     </bpmn:endEvent>
 
     <bpmn:exclusiveGateway id="Gateway_PublicAuthorityPowers_Art49"
-                           name="Is a public authority acting in the exercise of its public powers?">
+                           name="Is a public authority exercising public powers?">
       <bpmn:incoming>Flow_GatewayPrimaryTool_To_GatewayPublicAuthority_Art49</bpmn:incoming>
       <bpmn:outgoing>Flow_GatewayPublicAuthority_To_GatewayRestrictedDerogation_Art49</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewayPublicAuthority_To_GatewayFullDerogation_Art49</bpmn:outgoing>
@@ -97,7 +96,7 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:endEvent id="EndEvent_NoDerogation_Art49"
-                   name="No Article 49 derogation permits the transfer">
+                   name="No Article 49 derogation applies">
       <bpmn:incoming>Flow_GatewayFullDerogation_To_EndNoDerogation_Art49</bpmn:incoming>
       <bpmn:incoming>Flow_GatewayRestrictedDerogation_To_EndNoDerogation_Art49</bpmn:incoming>
       <bpmn:incoming>Flow_GatewayRegisterCompliant_To_EndNoDerogation_Art49</bpmn:incoming>
@@ -105,91 +104,91 @@
     </bpmn:endEvent>
 
     <bpmn:sendTask id="SendTask_InformDataSubjectAboutRisks_Art49"
-                   name="Inform the data subject about the transfer risks due to the absence of adequacy and safeguards">
+                   name="Inform data subject of transfer risks">
       <bpmn:incoming>Flow_GatewayFullDerogation_To_InformRisks_Art49</bpmn:incoming>
       <bpmn:outgoing>Flow_InformRisks_To_ReceiveExplicitConsent_Art49</bpmn:outgoing>
     </bpmn:sendTask>
 
     <bpmn:receiveTask id="ReceiveTask_ReceiveExplicitConsent_Art49"
-                      name="Receive the data subject's explicit consent to the proposed transfer">
+                      name="Receive explicit consent">
       <bpmn:incoming>Flow_InformRisks_To_ReceiveExplicitConsent_Art49</bpmn:incoming>
       <bpmn:outgoing>Flow_ReceiveExplicitConsent_To_GatewayTransferReady_Art49</bpmn:outgoing>
     </bpmn:receiveTask>
 
     <bpmn:task id="Task_VerifyDataSubjectContract_Art49"
-               name="Verify that the transfer is necessary for the data subject's contract or requested pre-contractual measures">
+               name="Check data-subject contract necessity">
       <bpmn:incoming>Flow_GatewayFullDerogation_To_VerifyDataSubjectContract_Art49</bpmn:incoming>
       <bpmn:outgoing>Flow_VerifyDataSubjectContract_To_GatewayTransferReady_Art49</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_VerifyDataSubjectInterestContract_Art49"
-               name="Verify that the transfer is necessary for a contract concluded in the data subject's interest">
+               name="Check contract in data subject's interest">
       <bpmn:incoming>Flow_GatewayFullDerogation_To_VerifyDataSubjectInterestContract_Art49</bpmn:incoming>
       <bpmn:outgoing>Flow_VerifyDataSubjectInterestContract_To_GatewayTransferReady_Art49</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_VerifyPublicInterest_Art49"
-               name="Verify that the transfer is necessary for important reasons of public interest">
+               name="Check recognised public interest and any transfer limits">
       <bpmn:incoming>Flow_GatewayFullDerogation_To_VerifyPublicInterest_Art49</bpmn:incoming>
       <bpmn:incoming>Flow_GatewayRestrictedDerogation_To_VerifyPublicInterest_Art49</bpmn:incoming>
       <bpmn:outgoing>Flow_VerifyPublicInterest_To_GatewayTransferReady_Art49</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_VerifyLegalClaims_Art49"
-               name="Verify that the transfer is necessary for the establishment, exercise, or defence of legal claims">
+               name="Check legal-claims necessity">
       <bpmn:incoming>Flow_GatewayFullDerogation_To_VerifyLegalClaims_Art49</bpmn:incoming>
       <bpmn:incoming>Flow_GatewayRestrictedDerogation_To_VerifyLegalClaims_Art49</bpmn:incoming>
       <bpmn:outgoing>Flow_VerifyLegalClaims_To_GatewayTransferReady_Art49</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_VerifyVitalInterests_Art49"
-               name="Verify that vital interests require the transfer and the data subject cannot give consent">
+               name="Check vital-interests necessity">
       <bpmn:incoming>Flow_GatewayFullDerogation_To_VerifyVitalInterests_Art49</bpmn:incoming>
       <bpmn:incoming>Flow_GatewayRestrictedDerogation_To_VerifyVitalInterests_Art49</bpmn:incoming>
       <bpmn:outgoing>Flow_VerifyVitalInterests_To_GatewayTransferReady_Art49</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_AssessRegisterTransfer_Art49"
-               name="Assess whether the transfer from the register is lawfully consultable and limited to the permitted extract">
+               name="Check register access and transfer scope">
       <bpmn:incoming>Flow_GatewayFullDerogation_To_AssessRegisterTransfer_Art49</bpmn:incoming>
       <bpmn:incoming>Flow_GatewayRestrictedDerogation_To_AssessRegisterTransfer_Art49</bpmn:incoming>
       <bpmn:outgoing>Flow_AssessRegisterTransfer_To_GatewayRegisterCompliant_Art49</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:exclusiveGateway id="Gateway_RegisterCompliant_Art49"
-                           name="Is the register transfer limited and, where required, requested by an entitled recipient?">
+                           name="Is the register transfer limited and lawfully requested?">
       <bpmn:incoming>Flow_AssessRegisterTransfer_To_GatewayRegisterCompliant_Art49</bpmn:incoming>
       <bpmn:outgoing>Flow_GatewayRegisterCompliant_To_EndNoDerogation_Art49</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewayRegisterCompliant_To_GatewayTransferReady_Art49</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
     <bpmn:task id="Task_AssessFallback_Art49"
-               name="Assess compelling legitimate interests, limited data subjects, non-repetitive use, and suitable safeguards">
+               name="Check fallback conditions and safeguards">
       <bpmn:incoming>Flow_GatewayFullDerogation_To_AssessFallback_Art49</bpmn:incoming>
       <bpmn:outgoing>Flow_AssessFallback_To_GatewayFallbackConditions_Art49</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:exclusiveGateway id="Gateway_FallbackConditions_Art49"
-                           name="Are all fallback conditions for compelling legitimate interests met?">
+                           name="Are all fallback conditions met?">
       <bpmn:incoming>Flow_AssessFallback_To_GatewayFallbackConditions_Art49</bpmn:incoming>
       <bpmn:outgoing>Flow_GatewayFallbackConditions_To_EndNoDerogation_Art49</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewayFallbackConditions_To_InformSupervisoryAuthority_Art49</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
     <bpmn:sendTask id="SendTask_InformSupervisoryAuthority_Art49"
-                   name="Inform the supervisory authority about the fallback transfer">
+                   name="Inform supervisory authority">
       <bpmn:incoming>Flow_GatewayFallbackConditions_To_InformSupervisoryAuthority_Art49</bpmn:incoming>
       <bpmn:outgoing>Flow_InformSupervisoryAuthority_To_InformDataSubjectAboutFallbackTransfer_Art49</bpmn:outgoing>
     </bpmn:sendTask>
 
     <bpmn:sendTask id="SendTask_InformDataSubjectAboutFallbackTransfer_Art49"
-                   name="Inform the data subject about the fallback transfer and the compelling legitimate interests pursued">
+                   name="Inform data subject of fallback transfer">
       <bpmn:incoming>Flow_InformSupervisoryAuthority_To_InformDataSubjectAboutFallbackTransfer_Art49</bpmn:incoming>
       <bpmn:outgoing>Flow_InformDataSubjectAboutFallbackTransfer_To_DocumentFallbackAssessment_Art49</bpmn:outgoing>
     </bpmn:sendTask>
 
     <bpmn:task id="Task_DocumentFallbackAssessment_Art49"
-               name="Document the assessment and suitable safeguards in the Article 30 records">
+               name="Document fallback assessment and safeguards">
       <bpmn:incoming>Flow_InformDataSubjectAboutFallbackTransfer_To_DocumentFallbackAssessment_Art49</bpmn:incoming>
       <bpmn:outgoing>Flow_DocumentFallbackAssessment_To_GatewayTransferReady_Art49</bpmn:outgoing>
     </bpmn:task>
@@ -207,13 +206,13 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:sendTask id="SendTask_TransferUnderDerogation_Art49"
-                   name="Transfer the personal data under the applicable Article 49 derogation">
+                   name="Transfer data under derogation">
       <bpmn:incoming>Flow_GatewayTransferReady_To_TransferUnderDerogation_Art49</bpmn:incoming>
       <bpmn:outgoing>Flow_TransferUnderDerogation_To_EndTransferCompleted_Art49</bpmn:outgoing>
     </bpmn:sendTask>
 
     <bpmn:endEvent id="EndEvent_TransferCompleted_Art49"
-                   name="Transfer completed under an Article 49 derogation">
+                   name="Transfer completed">
       <bpmn:incoming>Flow_TransferUnderDerogation_To_EndTransferCompleted_Art49</bpmn:incoming>
     </bpmn:endEvent>
 

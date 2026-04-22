@@ -7,28 +7,23 @@
                   targetNamespace="http://bpmn.io/schema/bpmn">
 
   <bpmn:process id="Process_Controller_Art10"
-                name="Assessing processing of criminal-conviction and offence data under Article 10"
+                name="Assess Article 10 processing"
                 isExecutable="false">
     <bpmn:documentation>
-      Manual BPMN conversion for GDPR Article 10 based on DAPRECO LegalRuleML
-      statements29. The local XML covers the Article 10 restriction that processing of
-      personal data relating to criminal convictions and offences or related security
-      measures may proceed only under official authority or when authorized by Union
-      or Member State law. It also covers the stricter register rule that a
-      comprehensive register may be kept only under official authority. The XML
-      serializes the protected subject matter through prOnto:Judicial and the register
-      branch through dapreco:Register plus public-body authorization, so the BPMN
-      transparently renders those structures as the official-authority and
-      comprehensive-register checks required by Article 10.
+      Manual BPMN conversion for GDPR Article 10 based on the real English legal text.
+      The model covers the Article 6(1) precondition, the control-by-official-
+      authority route, the Union-or-Member-State-law authorisation route with
+      appropriate safeguards, and the stricter rule that any comprehensive register of
+      criminal convictions may be kept only under official authority.
     </bpmn:documentation>
 
     <bpmn:startEvent id="StartEvent_AssessArticle10_Art10"
-                     name="Need to assess planned processing based on Article 6(1)">
+                     name="Need Article 10 assessment">
       <bpmn:outgoing>Flow_Start_To_TaskIdentifyArticle10Data_Art10</bpmn:outgoing>
     </bpmn:startEvent>
 
     <bpmn:task id="Task_IdentifyArticle10Data_Art10"
-               name="Identify whether the processing concerns criminal convictions, offences, related security measures, or a comprehensive criminal-convictions register">
+               name="Check Article 10 data or register">
       <bpmn:incoming>Flow_Start_To_TaskIdentifyArticle10Data_Art10</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskIdentifyArticle10Data_To_GatewayArticle10Applies_Art10</bpmn:outgoing>
     </bpmn:task>
@@ -41,7 +36,7 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:exclusiveGateway id="Gateway_ComprehensiveRegister_Art10"
-                           name="Does the processing involve a comprehensive register of criminal convictions?">
+                           name="Does the processing involve a comprehensive convictions register?">
       <bpmn:incoming>Flow_GatewayArticle10Applies_To_GatewayComprehensiveRegister_Art10</bpmn:incoming>
       <bpmn:outgoing>Flow_GatewayComprehensiveRegister_To_GatewayOfficialAuthorityRegister_Art10</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewayComprehensiveRegister_To_GatewayOfficialAuthorityGeneral_Art10</bpmn:outgoing>
@@ -62,7 +57,7 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:task id="Task_AssessAuthorization_Art10"
-               name="Assess whether Union or Member State law authorizes the processing and provides appropriate safeguards for the rights and freedoms of the data subject">
+               name="Check legal authorisation and safeguards">
       <bpmn:incoming>Flow_GatewayOfficialAuthorityGeneral_To_TaskAssessAuthorization_Art10</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskAssessAuthorization_To_GatewayAuthorizedByLaw_Art10</bpmn:outgoing>
     </bpmn:task>
@@ -75,32 +70,32 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:endEvent id="EndEvent_Article10NotTriggered_Art10"
-                   name="Article 10 does not restrict the planned processing">
+                   name="Article 10 not triggered">
       <bpmn:incoming>Flow_GatewayArticle10Applies_To_EndArticle10NotTriggered_Art10</bpmn:incoming>
     </bpmn:endEvent>
 
     <bpmn:endEvent id="EndEvent_RegisterAllowed_Art10"
-                   name="The comprehensive register may be kept under official authority">
+                   name="Register kept under official authority">
       <bpmn:incoming>Flow_GatewayOfficialAuthorityRegister_To_EndRegisterAllowed_Art10</bpmn:incoming>
     </bpmn:endEvent>
 
     <bpmn:endEvent id="EndEvent_RegisterProhibited_Art10"
-                   name="The comprehensive register may not be kept without official authority">
+                   name="Register not permitted">
       <bpmn:incoming>Flow_GatewayOfficialAuthorityRegister_To_EndRegisterProhibited_Art10</bpmn:incoming>
     </bpmn:endEvent>
 
     <bpmn:endEvent id="EndEvent_ProcessingUnderAuthority_Art10"
-                   name="The processing may proceed under official authority">
+                   name="Processing under official authority">
       <bpmn:incoming>Flow_GatewayOfficialAuthorityGeneral_To_EndProcessingUnderAuthority_Art10</bpmn:incoming>
     </bpmn:endEvent>
 
     <bpmn:endEvent id="EndEvent_ProcessingAuthorizedByLaw_Art10"
-                   name="The processing may proceed based on law with appropriate safeguards">
+                   name="Processing authorised by law">
       <bpmn:incoming>Flow_GatewayAuthorizedByLaw_To_EndProcessingAuthorizedByLaw_Art10</bpmn:incoming>
     </bpmn:endEvent>
 
     <bpmn:endEvent id="EndEvent_ProcessingProhibited_Art10"
-                   name="The processing may not proceed under Article 10">
+                   name="Processing not permitted">
       <bpmn:incoming>Flow_GatewayAuthorizedByLaw_To_EndProcessingProhibited_Art10</bpmn:incoming>
     </bpmn:endEvent>
 
