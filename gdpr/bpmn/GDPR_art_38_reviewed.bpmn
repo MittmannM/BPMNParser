@@ -29,31 +29,33 @@
                 name="Positioning and supporting the DPO"
                 isExecutable="false">
     <bpmn:documentation>
-      Manual BPMN conversion for GDPR Article 38 based on DAPRECO LegalRuleML statements205-210.
-      The model covers timely involvement of the DPO, support for the DPO's compliance tasks,
-      protection from instructions and task-related sanctions, direct reporting, data subject access,
+      Manual BPMN conversion for GDPR Article 38 based on the real English legal text
+      of Regulation (EU) 2016/679. The model covers timely involvement of the DPO in
+      all issues relating to personal-data protection, support through resources,
+      access, and maintenance of expert knowledge, protection from instructions and
+      task-related dismissal or penalties, direct reporting, data-subject contact,
       confidentiality, and conflict-of-interest checks for additional duties.
     </bpmn:documentation>
 
     <bpmn:startEvent id="StartEvent_DPODesignated_Art38"
-                     name="DPO designated for the processing context">
+                     name="Maintain DPO position">
       <bpmn:outgoing>Flow_Start_To_IdentifyIssue</bpmn:outgoing>
     </bpmn:startEvent>
 
     <bpmn:task id="Task_IdentifyIssue"
-               name="Identify an issue related to the protection of personal data">
+               name="Identify data-protection issue">
       <bpmn:incoming>Flow_Start_To_IdentifyIssue</bpmn:incoming>
       <bpmn:outgoing>Flow_IdentifyIssue_To_InvolveDPO</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:sendTask id="Task_InvolveDPO"
-                   name="Involve the DPO without delay">
+                   name="Involve DPO without delay">
       <bpmn:incoming>Flow_IdentifyIssue_To_InvolveDPO</bpmn:incoming>
       <bpmn:outgoing>Flow_InvolveDPO_To_ProvideSupport</bpmn:outgoing>
     </bpmn:sendTask>
 
     <bpmn:task id="Task_ProvideSupport"
-               name="Provide resources, access, and assistance for the DPO tasks">
+               name="Provide resources, access, and expertise">
       <bpmn:incoming>Flow_InvolveDPO_To_ProvideSupport</bpmn:incoming>
       <bpmn:outgoing>Flow_ProvideSupport_To_GatewayInstruction</bpmn:outgoing>
     </bpmn:task>
@@ -93,7 +95,7 @@
     </bpmn:task>
 
     <bpmn:task id="Task_EnableContact"
-               name="Maintain a direct contact channel for data subjects to reach the DPO">
+               name="Enable data-subject contact">
       <bpmn:incoming>Flow_EnsureReporting_To_EnableContact</bpmn:incoming>
       <bpmn:outgoing>Flow_EnableContact_To_GatewayOtherDuties</bpmn:outgoing>
     </bpmn:task>
@@ -196,55 +198,55 @@
   </bpmn:process>
 
   <bpmn:process id="Process_DPO_Art38"
-                name="DPO assistance and contact handling"
+                name="Handling DPO assistance and contact"
                 isExecutable="false">
     <bpmn:startEvent id="StartEvent_DPOIssuePath_Art38"
-                     name="DPO involvement path available">
+                     name="DPO issue path available">
       <bpmn:outgoing>Flow_DPOIssueStart_To_ReceiveInvolvementRequest</bpmn:outgoing>
     </bpmn:startEvent>
 
     <bpmn:receiveTask id="Task_ReceiveInvolvementRequest"
-                      name="Receive involvement in a personal-data-protection issue">
+                      name="Receive DPO issue">
       <bpmn:incoming>Flow_DPOIssueStart_To_ReceiveInvolvementRequest</bpmn:incoming>
       <bpmn:outgoing>Flow_ReceiveInvolvementRequest_To_AssistIssue</bpmn:outgoing>
     </bpmn:receiveTask>
 
     <bpmn:task id="Task_AssistIssue"
-               name="Assist on the personal-data-protection issue">
+               name="Handle DPO issue">
       <bpmn:incoming>Flow_ReceiveInvolvementRequest_To_AssistIssue</bpmn:incoming>
       <bpmn:outgoing>Flow_AssistIssue_To_ObserveConfidentialityIssue</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_ObserveConfidentialityIssue"
-               name="Observe secrecy or confidentiality while assisting on the issue">
+               name="Observe confidentiality">
       <bpmn:incoming>Flow_AssistIssue_To_ObserveConfidentialityIssue</bpmn:incoming>
       <bpmn:outgoing>Flow_ObserveConfidentialityIssue_To_EndIssuePath</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:endEvent id="EndEvent_DPOIssuePath_Art38"
-                   name="Issue support provided">
+                   name="DPO issue handled">
       <bpmn:incoming>Flow_ObserveConfidentialityIssue_To_EndIssuePath</bpmn:incoming>
     </bpmn:endEvent>
 
     <bpmn:startEvent id="StartEvent_DataSubjectPath_Art38"
-                     name="Data subject contact path available">
+                     name="Data-subject path available">
       <bpmn:outgoing>Flow_DataSubjectStart_To_ReceiveDataSubjectMatter</bpmn:outgoing>
     </bpmn:startEvent>
 
     <bpmn:receiveTask id="Task_ReceiveDataSubjectMatter"
-                      name="Receive a data subject matter about processing or rights">
+                      name="Receive data-subject matter">
       <bpmn:incoming>Flow_DataSubjectStart_To_ReceiveDataSubjectMatter</bpmn:incoming>
       <bpmn:outgoing>Flow_ReceiveDataSubjectMatter_To_AssistDataSubject</bpmn:outgoing>
     </bpmn:receiveTask>
 
     <bpmn:task id="Task_AssistDataSubject"
-               name="Assist on the processing or rights matter">
+               name="Handle rights matter">
       <bpmn:incoming>Flow_ReceiveDataSubjectMatter_To_AssistDataSubject</bpmn:incoming>
       <bpmn:outgoing>Flow_AssistDataSubject_To_ObserveConfidentialityRights</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_ObserveConfidentialityRights"
-               name="Observe secrecy or confidentiality while handling the rights matter">
+               name="Observe confidentiality">
       <bpmn:incoming>Flow_AssistDataSubject_To_ObserveConfidentialityRights</bpmn:incoming>
       <bpmn:outgoing>Flow_ObserveConfidentialityRights_To_EndDataSubjectPath</bpmn:outgoing>
     </bpmn:task>
@@ -331,7 +333,7 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Task_StopSanction_di"
                         bpmnElement="Task_StopSanction">
-        <dc:Bounds x="1310" y="60" width="220" height="80" />
+        <dc:Bounds x="1450" y="60" width="220" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Task_EnsureReporting_di"
                         bpmnElement="Task_EnsureReporting">
@@ -439,15 +441,15 @@
       <bpmndi:BPMNEdge id="Flow_GatewaySanction_To_StopSanction_di" bpmnElement="Flow_GatewaySanction_To_StopSanction">
         <di:waypoint x="1205" y="175" />
         <di:waypoint x="1205" y="100" />
-        <di:waypoint x="1310" y="100" />
+        <di:waypoint x="1450" y="100" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_GatewaySanction_To_EnsureReporting_di" bpmnElement="Flow_GatewaySanction_To_EnsureReporting">
         <di:waypoint x="1230" y="200" />
         <di:waypoint x="1310" y="200" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_StopSanction_To_EnsureReporting_di" bpmnElement="Flow_StopSanction_To_EnsureReporting">
-        <di:waypoint x="1420" y="140" />
-        <di:waypoint x="1420" y="160" />
+        <di:waypoint x="1560" y="140" />
+        <di:waypoint x="1560" y="160" />
         <di:waypoint x="1435" y="160" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_EnsureReporting_To_EnableContact_di" bpmnElement="Flow_EnsureReporting_To_EnableContact">

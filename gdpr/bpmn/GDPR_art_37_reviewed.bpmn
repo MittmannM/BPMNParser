@@ -12,11 +12,11 @@
     <bpmn:messageFlow id="MessageFlow_CommunicateDPOContactDetails" sourceRef="Task_CommunicateAuthority" targetRef="Participant_SupervisoryAuthority" />
   </bpmn:collaboration>
   <bpmn:process id="Process_Art37_Reviewed" name="Designation of the data protection officer" isExecutable="false">
-    <bpmn:documentation>Manual BPMN conversion for GDPR Article 37 based on DAPRECO LegalRuleML statements196-204. The model captures the three designation triggers, the judicial-capacity exception, the optional shared-DPO arrangement, the qualification requirement, and the publication/communication duty.</bpmn:documentation>
-    <bpmn:startEvent id="StartEvent_AssessDuty" name="Assess DPO designation duty">
+    <bpmn:documentation>Manual BPMN conversion for GDPR Article 37 based on the real English legal text of Regulation (EU) 2016/679. The model captures the three designation triggers, the judicial-capacity exception, the optional single-DPO arrangement for groups or public authorities where easily accessible, the qualification requirement, the staff-member or service-contract appointment path, and the publication plus supervisory-authority notification duty.</bpmn:documentation>
+    <bpmn:startEvent id="StartEvent_AssessDuty" name="Assess DPO duty">
       <bpmn:outgoing>Flow_Start_AssessPublic</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:task id="Task_AssessPublic" name="Assess whether the controller or processor is a public authority or body">
+    <bpmn:task id="Task_AssessPublic" name="Check public-authority status">
       <bpmn:incoming>Flow_Start_AssessPublic</bpmn:incoming>
       <bpmn:outgoing>Flow_AssessPublic_GatewayPublic</bpmn:outgoing>
     </bpmn:task>
@@ -25,7 +25,7 @@
       <bpmn:outgoing>Flow_GatewayPublic_TaskCourt</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewayPublic_TaskAssessMonitoring</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:task id="Task_CheckCourt" name="Check whether the authority acts in a judicial capacity">
+    <bpmn:task id="Task_CheckCourt" name="Check judicial-capacity exception">
       <bpmn:incoming>Flow_GatewayPublic_TaskCourt</bpmn:incoming>
       <bpmn:outgoing>Flow_CheckCourt_GatewayCourt</bpmn:outgoing>
     </bpmn:task>
@@ -34,7 +34,7 @@
       <bpmn:outgoing>Flow_GatewayCourt_EndNoDesignation</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewayCourt_TaskDesignate</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:task id="Task_AssessMonitoring" name="Assess whether core activities involve regular and systematic monitoring on a large scale">
+    <bpmn:task id="Task_AssessMonitoring" name="Check large-scale monitoring">
       <bpmn:incoming>Flow_GatewayPublic_TaskAssessMonitoring</bpmn:incoming>
       <bpmn:outgoing>Flow_AssessMonitoring_GatewayMonitoring</bpmn:outgoing>
     </bpmn:task>
@@ -43,7 +43,7 @@
       <bpmn:outgoing>Flow_GatewayMonitoring_TaskAssessLargeScale</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewayMonitoring_TaskDesignate</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:task id="Task_AssessLargeScale" name="Assess whether core activities involve large-scale special-category or criminal-data processing">
+    <bpmn:task id="Task_AssessLargeScale" name="Check large-scale sensitive/criminal-data processing">
       <bpmn:incoming>Flow_GatewayMonitoring_TaskAssessLargeScale</bpmn:incoming>
       <bpmn:outgoing>Flow_AssessLargeScale_GatewayLargeScale</bpmn:outgoing>
     </bpmn:task>
@@ -56,7 +56,7 @@
       <bpmn:incoming>Flow_GatewayCourt_EndNoDesignation</bpmn:incoming>
       <bpmn:incoming>Flow_GatewayLargeScale_EndNoDesignation</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:task id="Task_PrepareDesignation" name="Prepare the DPO designation arrangement">
+    <bpmn:task id="Task_PrepareDesignation" name="Prepare DPO designation">
       <bpmn:incoming>Flow_GatewayCourt_TaskDesignate</bpmn:incoming>
       <bpmn:incoming>Flow_GatewayMonitoring_TaskDesignate</bpmn:incoming>
       <bpmn:incoming>Flow_GatewayLargeScale_TaskDesignate</bpmn:incoming>
@@ -67,24 +67,24 @@
       <bpmn:outgoing>Flow_GatewayShared_TaskSharedArrangement</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewayShared_TaskSelectDPO</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:task id="Task_SharedArrangement" name="Arrange one DPO for several entities and ensure easy accessibility">
+    <bpmn:task id="Task_SharedArrangement" name="Set shared DPO arrangement">
       <bpmn:incoming>Flow_GatewayShared_TaskSharedArrangement</bpmn:incoming>
       <bpmn:outgoing>Flow_SharedArrangement_TaskSelectDPO</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:task id="Task_SelectDPO" name="Select a DPO with expert knowledge of data protection law and practices">
+    <bpmn:task id="Task_SelectDPO" name="Select qualified DPO">
       <bpmn:incoming>Flow_GatewayShared_TaskSelectDPO</bpmn:incoming>
       <bpmn:incoming>Flow_SharedArrangement_TaskSelectDPO</bpmn:incoming>
       <bpmn:outgoing>Flow_SelectDPO_TaskAppointDPO</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:task id="Task_AppointDPO" name="Appoint the selected DPO as staff member or external service provider">
+    <bpmn:task id="Task_AppointDPO" name="Appoint DPO">
       <bpmn:incoming>Flow_SelectDPO_TaskAppointDPO</bpmn:incoming>
       <bpmn:outgoing>Flow_AppointDPO_TaskPublishContactDetails</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:task id="Task_PublishContactDetails" name="Publish the DPO contact details">
+    <bpmn:task id="Task_PublishContactDetails" name="Publish DPO contact details">
       <bpmn:incoming>Flow_AppointDPO_TaskPublishContactDetails</bpmn:incoming>
       <bpmn:outgoing>Flow_PublishContactDetails_TaskCommunicateAuthority</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:sendTask id="Task_CommunicateAuthority" name="Communicate the DPO contact details to the supervisory authority">
+    <bpmn:sendTask id="Task_CommunicateAuthority" name="Notify supervisory authority">
       <bpmn:incoming>Flow_PublishContactDetails_TaskCommunicateAuthority</bpmn:incoming>
       <bpmn:outgoing>Flow_CommunicateAuthority_EndCompleted</bpmn:outgoing>
     </bpmn:sendTask>
