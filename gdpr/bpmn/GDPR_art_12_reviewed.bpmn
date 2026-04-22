@@ -49,32 +49,32 @@
   </bpmn:collaboration>
 
   <bpmn:process id="Process_Controller_Art12"
-                name="Applying Article 12 transparency and request-handling rules"
+                name="Apply Article 12 rules"
                 isExecutable="false">
     <bpmn:documentation>
-      Manual BPMN conversion for GDPR Article 12 based on DAPRECO LegalRuleML
-      statements32-38. The local XML models the Article 12(1) communication-quality
-      duties, writing-or-electronic default, oral-delivery exception where requested
-      and identity is proven, the Article 12(2) facilitation duty together with the
+      Manual BPMN conversion for GDPR Article 12 based on the real English legal
+      text. The model covers the Article 12(1) communication-quality duties, the
+      writing-or-electronic default, the oral-delivery exception where requested and
+      identity is proven, the Article 12(2) facilitation duty together with the
       Article 11(2) inability-to-identify exception, the Article 12(3) one-month
-      response rule and the possible extension with reasons, the Article 12(4) no-
-      action notice with reasons plus complaint and judicial-remedy information, the
-      Article 12(5) free-of-charge default with fee-or-refusal exception for
-      manifestly unfounded or excessive requests and the controller's burden to
-      demonstrate that, the Article 12(6) ability to request additional identity
-      information where reasonable doubts exist, and the Article 12(7) optional icons
-      plus machine-readable requirement for electronic icon presentation. The BPMN
-      therefore separates a general information path from a request-handling path and
-      keeps the Article 12 paragraph logic explicit.
+      response rule and the possible two-month extension with reasons, the Article
+      12(4) no-action notice with reasons plus complaint and judicial-remedy
+      information, the Article 12(5) free-of-charge default with fee-or-refusal
+      exception for manifestly unfounded or excessive requests and the controller's
+      burden to demonstrate that, the Article 12(6) ability to request additional
+      identity information where reasonable doubts exist, and the Article 12(7)
+      optional icons plus machine-readable requirement for electronic icon
+      presentation. Article 12(8) is treated as a Commission delegated-acts
+      background rule rather than as a separate controller workflow step.
     </bpmn:documentation>
 
     <bpmn:startEvent id="StartEvent_ProvideInformation_Art12"
-                     name="Need to provide GDPR information to the data subject">
+                     name="Need to provide information">
       <bpmn:outgoing>Flow_StartProvideInformation_To_TaskPrepareGeneralInformation_Art12</bpmn:outgoing>
     </bpmn:startEvent>
 
     <bpmn:task id="Task_PrepareGeneralInformation_Art12"
-               name="Prepare clear and accessible information">
+               name="Prepare concise and clear information">
       <bpmn:incoming>Flow_StartProvideInformation_To_TaskPrepareGeneralInformation_Art12</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskPrepareGeneralInformation_To_GatewayOralInfo_Art12</bpmn:outgoing>
     </bpmn:task>
@@ -133,7 +133,7 @@
     </bpmn:task>
 
     <bpmn:sendTask id="SendTask_SendWrittenInformation_Art12"
-                   name="Send information in writing or other form">
+                   name="Send written information">
       <bpmn:incoming>Flow_GatewayUseIconsWritten_To_SendTaskSendWrittenInformation_Art12</bpmn:incoming>
       <bpmn:incoming>Flow_TaskAttachIconsWritten_To_SendTaskSendWrittenInformation_Art12</bpmn:incoming>
       <bpmn:outgoing>Flow_SendTaskSendWrittenInformation_To_EndInformationProvided_Art12</bpmn:outgoing>
@@ -223,7 +223,7 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:task id="Task_DemonstrateManifestlyUnfoundedExcessive_Art12"
-               name="Assess manifestly unfounded or excessive request">
+               name="Demonstrate unfounded or excessive request">
       <bpmn:incoming>Flow_GatewayUnfoundedExcessive_To_TaskDemonstrateManifestlyUnfoundedExcessive_Art12</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskDemonstrateManifestlyUnfoundedExcessive_To_GatewayFeeOrRefuse_Art12</bpmn:outgoing>
     </bpmn:task>
@@ -298,7 +298,7 @@
     </bpmn:task>
 
     <bpmn:task id="Task_PrepareRequestCommunication_Art12"
-               name="Prepare clear request communication">
+               name="Prepare request reply">
       <bpmn:incoming>Flow_TaskTakeActionWithinThreeMonths_To_TaskPrepareRequestCommunication_Art12</bpmn:incoming>
       <bpmn:incoming>Flow_TaskTakeActionWithinOneMonth_To_TaskPrepareRequestCommunication_Art12</bpmn:incoming>
       <bpmn:incoming>Flow_TaskPrepareNoActionNotice_To_TaskPrepareRequestCommunication_Art12</bpmn:incoming>
@@ -339,20 +339,20 @@
     </bpmn:sendTask>
 
     <bpmn:endEvent id="EndEvent_InformationProvided_Art12"
-                   name="Article 12 information has been provided">
+                   name="Information provided">
       <bpmn:incoming>Flow_SendTaskProvideInformationOrally_To_EndInformationProvided_Art12</bpmn:incoming>
       <bpmn:incoming>Flow_SendTaskSendElectronicInformation_To_EndInformationProvided_Art12</bpmn:incoming>
       <bpmn:incoming>Flow_SendTaskSendWrittenInformation_To_EndInformationProvided_Art12</bpmn:incoming>
     </bpmn:endEvent>
 
     <bpmn:endEvent id="EndEvent_UnableToIdentify_Art12"
-                   name="No action is taken because inability to identify was demonstrated under Article 11(2)">
+                   name="Unable to identify">
       <bpmn:incoming>Flow_GatewayInformUnableIdentify_To_EndUnableToIdentify_Art12</bpmn:incoming>
       <bpmn:incoming>Flow_SendTaskInformUnableToIdentify_To_EndUnableToIdentify_Art12</bpmn:incoming>
     </bpmn:endEvent>
 
     <bpmn:endEvent id="EndEvent_RequestHandled_Art12"
-                   name="The Article 12 request-handling path is completed">
+                   name="Request handled">
       <bpmn:incoming>Flow_SendTaskSendElectronicResponse_To_EndRequestHandled_Art12</bpmn:incoming>
       <bpmn:incoming>Flow_SendTaskProvideResponseOrally_To_EndRequestHandled_Art12</bpmn:incoming>
       <bpmn:incoming>Flow_SendTaskSendWrittenResponse_To_EndRequestHandled_Art12</bpmn:incoming>

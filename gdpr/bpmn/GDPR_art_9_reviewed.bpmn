@@ -7,29 +7,23 @@
                   targetNamespace="http://bpmn.io/schema/bpmn">
 
   <bpmn:process id="Process_Controller_Art9"
-                name="Assessing processing of special categories of personal data under Article 9"
+                name="Assess Article 9 processing"
                 isExecutable="false">
     <bpmn:documentation>
-      Manual BPMN conversion for GDPR Article 9 based on DAPRECO LegalRuleML
-      statements19-28. The local XML models the Article 9(1) prohibition for nine
-      special-category data types and the exception structure of Article 9(2)(a)-(i).
-      The BPMN therefore shows a default prohibition followed by explicit exception
-      routes for consent, employment and social-protection law, vital interests,
-      not-for-profit bodies, manifestly public data, legal claims, substantial public
-      interest, health or social care, and public health. Article 9(2)(j), Article
-      9(3), and a standalone Article 9(4) national-law branch are not separately
-      serialized in the local XML, even though one prohibition statement contains a
-      limited negative reference to rioOnto:exceptionCha2Art9Par4; they are therefore
-      not modeled as independent BPMN paths here.
+      Manual BPMN conversion for GDPR Article 9 based on the real English legal text.
+      The model covers the Article 9(1) prohibition, all Article 9(2)(a)-(j)
+      exception routes, the additional secrecy condition for the Article 9(2)(h)
+      route under Article 9(3), and the possible further Member State conditions for
+      genetic data, biometric data, or data concerning health under Article 9(4).
     </bpmn:documentation>
 
     <bpmn:startEvent id="StartEvent_AssessArticle9_Art9"
-                     name="Need to assess planned processing involving personal data">
+                     name="Need Article 9 assessment">
       <bpmn:outgoing>Flow_Start_To_TaskIdentifyData_Art9</bpmn:outgoing>
     </bpmn:startEvent>
 
     <bpmn:task id="Task_IdentifySpecialCategoryData_Art9"
-               name="Identify whether the processing involves personal data revealing a special category under Article 9(1)">
+               name="Check special-category data">
       <bpmn:incoming>Flow_Start_To_TaskIdentifyData_Art9</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskIdentifyData_To_GatewaySpecialCategory_Art9</bpmn:outgoing>
     </bpmn:task>
@@ -42,7 +36,7 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:task id="Task_ApplyDefaultProhibition_Art9"
-               name="Apply the default prohibition on processing the special-category data">
+               name="Apply default prohibition">
       <bpmn:incoming>Flow_GatewaySpecialCategory_To_TaskApplyDefaultProhibition_Art9</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskApplyDefaultProhibition_To_GatewayException_Art9</bpmn:outgoing>
     </bpmn:task>
@@ -59,62 +53,76 @@
       <bpmn:outgoing>Flow_GatewayException_To_TaskSubstantialPublicInterest_Art9</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewayException_To_TaskHealthOrSocialCare_Art9</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewayException_To_TaskPublicHealth_Art9</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayException_To_TaskResearchArchive_Art9</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewayException_To_EndProhibited_Art9</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
     <bpmn:task id="Task_ExplicitConsent_Art9"
-               name="Confirm explicit consent for one or more specified purposes">
+               name="Check explicit consent and legal bar">
       <bpmn:incoming>Flow_GatewayException_To_TaskExplicitConsent_Art9</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskExplicitConsent_To_GatewayExceptionJoin_Art9</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_EmploymentLaw_Art9"
-               name="Confirm necessity under employment, social security, or social protection law with appropriate safeguards">
+               name="Check employment or social-protection law basis">
       <bpmn:incoming>Flow_GatewayException_To_TaskEmploymentLaw_Art9</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskEmploymentLaw_To_GatewayExceptionJoin_Art9</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_VitalInterests_Art9"
-               name="Confirm necessity to protect vital interests where the data subject is physically or legally incapable of giving consent">
+               name="Check vital-interests necessity">
       <bpmn:incoming>Flow_GatewayException_To_TaskVitalInterests_Art9</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskVitalInterests_To_GatewayExceptionJoin_Art9</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_NotForProfitBody_Art9"
-               name="Confirm that a not-for-profit body processes the data with appropriate safeguards and without external disclosure absent consent">
+               name="Check not-for-profit body conditions">
       <bpmn:incoming>Flow_GatewayException_To_TaskNotForProfitBody_Art9</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskNotForProfitBody_To_GatewayExceptionJoin_Art9</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_ManifestlyPublic_Art9"
-               name="Confirm that the data subject manifestly made the personal data public">
+               name="Check manifestly public data">
       <bpmn:incoming>Flow_GatewayException_To_TaskManifestlyPublic_Art9</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskManifestlyPublic_To_GatewayExceptionJoin_Art9</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_LegalClaims_Art9"
-               name="Confirm necessity for legal claims or for courts acting in their judicial capacity">
+               name="Check legal-claims basis">
       <bpmn:incoming>Flow_GatewayException_To_TaskLegalClaims_Art9</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskLegalClaims_To_GatewayExceptionJoin_Art9</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_SubstantialPublicInterest_Art9"
-               name="Confirm substantial public interest under Union or Member State law with suitable and specific safeguards">
+               name="Check substantial public interest">
       <bpmn:incoming>Flow_GatewayException_To_TaskSubstantialPublicInterest_Art9</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskSubstantialPublicInterest_To_GatewayExceptionJoin_Art9</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_HealthOrSocialCare_Art9"
-               name="Confirm necessity for preventive or occupational medicine, medical diagnosis, health or social care, or health-system management under secrecy conditions">
+               name="Check health or social-care basis">
       <bpmn:incoming>Flow_GatewayException_To_TaskHealthOrSocialCare_Art9</bpmn:incoming>
-      <bpmn:outgoing>Flow_TaskHealthOrSocialCare_To_GatewayExceptionJoin_Art9</bpmn:outgoing>
+      <bpmn:outgoing>Flow_TaskHealthOrSocialCare_To_GatewayHealthSecrecy_Art9</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_PublicHealth_Art9"
-               name="Confirm public-health necessity with suitable and specific safeguards including professional secrecy where required">
+               name="Check public-health basis">
       <bpmn:incoming>Flow_GatewayException_To_TaskPublicHealth_Art9</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskPublicHealth_To_GatewayExceptionJoin_Art9</bpmn:outgoing>
     </bpmn:task>
+
+    <bpmn:task id="Task_ResearchArchive_Art9"
+               name="Check Article 89(1) research or archiving basis">
+      <bpmn:incoming>Flow_GatewayException_To_TaskResearchArchive_Art9</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskResearchArchive_To_GatewayExceptionJoin_Art9</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_HealthSecrecy_Art9"
+                           name="Is the processing by or under responsibility of a secrecy-bound professional?">
+      <bpmn:incoming>Flow_TaskHealthOrSocialCare_To_GatewayHealthSecrecy_Art9</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayHealthSecrecy_To_GatewayExceptionJoin_Art9</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayHealthSecrecy_To_EndProhibited_Art9</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
 
     <bpmn:exclusiveGateway id="Gateway_ExceptionJoin_Art9">
       <bpmn:incoming>Flow_TaskExplicitConsent_To_GatewayExceptionJoin_Art9</bpmn:incoming>
@@ -124,23 +132,39 @@
       <bpmn:incoming>Flow_TaskManifestlyPublic_To_GatewayExceptionJoin_Art9</bpmn:incoming>
       <bpmn:incoming>Flow_TaskLegalClaims_To_GatewayExceptionJoin_Art9</bpmn:incoming>
       <bpmn:incoming>Flow_TaskSubstantialPublicInterest_To_GatewayExceptionJoin_Art9</bpmn:incoming>
-      <bpmn:incoming>Flow_TaskHealthOrSocialCare_To_GatewayExceptionJoin_Art9</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayHealthSecrecy_To_GatewayExceptionJoin_Art9</bpmn:incoming>
       <bpmn:incoming>Flow_TaskPublicHealth_To_GatewayExceptionJoin_Art9</bpmn:incoming>
-      <bpmn:outgoing>Flow_GatewayExceptionJoin_To_EndExceptionApplies_Art9</bpmn:outgoing>
+      <bpmn:incoming>Flow_TaskResearchArchive_To_GatewayExceptionJoin_Art9</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayExceptionJoin_To_TaskCheckNationalConditions_Art9</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_CheckNationalConditions_Art9"
+               name="Check added national conditions if applicable">
+      <bpmn:incoming>Flow_GatewayExceptionJoin_To_TaskCheckNationalConditions_Art9</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskCheckNationalConditions_To_GatewayNationalConditionsMet_Art9</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_NationalConditionsMet_Art9"
+                           name="Are any added national conditions met?">
+      <bpmn:incoming>Flow_TaskCheckNationalConditions_To_GatewayNationalConditionsMet_Art9</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayNationalConditionsMet_To_EndExceptionApplies_Art9</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayNationalConditionsMet_To_EndProhibited_Art9</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
     <bpmn:endEvent id="EndEvent_ExceptionApplies_Art9"
-                   name="Processing may proceed under an Article 9 exception">
-      <bpmn:incoming>Flow_GatewayExceptionJoin_To_EndExceptionApplies_Art9</bpmn:incoming>
+                   name="Exception conditions met">
+      <bpmn:incoming>Flow_GatewayNationalConditionsMet_To_EndExceptionApplies_Art9</bpmn:incoming>
     </bpmn:endEvent>
 
     <bpmn:endEvent id="EndEvent_Prohibited_Art9"
-                   name="Processing of the special-category data remains prohibited">
+                   name="Processing prohibited">
       <bpmn:incoming>Flow_GatewayException_To_EndProhibited_Art9</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayHealthSecrecy_To_EndProhibited_Art9</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayNationalConditionsMet_To_EndProhibited_Art9</bpmn:incoming>
     </bpmn:endEvent>
 
     <bpmn:endEvent id="EndEvent_Article9NotTriggered_Art9"
-                   name="Article 9 special-category prohibition does not apply">
+                   name="Article 9 not triggered">
       <bpmn:incoming>Flow_GatewaySpecialCategory_To_EndArticle9NotTriggered_Art9</bpmn:incoming>
     </bpmn:endEvent>
 
@@ -158,6 +182,7 @@
     <bpmn:sequenceFlow id="Flow_GatewayException_To_TaskSubstantialPublicInterest_Art9" name="Substantial public interest" sourceRef="Gateway_Exception_Art9" targetRef="Task_SubstantialPublicInterest_Art9" />
     <bpmn:sequenceFlow id="Flow_GatewayException_To_TaskHealthOrSocialCare_Art9" name="Health or social care" sourceRef="Gateway_Exception_Art9" targetRef="Task_HealthOrSocialCare_Art9" />
     <bpmn:sequenceFlow id="Flow_GatewayException_To_TaskPublicHealth_Art9" name="Public health" sourceRef="Gateway_Exception_Art9" targetRef="Task_PublicHealth_Art9" />
+    <bpmn:sequenceFlow id="Flow_GatewayException_To_TaskResearchArchive_Art9" name="Research, archiving, or statistics" sourceRef="Gateway_Exception_Art9" targetRef="Task_ResearchArchive_Art9" />
     <bpmn:sequenceFlow id="Flow_GatewayException_To_EndProhibited_Art9" name="No exception" sourceRef="Gateway_Exception_Art9" targetRef="EndEvent_Prohibited_Art9" />
     <bpmn:sequenceFlow id="Flow_TaskExplicitConsent_To_GatewayExceptionJoin_Art9" sourceRef="Task_ExplicitConsent_Art9" targetRef="Gateway_ExceptionJoin_Art9" />
     <bpmn:sequenceFlow id="Flow_TaskEmploymentLaw_To_GatewayExceptionJoin_Art9" sourceRef="Task_EmploymentLaw_Art9" targetRef="Gateway_ExceptionJoin_Art9" />
@@ -166,9 +191,15 @@
     <bpmn:sequenceFlow id="Flow_TaskManifestlyPublic_To_GatewayExceptionJoin_Art9" sourceRef="Task_ManifestlyPublic_Art9" targetRef="Gateway_ExceptionJoin_Art9" />
     <bpmn:sequenceFlow id="Flow_TaskLegalClaims_To_GatewayExceptionJoin_Art9" sourceRef="Task_LegalClaims_Art9" targetRef="Gateway_ExceptionJoin_Art9" />
     <bpmn:sequenceFlow id="Flow_TaskSubstantialPublicInterest_To_GatewayExceptionJoin_Art9" sourceRef="Task_SubstantialPublicInterest_Art9" targetRef="Gateway_ExceptionJoin_Art9" />
-    <bpmn:sequenceFlow id="Flow_TaskHealthOrSocialCare_To_GatewayExceptionJoin_Art9" sourceRef="Task_HealthOrSocialCare_Art9" targetRef="Gateway_ExceptionJoin_Art9" />
+    <bpmn:sequenceFlow id="Flow_TaskHealthOrSocialCare_To_GatewayHealthSecrecy_Art9" sourceRef="Task_HealthOrSocialCare_Art9" targetRef="Gateway_HealthSecrecy_Art9" />
+    <bpmn:sequenceFlow id="Flow_GatewayHealthSecrecy_To_GatewayExceptionJoin_Art9" name="Yes" sourceRef="Gateway_HealthSecrecy_Art9" targetRef="Gateway_ExceptionJoin_Art9" />
+    <bpmn:sequenceFlow id="Flow_GatewayHealthSecrecy_To_EndProhibited_Art9" name="No" sourceRef="Gateway_HealthSecrecy_Art9" targetRef="EndEvent_Prohibited_Art9" />
     <bpmn:sequenceFlow id="Flow_TaskPublicHealth_To_GatewayExceptionJoin_Art9" sourceRef="Task_PublicHealth_Art9" targetRef="Gateway_ExceptionJoin_Art9" />
-    <bpmn:sequenceFlow id="Flow_GatewayExceptionJoin_To_EndExceptionApplies_Art9" sourceRef="Gateway_ExceptionJoin_Art9" targetRef="EndEvent_ExceptionApplies_Art9" />
+    <bpmn:sequenceFlow id="Flow_TaskResearchArchive_To_GatewayExceptionJoin_Art9" sourceRef="Task_ResearchArchive_Art9" targetRef="Gateway_ExceptionJoin_Art9" />
+    <bpmn:sequenceFlow id="Flow_GatewayExceptionJoin_To_TaskCheckNationalConditions_Art9" sourceRef="Gateway_ExceptionJoin_Art9" targetRef="Task_CheckNationalConditions_Art9" />
+    <bpmn:sequenceFlow id="Flow_TaskCheckNationalConditions_To_GatewayNationalConditionsMet_Art9" sourceRef="Task_CheckNationalConditions_Art9" targetRef="Gateway_NationalConditionsMet_Art9" />
+    <bpmn:sequenceFlow id="Flow_GatewayNationalConditionsMet_To_EndExceptionApplies_Art9" name="Yes" sourceRef="Gateway_NationalConditionsMet_Art9" targetRef="EndEvent_ExceptionApplies_Art9" />
+    <bpmn:sequenceFlow id="Flow_GatewayNationalConditionsMet_To_EndProhibited_Art9" name="No" sourceRef="Gateway_NationalConditionsMet_Art9" targetRef="EndEvent_Prohibited_Art9" />
   </bpmn:process>
 
   <bpmndi:BPMNDiagram id="BPMNDiagram_Art9_Reviewed">
@@ -214,17 +245,29 @@
         <dc:Bounds x="1720" y="720" width="680" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Task_PublicHealth_Art9_di" bpmnElement="Task_PublicHealth_Art9">
-        <dc:Bounds x="1720" y="820" width="620" height="80" />
+        <dc:Bounds x="1720" y="820" width="340" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ResearchArchive_Art9_di" bpmnElement="Task_ResearchArchive_Art9">
+        <dc:Bounds x="1720" y="920" width="410" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_HealthSecrecy_Art9_di" bpmnElement="Gateway_HealthSecrecy_Art9" isMarkerVisible="true">
+        <dc:Bounds x="2460" y="735" width="50" height="50" />
       </bpmndi:BPMNShape>
 
       <bpmndi:BPMNShape id="Gateway_ExceptionJoin_Art9_di" bpmnElement="Gateway_ExceptionJoin_Art9" isMarkerVisible="true">
         <dc:Bounds x="2720" y="385" width="50" height="50" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CheckNationalConditions_Art9_di" bpmnElement="Task_CheckNationalConditions_Art9">
+        <dc:Bounds x="2890" y="370" width="350" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_NationalConditionsMet_Art9_di" bpmnElement="Gateway_NationalConditionsMet_Art9" isMarkerVisible="true">
+        <dc:Bounds x="3370" y="385" width="50" height="50" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="EndEvent_ExceptionApplies_Art9_di" bpmnElement="EndEvent_ExceptionApplies_Art9">
-        <dc:Bounds x="2930" y="392" width="36" height="36" />
+        <dc:Bounds x="3602" y="392" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="EndEvent_Prohibited_Art9_di" bpmnElement="EndEvent_Prohibited_Art9">
-        <dc:Bounds x="1762" y="962" width="36" height="36" />
+        <dc:Bounds x="3602" y="1092" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="EndEvent_Article9NotTriggered_Art9_di" bpmnElement="EndEvent_Article9NotTriggered_Art9">
         <dc:Bounds x="842" y="542" width="36" height="36" />
@@ -295,10 +338,15 @@
         <di:waypoint x="1495" y="860" />
         <di:waypoint x="1720" y="860" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayException_To_TaskResearchArchive_Art9_di" bpmnElement="Flow_GatewayException_To_TaskResearchArchive_Art9">
+        <di:waypoint x="1495" y="435" />
+        <di:waypoint x="1495" y="960" />
+        <di:waypoint x="1720" y="960" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_GatewayException_To_EndProhibited_Art9_di" bpmnElement="Flow_GatewayException_To_EndProhibited_Art9">
         <di:waypoint x="1495" y="435" />
-        <di:waypoint x="1495" y="980" />
-        <di:waypoint x="1762" y="980" />
+        <di:waypoint x="1495" y="1110" />
+        <di:waypoint x="3602" y="1110" />
       </bpmndi:BPMNEdge>
 
       <bpmndi:BPMNEdge id="Flow_TaskExplicitConsent_To_GatewayExceptionJoin_Art9_di" bpmnElement="Flow_TaskExplicitConsent_To_GatewayExceptionJoin_Art9">
@@ -336,19 +384,46 @@
         <di:waypoint x="2745" y="660" />
         <di:waypoint x="2745" y="435" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_TaskHealthOrSocialCare_To_GatewayExceptionJoin_Art9_di" bpmnElement="Flow_TaskHealthOrSocialCare_To_GatewayExceptionJoin_Art9">
+      <bpmndi:BPMNEdge id="Flow_TaskHealthOrSocialCare_To_GatewayHealthSecrecy_Art9_di" bpmnElement="Flow_TaskHealthOrSocialCare_To_GatewayHealthSecrecy_Art9">
         <di:waypoint x="2400" y="760" />
+        <di:waypoint x="2460" y="760" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayHealthSecrecy_To_GatewayExceptionJoin_Art9_di" bpmnElement="Flow_GatewayHealthSecrecy_To_GatewayExceptionJoin_Art9">
+        <di:waypoint x="2510" y="760" />
         <di:waypoint x="2745" y="760" />
         <di:waypoint x="2745" y="435" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayHealthSecrecy_To_EndProhibited_Art9_di" bpmnElement="Flow_GatewayHealthSecrecy_To_EndProhibited_Art9">
+        <di:waypoint x="2485" y="785" />
+        <di:waypoint x="2485" y="1110" />
+        <di:waypoint x="3602" y="1110" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_TaskPublicHealth_To_GatewayExceptionJoin_Art9_di" bpmnElement="Flow_TaskPublicHealth_To_GatewayExceptionJoin_Art9">
-        <di:waypoint x="2340" y="860" />
+        <di:waypoint x="2060" y="860" />
         <di:waypoint x="2745" y="860" />
         <di:waypoint x="2745" y="435" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayExceptionJoin_To_EndExceptionApplies_Art9_di" bpmnElement="Flow_GatewayExceptionJoin_To_EndExceptionApplies_Art9">
+      <bpmndi:BPMNEdge id="Flow_TaskResearchArchive_To_GatewayExceptionJoin_Art9_di" bpmnElement="Flow_TaskResearchArchive_To_GatewayExceptionJoin_Art9">
+        <di:waypoint x="2130" y="960" />
+        <di:waypoint x="2745" y="960" />
+        <di:waypoint x="2745" y="435" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExceptionJoin_To_TaskCheckNationalConditions_Art9_di" bpmnElement="Flow_GatewayExceptionJoin_To_TaskCheckNationalConditions_Art9">
         <di:waypoint x="2770" y="410" />
-        <di:waypoint x="2930" y="410" />
+        <di:waypoint x="2890" y="410" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskCheckNationalConditions_To_GatewayNationalConditionsMet_Art9_di" bpmnElement="Flow_TaskCheckNationalConditions_To_GatewayNationalConditionsMet_Art9">
+        <di:waypoint x="3240" y="410" />
+        <di:waypoint x="3370" y="410" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayNationalConditionsMet_To_EndExceptionApplies_Art9_di" bpmnElement="Flow_GatewayNationalConditionsMet_To_EndExceptionApplies_Art9">
+        <di:waypoint x="3420" y="410" />
+        <di:waypoint x="3602" y="410" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayNationalConditionsMet_To_EndProhibited_Art9_di" bpmnElement="Flow_GatewayNationalConditionsMet_To_EndProhibited_Art9">
+        <di:waypoint x="3395" y="435" />
+        <di:waypoint x="3395" y="1110" />
+        <di:waypoint x="3602" y="1110" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

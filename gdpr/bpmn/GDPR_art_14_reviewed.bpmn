@@ -13,25 +13,30 @@
     <bpmn:messageFlow id="MessageFlow_SendFurtherPurposeNotice_Art14" sourceRef="SendTask_SendFurtherPurposeNotice_Art14" targetRef="Participant_DataSubject_Art14" />
   </bpmn:collaboration>
 
-  <bpmn:process id="Process_Controller_Art14" name="Providing information where data are not obtained from the data subject" isExecutable="false">
+  <bpmn:process id="Process_Controller_Art14" name="Apply Article 14 duties" isExecutable="false">
     <bpmn:documentation>
-      Manual BPMN conversion for GDPR Article 14 based on DAPRECO LegalRuleML
-      statements52-71. The local XML models the Article 14 information duties for
-      indirectly obtained data, including controller and DPO details, purposes and
-      legal basis, categories of personal data, recipients, transfer information,
-      retention information, rights and complaint information, source information
-      including public-source status, automated decision-making information, the three
-      timing options in Article 14(3), the duty to inform before further processing
-      for another purpose, and the Article 14(5)(b)-(d) exception structure as
-      serialised in the local file.
+      Manual BPMN conversion for GDPR Article 14 based on the real English legal
+      text. The model covers the Article 14(1) identity/contact, DPO, purpose/legal-
+      basis, category, recipient, and transfer-information duties, the Article 14(2)
+      retention, legitimate-interest, rights, withdrawal, complaint, source, and
+      automated-decision information duties, the three timing alternatives from
+      Article 14(3), the further-purpose notice under Article 14(4), and the Article
+      14(5)(a)-(d) exception structure including protective measures and public
+      availability where relevant.
     </bpmn:documentation>
 
     <bpmn:startEvent id="StartEvent_ObtainData_Art14" name="Obtain personal data from a source other than the data subject">
-      <bpmn:outgoing>Flow_Start_To_GatewayExceptionB_Art14</bpmn:outgoing>
+      <bpmn:outgoing>Flow_Start_To_GatewayExceptionA_Art14</bpmn:outgoing>
     </bpmn:startEvent>
 
+    <bpmn:exclusiveGateway id="Gateway_ExceptionA_Art14" name="Does the data subject already have the information?">
+      <bpmn:incoming>Flow_Start_To_GatewayExceptionA_Art14</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayExceptionA_To_EndNoDirectNotice_Art14</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayExceptionA_To_GatewayExceptionB_Art14</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
     <bpmn:exclusiveGateway id="Gateway_ExceptionB_Art14" name="Would providing the information prove impossible or involve a disproportionate effort?">
-      <bpmn:incoming>Flow_Start_To_GatewayExceptionB_Art14</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayExceptionA_To_GatewayExceptionB_Art14</bpmn:incoming>
       <bpmn:outgoing>Flow_GatewayExceptionB_To_TaskImplementMeasuresEffort_Art14</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewayExceptionB_To_GatewayExceptionC_Art14</bpmn:outgoing>
     </bpmn:exclusiveGateway>
@@ -178,18 +183,21 @@
       <bpmn:outgoing>Flow_SendTaskSendFurtherPurposeNotice_To_EndArticle14Completed_Art14</bpmn:outgoing>
     </bpmn:sendTask>
 
-    <bpmn:endEvent id="EndEvent_NoDirectNotice_Art14" name="No direct Article 14 notice is sent because an Article 14(5) exception applies">
+    <bpmn:endEvent id="EndEvent_NoDirectNotice_Art14" name="No direct Article 14 notice needed">
+      <bpmn:incoming>Flow_GatewayExceptionA_To_EndNoDirectNotice_Art14</bpmn:incoming>
       <bpmn:incoming>Flow_TaskImplementMeasuresEffort_To_EndNoDirectNotice_Art14</bpmn:incoming>
       <bpmn:incoming>Flow_TaskImplementMeasuresLaw_To_EndNoDirectNotice_Art14</bpmn:incoming>
       <bpmn:incoming>Flow_GatewayExceptionD_To_EndNoDirectNotice_Art14</bpmn:incoming>
     </bpmn:endEvent>
 
-    <bpmn:endEvent id="EndEvent_Article14Completed_Art14" name="Article 14 information duties are completed">
+    <bpmn:endEvent id="EndEvent_Article14Completed_Art14" name="Article 14 duties completed">
       <bpmn:incoming>Flow_GatewayFurtherPurpose_To_EndArticle14Completed_Art14</bpmn:incoming>
       <bpmn:incoming>Flow_SendTaskSendFurtherPurposeNotice_To_EndArticle14Completed_Art14</bpmn:incoming>
     </bpmn:endEvent>
 
-    <bpmn:sequenceFlow id="Flow_Start_To_GatewayExceptionB_Art14" sourceRef="StartEvent_ObtainData_Art14" targetRef="Gateway_ExceptionB_Art14" />
+    <bpmn:sequenceFlow id="Flow_Start_To_GatewayExceptionA_Art14" sourceRef="StartEvent_ObtainData_Art14" targetRef="Gateway_ExceptionA_Art14" />
+    <bpmn:sequenceFlow id="Flow_GatewayExceptionA_To_EndNoDirectNotice_Art14" name="Yes" sourceRef="Gateway_ExceptionA_Art14" targetRef="EndEvent_NoDirectNotice_Art14" />
+    <bpmn:sequenceFlow id="Flow_GatewayExceptionA_To_GatewayExceptionB_Art14" name="No" sourceRef="Gateway_ExceptionA_Art14" targetRef="Gateway_ExceptionB_Art14" />
     <bpmn:sequenceFlow id="Flow_GatewayExceptionB_To_TaskImplementMeasuresEffort_Art14" name="Yes" sourceRef="Gateway_ExceptionB_Art14" targetRef="Task_ImplementMeasuresEffort_Art14" />
     <bpmn:sequenceFlow id="Flow_GatewayExceptionB_To_GatewayExceptionC_Art14" name="No" sourceRef="Gateway_ExceptionB_Art14" targetRef="Gateway_ExceptionC_Art14" />
     <bpmn:sequenceFlow id="Flow_TaskImplementMeasuresEffort_To_EndNoDirectNotice_Art14" sourceRef="Task_ImplementMeasuresEffort_Art14" targetRef="EndEvent_NoDirectNotice_Art14" />
@@ -235,11 +243,12 @@
       <bpmndi:BPMNShape id="Participant_DataSubject_Art14_di" bpmnElement="Participant_DataSubject_Art14" isHorizontal="true"><dc:Bounds x="60" y="980" width="6400" height="120" /></bpmndi:BPMNShape>
 
       <bpmndi:BPMNShape id="StartEvent_ObtainData_Art14_di" bpmnElement="StartEvent_ObtainData_Art14"><dc:Bounds x="120" y="452" width="36" height="36" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_ExceptionB_Art14_di" bpmnElement="Gateway_ExceptionB_Art14" isMarkerVisible="true"><dc:Bounds x="260" y="445" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ExceptionA_Art14_di" bpmnElement="Gateway_ExceptionA_Art14" isMarkerVisible="true"><dc:Bounds x="200" y="445" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ExceptionB_Art14_di" bpmnElement="Gateway_ExceptionB_Art14" isMarkerVisible="true"><dc:Bounds x="340" y="445" width="50" height="50" /></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Task_ImplementMeasuresEffort_Art14_di" bpmnElement="Task_ImplementMeasuresEffort_Art14"><dc:Bounds x="410" y="320" width="430" height="80" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_ExceptionC_Art14_di" bpmnElement="Gateway_ExceptionC_Art14" isMarkerVisible="true"><dc:Bounds x="410" y="445" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ExceptionC_Art14_di" bpmnElement="Gateway_ExceptionC_Art14" isMarkerVisible="true"><dc:Bounds x="490" y="445" width="50" height="50" /></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Task_ImplementMeasuresLaw_Art14_di" bpmnElement="Task_ImplementMeasuresLaw_Art14"><dc:Bounds x="570" y="560" width="410" height="80" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_ExceptionD_Art14_di" bpmnElement="Gateway_ExceptionD_Art14" isMarkerVisible="true"><dc:Bounds x="570" y="445" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ExceptionD_Art14_di" bpmnElement="Gateway_ExceptionD_Art14" isMarkerVisible="true"><dc:Bounds x="650" y="445" width="50" height="50" /></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Task_PrepareIdentity_Art14_di" bpmnElement="Task_PrepareIdentity_Art14"><dc:Bounds x="770" y="430" width="420" height="80" /></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Task_PrepareDPO_Art14_di" bpmnElement="Task_PrepareDPO_Art14"><dc:Bounds x="1290" y="430" width="330" height="80" /></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Task_PreparePurposeBasis_Art14_di" bpmnElement="Task_PreparePurposeBasis_Art14"><dc:Bounds x="1720" y="430" width="360" height="80" /></bpmndi:BPMNShape>
@@ -264,15 +273,17 @@
       <bpmndi:BPMNShape id="EndEvent_NoDirectNotice_Art14_di" bpmnElement="EndEvent_NoDirectNotice_Art14"><dc:Bounds x="1122" y="742" width="36" height="36" /></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="EndEvent_Article14Completed_Art14_di" bpmnElement="EndEvent_Article14Completed_Art14"><dc:Bounds x="6112" y="452" width="36" height="36" /></bpmndi:BPMNShape>
 
-      <bpmndi:BPMNEdge id="Flow_Start_To_GatewayExceptionB_Art14_di" bpmnElement="Flow_Start_To_GatewayExceptionB_Art14"><di:waypoint x="156" y="470" /><di:waypoint x="260" y="470" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayExceptionB_To_TaskImplementMeasuresEffort_Art14_di" bpmnElement="Flow_GatewayExceptionB_To_TaskImplementMeasuresEffort_Art14"><di:waypoint x="285" y="445" /><di:waypoint x="285" y="360" /><di:waypoint x="410" y="360" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayExceptionB_To_GatewayExceptionC_Art14_di" bpmnElement="Flow_GatewayExceptionB_To_GatewayExceptionC_Art14"><di:waypoint x="310" y="470" /><di:waypoint x="410" y="470" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Start_To_GatewayExceptionA_Art14_di" bpmnElement="Flow_Start_To_GatewayExceptionA_Art14"><di:waypoint x="156" y="470" /><di:waypoint x="200" y="470" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExceptionA_To_EndNoDirectNotice_Art14_di" bpmnElement="Flow_GatewayExceptionA_To_EndNoDirectNotice_Art14"><di:waypoint x="225" y="495" /><di:waypoint x="225" y="760" /><di:waypoint x="1122" y="760" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExceptionA_To_GatewayExceptionB_Art14_di" bpmnElement="Flow_GatewayExceptionA_To_GatewayExceptionB_Art14"><di:waypoint x="250" y="470" /><di:waypoint x="340" y="470" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExceptionB_To_TaskImplementMeasuresEffort_Art14_di" bpmnElement="Flow_GatewayExceptionB_To_TaskImplementMeasuresEffort_Art14"><di:waypoint x="365" y="445" /><di:waypoint x="365" y="360" /><di:waypoint x="410" y="360" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExceptionB_To_GatewayExceptionC_Art14_di" bpmnElement="Flow_GatewayExceptionB_To_GatewayExceptionC_Art14"><di:waypoint x="390" y="470" /><di:waypoint x="490" y="470" /></bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_TaskImplementMeasuresEffort_To_EndNoDirectNotice_Art14_di" bpmnElement="Flow_TaskImplementMeasuresEffort_To_EndNoDirectNotice_Art14"><di:waypoint x="840" y="360" /><di:waypoint x="910" y="360" /><di:waypoint x="910" y="760" /><di:waypoint x="1122" y="760" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayExceptionC_To_TaskImplementMeasuresLaw_Art14_di" bpmnElement="Flow_GatewayExceptionC_To_TaskImplementMeasuresLaw_Art14"><di:waypoint x="435" y="495" /><di:waypoint x="435" y="600" /><di:waypoint x="570" y="600" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayExceptionC_To_GatewayExceptionD_Art14_di" bpmnElement="Flow_GatewayExceptionC_To_GatewayExceptionD_Art14"><di:waypoint x="460" y="470" /><di:waypoint x="570" y="470" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExceptionC_To_TaskImplementMeasuresLaw_Art14_di" bpmnElement="Flow_GatewayExceptionC_To_TaskImplementMeasuresLaw_Art14"><di:waypoint x="515" y="495" /><di:waypoint x="515" y="600" /><di:waypoint x="570" y="600" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExceptionC_To_GatewayExceptionD_Art14_di" bpmnElement="Flow_GatewayExceptionC_To_GatewayExceptionD_Art14"><di:waypoint x="540" y="470" /><di:waypoint x="650" y="470" /></bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_TaskImplementMeasuresLaw_To_EndNoDirectNotice_Art14_di" bpmnElement="Flow_TaskImplementMeasuresLaw_To_EndNoDirectNotice_Art14"><di:waypoint x="980" y="600" /><di:waypoint x="1040" y="600" /><di:waypoint x="1040" y="760" /><di:waypoint x="1122" y="760" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayExceptionD_To_EndNoDirectNotice_Art14_di" bpmnElement="Flow_GatewayExceptionD_To_EndNoDirectNotice_Art14"><di:waypoint x="595" y="495" /><di:waypoint x="595" y="760" /><di:waypoint x="1122" y="760" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayExceptionD_To_TaskPrepareIdentity_Art14_di" bpmnElement="Flow_GatewayExceptionD_To_TaskPrepareIdentity_Art14"><di:waypoint x="620" y="470" /><di:waypoint x="770" y="470" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExceptionD_To_EndNoDirectNotice_Art14_di" bpmnElement="Flow_GatewayExceptionD_To_EndNoDirectNotice_Art14"><di:waypoint x="675" y="495" /><di:waypoint x="675" y="760" /><di:waypoint x="1122" y="760" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExceptionD_To_TaskPrepareIdentity_Art14_di" bpmnElement="Flow_GatewayExceptionD_To_TaskPrepareIdentity_Art14"><di:waypoint x="700" y="470" /><di:waypoint x="770" y="470" /></bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_TaskPrepareIdentity_To_TaskPrepareDPO_Art14_di" bpmnElement="Flow_TaskPrepareIdentity_To_TaskPrepareDPO_Art14"><di:waypoint x="1190" y="470" /><di:waypoint x="1290" y="470" /></bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_TaskPrepareDPO_To_TaskPreparePurposeBasis_Art14_di" bpmnElement="Flow_TaskPrepareDPO_To_TaskPreparePurposeBasis_Art14"><di:waypoint x="1620" y="470" /><di:waypoint x="1720" y="470" /></bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_TaskPreparePurposeBasis_To_GatewayLegitimateInterests_Art14_di" bpmnElement="Flow_TaskPreparePurposeBasis_To_GatewayLegitimateInterests_Art14"><di:waypoint x="2080" y="470" /><di:waypoint x="2200" y="470" /></bpmndi:BPMNEdge>

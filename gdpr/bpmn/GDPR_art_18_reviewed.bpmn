@@ -13,34 +13,28 @@
     <bpmn:messageFlow id="MessageFlow_InformBeforeLift_Art18" sourceRef="SendTask_InformBeforeLift_Art18" targetRef="Participant_DataSubject_Art18" />
   </bpmn:collaboration>
 
-  <bpmn:process id="Process_Controller_Art18" name="Handling the data subject's right to restriction of processing" isExecutable="false">
+  <bpmn:process id="Process_Controller_Art18" name="Apply Article 18 restriction right" isExecutable="false">
     <bpmn:documentation>
-      Manual BPMN conversion for GDPR Article 18 based on DAPRECO LegalRuleML
-      statements97-102. The local XML models four qualifying grounds for restriction,
-      the limited processing permission while restriction is in place, and the duty to
-      inform the data subject before restriction is lifted. Repeated Article 12(2) and
-      Article 11(2) filters are represented as one shared request-exception gateway.
-      The official GDPR text is used only to label and group the XML-grounded branches
-      transparently.
+      Manual BPMN conversion for GDPR Article 18 based on the real English legal
+      text in gdpr_articles. The model covers the four restriction grounds in
+      Article 18(1)(a)-(d), the limited-processing bases in Article 18(2), and
+      the duty in Article 18(3) to inform the data subject before the restriction
+      is lifted. Article-external XML prefilters are intentionally not part of
+      the main flow so that the BPMN stays anchored to the visible legal logic of
+      Article 18 itself.
     </bpmn:documentation>
 
-    <bpmn:startEvent id="StartEvent_RestrictionRequested_Art18" name="Data subject seeks restriction of processing">
+    <bpmn:startEvent id="StartEvent_RestrictionRequested_Art18" name="Need restriction assessment">
       <bpmn:outgoing>Flow_Start_To_ReceiveTaskReceiveRestrictionRequest_Art18</bpmn:outgoing>
     </bpmn:startEvent>
 
     <bpmn:receiveTask id="ReceiveTask_ReceiveRestrictionRequest_Art18" name="Receive restriction request">
       <bpmn:incoming>Flow_Start_To_ReceiveTaskReceiveRestrictionRequest_Art18</bpmn:incoming>
-      <bpmn:outgoing>Flow_ReceiveTaskReceiveRestrictionRequest_To_GatewayRequestExceptions_Art18</bpmn:outgoing>
+      <bpmn:outgoing>Flow_ReceiveTaskReceiveRestrictionRequest_To_GatewayRestrictionGround_Art18</bpmn:outgoing>
     </bpmn:receiveTask>
 
-    <bpmn:exclusiveGateway id="Gateway_RequestExceptions_Art18" name="Do Article 12(2) or Article 11(2) exceptions prevent handling the restriction request?">
-      <bpmn:incoming>Flow_ReceiveTaskReceiveRestrictionRequest_To_GatewayRequestExceptions_Art18</bpmn:incoming>
-      <bpmn:outgoing>Flow_GatewayRequestExceptions_To_EndRequestBlocked_Art18</bpmn:outgoing>
-      <bpmn:outgoing>Flow_GatewayRequestExceptions_To_GatewayRestrictionGround_Art18</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
-
     <bpmn:exclusiveGateway id="Gateway_RestrictionGround_Art18" name="Which Article 18(1) ground for restriction applies?">
-      <bpmn:incoming>Flow_GatewayRequestExceptions_To_GatewayRestrictionGround_Art18</bpmn:incoming>
+      <bpmn:incoming>Flow_ReceiveTaskReceiveRestrictionRequest_To_GatewayRestrictionGround_Art18</bpmn:incoming>
       <bpmn:outgoing>Flow_GatewayRestrictionGround_To_TaskGroundAccuracyContested_Art18</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewayRestrictionGround_To_TaskGroundUnlawfulInsteadOfErasure_Art18</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewayRestrictionGround_To_TaskGroundLegalClaims_Art18</bpmn:outgoing>
@@ -48,22 +42,22 @@
       <bpmn:outgoing>Flow_GatewayRestrictionGround_To_EndNoRestrictionGround_Art18</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
-    <bpmn:task id="Task_GroundAccuracyContested_Art18" name="Assess contested accuracy">
+    <bpmn:task id="Task_GroundAccuracyContested_Art18" name="Assess contested-accuracy ground">
       <bpmn:incoming>Flow_GatewayRestrictionGround_To_TaskGroundAccuracyContested_Art18</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskGroundAccuracyContested_To_GatewayJoinGrounds_Art18</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_GroundUnlawfulInsteadOfErasure_Art18" name="Assess unlawful processing with restriction request">
+    <bpmn:task id="Task_GroundUnlawfulInsteadOfErasure_Art18" name="Assess unlawful-processing ground">
       <bpmn:incoming>Flow_GatewayRestrictionGround_To_TaskGroundUnlawfulInsteadOfErasure_Art18</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskGroundUnlawfulInsteadOfErasure_To_GatewayJoinGrounds_Art18</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_GroundLegalClaims_Art18" name="Assess legal-claims need">
+    <bpmn:task id="Task_GroundLegalClaims_Art18" name="Assess legal-claims ground">
       <bpmn:incoming>Flow_GatewayRestrictionGround_To_TaskGroundLegalClaims_Art18</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskGroundLegalClaims_To_GatewayJoinGrounds_Art18</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_GroundPendingObjectionVerification_Art18" name="Assess pending Article 21 objection">
+    <bpmn:task id="Task_GroundPendingObjectionVerification_Art18" name="Assess pending-objection ground">
       <bpmn:incoming>Flow_GatewayRestrictionGround_To_TaskGroundPendingObjectionVerification_Art18</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskGroundPendingObjectionVerification_To_GatewayJoinGrounds_Art18</bpmn:outgoing>
     </bpmn:task>
@@ -81,7 +75,7 @@
       <bpmn:outgoing>Flow_TaskRestrictProcessing_To_GatewayFurtherProcessingNeeded_Art18</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:exclusiveGateway id="Gateway_FurtherProcessingNeeded_Art18" name="Is any processing beyond storage needed while the restriction remains in place?">
+    <bpmn:exclusiveGateway id="Gateway_FurtherProcessingNeeded_Art18" name="Is processing beyond storage needed?">
       <bpmn:incoming>Flow_TaskRestrictProcessing_To_GatewayFurtherProcessingNeeded_Art18</bpmn:incoming>
       <bpmn:outgoing>Flow_GatewayFurtherProcessingNeeded_To_GatewayAllowedProcessingBasis_Art18</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewayFurtherProcessingNeeded_To_GatewayLiftRestriction_Art18</bpmn:outgoing>
@@ -96,22 +90,22 @@
       <bpmn:outgoing>Flow_GatewayAllowedProcessingBasis_To_EndNoPermittedProcessing_Art18</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
-    <bpmn:task id="Task_ProcessByConsent_Art18" name="Process restricted data with consent">
+    <bpmn:task id="Task_ProcessByConsent_Art18" name="Process with data-subject consent">
       <bpmn:incoming>Flow_GatewayAllowedProcessingBasis_To_TaskProcessByConsent_Art18</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskProcessByConsent_To_GatewayLiftRestriction_Art18</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_ProcessForLegalClaims_Art18" name="Process restricted data for legal claims">
+    <bpmn:task id="Task_ProcessForLegalClaims_Art18" name="Process for legal claims">
       <bpmn:incoming>Flow_GatewayAllowedProcessingBasis_To_TaskProcessForLegalClaims_Art18</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskProcessForLegalClaims_To_GatewayLiftRestriction_Art18</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_ProcessToProtectRights_Art18" name="Process restricted data to protect others' rights">
+    <bpmn:task id="Task_ProcessToProtectRights_Art18" name="Process to protect others' rights">
       <bpmn:incoming>Flow_GatewayAllowedProcessingBasis_To_TaskProcessToProtectRights_Art18</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskProcessToProtectRights_To_GatewayLiftRestriction_Art18</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_ProcessForPublicInterest_Art18" name="Process restricted data for important public interest">
+    <bpmn:task id="Task_ProcessForPublicInterest_Art18" name="Process for important public interest">
       <bpmn:incoming>Flow_GatewayAllowedProcessingBasis_To_TaskProcessForPublicInterest_Art18</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskProcessForPublicInterest_To_GatewayLiftRestriction_Art18</bpmn:outgoing>
     </bpmn:task>
@@ -131,30 +125,24 @@
       <bpmn:outgoing>Flow_SendTaskInformBeforeLift_To_EndRestrictionLifted_Art18</bpmn:outgoing>
     </bpmn:sendTask>
 
-    <bpmn:endEvent id="EndEvent_RequestBlocked_Art18" name="The restriction request is not handled because Article 12(2) or Article 11(2) blocks the request">
-      <bpmn:incoming>Flow_GatewayRequestExceptions_To_EndRequestBlocked_Art18</bpmn:incoming>
-    </bpmn:endEvent>
-
-    <bpmn:endEvent id="EndEvent_NoRestrictionGround_Art18" name="No Article 18(1) restriction ground is established">
+    <bpmn:endEvent id="EndEvent_NoRestrictionGround_Art18" name="No restriction ground established">
       <bpmn:incoming>Flow_GatewayRestrictionGround_To_EndNoRestrictionGround_Art18</bpmn:incoming>
     </bpmn:endEvent>
 
-    <bpmn:endEvent id="EndEvent_NoPermittedProcessing_Art18" name="No further processing beyond storage is permitted while the restriction remains in place">
+    <bpmn:endEvent id="EndEvent_NoPermittedProcessing_Art18" name="Only storage remains permitted">
       <bpmn:incoming>Flow_GatewayAllowedProcessingBasis_To_EndNoPermittedProcessing_Art18</bpmn:incoming>
     </bpmn:endEvent>
 
-    <bpmn:endEvent id="EndEvent_RestrictionRemains_Art18" name="The restriction of processing remains in place">
+    <bpmn:endEvent id="EndEvent_RestrictionRemains_Art18" name="Restriction remains in place">
       <bpmn:incoming>Flow_GatewayLiftRestriction_To_EndRestrictionRemains_Art18</bpmn:incoming>
     </bpmn:endEvent>
 
-    <bpmn:endEvent id="EndEvent_RestrictionLifted_Art18" name="The data subject has been informed before the restriction is lifted">
+    <bpmn:endEvent id="EndEvent_RestrictionLifted_Art18" name="Article 18 completed">
       <bpmn:incoming>Flow_SendTaskInformBeforeLift_To_EndRestrictionLifted_Art18</bpmn:incoming>
     </bpmn:endEvent>
 
     <bpmn:sequenceFlow id="Flow_Start_To_ReceiveTaskReceiveRestrictionRequest_Art18" sourceRef="StartEvent_RestrictionRequested_Art18" targetRef="ReceiveTask_ReceiveRestrictionRequest_Art18" />
-    <bpmn:sequenceFlow id="Flow_ReceiveTaskReceiveRestrictionRequest_To_GatewayRequestExceptions_Art18" sourceRef="ReceiveTask_ReceiveRestrictionRequest_Art18" targetRef="Gateway_RequestExceptions_Art18" />
-    <bpmn:sequenceFlow id="Flow_GatewayRequestExceptions_To_EndRequestBlocked_Art18" name="Yes" sourceRef="Gateway_RequestExceptions_Art18" targetRef="EndEvent_RequestBlocked_Art18" />
-    <bpmn:sequenceFlow id="Flow_GatewayRequestExceptions_To_GatewayRestrictionGround_Art18" name="No" sourceRef="Gateway_RequestExceptions_Art18" targetRef="Gateway_RestrictionGround_Art18" />
+    <bpmn:sequenceFlow id="Flow_ReceiveTaskReceiveRestrictionRequest_To_GatewayRestrictionGround_Art18" sourceRef="ReceiveTask_ReceiveRestrictionRequest_Art18" targetRef="Gateway_RestrictionGround_Art18" />
     <bpmn:sequenceFlow id="Flow_GatewayRestrictionGround_To_TaskGroundAccuracyContested_Art18" name="Accuracy is contested pending verification" sourceRef="Gateway_RestrictionGround_Art18" targetRef="Task_GroundAccuracyContested_Art18" />
     <bpmn:sequenceFlow id="Flow_GatewayRestrictionGround_To_TaskGroundUnlawfulInsteadOfErasure_Art18" name="Processing is unlawful and restriction is requested instead of erasure" sourceRef="Gateway_RestrictionGround_Art18" targetRef="Task_GroundUnlawfulInsteadOfErasure_Art18" />
     <bpmn:sequenceFlow id="Flow_GatewayRestrictionGround_To_TaskGroundLegalClaims_Art18" name="Controller no longer needs the data but the data subject needs them for legal claims" sourceRef="Gateway_RestrictionGround_Art18" targetRef="Task_GroundLegalClaims_Art18" />
@@ -196,9 +184,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="ReceiveTask_ReceiveRestrictionRequest_Art18_di" bpmnElement="ReceiveTask_ReceiveRestrictionRequest_Art18">
         <dc:Bounds x="240" y="430" width="300" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_RequestExceptions_Art18_di" bpmnElement="Gateway_RequestExceptions_Art18" isMarkerVisible="true">
-        <dc:Bounds x="640" y="445" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_RestrictionGround_Art18_di" bpmnElement="Gateway_RestrictionGround_Art18" isMarkerVisible="true">
         <dc:Bounds x="860" y="445" width="50" height="50" />
@@ -246,9 +231,6 @@
         <dc:Bounds x="4140" y="430" width="520" height="80" />
       </bpmndi:BPMNShape>
 
-      <bpmndi:BPMNShape id="EndEvent_RequestBlocked_Art18_di" bpmnElement="EndEvent_RequestBlocked_Art18">
-        <dc:Bounds x="717" y="717" width="36" height="36" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="EndEvent_NoRestrictionGround_Art18_di" bpmnElement="EndEvent_NoRestrictionGround_Art18">
         <dc:Bounds x="1037" y="717" width="36" height="36" />
       </bpmndi:BPMNShape>
@@ -266,17 +248,8 @@
         <di:waypoint x="156" y="470" />
         <di:waypoint x="240" y="470" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_ReceiveTaskReceiveRestrictionRequest_To_GatewayRequestExceptions_Art18_di" bpmnElement="Flow_ReceiveTaskReceiveRestrictionRequest_To_GatewayRequestExceptions_Art18">
+      <bpmndi:BPMNEdge id="Flow_ReceiveTaskReceiveRestrictionRequest_To_GatewayRestrictionGround_Art18_di" bpmnElement="Flow_ReceiveTaskReceiveRestrictionRequest_To_GatewayRestrictionGround_Art18">
         <di:waypoint x="540" y="470" />
-        <di:waypoint x="640" y="470" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayRequestExceptions_To_EndRequestBlocked_Art18_di" bpmnElement="Flow_GatewayRequestExceptions_To_EndRequestBlocked_Art18">
-        <di:waypoint x="665" y="495" />
-        <di:waypoint x="665" y="735" />
-        <di:waypoint x="717" y="735" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayRequestExceptions_To_GatewayRestrictionGround_Art18_di" bpmnElement="Flow_GatewayRequestExceptions_To_GatewayRestrictionGround_Art18">
-        <di:waypoint x="690" y="470" />
         <di:waypoint x="860" y="470" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_GatewayRestrictionGround_To_TaskGroundAccuracyContested_Art18_di" bpmnElement="Flow_GatewayRestrictionGround_To_TaskGroundAccuracyContested_Art18">

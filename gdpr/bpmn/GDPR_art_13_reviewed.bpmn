@@ -13,24 +13,33 @@
     <bpmn:messageFlow id="MessageFlow_SendFurtherPurposeNotice_Art13" sourceRef="SendTask_SendFurtherPurposeNotice_Art13" targetRef="Participant_DataSubject_Art13" />
   </bpmn:collaboration>
 
-  <bpmn:process id="Process_Controller_Art13" name="Providing information where data are collected from the data subject" isExecutable="false">
+  <bpmn:process id="Process_Controller_Art13" name="Apply Article 13 duties" isExecutable="false">
     <bpmn:documentation>
-      Manual BPMN conversion for GDPR Article 13 based on DAPRECO LegalRuleML
-      statements39-51. The local XML models the information duties that apply when
-      personal data are collected from the data subject, including controller and DPO
-      contact details, purposes and legal basis, legitimate interests where relevant,
-      recipients, third-country transfer information, retention period or criteria,
-      rights and complaint information, whether provision is statutory or contractual
-      plus the consequences of non-provision, automated decision-making information,
-      and the later duty to inform before further processing for another purpose.
+      Manual BPMN conversion for GDPR Article 13 based on the real English legal
+      text. The model covers the Article 13(1) identity/contact, DPO, purpose/legal-
+      basis, legitimate-interest, recipient, and transfer-information duties, the
+      Article 13(2) retention, rights, withdrawal, complaint, provision-requirement,
+      and automated-decision information duties, the Article 13(3) further-purpose
+      notice before later incompatible processing, and the Article 13(4) exception
+      where and insofar as the data subject already has the information.
     </bpmn:documentation>
 
     <bpmn:startEvent id="StartEvent_CollectData_Art13" name="Collect personal data from the data subject">
-      <bpmn:outgoing>Flow_Start_To_TaskPrepareIdentity_Art13</bpmn:outgoing>
+      <bpmn:outgoing>Flow_Start_To_GatewayAlreadyHasInfo_Art13</bpmn:outgoing>
     </bpmn:startEvent>
 
+    <bpmn:exclusiveGateway id="Gateway_AlreadyHasInfo_Art13" name="Does the data subject already have the information?">
+      <bpmn:incoming>Flow_Start_To_GatewayAlreadyHasInfo_Art13</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAlreadyHasInfo_To_EndNoNoticeNeeded_Art13</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAlreadyHasInfo_To_TaskPrepareIdentity_Art13</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_NoNoticeNeeded_Art13" name="No Article 13 notice needed">
+      <bpmn:incoming>Flow_GatewayAlreadyHasInfo_To_EndNoNoticeNeeded_Art13</bpmn:incoming>
+    </bpmn:endEvent>
+
     <bpmn:task id="Task_PrepareIdentity_Art13" name="Prepare identity and contact details">
-      <bpmn:incoming>Flow_Start_To_TaskPrepareIdentity_Art13</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayAlreadyHasInfo_To_TaskPrepareIdentity_Art13</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskPrepareIdentity_To_TaskPrepareDPO_Art13</bpmn:outgoing>
     </bpmn:task>
 
@@ -125,12 +134,14 @@
       <bpmn:outgoing>Flow_SendTaskSendFurtherPurposeNotice_To_EndInformationDutiesCompleted_Art13</bpmn:outgoing>
     </bpmn:sendTask>
 
-    <bpmn:endEvent id="EndEvent_InformationDutiesCompleted_Art13" name="Article 13 information duties are completed">
+    <bpmn:endEvent id="EndEvent_InformationDutiesCompleted_Art13" name="Article 13 duties completed">
       <bpmn:incoming>Flow_GatewayFurtherPurpose_To_EndInformationDutiesCompleted_Art13</bpmn:incoming>
       <bpmn:incoming>Flow_SendTaskSendFurtherPurposeNotice_To_EndInformationDutiesCompleted_Art13</bpmn:incoming>
     </bpmn:endEvent>
 
-    <bpmn:sequenceFlow id="Flow_Start_To_TaskPrepareIdentity_Art13" sourceRef="StartEvent_CollectData_Art13" targetRef="Task_PrepareIdentity_Art13" />
+    <bpmn:sequenceFlow id="Flow_Start_To_GatewayAlreadyHasInfo_Art13" sourceRef="StartEvent_CollectData_Art13" targetRef="Gateway_AlreadyHasInfo_Art13" />
+    <bpmn:sequenceFlow id="Flow_GatewayAlreadyHasInfo_To_EndNoNoticeNeeded_Art13" name="Yes" sourceRef="Gateway_AlreadyHasInfo_Art13" targetRef="EndEvent_NoNoticeNeeded_Art13" />
+    <bpmn:sequenceFlow id="Flow_GatewayAlreadyHasInfo_To_TaskPrepareIdentity_Art13" name="No" sourceRef="Gateway_AlreadyHasInfo_Art13" targetRef="Task_PrepareIdentity_Art13" />
     <bpmn:sequenceFlow id="Flow_TaskPrepareIdentity_To_TaskPrepareDPO_Art13" sourceRef="Task_PrepareIdentity_Art13" targetRef="Task_PrepareDPO_Art13" />
     <bpmn:sequenceFlow id="Flow_TaskPrepareDPO_To_TaskPreparePurposeBasis_Art13" sourceRef="Task_PrepareDPO_Art13" targetRef="Task_PreparePurposeBasis_Art13" />
     <bpmn:sequenceFlow id="Flow_TaskPreparePurposeBasis_To_GatewayLegitimateInterests_Art13" sourceRef="Task_PreparePurposeBasis_Art13" targetRef="Gateway_LegitimateInterests_Art13" />
@@ -162,6 +173,8 @@
       <bpmndi:BPMNShape id="Participant_DataSubject_Art13_di" bpmnElement="Participant_DataSubject_Art13" isHorizontal="true"><dc:Bounds x="60" y="860" width="5200" height="120" /></bpmndi:BPMNShape>
 
       <bpmndi:BPMNShape id="StartEvent_CollectData_Art13_di" bpmnElement="StartEvent_CollectData_Art13"><dc:Bounds x="120" y="382" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AlreadyHasInfo_Art13_di" bpmnElement="Gateway_AlreadyHasInfo_Art13" isMarkerVisible="true"><dc:Bounds x="175" y="375" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NoNoticeNeeded_Art13_di" bpmnElement="EndEvent_NoNoticeNeeded_Art13"><dc:Bounds x="182" y="542" width="36" height="36" /></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Task_PrepareIdentity_Art13_di" bpmnElement="Task_PrepareIdentity_Art13"><dc:Bounds x="240" y="360" width="420" height="80" /></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Task_PrepareDPO_Art13_di" bpmnElement="Task_PrepareDPO_Art13"><dc:Bounds x="760" y="360" width="330" height="80" /></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Task_PreparePurposeBasis_Art13_di" bpmnElement="Task_PreparePurposeBasis_Art13"><dc:Bounds x="1190" y="360" width="360" height="80" /></bpmndi:BPMNShape>
@@ -181,7 +194,9 @@
       <bpmndi:BPMNShape id="SendTask_SendFurtherPurposeNotice_Art13_di" bpmnElement="SendTask_SendFurtherPurposeNotice_Art13"><dc:Bounds x="4380" y="210" width="460" height="80" /></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="EndEvent_InformationDutiesCompleted_Art13_di" bpmnElement="EndEvent_InformationDutiesCompleted_Art13"><dc:Bounds x="4872" y="382" width="36" height="36" /></bpmndi:BPMNShape>
 
-      <bpmndi:BPMNEdge id="Flow_Start_To_TaskPrepareIdentity_Art13_di" bpmnElement="Flow_Start_To_TaskPrepareIdentity_Art13"><di:waypoint x="156" y="400" /><di:waypoint x="240" y="400" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Start_To_GatewayAlreadyHasInfo_Art13_di" bpmnElement="Flow_Start_To_GatewayAlreadyHasInfo_Art13"><di:waypoint x="156" y="400" /><di:waypoint x="175" y="400" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAlreadyHasInfo_To_EndNoNoticeNeeded_Art13_di" bpmnElement="Flow_GatewayAlreadyHasInfo_To_EndNoNoticeNeeded_Art13"><di:waypoint x="200" y="425" /><di:waypoint x="200" y="542" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAlreadyHasInfo_To_TaskPrepareIdentity_Art13_di" bpmnElement="Flow_GatewayAlreadyHasInfo_To_TaskPrepareIdentity_Art13"><di:waypoint x="225" y="400" /><di:waypoint x="240" y="400" /></bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_TaskPrepareIdentity_To_TaskPrepareDPO_Art13_di" bpmnElement="Flow_TaskPrepareIdentity_To_TaskPrepareDPO_Art13"><di:waypoint x="660" y="400" /><di:waypoint x="760" y="400" /></bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_TaskPrepareDPO_To_TaskPreparePurposeBasis_Art13_di" bpmnElement="Flow_TaskPrepareDPO_To_TaskPreparePurposeBasis_Art13"><di:waypoint x="1090" y="400" /><di:waypoint x="1190" y="400" /></bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_TaskPreparePurposeBasis_To_GatewayLegitimateInterests_Art13_di" bpmnElement="Flow_TaskPreparePurposeBasis_To_GatewayLegitimateInterests_Art13"><di:waypoint x="1550" y="400" /><di:waypoint x="1670" y="400" /></bpmndi:BPMNEdge>

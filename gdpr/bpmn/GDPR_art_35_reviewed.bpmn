@@ -24,21 +24,22 @@
   </bpmn:collaboration>
 
   <bpmn:process id="Process_Controller_Art35"
-                name="Carrying out a DPIA under Article 35"
+                name="Apply Article 35 DPIA duties"
                 isExecutable="false">
     <bpmn:documentation>
       Manual BPMN conversion for GDPR Article 35 based on the real English legal text
-      of Regulation (EU) 2016/679. The model captures the Article 35(10) exception,
-      published no-DPIA and DPIA list checks from Article 35(4)-(6), the Article 35(1)
-      and (3) high-risk assessment logic, DPO advice under Article 35(2), the minimum
+      of Regulation (EU) 2016/679. The model captures the Article 35(1) high-risk
+      trigger including the possibility of a single assessment for similar operations,
+      DPO advice under Article 35(2), the in-particular triggers in Article 35(3),
+      published no-DPIA and DPIA list checks from Article 35(4)-(6), the minimum
       content block in Article 35(7), approved-code consideration under Article 35(8),
-      optional views under Article 35(9), and the later review under Article 35(11).
-      The supervisory-authority consistency mechanism in Article 35(6) is reflected
-      through the use of published lists rather than as a separate controller workflow.
+      optional views under Article 35(9), the Article 35(10) exception, and the
+      later review requirement in Article 35(11). The published-list checks reflect
+      the controller-facing effect of the supervisory-authority list regime.
     </bpmn:documentation>
 
     <bpmn:startEvent id="StartEvent_ReviewProcessing_Art35"
-                     name="Review intended processing">
+                     name="Need DPIA assessment">
       <bpmn:outgoing>Flow_StartReviewProcessing_To_TaskAssessArt3510Exception_Art35</bpmn:outgoing>
     </bpmn:startEvent>
 
@@ -108,7 +109,7 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:task id="Task_InitiateDPIA_Art35"
-               name="Initiate DPIA">
+               name="Initiate single or individual DPIA">
       <bpmn:incoming>Flow_GatewayHighRiskLikely_To_TaskInitiateDPIA_Art35</bpmn:incoming>
       <bpmn:incoming>Flow_GatewayArticle353TriggerApplies_To_TaskInitiateDPIA_Art35</bpmn:incoming>
       <bpmn:incoming>Flow_GatewayDPIAListApplies_To_TaskInitiateDPIA_Art35</bpmn:incoming>
@@ -135,7 +136,7 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:task id="Task_TakeCodesIntoAccount_Art35"
-               name="Take Article 40 codes into account">
+               name="Consider Article 40 codes">
       <bpmn:incoming>Flow_GatewayDPOMerge_To_TaskTakeCodesIntoAccount_Art35</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskTakeCodesIntoAccount_To_GatewaySplitDPIAContents_Art35</bpmn:outgoing>
     </bpmn:task>
@@ -149,7 +150,7 @@
     </bpmn:parallelGateway>
 
     <bpmn:task id="Task_DescribeOperationsPurposes_Art35"
-               name="Describe operations and purposes">
+               name="Describe operations, purposes, and interests">
       <bpmn:incoming>Flow_GatewaySplitDPIAContents_To_TaskDescribeOperationsPurposes_Art35</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskDescribeOperationsPurposes_To_GatewayJoinDPIAContents_Art35</bpmn:outgoing>
     </bpmn:task>
@@ -181,14 +182,14 @@
     </bpmn:parallelGateway>
 
     <bpmn:exclusiveGateway id="Gateway_SeekViews_Art35"
-                           name="Seek data-subject views where appropriate?">
+                           name="Seek data-subject views if appropriate?">
       <bpmn:incoming>Flow_GatewayJoinDPIAContents_To_GatewaySeekViews_Art35</bpmn:incoming>
       <bpmn:outgoing>Flow_GatewaySeekViews_To_SendTaskSeekDataSubjectViews_Art35</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewaySeekViews_To_GatewayViewsMerge_Art35</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
     <bpmn:sendTask id="SendTask_SeekDataSubjectViews_Art35"
-                   name="Seek data-subject views">
+                   name="Seek views where appropriate">
       <bpmn:incoming>Flow_GatewaySeekViews_To_SendTaskSeekDataSubjectViews_Art35</bpmn:incoming>
       <bpmn:outgoing>Flow_SendTaskSeekDataSubjectViews_To_GatewayViewsMerge_Art35</bpmn:outgoing>
     </bpmn:sendTask>
@@ -206,27 +207,27 @@
     </bpmn:task>
 
     <bpmn:exclusiveGateway id="Gateway_ReviewNeeded_Art35"
-                           name="Is a later review necessary?">
+                           name="Has the processing risk changed?">
       <bpmn:incoming>Flow_TaskFinalizeDPIA_To_GatewayReviewNeeded_Art35</bpmn:incoming>
       <bpmn:outgoing>Flow_GatewayReviewNeeded_To_TaskReviewDPIA_Art35</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewayReviewNeeded_To_EndDPIAHandled_Art35</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
     <bpmn:task id="Task_ReviewDPIA_Art35"
-               name="Review DPIA">
+               name="Review DPIA after risk change">
       <bpmn:incoming>Flow_GatewayReviewNeeded_To_TaskReviewDPIA_Art35</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskReviewDPIA_To_EndDPIAHandled_Art35</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:endEvent id="EndEvent_NoDPIARequired_Art35"
-                   name="No DPIA required">
+                   name="No DPIA required under Article 35">
       <bpmn:incoming>Flow_GatewayArt3510Exception_To_EndNoDPIARequired_Art35</bpmn:incoming>
       <bpmn:incoming>Flow_GatewayNoDPIAListApplies_To_EndNoDPIARequired_Art35</bpmn:incoming>
       <bpmn:incoming>Flow_GatewayDPIAListApplies_To_EndNoDPIARequired_Art35</bpmn:incoming>
     </bpmn:endEvent>
 
     <bpmn:endEvent id="EndEvent_DPIAHandled_Art35"
-                   name="DPIA handled">
+                   name="Article 35 completed">
       <bpmn:incoming>Flow_GatewayReviewNeeded_To_EndDPIAHandled_Art35</bpmn:incoming>
       <bpmn:incoming>Flow_TaskReviewDPIA_To_EndDPIAHandled_Art35</bpmn:incoming>
     </bpmn:endEvent>

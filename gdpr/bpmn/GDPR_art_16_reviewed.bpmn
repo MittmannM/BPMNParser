@@ -12,17 +12,13 @@
     <bpmn:messageFlow id="MessageFlow_SendRectificationRequest_Art16" sourceRef="Participant_DataSubject_Art16" targetRef="ReceiveTask_ReceiveRectificationRequest_Art16" />
   </bpmn:collaboration>
 
-  <bpmn:process id="Process_Controller_Art16" name="Handling the data subject's right to rectification" isExecutable="false">
+  <bpmn:process id="Process_Controller_Art16" name="Apply Article 16 rectification right" isExecutable="false">
     <bpmn:documentation>
-      Manual BPMN conversion for GDPR Article 16 based on DAPRECO LegalRuleML
-      statements83Formula1-4. The local XML models two substantive request types:
-      rectification of inaccurate personal data and completion of incomplete personal
-      data, both under the same Article 12(2) and Article 11(2) exception filters and
-      both coupled to a non-delayed controller obligation. The BPMN therefore uses one
-      shared request intake, one shared exception gateway, and two alternative
-      fulfilment paths. No separate controller notice back to the data subject is added
-      because the local XML for Article 16 serializes the corrective action itself
-      rather than a distinct response duty.
+      Manual BPMN conversion for GDPR Article 16 based on the real English legal
+      text. The model covers the right to obtain without undue delay the
+      rectification of inaccurate personal data and the right to have incomplete
+      personal data completed, including by means of a supplementary statement, taking
+      into account the purposes of the processing.
     </bpmn:documentation>
 
     <bpmn:startEvent id="StartEvent_RectificationRequested_Art16" name="Data subject seeks rectification or completion of personal data">
@@ -31,44 +27,32 @@
 
     <bpmn:receiveTask id="ReceiveTask_ReceiveRectificationRequest_Art16" name="Receive rectification request">
       <bpmn:incoming>Flow_Start_To_ReceiveTaskReceiveRectificationRequest_Art16</bpmn:incoming>
-      <bpmn:outgoing>Flow_ReceiveTaskReceiveRectificationRequest_To_GatewayExceptions_Art16</bpmn:outgoing>
+      <bpmn:outgoing>Flow_ReceiveTaskReceiveRectificationRequest_To_GatewayRequestType_Art16</bpmn:outgoing>
     </bpmn:receiveTask>
 
-    <bpmn:exclusiveGateway id="Gateway_Exceptions_Art16" name="Do Article 12(2) or Article 11(2) exceptions prevent handling the request?">
-      <bpmn:incoming>Flow_ReceiveTaskReceiveRectificationRequest_To_GatewayExceptions_Art16</bpmn:incoming>
-      <bpmn:outgoing>Flow_GatewayExceptions_To_EndExceptionBlocksHandling_Art16</bpmn:outgoing>
-      <bpmn:outgoing>Flow_GatewayExceptions_To_GatewayRequestType_Art16</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
-
-    <bpmn:exclusiveGateway id="Gateway_RequestType_Art16" name="Does the request seek rectification of inaccurate personal data?">
-      <bpmn:incoming>Flow_GatewayExceptions_To_GatewayRequestType_Art16</bpmn:incoming>
+    <bpmn:exclusiveGateway id="Gateway_RequestType_Art16" name="Does the request seek rectification of inaccurate data?">
+      <bpmn:incoming>Flow_ReceiveTaskReceiveRectificationRequest_To_GatewayRequestType_Art16</bpmn:incoming>
       <bpmn:outgoing>Flow_GatewayRequestType_To_TaskRectifyData_Art16</bpmn:outgoing>
       <bpmn:outgoing>Flow_GatewayRequestType_To_TaskCompleteData_Art16</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
-    <bpmn:task id="Task_RectifyData_Art16" name="Rectify inaccurate data">
+    <bpmn:task id="Task_RectifyData_Art16" name="Rectify inaccurate data without undue delay">
       <bpmn:incoming>Flow_GatewayRequestType_To_TaskRectifyData_Art16</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskRectifyData_To_EndRectificationCompleted_Art16</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_CompleteData_Art16" name="Complete incomplete data">
+    <bpmn:task id="Task_CompleteData_Art16" name="Complete incomplete data with supplementary statement">
       <bpmn:incoming>Flow_GatewayRequestType_To_TaskCompleteData_Art16</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskCompleteData_To_EndRectificationCompleted_Art16</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:endEvent id="EndEvent_ExceptionBlocksHandling_Art16" name="The rectification request is not handled because Article 12(2) or Article 11(2) blocks the request">
-      <bpmn:incoming>Flow_GatewayExceptions_To_EndExceptionBlocksHandling_Art16</bpmn:incoming>
-    </bpmn:endEvent>
-
-    <bpmn:endEvent id="EndEvent_RectificationCompleted_Art16" name="Article 16 rectification handling is completed">
+    <bpmn:endEvent id="EndEvent_RectificationCompleted_Art16" name="Article 16 completed">
       <bpmn:incoming>Flow_TaskRectifyData_To_EndRectificationCompleted_Art16</bpmn:incoming>
       <bpmn:incoming>Flow_TaskCompleteData_To_EndRectificationCompleted_Art16</bpmn:incoming>
     </bpmn:endEvent>
 
     <bpmn:sequenceFlow id="Flow_Start_To_ReceiveTaskReceiveRectificationRequest_Art16" sourceRef="StartEvent_RectificationRequested_Art16" targetRef="ReceiveTask_ReceiveRectificationRequest_Art16" />
-    <bpmn:sequenceFlow id="Flow_ReceiveTaskReceiveRectificationRequest_To_GatewayExceptions_Art16" sourceRef="ReceiveTask_ReceiveRectificationRequest_Art16" targetRef="Gateway_Exceptions_Art16" />
-    <bpmn:sequenceFlow id="Flow_GatewayExceptions_To_EndExceptionBlocksHandling_Art16" name="Yes" sourceRef="Gateway_Exceptions_Art16" targetRef="EndEvent_ExceptionBlocksHandling_Art16" />
-    <bpmn:sequenceFlow id="Flow_GatewayExceptions_To_GatewayRequestType_Art16" name="No" sourceRef="Gateway_Exceptions_Art16" targetRef="Gateway_RequestType_Art16" />
+    <bpmn:sequenceFlow id="Flow_ReceiveTaskReceiveRectificationRequest_To_GatewayRequestType_Art16" sourceRef="ReceiveTask_ReceiveRectificationRequest_Art16" targetRef="Gateway_RequestType_Art16" />
     <bpmn:sequenceFlow id="Flow_GatewayRequestType_To_TaskRectifyData_Art16" name="Yes" sourceRef="Gateway_RequestType_Art16" targetRef="Task_RectifyData_Art16" />
     <bpmn:sequenceFlow id="Flow_GatewayRequestType_To_TaskCompleteData_Art16" name="No" sourceRef="Gateway_RequestType_Art16" targetRef="Task_CompleteData_Art16" />
     <bpmn:sequenceFlow id="Flow_TaskRectifyData_To_EndRectificationCompleted_Art16" sourceRef="Task_RectifyData_Art16" targetRef="EndEvent_RectificationCompleted_Art16" />
@@ -90,63 +74,48 @@
       <bpmndi:BPMNShape id="ReceiveTask_ReceiveRectificationRequest_Art16_di" bpmnElement="ReceiveTask_ReceiveRectificationRequest_Art16">
         <dc:Bounds x="240" y="240" width="300" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_Exceptions_Art16_di" bpmnElement="Gateway_Exceptions_Art16" isMarkerVisible="true">
-        <dc:Bounds x="640" y="255" width="50" height="50" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_RequestType_Art16_di" bpmnElement="Gateway_RequestType_Art16" isMarkerVisible="true">
-        <dc:Bounds x="860" y="255" width="50" height="50" />
+        <dc:Bounds x="680" y="255" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Task_RectifyData_Art16_di" bpmnElement="Task_RectifyData_Art16">
-        <dc:Bounds x="1080" y="160" width="430" height="80" />
+        <dc:Bounds x="900" y="160" width="430" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Task_CompleteData_Art16_di" bpmnElement="Task_CompleteData_Art16">
-        <dc:Bounds x="1080" y="350" width="640" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="EndEvent_ExceptionBlocksHandling_Art16_di" bpmnElement="EndEvent_ExceptionBlocksHandling_Art16">
-        <dc:Bounds x="717" y="392" width="36" height="36" />
+        <dc:Bounds x="900" y="350" width="640" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="EndEvent_RectificationCompleted_Art16_di" bpmnElement="EndEvent_RectificationCompleted_Art16">
-        <dc:Bounds x="1882" y="272" width="36" height="36" />
+        <dc:Bounds x="1702" y="272" width="36" height="36" />
       </bpmndi:BPMNShape>
 
       <bpmndi:BPMNEdge id="Flow_Start_To_ReceiveTaskReceiveRectificationRequest_Art16_di" bpmnElement="Flow_Start_To_ReceiveTaskReceiveRectificationRequest_Art16">
         <di:waypoint x="156" y="280" />
         <di:waypoint x="240" y="280" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_ReceiveTaskReceiveRectificationRequest_To_GatewayExceptions_Art16_di" bpmnElement="Flow_ReceiveTaskReceiveRectificationRequest_To_GatewayExceptions_Art16">
+      <bpmndi:BPMNEdge id="Flow_ReceiveTaskReceiveRectificationRequest_To_GatewayRequestType_Art16_di" bpmnElement="Flow_ReceiveTaskReceiveRectificationRequest_To_GatewayRequestType_Art16">
         <di:waypoint x="540" y="280" />
-        <di:waypoint x="640" y="280" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayExceptions_To_EndExceptionBlocksHandling_Art16_di" bpmnElement="Flow_GatewayExceptions_To_EndExceptionBlocksHandling_Art16">
-        <di:waypoint x="665" y="305" />
-        <di:waypoint x="665" y="410" />
-        <di:waypoint x="717" y="410" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_GatewayExceptions_To_GatewayRequestType_Art16_di" bpmnElement="Flow_GatewayExceptions_To_GatewayRequestType_Art16">
-        <di:waypoint x="690" y="280" />
-        <di:waypoint x="860" y="280" />
+        <di:waypoint x="680" y="280" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_GatewayRequestType_To_TaskRectifyData_Art16_di" bpmnElement="Flow_GatewayRequestType_To_TaskRectifyData_Art16">
-        <di:waypoint x="885" y="255" />
-        <di:waypoint x="885" y="200" />
-        <di:waypoint x="1080" y="200" />
+        <di:waypoint x="705" y="255" />
+        <di:waypoint x="705" y="200" />
+        <di:waypoint x="900" y="200" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_GatewayRequestType_To_TaskCompleteData_Art16_di" bpmnElement="Flow_GatewayRequestType_To_TaskCompleteData_Art16">
-        <di:waypoint x="885" y="305" />
-        <di:waypoint x="885" y="390" />
-        <di:waypoint x="1080" y="390" />
+        <di:waypoint x="705" y="305" />
+        <di:waypoint x="705" y="390" />
+        <di:waypoint x="900" y="390" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_TaskRectifyData_To_EndRectificationCompleted_Art16_di" bpmnElement="Flow_TaskRectifyData_To_EndRectificationCompleted_Art16">
-        <di:waypoint x="1510" y="200" />
-        <di:waypoint x="1620" y="200" />
-        <di:waypoint x="1620" y="290" />
-        <di:waypoint x="1882" y="290" />
+        <di:waypoint x="1330" y="200" />
+        <di:waypoint x="1440" y="200" />
+        <di:waypoint x="1440" y="290" />
+        <di:waypoint x="1702" y="290" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_TaskCompleteData_To_EndRectificationCompleted_Art16_di" bpmnElement="Flow_TaskCompleteData_To_EndRectificationCompleted_Art16">
-        <di:waypoint x="1720" y="390" />
-        <di:waypoint x="1780" y="390" />
-        <di:waypoint x="1780" y="290" />
-        <di:waypoint x="1882" y="290" />
+        <di:waypoint x="1540" y="390" />
+        <di:waypoint x="1600" y="390" />
+        <di:waypoint x="1600" y="290" />
+        <di:waypoint x="1702" y="290" />
       </bpmndi:BPMNEdge>
 
       <bpmndi:BPMNEdge id="MessageFlow_SendRectificationRequest_Art16_di" bpmnElement="MessageFlow_SendRectificationRequest_Art16">

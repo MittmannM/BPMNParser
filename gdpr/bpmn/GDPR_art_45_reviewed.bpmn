@@ -33,7 +33,7 @@
   </bpmn:collaboration>
 
   <bpmn:process id="Process_ControllerProcessor_Art45"
-                name="Transferring data on the basis of adequacy"
+                name="Apply Article 45 adequacy transfer"
                 isExecutable="false">
     <bpmn:documentation>
       Manual BPMN conversion for GDPR Article 45 based on the real English legal text
@@ -44,7 +44,7 @@
     </bpmn:documentation>
 
     <bpmn:startEvent id="StartEvent_NeedTransfer_Art45"
-                     name="Need third-country transfer">
+                     name="Need transfer assessment">
       <bpmn:outgoing>Flow_StartNeedTransfer_To_GatewayDestinationType_Art45</bpmn:outgoing>
     </bpmn:startEvent>
 
@@ -82,7 +82,7 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:receiveTask id="ReceiveTask_ConsultAdequacyList_Art45"
-                      name="Consult adequacy list">
+                      name="Check adequacy list">
       <bpmn:incoming>Flow_GatewayDestinationMerged_To_ReceiveConsultAdequacyList_Art45</bpmn:incoming>
       <bpmn:outgoing>Flow_ReceiveConsultAdequacyList_To_GatewayAdequacyInForce_Art45</bpmn:outgoing>
     </bpmn:receiveTask>
@@ -95,7 +95,7 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:endEvent id="EndEvent_UseArticles46To49_Art45"
-                   name="Assess Articles 46 to 49">
+                   name="Use Articles 46 to 49">
       <bpmn:incoming>Flow_GatewayAdequacyInForce_To_EndUseArticles46To49_Art45</bpmn:incoming>
     </bpmn:endEvent>
 
@@ -106,7 +106,7 @@
     </bpmn:sendTask>
 
     <bpmn:endEvent id="EndEvent_TransferCompleted_Art45"
-                   name="Adequacy transfer completed">
+                   name="Article 45 transfer completed">
       <bpmn:incoming>Flow_SendTransferData_To_EndTransferCompleted_Art45</bpmn:incoming>
     </bpmn:endEvent>
 
@@ -125,18 +125,20 @@
   </bpmn:process>
 
   <bpmn:process id="Process_Commission_Art45"
-                name="Adopting and maintaining adequacy decisions"
+                name="Manage adequacy decisions"
                 isExecutable="false">
     <bpmn:documentation>
-      This process captures the Article 45(2) adequacy factors, Article 45(3) adoption
-      and at-least-four-year review mechanism, Article 45(4) ongoing monitoring,
-      Article 45(5) repeal/amend/suspend path including urgent acts, Article 45(6)
-      consultations, Article 45(8) publication of the list, and the operational effect
-      that older Article 25(6) Directive decisions remain until changed.
+      This process captures the Article 45(2) adequacy factors, Article 45(3)
+      adoption and at-least-four-year review mechanism, Article 45(4) ongoing
+      monitoring, Article 45(5) repeal/amend/suspend path including urgent acts,
+      Article 45(6) consultations, and Article 45(8) publication of the adequacy
+      status list. Article 45(7) and Article 45(9) are treated as legal effects:
+      transfers may continue under Articles 46 to 49 where relevant, and older
+      Article 25(6) Directive decisions remain in force until changed.
     </bpmn:documentation>
 
     <bpmn:startEvent id="StartEvent_AssessDestination_Art45"
-                     name="Assess destination protection">
+                     name="Need adequacy assessment">
       <bpmn:outgoing>Flow_StartAssessDestination_To_GatewaySplitAdequacyFactors_Art45</bpmn:outgoing>
     </bpmn:startEvent>
 
@@ -191,7 +193,7 @@
     </bpmn:task>
 
     <bpmn:sendTask id="SendTask_PublishAdequacyList_Art45"
-                   name="Publish adequacy list">
+                   name="Publish adequacy-status list">
       <bpmn:incoming>Flow_TaskAdoptAdequacyDecision_To_SendPublishAdequacyList_Art45</bpmn:incoming>
       <bpmn:outgoing>Flow_SendPublishAdequacyList_To_EventFourYearReview_Art45</bpmn:outgoing>
     </bpmn:sendTask>
@@ -224,7 +226,7 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:task id="Task_ContinueMonitoring_Art45"
-               name="Continue adequacy monitoring">
+               name="Continue monitoring">
       <bpmn:incoming>Flow_GatewayAdequacyStillEnsured_To_TaskContinueMonitoring_Art45</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskContinueMonitoring_To_EventFourYearReview_Art45</bpmn:outgoing>
     </bpmn:task>
@@ -255,14 +257,14 @@
     </bpmn:task>
 
     <bpmn:sendTask id="SendTask_PublishDecisionChange_Art45"
-                   name="Publish decision change list">
+                   name="Publish adequacy-status change">
       <bpmn:incoming>Flow_TaskAdoptOrdinaryDecisionChange_To_SendPublishDecisionChange_Art45</bpmn:incoming>
       <bpmn:incoming>Flow_TaskAdoptUrgentDecisionChange_To_SendPublishDecisionChange_Art45</bpmn:incoming>
       <bpmn:outgoing>Flow_SendPublishDecisionChange_To_EndDecisionChanged_Art45</bpmn:outgoing>
     </bpmn:sendTask>
 
     <bpmn:endEvent id="EndEvent_DecisionChanged_Art45"
-                   name="Adequacy decision changed">
+                   name="Decision changed; Articles 46 to 49 remain available">
       <bpmn:incoming>Flow_SendPublishDecisionChange_To_EndDecisionChanged_Art45</bpmn:incoming>
     </bpmn:endEvent>
 
