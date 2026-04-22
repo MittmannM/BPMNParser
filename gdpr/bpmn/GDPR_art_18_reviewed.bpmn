@@ -28,7 +28,7 @@
       <bpmn:outgoing>Flow_Start_To_ReceiveTaskReceiveRestrictionRequest_Art18</bpmn:outgoing>
     </bpmn:startEvent>
 
-    <bpmn:receiveTask id="ReceiveTask_ReceiveRestrictionRequest_Art18" name="Receive the restriction request">
+    <bpmn:receiveTask id="ReceiveTask_ReceiveRestrictionRequest_Art18" name="Receive restriction request">
       <bpmn:incoming>Flow_Start_To_ReceiveTaskReceiveRestrictionRequest_Art18</bpmn:incoming>
       <bpmn:outgoing>Flow_ReceiveTaskReceiveRestrictionRequest_To_GatewayRequestExceptions_Art18</bpmn:outgoing>
     </bpmn:receiveTask>
@@ -48,22 +48,22 @@
       <bpmn:outgoing>Flow_GatewayRestrictionGround_To_EndNoRestrictionGround_Art18</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
-    <bpmn:task id="Task_GroundAccuracyContested_Art18" name="Establish that the data subject contests the accuracy of the personal data pending verification">
+    <bpmn:task id="Task_GroundAccuracyContested_Art18" name="Assess contested accuracy">
       <bpmn:incoming>Flow_GatewayRestrictionGround_To_TaskGroundAccuracyContested_Art18</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskGroundAccuracyContested_To_GatewayJoinGrounds_Art18</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_GroundUnlawfulInsteadOfErasure_Art18" name="Establish that the processing is unlawful and that the data subject opposes erasure and requests restriction instead">
+    <bpmn:task id="Task_GroundUnlawfulInsteadOfErasure_Art18" name="Assess unlawful processing with restriction request">
       <bpmn:incoming>Flow_GatewayRestrictionGround_To_TaskGroundUnlawfulInsteadOfErasure_Art18</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskGroundUnlawfulInsteadOfErasure_To_GatewayJoinGrounds_Art18</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_GroundLegalClaims_Art18" name="Establish that the controller no longer needs the data but the data subject needs them for legal claims">
+    <bpmn:task id="Task_GroundLegalClaims_Art18" name="Assess legal-claims need">
       <bpmn:incoming>Flow_GatewayRestrictionGround_To_TaskGroundLegalClaims_Art18</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskGroundLegalClaims_To_GatewayJoinGrounds_Art18</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_GroundPendingObjectionVerification_Art18" name="Establish that the data subject objected under Article 21(1) pending verification of overriding grounds">
+    <bpmn:task id="Task_GroundPendingObjectionVerification_Art18" name="Assess pending Article 21 objection">
       <bpmn:incoming>Flow_GatewayRestrictionGround_To_TaskGroundPendingObjectionVerification_Art18</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskGroundPendingObjectionVerification_To_GatewayJoinGrounds_Art18</bpmn:outgoing>
     </bpmn:task>
@@ -76,7 +76,7 @@
       <bpmn:outgoing>Flow_GatewayJoinGrounds_To_TaskRestrictProcessing_Art18</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
-    <bpmn:task id="Task_RestrictProcessing_Art18" name="Restrict the processing of the personal data">
+    <bpmn:task id="Task_RestrictProcessing_Art18" name="Restrict processing">
       <bpmn:incoming>Flow_GatewayJoinGrounds_To_TaskRestrictProcessing_Art18</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskRestrictProcessing_To_GatewayFurtherProcessingNeeded_Art18</bpmn:outgoing>
     </bpmn:task>
@@ -96,22 +96,22 @@
       <bpmn:outgoing>Flow_GatewayAllowedProcessingBasis_To_EndNoPermittedProcessing_Art18</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
-    <bpmn:task id="Task_ProcessByConsent_Art18" name="Process the restricted data with the data subject's consent">
+    <bpmn:task id="Task_ProcessByConsent_Art18" name="Process restricted data with consent">
       <bpmn:incoming>Flow_GatewayAllowedProcessingBasis_To_TaskProcessByConsent_Art18</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskProcessByConsent_To_GatewayLiftRestriction_Art18</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_ProcessForLegalClaims_Art18" name="Process the restricted data for the establishment, exercise, or defence of legal claims">
+    <bpmn:task id="Task_ProcessForLegalClaims_Art18" name="Process restricted data for legal claims">
       <bpmn:incoming>Flow_GatewayAllowedProcessingBasis_To_TaskProcessForLegalClaims_Art18</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskProcessForLegalClaims_To_GatewayLiftRestriction_Art18</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_ProcessToProtectRights_Art18" name="Process the restricted data to protect the rights of another natural or legal person">
+    <bpmn:task id="Task_ProcessToProtectRights_Art18" name="Process restricted data to protect others' rights">
       <bpmn:incoming>Flow_GatewayAllowedProcessingBasis_To_TaskProcessToProtectRights_Art18</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskProcessToProtectRights_To_GatewayLiftRestriction_Art18</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_ProcessForPublicInterest_Art18" name="Process the restricted data for reasons of important public interest of the Union or of a Member State">
+    <bpmn:task id="Task_ProcessForPublicInterest_Art18" name="Process restricted data for important public interest">
       <bpmn:incoming>Flow_GatewayAllowedProcessingBasis_To_TaskProcessForPublicInterest_Art18</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskProcessForPublicInterest_To_GatewayLiftRestriction_Art18</bpmn:outgoing>
     </bpmn:task>
@@ -126,7 +126,7 @@
       <bpmn:outgoing>Flow_GatewayLiftRestriction_To_EndRestrictionRemains_Art18</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
-    <bpmn:sendTask id="SendTask_InformBeforeLift_Art18" name="Inform the data subject before the restriction of processing is lifted">
+    <bpmn:sendTask id="SendTask_InformBeforeLift_Art18" name="Inform before lifting restriction">
       <bpmn:incoming>Flow_GatewayLiftRestriction_To_SendTaskInformBeforeLift_Art18</bpmn:incoming>
       <bpmn:outgoing>Flow_SendTaskInformBeforeLift_To_EndRestrictionLifted_Art18</bpmn:outgoing>
     </bpmn:sendTask>

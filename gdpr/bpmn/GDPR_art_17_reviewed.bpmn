@@ -31,7 +31,7 @@
       <bpmn:outgoing>Flow_Start_To_ReceiveTaskReceiveErasureRequest_Art17</bpmn:outgoing>
     </bpmn:startEvent>
 
-    <bpmn:receiveTask id="ReceiveTask_ReceiveErasureRequest_Art17" name="Receive the erasure request">
+    <bpmn:receiveTask id="ReceiveTask_ReceiveErasureRequest_Art17" name="Receive erasure request">
       <bpmn:incoming>Flow_Start_To_ReceiveTaskReceiveErasureRequest_Art17</bpmn:incoming>
       <bpmn:outgoing>Flow_ReceiveTaskReceiveErasureRequest_To_GatewayRequestExceptions_Art17</bpmn:outgoing>
     </bpmn:receiveTask>
@@ -53,32 +53,32 @@
       <bpmn:outgoing>Flow_GatewayErasureGround_To_EndNoErasureGround_Art17</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
-    <bpmn:task id="Task_GroundNoLongerNecessary_Art17" name="Establish that the personal data are no longer necessary for the purposes of the processing">
+    <bpmn:task id="Task_GroundNoLongerNecessary_Art17" name="Assess storage no longer necessary">
       <bpmn:incoming>Flow_GatewayErasureGround_To_TaskGroundNoLongerNecessary_Art17</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskGroundNoLongerNecessary_To_GatewayJoinGrounds_Art17</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_GroundWithdrawnConsent_Art17" name="Establish that consent was withdrawn and no other legal ground supports the processing">
+    <bpmn:task id="Task_GroundWithdrawnConsent_Art17" name="Assess withdrawal without other legal basis">
       <bpmn:incoming>Flow_GatewayErasureGround_To_TaskGroundWithdrawnConsent_Art17</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskGroundWithdrawnConsent_To_GatewayJoinGrounds_Art17</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_GroundSuccessfulObjection_Art17" name="Establish that an Article 21 objection prevails or that the objection concerns direct marketing">
+    <bpmn:task id="Task_GroundSuccessfulObjection_Art17" name="Assess prevailing Article 21 objection">
       <bpmn:incoming>Flow_GatewayErasureGround_To_TaskGroundSuccessfulObjection_Art17</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskGroundSuccessfulObjection_To_GatewayJoinGrounds_Art17</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_GroundUnlawfulProcessing_Art17" name="Establish that the personal data have been processed unlawfully">
+    <bpmn:task id="Task_GroundUnlawfulProcessing_Art17" name="Assess unlawful processing">
       <bpmn:incoming>Flow_GatewayErasureGround_To_TaskGroundUnlawfulProcessing_Art17</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskGroundUnlawfulProcessing_To_GatewayJoinGrounds_Art17</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_GroundLegalObligation_Art17" name="Establish that erasure is required to comply with Union or Member State law">
+    <bpmn:task id="Task_GroundLegalObligation_Art17" name="Assess legal erasure duty">
       <bpmn:incoming>Flow_GatewayErasureGround_To_TaskGroundLegalObligation_Art17</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskGroundLegalObligation_To_GatewayJoinGrounds_Art17</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_GroundChildConsent_Art17" name="Establish that the personal data were collected in relation to information society services offered to a child">
+    <bpmn:task id="Task_GroundChildConsent_Art17" name="Assess child service data">
       <bpmn:incoming>Flow_GatewayErasureGround_To_TaskGroundChildConsent_Art17</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskGroundChildConsent_To_GatewayJoinGrounds_Art17</bpmn:outgoing>
     </bpmn:task>
@@ -108,7 +108,7 @@
       <bpmn:outgoing>Flow_GatewayExceptionType_To_EndLegalClaimsException_Art17</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
-    <bpmn:task id="Task_ErasePersonalData_Art17" name="Erase the personal data without undue delay">
+    <bpmn:task id="Task_ErasePersonalData_Art17" name="Erase personal data">
       <bpmn:incoming>Flow_GatewayArt17Exception_To_TaskErasePersonalData_Art17</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskErasePersonalData_To_GatewayPublicData_Art17</bpmn:outgoing>
     </bpmn:task>
@@ -119,7 +119,7 @@
       <bpmn:outgoing>Flow_GatewayPublicData_To_EndErasureCompleted_Art17</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
-    <bpmn:sendTask id="SendTask_InformOtherControllers_Art17" name="Take reasonable steps, including technical measures where appropriate, to inform other controllers to erase links, copies, or replications of the personal data">
+    <bpmn:sendTask id="SendTask_InformOtherControllers_Art17" name="Inform other controllers to erase links and copies">
       <bpmn:incoming>Flow_GatewayPublicData_To_SendTaskInformOtherControllers_Art17</bpmn:incoming>
       <bpmn:outgoing>Flow_SendTaskInformOtherControllers_To_EndErasureCompleted_Art17</bpmn:outgoing>
     </bpmn:sendTask>

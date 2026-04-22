@@ -29,17 +29,17 @@
       <bpmn:outgoing>Flow_Start_To_TaskPrepareIdentity_Art13</bpmn:outgoing>
     </bpmn:startEvent>
 
-    <bpmn:task id="Task_PrepareIdentity_Art13" name="Prepare the controller's identity and contact details and the representative's details where applicable">
+    <bpmn:task id="Task_PrepareIdentity_Art13" name="Prepare identity and contact details">
       <bpmn:incoming>Flow_Start_To_TaskPrepareIdentity_Art13</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskPrepareIdentity_To_TaskPrepareDPO_Art13</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_PrepareDPO_Art13" name="Prepare the data protection officer's contact details where applicable">
+    <bpmn:task id="Task_PrepareDPO_Art13" name="Prepare DPO contact details">
       <bpmn:incoming>Flow_TaskPrepareIdentity_To_TaskPrepareDPO_Art13</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskPrepareDPO_To_TaskPreparePurposeBasis_Art13</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_PreparePurposeBasis_Art13" name="Prepare the purposes of processing and the legal basis for the processing">
+    <bpmn:task id="Task_PreparePurposeBasis_Art13" name="Prepare purposes and legal basis">
       <bpmn:incoming>Flow_TaskPrepareDPO_To_TaskPreparePurposeBasis_Art13</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskPreparePurposeBasis_To_GatewayLegitimateInterests_Art13</bpmn:outgoing>
     </bpmn:task>
@@ -50,12 +50,12 @@
       <bpmn:outgoing>Flow_GatewayLegitimateInterests_To_TaskPrepareRecipients_Art13</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
-    <bpmn:task id="Task_PrepareLegitimateInterests_Art13" name="Prepare the legitimate interests pursued by the controller or by a third party">
+    <bpmn:task id="Task_PrepareLegitimateInterests_Art13" name="Prepare legitimate interests">
       <bpmn:incoming>Flow_GatewayLegitimateInterests_To_TaskPrepareLegitimateInterests_Art13</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskPrepareLegitimateInterests_To_TaskPrepareRecipients_Art13</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_PrepareRecipients_Art13" name="Prepare the recipients or categories of recipients of the personal data where applicable">
+    <bpmn:task id="Task_PrepareRecipients_Art13" name="Prepare recipients">
       <bpmn:incoming>Flow_GatewayLegitimateInterests_To_TaskPrepareRecipients_Art13</bpmn:incoming>
       <bpmn:incoming>Flow_TaskPrepareLegitimateInterests_To_TaskPrepareRecipients_Art13</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskPrepareRecipients_To_GatewayThirdCountryTransfer_Art13</bpmn:outgoing>
@@ -67,7 +67,7 @@
       <bpmn:outgoing>Flow_GatewayThirdCountryTransfer_To_GatewaySplitSupplementaryInfo_Art13</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
-    <bpmn:task id="Task_PrepareTransferInfo_Art13" name="Prepare transfer information, adequacy-decision status, safeguards, and how to obtain a copy or where they are available">
+    <bpmn:task id="Task_PrepareTransferInfo_Art13" name="Prepare transfer information">
       <bpmn:incoming>Flow_GatewayThirdCountryTransfer_To_TaskPrepareTransferInfo_Art13</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskPrepareTransferInfo_To_GatewaySplitSupplementaryInfo_Art13</bpmn:outgoing>
     </bpmn:task>
@@ -81,22 +81,22 @@
       <bpmn:outgoing>Flow_GatewaySplitSupplementaryInfo_To_TaskPrepareAutomatedDecisionInfo_Art13</bpmn:outgoing>
     </bpmn:parallelGateway>
 
-    <bpmn:task id="Task_PrepareRetentionInfo_Art13" name="Prepare the storage period or, if that is not possible, the criteria used to determine it">
+    <bpmn:task id="Task_PrepareRetentionInfo_Art13" name="Prepare retention information">
       <bpmn:incoming>Flow_GatewaySplitSupplementaryInfo_To_TaskPrepareRetentionInfo_Art13</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskPrepareRetentionInfo_To_GatewayJoinSupplementaryInfo_Art13</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_PrepareRightsInfo_Art13" name="Prepare information about access, rectification, erasure, restriction, portability, objection, withdrawal of consent where relevant, and the right to lodge a complaint">
+    <bpmn:task id="Task_PrepareRightsInfo_Art13" name="Prepare rights information">
       <bpmn:incoming>Flow_GatewaySplitSupplementaryInfo_To_TaskPrepareRightsInfo_Art13</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskPrepareRightsInfo_To_GatewayJoinSupplementaryInfo_Art13</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_PrepareProvisionInfo_Art13" name="Prepare whether provision of the data is a statutory or contractual requirement or necessary to enter into a contract and the consequences of failure to provide the data">
+    <bpmn:task id="Task_PrepareProvisionInfo_Art13" name="Prepare provision requirement information">
       <bpmn:incoming>Flow_GatewaySplitSupplementaryInfo_To_TaskPrepareProvisionInfo_Art13</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskPrepareProvisionInfo_To_GatewayJoinSupplementaryInfo_Art13</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_PrepareAutomatedDecisionInfo_Art13" name="Prepare information about automated decision-making, including profiling, the logic involved, and the significance and envisaged consequences">
+    <bpmn:task id="Task_PrepareAutomatedDecisionInfo_Art13" name="Prepare automated-decision information">
       <bpmn:incoming>Flow_GatewaySplitSupplementaryInfo_To_TaskPrepareAutomatedDecisionInfo_Art13</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskPrepareAutomatedDecisionInfo_To_GatewayJoinSupplementaryInfo_Art13</bpmn:outgoing>
     </bpmn:task>
@@ -109,7 +109,7 @@
       <bpmn:outgoing>Flow_GatewayJoinSupplementaryInfo_To_SendTaskSendInitialNotice_Art13</bpmn:outgoing>
     </bpmn:parallelGateway>
 
-    <bpmn:sendTask id="SendTask_SendInitialNotice_Art13" name="Provide the Article 13 information at the time when the personal data are obtained">
+    <bpmn:sendTask id="SendTask_SendInitialNotice_Art13" name="Send Article 13 notice">
       <bpmn:incoming>Flow_GatewayJoinSupplementaryInfo_To_SendTaskSendInitialNotice_Art13</bpmn:incoming>
       <bpmn:outgoing>Flow_SendTaskSendInitialNotice_To_GatewayFurtherPurpose_Art13</bpmn:outgoing>
     </bpmn:sendTask>
@@ -120,7 +120,7 @@
       <bpmn:outgoing>Flow_GatewayFurtherPurpose_To_EndInformationDutiesCompleted_Art13</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
-    <bpmn:sendTask id="SendTask_SendFurtherPurposeNotice_Art13" name="Inform the data subject of the new purpose and provide relevant further information before the further processing">
+    <bpmn:sendTask id="SendTask_SendFurtherPurposeNotice_Art13" name="Send further-purpose notice">
       <bpmn:incoming>Flow_GatewayFurtherPurpose_To_SendTaskSendFurtherPurposeNotice_Art13</bpmn:incoming>
       <bpmn:outgoing>Flow_SendTaskSendFurtherPurposeNotice_To_EndInformationDutiesCompleted_Art13</bpmn:outgoing>
     </bpmn:sendTask>

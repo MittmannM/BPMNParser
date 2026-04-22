@@ -29,7 +29,7 @@
       <bpmn:outgoing>Flow_Start_To_ReceiveTaskReceiveRectificationRequest_Art16</bpmn:outgoing>
     </bpmn:startEvent>
 
-    <bpmn:receiveTask id="ReceiveTask_ReceiveRectificationRequest_Art16" name="Receive the rectification or completion request">
+    <bpmn:receiveTask id="ReceiveTask_ReceiveRectificationRequest_Art16" name="Receive rectification request">
       <bpmn:incoming>Flow_Start_To_ReceiveTaskReceiveRectificationRequest_Art16</bpmn:incoming>
       <bpmn:outgoing>Flow_ReceiveTaskReceiveRectificationRequest_To_GatewayExceptions_Art16</bpmn:outgoing>
     </bpmn:receiveTask>
@@ -46,12 +46,12 @@
       <bpmn:outgoing>Flow_GatewayRequestType_To_TaskCompleteData_Art16</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
-    <bpmn:task id="Task_RectifyData_Art16" name="Rectify inaccurate personal data without undue delay">
+    <bpmn:task id="Task_RectifyData_Art16" name="Rectify inaccurate data">
       <bpmn:incoming>Flow_GatewayRequestType_To_TaskRectifyData_Art16</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskRectifyData_To_EndRectificationCompleted_Art16</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_CompleteData_Art16" name="Complete incomplete personal data without undue delay, including by means of a supplementary statement while taking the purposes of the processing into account">
+    <bpmn:task id="Task_CompleteData_Art16" name="Complete incomplete data">
       <bpmn:incoming>Flow_GatewayRequestType_To_TaskCompleteData_Art16</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskCompleteData_To_EndRectificationCompleted_Art16</bpmn:outgoing>
     </bpmn:task>

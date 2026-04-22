@@ -13,22 +13,16 @@ Sie dient zwei Zwecken:
 - Die BPMN-Dateien werden im Ordner `bpmn/` abgelegt.
 - Manuell gepruefte Endergebnisse bekommen das Namensschema `GDPR_art_<n>_reviewed.bpmn`.
 - Die Batch-generierten BPMN-Dateien gelten nicht als Endergebnis und nicht als semantische Quelle.
-- Jede reviewed-BPMN wird direkt aus der jeweiligen LegalRuleML-Datei und deren Semantik hergeleitet.
+- Jede reviewed-BPMN wird direkt aus dem echten englischen Text des jeweiligen GDPR-Artikels hergeleitet.
 - Vor Abschluss jeder neuen reviewed-Datei wird diese Checkliste komplett durchgegangen.
 
-## DAPRECO- und LegalRuleML-Hinweise
+## Quellenregel und Umgang mit den XML-Dateien
 
-- Die DAPRECO-Implementierung folgt nicht immer exakt der abstrakten Darstellung im Paper.
-- Die deontische Einordnung steckt in diesen Dateien oft vor allem im `lrml:Context`, zum Beispiel:
-  - `rioOnto:obligationRule`
-  - `rioOnto:permissionRule`
-  - `rioOnto:constitutiveRule`
-- Auch wenn Regeln als `lrml:ConstitutiveStatement` serialisiert sind, muessen sie semantisch als Pflicht, Erlaubnis, Ausnahme oder konstitutive Definition gelesen werden.
-- Die jeweilige Artikel-XML ist die primaere Transformationsquelle fuer das BPMN in diesem Projekt.
-- Der offizielle GDPR-Artikeltext dient als juristische Kontroll-, Plausibilisierungs- und Ergaenzungsquelle.
-- Wenn XML und Artikeltext nicht deckungsgleich wirken, wird die Abweichung bewusst geprueft und transparent im BPMN oder in der `bpmn:documentation` beruecksichtigt.
-- Der Artikeltext allein reicht nicht als Ersatz fuer die XML, weil DAPRECO die Normen teilweise anders komprimiert, gewichtet oder nur teilweise serialisiert.
-- Beim Modellieren ist nicht die XML-Form allein entscheidend, sondern die normative Wirkung:
+- Die Artikel-XML im Ordner `artikel/` bleibt archiviert und unveraendert, ist aber keine semantische Quelle mehr.
+- Massgeblich fuer die Modellierung ist nur noch der echte englische Gesetzestext des jeweiligen GDPR-Artikels.
+- Wenn alte XML-basierte Modelle, Notizen oder Referenzen vom Gesetzestext abweichen, geht immer der Gesetzestext vor.
+- Sichtbare Cross-References auf andere Artikel oder Absaetze sollen im BPMN erhalten bleiben, wenn sie im echten Artikeltext den Rechtsablauf erklaeren oder begrenzen.
+- Beim Modellieren ist nicht eine alte Formalisierung entscheidend, sondern die normative Wirkung des echten Artikels:
   - Pflicht
   - Ausnahme
   - Alternative
@@ -41,7 +35,7 @@ Sie dient zwei Zwecken:
 
 - Ziel ist kein generisches Diagramm, sondern ein rechtlich brauchbares Prozessmodell.
 - Das BPMN muss die prozessrelevante Logik des Artikels abbilden.
-- Nicht jede logische Aussage aus LegalRuleML braucht ein eigenes BPMN-Element.
+- Nicht jede logische Aussage aus dem Gesetzestext braucht ein eigenes BPMN-Element.
 - Es sollen nur solche Elemente modelliert werden, die fuer den Rechts- oder Entscheidungsablauf relevant sind.
 
 ## Harte BPMN-2.0-Anforderungen
@@ -112,11 +106,14 @@ Diese Punkte muessen immer erfuellt sein.
 ## Benennungskonventionen
 
 - Aktivitaeten werden in klarer Verb-Nomen-Form benannt.
+- Aktivitaetsnamen sollen moeglichst kurz und schnell lesbar sein, idealerweise als knappe Verb-Objekt- oder Verb-Nomen-Phrase statt als ganzer Satz.
 - Namen sollen beschreiben, was fachlich passiert, nicht nur auf den Artikel verweisen.
 - Gute Beispiele:
   - `Assess risk to rights and freedoms`
   - `Provide DPO or contact point details`
   - `Notify supervisory authority`
+- Zu lange ganze Saetze als Task-Label sollen vermieden werden, auch wenn sie inhaltlich korrekt waeren.
+- Wenn ein laengerer juristischer Inhalt wichtig ist, soll die Task kurz benannt werden und die Praezisierung ueber Gateway-Fragen, Dokumentation oder End Events erfolgen.
 - Schlechte Beispiele:
   - `Document information`
   - `Handle case`
@@ -158,8 +155,8 @@ Diese Punkte muessen immer erfuellt sein.
 
 - `bpmn:documentation` kann verwendet werden, um die semantische Herleitung eines reviewed-Modells knapp festzuhalten.
 - Documentation soll vor allem dort helfen, wo:
-  - LegalRuleML stark komprimiert ist
-  - mehrere Statements zusammen auf einen BPMN-Pfad abgebildet werden
+  - mehrere Absatzteile oder Saetze zusammen auf einen BPMN-Pfad abgebildet werden
+  - ein Cross-Reference-Artikel im Ablauf sichtbar gemacht wird
   - eine Ausnahme oder Ersatzmassnahme modelliert wird
 - Text Annotations nur verwenden, wenn sie den Leser wirklich unterstuetzen.
 - Annotationen sind kein Ersatz fuer saubere Modellierung.
@@ -191,8 +188,8 @@ Folgende Punkte wurden bisher explizit als gewuenscht oder notwendig erkannt:
 
 ## Empfohlener Arbeitsablauf pro Artikel
 
-1. LegalRuleML-Datei lesen.
-2. Zugehoerige Statements und deren Kontexte identifizieren.
+1. Den echten englischen Text des GDPR-Artikels lesen.
+2. Explizite Cross-References, Voraussetzungen und Rechtsfolgen markieren.
 3. Normative Logik in diese Kategorien zerlegen:
    - Ausloeser
    - Pflicht
@@ -213,8 +210,8 @@ Diese Liste ist vor jeder neuen reviewed-Datei aktiv abzuhaken.
 
 - Wurde die Artikel-XML unveraendert gelassen?
 - Wurde die BPMN-Datei als neue `*_reviewed.bpmn` gespeichert?
-- Wurde die semantische Logik direkt aus LegalRuleML hergeleitet?
-- Wurde die XML als primaere Quelle verwendet und der offizielle Artikeltext nur als Kontroll- oder Ergaenzungsquelle eingesetzt?
+- Wurde die semantische Logik direkt aus dem echten englischen Artikeltext hergeleitet?
+- Sind explizite Cross-References aus dem Artikel dort sichtbar erhalten, wo sie fuer den Rechtsablauf wichtig sind?
 - Sind Pflichten, Ausnahmen und Alternativen korrekt im Prozessverlauf abgebildet?
 - Sind die richtigen Teilnehmer modelliert?
 - Sind externe Interaktionen als Message Flows und nicht als Sequence Flows modelliert?

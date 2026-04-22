@@ -33,7 +33,7 @@
       <bpmn:outgoing>Flow_Start_To_ReceiveTaskReceiveAccessRequest_Art15</bpmn:outgoing>
     </bpmn:startEvent>
 
-    <bpmn:receiveTask id="ReceiveTask_ReceiveAccessRequest_Art15" name="Receive the access request">
+    <bpmn:receiveTask id="ReceiveTask_ReceiveAccessRequest_Art15" name="Receive access request">
       <bpmn:incoming>Flow_Start_To_ReceiveTaskReceiveAccessRequest_Art15</bpmn:incoming>
       <bpmn:outgoing>Flow_ReceiveTaskReceiveAccessRequest_To_GatewayExceptions_Art15</bpmn:outgoing>
     </bpmn:receiveTask>
@@ -44,7 +44,7 @@
       <bpmn:outgoing>Flow_GatewayExceptions_To_TaskAssessProcessing_Art15</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
-    <bpmn:task id="Task_AssessProcessing_Art15" name="Assess whether personal data concerning the data subject are being processed">
+    <bpmn:task id="Task_AssessProcessing_Art15" name="Assess whether data are processed">
       <bpmn:incoming>Flow_GatewayExceptions_To_TaskAssessProcessing_Art15</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskAssessProcessing_To_GatewayProcessingOccurs_Art15</bpmn:outgoing>
     </bpmn:task>
@@ -55,7 +55,7 @@
       <bpmn:outgoing>Flow_GatewayProcessingOccurs_To_SendTaskSendNoProcessingConfirmation_Art15</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
-    <bpmn:sendTask id="SendTask_SendNoProcessingConfirmation_Art15" name="Confirm that no personal data concerning the data subject are being processed">
+    <bpmn:sendTask id="SendTask_SendNoProcessingConfirmation_Art15" name="Send no-processing confirmation">
       <bpmn:incoming>Flow_GatewayProcessingOccurs_To_SendTaskSendNoProcessingConfirmation_Art15</bpmn:incoming>
       <bpmn:outgoing>Flow_SendTaskSendNoProcessingConfirmation_To_EndAccessHandled_Art15</bpmn:outgoing>
     </bpmn:sendTask>
@@ -72,42 +72,42 @@
       <bpmn:outgoing>Flow_GatewaySplitAccessInfo_To_TaskPrepareAutomatedDecisionInfo_Art15</bpmn:outgoing>
     </bpmn:parallelGateway>
 
-    <bpmn:task id="Task_PreparePurposes_Art15" name="Prepare information about the purposes of the processing">
+    <bpmn:task id="Task_PreparePurposes_Art15" name="Prepare purposes information">
       <bpmn:incoming>Flow_GatewaySplitAccessInfo_To_TaskPreparePurposes_Art15</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskPreparePurposes_To_GatewayJoinAccessInfo_Art15</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_PrepareCategories_Art15" name="Prepare information about the categories of personal data concerned">
+    <bpmn:task id="Task_PrepareCategories_Art15" name="Prepare data categories">
       <bpmn:incoming>Flow_GatewaySplitAccessInfo_To_TaskPrepareCategories_Art15</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskPrepareCategories_To_GatewayJoinAccessInfo_Art15</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_PrepareRecipients_Art15" name="Prepare information about recipients or categories of recipients, including recipients in third countries or international organisations where relevant">
+    <bpmn:task id="Task_PrepareRecipients_Art15" name="Prepare recipients information">
       <bpmn:incoming>Flow_GatewaySplitAccessInfo_To_TaskPrepareRecipients_Art15</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskPrepareRecipients_To_GatewayJoinAccessInfo_Art15</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_PrepareStorageInfo_Art15" name="Prepare the envisaged storage period or, if not possible, the criteria used to determine it">
+    <bpmn:task id="Task_PrepareStorageInfo_Art15" name="Prepare retention information">
       <bpmn:incoming>Flow_GatewaySplitAccessInfo_To_TaskPrepareStorageInfo_Art15</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskPrepareStorageInfo_To_GatewayJoinAccessInfo_Art15</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_PrepareRightsInfo_Art15" name="Prepare information about rectification, erasure, restriction, and objection rights">
+    <bpmn:task id="Task_PrepareRightsInfo_Art15" name="Prepare rights information">
       <bpmn:incoming>Flow_GatewaySplitAccessInfo_To_TaskPrepareRightsInfo_Art15</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskPrepareRightsInfo_To_GatewayJoinAccessInfo_Art15</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_PrepareComplaintInfo_Art15" name="Prepare information about the right to lodge a complaint with a supervisory authority">
+    <bpmn:task id="Task_PrepareComplaintInfo_Art15" name="Prepare complaint information">
       <bpmn:incoming>Flow_GatewaySplitAccessInfo_To_TaskPrepareComplaintInfo_Art15</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskPrepareComplaintInfo_To_GatewayJoinAccessInfo_Art15</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_PrepareSourceInfo_Art15" name="Prepare information about the source of the personal data if the data were not collected from the data subject">
+    <bpmn:task id="Task_PrepareSourceInfo_Art15" name="Prepare source information">
       <bpmn:incoming>Flow_GatewaySplitAccessInfo_To_TaskPrepareSourceInfo_Art15</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskPrepareSourceInfo_To_GatewayJoinAccessInfo_Art15</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_PrepareAutomatedDecisionInfo_Art15" name="Prepare information about automated decision-making, including profiling, the logic involved, and the significance and envisaged consequences">
+    <bpmn:task id="Task_PrepareAutomatedDecisionInfo_Art15" name="Prepare automated-decision information">
       <bpmn:incoming>Flow_GatewaySplitAccessInfo_To_TaskPrepareAutomatedDecisionInfo_Art15</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskPrepareAutomatedDecisionInfo_To_GatewayJoinAccessInfo_Art15</bpmn:outgoing>
     </bpmn:task>
@@ -130,12 +130,12 @@
       <bpmn:outgoing>Flow_GatewayTransferSafeguards_To_TaskPrepareCopy_Art15</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
-    <bpmn:task id="Task_PrepareTransferSafeguards_Art15" name="Prepare information about the appropriate safeguards for the transfer">
+    <bpmn:task id="Task_PrepareTransferSafeguards_Art15" name="Prepare transfer safeguards">
       <bpmn:incoming>Flow_GatewayTransferSafeguards_To_TaskPrepareTransferSafeguards_Art15</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskPrepareTransferSafeguards_To_TaskPrepareCopy_Art15</bpmn:outgoing>
     </bpmn:task>
 
-    <bpmn:task id="Task_PrepareCopy_Art15" name="Prepare a copy of the personal data undergoing processing">
+    <bpmn:task id="Task_PrepareCopy_Art15" name="Prepare data copy">
       <bpmn:incoming>Flow_GatewayTransferSafeguards_To_TaskPrepareCopy_Art15</bpmn:incoming>
       <bpmn:incoming>Flow_TaskPrepareTransferSafeguards_To_TaskPrepareCopy_Art15</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskPrepareCopy_To_GatewayProtectOthers_Art15</bpmn:outgoing>
@@ -147,7 +147,7 @@
       <bpmn:outgoing>Flow_GatewayProtectOthers_To_GatewayAdditionalCopies_Art15</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
-    <bpmn:task id="Task_LimitCopy_Art15" name="Limit or protect the copy so that the rights and freedoms of others are not adversely affected">
+    <bpmn:task id="Task_LimitCopy_Art15" name="Protect others' rights in copy">
       <bpmn:incoming>Flow_GatewayProtectOthers_To_TaskLimitCopy_Art15</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskLimitCopy_To_GatewayAdditionalCopies_Art15</bpmn:outgoing>
     </bpmn:task>
@@ -159,7 +159,7 @@
       <bpmn:outgoing>Flow_GatewayAdditionalCopies_To_GatewayElectronicRequest_Art15</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
-    <bpmn:task id="Task_ChargeReasonableFee_Art15" name="Charge a reasonable fee for additional copies based on administrative costs">
+    <bpmn:task id="Task_ChargeReasonableFee_Art15" name="Charge reasonable fee for additional copies">
       <bpmn:incoming>Flow_GatewayAdditionalCopies_To_TaskChargeReasonableFee_Art15</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskChargeReasonableFee_To_GatewayElectronicRequest_Art15</bpmn:outgoing>
     </bpmn:task>
@@ -171,12 +171,12 @@
       <bpmn:outgoing>Flow_GatewayElectronicRequest_To_SendTaskSendRequestedFormatAccessResponse_Art15</bpmn:outgoing>
     </bpmn:exclusiveGateway>
 
-    <bpmn:sendTask id="SendTask_SendElectronicAccessResponse_Art15" name="Send the access response and the copy in a commonly used electronic form">
+    <bpmn:sendTask id="SendTask_SendElectronicAccessResponse_Art15" name="Send electronic access response">
       <bpmn:incoming>Flow_GatewayElectronicRequest_To_SendTaskSendElectronicAccessResponse_Art15</bpmn:incoming>
       <bpmn:outgoing>Flow_SendTaskSendElectronicAccessResponse_To_EndAccessHandled_Art15</bpmn:outgoing>
     </bpmn:sendTask>
 
-    <bpmn:sendTask id="SendTask_SendRequestedFormatAccessResponse_Art15" name="Send the access response and the copy in the requested non-electronic format">
+    <bpmn:sendTask id="SendTask_SendRequestedFormatAccessResponse_Art15" name="Send requested-format access response">
       <bpmn:incoming>Flow_GatewayElectronicRequest_To_SendTaskSendRequestedFormatAccessResponse_Art15</bpmn:incoming>
       <bpmn:outgoing>Flow_SendTaskSendRequestedFormatAccessResponse_To_EndAccessHandled_Art15</bpmn:outgoing>
     </bpmn:sendTask>

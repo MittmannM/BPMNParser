@@ -74,7 +74,7 @@
     </bpmn:startEvent>
 
     <bpmn:task id="Task_PrepareGeneralInformation_Art12"
-               name="Prepare concise, transparent, intelligible and easily accessible information in clear and plain language">
+               name="Prepare clear and accessible information">
       <bpmn:incoming>Flow_StartProvideInformation_To_TaskPrepareGeneralInformation_Art12</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskPrepareGeneralInformation_To_GatewayOralInfo_Art12</bpmn:outgoing>
     </bpmn:task>
@@ -87,7 +87,7 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:sendTask id="SendTask_ProvideInformationOrally_Art12"
-                   name="Provide the information orally">
+                   name="Provide information orally">
       <bpmn:incoming>Flow_GatewayOralInfo_To_SendTaskProvideInformationOrally_Art12</bpmn:incoming>
       <bpmn:outgoing>Flow_SendTaskProvideInformationOrally_To_EndInformationProvided_Art12</bpmn:outgoing>
     </bpmn:sendTask>
@@ -107,13 +107,13 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:task id="Task_AttachIconsElectronic_Art12"
-               name="Attach standardized icons to the electronic information and ensure they are machine-readable">
+               name="Attach machine-readable icons">
       <bpmn:incoming>Flow_GatewayUseIconsElectronic_To_TaskAttachIconsElectronic_Art12</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskAttachIconsElectronic_To_SendTaskSendElectronicInformation_Art12</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:sendTask id="SendTask_SendElectronicInformation_Art12"
-                   name="Send the information electronically">
+                   name="Send information electronically">
       <bpmn:incoming>Flow_GatewayUseIconsElectronic_To_SendTaskSendElectronicInformation_Art12</bpmn:incoming>
       <bpmn:incoming>Flow_TaskAttachIconsElectronic_To_SendTaskSendElectronicInformation_Art12</bpmn:incoming>
       <bpmn:outgoing>Flow_SendTaskSendElectronicInformation_To_EndInformationProvided_Art12</bpmn:outgoing>
@@ -127,13 +127,13 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:task id="Task_AttachIconsWritten_Art12"
-               name="Attach standardized icons to the written or other non-electronic information">
+               name="Attach standardized icons">
       <bpmn:incoming>Flow_GatewayUseIconsWritten_To_TaskAttachIconsWritten_Art12</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskAttachIconsWritten_To_SendTaskSendWrittenInformation_Art12</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:sendTask id="SendTask_SendWrittenInformation_Art12"
-                   name="Provide the information in writing or by other means">
+                   name="Send information in writing or other form">
       <bpmn:incoming>Flow_GatewayUseIconsWritten_To_SendTaskSendWrittenInformation_Art12</bpmn:incoming>
       <bpmn:incoming>Flow_TaskAttachIconsWritten_To_SendTaskSendWrittenInformation_Art12</bpmn:incoming>
       <bpmn:outgoing>Flow_SendTaskSendWrittenInformation_To_EndInformationProvided_Art12</bpmn:outgoing>
@@ -145,13 +145,13 @@
     </bpmn:startEvent>
 
     <bpmn:receiveTask id="ReceiveTask_ReceiveRequest_Art12"
-                      name="Receive the request from the data subject">
+                      name="Receive request">
       <bpmn:incoming>Flow_StartHandleRequest_To_ReceiveTaskReceiveRequest_Art12</bpmn:incoming>
       <bpmn:outgoing>Flow_ReceiveTaskReceiveRequest_To_TaskFacilitateRights_Art12</bpmn:outgoing>
     </bpmn:receiveTask>
 
     <bpmn:task id="Task_FacilitateRights_Art12"
-               name="Facilitate the exercise of the data subject's rights">
+               name="Facilitate data-subject rights">
       <bpmn:incoming>Flow_ReceiveTaskReceiveRequest_To_TaskFacilitateRights_Art12</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskFacilitateRights_To_GatewayIdentityDoubts_Art12</bpmn:outgoing>
     </bpmn:task>
@@ -164,13 +164,13 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:sendTask id="SendTask_RequestAdditionalIdentityInfo_Art12"
-                   name="Request additional information necessary to confirm the data subject's identity">
+                   name="Request additional identity information">
       <bpmn:incoming>Flow_GatewayIdentityDoubts_To_SendTaskRequestAdditionalIdentityInfo_Art12</bpmn:incoming>
       <bpmn:outgoing>Flow_SendTaskRequestAdditionalIdentityInfo_To_ReceiveTaskReceiveAdditionalIdentityInfo_Art12</bpmn:outgoing>
     </bpmn:sendTask>
 
     <bpmn:receiveTask id="ReceiveTask_ReceiveAdditionalIdentityInfo_Art12"
-                      name="Receive additional identifying information from the data subject">
+                      name="Receive additional identity information">
       <bpmn:incoming>Flow_SendTaskRequestAdditionalIdentityInfo_To_ReceiveTaskReceiveAdditionalIdentityInfo_Art12</bpmn:incoming>
       <bpmn:outgoing>Flow_ReceiveTaskReceiveAdditionalIdentityInfo_To_GatewayIdentificationPossible_Art12</bpmn:outgoing>
     </bpmn:receiveTask>
@@ -183,7 +183,7 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:task id="Task_AssessInabilityToIdentify_Art12"
-               name="Assess whether the controller can demonstrate inability to identify the data subject under Article 11(2)">
+               name="Assess inability to identify">
       <bpmn:incoming>Flow_GatewayIdentificationPossible_To_TaskAssessInabilityToIdentify_Art12</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskAssessInabilityToIdentify_To_GatewayInabilityDemonstrated_Art12</bpmn:outgoing>
     </bpmn:task>
@@ -203,7 +203,7 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:sendTask id="SendTask_InformUnableToIdentify_Art12"
-                   name="Inform the data subject that the controller is not in a position to identify him or her">
+                   name="Inform unable to identify">
       <bpmn:incoming>Flow_GatewayInformUnableIdentify_To_SendTaskInformUnableToIdentify_Art12</bpmn:incoming>
       <bpmn:outgoing>Flow_SendTaskInformUnableToIdentify_To_EndUnableToIdentify_Art12</bpmn:outgoing>
     </bpmn:sendTask>
@@ -223,7 +223,7 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:task id="Task_DemonstrateManifestlyUnfoundedExcessive_Art12"
-               name="Demonstrate that the request is manifestly unfounded or excessive">
+               name="Assess manifestly unfounded or excessive request">
       <bpmn:incoming>Flow_GatewayUnfoundedExcessive_To_TaskDemonstrateManifestlyUnfoundedExcessive_Art12</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskDemonstrateManifestlyUnfoundedExcessive_To_GatewayFeeOrRefuse_Art12</bpmn:outgoing>
     </bpmn:task>
@@ -236,13 +236,13 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:task id="Task_ChargeReasonableFee_Art12"
-               name="Charge a reasonable fee based on the administrative costs of handling the request">
+               name="Charge reasonable fee">
       <bpmn:incoming>Flow_GatewayFeeOrRefuse_To_TaskChargeReasonableFee_Art12</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskChargeReasonableFee_To_GatewayHandlingChargeJoin_Art12</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_HandleFreeOfCharge_Art12"
-               name="Handle the request free of charge">
+               name="Handle request free of charge">
       <bpmn:incoming>Flow_GatewayUnfoundedExcessive_To_TaskHandleFreeOfCharge_Art12</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskHandleFreeOfCharge_To_GatewayHandlingChargeJoin_Art12</bpmn:outgoing>
     </bpmn:task>
@@ -268,37 +268,37 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:sendTask id="SendTask_SendExtensionNotice_Art12"
-                   name="Inform the data subject within one month about the extension and the reasons for the delay">
+                   name="Send extension notice">
       <bpmn:incoming>Flow_GatewayExtensionNecessary_To_SendTaskSendExtensionNotice_Art12</bpmn:incoming>
       <bpmn:outgoing>Flow_SendTaskSendExtensionNotice_To_TaskTakeActionWithinThreeMonths_Art12</bpmn:outgoing>
     </bpmn:sendTask>
 
     <bpmn:task id="Task_TakeActionWithinThreeMonths_Art12"
-               name="Take action on the request without undue delay and within three months of receipt">
+               name="Take action within three months">
       <bpmn:incoming>Flow_SendTaskSendExtensionNotice_To_TaskTakeActionWithinThreeMonths_Art12</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskTakeActionWithinThreeMonths_To_TaskPrepareRequestCommunication_Art12</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_TakeActionWithinOneMonth_Art12"
-               name="Take action on the request without undue delay and within one month of receipt">
+               name="Take action within one month">
       <bpmn:incoming>Flow_GatewayExtensionNecessary_To_TaskTakeActionWithinOneMonth_Art12</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskTakeActionWithinOneMonth_To_TaskPrepareRequestCommunication_Art12</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_PrepareNoActionNotice_Art12"
-               name="Prepare a notice that no action will be taken, including reasons and information about the right to lodge a complaint and seek a judicial remedy">
+               name="Prepare no-action notice">
       <bpmn:incoming>Flow_GatewayTakeAction_To_TaskPrepareNoActionNotice_Art12</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskPrepareNoActionNotice_To_TaskPrepareRequestCommunication_Art12</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_PrepareRefusalNotice_Art12"
-               name="Prepare a refusal notice including reasons and information about the right to lodge a complaint and seek a judicial remedy">
+               name="Prepare refusal notice">
       <bpmn:incoming>Flow_GatewayFeeOrRefuse_To_TaskPrepareRefusalNotice_Art12</bpmn:incoming>
       <bpmn:outgoing>Flow_TaskPrepareRefusalNotice_To_TaskPrepareRequestCommunication_Art12</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_PrepareRequestCommunication_Art12"
-               name="Prepare concise, transparent, intelligible and easily accessible request-related communication in clear and plain language">
+               name="Prepare clear request communication">
       <bpmn:incoming>Flow_TaskTakeActionWithinThreeMonths_To_TaskPrepareRequestCommunication_Art12</bpmn:incoming>
       <bpmn:incoming>Flow_TaskTakeActionWithinOneMonth_To_TaskPrepareRequestCommunication_Art12</bpmn:incoming>
       <bpmn:incoming>Flow_TaskPrepareNoActionNotice_To_TaskPrepareRequestCommunication_Art12</bpmn:incoming>
@@ -314,7 +314,7 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:sendTask id="SendTask_SendElectronicResponse_Art12"
-                   name="Send the response or notice electronically">
+                   name="Send response electronically">
       <bpmn:incoming>Flow_GatewayElectronicResponse_To_SendTaskSendElectronicResponse_Art12</bpmn:incoming>
       <bpmn:outgoing>Flow_SendTaskSendElectronicResponse_To_EndRequestHandled_Art12</bpmn:outgoing>
     </bpmn:sendTask>
@@ -327,13 +327,13 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:sendTask id="SendTask_ProvideResponseOrally_Art12"
-                   name="Provide the response or notice orally">
+                   name="Provide response orally">
       <bpmn:incoming>Flow_GatewayOralResponse_To_SendTaskProvideResponseOrally_Art12</bpmn:incoming>
       <bpmn:outgoing>Flow_SendTaskProvideResponseOrally_To_EndRequestHandled_Art12</bpmn:outgoing>
     </bpmn:sendTask>
 
     <bpmn:sendTask id="SendTask_SendWrittenResponse_Art12"
-                   name="Send the response or notice in writing or by other means">
+                   name="Send response in writing or other form">
       <bpmn:incoming>Flow_GatewayOralResponse_To_SendTaskSendWrittenResponse_Art12</bpmn:incoming>
       <bpmn:outgoing>Flow_SendTaskSendWrittenResponse_To_EndRequestHandled_Art12</bpmn:outgoing>
     </bpmn:sendTask>

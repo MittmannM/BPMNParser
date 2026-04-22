@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art29_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art29_Reviewed">
+    <bpmn:participant id="Participant_ControllerOrProcessor_Art29"
+                      name="Controller or Processor"
+                      processRef="Process_ControllerOrProcessor_Art29" />
+    <bpmn:participant id="Participant_AuthorizedPerson_Art29"
+                      name="Authorized Person" />
+
+    <bpmn:messageFlow id="MessageFlow_SendProcessingInstruction_Art29"
+                      sourceRef="SendTask_SendProcessingInstruction_Art29"
+                      targetRef="Participant_AuthorizedPerson_Art29" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_ControllerOrProcessor_Art29"
+                name="Controlling processing under authority under Article 29"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 29 based on the real English legal text
+      of Regulation (EU) 2016/679. The model captures access to personal data by a
+      person acting under the authority of the controller or processor, the default
+      rule that processing may occur only on instructions from the controller, and
+      the exception for processing required by Union or Member State law.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_ProvideAccess_Art29"
+                     name="Provide access to personal data">
+      <bpmn:outgoing>Flow_StartProvideAccess_To_GatewayAuthorityAccess_Art29</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_AuthorityAccess_Art29"
+                           name="Is the person acting under the authority of the controller or processor and does the person have access to personal data?">
+      <bpmn:incoming>Flow_StartProvideAccess_To_GatewayAuthorityAccess_Art29</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAuthorityAccess_To_GatewayLawRequiresProcessing_Art29</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAuthorityAccess_To_EndArticle29NotTriggered_Art29</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_Article29NotTriggered_Art29"
+                   name="Article 29 is not triggered">
+      <bpmn:incoming>Flow_GatewayAuthorityAccess_To_EndArticle29NotTriggered_Art29</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_LawRequiresProcessing_Art29"
+                           name="Is the processing required by Union or Member State law?">
+      <bpmn:incoming>Flow_GatewayAuthorityAccess_To_GatewayLawRequiresProcessing_Art29</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayLawRequiresProcessing_To_EndProcessingAllowedByLaw_Art29</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayLawRequiresProcessing_To_SendTaskSendProcessingInstruction_Art29</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="SendTask_SendProcessingInstruction_Art29"
+                   name="Send processing instruction">
+      <bpmn:incoming>Flow_GatewayLawRequiresProcessing_To_SendTaskSendProcessingInstruction_Art29</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendTaskSendProcessingInstruction_To_EndProcessingAllowedByInstruction_Art29</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_ProcessingAllowedByLaw_Art29"
+                   name="Processing is allowed by law">
+      <bpmn:incoming>Flow_GatewayLawRequiresProcessing_To_EndProcessingAllowedByLaw_Art29</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_ProcessingAllowedByInstruction_Art29"
+                   name="Processing is allowed on instruction">
+      <bpmn:incoming>Flow_SendTaskSendProcessingInstruction_To_EndProcessingAllowedByInstruction_Art29</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartProvideAccess_To_GatewayAuthorityAccess_Art29" sourceRef="StartEvent_ProvideAccess_Art29" targetRef="Gateway_AuthorityAccess_Art29" />
+    <bpmn:sequenceFlow id="Flow_GatewayAuthorityAccess_To_GatewayLawRequiresProcessing_Art29" name="Yes" sourceRef="Gateway_AuthorityAccess_Art29" targetRef="Gateway_LawRequiresProcessing_Art29" />
+    <bpmn:sequenceFlow id="Flow_GatewayAuthorityAccess_To_EndArticle29NotTriggered_Art29" name="No" sourceRef="Gateway_AuthorityAccess_Art29" targetRef="EndEvent_Article29NotTriggered_Art29" />
+    <bpmn:sequenceFlow id="Flow_GatewayLawRequiresProcessing_To_EndProcessingAllowedByLaw_Art29" name="Yes" sourceRef="Gateway_LawRequiresProcessing_Art29" targetRef="EndEvent_ProcessingAllowedByLaw_Art29" />
+    <bpmn:sequenceFlow id="Flow_GatewayLawRequiresProcessing_To_SendTaskSendProcessingInstruction_Art29" name="No" sourceRef="Gateway_LawRequiresProcessing_Art29" targetRef="SendTask_SendProcessingInstruction_Art29" />
+    <bpmn:sequenceFlow id="Flow_SendTaskSendProcessingInstruction_To_EndProcessingAllowedByInstruction_Art29" sourceRef="SendTask_SendProcessingInstruction_Art29" targetRef="EndEvent_ProcessingAllowedByInstruction_Art29" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art29_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art29_Reviewed" bpmnElement="Collaboration_Art29_Reviewed">
+      <bpmndi:BPMNShape id="Participant_ControllerOrProcessor_Art29_di"
+                        bpmnElement="Participant_ControllerOrProcessor_Art29"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="2100" height="340" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_AuthorizedPerson_Art29_di"
+                        bpmnElement="Participant_AuthorizedPerson_Art29"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="430" width="2100" height="120" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_ProvideAccess_Art29_di" bpmnElement="StartEvent_ProvideAccess_Art29">
+        <dc:Bounds x="120" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AuthorityAccess_Art29_di" bpmnElement="Gateway_AuthorityAccess_Art29" isMarkerVisible="true">
+        <dc:Bounds x="280" y="185" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Article29NotTriggered_Art29_di" bpmnElement="EndEvent_Article29NotTriggered_Art29">
+        <dc:Bounds x="432" y="302" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_LawRequiresProcessing_Art29_di" bpmnElement="Gateway_LawRequiresProcessing_Art29" isMarkerVisible="true">
+        <dc:Bounds x="530" y="185" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_SendProcessingInstruction_Art29_di" bpmnElement="SendTask_SendProcessingInstruction_Art29">
+        <dc:Bounds x="760" y="170" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ProcessingAllowedByLaw_Art29_di" bpmnElement="EndEvent_ProcessingAllowedByLaw_Art29">
+        <dc:Bounds x="762" y="302" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ProcessingAllowedByInstruction_Art29_di" bpmnElement="EndEvent_ProcessingAllowedByInstruction_Art29">
+        <dc:Bounds x="1062" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_StartProvideAccess_To_GatewayAuthorityAccess_Art29_di" bpmnElement="Flow_StartProvideAccess_To_GatewayAuthorityAccess_Art29">
+        <di:waypoint x="156" y="210" />
+        <di:waypoint x="280" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAuthorityAccess_To_GatewayLawRequiresProcessing_Art29_di" bpmnElement="Flow_GatewayAuthorityAccess_To_GatewayLawRequiresProcessing_Art29">
+        <di:waypoint x="330" y="210" />
+        <di:waypoint x="530" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAuthorityAccess_To_EndArticle29NotTriggered_Art29_di" bpmnElement="Flow_GatewayAuthorityAccess_To_EndArticle29NotTriggered_Art29">
+        <di:waypoint x="305" y="235" />
+        <di:waypoint x="305" y="320" />
+        <di:waypoint x="432" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayLawRequiresProcessing_To_EndProcessingAllowedByLaw_Art29_di" bpmnElement="Flow_GatewayLawRequiresProcessing_To_EndProcessingAllowedByLaw_Art29">
+        <di:waypoint x="555" y="235" />
+        <di:waypoint x="555" y="320" />
+        <di:waypoint x="762" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayLawRequiresProcessing_To_SendTaskSendProcessingInstruction_Art29_di" bpmnElement="Flow_GatewayLawRequiresProcessing_To_SendTaskSendProcessingInstruction_Art29">
+        <di:waypoint x="580" y="210" />
+        <di:waypoint x="760" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendTaskSendProcessingInstruction_To_EndProcessingAllowedByInstruction_Art29_di" bpmnElement="Flow_SendTaskSendProcessingInstruction_To_EndProcessingAllowedByInstruction_Art29">
+        <di:waypoint x="970" y="210" />
+        <di:waypoint x="1062" y="210" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_SendProcessingInstruction_Art29_di" bpmnElement="MessageFlow_SendProcessingInstruction_Art29">
+        <di:waypoint x="865" y="250" />
+        <di:waypoint x="865" y="490" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

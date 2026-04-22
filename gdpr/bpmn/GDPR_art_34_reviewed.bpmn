@@ -24,11 +24,11 @@
                 name="Controller communication to data subjects after a breach"
                 isExecutable="false">
     <bpmn:documentation>
-      Manual BPMN conversion for GDPR Article 34 based on DAPRECO LegalRuleML statements175-179.
-      statements175 models the obligation to communicate a breach to the data subject without undue delay
-      when the breach is likely to result in a high risk and no Art. 34(3) exception applies.
-      statements176 models the required communication content.
-      statements177-179 model the Art. 34(3) exceptions and the substitute public communication.
+      Manual BPMN conversion for GDPR Article 34 based on the real English legal text
+      of Regulation (EU) 2016/679. The model captures the Article 34(1) high-risk
+      trigger, the three Article 34(3) exception paths, the substitute public
+      communication path, and the Article 34(2) information bundle for direct
+      communication to the data subject.
     </bpmn:documentation>
 
     <bpmn:startEvent id="StartEvent_Art34AssessmentStarted"
@@ -50,7 +50,7 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:task id="Task_CheckProtectionMeasures"
-               name="Assess whether protection measures already nullify the breach risk">
+               name="Assess prior protection measures">
       <bpmn:incoming>Flow_GatewayHighRisk_To_CheckProtectionMeasures</bpmn:incoming>
       <bpmn:outgoing>Flow_CheckProtectionMeasures_To_GatewayRiskNullified</bpmn:outgoing>
     </bpmn:task>
@@ -63,7 +63,7 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:task id="Task_CheckSubsequentMeasures"
-               name="Assess whether subsequent measures removed the likely high risk">
+               name="Assess subsequent mitigation">
       <bpmn:incoming>Flow_GatewayRiskNullified_To_CheckSubsequentMeasures</bpmn:incoming>
       <bpmn:outgoing>Flow_CheckSubsequentMeasures_To_GatewayHighRiskRemoved</bpmn:outgoing>
     </bpmn:task>
@@ -76,7 +76,7 @@
     </bpmn:exclusiveGateway>
 
     <bpmn:task id="Task_CheckDisproportionateEffort"
-               name="Assess whether individual communication requires disproportionate effort">
+               name="Assess communication effort">
       <bpmn:incoming>Flow_GatewayHighRiskRemoved_To_CheckDisproportionateEffort</bpmn:incoming>
       <bpmn:outgoing>Flow_CheckDisproportionateEffort_To_GatewayDisproportionateEffort</bpmn:outgoing>
     </bpmn:task>
@@ -96,13 +96,13 @@
     </bpmn:parallelGateway>
 
     <bpmn:task id="Task_ProvideContact"
-               name="Provide DPO or other contact point details">
+               name="Provide DPO or contact point details">
       <bpmn:incoming>Flow_GatewayCompileSplit_To_ProvideContact</bpmn:incoming>
       <bpmn:outgoing>Flow_ProvideContact_To_GatewayCompileJoin</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_DescribeConsequences"
-               name="Describe the likely consequences of the breach">
+               name="Describe likely consequences">
       <bpmn:incoming>Flow_GatewayCompileSplit_To_DescribeConsequences</bpmn:incoming>
       <bpmn:outgoing>Flow_DescribeConsequences_To_GatewayCompileJoin</bpmn:outgoing>
     </bpmn:task>
@@ -121,7 +121,7 @@
     </bpmn:parallelGateway>
 
     <bpmn:sendTask id="Task_NotifyDataSubject"
-                   name="Communicate the breach information to the data subject without undue delay">
+                   name="Notify data subject">
       <bpmn:documentation>
         Art. 34(1) combined with Art. 34(2): direct communication is required when high risk exists
         and no Art. 34(3) exception applies.
@@ -320,7 +320,7 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Task_PublicCommunication_di"
                         bpmnElement="Task_PublicCommunication">
-        <dc:Bounds x="1450" y="310" width="200" height="80" />
+        <dc:Bounds x="1450" y="380" width="200" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="EndEvent_NoCommunicationRequired_di"
                         bpmnElement="EndEvent_NoCommunicationRequired">
@@ -332,7 +332,7 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="EndEvent_PublicCommunicationCompleted_di"
                         bpmnElement="EndEvent_PublicCommunicationCompleted">
-        <dc:Bounds x="1690" y="332" width="36" height="36" />
+        <dc:Bounds x="1690" y="402" width="36" height="36" />
       </bpmndi:BPMNShape>
 
       <bpmndi:BPMNEdge id="Flow_Start_To_AssessHighRisk_di"
@@ -396,8 +396,8 @@
       <bpmndi:BPMNEdge id="Flow_GatewayDisproportionateEffort_To_TaskPublicCommunication_di"
                        bpmnElement="Flow_GatewayDisproportionateEffort_To_TaskPublicCommunication">
         <di:waypoint x="1375" y="220" />
-        <di:waypoint x="1375" y="350" />
-        <di:waypoint x="1450" y="350" />
+        <di:waypoint x="1375" y="420" />
+        <di:waypoint x="1450" y="420" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_GatewayDisproportionateEffort_To_GatewayCompileSplit_di"
                        bpmnElement="Flow_GatewayDisproportionateEffort_To_GatewayCompileSplit">
@@ -450,8 +450,8 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_TaskPublicCommunication_To_EndPublicCommunicationCompleted_di"
                        bpmnElement="Flow_TaskPublicCommunication_To_EndPublicCommunicationCompleted">
-        <di:waypoint x="1650" y="350" />
-        <di:waypoint x="1690" y="350" />
+        <di:waypoint x="1650" y="420" />
+        <di:waypoint x="1690" y="420" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="MessageFlow_ControllerToDataSubject_di"
                        bpmnElement="MessageFlow_ControllerToDataSubject">

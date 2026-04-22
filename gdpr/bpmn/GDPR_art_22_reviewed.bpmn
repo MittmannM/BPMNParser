@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art22_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:collaboration id="Collaboration_Art22_Reviewed">
+    <bpmn:participant id="Participant_Controller_Art22" name="Controller" processRef="Process_Controller_Art22" />
+    <bpmn:participant id="Participant_DataSubject_Art22" name="Data Subject" />
+
+    <bpmn:messageFlow id="MessageFlow_NotifyDecision_Art22" sourceRef="SendTask_NotifyDecision_Art22" targetRef="Participant_DataSubject_Art22" />
+    <bpmn:messageFlow id="MessageFlow_ReceivePointOfView_Art22" sourceRef="Participant_DataSubject_Art22" targetRef="ReceiveTask_ReceivePointOfView_Art22" />
+    <bpmn:messageFlow id="MessageFlow_ReceiveContest_Art22" sourceRef="Participant_DataSubject_Art22" targetRef="ReceiveTask_ReceiveContest_Art22" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_Controller_Art22" name="Handling automated individual decision-making under Article 22" isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 22 based on the English legal text of
+      Regulation (EU) 2016/679. The model first checks whether a planned decision is
+      based solely on automated processing, including profiling, and whether it
+      produces legal or similarly significant effects. The visible gateways preserve
+      the article's own cross-references to Article 9(1) and Article 9(2)(a) or (g),
+      and distinguish the three Article 22(2) exceptions. The Article 22(3)
+      safeguards for the contract and explicit-consent paths are modeled as explicit
+      controller obligations and data-subject interaction points.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_PlanDecision_Art22" name="Plan an automated decision">
+      <bpmn:outgoing>Flow_StartPlanDecision_To_GatewaySolelyAutomated_Art22</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_SolelyAutomated_Art22" name="Is the decision based solely on automated processing, including profiling?">
+      <bpmn:incoming>Flow_StartPlanDecision_To_GatewaySolelyAutomated_Art22</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySolelyAutomated_To_GatewaySignificantEffect_Art22</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySolelyAutomated_To_EndArticle22NotTriggered_Art22</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_SignificantEffect_Art22" name="Does the decision produce legal effects or similarly significantly affect the data subject?">
+      <bpmn:incoming>Flow_GatewaySolelyAutomated_To_GatewaySignificantEffect_Art22</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySignificantEffect_To_GatewayExceptionType_Art22</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySignificantEffect_To_EndArticle22NotTriggered_Art22</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_Article22NotTriggered_Art22" name="Article 22 restriction is not triggered">
+      <bpmn:incoming>Flow_GatewaySolelyAutomated_To_EndArticle22NotTriggered_Art22</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewaySignificantEffect_To_EndArticle22NotTriggered_Art22</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_ExceptionType_Art22" name="Does an Article 22(2) exception apply?">
+      <bpmn:incoming>Flow_GatewaySignificantEffect_To_GatewayExceptionType_Art22</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayExceptionType_To_TaskAssessContractNecessity_Art22</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayExceptionType_To_TaskAssessLegalAuthorisation_Art22</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayExceptionType_To_TaskAssessExplicitConsent_Art22</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayExceptionType_To_EndDoNotSubject_Art22</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_AssessContractNecessity_Art22" name="Assess contract necessity">
+      <bpmn:incoming>Flow_GatewayExceptionType_To_TaskAssessContractNecessity_Art22</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskAssessContractNecessity_To_GatewayContractNecessity_Art22</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_ContractNecessity_Art22" name="Is the decision necessary for entering into or performing a contract with the data subject?">
+      <bpmn:incoming>Flow_TaskAssessContractNecessity_To_GatewayContractNecessity_Art22</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayContractNecessity_To_GatewaySpecialCategories_Art22</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayContractNecessity_To_TaskAssessLegalAuthorisation_Art22</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_AssessLegalAuthorisation_Art22" name="Assess legal authorisation">
+      <bpmn:incoming>Flow_GatewayExceptionType_To_TaskAssessLegalAuthorisation_Art22</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayContractNecessity_To_TaskAssessLegalAuthorisation_Art22</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskAssessLegalAuthorisation_To_GatewayLegalAuthorisation_Art22</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_LegalAuthorisation_Art22" name="Is the decision authorised by Union or Member State law with suitable safeguards?">
+      <bpmn:incoming>Flow_TaskAssessLegalAuthorisation_To_GatewayLegalAuthorisation_Art22</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayLegalAuthorisation_To_GatewaySpecialCategories_Art22</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayLegalAuthorisation_To_TaskAssessExplicitConsent_Art22</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_AssessExplicitConsent_Art22" name="Assess explicit consent">
+      <bpmn:incoming>Flow_GatewayExceptionType_To_TaskAssessExplicitConsent_Art22</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayLegalAuthorisation_To_TaskAssessExplicitConsent_Art22</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskAssessExplicitConsent_To_GatewayExplicitConsent_Art22</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_ExplicitConsent_Art22" name="Is the decision based on the data subject's explicit consent?">
+      <bpmn:incoming>Flow_TaskAssessExplicitConsent_To_GatewayExplicitConsent_Art22</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayExplicitConsent_To_GatewaySpecialCategories_Art22</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayExplicitConsent_To_EndDoNotSubject_Art22</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_DoNotSubject_Art22" name="Do not subject the data subject to the automated decision">
+      <bpmn:incoming>Flow_GatewayExceptionType_To_EndDoNotSubject_Art22</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayExplicitConsent_To_EndDoNotSubject_Art22</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_SpecialCategories_Art22" name="Is the decision based on special categories of personal data under Article 9(1)?">
+      <bpmn:incoming>Flow_GatewayContractNecessity_To_GatewaySpecialCategories_Art22</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayLegalAuthorisation_To_GatewaySpecialCategories_Art22</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayExplicitConsent_To_GatewaySpecialCategories_Art22</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySpecialCategories_To_GatewayArticle9Exception_Art22</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySpecialCategories_To_GatewaySafeguardPath_Art22</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_Article9Exception_Art22" name="Does Article 9(2)(a) or Article 9(2)(g) apply and are suitable safeguards in place?">
+      <bpmn:incoming>Flow_GatewaySpecialCategories_To_GatewayArticle9Exception_Art22</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayArticle9Exception_To_GatewaySafeguardPath_Art22</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayArticle9Exception_To_EndDoNotUseSpecialCategories_Art22</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_DoNotUseSpecialCategories_Art22" name="Do not base the decision on special-category data">
+      <bpmn:incoming>Flow_GatewayArticle9Exception_To_EndDoNotUseSpecialCategories_Art22</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_SafeguardPath_Art22" name="Does the decision rely on contract necessity or explicit consent?">
+      <bpmn:incoming>Flow_GatewaySpecialCategories_To_GatewaySafeguardPath_Art22</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayArticle9Exception_To_GatewaySafeguardPath_Art22</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySafeguardPath_To_TaskImplementHumanIntervention_Art22</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySafeguardPath_To_TaskMakeAutomatedDecision_Art22</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ImplementHumanIntervention_Art22" name="Implement human intervention">
+      <bpmn:incoming>Flow_GatewaySafeguardPath_To_TaskImplementHumanIntervention_Art22</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskImplementHumanIntervention_To_TaskEnablePointOfView_Art22</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_EnablePointOfView_Art22" name="Enable point of view">
+      <bpmn:incoming>Flow_TaskImplementHumanIntervention_To_TaskEnablePointOfView_Art22</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskEnablePointOfView_To_TaskEnableContest_Art22</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_EnableContest_Art22" name="Enable contest">
+      <bpmn:incoming>Flow_TaskEnablePointOfView_To_TaskEnableContest_Art22</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskEnableContest_To_TaskMakeAutomatedDecision_Art22</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_MakeAutomatedDecision_Art22" name="Make automated decision">
+      <bpmn:incoming>Flow_GatewaySafeguardPath_To_TaskMakeAutomatedDecision_Art22</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskEnableContest_To_TaskMakeAutomatedDecision_Art22</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskMakeAutomatedDecision_To_SendTaskNotifyDecision_Art22</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="SendTask_NotifyDecision_Art22" name="Notify decision and safeguards">
+      <bpmn:incoming>Flow_TaskMakeAutomatedDecision_To_SendTaskNotifyDecision_Art22</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendTaskNotifyDecision_To_GatewayPointOfViewSubmitted_Art22</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:exclusiveGateway id="Gateway_PointOfViewSubmitted_Art22" name="Did the data subject express a point of view?">
+      <bpmn:incoming>Flow_SendTaskNotifyDecision_To_GatewayPointOfViewSubmitted_Art22</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayPointOfViewSubmitted_To_ReceiveTaskReceivePointOfView_Art22</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayPointOfViewSubmitted_To_GatewayDecisionContested_Art22</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceivePointOfView_Art22" name="Receive point of view">
+      <bpmn:incoming>Flow_GatewayPointOfViewSubmitted_To_ReceiveTaskReceivePointOfView_Art22</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveTaskReceivePointOfView_To_TaskReviewDecision_Art22</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:task id="Task_ReviewDecision_Art22" name="Review decision">
+      <bpmn:incoming>Flow_ReceiveTaskReceivePointOfView_To_TaskReviewDecision_Art22</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskReviewDecision_To_GatewayDecisionContested_Art22</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_DecisionContested_Art22" name="Did the data subject contest the decision?">
+      <bpmn:incoming>Flow_GatewayPointOfViewSubmitted_To_GatewayDecisionContested_Art22</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskReviewDecision_To_GatewayDecisionContested_Art22</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayDecisionContested_To_ReceiveTaskReceiveContest_Art22</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayDecisionContested_To_EndDecisionCompleted_Art22</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveContest_Art22" name="Receive contest">
+      <bpmn:incoming>Flow_GatewayDecisionContested_To_ReceiveTaskReceiveContest_Art22</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveTaskReceiveContest_To_TaskReconsiderDecision_Art22</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:task id="Task_ReconsiderDecision_Art22" name="Reconsider decision">
+      <bpmn:incoming>Flow_ReceiveTaskReceiveContest_To_TaskReconsiderDecision_Art22</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskReconsiderDecision_To_EndDecisionCompleted_Art22</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_DecisionCompleted_Art22" name="Article 22 decision handling is completed">
+      <bpmn:incoming>Flow_GatewayDecisionContested_To_EndDecisionCompleted_Art22</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskReconsiderDecision_To_EndDecisionCompleted_Art22</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartPlanDecision_To_GatewaySolelyAutomated_Art22" sourceRef="StartEvent_PlanDecision_Art22" targetRef="Gateway_SolelyAutomated_Art22" />
+    <bpmn:sequenceFlow id="Flow_GatewaySolelyAutomated_To_GatewaySignificantEffect_Art22" name="Yes" sourceRef="Gateway_SolelyAutomated_Art22" targetRef="Gateway_SignificantEffect_Art22" />
+    <bpmn:sequenceFlow id="Flow_GatewaySolelyAutomated_To_EndArticle22NotTriggered_Art22" name="No" sourceRef="Gateway_SolelyAutomated_Art22" targetRef="EndEvent_Article22NotTriggered_Art22" />
+    <bpmn:sequenceFlow id="Flow_GatewaySignificantEffect_To_GatewayExceptionType_Art22" name="Yes" sourceRef="Gateway_SignificantEffect_Art22" targetRef="Gateway_ExceptionType_Art22" />
+    <bpmn:sequenceFlow id="Flow_GatewaySignificantEffect_To_EndArticle22NotTriggered_Art22" name="No" sourceRef="Gateway_SignificantEffect_Art22" targetRef="EndEvent_Article22NotTriggered_Art22" />
+    <bpmn:sequenceFlow id="Flow_GatewayExceptionType_To_TaskAssessContractNecessity_Art22" name="Assess contract necessity" sourceRef="Gateway_ExceptionType_Art22" targetRef="Task_AssessContractNecessity_Art22" />
+    <bpmn:sequenceFlow id="Flow_GatewayExceptionType_To_TaskAssessLegalAuthorisation_Art22" name="Assess legal authorisation" sourceRef="Gateway_ExceptionType_Art22" targetRef="Task_AssessLegalAuthorisation_Art22" />
+    <bpmn:sequenceFlow id="Flow_GatewayExceptionType_To_TaskAssessExplicitConsent_Art22" name="Assess explicit consent" sourceRef="Gateway_ExceptionType_Art22" targetRef="Task_AssessExplicitConsent_Art22" />
+    <bpmn:sequenceFlow id="Flow_GatewayExceptionType_To_EndDoNotSubject_Art22" name="No exception applies" sourceRef="Gateway_ExceptionType_Art22" targetRef="EndEvent_DoNotSubject_Art22" />
+    <bpmn:sequenceFlow id="Flow_TaskAssessContractNecessity_To_GatewayContractNecessity_Art22" sourceRef="Task_AssessContractNecessity_Art22" targetRef="Gateway_ContractNecessity_Art22" />
+    <bpmn:sequenceFlow id="Flow_GatewayContractNecessity_To_GatewaySpecialCategories_Art22" name="Yes" sourceRef="Gateway_ContractNecessity_Art22" targetRef="Gateway_SpecialCategories_Art22" />
+    <bpmn:sequenceFlow id="Flow_GatewayContractNecessity_To_TaskAssessLegalAuthorisation_Art22" name="No" sourceRef="Gateway_ContractNecessity_Art22" targetRef="Task_AssessLegalAuthorisation_Art22" />
+    <bpmn:sequenceFlow id="Flow_TaskAssessLegalAuthorisation_To_GatewayLegalAuthorisation_Art22" sourceRef="Task_AssessLegalAuthorisation_Art22" targetRef="Gateway_LegalAuthorisation_Art22" />
+    <bpmn:sequenceFlow id="Flow_GatewayLegalAuthorisation_To_GatewaySpecialCategories_Art22" name="Yes" sourceRef="Gateway_LegalAuthorisation_Art22" targetRef="Gateway_SpecialCategories_Art22" />
+    <bpmn:sequenceFlow id="Flow_GatewayLegalAuthorisation_To_TaskAssessExplicitConsent_Art22" name="No" sourceRef="Gateway_LegalAuthorisation_Art22" targetRef="Task_AssessExplicitConsent_Art22" />
+    <bpmn:sequenceFlow id="Flow_TaskAssessExplicitConsent_To_GatewayExplicitConsent_Art22" sourceRef="Task_AssessExplicitConsent_Art22" targetRef="Gateway_ExplicitConsent_Art22" />
+    <bpmn:sequenceFlow id="Flow_GatewayExplicitConsent_To_GatewaySpecialCategories_Art22" name="Yes" sourceRef="Gateway_ExplicitConsent_Art22" targetRef="Gateway_SpecialCategories_Art22" />
+    <bpmn:sequenceFlow id="Flow_GatewayExplicitConsent_To_EndDoNotSubject_Art22" name="No" sourceRef="Gateway_ExplicitConsent_Art22" targetRef="EndEvent_DoNotSubject_Art22" />
+    <bpmn:sequenceFlow id="Flow_GatewaySpecialCategories_To_GatewayArticle9Exception_Art22" name="Yes" sourceRef="Gateway_SpecialCategories_Art22" targetRef="Gateway_Article9Exception_Art22" />
+    <bpmn:sequenceFlow id="Flow_GatewaySpecialCategories_To_GatewaySafeguardPath_Art22" name="No" sourceRef="Gateway_SpecialCategories_Art22" targetRef="Gateway_SafeguardPath_Art22" />
+    <bpmn:sequenceFlow id="Flow_GatewayArticle9Exception_To_GatewaySafeguardPath_Art22" name="Yes" sourceRef="Gateway_Article9Exception_Art22" targetRef="Gateway_SafeguardPath_Art22" />
+    <bpmn:sequenceFlow id="Flow_GatewayArticle9Exception_To_EndDoNotUseSpecialCategories_Art22" name="No" sourceRef="Gateway_Article9Exception_Art22" targetRef="EndEvent_DoNotUseSpecialCategories_Art22" />
+    <bpmn:sequenceFlow id="Flow_GatewaySafeguardPath_To_TaskImplementHumanIntervention_Art22" name="Yes" sourceRef="Gateway_SafeguardPath_Art22" targetRef="Task_ImplementHumanIntervention_Art22" />
+    <bpmn:sequenceFlow id="Flow_GatewaySafeguardPath_To_TaskMakeAutomatedDecision_Art22" name="No" sourceRef="Gateway_SafeguardPath_Art22" targetRef="Task_MakeAutomatedDecision_Art22" />
+    <bpmn:sequenceFlow id="Flow_TaskImplementHumanIntervention_To_TaskEnablePointOfView_Art22" sourceRef="Task_ImplementHumanIntervention_Art22" targetRef="Task_EnablePointOfView_Art22" />
+    <bpmn:sequenceFlow id="Flow_TaskEnablePointOfView_To_TaskEnableContest_Art22" sourceRef="Task_EnablePointOfView_Art22" targetRef="Task_EnableContest_Art22" />
+    <bpmn:sequenceFlow id="Flow_TaskEnableContest_To_TaskMakeAutomatedDecision_Art22" sourceRef="Task_EnableContest_Art22" targetRef="Task_MakeAutomatedDecision_Art22" />
+    <bpmn:sequenceFlow id="Flow_TaskMakeAutomatedDecision_To_SendTaskNotifyDecision_Art22" sourceRef="Task_MakeAutomatedDecision_Art22" targetRef="SendTask_NotifyDecision_Art22" />
+    <bpmn:sequenceFlow id="Flow_SendTaskNotifyDecision_To_GatewayPointOfViewSubmitted_Art22" sourceRef="SendTask_NotifyDecision_Art22" targetRef="Gateway_PointOfViewSubmitted_Art22" />
+    <bpmn:sequenceFlow id="Flow_GatewayPointOfViewSubmitted_To_ReceiveTaskReceivePointOfView_Art22" name="Yes" sourceRef="Gateway_PointOfViewSubmitted_Art22" targetRef="ReceiveTask_ReceivePointOfView_Art22" />
+    <bpmn:sequenceFlow id="Flow_GatewayPointOfViewSubmitted_To_GatewayDecisionContested_Art22" name="No" sourceRef="Gateway_PointOfViewSubmitted_Art22" targetRef="Gateway_DecisionContested_Art22" />
+    <bpmn:sequenceFlow id="Flow_ReceiveTaskReceivePointOfView_To_TaskReviewDecision_Art22" sourceRef="ReceiveTask_ReceivePointOfView_Art22" targetRef="Task_ReviewDecision_Art22" />
+    <bpmn:sequenceFlow id="Flow_TaskReviewDecision_To_GatewayDecisionContested_Art22" sourceRef="Task_ReviewDecision_Art22" targetRef="Gateway_DecisionContested_Art22" />
+    <bpmn:sequenceFlow id="Flow_GatewayDecisionContested_To_ReceiveTaskReceiveContest_Art22" name="Yes" sourceRef="Gateway_DecisionContested_Art22" targetRef="ReceiveTask_ReceiveContest_Art22" />
+    <bpmn:sequenceFlow id="Flow_GatewayDecisionContested_To_EndDecisionCompleted_Art22" name="No" sourceRef="Gateway_DecisionContested_Art22" targetRef="EndEvent_DecisionCompleted_Art22" />
+    <bpmn:sequenceFlow id="Flow_ReceiveTaskReceiveContest_To_TaskReconsiderDecision_Art22" sourceRef="ReceiveTask_ReceiveContest_Art22" targetRef="Task_ReconsiderDecision_Art22" />
+    <bpmn:sequenceFlow id="Flow_TaskReconsiderDecision_To_EndDecisionCompleted_Art22" sourceRef="Task_ReconsiderDecision_Art22" targetRef="EndEvent_DecisionCompleted_Art22" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art22_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art22_Reviewed" bpmnElement="Collaboration_Art22_Reviewed">
+      <bpmndi:BPMNShape id="Participant_Controller_Art22_di" bpmnElement="Participant_Controller_Art22" isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="8200" height="1120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_DataSubject_Art22_di" bpmnElement="Participant_DataSubject_Art22" isHorizontal="true">
+        <dc:Bounds x="60" y="1200" width="8200" height="120" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_PlanDecision_Art22_di" bpmnElement="StartEvent_PlanDecision_Art22">
+        <dc:Bounds x="120" y="272" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SolelyAutomated_Art22_di" bpmnElement="Gateway_SolelyAutomated_Art22" isMarkerVisible="true">
+        <dc:Bounds x="260" y="265" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SignificantEffect_Art22_di" bpmnElement="Gateway_SignificantEffect_Art22" isMarkerVisible="true">
+        <dc:Bounds x="440" y="265" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Article22NotTriggered_Art22_di" bpmnElement="EndEvent_Article22NotTriggered_Art22">
+        <dc:Bounds x="562" y="502" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ExceptionType_Art22_di" bpmnElement="Gateway_ExceptionType_Art22" isMarkerVisible="true">
+        <dc:Bounds x="640" y="265" width="50" height="50" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Task_AssessContractNecessity_Art22_di" bpmnElement="Task_AssessContractNecessity_Art22">
+        <dc:Bounds x="860" y="80" width="240" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ContractNecessity_Art22_di" bpmnElement="Gateway_ContractNecessity_Art22" isMarkerVisible="true">
+        <dc:Bounds x="1180" y="95" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessLegalAuthorisation_Art22_di" bpmnElement="Task_AssessLegalAuthorisation_Art22">
+        <dc:Bounds x="1440" y="240" width="240" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_LegalAuthorisation_Art22_di" bpmnElement="Gateway_LegalAuthorisation_Art22" isMarkerVisible="true">
+        <dc:Bounds x="1760" y="255" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessExplicitConsent_Art22_di" bpmnElement="Task_AssessExplicitConsent_Art22">
+        <dc:Bounds x="2020" y="400" width="240" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ExplicitConsent_Art22_di" bpmnElement="Gateway_ExplicitConsent_Art22" isMarkerVisible="true">
+        <dc:Bounds x="2340" y="415" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_DoNotSubject_Art22_di" bpmnElement="EndEvent_DoNotSubject_Art22">
+        <dc:Bounds x="2502" y="682" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Gateway_SpecialCategories_Art22_di" bpmnElement="Gateway_SpecialCategories_Art22" isMarkerVisible="true">
+        <dc:Bounds x="2680" y="255" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Article9Exception_Art22_di" bpmnElement="Gateway_Article9Exception_Art22" isMarkerVisible="true">
+        <dc:Bounds x="2900" y="95" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_DoNotUseSpecialCategories_Art22_di" bpmnElement="EndEvent_DoNotUseSpecialCategories_Art22">
+        <dc:Bounds x="3082" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SafeguardPath_Art22_di" bpmnElement="Gateway_SafeguardPath_Art22" isMarkerVisible="true">
+        <dc:Bounds x="3180" y="255" width="50" height="50" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Task_ImplementHumanIntervention_Art22_di" bpmnElement="Task_ImplementHumanIntervention_Art22">
+        <dc:Bounds x="3420" y="80" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_EnablePointOfView_Art22_di" bpmnElement="Task_EnablePointOfView_Art22">
+        <dc:Bounds x="3720" y="80" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_EnableContest_Art22_di" bpmnElement="Task_EnableContest_Art22">
+        <dc:Bounds x="4020" y="80" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_MakeAutomatedDecision_Art22_di" bpmnElement="Task_MakeAutomatedDecision_Art22">
+        <dc:Bounds x="4340" y="240" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_NotifyDecision_Art22_di" bpmnElement="SendTask_NotifyDecision_Art22">
+        <dc:Bounds x="4680" y="240" width="240" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_PointOfViewSubmitted_Art22_di" bpmnElement="Gateway_PointOfViewSubmitted_Art22" isMarkerVisible="true">
+        <dc:Bounds x="5040" y="255" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceivePointOfView_Art22_di" bpmnElement="ReceiveTask_ReceivePointOfView_Art22">
+        <dc:Bounds x="5220" y="100" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReviewDecision_Art22_di" bpmnElement="Task_ReviewDecision_Art22">
+        <dc:Bounds x="5540" y="100" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_DecisionContested_Art22_di" bpmnElement="Gateway_DecisionContested_Art22" isMarkerVisible="true">
+        <dc:Bounds x="5860" y="255" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveContest_Art22_di" bpmnElement="ReceiveTask_ReceiveContest_Art22">
+        <dc:Bounds x="6040" y="420" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReconsiderDecision_Art22_di" bpmnElement="Task_ReconsiderDecision_Art22">
+        <dc:Bounds x="6360" y="420" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_DecisionCompleted_Art22_di" bpmnElement="EndEvent_DecisionCompleted_Art22">
+        <dc:Bounds x="6722" y="272" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_StartPlanDecision_To_GatewaySolelyAutomated_Art22_di" bpmnElement="Flow_StartPlanDecision_To_GatewaySolelyAutomated_Art22">
+        <di:waypoint x="156" y="290" />
+        <di:waypoint x="260" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySolelyAutomated_To_GatewaySignificantEffect_Art22_di" bpmnElement="Flow_GatewaySolelyAutomated_To_GatewaySignificantEffect_Art22">
+        <di:waypoint x="310" y="290" />
+        <di:waypoint x="440" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySolelyAutomated_To_EndArticle22NotTriggered_Art22_di" bpmnElement="Flow_GatewaySolelyAutomated_To_EndArticle22NotTriggered_Art22">
+        <di:waypoint x="285" y="315" />
+        <di:waypoint x="285" y="520" />
+        <di:waypoint x="562" y="520" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySignificantEffect_To_GatewayExceptionType_Art22_di" bpmnElement="Flow_GatewaySignificantEffect_To_GatewayExceptionType_Art22">
+        <di:waypoint x="490" y="290" />
+        <di:waypoint x="640" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySignificantEffect_To_EndArticle22NotTriggered_Art22_di" bpmnElement="Flow_GatewaySignificantEffect_To_EndArticle22NotTriggered_Art22">
+        <di:waypoint x="465" y="315" />
+        <di:waypoint x="465" y="520" />
+        <di:waypoint x="562" y="520" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExceptionType_To_TaskAssessContractNecessity_Art22_di" bpmnElement="Flow_GatewayExceptionType_To_TaskAssessContractNecessity_Art22">
+        <di:waypoint x="665" y="265" />
+        <di:waypoint x="665" y="120" />
+        <di:waypoint x="860" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExceptionType_To_TaskAssessLegalAuthorisation_Art22_di" bpmnElement="Flow_GatewayExceptionType_To_TaskAssessLegalAuthorisation_Art22">
+        <di:waypoint x="690" y="290" />
+        <di:waypoint x="1440" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExceptionType_To_TaskAssessExplicitConsent_Art22_di" bpmnElement="Flow_GatewayExceptionType_To_TaskAssessExplicitConsent_Art22">
+        <di:waypoint x="665" y="315" />
+        <di:waypoint x="665" y="440" />
+        <di:waypoint x="2020" y="440" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExceptionType_To_EndDoNotSubject_Art22_di" bpmnElement="Flow_GatewayExceptionType_To_EndDoNotSubject_Art22">
+        <di:waypoint x="665" y="315" />
+        <di:waypoint x="665" y="700" />
+        <di:waypoint x="2502" y="700" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskAssessContractNecessity_To_GatewayContractNecessity_Art22_di" bpmnElement="Flow_TaskAssessContractNecessity_To_GatewayContractNecessity_Art22">
+        <di:waypoint x="1100" y="120" />
+        <di:waypoint x="1180" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayContractNecessity_To_GatewaySpecialCategories_Art22_di" bpmnElement="Flow_GatewayContractNecessity_To_GatewaySpecialCategories_Art22">
+        <di:waypoint x="1230" y="120" />
+        <di:waypoint x="1250" y="120" />
+        <di:waypoint x="1250" y="290" />
+        <di:waypoint x="2680" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayContractNecessity_To_TaskAssessLegalAuthorisation_Art22_di" bpmnElement="Flow_GatewayContractNecessity_To_TaskAssessLegalAuthorisation_Art22">
+        <di:waypoint x="1205" y="145" />
+        <di:waypoint x="1205" y="280" />
+        <di:waypoint x="1440" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskAssessLegalAuthorisation_To_GatewayLegalAuthorisation_Art22_di" bpmnElement="Flow_TaskAssessLegalAuthorisation_To_GatewayLegalAuthorisation_Art22">
+        <di:waypoint x="1680" y="280" />
+        <di:waypoint x="1760" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayLegalAuthorisation_To_GatewaySpecialCategories_Art22_di" bpmnElement="Flow_GatewayLegalAuthorisation_To_GatewaySpecialCategories_Art22">
+        <di:waypoint x="1810" y="280" />
+        <di:waypoint x="2680" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayLegalAuthorisation_To_TaskAssessExplicitConsent_Art22_di" bpmnElement="Flow_GatewayLegalAuthorisation_To_TaskAssessExplicitConsent_Art22">
+        <di:waypoint x="1785" y="305" />
+        <di:waypoint x="1785" y="440" />
+        <di:waypoint x="2020" y="440" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskAssessExplicitConsent_To_GatewayExplicitConsent_Art22_di" bpmnElement="Flow_TaskAssessExplicitConsent_To_GatewayExplicitConsent_Art22">
+        <di:waypoint x="2260" y="440" />
+        <di:waypoint x="2340" y="440" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExplicitConsent_To_GatewaySpecialCategories_Art22_di" bpmnElement="Flow_GatewayExplicitConsent_To_GatewaySpecialCategories_Art22">
+        <di:waypoint x="2365" y="415" />
+        <di:waypoint x="2365" y="290" />
+        <di:waypoint x="2680" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExplicitConsent_To_EndDoNotSubject_Art22_di" bpmnElement="Flow_GatewayExplicitConsent_To_EndDoNotSubject_Art22">
+        <di:waypoint x="2365" y="465" />
+        <di:waypoint x="2365" y="700" />
+        <di:waypoint x="2502" y="700" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySpecialCategories_To_GatewayArticle9Exception_Art22_di" bpmnElement="Flow_GatewaySpecialCategories_To_GatewayArticle9Exception_Art22">
+        <di:waypoint x="2705" y="255" />
+        <di:waypoint x="2705" y="120" />
+        <di:waypoint x="2900" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySpecialCategories_To_GatewaySafeguardPath_Art22_di" bpmnElement="Flow_GatewaySpecialCategories_To_GatewaySafeguardPath_Art22">
+        <di:waypoint x="2730" y="290" />
+        <di:waypoint x="3180" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayArticle9Exception_To_GatewaySafeguardPath_Art22_di" bpmnElement="Flow_GatewayArticle9Exception_To_GatewaySafeguardPath_Art22">
+        <di:waypoint x="2950" y="120" />
+        <di:waypoint x="3000" y="120" />
+        <di:waypoint x="3000" y="290" />
+        <di:waypoint x="3180" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayArticle9Exception_To_EndDoNotUseSpecialCategories_Art22_di" bpmnElement="Flow_GatewayArticle9Exception_To_EndDoNotUseSpecialCategories_Art22">
+        <di:waypoint x="2950" y="120" />
+        <di:waypoint x="3082" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySafeguardPath_To_TaskImplementHumanIntervention_Art22_di" bpmnElement="Flow_GatewaySafeguardPath_To_TaskImplementHumanIntervention_Art22">
+        <di:waypoint x="3205" y="255" />
+        <di:waypoint x="3205" y="120" />
+        <di:waypoint x="3420" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySafeguardPath_To_TaskMakeAutomatedDecision_Art22_di" bpmnElement="Flow_GatewaySafeguardPath_To_TaskMakeAutomatedDecision_Art22">
+        <di:waypoint x="3230" y="290" />
+        <di:waypoint x="4340" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskImplementHumanIntervention_To_TaskEnablePointOfView_Art22_di" bpmnElement="Flow_TaskImplementHumanIntervention_To_TaskEnablePointOfView_Art22">
+        <di:waypoint x="3640" y="120" />
+        <di:waypoint x="3720" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskEnablePointOfView_To_TaskEnableContest_Art22_di" bpmnElement="Flow_TaskEnablePointOfView_To_TaskEnableContest_Art22">
+        <di:waypoint x="3940" y="120" />
+        <di:waypoint x="4020" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskEnableContest_To_TaskMakeAutomatedDecision_Art22_di" bpmnElement="Flow_TaskEnableContest_To_TaskMakeAutomatedDecision_Art22">
+        <di:waypoint x="4240" y="120" />
+        <di:waypoint x="4280" y="120" />
+        <di:waypoint x="4280" y="280" />
+        <di:waypoint x="4340" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskMakeAutomatedDecision_To_SendTaskNotifyDecision_Art22_di" bpmnElement="Flow_TaskMakeAutomatedDecision_To_SendTaskNotifyDecision_Art22">
+        <di:waypoint x="4560" y="280" />
+        <di:waypoint x="4680" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendTaskNotifyDecision_To_GatewayPointOfViewSubmitted_Art22_di" bpmnElement="Flow_SendTaskNotifyDecision_To_GatewayPointOfViewSubmitted_Art22">
+        <di:waypoint x="4920" y="280" />
+        <di:waypoint x="5040" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPointOfViewSubmitted_To_ReceiveTaskReceivePointOfView_Art22_di" bpmnElement="Flow_GatewayPointOfViewSubmitted_To_ReceiveTaskReceivePointOfView_Art22">
+        <di:waypoint x="5065" y="255" />
+        <di:waypoint x="5065" y="140" />
+        <di:waypoint x="5220" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPointOfViewSubmitted_To_GatewayDecisionContested_Art22_di" bpmnElement="Flow_GatewayPointOfViewSubmitted_To_GatewayDecisionContested_Art22">
+        <di:waypoint x="5090" y="280" />
+        <di:waypoint x="5860" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveTaskReceivePointOfView_To_TaskReviewDecision_Art22_di" bpmnElement="Flow_ReceiveTaskReceivePointOfView_To_TaskReviewDecision_Art22">
+        <di:waypoint x="5440" y="140" />
+        <di:waypoint x="5540" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskReviewDecision_To_GatewayDecisionContested_Art22_di" bpmnElement="Flow_TaskReviewDecision_To_GatewayDecisionContested_Art22">
+        <di:waypoint x="5720" y="140" />
+        <di:waypoint x="5780" y="140" />
+        <di:waypoint x="5780" y="280" />
+        <di:waypoint x="5860" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayDecisionContested_To_ReceiveTaskReceiveContest_Art22_di" bpmnElement="Flow_GatewayDecisionContested_To_ReceiveTaskReceiveContest_Art22">
+        <di:waypoint x="5885" y="305" />
+        <di:waypoint x="5885" y="460" />
+        <di:waypoint x="6040" y="460" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayDecisionContested_To_EndDecisionCompleted_Art22_di" bpmnElement="Flow_GatewayDecisionContested_To_EndDecisionCompleted_Art22">
+        <di:waypoint x="5910" y="280" />
+        <di:waypoint x="6722" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveTaskReceiveContest_To_TaskReconsiderDecision_Art22_di" bpmnElement="Flow_ReceiveTaskReceiveContest_To_TaskReconsiderDecision_Art22">
+        <di:waypoint x="6240" y="460" />
+        <di:waypoint x="6360" y="460" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskReconsiderDecision_To_EndDecisionCompleted_Art22_di" bpmnElement="Flow_TaskReconsiderDecision_To_EndDecisionCompleted_Art22">
+        <di:waypoint x="6550" y="460" />
+        <di:waypoint x="6640" y="460" />
+        <di:waypoint x="6640" y="290" />
+        <di:waypoint x="6722" y="290" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_NotifyDecision_Art22_di" bpmnElement="MessageFlow_NotifyDecision_Art22">
+        <di:waypoint x="4800" y="320" />
+        <di:waypoint x="4800" y="1200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ReceivePointOfView_Art22_di" bpmnElement="MessageFlow_ReceivePointOfView_Art22">
+        <di:waypoint x="5330" y="1200" />
+        <di:waypoint x="5330" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ReceiveContest_Art22_di" bpmnElement="MessageFlow_ReceiveContest_Art22">
+        <di:waypoint x="6140" y="1200" />
+        <di:waypoint x="6140" y="500" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,0 +1,734 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art30_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art30_Reviewed">
+    <bpmn:participant id="Participant_Controller_Art30"
+                      name="Controller"
+                      processRef="Process_Controller_Art30" />
+    <bpmn:participant id="Participant_Processor_Art30"
+                      name="Processor"
+                      processRef="Process_Processor_Art30" />
+    <bpmn:participant id="Participant_SupervisoryAuthority_Art30"
+                      name="Supervisory Authority" />
+
+    <bpmn:messageFlow id="MessageFlow_SARequestControllerRecord_Art30"
+                      sourceRef="Participant_SupervisoryAuthority_Art30"
+                      targetRef="ReceiveTask_ReceiveControllerRequest_Art30" />
+    <bpmn:messageFlow id="MessageFlow_ProvideControllerRecord_Art30"
+                      sourceRef="SendTask_ProvideControllerRecord_Art30"
+                      targetRef="Participant_SupervisoryAuthority_Art30" />
+    <bpmn:messageFlow id="MessageFlow_SARequestProcessorRecord_Art30"
+                      sourceRef="Participant_SupervisoryAuthority_Art30"
+                      targetRef="ReceiveTask_ReceiveProcessorRequest_Art30" />
+    <bpmn:messageFlow id="MessageFlow_ProvideProcessorRecord_Art30"
+                      sourceRef="SendTask_ProvideProcessorRecord_Art30"
+                      targetRef="Participant_SupervisoryAuthority_Art30" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_Controller_Art30"
+                name="Maintaining controller records under Article 30"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 30 based on the real English legal text
+      of Regulation (EU) 2016/679. This controller-side process captures the
+      Article 30(1) record content, the Article 30(3) writing-or-electronic-form
+      requirement, the Article 30(4) availability duty on request, and the
+      Article 30(5) small-organisation exemption with its three exceptions.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_CarryOutControllerProcessing_Art30"
+                     name="Carry out processing">
+      <bpmn:outgoing>Flow_StartControllerProcessing_To_TaskAssessControllerDuty_Art30</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_AssessControllerRecordDuty_Art30"
+               name="Assess controller record duty">
+      <bpmn:incoming>Flow_StartControllerProcessing_To_TaskAssessControllerDuty_Art30</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskAssessControllerDuty_To_GatewayControllerFewEmployees_Art30</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_ControllerFewEmployees_Art30"
+                           name="Does the organisation employ fewer than 250 persons?">
+      <bpmn:incoming>Flow_TaskAssessControllerDuty_To_GatewayControllerFewEmployees_Art30</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayControllerFewEmployees_To_GatewayControllerExceptionCriteria_Art30</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayControllerFewEmployees_To_TaskSetUpControllerRecord_Art30</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_ControllerExceptionCriteria_Art30"
+                           name="Is the processing likely to risk rights, not occasional, or Article 9(1)/10 data involved?">
+      <bpmn:incoming>Flow_GatewayControllerFewEmployees_To_GatewayControllerExceptionCriteria_Art30</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayControllerExceptionCriteria_To_TaskSetUpControllerRecord_Art30</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayControllerExceptionCriteria_To_EndNoControllerRecordDuty_Art30</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_NoControllerRecordDuty_Art30"
+                   name="No controller record duty">
+      <bpmn:incoming>Flow_GatewayControllerExceptionCriteria_To_EndNoControllerRecordDuty_Art30</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:task id="Task_SetUpControllerRecord_Art30"
+               name="Set up controller record">
+      <bpmn:incoming>Flow_GatewayControllerFewEmployees_To_TaskSetUpControllerRecord_Art30</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayControllerExceptionCriteria_To_TaskSetUpControllerRecord_Art30</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskSetUpControllerRecord_To_GatewaySplitControllerContents_Art30</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_SplitControllerContents_Art30">
+      <bpmn:incoming>Flow_TaskSetUpControllerRecord_To_GatewaySplitControllerContents_Art30</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplitControllerContents_To_TaskRecordControllerDetails_Art30</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitControllerContents_To_TaskRecordProcessingPurposes_Art30</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitControllerContents_To_TaskRecordDataCategories_Art30</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitControllerContents_To_TaskRecordRecipientCategories_Art30</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitControllerContents_To_TaskRecordTransferDetails_Art30</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitControllerContents_To_TaskRecordErasurePeriods_Art30</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitControllerContents_To_TaskRecordControllerSecurityMeasures_Art30</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_RecordControllerDetails_Art30"
+               name="Record controller-side details">
+      <bpmn:incoming>Flow_GatewaySplitControllerContents_To_TaskRecordControllerDetails_Art30</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskRecordControllerDetails_To_GatewayJoinControllerContents_Art30</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_RecordProcessingPurposes_Art30"
+               name="Record processing purposes">
+      <bpmn:incoming>Flow_GatewaySplitControllerContents_To_TaskRecordProcessingPurposes_Art30</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskRecordProcessingPurposes_To_GatewayJoinControllerContents_Art30</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_RecordDataCategories_Art30"
+               name="Record data-subject and data categories">
+      <bpmn:incoming>Flow_GatewaySplitControllerContents_To_TaskRecordDataCategories_Art30</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskRecordDataCategories_To_GatewayJoinControllerContents_Art30</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_RecordRecipientCategories_Art30"
+               name="Record recipient categories">
+      <bpmn:incoming>Flow_GatewaySplitControllerContents_To_TaskRecordRecipientCategories_Art30</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskRecordRecipientCategories_To_GatewayJoinControllerContents_Art30</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_RecordTransferDetails_Art30"
+               name="Record transfers and Article 49(1) safeguards">
+      <bpmn:incoming>Flow_GatewaySplitControllerContents_To_TaskRecordTransferDetails_Art30</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskRecordTransferDetails_To_GatewayJoinControllerContents_Art30</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_RecordErasurePeriods_Art30"
+               name="Record erasure periods">
+      <bpmn:incoming>Flow_GatewaySplitControllerContents_To_TaskRecordErasurePeriods_Art30</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskRecordErasurePeriods_To_GatewayJoinControllerContents_Art30</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_RecordControllerSecurityMeasures_Art30"
+               name="Record Article 32(1) security measures">
+      <bpmn:incoming>Flow_GatewaySplitControllerContents_To_TaskRecordControllerSecurityMeasures_Art30</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskRecordControllerSecurityMeasures_To_GatewayJoinControllerContents_Art30</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_JoinControllerContents_Art30">
+      <bpmn:incoming>Flow_TaskRecordControllerDetails_To_GatewayJoinControllerContents_Art30</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskRecordProcessingPurposes_To_GatewayJoinControllerContents_Art30</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskRecordDataCategories_To_GatewayJoinControllerContents_Art30</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskRecordRecipientCategories_To_GatewayJoinControllerContents_Art30</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskRecordTransferDetails_To_GatewayJoinControllerContents_Art30</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskRecordErasurePeriods_To_GatewayJoinControllerContents_Art30</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskRecordControllerSecurityMeasures_To_GatewayJoinControllerContents_Art30</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinControllerContents_To_TaskKeepControllerRecordInWriting_Art30</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_KeepControllerRecordInWriting_Art30"
+               name="Keep controller record in writing/electronic form">
+      <bpmn:incoming>Flow_GatewayJoinControllerContents_To_TaskKeepControllerRecordInWriting_Art30</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskKeepControllerRecordInWriting_To_GatewayControllerRequestReceived_Art30</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_ControllerRequestReceived_Art30"
+                           name="Did the supervisory authority request the record?">
+      <bpmn:incoming>Flow_TaskKeepControllerRecordInWriting_To_GatewayControllerRequestReceived_Art30</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayControllerRequestReceived_To_ReceiveTaskReceiveControllerRequest_Art30</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayControllerRequestReceived_To_EndKeepControllerRecordAvailable_Art30</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveControllerRequest_Art30"
+                      name="Receive authority request">
+      <bpmn:incoming>Flow_GatewayControllerRequestReceived_To_ReceiveTaskReceiveControllerRequest_Art30</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveTaskReceiveControllerRequest_To_SendTaskProvideControllerRecord_Art30</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:sendTask id="SendTask_ProvideControllerRecord_Art30"
+                   name="Provide controller record">
+      <bpmn:incoming>Flow_ReceiveTaskReceiveControllerRequest_To_SendTaskProvideControllerRecord_Art30</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendTaskProvideControllerRecord_To_EndControllerRecordAvailable_Art30</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_KeepControllerRecordAvailable_Art30"
+                   name="Keep controller record available">
+      <bpmn:incoming>Flow_GatewayControllerRequestReceived_To_EndKeepControllerRecordAvailable_Art30</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_ControllerRecordAvailable_Art30"
+                   name="Controller record available to authority">
+      <bpmn:incoming>Flow_SendTaskProvideControllerRecord_To_EndControllerRecordAvailable_Art30</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartControllerProcessing_To_TaskAssessControllerDuty_Art30" sourceRef="StartEvent_CarryOutControllerProcessing_Art30" targetRef="Task_AssessControllerRecordDuty_Art30" />
+    <bpmn:sequenceFlow id="Flow_TaskAssessControllerDuty_To_GatewayControllerFewEmployees_Art30" sourceRef="Task_AssessControllerRecordDuty_Art30" targetRef="Gateway_ControllerFewEmployees_Art30" />
+    <bpmn:sequenceFlow id="Flow_GatewayControllerFewEmployees_To_GatewayControllerExceptionCriteria_Art30" name="Yes" sourceRef="Gateway_ControllerFewEmployees_Art30" targetRef="Gateway_ControllerExceptionCriteria_Art30" />
+    <bpmn:sequenceFlow id="Flow_GatewayControllerFewEmployees_To_TaskSetUpControllerRecord_Art30" name="No" sourceRef="Gateway_ControllerFewEmployees_Art30" targetRef="Task_SetUpControllerRecord_Art30" />
+    <bpmn:sequenceFlow id="Flow_GatewayControllerExceptionCriteria_To_TaskSetUpControllerRecord_Art30" name="Yes" sourceRef="Gateway_ControllerExceptionCriteria_Art30" targetRef="Task_SetUpControllerRecord_Art30" />
+    <bpmn:sequenceFlow id="Flow_GatewayControllerExceptionCriteria_To_EndNoControllerRecordDuty_Art30" name="No" sourceRef="Gateway_ControllerExceptionCriteria_Art30" targetRef="EndEvent_NoControllerRecordDuty_Art30" />
+    <bpmn:sequenceFlow id="Flow_TaskSetUpControllerRecord_To_GatewaySplitControllerContents_Art30" sourceRef="Task_SetUpControllerRecord_Art30" targetRef="Gateway_SplitControllerContents_Art30" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitControllerContents_To_TaskRecordControllerDetails_Art30" sourceRef="Gateway_SplitControllerContents_Art30" targetRef="Task_RecordControllerDetails_Art30" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitControllerContents_To_TaskRecordProcessingPurposes_Art30" sourceRef="Gateway_SplitControllerContents_Art30" targetRef="Task_RecordProcessingPurposes_Art30" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitControllerContents_To_TaskRecordDataCategories_Art30" sourceRef="Gateway_SplitControllerContents_Art30" targetRef="Task_RecordDataCategories_Art30" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitControllerContents_To_TaskRecordRecipientCategories_Art30" sourceRef="Gateway_SplitControllerContents_Art30" targetRef="Task_RecordRecipientCategories_Art30" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitControllerContents_To_TaskRecordTransferDetails_Art30" sourceRef="Gateway_SplitControllerContents_Art30" targetRef="Task_RecordTransferDetails_Art30" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitControllerContents_To_TaskRecordErasurePeriods_Art30" sourceRef="Gateway_SplitControllerContents_Art30" targetRef="Task_RecordErasurePeriods_Art30" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitControllerContents_To_TaskRecordControllerSecurityMeasures_Art30" sourceRef="Gateway_SplitControllerContents_Art30" targetRef="Task_RecordControllerSecurityMeasures_Art30" />
+    <bpmn:sequenceFlow id="Flow_TaskRecordControllerDetails_To_GatewayJoinControllerContents_Art30" sourceRef="Task_RecordControllerDetails_Art30" targetRef="Gateway_JoinControllerContents_Art30" />
+    <bpmn:sequenceFlow id="Flow_TaskRecordProcessingPurposes_To_GatewayJoinControllerContents_Art30" sourceRef="Task_RecordProcessingPurposes_Art30" targetRef="Gateway_JoinControllerContents_Art30" />
+    <bpmn:sequenceFlow id="Flow_TaskRecordDataCategories_To_GatewayJoinControllerContents_Art30" sourceRef="Task_RecordDataCategories_Art30" targetRef="Gateway_JoinControllerContents_Art30" />
+    <bpmn:sequenceFlow id="Flow_TaskRecordRecipientCategories_To_GatewayJoinControllerContents_Art30" sourceRef="Task_RecordRecipientCategories_Art30" targetRef="Gateway_JoinControllerContents_Art30" />
+    <bpmn:sequenceFlow id="Flow_TaskRecordTransferDetails_To_GatewayJoinControllerContents_Art30" sourceRef="Task_RecordTransferDetails_Art30" targetRef="Gateway_JoinControllerContents_Art30" />
+    <bpmn:sequenceFlow id="Flow_TaskRecordErasurePeriods_To_GatewayJoinControllerContents_Art30" sourceRef="Task_RecordErasurePeriods_Art30" targetRef="Gateway_JoinControllerContents_Art30" />
+    <bpmn:sequenceFlow id="Flow_TaskRecordControllerSecurityMeasures_To_GatewayJoinControllerContents_Art30" sourceRef="Task_RecordControllerSecurityMeasures_Art30" targetRef="Gateway_JoinControllerContents_Art30" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoinControllerContents_To_TaskKeepControllerRecordInWriting_Art30" sourceRef="Gateway_JoinControllerContents_Art30" targetRef="Task_KeepControllerRecordInWriting_Art30" />
+    <bpmn:sequenceFlow id="Flow_TaskKeepControllerRecordInWriting_To_GatewayControllerRequestReceived_Art30" sourceRef="Task_KeepControllerRecordInWriting_Art30" targetRef="Gateway_ControllerRequestReceived_Art30" />
+    <bpmn:sequenceFlow id="Flow_GatewayControllerRequestReceived_To_ReceiveTaskReceiveControllerRequest_Art30" name="Yes" sourceRef="Gateway_ControllerRequestReceived_Art30" targetRef="ReceiveTask_ReceiveControllerRequest_Art30" />
+    <bpmn:sequenceFlow id="Flow_GatewayControllerRequestReceived_To_EndKeepControllerRecordAvailable_Art30" name="No" sourceRef="Gateway_ControllerRequestReceived_Art30" targetRef="EndEvent_KeepControllerRecordAvailable_Art30" />
+    <bpmn:sequenceFlow id="Flow_ReceiveTaskReceiveControllerRequest_To_SendTaskProvideControllerRecord_Art30" sourceRef="ReceiveTask_ReceiveControllerRequest_Art30" targetRef="SendTask_ProvideControllerRecord_Art30" />
+    <bpmn:sequenceFlow id="Flow_SendTaskProvideControllerRecord_To_EndControllerRecordAvailable_Art30" sourceRef="SendTask_ProvideControllerRecord_Art30" targetRef="EndEvent_ControllerRecordAvailable_Art30" />
+  </bpmn:process>
+
+  <bpmn:process id="Process_Processor_Art30"
+                name="Maintaining processor records under Article 30"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 30 based on the real English legal text
+      of Regulation (EU) 2016/679. This processor-side process captures the
+      Article 30(2) record content, the Article 30(3) writing-or-electronic-form
+      requirement, the Article 30(4) availability duty on request, and the
+      Article 30(5) small-organisation exemption with its three exceptions.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_ProcessForController_Art30"
+                     name="Process data for a controller">
+      <bpmn:outgoing>Flow_StartProcessorProcessing_To_TaskAssessProcessorDuty_Art30</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_AssessProcessorRecordDuty_Art30"
+               name="Assess processor record duty">
+      <bpmn:incoming>Flow_StartProcessorProcessing_To_TaskAssessProcessorDuty_Art30</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskAssessProcessorDuty_To_GatewayProcessorFewEmployees_Art30</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_ProcessorFewEmployees_Art30"
+                           name="Does the organisation employ fewer than 250 persons?">
+      <bpmn:incoming>Flow_TaskAssessProcessorDuty_To_GatewayProcessorFewEmployees_Art30</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayProcessorFewEmployees_To_GatewayProcessorExceptionCriteria_Art30</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayProcessorFewEmployees_To_TaskSetUpProcessorRecord_Art30</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_ProcessorExceptionCriteria_Art30"
+                           name="Is the processing likely to risk rights, not occasional, or Article 9(1)/10 data involved?">
+      <bpmn:incoming>Flow_GatewayProcessorFewEmployees_To_GatewayProcessorExceptionCriteria_Art30</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayProcessorExceptionCriteria_To_TaskSetUpProcessorRecord_Art30</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayProcessorExceptionCriteria_To_EndNoProcessorRecordDuty_Art30</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_NoProcessorRecordDuty_Art30"
+                   name="No processor record duty">
+      <bpmn:incoming>Flow_GatewayProcessorExceptionCriteria_To_EndNoProcessorRecordDuty_Art30</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:task id="Task_SetUpProcessorRecord_Art30"
+               name="Set up processor record">
+      <bpmn:incoming>Flow_GatewayProcessorFewEmployees_To_TaskSetUpProcessorRecord_Art30</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayProcessorExceptionCriteria_To_TaskSetUpProcessorRecord_Art30</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskSetUpProcessorRecord_To_GatewaySplitProcessorContents_Art30</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_SplitProcessorContents_Art30">
+      <bpmn:incoming>Flow_TaskSetUpProcessorRecord_To_GatewaySplitProcessorContents_Art30</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplitProcessorContents_To_TaskRecordProcessorDetails_Art30</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitProcessorContents_To_TaskRecordProcessingCategories_Art30</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitProcessorContents_To_TaskRecordProcessorTransferDetails_Art30</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitProcessorContents_To_TaskRecordProcessorSecurityMeasures_Art30</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_RecordProcessorDetails_Art30"
+               name="Record processor and controller details">
+      <bpmn:incoming>Flow_GatewaySplitProcessorContents_To_TaskRecordProcessorDetails_Art30</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskRecordProcessorDetails_To_GatewayJoinProcessorContents_Art30</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_RecordProcessingCategories_Art30"
+               name="Record processing categories">
+      <bpmn:incoming>Flow_GatewaySplitProcessorContents_To_TaskRecordProcessingCategories_Art30</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskRecordProcessingCategories_To_GatewayJoinProcessorContents_Art30</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_RecordProcessorTransferDetails_Art30"
+               name="Record transfers and Article 49(1) safeguards">
+      <bpmn:incoming>Flow_GatewaySplitProcessorContents_To_TaskRecordProcessorTransferDetails_Art30</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskRecordProcessorTransferDetails_To_GatewayJoinProcessorContents_Art30</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_RecordProcessorSecurityMeasures_Art30"
+               name="Record Article 32(1) security measures">
+      <bpmn:incoming>Flow_GatewaySplitProcessorContents_To_TaskRecordProcessorSecurityMeasures_Art30</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskRecordProcessorSecurityMeasures_To_GatewayJoinProcessorContents_Art30</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_JoinProcessorContents_Art30">
+      <bpmn:incoming>Flow_TaskRecordProcessorDetails_To_GatewayJoinProcessorContents_Art30</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskRecordProcessingCategories_To_GatewayJoinProcessorContents_Art30</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskRecordProcessorTransferDetails_To_GatewayJoinProcessorContents_Art30</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskRecordProcessorSecurityMeasures_To_GatewayJoinProcessorContents_Art30</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinProcessorContents_To_TaskKeepProcessorRecordInWriting_Art30</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_KeepProcessorRecordInWriting_Art30"
+               name="Keep processor record in writing/electronic form">
+      <bpmn:incoming>Flow_GatewayJoinProcessorContents_To_TaskKeepProcessorRecordInWriting_Art30</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskKeepProcessorRecordInWriting_To_GatewayProcessorRequestReceived_Art30</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_ProcessorRequestReceived_Art30"
+                           name="Did the supervisory authority request the record?">
+      <bpmn:incoming>Flow_TaskKeepProcessorRecordInWriting_To_GatewayProcessorRequestReceived_Art30</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayProcessorRequestReceived_To_ReceiveTaskReceiveProcessorRequest_Art30</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayProcessorRequestReceived_To_EndKeepProcessorRecordAvailable_Art30</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveProcessorRequest_Art30"
+                      name="Receive authority request">
+      <bpmn:incoming>Flow_GatewayProcessorRequestReceived_To_ReceiveTaskReceiveProcessorRequest_Art30</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveTaskReceiveProcessorRequest_To_SendTaskProvideProcessorRecord_Art30</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:sendTask id="SendTask_ProvideProcessorRecord_Art30"
+                   name="Provide processor record">
+      <bpmn:incoming>Flow_ReceiveTaskReceiveProcessorRequest_To_SendTaskProvideProcessorRecord_Art30</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendTaskProvideProcessorRecord_To_EndProcessorRecordAvailable_Art30</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_KeepProcessorRecordAvailable_Art30"
+                   name="Keep processor record available">
+      <bpmn:incoming>Flow_GatewayProcessorRequestReceived_To_EndKeepProcessorRecordAvailable_Art30</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_ProcessorRecordAvailable_Art30"
+                   name="Processor record available to authority">
+      <bpmn:incoming>Flow_SendTaskProvideProcessorRecord_To_EndProcessorRecordAvailable_Art30</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartProcessorProcessing_To_TaskAssessProcessorDuty_Art30" sourceRef="StartEvent_ProcessForController_Art30" targetRef="Task_AssessProcessorRecordDuty_Art30" />
+    <bpmn:sequenceFlow id="Flow_TaskAssessProcessorDuty_To_GatewayProcessorFewEmployees_Art30" sourceRef="Task_AssessProcessorRecordDuty_Art30" targetRef="Gateway_ProcessorFewEmployees_Art30" />
+    <bpmn:sequenceFlow id="Flow_GatewayProcessorFewEmployees_To_GatewayProcessorExceptionCriteria_Art30" name="Yes" sourceRef="Gateway_ProcessorFewEmployees_Art30" targetRef="Gateway_ProcessorExceptionCriteria_Art30" />
+    <bpmn:sequenceFlow id="Flow_GatewayProcessorFewEmployees_To_TaskSetUpProcessorRecord_Art30" name="No" sourceRef="Gateway_ProcessorFewEmployees_Art30" targetRef="Task_SetUpProcessorRecord_Art30" />
+    <bpmn:sequenceFlow id="Flow_GatewayProcessorExceptionCriteria_To_TaskSetUpProcessorRecord_Art30" name="Yes" sourceRef="Gateway_ProcessorExceptionCriteria_Art30" targetRef="Task_SetUpProcessorRecord_Art30" />
+    <bpmn:sequenceFlow id="Flow_GatewayProcessorExceptionCriteria_To_EndNoProcessorRecordDuty_Art30" name="No" sourceRef="Gateway_ProcessorExceptionCriteria_Art30" targetRef="EndEvent_NoProcessorRecordDuty_Art30" />
+    <bpmn:sequenceFlow id="Flow_TaskSetUpProcessorRecord_To_GatewaySplitProcessorContents_Art30" sourceRef="Task_SetUpProcessorRecord_Art30" targetRef="Gateway_SplitProcessorContents_Art30" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitProcessorContents_To_TaskRecordProcessorDetails_Art30" sourceRef="Gateway_SplitProcessorContents_Art30" targetRef="Task_RecordProcessorDetails_Art30" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitProcessorContents_To_TaskRecordProcessingCategories_Art30" sourceRef="Gateway_SplitProcessorContents_Art30" targetRef="Task_RecordProcessingCategories_Art30" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitProcessorContents_To_TaskRecordProcessorTransferDetails_Art30" sourceRef="Gateway_SplitProcessorContents_Art30" targetRef="Task_RecordProcessorTransferDetails_Art30" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitProcessorContents_To_TaskRecordProcessorSecurityMeasures_Art30" sourceRef="Gateway_SplitProcessorContents_Art30" targetRef="Task_RecordProcessorSecurityMeasures_Art30" />
+    <bpmn:sequenceFlow id="Flow_TaskRecordProcessorDetails_To_GatewayJoinProcessorContents_Art30" sourceRef="Task_RecordProcessorDetails_Art30" targetRef="Gateway_JoinProcessorContents_Art30" />
+    <bpmn:sequenceFlow id="Flow_TaskRecordProcessingCategories_To_GatewayJoinProcessorContents_Art30" sourceRef="Task_RecordProcessingCategories_Art30" targetRef="Gateway_JoinProcessorContents_Art30" />
+    <bpmn:sequenceFlow id="Flow_TaskRecordProcessorTransferDetails_To_GatewayJoinProcessorContents_Art30" sourceRef="Task_RecordProcessorTransferDetails_Art30" targetRef="Gateway_JoinProcessorContents_Art30" />
+    <bpmn:sequenceFlow id="Flow_TaskRecordProcessorSecurityMeasures_To_GatewayJoinProcessorContents_Art30" sourceRef="Task_RecordProcessorSecurityMeasures_Art30" targetRef="Gateway_JoinProcessorContents_Art30" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoinProcessorContents_To_TaskKeepProcessorRecordInWriting_Art30" sourceRef="Gateway_JoinProcessorContents_Art30" targetRef="Task_KeepProcessorRecordInWriting_Art30" />
+    <bpmn:sequenceFlow id="Flow_TaskKeepProcessorRecordInWriting_To_GatewayProcessorRequestReceived_Art30" sourceRef="Task_KeepProcessorRecordInWriting_Art30" targetRef="Gateway_ProcessorRequestReceived_Art30" />
+    <bpmn:sequenceFlow id="Flow_GatewayProcessorRequestReceived_To_ReceiveTaskReceiveProcessorRequest_Art30" name="Yes" sourceRef="Gateway_ProcessorRequestReceived_Art30" targetRef="ReceiveTask_ReceiveProcessorRequest_Art30" />
+    <bpmn:sequenceFlow id="Flow_GatewayProcessorRequestReceived_To_EndKeepProcessorRecordAvailable_Art30" name="No" sourceRef="Gateway_ProcessorRequestReceived_Art30" targetRef="EndEvent_KeepProcessorRecordAvailable_Art30" />
+    <bpmn:sequenceFlow id="Flow_ReceiveTaskReceiveProcessorRequest_To_SendTaskProvideProcessorRecord_Art30" sourceRef="ReceiveTask_ReceiveProcessorRequest_Art30" targetRef="SendTask_ProvideProcessorRecord_Art30" />
+    <bpmn:sequenceFlow id="Flow_SendTaskProvideProcessorRecord_To_EndProcessorRecordAvailable_Art30" sourceRef="SendTask_ProvideProcessorRecord_Art30" targetRef="EndEvent_ProcessorRecordAvailable_Art30" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art30_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art30_Reviewed" bpmnElement="Collaboration_Art30_Reviewed">
+      <bpmndi:BPMNShape id="Participant_Controller_Art30_di"
+                        bpmnElement="Participant_Controller_Art30"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="5600" height="620" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Processor_Art30_di"
+                        bpmnElement="Participant_Processor_Art30"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="700" width="5600" height="620" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_SupervisoryAuthority_Art30_di"
+                        bpmnElement="Participant_SupervisoryAuthority_Art30"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="1360" width="5600" height="140" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_CarryOutControllerProcessing_Art30_di" bpmnElement="StartEvent_CarryOutControllerProcessing_Art30">
+        <dc:Bounds x="120" y="172" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessControllerRecordDuty_Art30_di" bpmnElement="Task_AssessControllerRecordDuty_Art30">
+        <dc:Bounds x="220" y="150" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ControllerFewEmployees_Art30_di" bpmnElement="Gateway_ControllerFewEmployees_Art30" isMarkerVisible="true">
+        <dc:Bounds x="470" y="165" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ControllerExceptionCriteria_Art30_di" bpmnElement="Gateway_ControllerExceptionCriteria_Art30" isMarkerVisible="true">
+        <dc:Bounds x="630" y="165" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NoControllerRecordDuty_Art30_di" bpmnElement="EndEvent_NoControllerRecordDuty_Art30">
+        <dc:Bounds x="804" y="312" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SetUpControllerRecord_Art30_di" bpmnElement="Task_SetUpControllerRecord_Art30">
+        <dc:Bounds x="820" y="150" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SplitControllerContents_Art30_di" bpmnElement="Gateway_SplitControllerContents_Art30" isMarkerVisible="true">
+        <dc:Bounds x="1085" y="165" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RecordControllerDetails_Art30_di" bpmnElement="Task_RecordControllerDetails_Art30">
+        <dc:Bounds x="1220" y="70" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RecordProcessingPurposes_Art30_di" bpmnElement="Task_RecordProcessingPurposes_Art30">
+        <dc:Bounds x="1480" y="70" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RecordDataCategories_Art30_di" bpmnElement="Task_RecordDataCategories_Art30">
+        <dc:Bounds x="1740" y="70" width="240" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RecordRecipientCategories_Art30_di" bpmnElement="Task_RecordRecipientCategories_Art30">
+        <dc:Bounds x="2020" y="70" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RecordTransferDetails_Art30_di" bpmnElement="Task_RecordTransferDetails_Art30">
+        <dc:Bounds x="1220" y="280" width="260" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RecordErasurePeriods_Art30_di" bpmnElement="Task_RecordErasurePeriods_Art30">
+        <dc:Bounds x="1540" y="280" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RecordControllerSecurityMeasures_Art30_di" bpmnElement="Task_RecordControllerSecurityMeasures_Art30">
+        <dc:Bounds x="1820" y="280" width="280" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinControllerContents_Art30_di" bpmnElement="Gateway_JoinControllerContents_Art30" isMarkerVisible="true">
+        <dc:Bounds x="2295" y="165" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_KeepControllerRecordInWriting_Art30_di" bpmnElement="Task_KeepControllerRecordInWriting_Art30">
+        <dc:Bounds x="2430" y="150" width="260" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ControllerRequestReceived_Art30_di" bpmnElement="Gateway_ControllerRequestReceived_Art30" isMarkerVisible="true">
+        <dc:Bounds x="2770" y="165" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveControllerRequest_Art30_di" bpmnElement="ReceiveTask_ReceiveControllerRequest_Art30">
+        <dc:Bounds x="2910" y="150" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_ProvideControllerRecord_Art30_di" bpmnElement="SendTask_ProvideControllerRecord_Art30">
+        <dc:Bounds x="3160" y="150" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_KeepControllerRecordAvailable_Art30_di" bpmnElement="EndEvent_KeepControllerRecordAvailable_Art30">
+        <dc:Bounds x="2912" y="312" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ControllerRecordAvailable_Art30_di" bpmnElement="EndEvent_ControllerRecordAvailable_Art30">
+        <dc:Bounds x="3422" y="172" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_ProcessForController_Art30_di" bpmnElement="StartEvent_ProcessForController_Art30">
+        <dc:Bounds x="120" y="832" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessProcessorRecordDuty_Art30_di" bpmnElement="Task_AssessProcessorRecordDuty_Art30">
+        <dc:Bounds x="220" y="810" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ProcessorFewEmployees_Art30_di" bpmnElement="Gateway_ProcessorFewEmployees_Art30" isMarkerVisible="true">
+        <dc:Bounds x="470" y="825" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ProcessorExceptionCriteria_Art30_di" bpmnElement="Gateway_ProcessorExceptionCriteria_Art30" isMarkerVisible="true">
+        <dc:Bounds x="630" y="825" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NoProcessorRecordDuty_Art30_di" bpmnElement="EndEvent_NoProcessorRecordDuty_Art30">
+        <dc:Bounds x="804" y="972" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SetUpProcessorRecord_Art30_di" bpmnElement="Task_SetUpProcessorRecord_Art30">
+        <dc:Bounds x="820" y="810" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SplitProcessorContents_Art30_di" bpmnElement="Gateway_SplitProcessorContents_Art30" isMarkerVisible="true">
+        <dc:Bounds x="1085" y="825" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RecordProcessorDetails_Art30_di" bpmnElement="Task_RecordProcessorDetails_Art30">
+        <dc:Bounds x="1240" y="740" width="260" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RecordProcessingCategories_Art30_di" bpmnElement="Task_RecordProcessingCategories_Art30">
+        <dc:Bounds x="1560" y="740" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RecordProcessorTransferDetails_Art30_di" bpmnElement="Task_RecordProcessorTransferDetails_Art30">
+        <dc:Bounds x="1240" y="950" width="260" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RecordProcessorSecurityMeasures_Art30_di" bpmnElement="Task_RecordProcessorSecurityMeasures_Art30">
+        <dc:Bounds x="1560" y="950" width="280" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinProcessorContents_Art30_di" bpmnElement="Gateway_JoinProcessorContents_Art30" isMarkerVisible="true">
+        <dc:Bounds x="1975" y="825" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_KeepProcessorRecordInWriting_Art30_di" bpmnElement="Task_KeepProcessorRecordInWriting_Art30">
+        <dc:Bounds x="2110" y="810" width="260" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ProcessorRequestReceived_Art30_di" bpmnElement="Gateway_ProcessorRequestReceived_Art30" isMarkerVisible="true">
+        <dc:Bounds x="2450" y="825" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveProcessorRequest_Art30_di" bpmnElement="ReceiveTask_ReceiveProcessorRequest_Art30">
+        <dc:Bounds x="2590" y="810" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_ProvideProcessorRecord_Art30_di" bpmnElement="SendTask_ProvideProcessorRecord_Art30">
+        <dc:Bounds x="2840" y="810" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_KeepProcessorRecordAvailable_Art30_di" bpmnElement="EndEvent_KeepProcessorRecordAvailable_Art30">
+        <dc:Bounds x="2592" y="972" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ProcessorRecordAvailable_Art30_di" bpmnElement="EndEvent_ProcessorRecordAvailable_Art30">
+        <dc:Bounds x="3102" y="832" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_StartControllerProcessing_To_TaskAssessControllerDuty_Art30_di" bpmnElement="Flow_StartControllerProcessing_To_TaskAssessControllerDuty_Art30">
+        <di:waypoint x="156" y="190" />
+        <di:waypoint x="220" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskAssessControllerDuty_To_GatewayControllerFewEmployees_Art30_di" bpmnElement="Flow_TaskAssessControllerDuty_To_GatewayControllerFewEmployees_Art30">
+        <di:waypoint x="400" y="190" />
+        <di:waypoint x="470" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayControllerFewEmployees_To_GatewayControllerExceptionCriteria_Art30_di" bpmnElement="Flow_GatewayControllerFewEmployees_To_GatewayControllerExceptionCriteria_Art30">
+        <di:waypoint x="520" y="190" />
+        <di:waypoint x="630" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayControllerFewEmployees_To_TaskSetUpControllerRecord_Art30_di" bpmnElement="Flow_GatewayControllerFewEmployees_To_TaskSetUpControllerRecord_Art30">
+        <di:waypoint x="495" y="215" />
+        <di:waypoint x="495" y="260" />
+        <di:waypoint x="910" y="260" />
+        <di:waypoint x="910" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayControllerExceptionCriteria_To_TaskSetUpControllerRecord_Art30_di" bpmnElement="Flow_GatewayControllerExceptionCriteria_To_TaskSetUpControllerRecord_Art30">
+        <di:waypoint x="680" y="190" />
+        <di:waypoint x="820" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayControllerExceptionCriteria_To_EndNoControllerRecordDuty_Art30_di" bpmnElement="Flow_GatewayControllerExceptionCriteria_To_EndNoControllerRecordDuty_Art30">
+        <di:waypoint x="655" y="215" />
+        <di:waypoint x="655" y="330" />
+        <di:waypoint x="804" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskSetUpControllerRecord_To_GatewaySplitControllerContents_Art30_di" bpmnElement="Flow_TaskSetUpControllerRecord_To_GatewaySplitControllerContents_Art30">
+        <di:waypoint x="1000" y="190" />
+        <di:waypoint x="1085" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitControllerContents_To_TaskRecordControllerDetails_Art30_di" bpmnElement="Flow_GatewaySplitControllerContents_To_TaskRecordControllerDetails_Art30">
+        <di:waypoint x="1110" y="165" />
+        <di:waypoint x="1110" y="110" />
+        <di:waypoint x="1220" y="110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitControllerContents_To_TaskRecordProcessingPurposes_Art30_di" bpmnElement="Flow_GatewaySplitControllerContents_To_TaskRecordProcessingPurposes_Art30">
+        <di:waypoint x="1110" y="165" />
+        <di:waypoint x="1110" y="110" />
+        <di:waypoint x="1480" y="110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitControllerContents_To_TaskRecordDataCategories_Art30_di" bpmnElement="Flow_GatewaySplitControllerContents_To_TaskRecordDataCategories_Art30">
+        <di:waypoint x="1110" y="165" />
+        <di:waypoint x="1110" y="110" />
+        <di:waypoint x="1740" y="110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitControllerContents_To_TaskRecordRecipientCategories_Art30_di" bpmnElement="Flow_GatewaySplitControllerContents_To_TaskRecordRecipientCategories_Art30">
+        <di:waypoint x="1110" y="165" />
+        <di:waypoint x="1110" y="110" />
+        <di:waypoint x="2020" y="110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitControllerContents_To_TaskRecordTransferDetails_Art30_di" bpmnElement="Flow_GatewaySplitControllerContents_To_TaskRecordTransferDetails_Art30">
+        <di:waypoint x="1110" y="215" />
+        <di:waypoint x="1110" y="320" />
+        <di:waypoint x="1220" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitControllerContents_To_TaskRecordErasurePeriods_Art30_di" bpmnElement="Flow_GatewaySplitControllerContents_To_TaskRecordErasurePeriods_Art30">
+        <di:waypoint x="1110" y="215" />
+        <di:waypoint x="1110" y="320" />
+        <di:waypoint x="1540" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitControllerContents_To_TaskRecordControllerSecurityMeasures_Art30_di" bpmnElement="Flow_GatewaySplitControllerContents_To_TaskRecordControllerSecurityMeasures_Art30">
+        <di:waypoint x="1110" y="215" />
+        <di:waypoint x="1110" y="320" />
+        <di:waypoint x="1820" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskRecordControllerDetails_To_GatewayJoinControllerContents_Art30_di" bpmnElement="Flow_TaskRecordControllerDetails_To_GatewayJoinControllerContents_Art30">
+        <di:waypoint x="1440" y="110" />
+        <di:waypoint x="2320" y="110" />
+        <di:waypoint x="2320" y="165" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskRecordProcessingPurposes_To_GatewayJoinControllerContents_Art30_di" bpmnElement="Flow_TaskRecordProcessingPurposes_To_GatewayJoinControllerContents_Art30">
+        <di:waypoint x="1700" y="110" />
+        <di:waypoint x="2320" y="110" />
+        <di:waypoint x="2320" y="165" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskRecordDataCategories_To_GatewayJoinControllerContents_Art30_di" bpmnElement="Flow_TaskRecordDataCategories_To_GatewayJoinControllerContents_Art30">
+        <di:waypoint x="1980" y="110" />
+        <di:waypoint x="2320" y="110" />
+        <di:waypoint x="2320" y="165" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskRecordRecipientCategories_To_GatewayJoinControllerContents_Art30_di" bpmnElement="Flow_TaskRecordRecipientCategories_To_GatewayJoinControllerContents_Art30">
+        <di:waypoint x="2240" y="110" />
+        <di:waypoint x="2320" y="110" />
+        <di:waypoint x="2320" y="165" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskRecordTransferDetails_To_GatewayJoinControllerContents_Art30_di" bpmnElement="Flow_TaskRecordTransferDetails_To_GatewayJoinControllerContents_Art30">
+        <di:waypoint x="1480" y="320" />
+        <di:waypoint x="2320" y="320" />
+        <di:waypoint x="2320" y="215" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskRecordErasurePeriods_To_GatewayJoinControllerContents_Art30_di" bpmnElement="Flow_TaskRecordErasurePeriods_To_GatewayJoinControllerContents_Art30">
+        <di:waypoint x="1760" y="320" />
+        <di:waypoint x="2320" y="320" />
+        <di:waypoint x="2320" y="215" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskRecordControllerSecurityMeasures_To_GatewayJoinControllerContents_Art30_di" bpmnElement="Flow_TaskRecordControllerSecurityMeasures_To_GatewayJoinControllerContents_Art30">
+        <di:waypoint x="2100" y="320" />
+        <di:waypoint x="2320" y="320" />
+        <di:waypoint x="2320" y="215" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinControllerContents_To_TaskKeepControllerRecordInWriting_Art30_di" bpmnElement="Flow_GatewayJoinControllerContents_To_TaskKeepControllerRecordInWriting_Art30">
+        <di:waypoint x="2345" y="190" />
+        <di:waypoint x="2430" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskKeepControllerRecordInWriting_To_GatewayControllerRequestReceived_Art30_di" bpmnElement="Flow_TaskKeepControllerRecordInWriting_To_GatewayControllerRequestReceived_Art30">
+        <di:waypoint x="2690" y="190" />
+        <di:waypoint x="2770" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayControllerRequestReceived_To_ReceiveTaskReceiveControllerRequest_Art30_di" bpmnElement="Flow_GatewayControllerRequestReceived_To_ReceiveTaskReceiveControllerRequest_Art30">
+        <di:waypoint x="2820" y="190" />
+        <di:waypoint x="2910" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayControllerRequestReceived_To_EndKeepControllerRecordAvailable_Art30_di" bpmnElement="Flow_GatewayControllerRequestReceived_To_EndKeepControllerRecordAvailable_Art30">
+        <di:waypoint x="2795" y="215" />
+        <di:waypoint x="2795" y="330" />
+        <di:waypoint x="2912" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveTaskReceiveControllerRequest_To_SendTaskProvideControllerRecord_Art30_di" bpmnElement="Flow_ReceiveTaskReceiveControllerRequest_To_SendTaskProvideControllerRecord_Art30">
+        <di:waypoint x="3090" y="190" />
+        <di:waypoint x="3160" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendTaskProvideControllerRecord_To_EndControllerRecordAvailable_Art30_di" bpmnElement="Flow_SendTaskProvideControllerRecord_To_EndControllerRecordAvailable_Art30">
+        <di:waypoint x="3340" y="190" />
+        <di:waypoint x="3422" y="190" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_StartProcessorProcessing_To_TaskAssessProcessorDuty_Art30_di" bpmnElement="Flow_StartProcessorProcessing_To_TaskAssessProcessorDuty_Art30">
+        <di:waypoint x="156" y="850" />
+        <di:waypoint x="220" y="850" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskAssessProcessorDuty_To_GatewayProcessorFewEmployees_Art30_di" bpmnElement="Flow_TaskAssessProcessorDuty_To_GatewayProcessorFewEmployees_Art30">
+        <di:waypoint x="400" y="850" />
+        <di:waypoint x="470" y="850" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayProcessorFewEmployees_To_GatewayProcessorExceptionCriteria_Art30_di" bpmnElement="Flow_GatewayProcessorFewEmployees_To_GatewayProcessorExceptionCriteria_Art30">
+        <di:waypoint x="520" y="850" />
+        <di:waypoint x="630" y="850" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayProcessorFewEmployees_To_TaskSetUpProcessorRecord_Art30_di" bpmnElement="Flow_GatewayProcessorFewEmployees_To_TaskSetUpProcessorRecord_Art30">
+        <di:waypoint x="495" y="875" />
+        <di:waypoint x="495" y="920" />
+        <di:waypoint x="910" y="920" />
+        <di:waypoint x="910" y="890" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayProcessorExceptionCriteria_To_TaskSetUpProcessorRecord_Art30_di" bpmnElement="Flow_GatewayProcessorExceptionCriteria_To_TaskSetUpProcessorRecord_Art30">
+        <di:waypoint x="680" y="850" />
+        <di:waypoint x="820" y="850" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayProcessorExceptionCriteria_To_EndNoProcessorRecordDuty_Art30_di" bpmnElement="Flow_GatewayProcessorExceptionCriteria_To_EndNoProcessorRecordDuty_Art30">
+        <di:waypoint x="655" y="875" />
+        <di:waypoint x="655" y="990" />
+        <di:waypoint x="804" y="990" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskSetUpProcessorRecord_To_GatewaySplitProcessorContents_Art30_di" bpmnElement="Flow_TaskSetUpProcessorRecord_To_GatewaySplitProcessorContents_Art30">
+        <di:waypoint x="1000" y="850" />
+        <di:waypoint x="1085" y="850" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitProcessorContents_To_TaskRecordProcessorDetails_Art30_di" bpmnElement="Flow_GatewaySplitProcessorContents_To_TaskRecordProcessorDetails_Art30">
+        <di:waypoint x="1110" y="825" />
+        <di:waypoint x="1110" y="780" />
+        <di:waypoint x="1240" y="780" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitProcessorContents_To_TaskRecordProcessingCategories_Art30_di" bpmnElement="Flow_GatewaySplitProcessorContents_To_TaskRecordProcessingCategories_Art30">
+        <di:waypoint x="1110" y="825" />
+        <di:waypoint x="1110" y="780" />
+        <di:waypoint x="1560" y="780" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitProcessorContents_To_TaskRecordProcessorTransferDetails_Art30_di" bpmnElement="Flow_GatewaySplitProcessorContents_To_TaskRecordProcessorTransferDetails_Art30">
+        <di:waypoint x="1110" y="875" />
+        <di:waypoint x="1110" y="990" />
+        <di:waypoint x="1240" y="990" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitProcessorContents_To_TaskRecordProcessorSecurityMeasures_Art30_di" bpmnElement="Flow_GatewaySplitProcessorContents_To_TaskRecordProcessorSecurityMeasures_Art30">
+        <di:waypoint x="1110" y="875" />
+        <di:waypoint x="1110" y="990" />
+        <di:waypoint x="1560" y="990" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskRecordProcessorDetails_To_GatewayJoinProcessorContents_Art30_di" bpmnElement="Flow_TaskRecordProcessorDetails_To_GatewayJoinProcessorContents_Art30">
+        <di:waypoint x="1500" y="780" />
+        <di:waypoint x="2000" y="780" />
+        <di:waypoint x="2000" y="825" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskRecordProcessingCategories_To_GatewayJoinProcessorContents_Art30_di" bpmnElement="Flow_TaskRecordProcessingCategories_To_GatewayJoinProcessorContents_Art30">
+        <di:waypoint x="1780" y="780" />
+        <di:waypoint x="2000" y="780" />
+        <di:waypoint x="2000" y="825" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskRecordProcessorTransferDetails_To_GatewayJoinProcessorContents_Art30_di" bpmnElement="Flow_TaskRecordProcessorTransferDetails_To_GatewayJoinProcessorContents_Art30">
+        <di:waypoint x="1500" y="990" />
+        <di:waypoint x="2000" y="990" />
+        <di:waypoint x="2000" y="875" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskRecordProcessorSecurityMeasures_To_GatewayJoinProcessorContents_Art30_di" bpmnElement="Flow_TaskRecordProcessorSecurityMeasures_To_GatewayJoinProcessorContents_Art30">
+        <di:waypoint x="1840" y="990" />
+        <di:waypoint x="2000" y="990" />
+        <di:waypoint x="2000" y="875" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinProcessorContents_To_TaskKeepProcessorRecordInWriting_Art30_di" bpmnElement="Flow_GatewayJoinProcessorContents_To_TaskKeepProcessorRecordInWriting_Art30">
+        <di:waypoint x="2025" y="850" />
+        <di:waypoint x="2110" y="850" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskKeepProcessorRecordInWriting_To_GatewayProcessorRequestReceived_Art30_di" bpmnElement="Flow_TaskKeepProcessorRecordInWriting_To_GatewayProcessorRequestReceived_Art30">
+        <di:waypoint x="2370" y="850" />
+        <di:waypoint x="2450" y="850" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayProcessorRequestReceived_To_ReceiveTaskReceiveProcessorRequest_Art30_di" bpmnElement="Flow_GatewayProcessorRequestReceived_To_ReceiveTaskReceiveProcessorRequest_Art30">
+        <di:waypoint x="2500" y="850" />
+        <di:waypoint x="2590" y="850" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayProcessorRequestReceived_To_EndKeepProcessorRecordAvailable_Art30_di" bpmnElement="Flow_GatewayProcessorRequestReceived_To_EndKeepProcessorRecordAvailable_Art30">
+        <di:waypoint x="2475" y="875" />
+        <di:waypoint x="2475" y="990" />
+        <di:waypoint x="2592" y="990" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveTaskReceiveProcessorRequest_To_SendTaskProvideProcessorRecord_Art30_di" bpmnElement="Flow_ReceiveTaskReceiveProcessorRequest_To_SendTaskProvideProcessorRecord_Art30">
+        <di:waypoint x="2770" y="850" />
+        <di:waypoint x="2840" y="850" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendTaskProvideProcessorRecord_To_EndProcessorRecordAvailable_Art30_di" bpmnElement="Flow_SendTaskProvideProcessorRecord_To_EndProcessorRecordAvailable_Art30">
+        <di:waypoint x="3020" y="850" />
+        <di:waypoint x="3102" y="850" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_SARequestControllerRecord_Art30_di" bpmnElement="MessageFlow_SARequestControllerRecord_Art30">
+        <di:waypoint x="3000" y="1360" />
+        <di:waypoint x="3000" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ProvideControllerRecord_Art30_di" bpmnElement="MessageFlow_ProvideControllerRecord_Art30">
+        <di:waypoint x="3250" y="230" />
+        <di:waypoint x="3250" y="1360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SARequestProcessorRecord_Art30_di" bpmnElement="MessageFlow_SARequestProcessorRecord_Art30">
+        <di:waypoint x="2680" y="1360" />
+        <di:waypoint x="2680" y="890" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ProvideProcessorRecord_Art30_di" bpmnElement="MessageFlow_ProvideProcessorRecord_Art30">
+        <di:waypoint x="2930" y="890" />
+        <di:waypoint x="2930" y="1360" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
