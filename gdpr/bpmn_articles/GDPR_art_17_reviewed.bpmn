@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art17_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:collaboration id="Collaboration_Art17_Reviewed">
+    <bpmn:participant id="Participant_Controller_Art17" name="Controller" processRef="Process_Controller_Art17" />
+    <bpmn:participant id="Participant_DataSubject_Art17" name="Data Subject" />
+    <bpmn:participant id="Participant_OtherControllers_Art17" name="Other Controllers" />
+
+    <bpmn:messageFlow id="MessageFlow_SendErasureRequest_Art17" sourceRef="Participant_DataSubject_Art17" targetRef="ReceiveTask_ReceiveErasureRequest_Art17" />
+    <bpmn:messageFlow id="MessageFlow_InformOtherControllers_Art17" sourceRef="SendTask_InformOtherControllers_Art17" targetRef="Participant_OtherControllers_Art17" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_Controller_Art17" name="Apply Article 17 erasure right" isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 17 based on the real English legal
+      text in gdpr_articles. The model covers the six erasure grounds in Article
+      17(1)(a)-(f), the Article 17(2) duty to take reasonable steps to inform
+      other controllers when public data must be erased, and the five exception
+      categories in Article 17(3)(a)-(e). Article-external XML prefilters are
+      intentionally not part of the main flow so that the BPMN stays anchored to
+      the visible legal logic of Article 17 itself.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_ErasureRequested_Art17" name="Need erasure assessment">
+      <bpmn:outgoing>Flow_Start_To_ReceiveTaskReceiveErasureRequest_Art17</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveErasureRequest_Art17" name="Receive erasure request">
+      <bpmn:incoming>Flow_Start_To_ReceiveTaskReceiveErasureRequest_Art17</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveTaskReceiveErasureRequest_To_GatewayErasureGround_Art17</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:exclusiveGateway id="Gateway_ErasureGround_Art17" name="Which Article 17(1) erasure ground applies?">
+      <bpmn:incoming>Flow_ReceiveTaskReceiveErasureRequest_To_GatewayErasureGround_Art17</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayErasureGround_To_TaskGroundNoLongerNecessary_Art17</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayErasureGround_To_TaskGroundWithdrawnConsent_Art17</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayErasureGround_To_TaskGroundSuccessfulObjection_Art17</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayErasureGround_To_TaskGroundUnlawfulProcessing_Art17</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayErasureGround_To_TaskGroundLegalObligation_Art17</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayErasureGround_To_TaskGroundChildConsent_Art17</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayErasureGround_To_EndNoErasureGround_Art17</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_GroundNoLongerNecessary_Art17" name="Assess no-longer-necessary ground">
+      <bpmn:incoming>Flow_GatewayErasureGround_To_TaskGroundNoLongerNecessary_Art17</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskGroundNoLongerNecessary_To_GatewayJoinGrounds_Art17</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_GroundWithdrawnConsent_Art17" name="Assess withdrawn-consent ground">
+      <bpmn:incoming>Flow_GatewayErasureGround_To_TaskGroundWithdrawnConsent_Art17</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskGroundWithdrawnConsent_To_GatewayJoinGrounds_Art17</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_GroundSuccessfulObjection_Art17" name="Assess Article 21 objection ground">
+      <bpmn:incoming>Flow_GatewayErasureGround_To_TaskGroundSuccessfulObjection_Art17</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskGroundSuccessfulObjection_To_GatewayJoinGrounds_Art17</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_GroundUnlawfulProcessing_Art17" name="Assess unlawful-processing ground">
+      <bpmn:incoming>Flow_GatewayErasureGround_To_TaskGroundUnlawfulProcessing_Art17</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskGroundUnlawfulProcessing_To_GatewayJoinGrounds_Art17</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_GroundLegalObligation_Art17" name="Assess legal-obligation ground">
+      <bpmn:incoming>Flow_GatewayErasureGround_To_TaskGroundLegalObligation_Art17</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskGroundLegalObligation_To_GatewayJoinGrounds_Art17</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_GroundChildConsent_Art17" name="Assess child-service ground">
+      <bpmn:incoming>Flow_GatewayErasureGround_To_TaskGroundChildConsent_Art17</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskGroundChildConsent_To_GatewayJoinGrounds_Art17</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_JoinGrounds_Art17">
+      <bpmn:incoming>Flow_TaskGroundNoLongerNecessary_To_GatewayJoinGrounds_Art17</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskGroundWithdrawnConsent_To_GatewayJoinGrounds_Art17</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskGroundSuccessfulObjection_To_GatewayJoinGrounds_Art17</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskGroundUnlawfulProcessing_To_GatewayJoinGrounds_Art17</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskGroundLegalObligation_To_GatewayJoinGrounds_Art17</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskGroundChildConsent_To_GatewayJoinGrounds_Art17</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinGrounds_To_GatewayArt17Exception_Art17</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_Art17Exception_Art17" name="Does an Article 17(3) exception prevent erasure?">
+      <bpmn:incoming>Flow_GatewayJoinGrounds_To_GatewayArt17Exception_Art17</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayArt17Exception_To_GatewayExceptionType_Art17</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayArt17Exception_To_TaskErasePersonalData_Art17</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_ExceptionType_Art17" name="Which Article 17(3) exception applies?">
+      <bpmn:incoming>Flow_GatewayArt17Exception_To_GatewayExceptionType_Art17</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayExceptionType_To_EndFreedomExpressionException_Art17</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayExceptionType_To_EndLegalObligationException_Art17</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayExceptionType_To_EndPublicHealthException_Art17</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayExceptionType_To_EndResearchException_Art17</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayExceptionType_To_EndLegalClaimsException_Art17</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ErasePersonalData_Art17" name="Erase data without undue delay">
+      <bpmn:incoming>Flow_GatewayArt17Exception_To_TaskErasePersonalData_Art17</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskErasePersonalData_To_GatewayPublicData_Art17</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_PublicData_Art17" name="Were the personal data made public?">
+      <bpmn:incoming>Flow_TaskErasePersonalData_To_GatewayPublicData_Art17</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayPublicData_To_SendTaskInformOtherControllers_Art17</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayPublicData_To_EndErasureCompleted_Art17</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="SendTask_InformOtherControllers_Art17" name="Inform other controllers to erase links and copies">
+      <bpmn:incoming>Flow_GatewayPublicData_To_SendTaskInformOtherControllers_Art17</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendTaskInformOtherControllers_To_EndErasureCompleted_Art17</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_NoErasureGround_Art17" name="No erasure ground established">
+      <bpmn:incoming>Flow_GatewayErasureGround_To_EndNoErasureGround_Art17</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_FreedomExpressionException_Art17" name="Freedom-of-expression exception applies">
+      <bpmn:incoming>Flow_GatewayExceptionType_To_EndFreedomExpressionException_Art17</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_LegalObligationException_Art17" name="Legal-obligation or public-task exception applies">
+      <bpmn:incoming>Flow_GatewayExceptionType_To_EndLegalObligationException_Art17</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_PublicHealthException_Art17" name="Public-health exception applies">
+      <bpmn:incoming>Flow_GatewayExceptionType_To_EndPublicHealthException_Art17</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_ResearchException_Art17" name="Article 89 exception applies">
+      <bpmn:incoming>Flow_GatewayExceptionType_To_EndResearchException_Art17</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_LegalClaimsException_Art17" name="Legal-claims exception applies">
+      <bpmn:incoming>Flow_GatewayExceptionType_To_EndLegalClaimsException_Art17</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_ErasureCompleted_Art17" name="Article 17 completed">
+      <bpmn:incoming>Flow_GatewayPublicData_To_EndErasureCompleted_Art17</bpmn:incoming>
+      <bpmn:incoming>Flow_SendTaskInformOtherControllers_To_EndErasureCompleted_Art17</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_ReceiveTaskReceiveErasureRequest_Art17" sourceRef="StartEvent_ErasureRequested_Art17" targetRef="ReceiveTask_ReceiveErasureRequest_Art17" />
+    <bpmn:sequenceFlow id="Flow_ReceiveTaskReceiveErasureRequest_To_GatewayErasureGround_Art17" sourceRef="ReceiveTask_ReceiveErasureRequest_Art17" targetRef="Gateway_ErasureGround_Art17" />
+    <bpmn:sequenceFlow id="Flow_GatewayErasureGround_To_TaskGroundNoLongerNecessary_Art17" name="Data no longer necessary for the processing purposes" sourceRef="Gateway_ErasureGround_Art17" targetRef="Task_GroundNoLongerNecessary_Art17" />
+    <bpmn:sequenceFlow id="Flow_GatewayErasureGround_To_TaskGroundWithdrawnConsent_Art17" name="Consent withdrawn and no other legal ground remains" sourceRef="Gateway_ErasureGround_Art17" targetRef="Task_GroundWithdrawnConsent_Art17" />
+    <bpmn:sequenceFlow id="Flow_GatewayErasureGround_To_TaskGroundSuccessfulObjection_Art17" name="Objection prevails or the processing concerns direct marketing" sourceRef="Gateway_ErasureGround_Art17" targetRef="Task_GroundSuccessfulObjection_Art17" />
+    <bpmn:sequenceFlow id="Flow_GatewayErasureGround_To_TaskGroundUnlawfulProcessing_Art17" name="Personal data were processed unlawfully" sourceRef="Gateway_ErasureGround_Art17" targetRef="Task_GroundUnlawfulProcessing_Art17" />
+    <bpmn:sequenceFlow id="Flow_GatewayErasureGround_To_TaskGroundLegalObligation_Art17" name="Erasure is required by Union or Member State law" sourceRef="Gateway_ErasureGround_Art17" targetRef="Task_GroundLegalObligation_Art17" />
+    <bpmn:sequenceFlow id="Flow_GatewayErasureGround_To_TaskGroundChildConsent_Art17" name="Data were collected from a child for information society services" sourceRef="Gateway_ErasureGround_Art17" targetRef="Task_GroundChildConsent_Art17" />
+    <bpmn:sequenceFlow id="Flow_GatewayErasureGround_To_EndNoErasureGround_Art17" name="No ground" sourceRef="Gateway_ErasureGround_Art17" targetRef="EndEvent_NoErasureGround_Art17" />
+    <bpmn:sequenceFlow id="Flow_TaskGroundNoLongerNecessary_To_GatewayJoinGrounds_Art17" sourceRef="Task_GroundNoLongerNecessary_Art17" targetRef="Gateway_JoinGrounds_Art17" />
+    <bpmn:sequenceFlow id="Flow_TaskGroundWithdrawnConsent_To_GatewayJoinGrounds_Art17" sourceRef="Task_GroundWithdrawnConsent_Art17" targetRef="Gateway_JoinGrounds_Art17" />
+    <bpmn:sequenceFlow id="Flow_TaskGroundSuccessfulObjection_To_GatewayJoinGrounds_Art17" sourceRef="Task_GroundSuccessfulObjection_Art17" targetRef="Gateway_JoinGrounds_Art17" />
+    <bpmn:sequenceFlow id="Flow_TaskGroundUnlawfulProcessing_To_GatewayJoinGrounds_Art17" sourceRef="Task_GroundUnlawfulProcessing_Art17" targetRef="Gateway_JoinGrounds_Art17" />
+    <bpmn:sequenceFlow id="Flow_TaskGroundLegalObligation_To_GatewayJoinGrounds_Art17" sourceRef="Task_GroundLegalObligation_Art17" targetRef="Gateway_JoinGrounds_Art17" />
+    <bpmn:sequenceFlow id="Flow_TaskGroundChildConsent_To_GatewayJoinGrounds_Art17" sourceRef="Task_GroundChildConsent_Art17" targetRef="Gateway_JoinGrounds_Art17" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoinGrounds_To_GatewayArt17Exception_Art17" sourceRef="Gateway_JoinGrounds_Art17" targetRef="Gateway_Art17Exception_Art17" />
+    <bpmn:sequenceFlow id="Flow_GatewayArt17Exception_To_GatewayExceptionType_Art17" name="Yes" sourceRef="Gateway_Art17Exception_Art17" targetRef="Gateway_ExceptionType_Art17" />
+    <bpmn:sequenceFlow id="Flow_GatewayArt17Exception_To_TaskErasePersonalData_Art17" name="No" sourceRef="Gateway_Art17Exception_Art17" targetRef="Task_ErasePersonalData_Art17" />
+    <bpmn:sequenceFlow id="Flow_GatewayExceptionType_To_EndFreedomExpressionException_Art17" name="Necessary for freedom of expression and information" sourceRef="Gateway_ExceptionType_Art17" targetRef="EndEvent_FreedomExpressionException_Art17" />
+    <bpmn:sequenceFlow id="Flow_GatewayExceptionType_To_EndLegalObligationException_Art17" name="Necessary for a legal obligation, a public task, or official authority" sourceRef="Gateway_ExceptionType_Art17" targetRef="EndEvent_LegalObligationException_Art17" />
+    <bpmn:sequenceFlow id="Flow_GatewayExceptionType_To_EndPublicHealthException_Art17" name="Necessary for reasons of public interest in public health" sourceRef="Gateway_ExceptionType_Art17" targetRef="EndEvent_PublicHealthException_Art17" />
+    <bpmn:sequenceFlow id="Flow_GatewayExceptionType_To_EndResearchException_Art17" name="Necessary for archiving, research, or statistical purposes" sourceRef="Gateway_ExceptionType_Art17" targetRef="EndEvent_ResearchException_Art17" />
+    <bpmn:sequenceFlow id="Flow_GatewayExceptionType_To_EndLegalClaimsException_Art17" name="Necessary for the establishment, exercise, or defence of legal claims" sourceRef="Gateway_ExceptionType_Art17" targetRef="EndEvent_LegalClaimsException_Art17" />
+    <bpmn:sequenceFlow id="Flow_TaskErasePersonalData_To_GatewayPublicData_Art17" sourceRef="Task_ErasePersonalData_Art17" targetRef="Gateway_PublicData_Art17" />
+    <bpmn:sequenceFlow id="Flow_GatewayPublicData_To_SendTaskInformOtherControllers_Art17" name="Yes" sourceRef="Gateway_PublicData_Art17" targetRef="SendTask_InformOtherControllers_Art17" />
+    <bpmn:sequenceFlow id="Flow_GatewayPublicData_To_EndErasureCompleted_Art17" name="No" sourceRef="Gateway_PublicData_Art17" targetRef="EndEvent_ErasureCompleted_Art17" />
+    <bpmn:sequenceFlow id="Flow_SendTaskInformOtherControllers_To_EndErasureCompleted_Art17" sourceRef="SendTask_InformOtherControllers_Art17" targetRef="EndEvent_ErasureCompleted_Art17" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art17_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art17_Reviewed" bpmnElement="Collaboration_Art17_Reviewed">
+      <bpmndi:BPMNShape id="Participant_Controller_Art17_di" bpmnElement="Participant_Controller_Art17" isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="4700" height="920" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_DataSubject_Art17_di" bpmnElement="Participant_DataSubject_Art17" isHorizontal="true">
+        <dc:Bounds x="60" y="1000" width="4700" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_OtherControllers_Art17_di" bpmnElement="Participant_OtherControllers_Art17" isHorizontal="true">
+        <dc:Bounds x="60" y="1140" width="4700" height="120" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_ErasureRequested_Art17_di" bpmnElement="StartEvent_ErasureRequested_Art17">
+        <dc:Bounds x="120" y="412" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveErasureRequest_Art17_di" bpmnElement="ReceiveTask_ReceiveErasureRequest_Art17">
+        <dc:Bounds x="240" y="390" width="300" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ErasureGround_Art17_di" bpmnElement="Gateway_ErasureGround_Art17" isMarkerVisible="true">
+        <dc:Bounds x="860" y="405" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_GroundNoLongerNecessary_Art17_di" bpmnElement="Task_GroundNoLongerNecessary_Art17">
+        <dc:Bounds x="1120" y="60" width="540" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_GroundWithdrawnConsent_Art17_di" bpmnElement="Task_GroundWithdrawnConsent_Art17">
+        <dc:Bounds x="1120" y="160" width="540" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_GroundSuccessfulObjection_Art17_di" bpmnElement="Task_GroundSuccessfulObjection_Art17">
+        <dc:Bounds x="1120" y="260" width="620" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_GroundUnlawfulProcessing_Art17_di" bpmnElement="Task_GroundUnlawfulProcessing_Art17">
+        <dc:Bounds x="1120" y="360" width="500" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_GroundLegalObligation_Art17_di" bpmnElement="Task_GroundLegalObligation_Art17">
+        <dc:Bounds x="1120" y="460" width="560" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_GroundChildConsent_Art17_di" bpmnElement="Task_GroundChildConsent_Art17">
+        <dc:Bounds x="1120" y="560" width="640" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinGrounds_Art17_di" bpmnElement="Gateway_JoinGrounds_Art17" isMarkerVisible="true">
+        <dc:Bounds x="1820" y="405" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Art17Exception_Art17_di" bpmnElement="Gateway_Art17Exception_Art17" isMarkerVisible="true">
+        <dc:Bounds x="2040" y="405" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ErasePersonalData_Art17_di" bpmnElement="Task_ErasePersonalData_Art17">
+        <dc:Bounds x="2260" y="390" width="460" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_PublicData_Art17_di" bpmnElement="Gateway_PublicData_Art17" isMarkerVisible="true">
+        <dc:Bounds x="2880" y="405" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_InformOtherControllers_Art17_di" bpmnElement="SendTask_InformOtherControllers_Art17">
+        <dc:Bounds x="3100" y="300" width="640" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ExceptionType_Art17_di" bpmnElement="Gateway_ExceptionType_Art17" isMarkerVisible="true">
+        <dc:Bounds x="2265" y="645" width="50" height="50" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="EndEvent_NoErasureGround_Art17_di" bpmnElement="EndEvent_NoErasureGround_Art17">
+        <dc:Bounds x="1037" y="667" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_FreedomExpressionException_Art17_di" bpmnElement="EndEvent_FreedomExpressionException_Art17">
+        <dc:Bounds x="2922" y="522" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_LegalObligationException_Art17_di" bpmnElement="EndEvent_LegalObligationException_Art17">
+        <dc:Bounds x="2922" y="607" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_PublicHealthException_Art17_di" bpmnElement="EndEvent_PublicHealthException_Art17">
+        <dc:Bounds x="2922" y="692" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ResearchException_Art17_di" bpmnElement="EndEvent_ResearchException_Art17">
+        <dc:Bounds x="2922" y="777" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_LegalClaimsException_Art17_di" bpmnElement="EndEvent_LegalClaimsException_Art17">
+        <dc:Bounds x="2922" y="862" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ErasureCompleted_Art17_di" bpmnElement="EndEvent_ErasureCompleted_Art17">
+        <dc:Bounds x="3922" y="412" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_ReceiveTaskReceiveErasureRequest_Art17_di" bpmnElement="Flow_Start_To_ReceiveTaskReceiveErasureRequest_Art17">
+        <di:waypoint x="156" y="430" />
+        <di:waypoint x="240" y="430" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveTaskReceiveErasureRequest_To_GatewayErasureGround_Art17_di" bpmnElement="Flow_ReceiveTaskReceiveErasureRequest_To_GatewayErasureGround_Art17">
+        <di:waypoint x="540" y="430" />
+        <di:waypoint x="860" y="430" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayErasureGround_To_TaskGroundNoLongerNecessary_Art17_di" bpmnElement="Flow_GatewayErasureGround_To_TaskGroundNoLongerNecessary_Art17">
+        <di:waypoint x="885" y="405" />
+        <di:waypoint x="885" y="100" />
+        <di:waypoint x="1120" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayErasureGround_To_TaskGroundWithdrawnConsent_Art17_di" bpmnElement="Flow_GatewayErasureGround_To_TaskGroundWithdrawnConsent_Art17">
+        <di:waypoint x="885" y="405" />
+        <di:waypoint x="885" y="200" />
+        <di:waypoint x="1120" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayErasureGround_To_TaskGroundSuccessfulObjection_Art17_di" bpmnElement="Flow_GatewayErasureGround_To_TaskGroundSuccessfulObjection_Art17">
+        <di:waypoint x="885" y="405" />
+        <di:waypoint x="885" y="300" />
+        <di:waypoint x="1120" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayErasureGround_To_TaskGroundUnlawfulProcessing_Art17_di" bpmnElement="Flow_GatewayErasureGround_To_TaskGroundUnlawfulProcessing_Art17">
+        <di:waypoint x="910" y="430" />
+        <di:waypoint x="1120" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayErasureGround_To_TaskGroundLegalObligation_Art17_di" bpmnElement="Flow_GatewayErasureGround_To_TaskGroundLegalObligation_Art17">
+        <di:waypoint x="885" y="455" />
+        <di:waypoint x="885" y="500" />
+        <di:waypoint x="1120" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayErasureGround_To_TaskGroundChildConsent_Art17_di" bpmnElement="Flow_GatewayErasureGround_To_TaskGroundChildConsent_Art17">
+        <di:waypoint x="885" y="455" />
+        <di:waypoint x="885" y="600" />
+        <di:waypoint x="1120" y="600" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayErasureGround_To_EndNoErasureGround_Art17_di" bpmnElement="Flow_GatewayErasureGround_To_EndNoErasureGround_Art17">
+        <di:waypoint x="885" y="455" />
+        <di:waypoint x="885" y="685" />
+        <di:waypoint x="1037" y="685" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskGroundNoLongerNecessary_To_GatewayJoinGrounds_Art17_di" bpmnElement="Flow_TaskGroundNoLongerNecessary_To_GatewayJoinGrounds_Art17">
+        <di:waypoint x="1660" y="100" />
+        <di:waypoint x="1845" y="100" />
+        <di:waypoint x="1845" y="405" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskGroundWithdrawnConsent_To_GatewayJoinGrounds_Art17_di" bpmnElement="Flow_TaskGroundWithdrawnConsent_To_GatewayJoinGrounds_Art17">
+        <di:waypoint x="1660" y="200" />
+        <di:waypoint x="1845" y="200" />
+        <di:waypoint x="1845" y="405" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskGroundSuccessfulObjection_To_GatewayJoinGrounds_Art17_di" bpmnElement="Flow_TaskGroundSuccessfulObjection_To_GatewayJoinGrounds_Art17">
+        <di:waypoint x="1740" y="300" />
+        <di:waypoint x="1845" y="300" />
+        <di:waypoint x="1845" y="405" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskGroundUnlawfulProcessing_To_GatewayJoinGrounds_Art17_di" bpmnElement="Flow_TaskGroundUnlawfulProcessing_To_GatewayJoinGrounds_Art17">
+        <di:waypoint x="1620" y="400" />
+        <di:waypoint x="1820" y="430" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskGroundLegalObligation_To_GatewayJoinGrounds_Art17_di" bpmnElement="Flow_TaskGroundLegalObligation_To_GatewayJoinGrounds_Art17">
+        <di:waypoint x="1680" y="500" />
+        <di:waypoint x="1845" y="500" />
+        <di:waypoint x="1845" y="455" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskGroundChildConsent_To_GatewayJoinGrounds_Art17_di" bpmnElement="Flow_TaskGroundChildConsent_To_GatewayJoinGrounds_Art17">
+        <di:waypoint x="1760" y="600" />
+        <di:waypoint x="1845" y="600" />
+        <di:waypoint x="1845" y="455" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinGrounds_To_GatewayArt17Exception_Art17_di" bpmnElement="Flow_GatewayJoinGrounds_To_GatewayArt17Exception_Art17">
+        <di:waypoint x="1870" y="430" />
+        <di:waypoint x="2040" y="430" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayArt17Exception_To_GatewayExceptionType_Art17_di" bpmnElement="Flow_GatewayArt17Exception_To_GatewayExceptionType_Art17">
+        <di:waypoint x="2065" y="455" />
+        <di:waypoint x="2065" y="670" />
+        <di:waypoint x="2265" y="670" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayArt17Exception_To_TaskErasePersonalData_Art17_di" bpmnElement="Flow_GatewayArt17Exception_To_TaskErasePersonalData_Art17">
+        <di:waypoint x="2090" y="430" />
+        <di:waypoint x="2260" y="430" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExceptionType_To_EndFreedomExpressionException_Art17_di" bpmnElement="Flow_GatewayExceptionType_To_EndFreedomExpressionException_Art17">
+        <di:waypoint x="2315" y="645" />
+        <di:waypoint x="2315" y="540" />
+        <di:waypoint x="2922" y="540" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExceptionType_To_EndLegalObligationException_Art17_di" bpmnElement="Flow_GatewayExceptionType_To_EndLegalObligationException_Art17">
+        <di:waypoint x="2315" y="662" />
+        <di:waypoint x="2922" y="625" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExceptionType_To_EndPublicHealthException_Art17_di" bpmnElement="Flow_GatewayExceptionType_To_EndPublicHealthException_Art17">
+        <di:waypoint x="2315" y="670" />
+        <di:waypoint x="2922" y="710" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExceptionType_To_EndResearchException_Art17_di" bpmnElement="Flow_GatewayExceptionType_To_EndResearchException_Art17">
+        <di:waypoint x="2315" y="678" />
+        <di:waypoint x="2922" y="795" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExceptionType_To_EndLegalClaimsException_Art17_di" bpmnElement="Flow_GatewayExceptionType_To_EndLegalClaimsException_Art17">
+        <di:waypoint x="2315" y="695" />
+        <di:waypoint x="2315" y="880" />
+        <di:waypoint x="2922" y="880" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskErasePersonalData_To_GatewayPublicData_Art17_di" bpmnElement="Flow_TaskErasePersonalData_To_GatewayPublicData_Art17">
+        <di:waypoint x="2720" y="430" />
+        <di:waypoint x="2880" y="430" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPublicData_To_SendTaskInformOtherControllers_Art17_di" bpmnElement="Flow_GatewayPublicData_To_SendTaskInformOtherControllers_Art17">
+        <di:waypoint x="2905" y="405" />
+        <di:waypoint x="2905" y="340" />
+        <di:waypoint x="3100" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPublicData_To_EndErasureCompleted_Art17_di" bpmnElement="Flow_GatewayPublicData_To_EndErasureCompleted_Art17">
+        <di:waypoint x="2930" y="430" />
+        <di:waypoint x="3922" y="430" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendTaskInformOtherControllers_To_EndErasureCompleted_Art17_di" bpmnElement="Flow_SendTaskInformOtherControllers_To_EndErasureCompleted_Art17">
+        <di:waypoint x="3740" y="340" />
+        <di:waypoint x="3830" y="340" />
+        <di:waypoint x="3830" y="430" />
+        <di:waypoint x="3922" y="430" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_SendErasureRequest_Art17_di" bpmnElement="MessageFlow_SendErasureRequest_Art17">
+        <di:waypoint x="390" y="1000" />
+        <di:waypoint x="390" y="470" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_InformOtherControllers_Art17_di" bpmnElement="MessageFlow_InformOtherControllers_Art17">
+        <di:waypoint x="3420" y="380" />
+        <di:waypoint x="3420" y="1140" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

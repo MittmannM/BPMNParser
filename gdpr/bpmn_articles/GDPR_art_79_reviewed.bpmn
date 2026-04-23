@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art79_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art79_Reviewed">
+    <bpmn:participant id="Participant_DataSubject_Art79"
+                      name="Data Subject"
+                      processRef="Process_DataSubject_Art79" />
+    <bpmn:participant id="Participant_Court_Art79"
+                      name="Court" />
+
+    <bpmn:messageFlow id="MessageFlow_BringProceedings_Art79"
+                      sourceRef="SendTask_BringProceedings_Art79"
+                      targetRef="Participant_Court_Art79" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_DataSubject_Art79"
+                name="Bringing proceedings against a controller or processor"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 79 based on the real English legal text from
+      gdpr_articles/article_79.txt. The model shows the right to an effective judicial
+      remedy where GDPR rights are infringed through non-compliant processing and the
+      Article 79(2) venue logic, including the restriction for public authorities acting
+      in the exercise of their public powers.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_AssessControllerProcessorRemedy_Art79"
+                     name="Consider GDPR-rights infringement">
+      <bpmn:outgoing>Flow_Start_To_VerifyInfringement_Art79</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_VerifyInfringement_Art79"
+               name="Check non-compliant processing infringement">
+      <bpmn:incoming>Flow_Start_To_VerifyInfringement_Art79</bpmn:incoming>
+      <bpmn:outgoing>Flow_VerifyInfringement_To_GatewayPublicAuthority_Art79</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_PublicAuthorityVenue_Art79"
+                           name="Is the controller or processor a public authority exercising public powers?">
+      <bpmn:incoming>Flow_VerifyInfringement_To_GatewayPublicAuthority_Art79</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayPublicAuthority_To_TaskUseEstablishmentCourt_Art79</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayPublicAuthority_To_GatewayVenueChoice_Art79</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_UseEstablishmentCourt_Art79"
+               name="Use establishment Member-State court">
+      <bpmn:incoming>Flow_GatewayPublicAuthority_To_TaskUseEstablishmentCourt_Art79</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskUseEstablishmentCourt_To_GatewayVenueReady_Art79</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_VenueChoice_Art79"
+                           name="Which court venue will be used?">
+      <bpmn:incoming>Flow_GatewayPublicAuthority_To_GatewayVenueChoice_Art79</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayVenueChoice_To_TaskUseEstablishmentCourt_Art79</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayVenueChoice_To_TaskUseResidenceCourt_Art79</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_UseResidenceCourt_Art79"
+               name="Use habitual-residence Member-State court">
+      <bpmn:incoming>Flow_GatewayVenueChoice_To_TaskUseResidenceCourt_Art79</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskUseResidenceCourt_To_GatewayVenueReady_Art79</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_VenueReady_Art79">
+      <bpmn:incoming>Flow_TaskUseEstablishmentCourt_To_GatewayVenueReady_Art79</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskUseResidenceCourt_To_GatewayVenueReady_Art79</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayVenueReady_To_BringProceedings_Art79</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="SendTask_BringProceedings_Art79"
+                   name="Bring proceedings against controller or processor">
+      <bpmn:incoming>Flow_GatewayVenueReady_To_BringProceedings_Art79</bpmn:incoming>
+      <bpmn:outgoing>Flow_BringProceedings_To_EndRemedyRequested_Art79</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_RemedyRequested_Art79"
+                   name="Judicial remedy requested">
+      <bpmn:incoming>Flow_BringProceedings_To_EndRemedyRequested_Art79</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_VerifyInfringement_Art79" sourceRef="StartEvent_AssessControllerProcessorRemedy_Art79" targetRef="Task_VerifyInfringement_Art79" />
+    <bpmn:sequenceFlow id="Flow_VerifyInfringement_To_GatewayPublicAuthority_Art79" sourceRef="Task_VerifyInfringement_Art79" targetRef="Gateway_PublicAuthorityVenue_Art79" />
+    <bpmn:sequenceFlow id="Flow_GatewayPublicAuthority_To_TaskUseEstablishmentCourt_Art79" name="Yes" sourceRef="Gateway_PublicAuthorityVenue_Art79" targetRef="Task_UseEstablishmentCourt_Art79" />
+    <bpmn:sequenceFlow id="Flow_GatewayPublicAuthority_To_GatewayVenueChoice_Art79" name="No" sourceRef="Gateway_PublicAuthorityVenue_Art79" targetRef="Gateway_VenueChoice_Art79" />
+    <bpmn:sequenceFlow id="Flow_GatewayVenueChoice_To_TaskUseEstablishmentCourt_Art79" name="Establishment venue" sourceRef="Gateway_VenueChoice_Art79" targetRef="Task_UseEstablishmentCourt_Art79" />
+    <bpmn:sequenceFlow id="Flow_GatewayVenueChoice_To_TaskUseResidenceCourt_Art79" name="Habitual residence venue" sourceRef="Gateway_VenueChoice_Art79" targetRef="Task_UseResidenceCourt_Art79" />
+    <bpmn:sequenceFlow id="Flow_TaskUseEstablishmentCourt_To_GatewayVenueReady_Art79" sourceRef="Task_UseEstablishmentCourt_Art79" targetRef="Gateway_VenueReady_Art79" />
+    <bpmn:sequenceFlow id="Flow_TaskUseResidenceCourt_To_GatewayVenueReady_Art79" sourceRef="Task_UseResidenceCourt_Art79" targetRef="Gateway_VenueReady_Art79" />
+    <bpmn:sequenceFlow id="Flow_GatewayVenueReady_To_BringProceedings_Art79" sourceRef="Gateway_VenueReady_Art79" targetRef="SendTask_BringProceedings_Art79" />
+    <bpmn:sequenceFlow id="Flow_BringProceedings_To_EndRemedyRequested_Art79" sourceRef="SendTask_BringProceedings_Art79" targetRef="EndEvent_RemedyRequested_Art79" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art79_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art79_Reviewed"
+                      bpmnElement="Collaboration_Art79_Reviewed">
+      <bpmndi:BPMNShape id="Participant_DataSubject_Art79_di" bpmnElement="Participant_DataSubject_Art79" isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="3000" height="620" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Court_Art79_di" bpmnElement="Participant_Court_Art79" isHorizontal="true">
+        <dc:Bounds x="60" y="720" width="3000" height="120" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_AssessControllerProcessorRemedy_Art79_di" bpmnElement="StartEvent_AssessControllerProcessorRemedy_Art79">
+        <dc:Bounds x="120" y="302" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_VerifyInfringement_Art79_di" bpmnElement="Task_VerifyInfringement_Art79">
+        <dc:Bounds x="240" y="280" width="480" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_PublicAuthorityVenue_Art79_di" bpmnElement="Gateway_PublicAuthorityVenue_Art79" isMarkerVisible="true">
+        <dc:Bounds x="840" y="295" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_UseEstablishmentCourt_Art79_di" bpmnElement="Task_UseEstablishmentCourt_Art79">
+        <dc:Bounds x="1040" y="170" width="460" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_VenueChoice_Art79_di" bpmnElement="Gateway_VenueChoice_Art79" isMarkerVisible="true">
+        <dc:Bounds x="1050" y="295" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_UseResidenceCourt_Art79_di" bpmnElement="Task_UseResidenceCourt_Art79">
+        <dc:Bounds x="1040" y="420" width="430" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_VenueReady_Art79_di" bpmnElement="Gateway_VenueReady_Art79" isMarkerVisible="true">
+        <dc:Bounds x="1670" y="295" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_BringProceedings_Art79_di" bpmnElement="SendTask_BringProceedings_Art79">
+        <dc:Bounds x="1860" y="280" width="470" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_RemedyRequested_Art79_di" bpmnElement="EndEvent_RemedyRequested_Art79">
+        <dc:Bounds x="2480" y="302" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_VerifyInfringement_Art79_di" bpmnElement="Flow_Start_To_VerifyInfringement_Art79">
+        <di:waypoint x="156" y="320" />
+        <di:waypoint x="240" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_VerifyInfringement_To_GatewayPublicAuthority_Art79_di" bpmnElement="Flow_VerifyInfringement_To_GatewayPublicAuthority_Art79">
+        <di:waypoint x="720" y="320" />
+        <di:waypoint x="840" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPublicAuthority_To_TaskUseEstablishmentCourt_Art79_di" bpmnElement="Flow_GatewayPublicAuthority_To_TaskUseEstablishmentCourt_Art79">
+        <di:waypoint x="865" y="295" />
+        <di:waypoint x="865" y="210" />
+        <di:waypoint x="1040" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPublicAuthority_To_GatewayVenueChoice_Art79_di" bpmnElement="Flow_GatewayPublicAuthority_To_GatewayVenueChoice_Art79">
+        <di:waypoint x="890" y="320" />
+        <di:waypoint x="1050" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayVenueChoice_To_TaskUseEstablishmentCourt_Art79_di" bpmnElement="Flow_GatewayVenueChoice_To_TaskUseEstablishmentCourt_Art79">
+        <di:waypoint x="1075" y="295" />
+        <di:waypoint x="1075" y="250" />
+        <di:waypoint x="1270" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayVenueChoice_To_TaskUseResidenceCourt_Art79_di" bpmnElement="Flow_GatewayVenueChoice_To_TaskUseResidenceCourt_Art79">
+        <di:waypoint x="1075" y="345" />
+        <di:waypoint x="1075" y="460" />
+        <di:waypoint x="1040" y="460" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskUseEstablishmentCourt_To_GatewayVenueReady_Art79_di" bpmnElement="Flow_TaskUseEstablishmentCourt_To_GatewayVenueReady_Art79">
+        <di:waypoint x="1500" y="210" />
+        <di:waypoint x="1695" y="210" />
+        <di:waypoint x="1695" y="295" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskUseResidenceCourt_To_GatewayVenueReady_Art79_di" bpmnElement="Flow_TaskUseResidenceCourt_To_GatewayVenueReady_Art79">
+        <di:waypoint x="1470" y="460" />
+        <di:waypoint x="1695" y="460" />
+        <di:waypoint x="1695" y="345" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayVenueReady_To_BringProceedings_Art79_di" bpmnElement="Flow_GatewayVenueReady_To_BringProceedings_Art79">
+        <di:waypoint x="1720" y="320" />
+        <di:waypoint x="1860" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_BringProceedings_To_EndRemedyRequested_Art79_di" bpmnElement="Flow_BringProceedings_To_EndRemedyRequested_Art79">
+        <di:waypoint x="2330" y="320" />
+        <di:waypoint x="2480" y="320" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_BringProceedings_Art79_di" bpmnElement="MessageFlow_BringProceedings_Art79">
+        <di:waypoint x="2095" y="360" />
+        <di:waypoint x="2095" y="720" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

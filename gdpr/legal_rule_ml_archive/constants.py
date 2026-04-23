@@ -1,0 +1,264 @@
+# Sets for structural and deontic analysis
+ACTOR_LIST = {'Controller', 'Processor', 'SupervisoryAuthority', 'DataSubject', 'MemberState'}
+STRUCTURAL_NS = {'rioOnto', 'swrlb', 'rdfs', 'ruleml'}
+DEONTIC_WRAPPERS = {'Obliged', 'Permitted', 'Right', 'Prohibited'}
+
+# Modal helpers: domain verbs that qualify another verb but are NOT primary tasks
+MODAL_HELPERS = {'AbleTo', 'nonDelayed', 'possible', 'responsible', 'feasible', 'reasonable'}
+
+# Content verbs: verbs that describe WHAT a document/record must contain — never primary tasks
+CONTENT_VERBS = {'Contain', 'Describe', 'CategoryOf', 'allInfoAbout', 'imply'}
+
+# Relation verbs: ONLY true structural/ontological predicates that can NEVER be
+# primary BPMN tasks (pure logical connectives, type predicates, qualitative attributes).
+# DO NOT put domain action verbs here even if they sometimes appear as IF-block context —
+# use CONTEXT_PREDICATES for that (it only filters the gateway-condition scan, not THEN resolution).
+RELATION_VERBS = {
+    # Pure ontological type/membership predicates
+    'isRepresentedBy', 'nominates', 'isBasedOn', 'partOf', 'cause', 'imply',
+    'LegalRequirement', 'Marketing', 'publicPowers', 'Purpose',
+    # Structural relationship markers (not callable as process steps)
+    'PartyOf', 'ViolationOf', 'codeOfConduct',
+    'ApprovedCertificationMechanism', 'StandardContractualClause',
+    # Attribute/state predicates
+    'confidentialWrt',
+}
+
+# Background context predicates: atoms that appear in every rule's IF block to define
+# the legal scenario (who is involved, what data, what legal basis). These must NEVER
+# become XOR/AND gateway condition labels — they're always true preconditions, not
+# true decision branches.
+CONTEXT_PREDICATES = {
+    # Data & subject role markers
+    'PersonalData', 'PersonalDataProcessing', 'DataSubject', 'Controller',
+    'Processor', 'SupervisoryAuthority', 'MemberState',
+    # Legal relationship markers
+    'nominates', 'isBasedOn', 'Purpose', 'partOf', 'isRepresentedBy',
+    'ResponsibleFor', 'LegalRequirement', 'publicPowers', 'Marketing',
+    # Contract / sub-processor context
+    'Contract', 'PartyOf', 'ViolationOf', 'StandardContractualClause',
+    # Compliance markers
+    'AdhereTo', 'codeOfConduct', 'ApprovedCertificationMechanism',
+    # Relational descriptors
+    'RelatedTo', 'WorkIn', 'AssistFor', 'AuthorizedBy',
+    'confidentialWrt', 'Return', 'Define',
+    # Misc structural
+    'Communicate', 'Transmit', 'Execute', 'Request', 'Hold', 'cause',
+    'imply', 'PublicInterest',
+}
+
+# True process-triggering events
+EVENT_TRIGGERS = {
+    'DataBreach', 'AwareOf', 'Request', 'PersonalDataProcessing',
+    'Complaint', 'ReceiveFrom', 'Execute', 'Lodge'
+}
+
+# Structures namespace concepts that are not domain actions
+STRUCTURAL_THEN = STRUCTURAL_NS | {
+    'nonDelayed', 'LetterReasonFor', 'Define',
+    'RexistAtTime', 'AbleTo', 'writtenForm', 'electronicForm'
+}
+
+# Mapping for human-friendly labels
+HUMANIZER = {
+    "Communicate'": "Notify", "Communicate": "Notify",
+    "LetterReasonFor": "Provide Reason for Delay",
+    "Document'": "Document", "Document": "Document",
+    "ComplyWith": "Comply With Obligations",
+    "Verify": "Verify",
+    "Provide": "Provide Information",
+    "DataBreach": "Data Breach Detected",
+    "AwareOf": "Became Aware of Breach", "AwareOf'": "Became Aware of Breach",
+    "PersonalDataProcessing": "Personal Data Processing",
+    "PersonalDataProcessing'": "Personal Data Processing",
+    "Measure": "Measures Taken/Proposed",
+    "TakenToAddress": "Measures Already Taken",
+    "ProposedToAddress": "Measures Proposed",
+    "natureOf": "Nature of Breach",
+    "dpoOrCP": "Contact Details (DPO/CP)", "dpoOrCp": "Contact Details (DPO/CP)",
+    "imply": "Likely Consequences",
+    "contactDetails": "Contact Details",
+    "Risk": "High Risk to Individuals",
+    "likely": "Likely to Result in Risk",
+    "riskinessRightsFreedoms": "Risk to Rights and Freedoms",
+    "feasible": "Feasible",
+    "nominates": "Processor Nominates Controller",
+    "allInfoAbout": "All Info About the Breach",
+    "SupervisoryAuthority": "Supervisory Authority",
+    "Delete": "Erase Personal Data",
+    "Rectify": "Rectify Data",
+    "Access": "Provide Data Access",
+    "Lodge": "Lodge Complaint",
+    "ReceiveFrom": "Receive Communication",
+    "Charge": "Charge Fee",
+    "WithdrawConsent": "Withdraw Consent",
+    "Register": "Maintain Processing Record",
+    "WriteIn": "Record Processing Activity",
+    "Implement": "Implement Measure",
+    # Art. 82 — liability & compensation
+    "ResponsibleFor": "Bear Legal Responsibility",
+    "CompensationFor": "Receive Compensation",
+    "PayFor": "Pay Compensation",
+    "HasBeenDamaged": "Damage Suffered",
+    "Request": "Submit Request",
+    "ViolationOf": "GDPR Violation",
+    # Art. 82 / general — additional action verbs
+    "Transmit": "Transmit Data",
+    "Execute": "Execute Processing",
+    "Hold": "Hold Data",
+    "RelatedTo": "Related Processing",
+    "AdhereTo": "Adhere to Rules",
+    "AssistFor": "Assist With Compliance",
+    "Return": "Return Personal Data",
+    "WorkIn": "Work In Capacity",
+    "AuthorizedBy": "Authorized By Controller",
+    "Define": "Define Processing Scope",
+    "Contract": "Enter Contract",
+    "Demonstrate": "Demonstrate Compliance",
+    "ComplyWith": "Comply With Obligations",
+    "reasonable": "Use reasonable effort",
+    "publicPowers": "Official Authority Task",
+    "Public_Body": "Public Body Records",
+    "ThirdParty": "Third-Party Recipient",
+    "Marketing": "Direct Marketing",
+    "dpoOrCP": "Provide Contact Details",
+    "dpoOrCp": "Provide Contact Details",
+    "TakeIntoAccount": "Take Risk Into Account",
+    "clearness": "Use Clear Language",
+    "machineReadableness": "Provide Machine-Readable Information",
+    "PartyOf": "Enter Arrangement",
+    "isRepresentedBy": "Be Represented By",
+    "confidentialWrt": "Keep Confidential",
+    "AdequateWith": "Ensure Adequacy",
+    "designates": "Designate Data Protection Officer",
+    "ExpertIn": "Have Expert Knowledge",
+    "Publish": "Publish Information",
+    "ConflictOfInterest": "Avoid Conflict of Interest",
+    "Monitor": "Monitor Compliance",
+    "CooperateWith": "Cooperate With Authority",
+    "Protect": "Protect Rights and Freedoms",
+    "Research": "Research Purpose",
+    "Statistic": "Statistical Purpose",
+    "JudicialRemedy": "Seek Judicial Remedy",
+    "ThePublic": "Inform the Public",
+    "ReachableFrom": "Be Easily Reachable",
+    "OfferGoodsOrServices": "Offer Goods or Services",
+    "JointDataController": "Joint Controllers Involved",
+    "DPO": "Data Protection Officer",
+    "Recipient": "Recipients",
+    "CategoryOf": "Categories of Data",
+    "AutomatedDecisionMaking": "Automated Decision-Making",
+    "HasSignificantEffectOn": "Significant Effect",
+    "LegalEffectOn": "Legal Effect",
+    "BiometricData": "Biometric Data",
+    "EthnicData": "Ethnic Origin Data",
+    "GeneticData": "Genetic Data",
+    "HealthData": "Health Data",
+    "largeScale": "Large-Scale Processing",
+    "publicArea": "Publicly Accessible Area",
+    "Identify": "Identify the Requester",
+    "AttachTo": "Attach Standard Icons",
+    "AccreditedBy": "Be Accredited By",
+    "Mandate": "Mandate a Representative Body",
+    "ContactPointFor": "Provide Contact Point",
+    "public": "Make Information Public",
+    "AdviseOn": "Advise On Compliance",
+    "DataProtectionPolicies": "Data Protection Policies",
+    "BodyCC": "Monitoring Body",
+    "copyOf": "Copy of Personal Data",
+    "legalBasisOf": "Legal Basis",
+    "numberOfDSConcerned": "Number of Data Subjects Concerned",
+    "numberOfPDRConcerned": "Number of Data Records Concerned",
+    "progressOf": "Progress Update",
+    "draftOf": "Draft Notification",
+    "highestManagementLevel": "Highest Management Level",
+    "countryOf": "Country",
+    "minAgeForConsent": "Minimum Consent Age",
+    "ageOf": "Age of Data Subject",
+    "ThirdCountry": "Third Country",
+    "InternationalOrganization": "International Organization",
+    "oralForm": "Oral Form",
+    "lessThanOrEqual": "At or Below Threshold",
+    "equal": "Equals",
+    "Override": "Override",
+    "rightsAndFreedoms": "Rights and Freedoms",
+    "legitimateInterest": "Legitimate Interest",
+}
+
+COND_HUMANIZER = {
+    "Risk": "High Risk to Individuals",
+    "likely": "Likely to Cause Risk",
+    "riskinessRightsFreedoms": "Risk to Rights & Freedoms",
+    "Person": "Natural Person Affected",
+    "nominates": "Processor Nominates Representative",
+    "feasible": "Notification Feasible",
+    "NOT Possible": "NOT all info available yet",
+    "Partial Information Available": "Further details can follow later",
+    "ViolationOf": "GDPR Violation",
+    "DPO": "Data Protection Officer Appointed",
+    "CategoryOf": "Categories of Data",
+    "Recipient": "Recipients Identified",
+    "JointDataController": "Joint Controllers Involved",
+    "AutomatedDecisionMaking": "Automated Decision-Making",
+    "HasSignificantEffectOn": "Significant Effect on the Person",
+    "LegalEffectOn": "Legal Effect on the Person",
+    "BiometricData": "Biometric Data",
+    "EthnicData": "Ethnic Origin Data",
+    "GeneticData": "Genetic Data",
+    "HealthData": "Health Data",
+    "largeScale": "Large-Scale Processing",
+    "publicArea": "Publicly Accessible Area",
+    "Research": "Research Purpose",
+    "Statistic": "Statistical Purpose",
+    "Judicial": "Judicial Context",
+    "Protect": "Protect Rights and Freedoms",
+    "DataProtectionPolicies": "Data Protection Policies",
+    "OfferGoodsOrServices": "Offers Goods or Services",
+    "ReachableFrom": "Easily Reachable",
+    "Represent": "Representative Bodies Involved",
+    "Monitor": "Monitoring Activities",
+    "BodyCC": "Monitoring Body",
+    # Art. 17 grounds for erasure
+    "publicInterest": "Public Interest Processing",
+    "lawfulness": "Processing Was Lawful",
+    "Consent": "Original Consent Given",
+    "GiveConsent": "Data Subject Gave Consent",
+    "WithdrawConsent": "Consent Withdrawn",
+    "public": "Information Made Public",
+    # Art. 5 data minimisation
+    "accurate": "Data is Accurate",
+    "PersonalDataRecord": "Processing Record Exists",
+    "Store": "Data Stored",
+    "Marketing": "Direct Marketing",
+    "publicPowers": "Official Authority Task",
+    "ThirdParty": "Third-Party Recipient",
+    "Public_Body": "Public Body Records",
+    # Art. 30 / 34
+    "Representative": "Controller Has Representative",
+    "requireTooMuchEffort": "Disproportionate Effort",
+    # Art. 28 sub-processor conditions
+    "Demonstrate": "Compliance Demonstrated",
+    "Comply With Obligations": "Obligations Complied With",
+    "Maintain Processing Record": "Processing Record Maintained",
+    "ThirdCountry": "Transfer to Third Country",
+    "InternationalOrganization": "Transfer to International Organization",
+    "legitimateInterest": "Legitimate Interest",
+    "rightsAndFreedoms": "Rights and Freedoms",
+    "countryOf": "Country",
+    "minAgeForConsent": "Minimum Consent Age",
+    "ageOf": "Age of Data Subject",
+}
+
+RECIPIENT_HUMANIZER = {
+    'SupervisoryAuthority': 'Supervisory Authority',
+    'Controller': 'Controller',
+    'Processor': 'Processor',
+    'DataSubject': 'Data Subject',
+}
+
+RAW_SKIP_LABELS = {
+    'Describe', "Describe'", 'Contain', "Contain'", 'and', 'or', 'System', 'partOf',
+    'Notify', 'Document', 'Verify', 'Comply With Obligations', 'Provide Reason for Delay',
+    "Communicate'", "Communicate", "LetterReasonFor", "ComplyWith", "Document'", "Verify",
+    'Define',
+}

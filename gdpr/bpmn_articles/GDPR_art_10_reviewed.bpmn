@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art10_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:process id="Process_Controller_Art10"
+                name="Assess Article 10 processing"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 10 based on the real English legal text.
+      The model covers the Article 6(1) precondition, the control-by-official-
+      authority route, the Union-or-Member-State-law authorisation route with
+      appropriate safeguards, and the stricter rule that any comprehensive register of
+      criminal convictions may be kept only under official authority.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_AssessArticle10_Art10"
+                     name="Need Article 10 assessment">
+      <bpmn:outgoing>Flow_Start_To_TaskIdentifyArticle10Data_Art10</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_IdentifyArticle10Data_Art10"
+               name="Check Article 10 data or register">
+      <bpmn:incoming>Flow_Start_To_TaskIdentifyArticle10Data_Art10</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskIdentifyArticle10Data_To_GatewayArticle10Applies_Art10</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_Article10Applies_Art10"
+                           name="Does Article 10 apply to the planned processing?">
+      <bpmn:incoming>Flow_TaskIdentifyArticle10Data_To_GatewayArticle10Applies_Art10</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayArticle10Applies_To_GatewayComprehensiveRegister_Art10</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayArticle10Applies_To_EndArticle10NotTriggered_Art10</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_ComprehensiveRegister_Art10"
+                           name="Does the processing involve a comprehensive convictions register?">
+      <bpmn:incoming>Flow_GatewayArticle10Applies_To_GatewayComprehensiveRegister_Art10</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayComprehensiveRegister_To_GatewayOfficialAuthorityRegister_Art10</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayComprehensiveRegister_To_GatewayOfficialAuthorityGeneral_Art10</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_OfficialAuthorityRegister_Art10"
+                           name="Is the comprehensive register kept under official authority?">
+      <bpmn:incoming>Flow_GatewayComprehensiveRegister_To_GatewayOfficialAuthorityRegister_Art10</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayOfficialAuthorityRegister_To_EndRegisterAllowed_Art10</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayOfficialAuthorityRegister_To_EndRegisterProhibited_Art10</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_OfficialAuthorityGeneral_Art10"
+                           name="Is the processing carried out under official authority?">
+      <bpmn:incoming>Flow_GatewayComprehensiveRegister_To_GatewayOfficialAuthorityGeneral_Art10</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayOfficialAuthorityGeneral_To_EndProcessingUnderAuthority_Art10</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayOfficialAuthorityGeneral_To_TaskAssessAuthorization_Art10</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_AssessAuthorization_Art10"
+               name="Check legal authorisation and safeguards">
+      <bpmn:incoming>Flow_GatewayOfficialAuthorityGeneral_To_TaskAssessAuthorization_Art10</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskAssessAuthorization_To_GatewayAuthorizedByLaw_Art10</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_AuthorizedByLaw_Art10"
+                           name="Is the processing authorized by Union or Member State law with appropriate safeguards?">
+      <bpmn:incoming>Flow_TaskAssessAuthorization_To_GatewayAuthorizedByLaw_Art10</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAuthorizedByLaw_To_EndProcessingAuthorizedByLaw_Art10</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAuthorizedByLaw_To_EndProcessingProhibited_Art10</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_Article10NotTriggered_Art10"
+                   name="Article 10 not triggered">
+      <bpmn:incoming>Flow_GatewayArticle10Applies_To_EndArticle10NotTriggered_Art10</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_RegisterAllowed_Art10"
+                   name="Register kept under official authority">
+      <bpmn:incoming>Flow_GatewayOfficialAuthorityRegister_To_EndRegisterAllowed_Art10</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_RegisterProhibited_Art10"
+                   name="Register not permitted">
+      <bpmn:incoming>Flow_GatewayOfficialAuthorityRegister_To_EndRegisterProhibited_Art10</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_ProcessingUnderAuthority_Art10"
+                   name="Processing under official authority">
+      <bpmn:incoming>Flow_GatewayOfficialAuthorityGeneral_To_EndProcessingUnderAuthority_Art10</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_ProcessingAuthorizedByLaw_Art10"
+                   name="Processing authorised by law">
+      <bpmn:incoming>Flow_GatewayAuthorizedByLaw_To_EndProcessingAuthorizedByLaw_Art10</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_ProcessingProhibited_Art10"
+                   name="Processing not permitted">
+      <bpmn:incoming>Flow_GatewayAuthorizedByLaw_To_EndProcessingProhibited_Art10</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_TaskIdentifyArticle10Data_Art10" sourceRef="StartEvent_AssessArticle10_Art10" targetRef="Task_IdentifyArticle10Data_Art10" />
+    <bpmn:sequenceFlow id="Flow_TaskIdentifyArticle10Data_To_GatewayArticle10Applies_Art10" sourceRef="Task_IdentifyArticle10Data_Art10" targetRef="Gateway_Article10Applies_Art10" />
+    <bpmn:sequenceFlow id="Flow_GatewayArticle10Applies_To_GatewayComprehensiveRegister_Art10" name="Yes" sourceRef="Gateway_Article10Applies_Art10" targetRef="Gateway_ComprehensiveRegister_Art10" />
+    <bpmn:sequenceFlow id="Flow_GatewayArticle10Applies_To_EndArticle10NotTriggered_Art10" name="No" sourceRef="Gateway_Article10Applies_Art10" targetRef="EndEvent_Article10NotTriggered_Art10" />
+    <bpmn:sequenceFlow id="Flow_GatewayComprehensiveRegister_To_GatewayOfficialAuthorityRegister_Art10" name="Yes" sourceRef="Gateway_ComprehensiveRegister_Art10" targetRef="Gateway_OfficialAuthorityRegister_Art10" />
+    <bpmn:sequenceFlow id="Flow_GatewayComprehensiveRegister_To_GatewayOfficialAuthorityGeneral_Art10" name="No" sourceRef="Gateway_ComprehensiveRegister_Art10" targetRef="Gateway_OfficialAuthorityGeneral_Art10" />
+    <bpmn:sequenceFlow id="Flow_GatewayOfficialAuthorityRegister_To_EndRegisterAllowed_Art10" name="Yes" sourceRef="Gateway_OfficialAuthorityRegister_Art10" targetRef="EndEvent_RegisterAllowed_Art10" />
+    <bpmn:sequenceFlow id="Flow_GatewayOfficialAuthorityRegister_To_EndRegisterProhibited_Art10" name="No" sourceRef="Gateway_OfficialAuthorityRegister_Art10" targetRef="EndEvent_RegisterProhibited_Art10" />
+    <bpmn:sequenceFlow id="Flow_GatewayOfficialAuthorityGeneral_To_EndProcessingUnderAuthority_Art10" name="Yes" sourceRef="Gateway_OfficialAuthorityGeneral_Art10" targetRef="EndEvent_ProcessingUnderAuthority_Art10" />
+    <bpmn:sequenceFlow id="Flow_GatewayOfficialAuthorityGeneral_To_TaskAssessAuthorization_Art10" name="No" sourceRef="Gateway_OfficialAuthorityGeneral_Art10" targetRef="Task_AssessAuthorization_Art10" />
+    <bpmn:sequenceFlow id="Flow_TaskAssessAuthorization_To_GatewayAuthorizedByLaw_Art10" sourceRef="Task_AssessAuthorization_Art10" targetRef="Gateway_AuthorizedByLaw_Art10" />
+    <bpmn:sequenceFlow id="Flow_GatewayAuthorizedByLaw_To_EndProcessingAuthorizedByLaw_Art10" name="Yes" sourceRef="Gateway_AuthorizedByLaw_Art10" targetRef="EndEvent_ProcessingAuthorizedByLaw_Art10" />
+    <bpmn:sequenceFlow id="Flow_GatewayAuthorizedByLaw_To_EndProcessingProhibited_Art10" name="No" sourceRef="Gateway_AuthorizedByLaw_Art10" targetRef="EndEvent_ProcessingProhibited_Art10" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art10_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art10_Reviewed" bpmnElement="Process_Controller_Art10">
+      <bpmndi:BPMNShape id="StartEvent_AssessArticle10_Art10_di" bpmnElement="StartEvent_AssessArticle10_Art10">
+        <dc:Bounds x="120" y="342" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_IdentifyArticle10Data_Art10_di" bpmnElement="Task_IdentifyArticle10Data_Art10">
+        <dc:Bounds x="250" y="320" width="460" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Article10Applies_Art10_di" bpmnElement="Gateway_Article10Applies_Art10" isMarkerVisible="true">
+        <dc:Bounds x="840" y="335" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ComprehensiveRegister_Art10_di" bpmnElement="Gateway_ComprehensiveRegister_Art10" isMarkerVisible="true">
+        <dc:Bounds x="1080" y="335" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_OfficialAuthorityRegister_Art10_di" bpmnElement="Gateway_OfficialAuthorityRegister_Art10" isMarkerVisible="true">
+        <dc:Bounds x="1360" y="145" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_OfficialAuthorityGeneral_Art10_di" bpmnElement="Gateway_OfficialAuthorityGeneral_Art10" isMarkerVisible="true">
+        <dc:Bounds x="1360" y="335" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessAuthorization_Art10_di" bpmnElement="Task_AssessAuthorization_Art10">
+        <dc:Bounds x="1620" y="470" width="530" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AuthorizedByLaw_Art10_di" bpmnElement="Gateway_AuthorizedByLaw_Art10" isMarkerVisible="true">
+        <dc:Bounds x="2280" y="485" width="50" height="50" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="EndEvent_Article10NotTriggered_Art10_di" bpmnElement="EndEvent_Article10NotTriggered_Art10">
+        <dc:Bounds x="852" y="512" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_RegisterAllowed_Art10_di" bpmnElement="EndEvent_RegisterAllowed_Art10">
+        <dc:Bounds x="1652" y="112" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_RegisterProhibited_Art10_di" bpmnElement="EndEvent_RegisterProhibited_Art10">
+        <dc:Bounds x="1652" y="222" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ProcessingUnderAuthority_Art10_di" bpmnElement="EndEvent_ProcessingUnderAuthority_Art10">
+        <dc:Bounds x="1652" y="342" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ProcessingAuthorizedByLaw_Art10_di" bpmnElement="EndEvent_ProcessingAuthorizedByLaw_Art10">
+        <dc:Bounds x="2552" y="492" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ProcessingProhibited_Art10_di" bpmnElement="EndEvent_ProcessingProhibited_Art10">
+        <dc:Bounds x="2552" y="612" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_TaskIdentifyArticle10Data_Art10_di" bpmnElement="Flow_Start_To_TaskIdentifyArticle10Data_Art10">
+        <di:waypoint x="156" y="360" />
+        <di:waypoint x="250" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskIdentifyArticle10Data_To_GatewayArticle10Applies_Art10_di" bpmnElement="Flow_TaskIdentifyArticle10Data_To_GatewayArticle10Applies_Art10">
+        <di:waypoint x="710" y="360" />
+        <di:waypoint x="840" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayArticle10Applies_To_GatewayComprehensiveRegister_Art10_di" bpmnElement="Flow_GatewayArticle10Applies_To_GatewayComprehensiveRegister_Art10">
+        <di:waypoint x="890" y="360" />
+        <di:waypoint x="1080" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayArticle10Applies_To_EndArticle10NotTriggered_Art10_di" bpmnElement="Flow_GatewayArticle10Applies_To_EndArticle10NotTriggered_Art10">
+        <di:waypoint x="865" y="385" />
+        <di:waypoint x="865" y="530" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayComprehensiveRegister_To_GatewayOfficialAuthorityRegister_Art10_di" bpmnElement="Flow_GatewayComprehensiveRegister_To_GatewayOfficialAuthorityRegister_Art10">
+        <di:waypoint x="1105" y="335" />
+        <di:waypoint x="1105" y="170" />
+        <di:waypoint x="1360" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayComprehensiveRegister_To_GatewayOfficialAuthorityGeneral_Art10_di" bpmnElement="Flow_GatewayComprehensiveRegister_To_GatewayOfficialAuthorityGeneral_Art10">
+        <di:waypoint x="1130" y="360" />
+        <di:waypoint x="1360" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayOfficialAuthorityRegister_To_EndRegisterAllowed_Art10_di" bpmnElement="Flow_GatewayOfficialAuthorityRegister_To_EndRegisterAllowed_Art10">
+        <di:waypoint x="1410" y="170" />
+        <di:waypoint x="1652" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayOfficialAuthorityRegister_To_EndRegisterProhibited_Art10_di" bpmnElement="Flow_GatewayOfficialAuthorityRegister_To_EndRegisterProhibited_Art10">
+        <di:waypoint x="1385" y="195" />
+        <di:waypoint x="1385" y="240" />
+        <di:waypoint x="1652" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayOfficialAuthorityGeneral_To_EndProcessingUnderAuthority_Art10_di" bpmnElement="Flow_GatewayOfficialAuthorityGeneral_To_EndProcessingUnderAuthority_Art10">
+        <di:waypoint x="1410" y="360" />
+        <di:waypoint x="1652" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayOfficialAuthorityGeneral_To_TaskAssessAuthorization_Art10_di" bpmnElement="Flow_GatewayOfficialAuthorityGeneral_To_TaskAssessAuthorization_Art10">
+        <di:waypoint x="1385" y="385" />
+        <di:waypoint x="1385" y="510" />
+        <di:waypoint x="1620" y="510" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskAssessAuthorization_To_GatewayAuthorizedByLaw_Art10_di" bpmnElement="Flow_TaskAssessAuthorization_To_GatewayAuthorizedByLaw_Art10">
+        <di:waypoint x="2150" y="510" />
+        <di:waypoint x="2280" y="510" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAuthorizedByLaw_To_EndProcessingAuthorizedByLaw_Art10_di" bpmnElement="Flow_GatewayAuthorizedByLaw_To_EndProcessingAuthorizedByLaw_Art10">
+        <di:waypoint x="2330" y="510" />
+        <di:waypoint x="2552" y="510" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAuthorizedByLaw_To_EndProcessingProhibited_Art10_di" bpmnElement="Flow_GatewayAuthorizedByLaw_To_EndProcessingProhibited_Art10">
+        <di:waypoint x="2305" y="535" />
+        <di:waypoint x="2305" y="630" />
+        <di:waypoint x="2552" y="630" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

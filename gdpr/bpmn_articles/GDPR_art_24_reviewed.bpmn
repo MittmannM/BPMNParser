@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art24_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:process id="Process_Controller_Art24"
+                name="Maintaining controller accountability under Article 24"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 24 based on the real English legal text
+      of Regulation (EU) 2016/679. The model captures the Article 24(1) assessment of
+      nature, scope, context, purposes, and risk; the implementation of appropriate
+      technical and organisational measures; the Article 24(2) proportionate policy
+      branch; the optional Article 24(3) compliance-evidence path via Article 40
+      codes of conduct or Article 42 certification; and the duty to review and update
+      the measures where necessary.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_PlanProcessing_Art24"
+                     name="Plan a processing activity">
+      <bpmn:outgoing>Flow_StartPlanProcessing_To_TaskAssessContextRisk_Art24</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_AssessContextRisk_Art24"
+               name="Assess context and risk">
+      <bpmn:incoming>Flow_StartPlanProcessing_To_TaskAssessContextRisk_Art24</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskAssessContextRisk_To_TaskDefineMeasures_Art24</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_DefineMeasures_Art24"
+               name="Define accountability measures">
+      <bpmn:incoming>Flow_TaskAssessContextRisk_To_TaskDefineMeasures_Art24</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskDefineMeasures_To_TaskImplementMeasures_Art24</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ImplementMeasures_Art24"
+               name="Implement measures">
+      <bpmn:incoming>Flow_TaskDefineMeasures_To_TaskImplementMeasures_Art24</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskImplementMeasures_To_GatewayPoliciesProportionate_Art24</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_PoliciesProportionate_Art24"
+                           name="Are data protection policies proportionate to the processing activities?">
+      <bpmn:incoming>Flow_TaskImplementMeasures_To_GatewayPoliciesProportionate_Art24</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayPoliciesProportionate_To_TaskImplementPolicies_Art24</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayPoliciesProportionate_To_GatewayPoliciesJoin_Art24</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ImplementPolicies_Art24"
+               name="Implement data protection policies">
+      <bpmn:incoming>Flow_GatewayPoliciesProportionate_To_TaskImplementPolicies_Art24</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskImplementPolicies_To_GatewayPoliciesJoin_Art24</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_PoliciesJoin_Art24">
+      <bpmn:incoming>Flow_GatewayPoliciesProportionate_To_GatewayPoliciesJoin_Art24</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskImplementPolicies_To_GatewayPoliciesJoin_Art24</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayPoliciesJoin_To_GatewayUseEvidence_Art24</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_UseEvidence_Art24"
+                           name="Use Article 40 code of conduct or Article 42 certification to demonstrate compliance?">
+      <bpmn:incoming>Flow_GatewayPoliciesJoin_To_GatewayUseEvidence_Art24</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayUseEvidence_To_GatewayEvidenceChoice_Art24</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayUseEvidence_To_TaskReviewMeasures_Art24</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_EvidenceChoice_Art24"
+                           name="Which compliance evidence is used?">
+      <bpmn:incoming>Flow_GatewayUseEvidence_To_GatewayEvidenceChoice_Art24</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayEvidenceChoice_To_TaskAdhereCode_Art24</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayEvidenceChoice_To_TaskAdhereCertification_Art24</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_AdhereCode_Art24"
+               name="Adhere to approved code">
+      <bpmn:incoming>Flow_GatewayEvidenceChoice_To_TaskAdhereCode_Art24</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskAdhereCode_To_GatewayEvidenceJoin_Art24</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_AdhereCertification_Art24"
+               name="Adhere to approved certification">
+      <bpmn:incoming>Flow_GatewayEvidenceChoice_To_TaskAdhereCertification_Art24</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskAdhereCertification_To_GatewayEvidenceJoin_Art24</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_EvidenceJoin_Art24">
+      <bpmn:incoming>Flow_TaskAdhereCode_To_GatewayEvidenceJoin_Art24</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskAdhereCertification_To_GatewayEvidenceJoin_Art24</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayEvidenceJoin_To_TaskReviewMeasures_Art24</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ReviewMeasures_Art24"
+               name="Review measures">
+      <bpmn:incoming>Flow_GatewayUseEvidence_To_TaskReviewMeasures_Art24</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayEvidenceJoin_To_TaskReviewMeasures_Art24</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskReviewMeasures_To_GatewayUpdatesNecessary_Art24</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_UpdatesNecessary_Art24"
+                           name="Are measure updates necessary?">
+      <bpmn:incoming>Flow_TaskReviewMeasures_To_GatewayUpdatesNecessary_Art24</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayUpdatesNecessary_To_TaskUpdateMeasures_Art24</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayUpdatesNecessary_To_EndAccountabilityMaintained_Art24</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_UpdateMeasures_Art24"
+               name="Update measures">
+      <bpmn:incoming>Flow_GatewayUpdatesNecessary_To_TaskUpdateMeasures_Art24</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskUpdateMeasures_To_EndAccountabilityMaintained_Art24</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_AccountabilityMaintained_Art24"
+                   name="Article 24 accountability measures maintained">
+      <bpmn:incoming>Flow_GatewayUpdatesNecessary_To_EndAccountabilityMaintained_Art24</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskUpdateMeasures_To_EndAccountabilityMaintained_Art24</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartPlanProcessing_To_TaskAssessContextRisk_Art24" sourceRef="StartEvent_PlanProcessing_Art24" targetRef="Task_AssessContextRisk_Art24" />
+    <bpmn:sequenceFlow id="Flow_TaskAssessContextRisk_To_TaskDefineMeasures_Art24" sourceRef="Task_AssessContextRisk_Art24" targetRef="Task_DefineMeasures_Art24" />
+    <bpmn:sequenceFlow id="Flow_TaskDefineMeasures_To_TaskImplementMeasures_Art24" sourceRef="Task_DefineMeasures_Art24" targetRef="Task_ImplementMeasures_Art24" />
+    <bpmn:sequenceFlow id="Flow_TaskImplementMeasures_To_GatewayPoliciesProportionate_Art24" sourceRef="Task_ImplementMeasures_Art24" targetRef="Gateway_PoliciesProportionate_Art24" />
+    <bpmn:sequenceFlow id="Flow_GatewayPoliciesProportionate_To_TaskImplementPolicies_Art24" name="Yes" sourceRef="Gateway_PoliciesProportionate_Art24" targetRef="Task_ImplementPolicies_Art24" />
+    <bpmn:sequenceFlow id="Flow_GatewayPoliciesProportionate_To_GatewayPoliciesJoin_Art24" name="No" sourceRef="Gateway_PoliciesProportionate_Art24" targetRef="Gateway_PoliciesJoin_Art24" />
+    <bpmn:sequenceFlow id="Flow_TaskImplementPolicies_To_GatewayPoliciesJoin_Art24" sourceRef="Task_ImplementPolicies_Art24" targetRef="Gateway_PoliciesJoin_Art24" />
+    <bpmn:sequenceFlow id="Flow_GatewayPoliciesJoin_To_GatewayUseEvidence_Art24" sourceRef="Gateway_PoliciesJoin_Art24" targetRef="Gateway_UseEvidence_Art24" />
+    <bpmn:sequenceFlow id="Flow_GatewayUseEvidence_To_GatewayEvidenceChoice_Art24" name="Yes" sourceRef="Gateway_UseEvidence_Art24" targetRef="Gateway_EvidenceChoice_Art24" />
+    <bpmn:sequenceFlow id="Flow_GatewayUseEvidence_To_TaskReviewMeasures_Art24" name="No" sourceRef="Gateway_UseEvidence_Art24" targetRef="Task_ReviewMeasures_Art24" />
+    <bpmn:sequenceFlow id="Flow_GatewayEvidenceChoice_To_TaskAdhereCode_Art24" name="Article 40 code of conduct" sourceRef="Gateway_EvidenceChoice_Art24" targetRef="Task_AdhereCode_Art24" />
+    <bpmn:sequenceFlow id="Flow_GatewayEvidenceChoice_To_TaskAdhereCertification_Art24" name="Article 42 certification" sourceRef="Gateway_EvidenceChoice_Art24" targetRef="Task_AdhereCertification_Art24" />
+    <bpmn:sequenceFlow id="Flow_TaskAdhereCode_To_GatewayEvidenceJoin_Art24" sourceRef="Task_AdhereCode_Art24" targetRef="Gateway_EvidenceJoin_Art24" />
+    <bpmn:sequenceFlow id="Flow_TaskAdhereCertification_To_GatewayEvidenceJoin_Art24" sourceRef="Task_AdhereCertification_Art24" targetRef="Gateway_EvidenceJoin_Art24" />
+    <bpmn:sequenceFlow id="Flow_GatewayEvidenceJoin_To_TaskReviewMeasures_Art24" sourceRef="Gateway_EvidenceJoin_Art24" targetRef="Task_ReviewMeasures_Art24" />
+    <bpmn:sequenceFlow id="Flow_TaskReviewMeasures_To_GatewayUpdatesNecessary_Art24" sourceRef="Task_ReviewMeasures_Art24" targetRef="Gateway_UpdatesNecessary_Art24" />
+    <bpmn:sequenceFlow id="Flow_GatewayUpdatesNecessary_To_TaskUpdateMeasures_Art24" name="Yes" sourceRef="Gateway_UpdatesNecessary_Art24" targetRef="Task_UpdateMeasures_Art24" />
+    <bpmn:sequenceFlow id="Flow_GatewayUpdatesNecessary_To_EndAccountabilityMaintained_Art24" name="No" sourceRef="Gateway_UpdatesNecessary_Art24" targetRef="EndEvent_AccountabilityMaintained_Art24" />
+    <bpmn:sequenceFlow id="Flow_TaskUpdateMeasures_To_EndAccountabilityMaintained_Art24" sourceRef="Task_UpdateMeasures_Art24" targetRef="EndEvent_AccountabilityMaintained_Art24" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art24_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art24_Reviewed" bpmnElement="Process_Controller_Art24">
+      <bpmndi:BPMNShape id="StartEvent_PlanProcessing_Art24_di" bpmnElement="StartEvent_PlanProcessing_Art24">
+        <dc:Bounds x="120" y="382" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessContextRisk_Art24_di" bpmnElement="Task_AssessContextRisk_Art24">
+        <dc:Bounds x="240" y="360" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DefineMeasures_Art24_di" bpmnElement="Task_DefineMeasures_Art24">
+        <dc:Bounds x="560" y="360" width="230" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ImplementMeasures_Art24_di" bpmnElement="Task_ImplementMeasures_Art24">
+        <dc:Bounds x="900" y="360" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_PoliciesProportionate_Art24_di" bpmnElement="Gateway_PoliciesProportionate_Art24" isMarkerVisible="true">
+        <dc:Bounds x="1190" y="375" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ImplementPolicies_Art24_di" bpmnElement="Task_ImplementPolicies_Art24">
+        <dc:Bounds x="1360" y="220" width="240" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_PoliciesJoin_Art24_di" bpmnElement="Gateway_PoliciesJoin_Art24" isMarkerVisible="true">
+        <dc:Bounds x="1700" y="375" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_UseEvidence_Art24_di" bpmnElement="Gateway_UseEvidence_Art24" isMarkerVisible="true">
+        <dc:Bounds x="1880" y="375" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_EvidenceChoice_Art24_di" bpmnElement="Gateway_EvidenceChoice_Art24" isMarkerVisible="true">
+        <dc:Bounds x="2080" y="375" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AdhereCode_Art24_di" bpmnElement="Task_AdhereCode_Art24">
+        <dc:Bounds x="2280" y="220" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AdhereCertification_Art24_di" bpmnElement="Task_AdhereCertification_Art24">
+        <dc:Bounds x="2280" y="520" width="240" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_EvidenceJoin_Art24_di" bpmnElement="Gateway_EvidenceJoin_Art24" isMarkerVisible="true">
+        <dc:Bounds x="2670" y="375" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReviewMeasures_Art24_di" bpmnElement="Task_ReviewMeasures_Art24">
+        <dc:Bounds x="2850" y="360" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_UpdatesNecessary_Art24_di" bpmnElement="Gateway_UpdatesNecessary_Art24" isMarkerVisible="true">
+        <dc:Bounds x="3150" y="375" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_UpdateMeasures_Art24_di" bpmnElement="Task_UpdateMeasures_Art24">
+        <dc:Bounds x="3310" y="220" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_AccountabilityMaintained_Art24_di" bpmnElement="EndEvent_AccountabilityMaintained_Art24">
+        <dc:Bounds x="3600" y="382" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_StartPlanProcessing_To_TaskAssessContextRisk_Art24_di" bpmnElement="Flow_StartPlanProcessing_To_TaskAssessContextRisk_Art24">
+        <di:waypoint x="156" y="400" />
+        <di:waypoint x="240" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskAssessContextRisk_To_TaskDefineMeasures_Art24_di" bpmnElement="Flow_TaskAssessContextRisk_To_TaskDefineMeasures_Art24">
+        <di:waypoint x="460" y="400" />
+        <di:waypoint x="560" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskDefineMeasures_To_TaskImplementMeasures_Art24_di" bpmnElement="Flow_TaskDefineMeasures_To_TaskImplementMeasures_Art24">
+        <di:waypoint x="790" y="400" />
+        <di:waypoint x="900" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskImplementMeasures_To_GatewayPoliciesProportionate_Art24_di" bpmnElement="Flow_TaskImplementMeasures_To_GatewayPoliciesProportionate_Art24">
+        <di:waypoint x="1080" y="400" />
+        <di:waypoint x="1190" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPoliciesProportionate_To_TaskImplementPolicies_Art24_di" bpmnElement="Flow_GatewayPoliciesProportionate_To_TaskImplementPolicies_Art24">
+        <di:waypoint x="1215" y="375" />
+        <di:waypoint x="1215" y="260" />
+        <di:waypoint x="1360" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPoliciesProportionate_To_GatewayPoliciesJoin_Art24_di" bpmnElement="Flow_GatewayPoliciesProportionate_To_GatewayPoliciesJoin_Art24">
+        <di:waypoint x="1240" y="400" />
+        <di:waypoint x="1700" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskImplementPolicies_To_GatewayPoliciesJoin_Art24_di" bpmnElement="Flow_TaskImplementPolicies_To_GatewayPoliciesJoin_Art24">
+        <di:waypoint x="1600" y="260" />
+        <di:waypoint x="1725" y="260" />
+        <di:waypoint x="1725" y="375" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPoliciesJoin_To_GatewayUseEvidence_Art24_di" bpmnElement="Flow_GatewayPoliciesJoin_To_GatewayUseEvidence_Art24">
+        <di:waypoint x="1750" y="400" />
+        <di:waypoint x="1880" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayUseEvidence_To_GatewayEvidenceChoice_Art24_di" bpmnElement="Flow_GatewayUseEvidence_To_GatewayEvidenceChoice_Art24">
+        <di:waypoint x="1930" y="400" />
+        <di:waypoint x="2080" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayUseEvidence_To_TaskReviewMeasures_Art24_di" bpmnElement="Flow_GatewayUseEvidence_To_TaskReviewMeasures_Art24">
+        <di:waypoint x="1930" y="400" />
+        <di:waypoint x="2850" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayEvidenceChoice_To_TaskAdhereCode_Art24_di" bpmnElement="Flow_GatewayEvidenceChoice_To_TaskAdhereCode_Art24">
+        <di:waypoint x="2105" y="375" />
+        <di:waypoint x="2105" y="260" />
+        <di:waypoint x="2280" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayEvidenceChoice_To_TaskAdhereCertification_Art24_di" bpmnElement="Flow_GatewayEvidenceChoice_To_TaskAdhereCertification_Art24">
+        <di:waypoint x="2105" y="425" />
+        <di:waypoint x="2105" y="560" />
+        <di:waypoint x="2280" y="560" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskAdhereCode_To_GatewayEvidenceJoin_Art24_di" bpmnElement="Flow_TaskAdhereCode_To_GatewayEvidenceJoin_Art24">
+        <di:waypoint x="2500" y="260" />
+        <di:waypoint x="2695" y="260" />
+        <di:waypoint x="2695" y="375" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskAdhereCertification_To_GatewayEvidenceJoin_Art24_di" bpmnElement="Flow_TaskAdhereCertification_To_GatewayEvidenceJoin_Art24">
+        <di:waypoint x="2520" y="560" />
+        <di:waypoint x="2695" y="560" />
+        <di:waypoint x="2695" y="425" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayEvidenceJoin_To_TaskReviewMeasures_Art24_di" bpmnElement="Flow_GatewayEvidenceJoin_To_TaskReviewMeasures_Art24">
+        <di:waypoint x="2720" y="400" />
+        <di:waypoint x="2850" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskReviewMeasures_To_GatewayUpdatesNecessary_Art24_di" bpmnElement="Flow_TaskReviewMeasures_To_GatewayUpdatesNecessary_Art24">
+        <di:waypoint x="3030" y="400" />
+        <di:waypoint x="3150" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayUpdatesNecessary_To_TaskUpdateMeasures_Art24_di" bpmnElement="Flow_GatewayUpdatesNecessary_To_TaskUpdateMeasures_Art24">
+        <di:waypoint x="3175" y="375" />
+        <di:waypoint x="3175" y="260" />
+        <di:waypoint x="3310" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayUpdatesNecessary_To_EndAccountabilityMaintained_Art24_di" bpmnElement="Flow_GatewayUpdatesNecessary_To_EndAccountabilityMaintained_Art24">
+        <di:waypoint x="3200" y="400" />
+        <di:waypoint x="3600" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskUpdateMeasures_To_EndAccountabilityMaintained_Art24_di" bpmnElement="Flow_TaskUpdateMeasures_To_EndAccountabilityMaintained_Art24">
+        <di:waypoint x="3490" y="260" />
+        <di:waypoint x="3618" y="260" />
+        <di:waypoint x="3618" y="382" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art35_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art35_Reviewed">
+    <bpmn:participant id="Participant_Controller_Art35"
+                      name="Controller"
+                      processRef="Process_Controller_Art35" />
+    <bpmn:participant id="Participant_DPO_Art35"
+                      name="Data Protection Officer" />
+    <bpmn:participant id="Participant_DataSubjects_Art35"
+                      name="Data Subjects or Representatives" />
+
+    <bpmn:messageFlow id="MessageFlow_SeekDPOAdvice_Art35"
+                      sourceRef="SendTask_SeekDPOAdvice_Art35"
+                      targetRef="Participant_DPO_Art35" />
+    <bpmn:messageFlow id="MessageFlow_SeekViews_Art35"
+                      sourceRef="SendTask_SeekDataSubjectViews_Art35"
+                      targetRef="Participant_DataSubjects_Art35" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_Controller_Art35"
+                name="Apply Article 35 DPIA duties"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 35 based on the real English legal text
+      of Regulation (EU) 2016/679. The model captures the Article 35(1) high-risk
+      trigger including the possibility of a single assessment for similar operations,
+      DPO advice under Article 35(2), the in-particular triggers in Article 35(3),
+      published no-DPIA and DPIA list checks from Article 35(4)-(6), the minimum
+      content block in Article 35(7), approved-code consideration under Article 35(8),
+      optional views under Article 35(9), the Article 35(10) exception, and the
+      later review requirement in Article 35(11). The published-list checks reflect
+      the controller-facing effect of the supervisory-authority list regime.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_ReviewProcessing_Art35"
+                     name="Need DPIA assessment">
+      <bpmn:outgoing>Flow_StartReviewProcessing_To_TaskAssessArt3510Exception_Art35</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_AssessArt3510Exception_Art35"
+               name="Assess Article 35(10) exception">
+      <bpmn:incoming>Flow_StartReviewProcessing_To_TaskAssessArt3510Exception_Art35</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskAssessArt3510Exception_To_GatewayArt3510Exception_Art35</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_Art3510Exception_Art35"
+                           name="Does Article 35(10) exempt the processing?">
+      <bpmn:incoming>Flow_TaskAssessArt3510Exception_To_GatewayArt3510Exception_Art35</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayArt3510Exception_To_EndNoDPIARequired_Art35</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayArt3510Exception_To_TaskCheckNoDPIAList_Art35</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_CheckNoDPIAList_Art35"
+               name="Check published no-DPIA list">
+      <bpmn:incoming>Flow_GatewayArt3510Exception_To_TaskCheckNoDPIAList_Art35</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskCheckNoDPIAList_To_GatewayNoDPIAListApplies_Art35</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_NoDPIAListApplies_Art35"
+                           name="Does the no-DPIA list apply?">
+      <bpmn:incoming>Flow_TaskCheckNoDPIAList_To_GatewayNoDPIAListApplies_Art35</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayNoDPIAListApplies_To_EndNoDPIARequired_Art35</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayNoDPIAListApplies_To_TaskAssessHighRisk_Art35</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_AssessHighRisk_Art35"
+               name="Assess likely high risk">
+      <bpmn:incoming>Flow_GatewayNoDPIAListApplies_To_TaskAssessHighRisk_Art35</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskAssessHighRisk_To_GatewayHighRiskLikely_Art35</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_HighRiskLikely_Art35"
+                           name="Is the processing likely to result in high risk?">
+      <bpmn:incoming>Flow_TaskAssessHighRisk_To_GatewayHighRiskLikely_Art35</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayHighRiskLikely_To_TaskInitiateDPIA_Art35</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayHighRiskLikely_To_TaskCheckArticle353Triggers_Art35</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_CheckArticle353Triggers_Art35"
+               name="Check Article 35(3) triggers">
+      <bpmn:incoming>Flow_GatewayHighRiskLikely_To_TaskCheckArticle353Triggers_Art35</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskCheckArticle353Triggers_To_GatewayArticle353TriggerApplies_Art35</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_Article353TriggerApplies_Art35"
+                           name="Does an Article 35(3) trigger apply?">
+      <bpmn:incoming>Flow_TaskCheckArticle353Triggers_To_GatewayArticle353TriggerApplies_Art35</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayArticle353TriggerApplies_To_TaskInitiateDPIA_Art35</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayArticle353TriggerApplies_To_TaskCheckDPIAList_Art35</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_CheckDPIAList_Art35"
+               name="Check published DPIA list">
+      <bpmn:incoming>Flow_GatewayArticle353TriggerApplies_To_TaskCheckDPIAList_Art35</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskCheckDPIAList_To_GatewayDPIAListApplies_Art35</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_DPIAListApplies_Art35"
+                           name="Does the DPIA list apply?">
+      <bpmn:incoming>Flow_TaskCheckDPIAList_To_GatewayDPIAListApplies_Art35</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayDPIAListApplies_To_TaskInitiateDPIA_Art35</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayDPIAListApplies_To_EndNoDPIARequired_Art35</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_InitiateDPIA_Art35"
+               name="Initiate single or individual DPIA">
+      <bpmn:incoming>Flow_GatewayHighRiskLikely_To_TaskInitiateDPIA_Art35</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayArticle353TriggerApplies_To_TaskInitiateDPIA_Art35</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayDPIAListApplies_To_TaskInitiateDPIA_Art35</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskInitiateDPIA_To_GatewayDPODesignated_Art35</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_DPODesignated_Art35"
+                           name="Is a DPO designated?">
+      <bpmn:incoming>Flow_TaskInitiateDPIA_To_GatewayDPODesignated_Art35</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayDPODesignated_To_SendTaskSeekDPOAdvice_Art35</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayDPODesignated_To_GatewayDPOMerge_Art35</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="SendTask_SeekDPOAdvice_Art35"
+                   name="Seek DPO advice">
+      <bpmn:incoming>Flow_GatewayDPODesignated_To_SendTaskSeekDPOAdvice_Art35</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendTaskSeekDPOAdvice_To_GatewayDPOMerge_Art35</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:exclusiveGateway id="Gateway_DPOMerge_Art35">
+      <bpmn:incoming>Flow_GatewayDPODesignated_To_GatewayDPOMerge_Art35</bpmn:incoming>
+      <bpmn:incoming>Flow_SendTaskSeekDPOAdvice_To_GatewayDPOMerge_Art35</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayDPOMerge_To_TaskTakeCodesIntoAccount_Art35</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_TakeCodesIntoAccount_Art35"
+               name="Consider Article 40 codes">
+      <bpmn:incoming>Flow_GatewayDPOMerge_To_TaskTakeCodesIntoAccount_Art35</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskTakeCodesIntoAccount_To_GatewaySplitDPIAContents_Art35</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_SplitDPIAContents_Art35">
+      <bpmn:incoming>Flow_TaskTakeCodesIntoAccount_To_GatewaySplitDPIAContents_Art35</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplitDPIAContents_To_TaskDescribeOperationsPurposes_Art35</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitDPIAContents_To_TaskAssessNecessityProportionality_Art35</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitDPIAContents_To_TaskAssessRisks_Art35</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitDPIAContents_To_TaskDefineRiskMeasures_Art35</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_DescribeOperationsPurposes_Art35"
+               name="Describe operations, purposes, and interests">
+      <bpmn:incoming>Flow_GatewaySplitDPIAContents_To_TaskDescribeOperationsPurposes_Art35</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskDescribeOperationsPurposes_To_GatewayJoinDPIAContents_Art35</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_AssessNecessityProportionality_Art35"
+               name="Assess necessity and proportionality">
+      <bpmn:incoming>Flow_GatewaySplitDPIAContents_To_TaskAssessNecessityProportionality_Art35</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskAssessNecessityProportionality_To_GatewayJoinDPIAContents_Art35</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_AssessRisks_Art35"
+               name="Assess risks to data subjects">
+      <bpmn:incoming>Flow_GatewaySplitDPIAContents_To_TaskAssessRisks_Art35</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskAssessRisks_To_GatewayJoinDPIAContents_Art35</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_DefineRiskMeasures_Art35"
+               name="Define safeguards and security measures">
+      <bpmn:incoming>Flow_GatewaySplitDPIAContents_To_TaskDefineRiskMeasures_Art35</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskDefineRiskMeasures_To_GatewayJoinDPIAContents_Art35</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_JoinDPIAContents_Art35">
+      <bpmn:incoming>Flow_TaskDescribeOperationsPurposes_To_GatewayJoinDPIAContents_Art35</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskAssessNecessityProportionality_To_GatewayJoinDPIAContents_Art35</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskAssessRisks_To_GatewayJoinDPIAContents_Art35</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskDefineRiskMeasures_To_GatewayJoinDPIAContents_Art35</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinDPIAContents_To_GatewaySeekViews_Art35</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_SeekViews_Art35"
+                           name="Seek data-subject views if appropriate?">
+      <bpmn:incoming>Flow_GatewayJoinDPIAContents_To_GatewaySeekViews_Art35</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySeekViews_To_SendTaskSeekDataSubjectViews_Art35</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySeekViews_To_GatewayViewsMerge_Art35</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="SendTask_SeekDataSubjectViews_Art35"
+                   name="Seek views where appropriate">
+      <bpmn:incoming>Flow_GatewaySeekViews_To_SendTaskSeekDataSubjectViews_Art35</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendTaskSeekDataSubjectViews_To_GatewayViewsMerge_Art35</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:exclusiveGateway id="Gateway_ViewsMerge_Art35">
+      <bpmn:incoming>Flow_GatewaySeekViews_To_GatewayViewsMerge_Art35</bpmn:incoming>
+      <bpmn:incoming>Flow_SendTaskSeekDataSubjectViews_To_GatewayViewsMerge_Art35</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayViewsMerge_To_TaskFinalizeDPIA_Art35</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_FinalizeDPIA_Art35"
+               name="Finalize DPIA">
+      <bpmn:incoming>Flow_GatewayViewsMerge_To_TaskFinalizeDPIA_Art35</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskFinalizeDPIA_To_GatewayReviewNeeded_Art35</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_ReviewNeeded_Art35"
+                           name="Has the processing risk changed?">
+      <bpmn:incoming>Flow_TaskFinalizeDPIA_To_GatewayReviewNeeded_Art35</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayReviewNeeded_To_TaskReviewDPIA_Art35</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayReviewNeeded_To_EndDPIAHandled_Art35</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ReviewDPIA_Art35"
+               name="Review DPIA after risk change">
+      <bpmn:incoming>Flow_GatewayReviewNeeded_To_TaskReviewDPIA_Art35</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskReviewDPIA_To_EndDPIAHandled_Art35</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_NoDPIARequired_Art35"
+                   name="No DPIA required under Article 35">
+      <bpmn:incoming>Flow_GatewayArt3510Exception_To_EndNoDPIARequired_Art35</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayNoDPIAListApplies_To_EndNoDPIARequired_Art35</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayDPIAListApplies_To_EndNoDPIARequired_Art35</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_DPIAHandled_Art35"
+                   name="Article 35 completed">
+      <bpmn:incoming>Flow_GatewayReviewNeeded_To_EndDPIAHandled_Art35</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskReviewDPIA_To_EndDPIAHandled_Art35</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartReviewProcessing_To_TaskAssessArt3510Exception_Art35" sourceRef="StartEvent_ReviewProcessing_Art35" targetRef="Task_AssessArt3510Exception_Art35" />
+    <bpmn:sequenceFlow id="Flow_TaskAssessArt3510Exception_To_GatewayArt3510Exception_Art35" sourceRef="Task_AssessArt3510Exception_Art35" targetRef="Gateway_Art3510Exception_Art35" />
+    <bpmn:sequenceFlow id="Flow_GatewayArt3510Exception_To_EndNoDPIARequired_Art35" name="Yes" sourceRef="Gateway_Art3510Exception_Art35" targetRef="EndEvent_NoDPIARequired_Art35" />
+    <bpmn:sequenceFlow id="Flow_GatewayArt3510Exception_To_TaskCheckNoDPIAList_Art35" name="No" sourceRef="Gateway_Art3510Exception_Art35" targetRef="Task_CheckNoDPIAList_Art35" />
+    <bpmn:sequenceFlow id="Flow_TaskCheckNoDPIAList_To_GatewayNoDPIAListApplies_Art35" sourceRef="Task_CheckNoDPIAList_Art35" targetRef="Gateway_NoDPIAListApplies_Art35" />
+    <bpmn:sequenceFlow id="Flow_GatewayNoDPIAListApplies_To_EndNoDPIARequired_Art35" name="Yes" sourceRef="Gateway_NoDPIAListApplies_Art35" targetRef="EndEvent_NoDPIARequired_Art35" />
+    <bpmn:sequenceFlow id="Flow_GatewayNoDPIAListApplies_To_TaskAssessHighRisk_Art35" name="No" sourceRef="Gateway_NoDPIAListApplies_Art35" targetRef="Task_AssessHighRisk_Art35" />
+    <bpmn:sequenceFlow id="Flow_TaskAssessHighRisk_To_GatewayHighRiskLikely_Art35" sourceRef="Task_AssessHighRisk_Art35" targetRef="Gateway_HighRiskLikely_Art35" />
+    <bpmn:sequenceFlow id="Flow_GatewayHighRiskLikely_To_TaskInitiateDPIA_Art35" name="Yes" sourceRef="Gateway_HighRiskLikely_Art35" targetRef="Task_InitiateDPIA_Art35" />
+    <bpmn:sequenceFlow id="Flow_GatewayHighRiskLikely_To_TaskCheckArticle353Triggers_Art35" name="No" sourceRef="Gateway_HighRiskLikely_Art35" targetRef="Task_CheckArticle353Triggers_Art35" />
+    <bpmn:sequenceFlow id="Flow_TaskCheckArticle353Triggers_To_GatewayArticle353TriggerApplies_Art35" sourceRef="Task_CheckArticle353Triggers_Art35" targetRef="Gateway_Article353TriggerApplies_Art35" />
+    <bpmn:sequenceFlow id="Flow_GatewayArticle353TriggerApplies_To_TaskInitiateDPIA_Art35" name="Yes" sourceRef="Gateway_Article353TriggerApplies_Art35" targetRef="Task_InitiateDPIA_Art35" />
+    <bpmn:sequenceFlow id="Flow_GatewayArticle353TriggerApplies_To_TaskCheckDPIAList_Art35" name="No" sourceRef="Gateway_Article353TriggerApplies_Art35" targetRef="Task_CheckDPIAList_Art35" />
+    <bpmn:sequenceFlow id="Flow_TaskCheckDPIAList_To_GatewayDPIAListApplies_Art35" sourceRef="Task_CheckDPIAList_Art35" targetRef="Gateway_DPIAListApplies_Art35" />
+    <bpmn:sequenceFlow id="Flow_GatewayDPIAListApplies_To_TaskInitiateDPIA_Art35" name="Yes" sourceRef="Gateway_DPIAListApplies_Art35" targetRef="Task_InitiateDPIA_Art35" />
+    <bpmn:sequenceFlow id="Flow_GatewayDPIAListApplies_To_EndNoDPIARequired_Art35" name="No" sourceRef="Gateway_DPIAListApplies_Art35" targetRef="EndEvent_NoDPIARequired_Art35" />
+    <bpmn:sequenceFlow id="Flow_TaskInitiateDPIA_To_GatewayDPODesignated_Art35" sourceRef="Task_InitiateDPIA_Art35" targetRef="Gateway_DPODesignated_Art35" />
+    <bpmn:sequenceFlow id="Flow_GatewayDPODesignated_To_SendTaskSeekDPOAdvice_Art35" name="Yes" sourceRef="Gateway_DPODesignated_Art35" targetRef="SendTask_SeekDPOAdvice_Art35" />
+    <bpmn:sequenceFlow id="Flow_GatewayDPODesignated_To_GatewayDPOMerge_Art35" name="No" sourceRef="Gateway_DPODesignated_Art35" targetRef="Gateway_DPOMerge_Art35" />
+    <bpmn:sequenceFlow id="Flow_SendTaskSeekDPOAdvice_To_GatewayDPOMerge_Art35" sourceRef="SendTask_SeekDPOAdvice_Art35" targetRef="Gateway_DPOMerge_Art35" />
+    <bpmn:sequenceFlow id="Flow_GatewayDPOMerge_To_TaskTakeCodesIntoAccount_Art35" sourceRef="Gateway_DPOMerge_Art35" targetRef="Task_TakeCodesIntoAccount_Art35" />
+    <bpmn:sequenceFlow id="Flow_TaskTakeCodesIntoAccount_To_GatewaySplitDPIAContents_Art35" sourceRef="Task_TakeCodesIntoAccount_Art35" targetRef="Gateway_SplitDPIAContents_Art35" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitDPIAContents_To_TaskDescribeOperationsPurposes_Art35" sourceRef="Gateway_SplitDPIAContents_Art35" targetRef="Task_DescribeOperationsPurposes_Art35" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitDPIAContents_To_TaskAssessNecessityProportionality_Art35" sourceRef="Gateway_SplitDPIAContents_Art35" targetRef="Task_AssessNecessityProportionality_Art35" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitDPIAContents_To_TaskAssessRisks_Art35" sourceRef="Gateway_SplitDPIAContents_Art35" targetRef="Task_AssessRisks_Art35" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitDPIAContents_To_TaskDefineRiskMeasures_Art35" sourceRef="Gateway_SplitDPIAContents_Art35" targetRef="Task_DefineRiskMeasures_Art35" />
+    <bpmn:sequenceFlow id="Flow_TaskDescribeOperationsPurposes_To_GatewayJoinDPIAContents_Art35" sourceRef="Task_DescribeOperationsPurposes_Art35" targetRef="Gateway_JoinDPIAContents_Art35" />
+    <bpmn:sequenceFlow id="Flow_TaskAssessNecessityProportionality_To_GatewayJoinDPIAContents_Art35" sourceRef="Task_AssessNecessityProportionality_Art35" targetRef="Gateway_JoinDPIAContents_Art35" />
+    <bpmn:sequenceFlow id="Flow_TaskAssessRisks_To_GatewayJoinDPIAContents_Art35" sourceRef="Task_AssessRisks_Art35" targetRef="Gateway_JoinDPIAContents_Art35" />
+    <bpmn:sequenceFlow id="Flow_TaskDefineRiskMeasures_To_GatewayJoinDPIAContents_Art35" sourceRef="Task_DefineRiskMeasures_Art35" targetRef="Gateway_JoinDPIAContents_Art35" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoinDPIAContents_To_GatewaySeekViews_Art35" sourceRef="Gateway_JoinDPIAContents_Art35" targetRef="Gateway_SeekViews_Art35" />
+    <bpmn:sequenceFlow id="Flow_GatewaySeekViews_To_SendTaskSeekDataSubjectViews_Art35" name="Yes" sourceRef="Gateway_SeekViews_Art35" targetRef="SendTask_SeekDataSubjectViews_Art35" />
+    <bpmn:sequenceFlow id="Flow_GatewaySeekViews_To_GatewayViewsMerge_Art35" name="No" sourceRef="Gateway_SeekViews_Art35" targetRef="Gateway_ViewsMerge_Art35" />
+    <bpmn:sequenceFlow id="Flow_SendTaskSeekDataSubjectViews_To_GatewayViewsMerge_Art35" sourceRef="SendTask_SeekDataSubjectViews_Art35" targetRef="Gateway_ViewsMerge_Art35" />
+    <bpmn:sequenceFlow id="Flow_GatewayViewsMerge_To_TaskFinalizeDPIA_Art35" sourceRef="Gateway_ViewsMerge_Art35" targetRef="Task_FinalizeDPIA_Art35" />
+    <bpmn:sequenceFlow id="Flow_TaskFinalizeDPIA_To_GatewayReviewNeeded_Art35" sourceRef="Task_FinalizeDPIA_Art35" targetRef="Gateway_ReviewNeeded_Art35" />
+    <bpmn:sequenceFlow id="Flow_GatewayReviewNeeded_To_TaskReviewDPIA_Art35" name="Yes" sourceRef="Gateway_ReviewNeeded_Art35" targetRef="Task_ReviewDPIA_Art35" />
+    <bpmn:sequenceFlow id="Flow_GatewayReviewNeeded_To_EndDPIAHandled_Art35" name="No" sourceRef="Gateway_ReviewNeeded_Art35" targetRef="EndEvent_DPIAHandled_Art35" />
+    <bpmn:sequenceFlow id="Flow_TaskReviewDPIA_To_EndDPIAHandled_Art35" sourceRef="Task_ReviewDPIA_Art35" targetRef="EndEvent_DPIAHandled_Art35" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art35_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art35_Reviewed" bpmnElement="Collaboration_Art35_Reviewed">
+      <bpmndi:BPMNShape id="Participant_Controller_Art35_di" bpmnElement="Participant_Controller_Art35" isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="5600" height="700" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_DPO_Art35_di" bpmnElement="Participant_DPO_Art35" isHorizontal="true">
+        <dc:Bounds x="60" y="780" width="5600" height="140" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_DataSubjects_Art35_di" bpmnElement="Participant_DataSubjects_Art35" isHorizontal="true">
+        <dc:Bounds x="60" y="960" width="5600" height="140" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_ReviewProcessing_Art35_di" bpmnElement="StartEvent_ReviewProcessing_Art35">
+        <dc:Bounds x="140" y="322" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessArt3510Exception_Art35_di" bpmnElement="Task_AssessArt3510Exception_Art35">
+        <dc:Bounds x="220" y="300" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Art3510Exception_Art35_di" bpmnElement="Gateway_Art3510Exception_Art35" isMarkerVisible="true">
+        <dc:Bounds x="460" y="315" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CheckNoDPIAList_Art35_di" bpmnElement="Task_CheckNoDPIAList_Art35">
+        <dc:Bounds x="570" y="300" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_NoDPIAListApplies_Art35_di" bpmnElement="Gateway_NoDPIAListApplies_Art35" isMarkerVisible="true">
+        <dc:Bounds x="800" y="315" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessHighRisk_Art35_di" bpmnElement="Task_AssessHighRisk_Art35">
+        <dc:Bounds x="910" y="300" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_HighRiskLikely_Art35_di" bpmnElement="Gateway_HighRiskLikely_Art35" isMarkerVisible="true">
+        <dc:Bounds x="1130" y="315" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CheckArticle353Triggers_Art35_di" bpmnElement="Task_CheckArticle353Triggers_Art35">
+        <dc:Bounds x="1240" y="300" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Article353TriggerApplies_Art35_di" bpmnElement="Gateway_Article353TriggerApplies_Art35" isMarkerVisible="true">
+        <dc:Bounds x="1480" y="315" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CheckDPIAList_Art35_di" bpmnElement="Task_CheckDPIAList_Art35">
+        <dc:Bounds x="1590" y="300" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_DPIAListApplies_Art35_di" bpmnElement="Gateway_DPIAListApplies_Art35" isMarkerVisible="true">
+        <dc:Bounds x="1810" y="315" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_InitiateDPIA_Art35_di" bpmnElement="Task_InitiateDPIA_Art35">
+        <dc:Bounds x="1920" y="300" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_DPODesignated_Art35_di" bpmnElement="Gateway_DPODesignated_Art35" isMarkerVisible="true">
+        <dc:Bounds x="2120" y="315" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_SeekDPOAdvice_Art35_di" bpmnElement="SendTask_SeekDPOAdvice_Art35">
+        <dc:Bounds x="2240" y="140" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_DPOMerge_Art35_di" bpmnElement="Gateway_DPOMerge_Art35" isMarkerVisible="true">
+        <dc:Bounds x="2480" y="315" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_TakeCodesIntoAccount_Art35_di" bpmnElement="Task_TakeCodesIntoAccount_Art35">
+        <dc:Bounds x="2590" y="300" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SplitDPIAContents_Art35_di" bpmnElement="Gateway_SplitDPIAContents_Art35" isMarkerVisible="true">
+        <dc:Bounds x="2860" y="315" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DescribeOperationsPurposes_Art35_di" bpmnElement="Task_DescribeOperationsPurposes_Art35">
+        <dc:Bounds x="2990" y="120" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessNecessityProportionality_Art35_di" bpmnElement="Task_AssessNecessityProportionality_Art35">
+        <dc:Bounds x="3270" y="120" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessRisks_Art35_di" bpmnElement="Task_AssessRisks_Art35">
+        <dc:Bounds x="2990" y="470" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DefineRiskMeasures_Art35_di" bpmnElement="Task_DefineRiskMeasures_Art35">
+        <dc:Bounds x="3270" y="470" width="230" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinDPIAContents_Art35_di" bpmnElement="Gateway_JoinDPIAContents_Art35" isMarkerVisible="true">
+        <dc:Bounds x="3625" y="315" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SeekViews_Art35_di" bpmnElement="Gateway_SeekViews_Art35" isMarkerVisible="true">
+        <dc:Bounds x="3760" y="315" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_SeekDataSubjectViews_Art35_di" bpmnElement="SendTask_SeekDataSubjectViews_Art35">
+        <dc:Bounds x="3890" y="140" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ViewsMerge_Art35_di" bpmnElement="Gateway_ViewsMerge_Art35" isMarkerVisible="true">
+        <dc:Bounds x="4140" y="315" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_FinalizeDPIA_Art35_di" bpmnElement="Task_FinalizeDPIA_Art35">
+        <dc:Bounds x="4250" y="300" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ReviewNeeded_Art35_di" bpmnElement="Gateway_ReviewNeeded_Art35" isMarkerVisible="true">
+        <dc:Bounds x="4460" y="315" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReviewDPIA_Art35_di" bpmnElement="Task_ReviewDPIA_Art35">
+        <dc:Bounds x="4570" y="300" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NoDPIARequired_Art35_di" bpmnElement="EndEvent_NoDPIARequired_Art35">
+        <dc:Bounds x="1832" y="592" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_DPIAHandled_Art35_di" bpmnElement="EndEvent_DPIAHandled_Art35">
+        <dc:Bounds x="4892" y="322" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_StartReviewProcessing_To_TaskAssessArt3510Exception_Art35_di" bpmnElement="Flow_StartReviewProcessing_To_TaskAssessArt3510Exception_Art35">
+        <di:waypoint x="176" y="340" />
+        <di:waypoint x="220" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskAssessArt3510Exception_To_GatewayArt3510Exception_Art35_di" bpmnElement="Flow_TaskAssessArt3510Exception_To_GatewayArt3510Exception_Art35">
+        <di:waypoint x="410" y="340" />
+        <di:waypoint x="460" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayArt3510Exception_To_EndNoDPIARequired_Art35_di" bpmnElement="Flow_GatewayArt3510Exception_To_EndNoDPIARequired_Art35">
+        <di:waypoint x="485" y="365" />
+        <di:waypoint x="485" y="610" />
+        <di:waypoint x="1832" y="610" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayArt3510Exception_To_TaskCheckNoDPIAList_Art35_di" bpmnElement="Flow_GatewayArt3510Exception_To_TaskCheckNoDPIAList_Art35">
+        <di:waypoint x="510" y="340" />
+        <di:waypoint x="570" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskCheckNoDPIAList_To_GatewayNoDPIAListApplies_Art35_di" bpmnElement="Flow_TaskCheckNoDPIAList_To_GatewayNoDPIAListApplies_Art35">
+        <di:waypoint x="750" y="340" />
+        <di:waypoint x="800" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayNoDPIAListApplies_To_EndNoDPIARequired_Art35_di" bpmnElement="Flow_GatewayNoDPIAListApplies_To_EndNoDPIARequired_Art35">
+        <di:waypoint x="825" y="365" />
+        <di:waypoint x="825" y="610" />
+        <di:waypoint x="1832" y="610" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayNoDPIAListApplies_To_TaskAssessHighRisk_Art35_di" bpmnElement="Flow_GatewayNoDPIAListApplies_To_TaskAssessHighRisk_Art35">
+        <di:waypoint x="850" y="340" />
+        <di:waypoint x="910" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskAssessHighRisk_To_GatewayHighRiskLikely_Art35_di" bpmnElement="Flow_TaskAssessHighRisk_To_GatewayHighRiskLikely_Art35">
+        <di:waypoint x="1080" y="340" />
+        <di:waypoint x="1130" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayHighRiskLikely_To_TaskInitiateDPIA_Art35_di" bpmnElement="Flow_GatewayHighRiskLikely_To_TaskInitiateDPIA_Art35">
+        <di:waypoint x="1155" y="315" />
+        <di:waypoint x="1155" y="250" />
+        <di:waypoint x="1995" y="250" />
+        <di:waypoint x="1995" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayHighRiskLikely_To_TaskCheckArticle353Triggers_Art35_di" bpmnElement="Flow_GatewayHighRiskLikely_To_TaskCheckArticle353Triggers_Art35">
+        <di:waypoint x="1180" y="340" />
+        <di:waypoint x="1240" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskCheckArticle353Triggers_To_GatewayArticle353TriggerApplies_Art35_di" bpmnElement="Flow_TaskCheckArticle353Triggers_To_GatewayArticle353TriggerApplies_Art35">
+        <di:waypoint x="1430" y="340" />
+        <di:waypoint x="1480" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayArticle353TriggerApplies_To_TaskInitiateDPIA_Art35_di" bpmnElement="Flow_GatewayArticle353TriggerApplies_To_TaskInitiateDPIA_Art35">
+        <di:waypoint x="1505" y="315" />
+        <di:waypoint x="1505" y="230" />
+        <di:waypoint x="1995" y="230" />
+        <di:waypoint x="1995" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayArticle353TriggerApplies_To_TaskCheckDPIAList_Art35_di" bpmnElement="Flow_GatewayArticle353TriggerApplies_To_TaskCheckDPIAList_Art35">
+        <di:waypoint x="1530" y="340" />
+        <di:waypoint x="1590" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskCheckDPIAList_To_GatewayDPIAListApplies_Art35_di" bpmnElement="Flow_TaskCheckDPIAList_To_GatewayDPIAListApplies_Art35">
+        <di:waypoint x="1760" y="340" />
+        <di:waypoint x="1810" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayDPIAListApplies_To_TaskInitiateDPIA_Art35_di" bpmnElement="Flow_GatewayDPIAListApplies_To_TaskInitiateDPIA_Art35">
+        <di:waypoint x="1835" y="315" />
+        <di:waypoint x="1835" y="210" />
+        <di:waypoint x="1995" y="210" />
+        <di:waypoint x="1995" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayDPIAListApplies_To_EndNoDPIARequired_Art35_di" bpmnElement="Flow_GatewayDPIAListApplies_To_EndNoDPIARequired_Art35">
+        <di:waypoint x="1835" y="365" />
+        <di:waypoint x="1835" y="592" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskInitiateDPIA_To_GatewayDPODesignated_Art35_di" bpmnElement="Flow_TaskInitiateDPIA_To_GatewayDPODesignated_Art35">
+        <di:waypoint x="2070" y="340" />
+        <di:waypoint x="2120" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayDPODesignated_To_SendTaskSeekDPOAdvice_Art35_di" bpmnElement="Flow_GatewayDPODesignated_To_SendTaskSeekDPOAdvice_Art35">
+        <di:waypoint x="2145" y="315" />
+        <di:waypoint x="2145" y="180" />
+        <di:waypoint x="2240" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayDPODesignated_To_GatewayDPOMerge_Art35_di" bpmnElement="Flow_GatewayDPODesignated_To_GatewayDPOMerge_Art35">
+        <di:waypoint x="2170" y="340" />
+        <di:waypoint x="2480" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendTaskSeekDPOAdvice_To_GatewayDPOMerge_Art35_di" bpmnElement="Flow_SendTaskSeekDPOAdvice_To_GatewayDPOMerge_Art35">
+        <di:waypoint x="2410" y="180" />
+        <di:waypoint x="2505" y="180" />
+        <di:waypoint x="2505" y="315" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayDPOMerge_To_TaskTakeCodesIntoAccount_Art35_di" bpmnElement="Flow_GatewayDPOMerge_To_TaskTakeCodesIntoAccount_Art35">
+        <di:waypoint x="2530" y="340" />
+        <di:waypoint x="2590" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskTakeCodesIntoAccount_To_GatewaySplitDPIAContents_Art35_di" bpmnElement="Flow_TaskTakeCodesIntoAccount_To_GatewaySplitDPIAContents_Art35">
+        <di:waypoint x="2800" y="340" />
+        <di:waypoint x="2860" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitDPIAContents_To_TaskDescribeOperationsPurposes_Art35_di" bpmnElement="Flow_GatewaySplitDPIAContents_To_TaskDescribeOperationsPurposes_Art35">
+        <di:waypoint x="2885" y="315" />
+        <di:waypoint x="2885" y="160" />
+        <di:waypoint x="2990" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitDPIAContents_To_TaskAssessNecessityProportionality_Art35_di" bpmnElement="Flow_GatewaySplitDPIAContents_To_TaskAssessNecessityProportionality_Art35">
+        <di:waypoint x="2885" y="315" />
+        <di:waypoint x="2885" y="160" />
+        <di:waypoint x="3270" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitDPIAContents_To_TaskAssessRisks_Art35_di" bpmnElement="Flow_GatewaySplitDPIAContents_To_TaskAssessRisks_Art35">
+        <di:waypoint x="2885" y="365" />
+        <di:waypoint x="2885" y="510" />
+        <di:waypoint x="2990" y="510" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitDPIAContents_To_TaskDefineRiskMeasures_Art35_di" bpmnElement="Flow_GatewaySplitDPIAContents_To_TaskDefineRiskMeasures_Art35">
+        <di:waypoint x="2885" y="365" />
+        <di:waypoint x="2885" y="510" />
+        <di:waypoint x="3270" y="510" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskDescribeOperationsPurposes_To_GatewayJoinDPIAContents_Art35_di" bpmnElement="Flow_TaskDescribeOperationsPurposes_To_GatewayJoinDPIAContents_Art35">
+        <di:waypoint x="3200" y="160" />
+        <di:waypoint x="3650" y="160" />
+        <di:waypoint x="3650" y="315" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskAssessNecessityProportionality_To_GatewayJoinDPIAContents_Art35_di" bpmnElement="Flow_TaskAssessNecessityProportionality_To_GatewayJoinDPIAContents_Art35">
+        <di:waypoint x="3490" y="160" />
+        <di:waypoint x="3650" y="160" />
+        <di:waypoint x="3650" y="315" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskAssessRisks_To_GatewayJoinDPIAContents_Art35_di" bpmnElement="Flow_TaskAssessRisks_To_GatewayJoinDPIAContents_Art35">
+        <di:waypoint x="3180" y="510" />
+        <di:waypoint x="3650" y="510" />
+        <di:waypoint x="3650" y="365" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskDefineRiskMeasures_To_GatewayJoinDPIAContents_Art35_di" bpmnElement="Flow_TaskDefineRiskMeasures_To_GatewayJoinDPIAContents_Art35">
+        <di:waypoint x="3500" y="510" />
+        <di:waypoint x="3650" y="510" />
+        <di:waypoint x="3650" y="365" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinDPIAContents_To_GatewaySeekViews_Art35_di" bpmnElement="Flow_GatewayJoinDPIAContents_To_GatewaySeekViews_Art35">
+        <di:waypoint x="3675" y="340" />
+        <di:waypoint x="3760" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySeekViews_To_SendTaskSeekDataSubjectViews_Art35_di" bpmnElement="Flow_GatewaySeekViews_To_SendTaskSeekDataSubjectViews_Art35">
+        <di:waypoint x="3785" y="315" />
+        <di:waypoint x="3785" y="180" />
+        <di:waypoint x="3890" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySeekViews_To_GatewayViewsMerge_Art35_di" bpmnElement="Flow_GatewaySeekViews_To_GatewayViewsMerge_Art35">
+        <di:waypoint x="3810" y="340" />
+        <di:waypoint x="4140" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendTaskSeekDataSubjectViews_To_GatewayViewsMerge_Art35_di" bpmnElement="Flow_SendTaskSeekDataSubjectViews_To_GatewayViewsMerge_Art35">
+        <di:waypoint x="4060" y="180" />
+        <di:waypoint x="4165" y="180" />
+        <di:waypoint x="4165" y="315" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayViewsMerge_To_TaskFinalizeDPIA_Art35_di" bpmnElement="Flow_GatewayViewsMerge_To_TaskFinalizeDPIA_Art35">
+        <di:waypoint x="4190" y="340" />
+        <di:waypoint x="4250" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskFinalizeDPIA_To_GatewayReviewNeeded_Art35_di" bpmnElement="Flow_TaskFinalizeDPIA_To_GatewayReviewNeeded_Art35">
+        <di:waypoint x="4400" y="340" />
+        <di:waypoint x="4460" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayReviewNeeded_To_TaskReviewDPIA_Art35_di" bpmnElement="Flow_GatewayReviewNeeded_To_TaskReviewDPIA_Art35">
+        <di:waypoint x="4510" y="340" />
+        <di:waypoint x="4570" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayReviewNeeded_To_EndDPIAHandled_Art35_di" bpmnElement="Flow_GatewayReviewNeeded_To_EndDPIAHandled_Art35">
+        <di:waypoint x="4485" y="315" />
+        <di:waypoint x="4485" y="250" />
+        <di:waypoint x="4910" y="250" />
+        <di:waypoint x="4910" y="322" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskReviewDPIA_To_EndDPIAHandled_Art35_di" bpmnElement="Flow_TaskReviewDPIA_To_EndDPIAHandled_Art35">
+        <di:waypoint x="4720" y="340" />
+        <di:waypoint x="4892" y="340" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_SeekDPOAdvice_Art35_di" bpmnElement="MessageFlow_SeekDPOAdvice_Art35">
+        <di:waypoint x="2325" y="220" />
+        <di:waypoint x="2325" y="780" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SeekViews_Art35_di" bpmnElement="MessageFlow_SeekViews_Art35">
+        <di:waypoint x="3975" y="220" />
+        <di:waypoint x="3975" y="960" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

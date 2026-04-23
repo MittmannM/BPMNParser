@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art47_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art47_Reviewed">
+    <bpmn:participant id="Participant_GroupMember_Art47"
+                      name="Group member"
+                      processRef="Process_GroupMember_Art47" />
+    <bpmn:participant id="Participant_SupervisoryAuthority_Art47"
+                      name="Supervisory Authority" />
+    <bpmn:participant id="Participant_DataSubject_Art47"
+                      name="Data Subject" />
+    <bpmn:messageFlow id="MessageFlow_SubmitBCRApproval_Art47"
+                      sourceRef="SendTask_SubmitBCRApproval_Art47"
+                      targetRef="Participant_SupervisoryAuthority_Art47" />
+    <bpmn:messageFlow id="MessageFlow_ApprovalDecision_Art47"
+                      sourceRef="Participant_SupervisoryAuthority_Art47"
+                      targetRef="ReceiveTask_ReceiveBCRApprovalDecision_Art47" />
+    <bpmn:messageFlow id="MessageFlow_MakeBCRAvailable_Art47"
+                      sourceRef="SendTask_MakeBCRAvailable_Art47"
+                      targetRef="Participant_DataSubject_Art47" />
+    <bpmn:messageFlow id="MessageFlow_NotifyDataSubjectsAboutChanges_Art47"
+                      sourceRef="SendTask_NotifyDataSubjectsAboutChanges_Art47"
+                      targetRef="Participant_DataSubject_Art47" />
+    <bpmn:messageFlow id="MessageFlow_NotifySupervisoryAuthority_Art47"
+                      sourceRef="SendTask_NotifySupervisoryAuthority_Art47"
+                      targetRef="Participant_SupervisoryAuthority_Art47" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_GroupMember_Art47"
+                name="Establishing and operating binding corporate rules"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 47 based on the real English legal text from
+      gdpr_articles/article_47.txt. The model shows the Article 47(1) approval conditions,
+      grouped Article 47(2)(a)-(n) minimum BCR content, approval under the Article 63
+      consistency mechanism, post-approval binding effect and information duties, and the
+      continuing governance duties around complaints, audits, change reporting,
+      supervisory-authority cooperation, legal-conflict reporting, and training.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_NeedBCRTransfer_Art47"
+                     name="Need BCR transfer">
+      <bpmn:outgoing>Flow_Start_To_DraftBCRPackage_Art47</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_DraftBCRPackage_Art47"
+               name="Draft BCR package">
+      <bpmn:incoming>Flow_Start_To_DraftBCRPackage_Art47</bpmn:incoming>
+      <bpmn:incoming>Flow_ReviseBCRPackage_To_DraftBCRPackage_Art47</bpmn:incoming>
+      <bpmn:outgoing>Flow_DraftBCRPackage_To_GatewayPrepareContent_Art47</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_PrepareBCRContent_Art47">
+      <bpmn:incoming>Flow_DraftBCRPackage_To_GatewayPrepareContent_Art47</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayPrepareContent_To_DescribeTransfers_Art47</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayPrepareContent_To_DefineRightsAndContacts_Art47</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayPrepareContent_To_DefineAuditAndComplaints_Art47</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayPrepareContent_To_DefineNotificationsAndCooperation_Art47</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayPrepareContent_To_PlanTrainingAndMonitoring_Art47</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_DescribeTransfers_Art47"
+               name="Describe group and transfers">
+      <bpmn:incoming>Flow_GatewayPrepareContent_To_DescribeTransfers_Art47</bpmn:incoming>
+      <bpmn:outgoing>Flow_DescribeTransfers_To_GatewayContentPrepared_Art47</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_DefineRightsAndContacts_Art47"
+               name="Define principles, rights, and notice">
+      <bpmn:incoming>Flow_GatewayPrepareContent_To_DefineRightsAndContacts_Art47</bpmn:incoming>
+      <bpmn:outgoing>Flow_DefineRightsAndContacts_To_GatewayContentPrepared_Art47</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_DefineAuditAndComplaints_Art47"
+               name="Define liability, complaints, and redress">
+      <bpmn:incoming>Flow_GatewayPrepareContent_To_DefineAuditAndComplaints_Art47</bpmn:incoming>
+      <bpmn:outgoing>Flow_DefineAuditAndComplaints_To_GatewayContentPrepared_Art47</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_DefineNotificationsAndCooperation_Art47"
+               name="Define reporting and SA cooperation">
+      <bpmn:incoming>Flow_GatewayPrepareContent_To_DefineNotificationsAndCooperation_Art47</bpmn:incoming>
+      <bpmn:outgoing>Flow_DefineNotificationsAndCooperation_To_GatewayContentPrepared_Art47</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_PlanTrainingAndMonitoring_Art47"
+               name="Assign monitoring and training">
+      <bpmn:incoming>Flow_GatewayPrepareContent_To_PlanTrainingAndMonitoring_Art47</bpmn:incoming>
+      <bpmn:outgoing>Flow_PlanTrainingAndMonitoring_To_GatewayContentPrepared_Art47</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_BCRContentPrepared_Art47">
+      <bpmn:incoming>Flow_DescribeTransfers_To_GatewayContentPrepared_Art47</bpmn:incoming>
+      <bpmn:incoming>Flow_DefineRightsAndContacts_To_GatewayContentPrepared_Art47</bpmn:incoming>
+      <bpmn:incoming>Flow_DefineAuditAndComplaints_To_GatewayContentPrepared_Art47</bpmn:incoming>
+      <bpmn:incoming>Flow_DefineNotificationsAndCooperation_To_GatewayContentPrepared_Art47</bpmn:incoming>
+      <bpmn:incoming>Flow_PlanTrainingAndMonitoring_To_GatewayContentPrepared_Art47</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayContentPrepared_To_AssessBCRProtection_Art47</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_AssessBCRProtection_Art47"
+               name="Check binding effect and rights">
+      <bpmn:incoming>Flow_GatewayContentPrepared_To_AssessBCRProtection_Art47</bpmn:incoming>
+      <bpmn:outgoing>Flow_AssessBCRProtection_To_GatewayAdequate_Art47</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_BCRProtectionAdequate_Art47"
+                           name="Do the BCRs provide binding effect, rights, and remedies?">
+      <bpmn:incoming>Flow_AssessBCRProtection_To_GatewayAdequate_Art47</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAdequate_To_ReviseBCRPackage_Art47</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAdequate_To_SubmitBCRApproval_Art47</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ReviseBCRPackage_Art47"
+               name="Revise BCR package">
+      <bpmn:incoming>Flow_GatewayAdequate_To_ReviseBCRPackage_Art47</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReviseBCRPackage_To_DraftBCRPackage_Art47</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="SendTask_SubmitBCRApproval_Art47"
+                   name="Submit BCRs for Article 63 approval">
+      <bpmn:incoming>Flow_GatewayAdequate_To_SubmitBCRApproval_Art47</bpmn:incoming>
+      <bpmn:outgoing>Flow_SubmitBCRApproval_To_ReceiveBCRApprovalDecision_Art47</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveBCRApprovalDecision_Art47"
+                      name="Receive BCR approval">
+      <bpmn:incoming>Flow_SubmitBCRApproval_To_ReceiveBCRApprovalDecision_Art47</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveBCRApprovalDecision_To_GatewayApproved_Art47</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:exclusiveGateway id="Gateway_BCRApproved_Art47"
+                           name="Did the supervisory authority approve the BCRs?">
+      <bpmn:incoming>Flow_ReceiveBCRApprovalDecision_To_GatewayApproved_Art47</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayApproved_To_EndBCRNotApproved_Art47</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayApproved_To_MakeBCRBinding_Art47</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_BCRNotApproved_Art47"
+                   name="BCR approval denied">
+      <bpmn:incoming>Flow_GatewayApproved_To_EndBCRNotApproved_Art47</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:task id="Task_MakeBCRBinding_Art47"
+               name="Bind all group members">
+      <bpmn:incoming>Flow_GatewayApproved_To_MakeBCRBinding_Art47</bpmn:incoming>
+      <bpmn:outgoing>Flow_MakeBCRBinding_To_MakeBCRAvailable_Art47</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="SendTask_MakeBCRAvailable_Art47"
+                   name="Provide BCR information">
+      <bpmn:incoming>Flow_MakeBCRBinding_To_MakeBCRAvailable_Art47</bpmn:incoming>
+      <bpmn:outgoing>Flow_MakeBCRAvailable_To_GatewayOperationalDuties_Art47</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:parallelGateway id="Gateway_OperationalDuties_Art47">
+      <bpmn:incoming>Flow_MakeBCRAvailable_To_GatewayOperationalDuties_Art47</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayOperationalDuties_To_ImplementCompliance_Art47</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayOperationalDuties_To_HandleComplaints_Art47</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayOperationalDuties_To_NotifyDataSubjectsAboutChanges_Art47</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayOperationalDuties_To_NotifySupervisoryAuthority_Art47</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayOperationalDuties_To_ProvideTraining_Art47</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_ImplementCompliance_Art47"
+               name="Run audits and corrective actions">
+      <bpmn:incoming>Flow_GatewayOperationalDuties_To_ImplementCompliance_Art47</bpmn:incoming>
+      <bpmn:outgoing>Flow_ImplementCompliance_To_GatewayOperationalDutiesCompleted_Art47</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_HandleComplaints_Art47"
+               name="Handle BCR complaints">
+      <bpmn:incoming>Flow_GatewayOperationalDuties_To_HandleComplaints_Art47</bpmn:incoming>
+      <bpmn:outgoing>Flow_HandleComplaints_To_GatewayOperationalDutiesCompleted_Art47</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="SendTask_NotifyDataSubjectsAboutChanges_Art47"
+                   name="Notify data subjects of BCR changes">
+      <bpmn:incoming>Flow_GatewayOperationalDuties_To_NotifyDataSubjectsAboutChanges_Art47</bpmn:incoming>
+      <bpmn:outgoing>Flow_NotifyDataSubjectsAboutChanges_To_GatewayOperationalDutiesCompleted_Art47</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:sendTask id="SendTask_NotifySupervisoryAuthority_Art47"
+                   name="Report changes and legal conflicts">
+      <bpmn:incoming>Flow_GatewayOperationalDuties_To_NotifySupervisoryAuthority_Art47</bpmn:incoming>
+      <bpmn:outgoing>Flow_NotifySupervisoryAuthority_To_GatewayOperationalDutiesCompleted_Art47</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:task id="Task_ProvideTraining_Art47"
+               name="Provide BCR training">
+      <bpmn:incoming>Flow_GatewayOperationalDuties_To_ProvideTraining_Art47</bpmn:incoming>
+      <bpmn:outgoing>Flow_ProvideTraining_To_GatewayOperationalDutiesCompleted_Art47</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_OperationalDutiesCompleted_Art47">
+      <bpmn:incoming>Flow_ImplementCompliance_To_GatewayOperationalDutiesCompleted_Art47</bpmn:incoming>
+      <bpmn:incoming>Flow_HandleComplaints_To_GatewayOperationalDutiesCompleted_Art47</bpmn:incoming>
+      <bpmn:incoming>Flow_NotifyDataSubjectsAboutChanges_To_GatewayOperationalDutiesCompleted_Art47</bpmn:incoming>
+      <bpmn:incoming>Flow_NotifySupervisoryAuthority_To_GatewayOperationalDutiesCompleted_Art47</bpmn:incoming>
+      <bpmn:incoming>Flow_ProvideTraining_To_GatewayOperationalDutiesCompleted_Art47</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayOperationalDutiesCompleted_To_EndGovernanceOperating_Art47</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:endEvent id="EndEvent_GovernanceOperating_Art47"
+                   name="BCR governance operating">
+      <bpmn:incoming>Flow_GatewayOperationalDutiesCompleted_To_EndGovernanceOperating_Art47</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_DraftBCRPackage_Art47" sourceRef="StartEvent_NeedBCRTransfer_Art47" targetRef="Task_DraftBCRPackage_Art47" />
+    <bpmn:sequenceFlow id="Flow_DraftBCRPackage_To_GatewayPrepareContent_Art47" sourceRef="Task_DraftBCRPackage_Art47" targetRef="Gateway_PrepareBCRContent_Art47" />
+    <bpmn:sequenceFlow id="Flow_GatewayPrepareContent_To_DescribeTransfers_Art47" sourceRef="Gateway_PrepareBCRContent_Art47" targetRef="Task_DescribeTransfers_Art47" />
+    <bpmn:sequenceFlow id="Flow_GatewayPrepareContent_To_DefineRightsAndContacts_Art47" sourceRef="Gateway_PrepareBCRContent_Art47" targetRef="Task_DefineRightsAndContacts_Art47" />
+    <bpmn:sequenceFlow id="Flow_GatewayPrepareContent_To_DefineAuditAndComplaints_Art47" sourceRef="Gateway_PrepareBCRContent_Art47" targetRef="Task_DefineAuditAndComplaints_Art47" />
+    <bpmn:sequenceFlow id="Flow_GatewayPrepareContent_To_DefineNotificationsAndCooperation_Art47" sourceRef="Gateway_PrepareBCRContent_Art47" targetRef="Task_DefineNotificationsAndCooperation_Art47" />
+    <bpmn:sequenceFlow id="Flow_GatewayPrepareContent_To_PlanTrainingAndMonitoring_Art47" sourceRef="Gateway_PrepareBCRContent_Art47" targetRef="Task_PlanTrainingAndMonitoring_Art47" />
+    <bpmn:sequenceFlow id="Flow_DescribeTransfers_To_GatewayContentPrepared_Art47" sourceRef="Task_DescribeTransfers_Art47" targetRef="Gateway_BCRContentPrepared_Art47" />
+    <bpmn:sequenceFlow id="Flow_DefineRightsAndContacts_To_GatewayContentPrepared_Art47" sourceRef="Task_DefineRightsAndContacts_Art47" targetRef="Gateway_BCRContentPrepared_Art47" />
+    <bpmn:sequenceFlow id="Flow_DefineAuditAndComplaints_To_GatewayContentPrepared_Art47" sourceRef="Task_DefineAuditAndComplaints_Art47" targetRef="Gateway_BCRContentPrepared_Art47" />
+    <bpmn:sequenceFlow id="Flow_DefineNotificationsAndCooperation_To_GatewayContentPrepared_Art47" sourceRef="Task_DefineNotificationsAndCooperation_Art47" targetRef="Gateway_BCRContentPrepared_Art47" />
+    <bpmn:sequenceFlow id="Flow_PlanTrainingAndMonitoring_To_GatewayContentPrepared_Art47" sourceRef="Task_PlanTrainingAndMonitoring_Art47" targetRef="Gateway_BCRContentPrepared_Art47" />
+    <bpmn:sequenceFlow id="Flow_GatewayContentPrepared_To_AssessBCRProtection_Art47" sourceRef="Gateway_BCRContentPrepared_Art47" targetRef="Task_AssessBCRProtection_Art47" />
+    <bpmn:sequenceFlow id="Flow_AssessBCRProtection_To_GatewayAdequate_Art47" sourceRef="Task_AssessBCRProtection_Art47" targetRef="Gateway_BCRProtectionAdequate_Art47" />
+    <bpmn:sequenceFlow id="Flow_GatewayAdequate_To_ReviseBCRPackage_Art47" name="No" sourceRef="Gateway_BCRProtectionAdequate_Art47" targetRef="Task_ReviseBCRPackage_Art47" />
+    <bpmn:sequenceFlow id="Flow_GatewayAdequate_To_SubmitBCRApproval_Art47" name="Yes" sourceRef="Gateway_BCRProtectionAdequate_Art47" targetRef="SendTask_SubmitBCRApproval_Art47" />
+    <bpmn:sequenceFlow id="Flow_ReviseBCRPackage_To_DraftBCRPackage_Art47" sourceRef="Task_ReviseBCRPackage_Art47" targetRef="Task_DraftBCRPackage_Art47" />
+    <bpmn:sequenceFlow id="Flow_SubmitBCRApproval_To_ReceiveBCRApprovalDecision_Art47" sourceRef="SendTask_SubmitBCRApproval_Art47" targetRef="ReceiveTask_ReceiveBCRApprovalDecision_Art47" />
+    <bpmn:sequenceFlow id="Flow_ReceiveBCRApprovalDecision_To_GatewayApproved_Art47" sourceRef="ReceiveTask_ReceiveBCRApprovalDecision_Art47" targetRef="Gateway_BCRApproved_Art47" />
+    <bpmn:sequenceFlow id="Flow_GatewayApproved_To_EndBCRNotApproved_Art47" name="No" sourceRef="Gateway_BCRApproved_Art47" targetRef="EndEvent_BCRNotApproved_Art47" />
+    <bpmn:sequenceFlow id="Flow_GatewayApproved_To_MakeBCRBinding_Art47" name="Yes" sourceRef="Gateway_BCRApproved_Art47" targetRef="Task_MakeBCRBinding_Art47" />
+    <bpmn:sequenceFlow id="Flow_MakeBCRBinding_To_MakeBCRAvailable_Art47" sourceRef="Task_MakeBCRBinding_Art47" targetRef="SendTask_MakeBCRAvailable_Art47" />
+    <bpmn:sequenceFlow id="Flow_MakeBCRAvailable_To_GatewayOperationalDuties_Art47" sourceRef="SendTask_MakeBCRAvailable_Art47" targetRef="Gateway_OperationalDuties_Art47" />
+    <bpmn:sequenceFlow id="Flow_GatewayOperationalDuties_To_ImplementCompliance_Art47" sourceRef="Gateway_OperationalDuties_Art47" targetRef="Task_ImplementCompliance_Art47" />
+    <bpmn:sequenceFlow id="Flow_GatewayOperationalDuties_To_HandleComplaints_Art47" sourceRef="Gateway_OperationalDuties_Art47" targetRef="Task_HandleComplaints_Art47" />
+    <bpmn:sequenceFlow id="Flow_GatewayOperationalDuties_To_NotifyDataSubjectsAboutChanges_Art47" sourceRef="Gateway_OperationalDuties_Art47" targetRef="SendTask_NotifyDataSubjectsAboutChanges_Art47" />
+    <bpmn:sequenceFlow id="Flow_GatewayOperationalDuties_To_NotifySupervisoryAuthority_Art47" sourceRef="Gateway_OperationalDuties_Art47" targetRef="SendTask_NotifySupervisoryAuthority_Art47" />
+    <bpmn:sequenceFlow id="Flow_GatewayOperationalDuties_To_ProvideTraining_Art47" sourceRef="Gateway_OperationalDuties_Art47" targetRef="Task_ProvideTraining_Art47" />
+    <bpmn:sequenceFlow id="Flow_ImplementCompliance_To_GatewayOperationalDutiesCompleted_Art47" sourceRef="Task_ImplementCompliance_Art47" targetRef="Gateway_OperationalDutiesCompleted_Art47" />
+    <bpmn:sequenceFlow id="Flow_HandleComplaints_To_GatewayOperationalDutiesCompleted_Art47" sourceRef="Task_HandleComplaints_Art47" targetRef="Gateway_OperationalDutiesCompleted_Art47" />
+    <bpmn:sequenceFlow id="Flow_NotifyDataSubjectsAboutChanges_To_GatewayOperationalDutiesCompleted_Art47" sourceRef="SendTask_NotifyDataSubjectsAboutChanges_Art47" targetRef="Gateway_OperationalDutiesCompleted_Art47" />
+    <bpmn:sequenceFlow id="Flow_NotifySupervisoryAuthority_To_GatewayOperationalDutiesCompleted_Art47" sourceRef="SendTask_NotifySupervisoryAuthority_Art47" targetRef="Gateway_OperationalDutiesCompleted_Art47" />
+    <bpmn:sequenceFlow id="Flow_ProvideTraining_To_GatewayOperationalDutiesCompleted_Art47" sourceRef="Task_ProvideTraining_Art47" targetRef="Gateway_OperationalDutiesCompleted_Art47" />
+    <bpmn:sequenceFlow id="Flow_GatewayOperationalDutiesCompleted_To_EndGovernanceOperating_Art47" sourceRef="Gateway_OperationalDutiesCompleted_Art47" targetRef="EndEvent_GovernanceOperating_Art47" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art47_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art47_Reviewed"
+                      bpmnElement="Collaboration_Art47_Reviewed">
+      <bpmndi:BPMNShape id="Participant_GroupMember_Art47_di"
+                        bpmnElement="Participant_GroupMember_Art47"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="5400" height="700" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_SupervisoryAuthority_Art47_di"
+                        bpmnElement="Participant_SupervisoryAuthority_Art47"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="780" width="5400" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_DataSubject_Art47_di"
+                        bpmnElement="Participant_DataSubject_Art47"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="940" width="5400" height="120" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_NeedBCRTransfer_Art47_di" bpmnElement="StartEvent_NeedBCRTransfer_Art47">
+        <dc:Bounds x="120" y="362" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DraftBCRPackage_Art47_di" bpmnElement="Task_DraftBCRPackage_Art47">
+        <dc:Bounds x="220" y="340" width="320" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_PrepareBCRContent_Art47_di" bpmnElement="Gateway_PrepareBCRContent_Art47" isMarkerVisible="true">
+        <dc:Bounds x="620" y="355" width="50" height="50" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Task_DescribeTransfers_Art47_di" bpmnElement="Task_DescribeTransfers_Art47">
+        <dc:Bounds x="780" y="80" width="360" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DefineRightsAndContacts_Art47_di" bpmnElement="Task_DefineRightsAndContacts_Art47">
+        <dc:Bounds x="780" y="190" width="380" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DefineAuditAndComplaints_Art47_di" bpmnElement="Task_DefineAuditAndComplaints_Art47">
+        <dc:Bounds x="780" y="300" width="360" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DefineNotificationsAndCooperation_Art47_di" bpmnElement="Task_DefineNotificationsAndCooperation_Art47">
+        <dc:Bounds x="780" y="410" width="390" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PlanTrainingAndMonitoring_Art47_di" bpmnElement="Task_PlanTrainingAndMonitoring_Art47">
+        <dc:Bounds x="780" y="520" width="340" height="80" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Gateway_BCRContentPrepared_Art47_di" bpmnElement="Gateway_BCRContentPrepared_Art47" isMarkerVisible="true">
+        <dc:Bounds x="1240" y="355" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessBCRProtection_Art47_di" bpmnElement="Task_AssessBCRProtection_Art47">
+        <dc:Bounds x="1400" y="340" width="360" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_BCRProtectionAdequate_Art47_di" bpmnElement="Gateway_BCRProtectionAdequate_Art47" isMarkerVisible="true">
+        <dc:Bounds x="1840" y="355" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReviseBCRPackage_Art47_di" bpmnElement="Task_ReviseBCRPackage_Art47">
+        <dc:Bounds x="2030" y="190" width="300" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_SubmitBCRApproval_Art47_di" bpmnElement="SendTask_SubmitBCRApproval_Art47">
+        <dc:Bounds x="2030" y="340" width="340" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveBCRApprovalDecision_Art47_di" bpmnElement="ReceiveTask_ReceiveBCRApprovalDecision_Art47">
+        <dc:Bounds x="2480" y="340" width="330" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_BCRApproved_Art47_di" bpmnElement="Gateway_BCRApproved_Art47" isMarkerVisible="true">
+        <dc:Bounds x="2910" y="355" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_BCRNotApproved_Art47_di" bpmnElement="EndEvent_BCRNotApproved_Art47">
+        <dc:Bounds x="3090" y="212" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_MakeBCRBinding_Art47_di" bpmnElement="Task_MakeBCRBinding_Art47">
+        <dc:Bounds x="3090" y="340" width="360" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_MakeBCRAvailable_Art47_di" bpmnElement="SendTask_MakeBCRAvailable_Art47">
+        <dc:Bounds x="3550" y="340" width="350" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_OperationalDuties_Art47_di" bpmnElement="Gateway_OperationalDuties_Art47" isMarkerVisible="true">
+        <dc:Bounds x="3990" y="355" width="50" height="50" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Task_ImplementCompliance_Art47_di" bpmnElement="Task_ImplementCompliance_Art47">
+        <dc:Bounds x="4160" y="80" width="380" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_HandleComplaints_Art47_di" bpmnElement="Task_HandleComplaints_Art47">
+        <dc:Bounds x="4160" y="190" width="350" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_NotifyDataSubjectsAboutChanges_Art47_di" bpmnElement="SendTask_NotifyDataSubjectsAboutChanges_Art47">
+        <dc:Bounds x="4160" y="300" width="340" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_NotifySupervisoryAuthority_Art47_di" bpmnElement="SendTask_NotifySupervisoryAuthority_Art47">
+        <dc:Bounds x="4160" y="410" width="390" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ProvideTraining_Art47_di" bpmnElement="Task_ProvideTraining_Art47">
+        <dc:Bounds x="4160" y="520" width="320" height="80" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Gateway_OperationalDutiesCompleted_Art47_di" bpmnElement="Gateway_OperationalDutiesCompleted_Art47" isMarkerVisible="true">
+        <dc:Bounds x="4720" y="355" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_GovernanceOperating_Art47_di" bpmnElement="EndEvent_GovernanceOperating_Art47">
+        <dc:Bounds x="4880" y="362" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_Start_To_DraftBCRPackage_Art47_di" bpmnElement="Flow_Start_To_DraftBCRPackage_Art47">
+        <di:waypoint x="156" y="380" />
+        <di:waypoint x="220" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_DraftBCRPackage_To_GatewayPrepareContent_Art47_di" bpmnElement="Flow_DraftBCRPackage_To_GatewayPrepareContent_Art47">
+        <di:waypoint x="540" y="380" />
+        <di:waypoint x="620" y="380" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_GatewayPrepareContent_To_DescribeTransfers_Art47_di" bpmnElement="Flow_GatewayPrepareContent_To_DescribeTransfers_Art47">
+        <di:waypoint x="645" y="355" />
+        <di:waypoint x="645" y="120" />
+        <di:waypoint x="780" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPrepareContent_To_DefineRightsAndContacts_Art47_di" bpmnElement="Flow_GatewayPrepareContent_To_DefineRightsAndContacts_Art47">
+        <di:waypoint x="645" y="355" />
+        <di:waypoint x="645" y="230" />
+        <di:waypoint x="780" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPrepareContent_To_DefineAuditAndComplaints_Art47_di" bpmnElement="Flow_GatewayPrepareContent_To_DefineAuditAndComplaints_Art47">
+        <di:waypoint x="670" y="380" />
+        <di:waypoint x="780" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPrepareContent_To_DefineNotificationsAndCooperation_Art47_di" bpmnElement="Flow_GatewayPrepareContent_To_DefineNotificationsAndCooperation_Art47">
+        <di:waypoint x="670" y="380" />
+        <di:waypoint x="780" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPrepareContent_To_PlanTrainingAndMonitoring_Art47_di" bpmnElement="Flow_GatewayPrepareContent_To_PlanTrainingAndMonitoring_Art47">
+        <di:waypoint x="645" y="405" />
+        <di:waypoint x="645" y="560" />
+        <di:waypoint x="780" y="560" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_DescribeTransfers_To_GatewayContentPrepared_Art47_di" bpmnElement="Flow_DescribeTransfers_To_GatewayContentPrepared_Art47">
+        <di:waypoint x="1140" y="120" />
+        <di:waypoint x="1265" y="120" />
+        <di:waypoint x="1265" y="355" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_DefineRightsAndContacts_To_GatewayContentPrepared_Art47_di" bpmnElement="Flow_DefineRightsAndContacts_To_GatewayContentPrepared_Art47">
+        <di:waypoint x="1160" y="230" />
+        <di:waypoint x="1265" y="230" />
+        <di:waypoint x="1265" y="355" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_DefineAuditAndComplaints_To_GatewayContentPrepared_Art47_di" bpmnElement="Flow_DefineAuditAndComplaints_To_GatewayContentPrepared_Art47">
+        <di:waypoint x="1140" y="340" />
+        <di:waypoint x="1265" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_DefineNotificationsAndCooperation_To_GatewayContentPrepared_Art47_di" bpmnElement="Flow_DefineNotificationsAndCooperation_To_GatewayContentPrepared_Art47">
+        <di:waypoint x="1170" y="450" />
+        <di:waypoint x="1265" y="450" />
+        <di:waypoint x="1265" y="405" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_PlanTrainingAndMonitoring_To_GatewayContentPrepared_Art47_di" bpmnElement="Flow_PlanTrainingAndMonitoring_To_GatewayContentPrepared_Art47">
+        <di:waypoint x="1120" y="560" />
+        <di:waypoint x="1265" y="560" />
+        <di:waypoint x="1265" y="405" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_GatewayContentPrepared_To_AssessBCRProtection_Art47_di" bpmnElement="Flow_GatewayContentPrepared_To_AssessBCRProtection_Art47">
+        <di:waypoint x="1290" y="380" />
+        <di:waypoint x="1400" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AssessBCRProtection_To_GatewayAdequate_Art47_di" bpmnElement="Flow_AssessBCRProtection_To_GatewayAdequate_Art47">
+        <di:waypoint x="1760" y="380" />
+        <di:waypoint x="1840" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAdequate_To_ReviseBCRPackage_Art47_di" bpmnElement="Flow_GatewayAdequate_To_ReviseBCRPackage_Art47">
+        <di:waypoint x="1865" y="355" />
+        <di:waypoint x="1865" y="230" />
+        <di:waypoint x="2030" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAdequate_To_SubmitBCRApproval_Art47_di" bpmnElement="Flow_GatewayAdequate_To_SubmitBCRApproval_Art47">
+        <di:waypoint x="1890" y="380" />
+        <di:waypoint x="2030" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReviseBCRPackage_To_DraftBCRPackage_Art47_di" bpmnElement="Flow_ReviseBCRPackage_To_DraftBCRPackage_Art47">
+        <di:waypoint x="2030" y="230" />
+        <di:waypoint x="380" y="230" />
+        <di:waypoint x="380" y="340" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_SubmitBCRApproval_To_ReceiveBCRApprovalDecision_Art47_di" bpmnElement="Flow_SubmitBCRApproval_To_ReceiveBCRApprovalDecision_Art47">
+        <di:waypoint x="2370" y="380" />
+        <di:waypoint x="2480" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveBCRApprovalDecision_To_GatewayApproved_Art47_di" bpmnElement="Flow_ReceiveBCRApprovalDecision_To_GatewayApproved_Art47">
+        <di:waypoint x="2810" y="380" />
+        <di:waypoint x="2910" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayApproved_To_EndBCRNotApproved_Art47_di" bpmnElement="Flow_GatewayApproved_To_EndBCRNotApproved_Art47">
+        <di:waypoint x="2935" y="355" />
+        <di:waypoint x="2935" y="230" />
+        <di:waypoint x="3090" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayApproved_To_MakeBCRBinding_Art47_di" bpmnElement="Flow_GatewayApproved_To_MakeBCRBinding_Art47">
+        <di:waypoint x="2960" y="380" />
+        <di:waypoint x="3090" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_MakeBCRBinding_To_MakeBCRAvailable_Art47_di" bpmnElement="Flow_MakeBCRBinding_To_MakeBCRAvailable_Art47">
+        <di:waypoint x="3450" y="380" />
+        <di:waypoint x="3550" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_MakeBCRAvailable_To_GatewayOperationalDuties_Art47_di" bpmnElement="Flow_MakeBCRAvailable_To_GatewayOperationalDuties_Art47">
+        <di:waypoint x="3900" y="380" />
+        <di:waypoint x="3990" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayOperationalDuties_To_ImplementCompliance_Art47_di" bpmnElement="Flow_GatewayOperationalDuties_To_ImplementCompliance_Art47">
+        <di:waypoint x="4015" y="355" />
+        <di:waypoint x="4015" y="120" />
+        <di:waypoint x="4160" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayOperationalDuties_To_HandleComplaints_Art47_di" bpmnElement="Flow_GatewayOperationalDuties_To_HandleComplaints_Art47">
+        <di:waypoint x="4015" y="355" />
+        <di:waypoint x="4015" y="230" />
+        <di:waypoint x="4160" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayOperationalDuties_To_NotifyDataSubjectsAboutChanges_Art47_di" bpmnElement="Flow_GatewayOperationalDuties_To_NotifyDataSubjectsAboutChanges_Art47">
+        <di:waypoint x="4040" y="380" />
+        <di:waypoint x="4160" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayOperationalDuties_To_NotifySupervisoryAuthority_Art47_di" bpmnElement="Flow_GatewayOperationalDuties_To_NotifySupervisoryAuthority_Art47">
+        <di:waypoint x="4040" y="380" />
+        <di:waypoint x="4160" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayOperationalDuties_To_ProvideTraining_Art47_di" bpmnElement="Flow_GatewayOperationalDuties_To_ProvideTraining_Art47">
+        <di:waypoint x="4015" y="405" />
+        <di:waypoint x="4015" y="560" />
+        <di:waypoint x="4160" y="560" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_ImplementCompliance_To_GatewayOperationalDutiesCompleted_Art47_di" bpmnElement="Flow_ImplementCompliance_To_GatewayOperationalDutiesCompleted_Art47">
+        <di:waypoint x="4540" y="120" />
+        <di:waypoint x="4745" y="120" />
+        <di:waypoint x="4745" y="355" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_HandleComplaints_To_GatewayOperationalDutiesCompleted_Art47_di" bpmnElement="Flow_HandleComplaints_To_GatewayOperationalDutiesCompleted_Art47">
+        <di:waypoint x="4510" y="230" />
+        <di:waypoint x="4745" y="230" />
+        <di:waypoint x="4745" y="355" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_NotifyDataSubjectsAboutChanges_To_GatewayOperationalDutiesCompleted_Art47_di" bpmnElement="Flow_NotifyDataSubjectsAboutChanges_To_GatewayOperationalDutiesCompleted_Art47">
+        <di:waypoint x="4500" y="340" />
+        <di:waypoint x="4745" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_NotifySupervisoryAuthority_To_GatewayOperationalDutiesCompleted_Art47_di" bpmnElement="Flow_NotifySupervisoryAuthority_To_GatewayOperationalDutiesCompleted_Art47">
+        <di:waypoint x="4550" y="450" />
+        <di:waypoint x="4745" y="450" />
+        <di:waypoint x="4745" y="405" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ProvideTraining_To_GatewayOperationalDutiesCompleted_Art47_di" bpmnElement="Flow_ProvideTraining_To_GatewayOperationalDutiesCompleted_Art47">
+        <di:waypoint x="4480" y="560" />
+        <di:waypoint x="4745" y="560" />
+        <di:waypoint x="4745" y="405" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayOperationalDutiesCompleted_To_EndGovernanceOperating_Art47_di" bpmnElement="Flow_GatewayOperationalDutiesCompleted_To_EndGovernanceOperating_Art47">
+        <di:waypoint x="4770" y="380" />
+        <di:waypoint x="4880" y="380" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_SubmitBCRApproval_Art47_di" bpmnElement="MessageFlow_SubmitBCRApproval_Art47">
+        <di:waypoint x="2200" y="420" />
+        <di:waypoint x="2200" y="780" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ApprovalDecision_Art47_di" bpmnElement="MessageFlow_ApprovalDecision_Art47">
+        <di:waypoint x="2645" y="780" />
+        <di:waypoint x="2645" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_MakeBCRAvailable_Art47_di" bpmnElement="MessageFlow_MakeBCRAvailable_Art47">
+        <di:waypoint x="3725" y="420" />
+        <di:waypoint x="3725" y="940" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_NotifyDataSubjectsAboutChanges_Art47_di" bpmnElement="MessageFlow_NotifyDataSubjectsAboutChanges_Art47">
+        <di:waypoint x="4330" y="380" />
+        <di:waypoint x="4330" y="940" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_NotifySupervisoryAuthority_Art47_di" bpmnElement="MessageFlow_NotifySupervisoryAuthority_Art47">
+        <di:waypoint x="4355" y="490" />
+        <di:waypoint x="4355" y="780" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

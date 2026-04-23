@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art28_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art28_Reviewed">
+    <bpmn:participant id="Participant_Controller_Art28"
+                      name="Controller"
+                      processRef="Process_Controller_Art28" />
+    <bpmn:participant id="Participant_Processor_Art28"
+                      name="Processor" />
+
+    <bpmn:messageFlow id="MessageFlow_SendProcessorContract_Art28"
+                      sourceRef="SendTask_SendProcessorContract_Art28"
+                      targetRef="Participant_Processor_Art28" />
+    <bpmn:messageFlow id="MessageFlow_RequestComplianceInfo_Art28"
+                      sourceRef="SendTask_RequestComplianceInfo_Art28"
+                      targetRef="Participant_Processor_Art28" />
+    <bpmn:messageFlow id="MessageFlow_ReceiveComplianceInfo_Art28"
+                      sourceRef="Participant_Processor_Art28"
+                      targetRef="ReceiveTask_ReceiveComplianceInfo_Art28" />
+    <bpmn:messageFlow id="MessageFlow_ReceiveInfringementNotice_Art28"
+                      sourceRef="Participant_Processor_Art28"
+                      targetRef="ReceiveTask_ReceiveInfringementNotice_Art28" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_Controller_Art28"
+                name="Establishing a processor arrangement under Article 28"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 28 based on the real English legal text
+      of Regulation (EU) 2016/679. The model captures processor selection based on
+      sufficient guarantees, the mandatory written contract or legal-act framework,
+      the core Article 28(3)(a)-(h) clause set, the optional Article 40, Article 42,
+      and Article 28(7)-(8) demonstration or standard-clause path, the processor's
+      compliance-information and audit-support obligation, the immediate notice when
+      an instruction appears unlawful, and the Article 28(10) consequence that a
+      processor determining purposes and means is considered a controller.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_NeedProcessorSupport_Art28"
+                     name="Need processor support">
+      <bpmn:outgoing>Flow_StartNeedProcessorSupport_To_TaskAssessProcessorGuarantees_Art28</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_AssessProcessorGuarantees_Art28"
+               name="Assess processor guarantees">
+      <bpmn:incoming>Flow_StartNeedProcessorSupport_To_TaskAssessProcessorGuarantees_Art28</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskAssessProcessorGuarantees_To_GatewaySufficientGuarantees_Art28</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_SufficientGuarantees_Art28"
+                           name="Do sufficient guarantees exist?">
+      <bpmn:incoming>Flow_TaskAssessProcessorGuarantees_To_GatewaySufficientGuarantees_Art28</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySufficientGuarantees_To_TaskDefineProcessingTerms_Art28</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySufficientGuarantees_To_EndDoNotUseProcessor_Art28</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_DoNotUseProcessor_Art28"
+                   name="Do not use the processor">
+      <bpmn:incoming>Flow_GatewaySufficientGuarantees_To_EndDoNotUseProcessor_Art28</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:task id="Task_DefineProcessingTerms_Art28"
+               name="Define processing terms">
+      <bpmn:incoming>Flow_GatewaySufficientGuarantees_To_TaskDefineProcessingTerms_Art28</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskDefineProcessingTerms_To_GatewaySplitContractClauses_Art28</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_SplitContractClauses_Art28">
+      <bpmn:incoming>Flow_TaskDefineProcessingTerms_To_GatewaySplitContractClauses_Art28</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplitContractClauses_To_TaskSetInstructionClause_Art28</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitContractClauses_To_TaskSetConfidentialityClause_Art28</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitContractClauses_To_TaskSetArticle32Clause_Art28</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitContractClauses_To_TaskSetSubProcessorClause_Art28</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitContractClauses_To_TaskSetRightsAssistanceClause_Art28</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitContractClauses_To_TaskSetComplianceAssistanceClause_Art28</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitContractClauses_To_TaskSetDeleteReturnClause_Art28</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitContractClauses_To_TaskSetAuditClause_Art28</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_SetInstructionClause_Art28"
+               name="Set instruction clause">
+      <bpmn:incoming>Flow_GatewaySplitContractClauses_To_TaskSetInstructionClause_Art28</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskSetInstructionClause_To_GatewayJoinContractClauses_Art28</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_SetConfidentialityClause_Art28"
+               name="Set confidentiality clause">
+      <bpmn:incoming>Flow_GatewaySplitContractClauses_To_TaskSetConfidentialityClause_Art28</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskSetConfidentialityClause_To_GatewayJoinContractClauses_Art28</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_SetArticle32Clause_Art28"
+               name="Set Article 32 clause">
+      <bpmn:incoming>Flow_GatewaySplitContractClauses_To_TaskSetArticle32Clause_Art28</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskSetArticle32Clause_To_GatewayJoinContractClauses_Art28</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_SetSubProcessorClause_Art28"
+               name="Set sub-processor clause">
+      <bpmn:incoming>Flow_GatewaySplitContractClauses_To_TaskSetSubProcessorClause_Art28</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskSetSubProcessorClause_To_GatewayJoinContractClauses_Art28</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_SetRightsAssistanceClause_Art28"
+               name="Set rights-assistance clause">
+      <bpmn:incoming>Flow_GatewaySplitContractClauses_To_TaskSetRightsAssistanceClause_Art28</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskSetRightsAssistanceClause_To_GatewayJoinContractClauses_Art28</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_SetComplianceAssistanceClause_Art28"
+               name="Set Articles 32 to 36 clause">
+      <bpmn:incoming>Flow_GatewaySplitContractClauses_To_TaskSetComplianceAssistanceClause_Art28</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskSetComplianceAssistanceClause_To_GatewayJoinContractClauses_Art28</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_SetDeleteReturnClause_Art28"
+               name="Set delete-or-return clause">
+      <bpmn:incoming>Flow_GatewaySplitContractClauses_To_TaskSetDeleteReturnClause_Art28</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskSetDeleteReturnClause_To_GatewayJoinContractClauses_Art28</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_SetAuditClause_Art28"
+               name="Set audit clause">
+      <bpmn:incoming>Flow_GatewaySplitContractClauses_To_TaskSetAuditClause_Art28</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskSetAuditClause_To_GatewayJoinContractClauses_Art28</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_JoinContractClauses_Art28">
+      <bpmn:incoming>Flow_TaskSetInstructionClause_To_GatewayJoinContractClauses_Art28</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskSetConfidentialityClause_To_GatewayJoinContractClauses_Art28</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskSetArticle32Clause_To_GatewayJoinContractClauses_Art28</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskSetSubProcessorClause_To_GatewayJoinContractClauses_Art28</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskSetRightsAssistanceClause_To_GatewayJoinContractClauses_Art28</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskSetComplianceAssistanceClause_To_GatewayJoinContractClauses_Art28</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskSetDeleteReturnClause_To_GatewayJoinContractClauses_Art28</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskSetAuditClause_To_GatewayJoinContractClauses_Art28</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinContractClauses_To_GatewayUseDemonstrationElement_Art28</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_UseDemonstrationElement_Art28"
+                           name="Use Article 40, Article 42, or standard clauses?">
+      <bpmn:incoming>Flow_GatewayJoinContractClauses_To_GatewayUseDemonstrationElement_Art28</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayUseDemonstrationElement_To_TaskSelectDemonstrationElement_Art28</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayUseDemonstrationElement_To_TaskPutContractInWriting_Art28</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_SelectDemonstrationElement_Art28"
+               name="Select code, certification, or clauses">
+      <bpmn:incoming>Flow_GatewayUseDemonstrationElement_To_TaskSelectDemonstrationElement_Art28</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskSelectDemonstrationElement_To_TaskPutContractInWriting_Art28</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_PutContractInWriting_Art28"
+               name="Put contract in writing">
+      <bpmn:incoming>Flow_GatewayUseDemonstrationElement_To_TaskPutContractInWriting_Art28</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskSelectDemonstrationElement_To_TaskPutContractInWriting_Art28</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPutContractInWriting_To_SendTaskSendProcessorContract_Art28</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="SendTask_SendProcessorContract_Art28"
+                   name="Send processor contract">
+      <bpmn:incoming>Flow_TaskPutContractInWriting_To_SendTaskSendProcessorContract_Art28</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendTaskSendProcessorContract_To_SendTaskRequestComplianceInfo_Art28</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:sendTask id="SendTask_RequestComplianceInfo_Art28"
+                   name="Request compliance information">
+      <bpmn:incoming>Flow_SendTaskSendProcessorContract_To_SendTaskRequestComplianceInfo_Art28</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendTaskRequestComplianceInfo_To_ReceiveTaskReceiveComplianceInfo_Art28</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveComplianceInfo_Art28"
+                      name="Receive compliance information">
+      <bpmn:incoming>Flow_SendTaskRequestComplianceInfo_To_ReceiveTaskReceiveComplianceInfo_Art28</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveTaskReceiveComplianceInfo_To_ReceiveTaskReceiveInfringementNotice_Art28</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveInfringementNotice_Art28"
+                      name="Receive infringement notice">
+      <bpmn:incoming>Flow_ReceiveTaskReceiveComplianceInfo_To_ReceiveTaskReceiveInfringementNotice_Art28</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveTaskReceiveInfringementNotice_To_TaskMonitorProcessorRole_Art28</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:task id="Task_MonitorProcessorRole_Art28"
+               name="Monitor processor role">
+      <bpmn:incoming>Flow_ReceiveTaskReceiveInfringementNotice_To_TaskMonitorProcessorRole_Art28</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskMonitorProcessorRole_To_GatewayPurposesMeansDetermined_Art28</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_PurposesMeansDetermined_Art28"
+                           name="Did the processor determine purposes and means?">
+      <bpmn:incoming>Flow_TaskMonitorProcessorRole_To_GatewayPurposesMeansDetermined_Art28</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayPurposesMeansDetermined_To_EndProcessorBecomesController_Art28</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayPurposesMeansDetermined_To_EndArrangementEstablished_Art28</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_ProcessorBecomesController_Art28"
+                   name="Processor is considered controller">
+      <bpmn:incoming>Flow_GatewayPurposesMeansDetermined_To_EndProcessorBecomesController_Art28</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_ArrangementEstablished_Art28"
+                   name="Article 28 processor arrangement established">
+      <bpmn:incoming>Flow_GatewayPurposesMeansDetermined_To_EndArrangementEstablished_Art28</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartNeedProcessorSupport_To_TaskAssessProcessorGuarantees_Art28" sourceRef="StartEvent_NeedProcessorSupport_Art28" targetRef="Task_AssessProcessorGuarantees_Art28" />
+    <bpmn:sequenceFlow id="Flow_TaskAssessProcessorGuarantees_To_GatewaySufficientGuarantees_Art28" sourceRef="Task_AssessProcessorGuarantees_Art28" targetRef="Gateway_SufficientGuarantees_Art28" />
+    <bpmn:sequenceFlow id="Flow_GatewaySufficientGuarantees_To_TaskDefineProcessingTerms_Art28" name="Yes" sourceRef="Gateway_SufficientGuarantees_Art28" targetRef="Task_DefineProcessingTerms_Art28" />
+    <bpmn:sequenceFlow id="Flow_GatewaySufficientGuarantees_To_EndDoNotUseProcessor_Art28" name="No" sourceRef="Gateway_SufficientGuarantees_Art28" targetRef="EndEvent_DoNotUseProcessor_Art28" />
+    <bpmn:sequenceFlow id="Flow_TaskDefineProcessingTerms_To_GatewaySplitContractClauses_Art28" sourceRef="Task_DefineProcessingTerms_Art28" targetRef="Gateway_SplitContractClauses_Art28" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitContractClauses_To_TaskSetInstructionClause_Art28" sourceRef="Gateway_SplitContractClauses_Art28" targetRef="Task_SetInstructionClause_Art28" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitContractClauses_To_TaskSetConfidentialityClause_Art28" sourceRef="Gateway_SplitContractClauses_Art28" targetRef="Task_SetConfidentialityClause_Art28" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitContractClauses_To_TaskSetArticle32Clause_Art28" sourceRef="Gateway_SplitContractClauses_Art28" targetRef="Task_SetArticle32Clause_Art28" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitContractClauses_To_TaskSetSubProcessorClause_Art28" sourceRef="Gateway_SplitContractClauses_Art28" targetRef="Task_SetSubProcessorClause_Art28" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitContractClauses_To_TaskSetRightsAssistanceClause_Art28" sourceRef="Gateway_SplitContractClauses_Art28" targetRef="Task_SetRightsAssistanceClause_Art28" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitContractClauses_To_TaskSetComplianceAssistanceClause_Art28" sourceRef="Gateway_SplitContractClauses_Art28" targetRef="Task_SetComplianceAssistanceClause_Art28" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitContractClauses_To_TaskSetDeleteReturnClause_Art28" sourceRef="Gateway_SplitContractClauses_Art28" targetRef="Task_SetDeleteReturnClause_Art28" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitContractClauses_To_TaskSetAuditClause_Art28" sourceRef="Gateway_SplitContractClauses_Art28" targetRef="Task_SetAuditClause_Art28" />
+    <bpmn:sequenceFlow id="Flow_TaskSetInstructionClause_To_GatewayJoinContractClauses_Art28" sourceRef="Task_SetInstructionClause_Art28" targetRef="Gateway_JoinContractClauses_Art28" />
+    <bpmn:sequenceFlow id="Flow_TaskSetConfidentialityClause_To_GatewayJoinContractClauses_Art28" sourceRef="Task_SetConfidentialityClause_Art28" targetRef="Gateway_JoinContractClauses_Art28" />
+    <bpmn:sequenceFlow id="Flow_TaskSetArticle32Clause_To_GatewayJoinContractClauses_Art28" sourceRef="Task_SetArticle32Clause_Art28" targetRef="Gateway_JoinContractClauses_Art28" />
+    <bpmn:sequenceFlow id="Flow_TaskSetSubProcessorClause_To_GatewayJoinContractClauses_Art28" sourceRef="Task_SetSubProcessorClause_Art28" targetRef="Gateway_JoinContractClauses_Art28" />
+    <bpmn:sequenceFlow id="Flow_TaskSetRightsAssistanceClause_To_GatewayJoinContractClauses_Art28" sourceRef="Task_SetRightsAssistanceClause_Art28" targetRef="Gateway_JoinContractClauses_Art28" />
+    <bpmn:sequenceFlow id="Flow_TaskSetComplianceAssistanceClause_To_GatewayJoinContractClauses_Art28" sourceRef="Task_SetComplianceAssistanceClause_Art28" targetRef="Gateway_JoinContractClauses_Art28" />
+    <bpmn:sequenceFlow id="Flow_TaskSetDeleteReturnClause_To_GatewayJoinContractClauses_Art28" sourceRef="Task_SetDeleteReturnClause_Art28" targetRef="Gateway_JoinContractClauses_Art28" />
+    <bpmn:sequenceFlow id="Flow_TaskSetAuditClause_To_GatewayJoinContractClauses_Art28" sourceRef="Task_SetAuditClause_Art28" targetRef="Gateway_JoinContractClauses_Art28" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoinContractClauses_To_GatewayUseDemonstrationElement_Art28" sourceRef="Gateway_JoinContractClauses_Art28" targetRef="Gateway_UseDemonstrationElement_Art28" />
+    <bpmn:sequenceFlow id="Flow_GatewayUseDemonstrationElement_To_TaskSelectDemonstrationElement_Art28" name="Yes" sourceRef="Gateway_UseDemonstrationElement_Art28" targetRef="Task_SelectDemonstrationElement_Art28" />
+    <bpmn:sequenceFlow id="Flow_GatewayUseDemonstrationElement_To_TaskPutContractInWriting_Art28" name="No" sourceRef="Gateway_UseDemonstrationElement_Art28" targetRef="Task_PutContractInWriting_Art28" />
+    <bpmn:sequenceFlow id="Flow_TaskSelectDemonstrationElement_To_TaskPutContractInWriting_Art28" sourceRef="Task_SelectDemonstrationElement_Art28" targetRef="Task_PutContractInWriting_Art28" />
+    <bpmn:sequenceFlow id="Flow_TaskPutContractInWriting_To_SendTaskSendProcessorContract_Art28" sourceRef="Task_PutContractInWriting_Art28" targetRef="SendTask_SendProcessorContract_Art28" />
+    <bpmn:sequenceFlow id="Flow_SendTaskSendProcessorContract_To_SendTaskRequestComplianceInfo_Art28" sourceRef="SendTask_SendProcessorContract_Art28" targetRef="SendTask_RequestComplianceInfo_Art28" />
+    <bpmn:sequenceFlow id="Flow_SendTaskRequestComplianceInfo_To_ReceiveTaskReceiveComplianceInfo_Art28" sourceRef="SendTask_RequestComplianceInfo_Art28" targetRef="ReceiveTask_ReceiveComplianceInfo_Art28" />
+    <bpmn:sequenceFlow id="Flow_ReceiveTaskReceiveComplianceInfo_To_ReceiveTaskReceiveInfringementNotice_Art28" sourceRef="ReceiveTask_ReceiveComplianceInfo_Art28" targetRef="ReceiveTask_ReceiveInfringementNotice_Art28" />
+    <bpmn:sequenceFlow id="Flow_ReceiveTaskReceiveInfringementNotice_To_TaskMonitorProcessorRole_Art28" sourceRef="ReceiveTask_ReceiveInfringementNotice_Art28" targetRef="Task_MonitorProcessorRole_Art28" />
+    <bpmn:sequenceFlow id="Flow_TaskMonitorProcessorRole_To_GatewayPurposesMeansDetermined_Art28" sourceRef="Task_MonitorProcessorRole_Art28" targetRef="Gateway_PurposesMeansDetermined_Art28" />
+    <bpmn:sequenceFlow id="Flow_GatewayPurposesMeansDetermined_To_EndProcessorBecomesController_Art28" name="Yes" sourceRef="Gateway_PurposesMeansDetermined_Art28" targetRef="EndEvent_ProcessorBecomesController_Art28" />
+    <bpmn:sequenceFlow id="Flow_GatewayPurposesMeansDetermined_To_EndArrangementEstablished_Art28" name="No" sourceRef="Gateway_PurposesMeansDetermined_Art28" targetRef="EndEvent_ArrangementEstablished_Art28" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art28_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art28_Reviewed" bpmnElement="Collaboration_Art28_Reviewed">
+      <bpmndi:BPMNShape id="Participant_Controller_Art28_di"
+                        bpmnElement="Participant_Controller_Art28"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="6100" height="860" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Processor_Art28_di"
+                        bpmnElement="Participant_Processor_Art28"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="940" width="6100" height="120" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_NeedProcessorSupport_Art28_di" bpmnElement="StartEvent_NeedProcessorSupport_Art28">
+        <dc:Bounds x="120" y="472" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessProcessorGuarantees_Art28_di" bpmnElement="Task_AssessProcessorGuarantees_Art28">
+        <dc:Bounds x="230" y="450" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SufficientGuarantees_Art28_di" bpmnElement="Gateway_SufficientGuarantees_Art28" isMarkerVisible="true">
+        <dc:Bounds x="550" y="465" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_DoNotUseProcessor_Art28_di" bpmnElement="EndEvent_DoNotUseProcessor_Art28">
+        <dc:Bounds x="672" y="682" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DefineProcessingTerms_Art28_di" bpmnElement="Task_DefineProcessingTerms_Art28">
+        <dc:Bounds x="720" y="450" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SplitContractClauses_Art28_di" bpmnElement="Gateway_SplitContractClauses_Art28" isMarkerVisible="true">
+        <dc:Bounds x="1060" y="465" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SetInstructionClause_Art28_di" bpmnElement="Task_SetInstructionClause_Art28">
+        <dc:Bounds x="1270" y="40" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SetConfidentialityClause_Art28_di" bpmnElement="Task_SetConfidentialityClause_Art28">
+        <dc:Bounds x="1270" y="150" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SetArticle32Clause_Art28_di" bpmnElement="Task_SetArticle32Clause_Art28">
+        <dc:Bounds x="1270" y="260" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SetSubProcessorClause_Art28_di" bpmnElement="Task_SetSubProcessorClause_Art28">
+        <dc:Bounds x="1270" y="370" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SetRightsAssistanceClause_Art28_di" bpmnElement="Task_SetRightsAssistanceClause_Art28">
+        <dc:Bounds x="1270" y="480" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SetComplianceAssistanceClause_Art28_di" bpmnElement="Task_SetComplianceAssistanceClause_Art28">
+        <dc:Bounds x="1270" y="590" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SetDeleteReturnClause_Art28_di" bpmnElement="Task_SetDeleteReturnClause_Art28">
+        <dc:Bounds x="1270" y="700" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SetAuditClause_Art28_di" bpmnElement="Task_SetAuditClause_Art28">
+        <dc:Bounds x="1270" y="810" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinContractClauses_Art28_di" bpmnElement="Gateway_JoinContractClauses_Art28" isMarkerVisible="true">
+        <dc:Bounds x="1750" y="465" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_UseDemonstrationElement_Art28_di" bpmnElement="Gateway_UseDemonstrationElement_Art28" isMarkerVisible="true">
+        <dc:Bounds x="1960" y="465" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SelectDemonstrationElement_Art28_di" bpmnElement="Task_SelectDemonstrationElement_Art28">
+        <dc:Bounds x="2170" y="320" width="240" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PutContractInWriting_Art28_di" bpmnElement="Task_PutContractInWriting_Art28">
+        <dc:Bounds x="2460" y="450" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_SendProcessorContract_Art28_di" bpmnElement="SendTask_SendProcessorContract_Art28">
+        <dc:Bounds x="2780" y="450" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_RequestComplianceInfo_Art28_di" bpmnElement="SendTask_RequestComplianceInfo_Art28">
+        <dc:Bounds x="3090" y="450" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveComplianceInfo_Art28_di" bpmnElement="ReceiveTask_ReceiveComplianceInfo_Art28">
+        <dc:Bounds x="3430" y="450" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveInfringementNotice_Art28_di" bpmnElement="ReceiveTask_ReceiveInfringementNotice_Art28">
+        <dc:Bounds x="3780" y="450" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_MonitorProcessorRole_Art28_di" bpmnElement="Task_MonitorProcessorRole_Art28">
+        <dc:Bounds x="4100" y="450" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_PurposesMeansDetermined_Art28_di" bpmnElement="Gateway_PurposesMeansDetermined_Art28" isMarkerVisible="true">
+        <dc:Bounds x="4410" y="465" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ProcessorBecomesController_Art28_di" bpmnElement="EndEvent_ProcessorBecomesController_Art28">
+        <dc:Bounds x="4582" y="322" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ArrangementEstablished_Art28_di" bpmnElement="EndEvent_ArrangementEstablished_Art28">
+        <dc:Bounds x="4582" y="472" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_StartNeedProcessorSupport_To_TaskAssessProcessorGuarantees_Art28_di" bpmnElement="Flow_StartNeedProcessorSupport_To_TaskAssessProcessorGuarantees_Art28">
+        <di:waypoint x="156" y="490" />
+        <di:waypoint x="230" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskAssessProcessorGuarantees_To_GatewaySufficientGuarantees_Art28_di" bpmnElement="Flow_TaskAssessProcessorGuarantees_To_GatewaySufficientGuarantees_Art28">
+        <di:waypoint x="440" y="490" />
+        <di:waypoint x="550" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySufficientGuarantees_To_TaskDefineProcessingTerms_Art28_di" bpmnElement="Flow_GatewaySufficientGuarantees_To_TaskDefineProcessingTerms_Art28">
+        <di:waypoint x="600" y="490" />
+        <di:waypoint x="720" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySufficientGuarantees_To_EndDoNotUseProcessor_Art28_di" bpmnElement="Flow_GatewaySufficientGuarantees_To_EndDoNotUseProcessor_Art28">
+        <di:waypoint x="575" y="515" />
+        <di:waypoint x="575" y="700" />
+        <di:waypoint x="672" y="700" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskDefineProcessingTerms_To_GatewaySplitContractClauses_Art28_di" bpmnElement="Flow_TaskDefineProcessingTerms_To_GatewaySplitContractClauses_Art28">
+        <di:waypoint x="940" y="490" />
+        <di:waypoint x="1060" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitContractClauses_To_TaskSetInstructionClause_Art28_di" bpmnElement="Flow_GatewaySplitContractClauses_To_TaskSetInstructionClause_Art28">
+        <di:waypoint x="1085" y="465" />
+        <di:waypoint x="1085" y="80" />
+        <di:waypoint x="1270" y="80" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitContractClauses_To_TaskSetConfidentialityClause_Art28_di" bpmnElement="Flow_GatewaySplitContractClauses_To_TaskSetConfidentialityClause_Art28">
+        <di:waypoint x="1085" y="465" />
+        <di:waypoint x="1085" y="190" />
+        <di:waypoint x="1270" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitContractClauses_To_TaskSetArticle32Clause_Art28_di" bpmnElement="Flow_GatewaySplitContractClauses_To_TaskSetArticle32Clause_Art28">
+        <di:waypoint x="1085" y="465" />
+        <di:waypoint x="1085" y="300" />
+        <di:waypoint x="1270" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitContractClauses_To_TaskSetSubProcessorClause_Art28_di" bpmnElement="Flow_GatewaySplitContractClauses_To_TaskSetSubProcessorClause_Art28">
+        <di:waypoint x="1085" y="465" />
+        <di:waypoint x="1085" y="410" />
+        <di:waypoint x="1270" y="410" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitContractClauses_To_TaskSetRightsAssistanceClause_Art28_di" bpmnElement="Flow_GatewaySplitContractClauses_To_TaskSetRightsAssistanceClause_Art28">
+        <di:waypoint x="1110" y="490" />
+        <di:waypoint x="1270" y="520" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitContractClauses_To_TaskSetComplianceAssistanceClause_Art28_di" bpmnElement="Flow_GatewaySplitContractClauses_To_TaskSetComplianceAssistanceClause_Art28">
+        <di:waypoint x="1085" y="515" />
+        <di:waypoint x="1085" y="630" />
+        <di:waypoint x="1270" y="630" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitContractClauses_To_TaskSetDeleteReturnClause_Art28_di" bpmnElement="Flow_GatewaySplitContractClauses_To_TaskSetDeleteReturnClause_Art28">
+        <di:waypoint x="1085" y="515" />
+        <di:waypoint x="1085" y="740" />
+        <di:waypoint x="1270" y="740" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitContractClauses_To_TaskSetAuditClause_Art28_di" bpmnElement="Flow_GatewaySplitContractClauses_To_TaskSetAuditClause_Art28">
+        <di:waypoint x="1085" y="515" />
+        <di:waypoint x="1085" y="850" />
+        <di:waypoint x="1270" y="850" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskSetInstructionClause_To_GatewayJoinContractClauses_Art28_di" bpmnElement="Flow_TaskSetInstructionClause_To_GatewayJoinContractClauses_Art28">
+        <di:waypoint x="1460" y="80" />
+        <di:waypoint x="1775" y="80" />
+        <di:waypoint x="1775" y="465" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskSetConfidentialityClause_To_GatewayJoinContractClauses_Art28_di" bpmnElement="Flow_TaskSetConfidentialityClause_To_GatewayJoinContractClauses_Art28">
+        <di:waypoint x="1460" y="190" />
+        <di:waypoint x="1775" y="190" />
+        <di:waypoint x="1775" y="465" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskSetArticle32Clause_To_GatewayJoinContractClauses_Art28_di" bpmnElement="Flow_TaskSetArticle32Clause_To_GatewayJoinContractClauses_Art28">
+        <di:waypoint x="1450" y="300" />
+        <di:waypoint x="1775" y="300" />
+        <di:waypoint x="1775" y="465" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskSetSubProcessorClause_To_GatewayJoinContractClauses_Art28_di" bpmnElement="Flow_TaskSetSubProcessorClause_To_GatewayJoinContractClauses_Art28">
+        <di:waypoint x="1460" y="410" />
+        <di:waypoint x="1775" y="410" />
+        <di:waypoint x="1775" y="465" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskSetRightsAssistanceClause_To_GatewayJoinContractClauses_Art28_di" bpmnElement="Flow_TaskSetRightsAssistanceClause_To_GatewayJoinContractClauses_Art28">
+        <di:waypoint x="1480" y="520" />
+        <di:waypoint x="1750" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskSetComplianceAssistanceClause_To_GatewayJoinContractClauses_Art28_di" bpmnElement="Flow_TaskSetComplianceAssistanceClause_To_GatewayJoinContractClauses_Art28">
+        <di:waypoint x="1490" y="630" />
+        <di:waypoint x="1775" y="630" />
+        <di:waypoint x="1775" y="515" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskSetDeleteReturnClause_To_GatewayJoinContractClauses_Art28_di" bpmnElement="Flow_TaskSetDeleteReturnClause_To_GatewayJoinContractClauses_Art28">
+        <di:waypoint x="1470" y="740" />
+        <di:waypoint x="1775" y="740" />
+        <di:waypoint x="1775" y="515" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskSetAuditClause_To_GatewayJoinContractClauses_Art28_di" bpmnElement="Flow_TaskSetAuditClause_To_GatewayJoinContractClauses_Art28">
+        <di:waypoint x="1440" y="850" />
+        <di:waypoint x="1775" y="850" />
+        <di:waypoint x="1775" y="515" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinContractClauses_To_GatewayUseDemonstrationElement_Art28_di" bpmnElement="Flow_GatewayJoinContractClauses_To_GatewayUseDemonstrationElement_Art28">
+        <di:waypoint x="1800" y="490" />
+        <di:waypoint x="1960" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayUseDemonstrationElement_To_TaskSelectDemonstrationElement_Art28_di" bpmnElement="Flow_GatewayUseDemonstrationElement_To_TaskSelectDemonstrationElement_Art28">
+        <di:waypoint x="1985" y="465" />
+        <di:waypoint x="1985" y="360" />
+        <di:waypoint x="2170" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayUseDemonstrationElement_To_TaskPutContractInWriting_Art28_di" bpmnElement="Flow_GatewayUseDemonstrationElement_To_TaskPutContractInWriting_Art28">
+        <di:waypoint x="2010" y="490" />
+        <di:waypoint x="2460" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskSelectDemonstrationElement_To_TaskPutContractInWriting_Art28_di" bpmnElement="Flow_TaskSelectDemonstrationElement_To_TaskPutContractInWriting_Art28">
+        <di:waypoint x="2410" y="360" />
+        <di:waypoint x="2565" y="360" />
+        <di:waypoint x="2565" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPutContractInWriting_To_SendTaskSendProcessorContract_Art28_di" bpmnElement="Flow_TaskPutContractInWriting_To_SendTaskSendProcessorContract_Art28">
+        <di:waypoint x="2670" y="490" />
+        <di:waypoint x="2780" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendTaskSendProcessorContract_To_SendTaskRequestComplianceInfo_Art28_di" bpmnElement="Flow_SendTaskSendProcessorContract_To_SendTaskRequestComplianceInfo_Art28">
+        <di:waypoint x="2980" y="490" />
+        <di:waypoint x="3090" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendTaskRequestComplianceInfo_To_ReceiveTaskReceiveComplianceInfo_Art28_di" bpmnElement="Flow_SendTaskRequestComplianceInfo_To_ReceiveTaskReceiveComplianceInfo_Art28">
+        <di:waypoint x="3310" y="490" />
+        <di:waypoint x="3430" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveTaskReceiveComplianceInfo_To_ReceiveTaskReceiveInfringementNotice_Art28_di" bpmnElement="Flow_ReceiveTaskReceiveComplianceInfo_To_ReceiveTaskReceiveInfringementNotice_Art28">
+        <di:waypoint x="3650" y="490" />
+        <di:waypoint x="3780" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveTaskReceiveInfringementNotice_To_TaskMonitorProcessorRole_Art28_di" bpmnElement="Flow_ReceiveTaskReceiveInfringementNotice_To_TaskMonitorProcessorRole_Art28">
+        <di:waypoint x="3990" y="490" />
+        <di:waypoint x="4100" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskMonitorProcessorRole_To_GatewayPurposesMeansDetermined_Art28_di" bpmnElement="Flow_TaskMonitorProcessorRole_To_GatewayPurposesMeansDetermined_Art28">
+        <di:waypoint x="4290" y="490" />
+        <di:waypoint x="4410" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPurposesMeansDetermined_To_EndProcessorBecomesController_Art28_di" bpmnElement="Flow_GatewayPurposesMeansDetermined_To_EndProcessorBecomesController_Art28">
+        <di:waypoint x="4435" y="465" />
+        <di:waypoint x="4435" y="340" />
+        <di:waypoint x="4582" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPurposesMeansDetermined_To_EndArrangementEstablished_Art28_di" bpmnElement="Flow_GatewayPurposesMeansDetermined_To_EndArrangementEstablished_Art28">
+        <di:waypoint x="4460" y="490" />
+        <di:waypoint x="4582" y="490" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_SendProcessorContract_Art28_di" bpmnElement="MessageFlow_SendProcessorContract_Art28">
+        <di:waypoint x="2880" y="530" />
+        <di:waypoint x="2880" y="1000" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_RequestComplianceInfo_Art28_di" bpmnElement="MessageFlow_RequestComplianceInfo_Art28">
+        <di:waypoint x="3200" y="530" />
+        <di:waypoint x="3200" y="1000" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ReceiveComplianceInfo_Art28_di" bpmnElement="MessageFlow_ReceiveComplianceInfo_Art28">
+        <di:waypoint x="3540" y="940" />
+        <di:waypoint x="3540" y="530" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ReceiveInfringementNotice_Art28_di" bpmnElement="MessageFlow_ReceiveInfringementNotice_Art28">
+        <di:waypoint x="3885" y="940" />
+        <di:waypoint x="3885" y="530" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art49_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art49_Reviewed">
+    <bpmn:participant id="Participant_ControllerProcessor_Art49"
+                      name="Controller or Processor"
+                      processRef="Process_ControllerProcessor_Art49" />
+    <bpmn:participant id="Participant_DataSubject_Art49"
+                      name="Data Subject" />
+    <bpmn:participant id="Participant_SupervisoryAuthority_Art49"
+                      name="Supervisory Authority" />
+    <bpmn:participant id="Participant_ThirdCountryRecipient_Art49"
+                      name="Third-country recipient or requester" />
+    <bpmn:messageFlow id="MessageFlow_InformRisks_Art49"
+                      sourceRef="SendTask_InformDataSubjectAboutRisks_Art49"
+                      targetRef="Participant_DataSubject_Art49" />
+    <bpmn:messageFlow id="MessageFlow_ExplicitConsent_Art49"
+                      sourceRef="Participant_DataSubject_Art49"
+                      targetRef="ReceiveTask_ReceiveExplicitConsent_Art49" />
+    <bpmn:messageFlow id="MessageFlow_InformFallbackTransfer_Art49"
+                      sourceRef="SendTask_InformDataSubjectAboutFallbackTransfer_Art49"
+                      targetRef="Participant_DataSubject_Art49" />
+    <bpmn:messageFlow id="MessageFlow_InformSupervisoryAuthority_Art49"
+                      sourceRef="SendTask_InformSupervisoryAuthority_Art49"
+                      targetRef="Participant_SupervisoryAuthority_Art49" />
+    <bpmn:messageFlow id="MessageFlow_TransferUnderDerogation_Art49"
+                      sourceRef="SendTask_TransferUnderDerogation_Art49"
+                      targetRef="Participant_ThirdCountryRecipient_Art49" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_ControllerProcessor_Art49"
+                name="Assessing derogations for a transfer without Article 45 or 46 basis"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 49 based on the real English legal text from
+      gdpr_articles/article_49.txt. The model reflects the exceptional nature of
+      Article 49: first rule out Article 45 and Article 46 transfer tools, then assess
+      the specific derogations in Article 49(1), the register limitation in Article 49(2),
+      the public-authority restriction in Article 49(3), the recognised-public-interest
+      and category-limit aspects in Article 49(4)-(5), and the information and
+      documentation duties for the compelling-legitimate-interests route under
+      Article 49(1) second subparagraph and Article 49(6).
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_NeedExceptionalTransfer_Art49"
+                     name="Need transfer">
+      <bpmn:outgoing>Flow_Start_To_GatewayPrimaryTool_Art49</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_PrimaryTransferTool_Art49"
+                           name="Is an Article 45 or 46 transfer tool available?">
+      <bpmn:incoming>Flow_Start_To_GatewayPrimaryTool_Art49</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayPrimaryTool_To_EndUsePrimaryTool_Art49</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayPrimaryTool_To_GatewayPublicAuthority_Art49</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_UsePrimaryTool_Art49"
+                   name="Use Article 45 or 46 route">
+      <bpmn:incoming>Flow_GatewayPrimaryTool_To_EndUsePrimaryTool_Art49</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_PublicAuthorityPowers_Art49"
+                           name="Is a public authority exercising public powers?">
+      <bpmn:incoming>Flow_GatewayPrimaryTool_To_GatewayPublicAuthority_Art49</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayPublicAuthority_To_GatewayRestrictedDerogation_Art49</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayPublicAuthority_To_GatewayFullDerogation_Art49</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_FullDerogation_Art49"
+                           name="Which Article 49 derogation applies?">
+      <bpmn:incoming>Flow_GatewayPublicAuthority_To_GatewayFullDerogation_Art49</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayFullDerogation_To_InformRisks_Art49</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayFullDerogation_To_VerifyDataSubjectContract_Art49</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayFullDerogation_To_VerifyDataSubjectInterestContract_Art49</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayFullDerogation_To_VerifyPublicInterest_Art49</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayFullDerogation_To_VerifyLegalClaims_Art49</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayFullDerogation_To_VerifyVitalInterests_Art49</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayFullDerogation_To_AssessRegisterTransfer_Art49</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayFullDerogation_To_AssessFallback_Art49</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayFullDerogation_To_EndNoDerogation_Art49</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_RestrictedDerogation_Art49"
+                           name="Which Article 49 derogation applies for the public authority?">
+      <bpmn:incoming>Flow_GatewayPublicAuthority_To_GatewayRestrictedDerogation_Art49</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayRestrictedDerogation_To_VerifyPublicInterest_Art49</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayRestrictedDerogation_To_VerifyLegalClaims_Art49</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayRestrictedDerogation_To_VerifyVitalInterests_Art49</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayRestrictedDerogation_To_AssessRegisterTransfer_Art49</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayRestrictedDerogation_To_EndNoDerogation_Art49</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_NoDerogation_Art49"
+                   name="No Article 49 derogation applies">
+      <bpmn:incoming>Flow_GatewayFullDerogation_To_EndNoDerogation_Art49</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayRestrictedDerogation_To_EndNoDerogation_Art49</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayRegisterCompliant_To_EndNoDerogation_Art49</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayFallbackConditions_To_EndNoDerogation_Art49</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sendTask id="SendTask_InformDataSubjectAboutRisks_Art49"
+                   name="Inform data subject of transfer risks">
+      <bpmn:incoming>Flow_GatewayFullDerogation_To_InformRisks_Art49</bpmn:incoming>
+      <bpmn:outgoing>Flow_InformRisks_To_ReceiveExplicitConsent_Art49</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveExplicitConsent_Art49"
+                      name="Receive explicit consent">
+      <bpmn:incoming>Flow_InformRisks_To_ReceiveExplicitConsent_Art49</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveExplicitConsent_To_GatewayTransferReady_Art49</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:task id="Task_VerifyDataSubjectContract_Art49"
+               name="Check data-subject contract necessity">
+      <bpmn:incoming>Flow_GatewayFullDerogation_To_VerifyDataSubjectContract_Art49</bpmn:incoming>
+      <bpmn:outgoing>Flow_VerifyDataSubjectContract_To_GatewayTransferReady_Art49</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_VerifyDataSubjectInterestContract_Art49"
+               name="Check contract in data subject's interest">
+      <bpmn:incoming>Flow_GatewayFullDerogation_To_VerifyDataSubjectInterestContract_Art49</bpmn:incoming>
+      <bpmn:outgoing>Flow_VerifyDataSubjectInterestContract_To_GatewayTransferReady_Art49</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_VerifyPublicInterest_Art49"
+               name="Check recognised public interest and any transfer limits">
+      <bpmn:incoming>Flow_GatewayFullDerogation_To_VerifyPublicInterest_Art49</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayRestrictedDerogation_To_VerifyPublicInterest_Art49</bpmn:incoming>
+      <bpmn:outgoing>Flow_VerifyPublicInterest_To_GatewayTransferReady_Art49</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_VerifyLegalClaims_Art49"
+               name="Check legal-claims necessity">
+      <bpmn:incoming>Flow_GatewayFullDerogation_To_VerifyLegalClaims_Art49</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayRestrictedDerogation_To_VerifyLegalClaims_Art49</bpmn:incoming>
+      <bpmn:outgoing>Flow_VerifyLegalClaims_To_GatewayTransferReady_Art49</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_VerifyVitalInterests_Art49"
+               name="Check vital-interests necessity">
+      <bpmn:incoming>Flow_GatewayFullDerogation_To_VerifyVitalInterests_Art49</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayRestrictedDerogation_To_VerifyVitalInterests_Art49</bpmn:incoming>
+      <bpmn:outgoing>Flow_VerifyVitalInterests_To_GatewayTransferReady_Art49</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_AssessRegisterTransfer_Art49"
+               name="Check register access and transfer scope">
+      <bpmn:incoming>Flow_GatewayFullDerogation_To_AssessRegisterTransfer_Art49</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayRestrictedDerogation_To_AssessRegisterTransfer_Art49</bpmn:incoming>
+      <bpmn:outgoing>Flow_AssessRegisterTransfer_To_GatewayRegisterCompliant_Art49</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_RegisterCompliant_Art49"
+                           name="Is the register transfer limited and lawfully requested?">
+      <bpmn:incoming>Flow_AssessRegisterTransfer_To_GatewayRegisterCompliant_Art49</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayRegisterCompliant_To_EndNoDerogation_Art49</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayRegisterCompliant_To_GatewayTransferReady_Art49</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_AssessFallback_Art49"
+               name="Check fallback conditions and safeguards">
+      <bpmn:incoming>Flow_GatewayFullDerogation_To_AssessFallback_Art49</bpmn:incoming>
+      <bpmn:outgoing>Flow_AssessFallback_To_GatewayFallbackConditions_Art49</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_FallbackConditions_Art49"
+                           name="Are all fallback conditions met?">
+      <bpmn:incoming>Flow_AssessFallback_To_GatewayFallbackConditions_Art49</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayFallbackConditions_To_EndNoDerogation_Art49</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayFallbackConditions_To_InformSupervisoryAuthority_Art49</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="SendTask_InformSupervisoryAuthority_Art49"
+                   name="Inform supervisory authority">
+      <bpmn:incoming>Flow_GatewayFallbackConditions_To_InformSupervisoryAuthority_Art49</bpmn:incoming>
+      <bpmn:outgoing>Flow_InformSupervisoryAuthority_To_InformDataSubjectAboutFallbackTransfer_Art49</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:sendTask id="SendTask_InformDataSubjectAboutFallbackTransfer_Art49"
+                   name="Inform data subject of fallback transfer">
+      <bpmn:incoming>Flow_InformSupervisoryAuthority_To_InformDataSubjectAboutFallbackTransfer_Art49</bpmn:incoming>
+      <bpmn:outgoing>Flow_InformDataSubjectAboutFallbackTransfer_To_DocumentFallbackAssessment_Art49</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:task id="Task_DocumentFallbackAssessment_Art49"
+               name="Document fallback assessment and safeguards">
+      <bpmn:incoming>Flow_InformDataSubjectAboutFallbackTransfer_To_DocumentFallbackAssessment_Art49</bpmn:incoming>
+      <bpmn:outgoing>Flow_DocumentFallbackAssessment_To_GatewayTransferReady_Art49</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_TransferReady_Art49">
+      <bpmn:incoming>Flow_ReceiveExplicitConsent_To_GatewayTransferReady_Art49</bpmn:incoming>
+      <bpmn:incoming>Flow_VerifyDataSubjectContract_To_GatewayTransferReady_Art49</bpmn:incoming>
+      <bpmn:incoming>Flow_VerifyDataSubjectInterestContract_To_GatewayTransferReady_Art49</bpmn:incoming>
+      <bpmn:incoming>Flow_VerifyPublicInterest_To_GatewayTransferReady_Art49</bpmn:incoming>
+      <bpmn:incoming>Flow_VerifyLegalClaims_To_GatewayTransferReady_Art49</bpmn:incoming>
+      <bpmn:incoming>Flow_VerifyVitalInterests_To_GatewayTransferReady_Art49</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayRegisterCompliant_To_GatewayTransferReady_Art49</bpmn:incoming>
+      <bpmn:incoming>Flow_DocumentFallbackAssessment_To_GatewayTransferReady_Art49</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayTransferReady_To_TransferUnderDerogation_Art49</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="SendTask_TransferUnderDerogation_Art49"
+                   name="Transfer data under derogation">
+      <bpmn:incoming>Flow_GatewayTransferReady_To_TransferUnderDerogation_Art49</bpmn:incoming>
+      <bpmn:outgoing>Flow_TransferUnderDerogation_To_EndTransferCompleted_Art49</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_TransferCompleted_Art49"
+                   name="Transfer completed">
+      <bpmn:incoming>Flow_TransferUnderDerogation_To_EndTransferCompleted_Art49</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_GatewayPrimaryTool_Art49" sourceRef="StartEvent_NeedExceptionalTransfer_Art49" targetRef="Gateway_PrimaryTransferTool_Art49" />
+    <bpmn:sequenceFlow id="Flow_GatewayPrimaryTool_To_EndUsePrimaryTool_Art49" name="Yes" sourceRef="Gateway_PrimaryTransferTool_Art49" targetRef="EndEvent_UsePrimaryTool_Art49" />
+    <bpmn:sequenceFlow id="Flow_GatewayPrimaryTool_To_GatewayPublicAuthority_Art49" name="No" sourceRef="Gateway_PrimaryTransferTool_Art49" targetRef="Gateway_PublicAuthorityPowers_Art49" />
+    <bpmn:sequenceFlow id="Flow_GatewayPublicAuthority_To_GatewayRestrictedDerogation_Art49" name="Yes" sourceRef="Gateway_PublicAuthorityPowers_Art49" targetRef="Gateway_RestrictedDerogation_Art49" />
+    <bpmn:sequenceFlow id="Flow_GatewayPublicAuthority_To_GatewayFullDerogation_Art49" name="No" sourceRef="Gateway_PublicAuthorityPowers_Art49" targetRef="Gateway_FullDerogation_Art49" />
+    <bpmn:sequenceFlow id="Flow_GatewayFullDerogation_To_InformRisks_Art49" name="Explicit consent" sourceRef="Gateway_FullDerogation_Art49" targetRef="SendTask_InformDataSubjectAboutRisks_Art49" />
+    <bpmn:sequenceFlow id="Flow_GatewayFullDerogation_To_VerifyDataSubjectContract_Art49" name="Data subject contract" sourceRef="Gateway_FullDerogation_Art49" targetRef="Task_VerifyDataSubjectContract_Art49" />
+    <bpmn:sequenceFlow id="Flow_GatewayFullDerogation_To_VerifyDataSubjectInterestContract_Art49" name="Contract in data subject's interest" sourceRef="Gateway_FullDerogation_Art49" targetRef="Task_VerifyDataSubjectInterestContract_Art49" />
+    <bpmn:sequenceFlow id="Flow_GatewayFullDerogation_To_VerifyPublicInterest_Art49" name="Important public interest" sourceRef="Gateway_FullDerogation_Art49" targetRef="Task_VerifyPublicInterest_Art49" />
+    <bpmn:sequenceFlow id="Flow_GatewayFullDerogation_To_VerifyLegalClaims_Art49" name="Legal claims" sourceRef="Gateway_FullDerogation_Art49" targetRef="Task_VerifyLegalClaims_Art49" />
+    <bpmn:sequenceFlow id="Flow_GatewayFullDerogation_To_VerifyVitalInterests_Art49" name="Vital interests" sourceRef="Gateway_FullDerogation_Art49" targetRef="Task_VerifyVitalInterests_Art49" />
+    <bpmn:sequenceFlow id="Flow_GatewayFullDerogation_To_AssessRegisterTransfer_Art49" name="Public register" sourceRef="Gateway_FullDerogation_Art49" targetRef="Task_AssessRegisterTransfer_Art49" />
+    <bpmn:sequenceFlow id="Flow_GatewayFullDerogation_To_AssessFallback_Art49" name="Compelling legitimate interests" sourceRef="Gateway_FullDerogation_Art49" targetRef="Task_AssessFallback_Art49" />
+    <bpmn:sequenceFlow id="Flow_GatewayFullDerogation_To_EndNoDerogation_Art49" name="None" sourceRef="Gateway_FullDerogation_Art49" targetRef="EndEvent_NoDerogation_Art49" />
+    <bpmn:sequenceFlow id="Flow_GatewayRestrictedDerogation_To_VerifyPublicInterest_Art49" name="Important public interest" sourceRef="Gateway_RestrictedDerogation_Art49" targetRef="Task_VerifyPublicInterest_Art49" />
+    <bpmn:sequenceFlow id="Flow_GatewayRestrictedDerogation_To_VerifyLegalClaims_Art49" name="Legal claims" sourceRef="Gateway_RestrictedDerogation_Art49" targetRef="Task_VerifyLegalClaims_Art49" />
+    <bpmn:sequenceFlow id="Flow_GatewayRestrictedDerogation_To_VerifyVitalInterests_Art49" name="Vital interests" sourceRef="Gateway_RestrictedDerogation_Art49" targetRef="Task_VerifyVitalInterests_Art49" />
+    <bpmn:sequenceFlow id="Flow_GatewayRestrictedDerogation_To_AssessRegisterTransfer_Art49" name="Public register" sourceRef="Gateway_RestrictedDerogation_Art49" targetRef="Task_AssessRegisterTransfer_Art49" />
+    <bpmn:sequenceFlow id="Flow_GatewayRestrictedDerogation_To_EndNoDerogation_Art49" name="None" sourceRef="Gateway_RestrictedDerogation_Art49" targetRef="EndEvent_NoDerogation_Art49" />
+    <bpmn:sequenceFlow id="Flow_InformRisks_To_ReceiveExplicitConsent_Art49" sourceRef="SendTask_InformDataSubjectAboutRisks_Art49" targetRef="ReceiveTask_ReceiveExplicitConsent_Art49" />
+    <bpmn:sequenceFlow id="Flow_ReceiveExplicitConsent_To_GatewayTransferReady_Art49" sourceRef="ReceiveTask_ReceiveExplicitConsent_Art49" targetRef="Gateway_TransferReady_Art49" />
+    <bpmn:sequenceFlow id="Flow_VerifyDataSubjectContract_To_GatewayTransferReady_Art49" sourceRef="Task_VerifyDataSubjectContract_Art49" targetRef="Gateway_TransferReady_Art49" />
+    <bpmn:sequenceFlow id="Flow_VerifyDataSubjectInterestContract_To_GatewayTransferReady_Art49" sourceRef="Task_VerifyDataSubjectInterestContract_Art49" targetRef="Gateway_TransferReady_Art49" />
+    <bpmn:sequenceFlow id="Flow_VerifyPublicInterest_To_GatewayTransferReady_Art49" sourceRef="Task_VerifyPublicInterest_Art49" targetRef="Gateway_TransferReady_Art49" />
+    <bpmn:sequenceFlow id="Flow_VerifyLegalClaims_To_GatewayTransferReady_Art49" sourceRef="Task_VerifyLegalClaims_Art49" targetRef="Gateway_TransferReady_Art49" />
+    <bpmn:sequenceFlow id="Flow_VerifyVitalInterests_To_GatewayTransferReady_Art49" sourceRef="Task_VerifyVitalInterests_Art49" targetRef="Gateway_TransferReady_Art49" />
+    <bpmn:sequenceFlow id="Flow_AssessRegisterTransfer_To_GatewayRegisterCompliant_Art49" sourceRef="Task_AssessRegisterTransfer_Art49" targetRef="Gateway_RegisterCompliant_Art49" />
+    <bpmn:sequenceFlow id="Flow_GatewayRegisterCompliant_To_EndNoDerogation_Art49" name="No" sourceRef="Gateway_RegisterCompliant_Art49" targetRef="EndEvent_NoDerogation_Art49" />
+    <bpmn:sequenceFlow id="Flow_GatewayRegisterCompliant_To_GatewayTransferReady_Art49" name="Yes" sourceRef="Gateway_RegisterCompliant_Art49" targetRef="Gateway_TransferReady_Art49" />
+    <bpmn:sequenceFlow id="Flow_AssessFallback_To_GatewayFallbackConditions_Art49" sourceRef="Task_AssessFallback_Art49" targetRef="Gateway_FallbackConditions_Art49" />
+    <bpmn:sequenceFlow id="Flow_GatewayFallbackConditions_To_EndNoDerogation_Art49" name="No" sourceRef="Gateway_FallbackConditions_Art49" targetRef="EndEvent_NoDerogation_Art49" />
+    <bpmn:sequenceFlow id="Flow_GatewayFallbackConditions_To_InformSupervisoryAuthority_Art49" name="Yes" sourceRef="Gateway_FallbackConditions_Art49" targetRef="SendTask_InformSupervisoryAuthority_Art49" />
+    <bpmn:sequenceFlow id="Flow_InformSupervisoryAuthority_To_InformDataSubjectAboutFallbackTransfer_Art49" sourceRef="SendTask_InformSupervisoryAuthority_Art49" targetRef="SendTask_InformDataSubjectAboutFallbackTransfer_Art49" />
+    <bpmn:sequenceFlow id="Flow_InformDataSubjectAboutFallbackTransfer_To_DocumentFallbackAssessment_Art49" sourceRef="SendTask_InformDataSubjectAboutFallbackTransfer_Art49" targetRef="Task_DocumentFallbackAssessment_Art49" />
+    <bpmn:sequenceFlow id="Flow_DocumentFallbackAssessment_To_GatewayTransferReady_Art49" sourceRef="Task_DocumentFallbackAssessment_Art49" targetRef="Gateway_TransferReady_Art49" />
+    <bpmn:sequenceFlow id="Flow_GatewayTransferReady_To_TransferUnderDerogation_Art49" sourceRef="Gateway_TransferReady_Art49" targetRef="SendTask_TransferUnderDerogation_Art49" />
+    <bpmn:sequenceFlow id="Flow_TransferUnderDerogation_To_EndTransferCompleted_Art49" sourceRef="SendTask_TransferUnderDerogation_Art49" targetRef="EndEvent_TransferCompleted_Art49" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art49_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art49_Reviewed"
+                      bpmnElement="Collaboration_Art49_Reviewed">
+      <bpmndi:BPMNShape id="Participant_ControllerProcessor_Art49_di" bpmnElement="Participant_ControllerProcessor_Art49" isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="6400" height="980" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_DataSubject_Art49_di" bpmnElement="Participant_DataSubject_Art49" isHorizontal="true">
+        <dc:Bounds x="60" y="1060" width="6400" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_SupervisoryAuthority_Art49_di" bpmnElement="Participant_SupervisoryAuthority_Art49" isHorizontal="true">
+        <dc:Bounds x="60" y="1220" width="6400" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_ThirdCountryRecipient_Art49_di" bpmnElement="Participant_ThirdCountryRecipient_Art49" isHorizontal="true">
+        <dc:Bounds x="60" y="1380" width="6400" height="120" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_NeedExceptionalTransfer_Art49_di" bpmnElement="StartEvent_NeedExceptionalTransfer_Art49">
+        <dc:Bounds x="120" y="472" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_PrimaryTransferTool_Art49_di" bpmnElement="Gateway_PrimaryTransferTool_Art49" isMarkerVisible="true">
+        <dc:Bounds x="260" y="465" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_UsePrimaryTool_Art49_di" bpmnElement="EndEvent_UsePrimaryTool_Art49">
+        <dc:Bounds x="440" y="242" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_PublicAuthorityPowers_Art49_di" bpmnElement="Gateway_PublicAuthorityPowers_Art49" isMarkerVisible="true">
+        <dc:Bounds x="460" y="465" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_FullDerogation_Art49_di" bpmnElement="Gateway_FullDerogation_Art49" isMarkerVisible="true">
+        <dc:Bounds x="650" y="465" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_RestrictedDerogation_Art49_di" bpmnElement="Gateway_RestrictedDerogation_Art49" isMarkerVisible="true">
+        <dc:Bounds x="650" y="705" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NoDerogation_Art49_di" bpmnElement="EndEvent_NoDerogation_Art49">
+        <dc:Bounds x="3380" y="802" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="SendTask_InformDataSubjectAboutRisks_Art49_di" bpmnElement="SendTask_InformDataSubjectAboutRisks_Art49">
+        <dc:Bounds x="900" y="80" width="360" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveExplicitConsent_Art49_di" bpmnElement="ReceiveTask_ReceiveExplicitConsent_Art49">
+        <dc:Bounds x="1380" y="80" width="340" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_VerifyDataSubjectContract_Art49_di" bpmnElement="Task_VerifyDataSubjectContract_Art49">
+        <dc:Bounds x="900" y="190" width="390" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_VerifyDataSubjectInterestContract_Art49_di" bpmnElement="Task_VerifyDataSubjectInterestContract_Art49">
+        <dc:Bounds x="900" y="300" width="390" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_VerifyPublicInterest_Art49_di" bpmnElement="Task_VerifyPublicInterest_Art49">
+        <dc:Bounds x="900" y="410" width="340" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_VerifyLegalClaims_Art49_di" bpmnElement="Task_VerifyLegalClaims_Art49">
+        <dc:Bounds x="900" y="520" width="390" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_VerifyVitalInterests_Art49_di" bpmnElement="Task_VerifyVitalInterests_Art49">
+        <dc:Bounds x="900" y="630" width="380" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessRegisterTransfer_Art49_di" bpmnElement="Task_AssessRegisterTransfer_Art49">
+        <dc:Bounds x="900" y="740" width="410" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_RegisterCompliant_Art49_di" bpmnElement="Gateway_RegisterCompliant_Art49" isMarkerVisible="true">
+        <dc:Bounds x="1450" y="755" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessFallback_Art49_di" bpmnElement="Task_AssessFallback_Art49">
+        <dc:Bounds x="900" y="880" width="430" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_FallbackConditions_Art49_di" bpmnElement="Gateway_FallbackConditions_Art49" isMarkerVisible="true">
+        <dc:Bounds x="1450" y="895" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_InformSupervisoryAuthority_Art49_di" bpmnElement="SendTask_InformSupervisoryAuthority_Art49">
+        <dc:Bounds x="1640" y="880" width="320" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_InformDataSubjectAboutFallbackTransfer_Art49_di" bpmnElement="SendTask_InformDataSubjectAboutFallbackTransfer_Art49">
+        <dc:Bounds x="2080" y="880" width="380" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DocumentFallbackAssessment_Art49_di" bpmnElement="Task_DocumentFallbackAssessment_Art49">
+        <dc:Bounds x="2590" y="880" width="360" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_TransferReady_Art49_di" bpmnElement="Gateway_TransferReady_Art49" isMarkerVisible="true">
+        <dc:Bounds x="3660" y="465" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_TransferUnderDerogation_Art49_di" bpmnElement="SendTask_TransferUnderDerogation_Art49">
+        <dc:Bounds x="3860" y="450" width="360" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_TransferCompleted_Art49_di" bpmnElement="EndEvent_TransferCompleted_Art49">
+        <dc:Bounds x="4380" y="472" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_Start_To_GatewayPrimaryTool_Art49_di" bpmnElement="Flow_Start_To_GatewayPrimaryTool_Art49">
+        <di:waypoint x="156" y="490" />
+        <di:waypoint x="260" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPrimaryTool_To_EndUsePrimaryTool_Art49_di" bpmnElement="Flow_GatewayPrimaryTool_To_EndUsePrimaryTool_Art49">
+        <di:waypoint x="285" y="465" />
+        <di:waypoint x="285" y="260" />
+        <di:waypoint x="440" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPrimaryTool_To_GatewayPublicAuthority_Art49_di" bpmnElement="Flow_GatewayPrimaryTool_To_GatewayPublicAuthority_Art49">
+        <di:waypoint x="310" y="490" />
+        <di:waypoint x="460" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPublicAuthority_To_GatewayRestrictedDerogation_Art49_di" bpmnElement="Flow_GatewayPublicAuthority_To_GatewayRestrictedDerogation_Art49">
+        <di:waypoint x="485" y="515" />
+        <di:waypoint x="485" y="730" />
+        <di:waypoint x="650" y="730" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPublicAuthority_To_GatewayFullDerogation_Art49_di" bpmnElement="Flow_GatewayPublicAuthority_To_GatewayFullDerogation_Art49">
+        <di:waypoint x="510" y="490" />
+        <di:waypoint x="650" y="490" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_GatewayFullDerogation_To_InformRisks_Art49_di" bpmnElement="Flow_GatewayFullDerogation_To_InformRisks_Art49">
+        <di:waypoint x="675" y="465" />
+        <di:waypoint x="675" y="120" />
+        <di:waypoint x="900" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayFullDerogation_To_VerifyDataSubjectContract_Art49_di" bpmnElement="Flow_GatewayFullDerogation_To_VerifyDataSubjectContract_Art49">
+        <di:waypoint x="675" y="465" />
+        <di:waypoint x="675" y="230" />
+        <di:waypoint x="900" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayFullDerogation_To_VerifyDataSubjectInterestContract_Art49_di" bpmnElement="Flow_GatewayFullDerogation_To_VerifyDataSubjectInterestContract_Art49">
+        <di:waypoint x="675" y="465" />
+        <di:waypoint x="675" y="340" />
+        <di:waypoint x="900" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayFullDerogation_To_VerifyPublicInterest_Art49_di" bpmnElement="Flow_GatewayFullDerogation_To_VerifyPublicInterest_Art49">
+        <di:waypoint x="700" y="490" />
+        <di:waypoint x="900" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayFullDerogation_To_VerifyLegalClaims_Art49_di" bpmnElement="Flow_GatewayFullDerogation_To_VerifyLegalClaims_Art49">
+        <di:waypoint x="700" y="490" />
+        <di:waypoint x="900" y="560" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayFullDerogation_To_VerifyVitalInterests_Art49_di" bpmnElement="Flow_GatewayFullDerogation_To_VerifyVitalInterests_Art49">
+        <di:waypoint x="675" y="515" />
+        <di:waypoint x="675" y="670" />
+        <di:waypoint x="900" y="670" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayFullDerogation_To_AssessRegisterTransfer_Art49_di" bpmnElement="Flow_GatewayFullDerogation_To_AssessRegisterTransfer_Art49">
+        <di:waypoint x="675" y="515" />
+        <di:waypoint x="675" y="780" />
+        <di:waypoint x="900" y="780" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayFullDerogation_To_AssessFallback_Art49_di" bpmnElement="Flow_GatewayFullDerogation_To_AssessFallback_Art49">
+        <di:waypoint x="675" y="515" />
+        <di:waypoint x="675" y="920" />
+        <di:waypoint x="900" y="920" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayFullDerogation_To_EndNoDerogation_Art49_di" bpmnElement="Flow_GatewayFullDerogation_To_EndNoDerogation_Art49">
+        <di:waypoint x="700" y="490" />
+        <di:waypoint x="3398" y="490" />
+        <di:waypoint x="3398" y="802" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_GatewayRestrictedDerogation_To_VerifyPublicInterest_Art49_di" bpmnElement="Flow_GatewayRestrictedDerogation_To_VerifyPublicInterest_Art49">
+        <di:waypoint x="675" y="705" />
+        <di:waypoint x="675" y="450" />
+        <di:waypoint x="900" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRestrictedDerogation_To_VerifyLegalClaims_Art49_di" bpmnElement="Flow_GatewayRestrictedDerogation_To_VerifyLegalClaims_Art49">
+        <di:waypoint x="700" y="730" />
+        <di:waypoint x="900" y="560" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRestrictedDerogation_To_VerifyVitalInterests_Art49_di" bpmnElement="Flow_GatewayRestrictedDerogation_To_VerifyVitalInterests_Art49">
+        <di:waypoint x="700" y="730" />
+        <di:waypoint x="900" y="670" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRestrictedDerogation_To_AssessRegisterTransfer_Art49_di" bpmnElement="Flow_GatewayRestrictedDerogation_To_AssessRegisterTransfer_Art49">
+        <di:waypoint x="700" y="730" />
+        <di:waypoint x="900" y="780" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRestrictedDerogation_To_EndNoDerogation_Art49_di" bpmnElement="Flow_GatewayRestrictedDerogation_To_EndNoDerogation_Art49">
+        <di:waypoint x="700" y="730" />
+        <di:waypoint x="3398" y="730" />
+        <di:waypoint x="3398" y="802" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_InformRisks_To_ReceiveExplicitConsent_Art49_di" bpmnElement="Flow_InformRisks_To_ReceiveExplicitConsent_Art49">
+        <di:waypoint x="1260" y="120" />
+        <di:waypoint x="1380" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveExplicitConsent_To_GatewayTransferReady_Art49_di" bpmnElement="Flow_ReceiveExplicitConsent_To_GatewayTransferReady_Art49">
+        <di:waypoint x="1720" y="120" />
+        <di:waypoint x="3685" y="120" />
+        <di:waypoint x="3685" y="465" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_VerifyDataSubjectContract_To_GatewayTransferReady_Art49_di" bpmnElement="Flow_VerifyDataSubjectContract_To_GatewayTransferReady_Art49">
+        <di:waypoint x="1290" y="230" />
+        <di:waypoint x="3685" y="230" />
+        <di:waypoint x="3685" y="465" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_VerifyDataSubjectInterestContract_To_GatewayTransferReady_Art49_di" bpmnElement="Flow_VerifyDataSubjectInterestContract_To_GatewayTransferReady_Art49">
+        <di:waypoint x="1290" y="340" />
+        <di:waypoint x="3685" y="340" />
+        <di:waypoint x="3685" y="465" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_VerifyPublicInterest_To_GatewayTransferReady_Art49_di" bpmnElement="Flow_VerifyPublicInterest_To_GatewayTransferReady_Art49">
+        <di:waypoint x="1240" y="450" />
+        <di:waypoint x="3660" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_VerifyLegalClaims_To_GatewayTransferReady_Art49_di" bpmnElement="Flow_VerifyLegalClaims_To_GatewayTransferReady_Art49">
+        <di:waypoint x="1290" y="560" />
+        <di:waypoint x="3685" y="560" />
+        <di:waypoint x="3685" y="515" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_VerifyVitalInterests_To_GatewayTransferReady_Art49_di" bpmnElement="Flow_VerifyVitalInterests_To_GatewayTransferReady_Art49">
+        <di:waypoint x="1280" y="670" />
+        <di:waypoint x="3685" y="670" />
+        <di:waypoint x="3685" y="515" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AssessRegisterTransfer_To_GatewayRegisterCompliant_Art49_di" bpmnElement="Flow_AssessRegisterTransfer_To_GatewayRegisterCompliant_Art49">
+        <di:waypoint x="1310" y="780" />
+        <di:waypoint x="1450" y="780" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRegisterCompliant_To_EndNoDerogation_Art49_di" bpmnElement="Flow_GatewayRegisterCompliant_To_EndNoDerogation_Art49">
+        <di:waypoint x="1475" y="780" />
+        <di:waypoint x="3398" y="780" />
+        <di:waypoint x="3398" y="802" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRegisterCompliant_To_GatewayTransferReady_Art49_di" bpmnElement="Flow_GatewayRegisterCompliant_To_GatewayTransferReady_Art49">
+        <di:waypoint x="1475" y="755" />
+        <di:waypoint x="1475" y="490" />
+        <di:waypoint x="3660" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AssessFallback_To_GatewayFallbackConditions_Art49_di" bpmnElement="Flow_AssessFallback_To_GatewayFallbackConditions_Art49">
+        <di:waypoint x="1330" y="920" />
+        <di:waypoint x="1450" y="920" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayFallbackConditions_To_EndNoDerogation_Art49_di" bpmnElement="Flow_GatewayFallbackConditions_To_EndNoDerogation_Art49">
+        <di:waypoint x="1475" y="945" />
+        <di:waypoint x="1475" y="820" />
+        <di:waypoint x="3380" y="820" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayFallbackConditions_To_InformSupervisoryAuthority_Art49_di" bpmnElement="Flow_GatewayFallbackConditions_To_InformSupervisoryAuthority_Art49">
+        <di:waypoint x="1500" y="920" />
+        <di:waypoint x="1640" y="920" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_InformSupervisoryAuthority_To_InformDataSubjectAboutFallbackTransfer_Art49_di" bpmnElement="Flow_InformSupervisoryAuthority_To_InformDataSubjectAboutFallbackTransfer_Art49">
+        <di:waypoint x="1960" y="920" />
+        <di:waypoint x="2080" y="920" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_InformDataSubjectAboutFallbackTransfer_To_DocumentFallbackAssessment_Art49_di" bpmnElement="Flow_InformDataSubjectAboutFallbackTransfer_To_DocumentFallbackAssessment_Art49">
+        <di:waypoint x="2460" y="920" />
+        <di:waypoint x="2590" y="920" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_DocumentFallbackAssessment_To_GatewayTransferReady_Art49_di" bpmnElement="Flow_DocumentFallbackAssessment_To_GatewayTransferReady_Art49">
+        <di:waypoint x="2950" y="920" />
+        <di:waypoint x="3685" y="920" />
+        <di:waypoint x="3685" y="515" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayTransferReady_To_TransferUnderDerogation_Art49_di" bpmnElement="Flow_GatewayTransferReady_To_TransferUnderDerogation_Art49">
+        <di:waypoint x="3710" y="490" />
+        <di:waypoint x="3860" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TransferUnderDerogation_To_EndTransferCompleted_Art49_di" bpmnElement="Flow_TransferUnderDerogation_To_EndTransferCompleted_Art49">
+        <di:waypoint x="4220" y="490" />
+        <di:waypoint x="4380" y="490" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_InformRisks_Art49_di" bpmnElement="MessageFlow_InformRisks_Art49">
+        <di:waypoint x="1080" y="160" />
+        <di:waypoint x="1080" y="1060" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ExplicitConsent_Art49_di" bpmnElement="MessageFlow_ExplicitConsent_Art49">
+        <di:waypoint x="1550" y="1060" />
+        <di:waypoint x="1550" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_InformFallbackTransfer_Art49_di" bpmnElement="MessageFlow_InformFallbackTransfer_Art49">
+        <di:waypoint x="2270" y="960" />
+        <di:waypoint x="2270" y="1060" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_InformSupervisoryAuthority_Art49_di" bpmnElement="MessageFlow_InformSupervisoryAuthority_Art49">
+        <di:waypoint x="1800" y="960" />
+        <di:waypoint x="1800" y="1220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_TransferUnderDerogation_Art49_di" bpmnElement="MessageFlow_TransferUnderDerogation_Art49">
+        <di:waypoint x="4040" y="530" />
+        <di:waypoint x="4040" y="1380" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

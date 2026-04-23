@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art45_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art45_Reviewed">
+    <bpmn:participant id="Participant_ControllerProcessor_Art45"
+                      name="Controller or Processor"
+                      processRef="Process_ControllerProcessor_Art45" />
+    <bpmn:participant id="Participant_Commission_Art45"
+                      name="Commission"
+                      processRef="Process_Commission_Art45" />
+    <bpmn:participant id="Participant_ThirdCountryIO_Art45"
+                      name="Third Country or International Organisation" />
+    <bpmn:participant id="Participant_Recipient_Art45"
+                      name="Recipient" />
+
+    <bpmn:messageFlow id="MessageFlow_PublishAdequacyList_Art45"
+                      sourceRef="SendTask_PublishAdequacyList_Art45"
+                      targetRef="ReceiveTask_ConsultAdequacyList_Art45" />
+    <bpmn:messageFlow id="MessageFlow_TransferData_Art45"
+                      sourceRef="SendTask_TransferData_Art45"
+                      targetRef="Participant_Recipient_Art45" />
+    <bpmn:messageFlow id="MessageFlow_ConsultThirdCountry_Art45"
+                      sourceRef="SendTask_ConsultThirdCountry_Art45"
+                      targetRef="Participant_ThirdCountryIO_Art45" />
+    <bpmn:messageFlow id="MessageFlow_PublishDecisionChange_Art45"
+                      sourceRef="SendTask_PublishDecisionChange_Art45"
+                      targetRef="Participant_ControllerProcessor_Art45" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_ControllerProcessor_Art45"
+                name="Apply Article 45 adequacy transfer"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 45 based on the real English legal text
+      from gdpr_articles/article_45.txt. This process captures the check for a current
+      adequacy decision covering a third country, territory, sector, or international
+      organisation, the rule that no specific authorisation is required where adequacy
+      exists, and the fallback to Articles 46 to 49 where adequacy is not in force.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_NeedTransfer_Art45"
+                     name="Need transfer assessment">
+      <bpmn:outgoing>Flow_StartNeedTransfer_To_GatewayDestinationType_Art45</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_DestinationType_Art45"
+                           name="What is the destination type?">
+      <bpmn:incoming>Flow_StartNeedTransfer_To_GatewayDestinationType_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayDestinationType_To_TaskIdentifyThirdCountry_Art45</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayDestinationType_To_TaskIdentifyTerritorySector_Art45</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayDestinationType_To_TaskIdentifyInternationalOrganisation_Art45</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_IdentifyThirdCountry_Art45"
+               name="Identify third country">
+      <bpmn:incoming>Flow_GatewayDestinationType_To_TaskIdentifyThirdCountry_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskIdentifyThirdCountry_To_GatewayDestinationMerged_Art45</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_IdentifyTerritorySector_Art45"
+               name="Identify territory or sector">
+      <bpmn:incoming>Flow_GatewayDestinationType_To_TaskIdentifyTerritorySector_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskIdentifyTerritorySector_To_GatewayDestinationMerged_Art45</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_IdentifyInternationalOrganisation_Art45"
+               name="Identify international organisation">
+      <bpmn:incoming>Flow_GatewayDestinationType_To_TaskIdentifyInternationalOrganisation_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskIdentifyInternationalOrganisation_To_GatewayDestinationMerged_Art45</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_DestinationMerged_Art45">
+      <bpmn:incoming>Flow_TaskIdentifyThirdCountry_To_GatewayDestinationMerged_Art45</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskIdentifyTerritorySector_To_GatewayDestinationMerged_Art45</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskIdentifyInternationalOrganisation_To_GatewayDestinationMerged_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayDestinationMerged_To_ReceiveConsultAdequacyList_Art45</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:receiveTask id="ReceiveTask_ConsultAdequacyList_Art45"
+                      name="Check adequacy list">
+      <bpmn:incoming>Flow_GatewayDestinationMerged_To_ReceiveConsultAdequacyList_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveConsultAdequacyList_To_GatewayAdequacyInForce_Art45</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:exclusiveGateway id="Gateway_AdequacyInForce_Art45"
+                           name="Is an adequacy decision in force?">
+      <bpmn:incoming>Flow_ReceiveConsultAdequacyList_To_GatewayAdequacyInForce_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAdequacyInForce_To_EndUseArticles46To49_Art45</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAdequacyInForce_To_SendTransferData_Art45</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_UseArticles46To49_Art45"
+                   name="Use Articles 46 to 49">
+      <bpmn:incoming>Flow_GatewayAdequacyInForce_To_EndUseArticles46To49_Art45</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sendTask id="SendTask_TransferData_Art45"
+                   name="Transfer data without specific authorisation">
+      <bpmn:incoming>Flow_GatewayAdequacyInForce_To_SendTransferData_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendTransferData_To_EndTransferCompleted_Art45</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_TransferCompleted_Art45"
+                   name="Article 45 transfer completed">
+      <bpmn:incoming>Flow_SendTransferData_To_EndTransferCompleted_Art45</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartNeedTransfer_To_GatewayDestinationType_Art45" sourceRef="StartEvent_NeedTransfer_Art45" targetRef="Gateway_DestinationType_Art45" />
+    <bpmn:sequenceFlow id="Flow_GatewayDestinationType_To_TaskIdentifyThirdCountry_Art45" name="Third country" sourceRef="Gateway_DestinationType_Art45" targetRef="Task_IdentifyThirdCountry_Art45" />
+    <bpmn:sequenceFlow id="Flow_GatewayDestinationType_To_TaskIdentifyTerritorySector_Art45" name="Territory or sector" sourceRef="Gateway_DestinationType_Art45" targetRef="Task_IdentifyTerritorySector_Art45" />
+    <bpmn:sequenceFlow id="Flow_GatewayDestinationType_To_TaskIdentifyInternationalOrganisation_Art45" name="International organisation" sourceRef="Gateway_DestinationType_Art45" targetRef="Task_IdentifyInternationalOrganisation_Art45" />
+    <bpmn:sequenceFlow id="Flow_TaskIdentifyThirdCountry_To_GatewayDestinationMerged_Art45" sourceRef="Task_IdentifyThirdCountry_Art45" targetRef="Gateway_DestinationMerged_Art45" />
+    <bpmn:sequenceFlow id="Flow_TaskIdentifyTerritorySector_To_GatewayDestinationMerged_Art45" sourceRef="Task_IdentifyTerritorySector_Art45" targetRef="Gateway_DestinationMerged_Art45" />
+    <bpmn:sequenceFlow id="Flow_TaskIdentifyInternationalOrganisation_To_GatewayDestinationMerged_Art45" sourceRef="Task_IdentifyInternationalOrganisation_Art45" targetRef="Gateway_DestinationMerged_Art45" />
+    <bpmn:sequenceFlow id="Flow_GatewayDestinationMerged_To_ReceiveConsultAdequacyList_Art45" sourceRef="Gateway_DestinationMerged_Art45" targetRef="ReceiveTask_ConsultAdequacyList_Art45" />
+    <bpmn:sequenceFlow id="Flow_ReceiveConsultAdequacyList_To_GatewayAdequacyInForce_Art45" sourceRef="ReceiveTask_ConsultAdequacyList_Art45" targetRef="Gateway_AdequacyInForce_Art45" />
+    <bpmn:sequenceFlow id="Flow_GatewayAdequacyInForce_To_EndUseArticles46To49_Art45" name="No" sourceRef="Gateway_AdequacyInForce_Art45" targetRef="EndEvent_UseArticles46To49_Art45" />
+    <bpmn:sequenceFlow id="Flow_GatewayAdequacyInForce_To_SendTransferData_Art45" name="Yes" sourceRef="Gateway_AdequacyInForce_Art45" targetRef="SendTask_TransferData_Art45" />
+    <bpmn:sequenceFlow id="Flow_SendTransferData_To_EndTransferCompleted_Art45" sourceRef="SendTask_TransferData_Art45" targetRef="EndEvent_TransferCompleted_Art45" />
+  </bpmn:process>
+
+  <bpmn:process id="Process_Commission_Art45"
+                name="Manage adequacy decisions"
+                isExecutable="false">
+    <bpmn:documentation>
+      This process captures the Article 45(2) adequacy factors, Article 45(3)
+      adoption and at-least-four-year review mechanism, Article 45(4) ongoing
+      monitoring, Article 45(5) repeal/amend/suspend path including urgent acts,
+      Article 45(6) consultations, and Article 45(8) publication of the adequacy
+      status list. Article 45(7) and Article 45(9) are treated as legal effects:
+      transfers may continue under Articles 46 to 49 where relevant, and older
+      Article 25(6) Directive decisions remain in force until changed.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_AssessDestination_Art45"
+                     name="Need adequacy assessment">
+      <bpmn:outgoing>Flow_StartAssessDestination_To_GatewaySplitAdequacyFactors_Art45</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:parallelGateway id="Gateway_SplitAdequacyFactors_Art45">
+      <bpmn:incoming>Flow_StartAssessDestination_To_GatewaySplitAdequacyFactors_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplitAdequacyFactors_To_TaskAssessLegalFramework_Art45</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitAdequacyFactors_To_TaskAssessSupervisoryAuthorities_Art45</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitAdequacyFactors_To_TaskAssessInternationalCommitments_Art45</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_AssessLegalFramework_Art45"
+               name="Assess legal framework">
+      <bpmn:incoming>Flow_GatewaySplitAdequacyFactors_To_TaskAssessLegalFramework_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskAssessLegalFramework_To_GatewayJoinAdequacyFactors_Art45</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_AssessSupervisoryAuthorities_Art45"
+               name="Assess supervisory authorities">
+      <bpmn:incoming>Flow_GatewaySplitAdequacyFactors_To_TaskAssessSupervisoryAuthorities_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskAssessSupervisoryAuthorities_To_GatewayJoinAdequacyFactors_Art45</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_AssessInternationalCommitments_Art45"
+               name="Assess international commitments">
+      <bpmn:incoming>Flow_GatewaySplitAdequacyFactors_To_TaskAssessInternationalCommitments_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskAssessInternationalCommitments_To_GatewayJoinAdequacyFactors_Art45</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_JoinAdequacyFactors_Art45">
+      <bpmn:incoming>Flow_TaskAssessLegalFramework_To_GatewayJoinAdequacyFactors_Art45</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskAssessSupervisoryAuthorities_To_GatewayJoinAdequacyFactors_Art45</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskAssessInternationalCommitments_To_GatewayJoinAdequacyFactors_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinAdequacyFactors_To_GatewayAdequateProtection_Art45</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_AdequateProtection_Art45"
+                           name="Does the destination ensure adequate protection?">
+      <bpmn:incoming>Flow_GatewayJoinAdequacyFactors_To_GatewayAdequateProtection_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAdequateProtection_To_EndNoAdequacyDecision_Art45</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAdequateProtection_To_TaskAdoptAdequacyDecision_Art45</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_NoAdequacyDecision_Art45"
+                   name="No adequacy decision adopted">
+      <bpmn:incoming>Flow_GatewayAdequateProtection_To_EndNoAdequacyDecision_Art45</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:task id="Task_AdoptAdequacyDecision_Art45"
+               name="Adopt adequacy decision">
+      <bpmn:incoming>Flow_GatewayAdequateProtection_To_TaskAdoptAdequacyDecision_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskAdoptAdequacyDecision_To_SendPublishAdequacyList_Art45</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="SendTask_PublishAdequacyList_Art45"
+                   name="Publish adequacy-status list">
+      <bpmn:incoming>Flow_TaskAdoptAdequacyDecision_To_SendPublishAdequacyList_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendPublishAdequacyList_To_EventFourYearReview_Art45</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:intermediateCatchEvent id="IntermediateCatchEvent_FourYearReview_Art45"
+                                 name="At least four years pass">
+      <bpmn:incoming>Flow_SendPublishAdequacyList_To_EventFourYearReview_Art45</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskContinueMonitoring_To_EventFourYearReview_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_EventFourYearReview_To_TaskReviewAdequacyDecision_Art45</bpmn:outgoing>
+      <bpmn:timerEventDefinition />
+    </bpmn:intermediateCatchEvent>
+
+    <bpmn:task id="Task_ReviewAdequacyDecision_Art45"
+               name="Review adequacy decision">
+      <bpmn:incoming>Flow_EventFourYearReview_To_TaskReviewAdequacyDecision_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskReviewAdequacyDecision_To_TaskMonitorDevelopments_Art45</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_MonitorDevelopments_Art45"
+               name="Monitor developments">
+      <bpmn:incoming>Flow_TaskReviewAdequacyDecision_To_TaskMonitorDevelopments_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskMonitorDevelopments_To_GatewayAdequacyStillEnsured_Art45</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_AdequacyStillEnsured_Art45"
+                           name="Is adequate protection still ensured?">
+      <bpmn:incoming>Flow_TaskMonitorDevelopments_To_GatewayAdequacyStillEnsured_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAdequacyStillEnsured_To_TaskContinueMonitoring_Art45</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAdequacyStillEnsured_To_SendConsultThirdCountry_Art45</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ContinueMonitoring_Art45"
+               name="Continue monitoring">
+      <bpmn:incoming>Flow_GatewayAdequacyStillEnsured_To_TaskContinueMonitoring_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskContinueMonitoring_To_EventFourYearReview_Art45</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="SendTask_ConsultThirdCountry_Art45"
+                   name="Consult third country or organisation">
+      <bpmn:incoming>Flow_GatewayAdequacyStillEnsured_To_SendConsultThirdCountry_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendConsultThirdCountry_To_GatewayUrgency_Art45</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:exclusiveGateway id="Gateway_Urgency_Art45"
+                           name="Are imperative grounds of urgency present?">
+      <bpmn:incoming>Flow_SendConsultThirdCountry_To_GatewayUrgency_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayUrgency_To_TaskAdoptOrdinaryDecisionChange_Art45</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayUrgency_To_TaskAdoptUrgentDecisionChange_Art45</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_AdoptOrdinaryDecisionChange_Art45"
+               name="Adopt repeal, amend, or suspend act">
+      <bpmn:incoming>Flow_GatewayUrgency_To_TaskAdoptOrdinaryDecisionChange_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskAdoptOrdinaryDecisionChange_To_SendPublishDecisionChange_Art45</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_AdoptUrgentDecisionChange_Art45"
+               name="Adopt urgent implementing act">
+      <bpmn:incoming>Flow_GatewayUrgency_To_TaskAdoptUrgentDecisionChange_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskAdoptUrgentDecisionChange_To_SendPublishDecisionChange_Art45</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="SendTask_PublishDecisionChange_Art45"
+                   name="Publish adequacy-status change">
+      <bpmn:incoming>Flow_TaskAdoptOrdinaryDecisionChange_To_SendPublishDecisionChange_Art45</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskAdoptUrgentDecisionChange_To_SendPublishDecisionChange_Art45</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendPublishDecisionChange_To_EndDecisionChanged_Art45</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_DecisionChanged_Art45"
+                   name="Decision changed; Articles 46 to 49 remain available">
+      <bpmn:incoming>Flow_SendPublishDecisionChange_To_EndDecisionChanged_Art45</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartAssessDestination_To_GatewaySplitAdequacyFactors_Art45" sourceRef="StartEvent_AssessDestination_Art45" targetRef="Gateway_SplitAdequacyFactors_Art45" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitAdequacyFactors_To_TaskAssessLegalFramework_Art45" sourceRef="Gateway_SplitAdequacyFactors_Art45" targetRef="Task_AssessLegalFramework_Art45" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitAdequacyFactors_To_TaskAssessSupervisoryAuthorities_Art45" sourceRef="Gateway_SplitAdequacyFactors_Art45" targetRef="Task_AssessSupervisoryAuthorities_Art45" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitAdequacyFactors_To_TaskAssessInternationalCommitments_Art45" sourceRef="Gateway_SplitAdequacyFactors_Art45" targetRef="Task_AssessInternationalCommitments_Art45" />
+    <bpmn:sequenceFlow id="Flow_TaskAssessLegalFramework_To_GatewayJoinAdequacyFactors_Art45" sourceRef="Task_AssessLegalFramework_Art45" targetRef="Gateway_JoinAdequacyFactors_Art45" />
+    <bpmn:sequenceFlow id="Flow_TaskAssessSupervisoryAuthorities_To_GatewayJoinAdequacyFactors_Art45" sourceRef="Task_AssessSupervisoryAuthorities_Art45" targetRef="Gateway_JoinAdequacyFactors_Art45" />
+    <bpmn:sequenceFlow id="Flow_TaskAssessInternationalCommitments_To_GatewayJoinAdequacyFactors_Art45" sourceRef="Task_AssessInternationalCommitments_Art45" targetRef="Gateway_JoinAdequacyFactors_Art45" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoinAdequacyFactors_To_GatewayAdequateProtection_Art45" sourceRef="Gateway_JoinAdequacyFactors_Art45" targetRef="Gateway_AdequateProtection_Art45" />
+    <bpmn:sequenceFlow id="Flow_GatewayAdequateProtection_To_EndNoAdequacyDecision_Art45" name="No" sourceRef="Gateway_AdequateProtection_Art45" targetRef="EndEvent_NoAdequacyDecision_Art45" />
+    <bpmn:sequenceFlow id="Flow_GatewayAdequateProtection_To_TaskAdoptAdequacyDecision_Art45" name="Yes" sourceRef="Gateway_AdequateProtection_Art45" targetRef="Task_AdoptAdequacyDecision_Art45" />
+    <bpmn:sequenceFlow id="Flow_TaskAdoptAdequacyDecision_To_SendPublishAdequacyList_Art45" sourceRef="Task_AdoptAdequacyDecision_Art45" targetRef="SendTask_PublishAdequacyList_Art45" />
+    <bpmn:sequenceFlow id="Flow_SendPublishAdequacyList_To_EventFourYearReview_Art45" sourceRef="SendTask_PublishAdequacyList_Art45" targetRef="IntermediateCatchEvent_FourYearReview_Art45" />
+    <bpmn:sequenceFlow id="Flow_EventFourYearReview_To_TaskReviewAdequacyDecision_Art45" sourceRef="IntermediateCatchEvent_FourYearReview_Art45" targetRef="Task_ReviewAdequacyDecision_Art45" />
+    <bpmn:sequenceFlow id="Flow_TaskReviewAdequacyDecision_To_TaskMonitorDevelopments_Art45" sourceRef="Task_ReviewAdequacyDecision_Art45" targetRef="Task_MonitorDevelopments_Art45" />
+    <bpmn:sequenceFlow id="Flow_TaskMonitorDevelopments_To_GatewayAdequacyStillEnsured_Art45" sourceRef="Task_MonitorDevelopments_Art45" targetRef="Gateway_AdequacyStillEnsured_Art45" />
+    <bpmn:sequenceFlow id="Flow_GatewayAdequacyStillEnsured_To_TaskContinueMonitoring_Art45" name="Yes" sourceRef="Gateway_AdequacyStillEnsured_Art45" targetRef="Task_ContinueMonitoring_Art45" />
+    <bpmn:sequenceFlow id="Flow_GatewayAdequacyStillEnsured_To_SendConsultThirdCountry_Art45" name="No" sourceRef="Gateway_AdequacyStillEnsured_Art45" targetRef="SendTask_ConsultThirdCountry_Art45" />
+    <bpmn:sequenceFlow id="Flow_TaskContinueMonitoring_To_EventFourYearReview_Art45" sourceRef="Task_ContinueMonitoring_Art45" targetRef="IntermediateCatchEvent_FourYearReview_Art45" />
+    <bpmn:sequenceFlow id="Flow_SendConsultThirdCountry_To_GatewayUrgency_Art45" sourceRef="SendTask_ConsultThirdCountry_Art45" targetRef="Gateway_Urgency_Art45" />
+    <bpmn:sequenceFlow id="Flow_GatewayUrgency_To_TaskAdoptOrdinaryDecisionChange_Art45" name="No" sourceRef="Gateway_Urgency_Art45" targetRef="Task_AdoptOrdinaryDecisionChange_Art45" />
+    <bpmn:sequenceFlow id="Flow_GatewayUrgency_To_TaskAdoptUrgentDecisionChange_Art45" name="Yes" sourceRef="Gateway_Urgency_Art45" targetRef="Task_AdoptUrgentDecisionChange_Art45" />
+    <bpmn:sequenceFlow id="Flow_TaskAdoptOrdinaryDecisionChange_To_SendPublishDecisionChange_Art45" sourceRef="Task_AdoptOrdinaryDecisionChange_Art45" targetRef="SendTask_PublishDecisionChange_Art45" />
+    <bpmn:sequenceFlow id="Flow_TaskAdoptUrgentDecisionChange_To_SendPublishDecisionChange_Art45" sourceRef="Task_AdoptUrgentDecisionChange_Art45" targetRef="SendTask_PublishDecisionChange_Art45" />
+    <bpmn:sequenceFlow id="Flow_SendPublishDecisionChange_To_EndDecisionChanged_Art45" sourceRef="SendTask_PublishDecisionChange_Art45" targetRef="EndEvent_DecisionChanged_Art45" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art45_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art45_Reviewed"
+                      bpmnElement="Collaboration_Art45_Reviewed">
+      <bpmndi:BPMNShape id="Participant_ControllerProcessor_Art45_di" bpmnElement="Participant_ControllerProcessor_Art45" isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="4300" height="320" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Commission_Art45_di" bpmnElement="Participant_Commission_Art45" isHorizontal="true">
+        <dc:Bounds x="60" y="400" width="4300" height="420" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_ThirdCountryIO_Art45_di" bpmnElement="Participant_ThirdCountryIO_Art45" isHorizontal="true">
+        <dc:Bounds x="60" y="860" width="4300" height="110" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Recipient_Art45_di" bpmnElement="Participant_Recipient_Art45" isHorizontal="true">
+        <dc:Bounds x="60" y="1010" width="4300" height="110" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_NeedTransfer_Art45_di" bpmnElement="StartEvent_NeedTransfer_Art45">
+        <dc:Bounds x="120" y="172" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_DestinationType_Art45_di" bpmnElement="Gateway_DestinationType_Art45" isMarkerVisible="true">
+        <dc:Bounds x="250" y="165" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_IdentifyThirdCountry_Art45_di" bpmnElement="Task_IdentifyThirdCountry_Art45">
+        <dc:Bounds x="380" y="60" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_IdentifyTerritorySector_Art45_di" bpmnElement="Task_IdentifyTerritorySector_Art45">
+        <dc:Bounds x="380" y="160" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_IdentifyInternationalOrganisation_Art45_di" bpmnElement="Task_IdentifyInternationalOrganisation_Art45">
+        <dc:Bounds x="380" y="260" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_DestinationMerged_Art45_di" bpmnElement="Gateway_DestinationMerged_Art45" isMarkerVisible="true">
+        <dc:Bounds x="670" y="175" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ConsultAdequacyList_Art45_di" bpmnElement="ReceiveTask_ConsultAdequacyList_Art45">
+        <dc:Bounds x="810" y="160" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AdequacyInForce_Art45_di" bpmnElement="Gateway_AdequacyInForce_Art45" isMarkerVisible="true">
+        <dc:Bounds x="1060" y="175" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_UseArticles46To49_Art45_di" bpmnElement="EndEvent_UseArticles46To49_Art45">
+        <dc:Bounds x="1202" y="72" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_TransferData_Art45_di" bpmnElement="SendTask_TransferData_Art45">
+        <dc:Bounds x="1200" y="160" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_TransferCompleted_Art45_di" bpmnElement="EndEvent_TransferCompleted_Art45">
+        <dc:Bounds x="1492" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_AssessDestination_Art45_di" bpmnElement="StartEvent_AssessDestination_Art45">
+        <dc:Bounds x="120" y="592" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SplitAdequacyFactors_Art45_di" bpmnElement="Gateway_SplitAdequacyFactors_Art45" isMarkerVisible="true">
+        <dc:Bounds x="240" y="585" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessLegalFramework_Art45_di" bpmnElement="Task_AssessLegalFramework_Art45">
+        <dc:Bounds x="380" y="470" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessSupervisoryAuthorities_Art45_di" bpmnElement="Task_AssessSupervisoryAuthorities_Art45">
+        <dc:Bounds x="610" y="470" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessInternationalCommitments_Art45_di" bpmnElement="Task_AssessInternationalCommitments_Art45">
+        <dc:Bounds x="850" y="470" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinAdequacyFactors_Art45_di" bpmnElement="Gateway_JoinAdequacyFactors_Art45" isMarkerVisible="true">
+        <dc:Bounds x="1100" y="585" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AdequateProtection_Art45_di" bpmnElement="Gateway_AdequateProtection_Art45" isMarkerVisible="true">
+        <dc:Bounds x="1250" y="585" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NoAdequacyDecision_Art45_di" bpmnElement="EndEvent_NoAdequacyDecision_Art45">
+        <dc:Bounds x="1392" y="492" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AdoptAdequacyDecision_Art45_di" bpmnElement="Task_AdoptAdequacyDecision_Art45">
+        <dc:Bounds x="1390" y="570" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_PublishAdequacyList_Art45_di" bpmnElement="SendTask_PublishAdequacyList_Art45">
+        <dc:Bounds x="1640" y="570" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="IntermediateCatchEvent_FourYearReview_Art45_di" bpmnElement="IntermediateCatchEvent_FourYearReview_Art45">
+        <dc:Bounds x="1892" y="592" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReviewAdequacyDecision_Art45_di" bpmnElement="Task_ReviewAdequacyDecision_Art45">
+        <dc:Bounds x="2010" y="570" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_MonitorDevelopments_Art45_di" bpmnElement="Task_MonitorDevelopments_Art45">
+        <dc:Bounds x="2260" y="570" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AdequacyStillEnsured_Art45_di" bpmnElement="Gateway_AdequacyStillEnsured_Art45" isMarkerVisible="true">
+        <dc:Bounds x="2500" y="585" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ContinueMonitoring_Art45_di" bpmnElement="Task_ContinueMonitoring_Art45">
+        <dc:Bounds x="2640" y="470" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_ConsultThirdCountry_Art45_di" bpmnElement="SendTask_ConsultThirdCountry_Art45">
+        <dc:Bounds x="2640" y="650" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Urgency_Art45_di" bpmnElement="Gateway_Urgency_Art45" isMarkerVisible="true">
+        <dc:Bounds x="2910" y="665" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AdoptOrdinaryDecisionChange_Art45_di" bpmnElement="Task_AdoptOrdinaryDecisionChange_Art45">
+        <dc:Bounds x="3050" y="580" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AdoptUrgentDecisionChange_Art45_di" bpmnElement="Task_AdoptUrgentDecisionChange_Art45">
+        <dc:Bounds x="3050" y="740" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_PublishDecisionChange_Art45_di" bpmnElement="SendTask_PublishDecisionChange_Art45">
+        <dc:Bounds x="3310" y="650" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_DecisionChanged_Art45_di" bpmnElement="EndEvent_DecisionChanged_Art45">
+        <dc:Bounds x="3562" y="672" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_StartNeedTransfer_To_GatewayDestinationType_Art45_di" bpmnElement="Flow_StartNeedTransfer_To_GatewayDestinationType_Art45"><di:waypoint x="156" y="190" /><di:waypoint x="250" y="190" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayDestinationType_To_TaskIdentifyThirdCountry_Art45_di" bpmnElement="Flow_GatewayDestinationType_To_TaskIdentifyThirdCountry_Art45"><di:waypoint x="275" y="165" /><di:waypoint x="275" y="100" /><di:waypoint x="380" y="100" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayDestinationType_To_TaskIdentifyTerritorySector_Art45_di" bpmnElement="Flow_GatewayDestinationType_To_TaskIdentifyTerritorySector_Art45"><di:waypoint x="300" y="190" /><di:waypoint x="380" y="200" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayDestinationType_To_TaskIdentifyInternationalOrganisation_Art45_di" bpmnElement="Flow_GatewayDestinationType_To_TaskIdentifyInternationalOrganisation_Art45"><di:waypoint x="275" y="215" /><di:waypoint x="275" y="300" /><di:waypoint x="380" y="300" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskIdentifyThirdCountry_To_GatewayDestinationMerged_Art45_di" bpmnElement="Flow_TaskIdentifyThirdCountry_To_GatewayDestinationMerged_Art45"><di:waypoint x="550" y="100" /><di:waypoint x="695" y="100" /><di:waypoint x="695" y="175" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskIdentifyTerritorySector_To_GatewayDestinationMerged_Art45_di" bpmnElement="Flow_TaskIdentifyTerritorySector_To_GatewayDestinationMerged_Art45"><di:waypoint x="560" y="200" /><di:waypoint x="670" y="200" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskIdentifyInternationalOrganisation_To_GatewayDestinationMerged_Art45_di" bpmnElement="Flow_TaskIdentifyInternationalOrganisation_To_GatewayDestinationMerged_Art45"><di:waypoint x="570" y="300" /><di:waypoint x="695" y="300" /><di:waypoint x="695" y="225" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayDestinationMerged_To_ReceiveConsultAdequacyList_Art45_di" bpmnElement="Flow_GatewayDestinationMerged_To_ReceiveConsultAdequacyList_Art45"><di:waypoint x="720" y="200" /><di:waypoint x="810" y="200" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveConsultAdequacyList_To_GatewayAdequacyInForce_Art45_di" bpmnElement="Flow_ReceiveConsultAdequacyList_To_GatewayAdequacyInForce_Art45"><di:waypoint x="980" y="200" /><di:waypoint x="1060" y="200" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAdequacyInForce_To_EndUseArticles46To49_Art45_di" bpmnElement="Flow_GatewayAdequacyInForce_To_EndUseArticles46To49_Art45"><di:waypoint x="1085" y="175" /><di:waypoint x="1085" y="90" /><di:waypoint x="1202" y="90" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAdequacyInForce_To_SendTransferData_Art45_di" bpmnElement="Flow_GatewayAdequacyInForce_To_SendTransferData_Art45"><di:waypoint x="1110" y="200" /><di:waypoint x="1200" y="200" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendTransferData_To_EndTransferCompleted_Art45_di" bpmnElement="Flow_SendTransferData_To_EndTransferCompleted_Art45"><di:waypoint x="1410" y="200" /><di:waypoint x="1492" y="200" /></bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_StartAssessDestination_To_GatewaySplitAdequacyFactors_Art45_di" bpmnElement="Flow_StartAssessDestination_To_GatewaySplitAdequacyFactors_Art45"><di:waypoint x="156" y="610" /><di:waypoint x="240" y="610" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitAdequacyFactors_To_TaskAssessLegalFramework_Art45_di" bpmnElement="Flow_GatewaySplitAdequacyFactors_To_TaskAssessLegalFramework_Art45"><di:waypoint x="265" y="585" /><di:waypoint x="265" y="510" /><di:waypoint x="380" y="510" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitAdequacyFactors_To_TaskAssessSupervisoryAuthorities_Art45_di" bpmnElement="Flow_GatewaySplitAdequacyFactors_To_TaskAssessSupervisoryAuthorities_Art45"><di:waypoint x="265" y="585" /><di:waypoint x="265" y="510" /><di:waypoint x="610" y="510" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitAdequacyFactors_To_TaskAssessInternationalCommitments_Art45_di" bpmnElement="Flow_GatewaySplitAdequacyFactors_To_TaskAssessInternationalCommitments_Art45"><di:waypoint x="265" y="585" /><di:waypoint x="265" y="510" /><di:waypoint x="850" y="510" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskAssessLegalFramework_To_GatewayJoinAdequacyFactors_Art45_di" bpmnElement="Flow_TaskAssessLegalFramework_To_GatewayJoinAdequacyFactors_Art45"><di:waypoint x="560" y="510" /><di:waypoint x="1125" y="510" /><di:waypoint x="1125" y="585" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskAssessSupervisoryAuthorities_To_GatewayJoinAdequacyFactors_Art45_di" bpmnElement="Flow_TaskAssessSupervisoryAuthorities_To_GatewayJoinAdequacyFactors_Art45"><di:waypoint x="800" y="510" /><di:waypoint x="1125" y="510" /><di:waypoint x="1125" y="585" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskAssessInternationalCommitments_To_GatewayJoinAdequacyFactors_Art45_di" bpmnElement="Flow_TaskAssessInternationalCommitments_To_GatewayJoinAdequacyFactors_Art45"><di:waypoint x="1040" y="510" /><di:waypoint x="1125" y="510" /><di:waypoint x="1125" y="585" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinAdequacyFactors_To_GatewayAdequateProtection_Art45_di" bpmnElement="Flow_GatewayJoinAdequacyFactors_To_GatewayAdequateProtection_Art45"><di:waypoint x="1150" y="610" /><di:waypoint x="1250" y="610" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAdequateProtection_To_EndNoAdequacyDecision_Art45_di" bpmnElement="Flow_GatewayAdequateProtection_To_EndNoAdequacyDecision_Art45"><di:waypoint x="1275" y="585" /><di:waypoint x="1275" y="510" /><di:waypoint x="1392" y="510" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAdequateProtection_To_TaskAdoptAdequacyDecision_Art45_di" bpmnElement="Flow_GatewayAdequateProtection_To_TaskAdoptAdequacyDecision_Art45"><di:waypoint x="1300" y="610" /><di:waypoint x="1390" y="610" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskAdoptAdequacyDecision_To_SendPublishAdequacyList_Art45_di" bpmnElement="Flow_TaskAdoptAdequacyDecision_To_SendPublishAdequacyList_Art45"><di:waypoint x="1560" y="610" /><di:waypoint x="1640" y="610" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendPublishAdequacyList_To_EventFourYearReview_Art45_di" bpmnElement="Flow_SendPublishAdequacyList_To_EventFourYearReview_Art45"><di:waypoint x="1810" y="610" /><di:waypoint x="1892" y="610" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_EventFourYearReview_To_TaskReviewAdequacyDecision_Art45_di" bpmnElement="Flow_EventFourYearReview_To_TaskReviewAdequacyDecision_Art45"><di:waypoint x="1928" y="610" /><di:waypoint x="2010" y="610" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskReviewAdequacyDecision_To_TaskMonitorDevelopments_Art45_di" bpmnElement="Flow_TaskReviewAdequacyDecision_To_TaskMonitorDevelopments_Art45"><di:waypoint x="2180" y="610" /><di:waypoint x="2260" y="610" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskMonitorDevelopments_To_GatewayAdequacyStillEnsured_Art45_di" bpmnElement="Flow_TaskMonitorDevelopments_To_GatewayAdequacyStillEnsured_Art45"><di:waypoint x="2420" y="610" /><di:waypoint x="2500" y="610" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAdequacyStillEnsured_To_TaskContinueMonitoring_Art45_di" bpmnElement="Flow_GatewayAdequacyStillEnsured_To_TaskContinueMonitoring_Art45"><di:waypoint x="2525" y="585" /><di:waypoint x="2525" y="510" /><di:waypoint x="2640" y="510" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAdequacyStillEnsured_To_SendConsultThirdCountry_Art45_di" bpmnElement="Flow_GatewayAdequacyStillEnsured_To_SendConsultThirdCountry_Art45"><di:waypoint x="2525" y="635" /><di:waypoint x="2525" y="690" /><di:waypoint x="2640" y="690" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskContinueMonitoring_To_EventFourYearReview_Art45_di" bpmnElement="Flow_TaskContinueMonitoring_To_EventFourYearReview_Art45"><di:waypoint x="2800" y="510" /><di:waypoint x="2860" y="510" /><di:waypoint x="2860" y="750" /><di:waypoint x="1910" y="750" /><di:waypoint x="1910" y="628" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendConsultThirdCountry_To_GatewayUrgency_Art45_di" bpmnElement="Flow_SendConsultThirdCountry_To_GatewayUrgency_Art45"><di:waypoint x="2820" y="690" /><di:waypoint x="2910" y="690" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayUrgency_To_TaskAdoptOrdinaryDecisionChange_Art45_di" bpmnElement="Flow_GatewayUrgency_To_TaskAdoptOrdinaryDecisionChange_Art45"><di:waypoint x="2935" y="665" /><di:waypoint x="2935" y="620" /><di:waypoint x="3050" y="620" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayUrgency_To_TaskAdoptUrgentDecisionChange_Art45_di" bpmnElement="Flow_GatewayUrgency_To_TaskAdoptUrgentDecisionChange_Art45"><di:waypoint x="2935" y="715" /><di:waypoint x="2935" y="780" /><di:waypoint x="3050" y="780" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskAdoptOrdinaryDecisionChange_To_SendPublishDecisionChange_Art45_di" bpmnElement="Flow_TaskAdoptOrdinaryDecisionChange_To_SendPublishDecisionChange_Art45"><di:waypoint x="3230" y="620" /><di:waypoint x="3395" y="620" /><di:waypoint x="3395" y="650" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskAdoptUrgentDecisionChange_To_SendPublishDecisionChange_Art45_di" bpmnElement="Flow_TaskAdoptUrgentDecisionChange_To_SendPublishDecisionChange_Art45"><di:waypoint x="3230" y="780" /><di:waypoint x="3395" y="780" /><di:waypoint x="3395" y="730" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendPublishDecisionChange_To_EndDecisionChanged_Art45_di" bpmnElement="Flow_SendPublishDecisionChange_To_EndDecisionChanged_Art45"><di:waypoint x="3480" y="690" /><di:waypoint x="3562" y="690" /></bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_PublishAdequacyList_Art45_di" bpmnElement="MessageFlow_PublishAdequacyList_Art45"><di:waypoint x="1725" y="570" /><di:waypoint x="1725" y="240" /><di:waypoint x="895" y="240" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_TransferData_Art45_di" bpmnElement="MessageFlow_TransferData_Art45"><di:waypoint x="1305" y="240" /><di:waypoint x="1305" y="1010" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ConsultThirdCountry_Art45_di" bpmnElement="MessageFlow_ConsultThirdCountry_Art45"><di:waypoint x="2730" y="730" /><di:waypoint x="2730" y="860" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_PublishDecisionChange_Art45_di" bpmnElement="MessageFlow_PublishDecisionChange_Art45"><di:waypoint x="3395" y="650" /><di:waypoint x="3395" y="360" /></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

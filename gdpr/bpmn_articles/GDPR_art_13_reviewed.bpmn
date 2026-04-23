@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art13_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:collaboration id="Collaboration_Art13_Reviewed">
+    <bpmn:participant id="Participant_Controller_Art13" name="Controller" processRef="Process_Controller_Art13" />
+    <bpmn:participant id="Participant_DataSubject_Art13" name="Data Subject" />
+
+    <bpmn:messageFlow id="MessageFlow_SendInitialNotice_Art13" sourceRef="SendTask_SendInitialNotice_Art13" targetRef="Participant_DataSubject_Art13" />
+    <bpmn:messageFlow id="MessageFlow_SendFurtherPurposeNotice_Art13" sourceRef="SendTask_SendFurtherPurposeNotice_Art13" targetRef="Participant_DataSubject_Art13" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_Controller_Art13" name="Apply Article 13 duties" isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 13 based on the real English legal
+      text. The model covers the Article 13(1) identity/contact, DPO, purpose/legal-
+      basis, legitimate-interest, recipient, and transfer-information duties, the
+      Article 13(2) retention, rights, withdrawal, complaint, provision-requirement,
+      and automated-decision information duties, the Article 13(3) further-purpose
+      notice before later incompatible processing, and the Article 13(4) exception
+      where and insofar as the data subject already has the information.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_CollectData_Art13" name="Collect personal data from the data subject">
+      <bpmn:outgoing>Flow_Start_To_GatewayAlreadyHasInfo_Art13</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_AlreadyHasInfo_Art13" name="Does the data subject already have the information?">
+      <bpmn:incoming>Flow_Start_To_GatewayAlreadyHasInfo_Art13</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAlreadyHasInfo_To_EndNoNoticeNeeded_Art13</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAlreadyHasInfo_To_TaskPrepareIdentity_Art13</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_NoNoticeNeeded_Art13" name="No Article 13 notice needed">
+      <bpmn:incoming>Flow_GatewayAlreadyHasInfo_To_EndNoNoticeNeeded_Art13</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:task id="Task_PrepareIdentity_Art13" name="Prepare identity and contact details">
+      <bpmn:incoming>Flow_GatewayAlreadyHasInfo_To_TaskPrepareIdentity_Art13</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPrepareIdentity_To_TaskPrepareDPO_Art13</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_PrepareDPO_Art13" name="Prepare DPO contact details">
+      <bpmn:incoming>Flow_TaskPrepareIdentity_To_TaskPrepareDPO_Art13</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPrepareDPO_To_TaskPreparePurposeBasis_Art13</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_PreparePurposeBasis_Art13" name="Prepare purposes and legal basis">
+      <bpmn:incoming>Flow_TaskPrepareDPO_To_TaskPreparePurposeBasis_Art13</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPreparePurposeBasis_To_GatewayLegitimateInterests_Art13</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_LegitimateInterests_Art13" name="Is the processing based on Article 6(1)(f)?">
+      <bpmn:incoming>Flow_TaskPreparePurposeBasis_To_GatewayLegitimateInterests_Art13</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayLegitimateInterests_To_TaskPrepareLegitimateInterests_Art13</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayLegitimateInterests_To_TaskPrepareRecipients_Art13</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_PrepareLegitimateInterests_Art13" name="Prepare legitimate interests">
+      <bpmn:incoming>Flow_GatewayLegitimateInterests_To_TaskPrepareLegitimateInterests_Art13</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPrepareLegitimateInterests_To_TaskPrepareRecipients_Art13</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_PrepareRecipients_Art13" name="Prepare recipients">
+      <bpmn:incoming>Flow_GatewayLegitimateInterests_To_TaskPrepareRecipients_Art13</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskPrepareLegitimateInterests_To_TaskPrepareRecipients_Art13</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPrepareRecipients_To_GatewayThirdCountryTransfer_Art13</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_ThirdCountryTransfer_Art13" name="Is a transfer to a third country or international organisation intended?">
+      <bpmn:incoming>Flow_TaskPrepareRecipients_To_GatewayThirdCountryTransfer_Art13</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayThirdCountryTransfer_To_TaskPrepareTransferInfo_Art13</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayThirdCountryTransfer_To_GatewaySplitSupplementaryInfo_Art13</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_PrepareTransferInfo_Art13" name="Prepare transfer information">
+      <bpmn:incoming>Flow_GatewayThirdCountryTransfer_To_TaskPrepareTransferInfo_Art13</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPrepareTransferInfo_To_GatewaySplitSupplementaryInfo_Art13</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_SplitSupplementaryInfo_Art13">
+      <bpmn:incoming>Flow_GatewayThirdCountryTransfer_To_GatewaySplitSupplementaryInfo_Art13</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskPrepareTransferInfo_To_GatewaySplitSupplementaryInfo_Art13</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplitSupplementaryInfo_To_TaskPrepareRetentionInfo_Art13</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitSupplementaryInfo_To_TaskPrepareRightsInfo_Art13</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitSupplementaryInfo_To_TaskPrepareProvisionInfo_Art13</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitSupplementaryInfo_To_TaskPrepareAutomatedDecisionInfo_Art13</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_PrepareRetentionInfo_Art13" name="Prepare retention information">
+      <bpmn:incoming>Flow_GatewaySplitSupplementaryInfo_To_TaskPrepareRetentionInfo_Art13</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPrepareRetentionInfo_To_GatewayJoinSupplementaryInfo_Art13</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_PrepareRightsInfo_Art13" name="Prepare rights information">
+      <bpmn:incoming>Flow_GatewaySplitSupplementaryInfo_To_TaskPrepareRightsInfo_Art13</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPrepareRightsInfo_To_GatewayJoinSupplementaryInfo_Art13</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_PrepareProvisionInfo_Art13" name="Prepare provision requirement information">
+      <bpmn:incoming>Flow_GatewaySplitSupplementaryInfo_To_TaskPrepareProvisionInfo_Art13</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPrepareProvisionInfo_To_GatewayJoinSupplementaryInfo_Art13</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_PrepareAutomatedDecisionInfo_Art13" name="Prepare automated-decision information">
+      <bpmn:incoming>Flow_GatewaySplitSupplementaryInfo_To_TaskPrepareAutomatedDecisionInfo_Art13</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPrepareAutomatedDecisionInfo_To_GatewayJoinSupplementaryInfo_Art13</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_JoinSupplementaryInfo_Art13">
+      <bpmn:incoming>Flow_TaskPrepareRetentionInfo_To_GatewayJoinSupplementaryInfo_Art13</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskPrepareRightsInfo_To_GatewayJoinSupplementaryInfo_Art13</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskPrepareProvisionInfo_To_GatewayJoinSupplementaryInfo_Art13</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskPrepareAutomatedDecisionInfo_To_GatewayJoinSupplementaryInfo_Art13</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinSupplementaryInfo_To_SendTaskSendInitialNotice_Art13</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:sendTask id="SendTask_SendInitialNotice_Art13" name="Send Article 13 notice">
+      <bpmn:incoming>Flow_GatewayJoinSupplementaryInfo_To_SendTaskSendInitialNotice_Art13</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendTaskSendInitialNotice_To_GatewayFurtherPurpose_Art13</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:exclusiveGateway id="Gateway_FurtherPurpose_Art13" name="Will the personal data later be processed for another purpose?">
+      <bpmn:incoming>Flow_SendTaskSendInitialNotice_To_GatewayFurtherPurpose_Art13</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayFurtherPurpose_To_SendTaskSendFurtherPurposeNotice_Art13</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayFurtherPurpose_To_EndInformationDutiesCompleted_Art13</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="SendTask_SendFurtherPurposeNotice_Art13" name="Send further-purpose notice">
+      <bpmn:incoming>Flow_GatewayFurtherPurpose_To_SendTaskSendFurtherPurposeNotice_Art13</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendTaskSendFurtherPurposeNotice_To_EndInformationDutiesCompleted_Art13</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_InformationDutiesCompleted_Art13" name="Article 13 duties completed">
+      <bpmn:incoming>Flow_GatewayFurtherPurpose_To_EndInformationDutiesCompleted_Art13</bpmn:incoming>
+      <bpmn:incoming>Flow_SendTaskSendFurtherPurposeNotice_To_EndInformationDutiesCompleted_Art13</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_GatewayAlreadyHasInfo_Art13" sourceRef="StartEvent_CollectData_Art13" targetRef="Gateway_AlreadyHasInfo_Art13" />
+    <bpmn:sequenceFlow id="Flow_GatewayAlreadyHasInfo_To_EndNoNoticeNeeded_Art13" name="Yes" sourceRef="Gateway_AlreadyHasInfo_Art13" targetRef="EndEvent_NoNoticeNeeded_Art13" />
+    <bpmn:sequenceFlow id="Flow_GatewayAlreadyHasInfo_To_TaskPrepareIdentity_Art13" name="No" sourceRef="Gateway_AlreadyHasInfo_Art13" targetRef="Task_PrepareIdentity_Art13" />
+    <bpmn:sequenceFlow id="Flow_TaskPrepareIdentity_To_TaskPrepareDPO_Art13" sourceRef="Task_PrepareIdentity_Art13" targetRef="Task_PrepareDPO_Art13" />
+    <bpmn:sequenceFlow id="Flow_TaskPrepareDPO_To_TaskPreparePurposeBasis_Art13" sourceRef="Task_PrepareDPO_Art13" targetRef="Task_PreparePurposeBasis_Art13" />
+    <bpmn:sequenceFlow id="Flow_TaskPreparePurposeBasis_To_GatewayLegitimateInterests_Art13" sourceRef="Task_PreparePurposeBasis_Art13" targetRef="Gateway_LegitimateInterests_Art13" />
+    <bpmn:sequenceFlow id="Flow_GatewayLegitimateInterests_To_TaskPrepareLegitimateInterests_Art13" name="Yes" sourceRef="Gateway_LegitimateInterests_Art13" targetRef="Task_PrepareLegitimateInterests_Art13" />
+    <bpmn:sequenceFlow id="Flow_GatewayLegitimateInterests_To_TaskPrepareRecipients_Art13" name="No" sourceRef="Gateway_LegitimateInterests_Art13" targetRef="Task_PrepareRecipients_Art13" />
+    <bpmn:sequenceFlow id="Flow_TaskPrepareLegitimateInterests_To_TaskPrepareRecipients_Art13" sourceRef="Task_PrepareLegitimateInterests_Art13" targetRef="Task_PrepareRecipients_Art13" />
+    <bpmn:sequenceFlow id="Flow_TaskPrepareRecipients_To_GatewayThirdCountryTransfer_Art13" sourceRef="Task_PrepareRecipients_Art13" targetRef="Gateway_ThirdCountryTransfer_Art13" />
+    <bpmn:sequenceFlow id="Flow_GatewayThirdCountryTransfer_To_TaskPrepareTransferInfo_Art13" name="Yes" sourceRef="Gateway_ThirdCountryTransfer_Art13" targetRef="Task_PrepareTransferInfo_Art13" />
+    <bpmn:sequenceFlow id="Flow_GatewayThirdCountryTransfer_To_GatewaySplitSupplementaryInfo_Art13" name="No" sourceRef="Gateway_ThirdCountryTransfer_Art13" targetRef="Gateway_SplitSupplementaryInfo_Art13" />
+    <bpmn:sequenceFlow id="Flow_TaskPrepareTransferInfo_To_GatewaySplitSupplementaryInfo_Art13" sourceRef="Task_PrepareTransferInfo_Art13" targetRef="Gateway_SplitSupplementaryInfo_Art13" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitSupplementaryInfo_To_TaskPrepareRetentionInfo_Art13" sourceRef="Gateway_SplitSupplementaryInfo_Art13" targetRef="Task_PrepareRetentionInfo_Art13" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitSupplementaryInfo_To_TaskPrepareRightsInfo_Art13" sourceRef="Gateway_SplitSupplementaryInfo_Art13" targetRef="Task_PrepareRightsInfo_Art13" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitSupplementaryInfo_To_TaskPrepareProvisionInfo_Art13" sourceRef="Gateway_SplitSupplementaryInfo_Art13" targetRef="Task_PrepareProvisionInfo_Art13" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitSupplementaryInfo_To_TaskPrepareAutomatedDecisionInfo_Art13" sourceRef="Gateway_SplitSupplementaryInfo_Art13" targetRef="Task_PrepareAutomatedDecisionInfo_Art13" />
+    <bpmn:sequenceFlow id="Flow_TaskPrepareRetentionInfo_To_GatewayJoinSupplementaryInfo_Art13" sourceRef="Task_PrepareRetentionInfo_Art13" targetRef="Gateway_JoinSupplementaryInfo_Art13" />
+    <bpmn:sequenceFlow id="Flow_TaskPrepareRightsInfo_To_GatewayJoinSupplementaryInfo_Art13" sourceRef="Task_PrepareRightsInfo_Art13" targetRef="Gateway_JoinSupplementaryInfo_Art13" />
+    <bpmn:sequenceFlow id="Flow_TaskPrepareProvisionInfo_To_GatewayJoinSupplementaryInfo_Art13" sourceRef="Task_PrepareProvisionInfo_Art13" targetRef="Gateway_JoinSupplementaryInfo_Art13" />
+    <bpmn:sequenceFlow id="Flow_TaskPrepareAutomatedDecisionInfo_To_GatewayJoinSupplementaryInfo_Art13" sourceRef="Task_PrepareAutomatedDecisionInfo_Art13" targetRef="Gateway_JoinSupplementaryInfo_Art13" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoinSupplementaryInfo_To_SendTaskSendInitialNotice_Art13" sourceRef="Gateway_JoinSupplementaryInfo_Art13" targetRef="SendTask_SendInitialNotice_Art13" />
+    <bpmn:sequenceFlow id="Flow_SendTaskSendInitialNotice_To_GatewayFurtherPurpose_Art13" sourceRef="SendTask_SendInitialNotice_Art13" targetRef="Gateway_FurtherPurpose_Art13" />
+    <bpmn:sequenceFlow id="Flow_GatewayFurtherPurpose_To_SendTaskSendFurtherPurposeNotice_Art13" name="Yes" sourceRef="Gateway_FurtherPurpose_Art13" targetRef="SendTask_SendFurtherPurposeNotice_Art13" />
+    <bpmn:sequenceFlow id="Flow_GatewayFurtherPurpose_To_EndInformationDutiesCompleted_Art13" name="No" sourceRef="Gateway_FurtherPurpose_Art13" targetRef="EndEvent_InformationDutiesCompleted_Art13" />
+    <bpmn:sequenceFlow id="Flow_SendTaskSendFurtherPurposeNotice_To_EndInformationDutiesCompleted_Art13" sourceRef="SendTask_SendFurtherPurposeNotice_Art13" targetRef="EndEvent_InformationDutiesCompleted_Art13" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art13_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art13_Reviewed" bpmnElement="Collaboration_Art13_Reviewed">
+      <bpmndi:BPMNShape id="Participant_Controller_Art13_di" bpmnElement="Participant_Controller_Art13" isHorizontal="true"><dc:Bounds x="60" y="40" width="5200" height="760" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_DataSubject_Art13_di" bpmnElement="Participant_DataSubject_Art13" isHorizontal="true"><dc:Bounds x="60" y="860" width="5200" height="120" /></bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_CollectData_Art13_di" bpmnElement="StartEvent_CollectData_Art13"><dc:Bounds x="120" y="382" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AlreadyHasInfo_Art13_di" bpmnElement="Gateway_AlreadyHasInfo_Art13" isMarkerVisible="true"><dc:Bounds x="175" y="375" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NoNoticeNeeded_Art13_di" bpmnElement="EndEvent_NoNoticeNeeded_Art13"><dc:Bounds x="182" y="542" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareIdentity_Art13_di" bpmnElement="Task_PrepareIdentity_Art13"><dc:Bounds x="240" y="360" width="420" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareDPO_Art13_di" bpmnElement="Task_PrepareDPO_Art13"><dc:Bounds x="760" y="360" width="330" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PreparePurposeBasis_Art13_di" bpmnElement="Task_PreparePurposeBasis_Art13"><dc:Bounds x="1190" y="360" width="360" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_LegitimateInterests_Art13_di" bpmnElement="Gateway_LegitimateInterests_Art13" isMarkerVisible="true"><dc:Bounds x="1670" y="375" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareLegitimateInterests_Art13_di" bpmnElement="Task_PrepareLegitimateInterests_Art13"><dc:Bounds x="1820" y="210" width="380" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareRecipients_Art13_di" bpmnElement="Task_PrepareRecipients_Art13"><dc:Bounds x="1820" y="360" width="390" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ThirdCountryTransfer_Art13_di" bpmnElement="Gateway_ThirdCountryTransfer_Art13" isMarkerVisible="true"><dc:Bounds x="2310" y="375" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareTransferInfo_Art13_di" bpmnElement="Task_PrepareTransferInfo_Art13"><dc:Bounds x="2470" y="560" width="460" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SplitSupplementaryInfo_Art13_di" bpmnElement="Gateway_SplitSupplementaryInfo_Art13" isMarkerVisible="true"><dc:Bounds x="2470" y="375" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareRetentionInfo_Art13_di" bpmnElement="Task_PrepareRetentionInfo_Art13"><dc:Bounds x="2700" y="40" width="380" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareRightsInfo_Art13_di" bpmnElement="Task_PrepareRightsInfo_Art13"><dc:Bounds x="2700" y="170" width="560" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareProvisionInfo_Art13_di" bpmnElement="Task_PrepareProvisionInfo_Art13"><dc:Bounds x="2700" y="300" width="560" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareAutomatedDecisionInfo_Art13_di" bpmnElement="Task_PrepareAutomatedDecisionInfo_Art13"><dc:Bounds x="2700" y="430" width="520" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinSupplementaryInfo_Art13_di" bpmnElement="Gateway_JoinSupplementaryInfo_Art13" isMarkerVisible="true"><dc:Bounds x="3470" y="375" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_SendInitialNotice_Art13_di" bpmnElement="SendTask_SendInitialNotice_Art13"><dc:Bounds x="3640" y="360" width="420" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_FurtherPurpose_Art13_di" bpmnElement="Gateway_FurtherPurpose_Art13" isMarkerVisible="true"><dc:Bounds x="4200" y="375" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_SendFurtherPurposeNotice_Art13_di" bpmnElement="SendTask_SendFurtherPurposeNotice_Art13"><dc:Bounds x="4380" y="210" width="460" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_InformationDutiesCompleted_Art13_di" bpmnElement="EndEvent_InformationDutiesCompleted_Art13"><dc:Bounds x="4872" y="382" width="36" height="36" /></bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_GatewayAlreadyHasInfo_Art13_di" bpmnElement="Flow_Start_To_GatewayAlreadyHasInfo_Art13"><di:waypoint x="156" y="400" /><di:waypoint x="175" y="400" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAlreadyHasInfo_To_EndNoNoticeNeeded_Art13_di" bpmnElement="Flow_GatewayAlreadyHasInfo_To_EndNoNoticeNeeded_Art13"><di:waypoint x="200" y="425" /><di:waypoint x="200" y="542" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAlreadyHasInfo_To_TaskPrepareIdentity_Art13_di" bpmnElement="Flow_GatewayAlreadyHasInfo_To_TaskPrepareIdentity_Art13"><di:waypoint x="225" y="400" /><di:waypoint x="240" y="400" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPrepareIdentity_To_TaskPrepareDPO_Art13_di" bpmnElement="Flow_TaskPrepareIdentity_To_TaskPrepareDPO_Art13"><di:waypoint x="660" y="400" /><di:waypoint x="760" y="400" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPrepareDPO_To_TaskPreparePurposeBasis_Art13_di" bpmnElement="Flow_TaskPrepareDPO_To_TaskPreparePurposeBasis_Art13"><di:waypoint x="1090" y="400" /><di:waypoint x="1190" y="400" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPreparePurposeBasis_To_GatewayLegitimateInterests_Art13_di" bpmnElement="Flow_TaskPreparePurposeBasis_To_GatewayLegitimateInterests_Art13"><di:waypoint x="1550" y="400" /><di:waypoint x="1670" y="400" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayLegitimateInterests_To_TaskPrepareLegitimateInterests_Art13_di" bpmnElement="Flow_GatewayLegitimateInterests_To_TaskPrepareLegitimateInterests_Art13"><di:waypoint x="1695" y="375" /><di:waypoint x="1695" y="250" /><di:waypoint x="1820" y="250" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayLegitimateInterests_To_TaskPrepareRecipients_Art13_di" bpmnElement="Flow_GatewayLegitimateInterests_To_TaskPrepareRecipients_Art13"><di:waypoint x="1720" y="400" /><di:waypoint x="1820" y="400" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPrepareLegitimateInterests_To_TaskPrepareRecipients_Art13_di" bpmnElement="Flow_TaskPrepareLegitimateInterests_To_TaskPrepareRecipients_Art13"><di:waypoint x="2200" y="250" /><di:waypoint x="2250" y="250" /><di:waypoint x="2250" y="400" /><di:waypoint x="1820" y="400" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPrepareRecipients_To_GatewayThirdCountryTransfer_Art13_di" bpmnElement="Flow_TaskPrepareRecipients_To_GatewayThirdCountryTransfer_Art13"><di:waypoint x="2210" y="400" /><di:waypoint x="2310" y="400" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayThirdCountryTransfer_To_TaskPrepareTransferInfo_Art13_di" bpmnElement="Flow_GatewayThirdCountryTransfer_To_TaskPrepareTransferInfo_Art13"><di:waypoint x="2335" y="425" /><di:waypoint x="2335" y="600" /><di:waypoint x="2470" y="600" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayThirdCountryTransfer_To_GatewaySplitSupplementaryInfo_Art13_di" bpmnElement="Flow_GatewayThirdCountryTransfer_To_GatewaySplitSupplementaryInfo_Art13"><di:waypoint x="2360" y="400" /><di:waypoint x="2470" y="400" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPrepareTransferInfo_To_GatewaySplitSupplementaryInfo_Art13_di" bpmnElement="Flow_TaskPrepareTransferInfo_To_GatewaySplitSupplementaryInfo_Art13"><di:waypoint x="2700" y="560" /><di:waypoint x="2700" y="520" /><di:waypoint x="2495" y="520" /><di:waypoint x="2495" y="425" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitSupplementaryInfo_To_TaskPrepareRetentionInfo_Art13_di" bpmnElement="Flow_GatewaySplitSupplementaryInfo_To_TaskPrepareRetentionInfo_Art13"><di:waypoint x="2495" y="375" /><di:waypoint x="2495" y="80" /><di:waypoint x="2700" y="80" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitSupplementaryInfo_To_TaskPrepareRightsInfo_Art13_di" bpmnElement="Flow_GatewaySplitSupplementaryInfo_To_TaskPrepareRightsInfo_Art13"><di:waypoint x="2495" y="375" /><di:waypoint x="2495" y="210" /><di:waypoint x="2700" y="210" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitSupplementaryInfo_To_TaskPrepareProvisionInfo_Art13_di" bpmnElement="Flow_GatewaySplitSupplementaryInfo_To_TaskPrepareProvisionInfo_Art13"><di:waypoint x="2520" y="400" /><di:waypoint x="2700" y="340" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitSupplementaryInfo_To_TaskPrepareAutomatedDecisionInfo_Art13_di" bpmnElement="Flow_GatewaySplitSupplementaryInfo_To_TaskPrepareAutomatedDecisionInfo_Art13"><di:waypoint x="2495" y="425" /><di:waypoint x="2495" y="470" /><di:waypoint x="2700" y="470" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPrepareRetentionInfo_To_GatewayJoinSupplementaryInfo_Art13_di" bpmnElement="Flow_TaskPrepareRetentionInfo_To_GatewayJoinSupplementaryInfo_Art13"><di:waypoint x="3080" y="80" /><di:waypoint x="3495" y="80" /><di:waypoint x="3495" y="375" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPrepareRightsInfo_To_GatewayJoinSupplementaryInfo_Art13_di" bpmnElement="Flow_TaskPrepareRightsInfo_To_GatewayJoinSupplementaryInfo_Art13"><di:waypoint x="3260" y="210" /><di:waypoint x="3495" y="210" /><di:waypoint x="3495" y="375" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPrepareProvisionInfo_To_GatewayJoinSupplementaryInfo_Art13_di" bpmnElement="Flow_TaskPrepareProvisionInfo_To_GatewayJoinSupplementaryInfo_Art13"><di:waypoint x="3260" y="340" /><di:waypoint x="3495" y="340" /><di:waypoint x="3495" y="375" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPrepareAutomatedDecisionInfo_To_GatewayJoinSupplementaryInfo_Art13_di" bpmnElement="Flow_TaskPrepareAutomatedDecisionInfo_To_GatewayJoinSupplementaryInfo_Art13"><di:waypoint x="3220" y="470" /><di:waypoint x="3495" y="470" /><di:waypoint x="3495" y="425" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinSupplementaryInfo_To_SendTaskSendInitialNotice_Art13_di" bpmnElement="Flow_GatewayJoinSupplementaryInfo_To_SendTaskSendInitialNotice_Art13"><di:waypoint x="3520" y="400" /><di:waypoint x="3640" y="400" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendTaskSendInitialNotice_To_GatewayFurtherPurpose_Art13_di" bpmnElement="Flow_SendTaskSendInitialNotice_To_GatewayFurtherPurpose_Art13"><di:waypoint x="4060" y="400" /><di:waypoint x="4200" y="400" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayFurtherPurpose_To_SendTaskSendFurtherPurposeNotice_Art13_di" bpmnElement="Flow_GatewayFurtherPurpose_To_SendTaskSendFurtherPurposeNotice_Art13"><di:waypoint x="4225" y="375" /><di:waypoint x="4225" y="250" /><di:waypoint x="4380" y="250" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayFurtherPurpose_To_EndInformationDutiesCompleted_Art13_di" bpmnElement="Flow_GatewayFurtherPurpose_To_EndInformationDutiesCompleted_Art13"><di:waypoint x="4250" y="400" /><di:waypoint x="4872" y="400" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendTaskSendFurtherPurposeNotice_To_EndInformationDutiesCompleted_Art13_di" bpmnElement="Flow_SendTaskSendFurtherPurposeNotice_To_EndInformationDutiesCompleted_Art13"><di:waypoint x="4840" y="250" /><di:waypoint x="4890" y="250" /><di:waypoint x="4890" y="382" /></bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_SendInitialNotice_Art13_di" bpmnElement="MessageFlow_SendInitialNotice_Art13"><di:waypoint x="3850" y="440" /><di:waypoint x="3850" y="860" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SendFurtherPurposeNotice_Art13_di" bpmnElement="MessageFlow_SendFurtherPurposeNotice_Art13"><di:waypoint x="4610" y="290" /><di:waypoint x="4610" y="860" /></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

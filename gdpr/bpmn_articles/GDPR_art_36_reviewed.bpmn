@@ -1,0 +1,606 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art36_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art36_Reviewed">
+    <bpmn:participant id="Participant_Controller_Art36"
+                      name="Controller"
+                      processRef="Process_Controller_Art36" />
+    <bpmn:participant id="Participant_SupervisoryAuthority_Art36"
+                      name="Supervisory Authority" />
+    <bpmn:participant id="Participant_MemberState_Art36"
+                      name="Member State"
+                      processRef="Process_MemberState_Art36" />
+
+    <bpmn:messageFlow id="MessageFlow_SendPriorConsultation_Art36"
+                      sourceRef="SendTask_SendPriorConsultation_Art36"
+                      targetRef="Participant_SupervisoryAuthority_Art36" />
+    <bpmn:messageFlow id="MessageFlow_RequestAdditionalInfo_Art36"
+                      sourceRef="Participant_SupervisoryAuthority_Art36"
+                      targetRef="ReceiveTask_ReceiveAdditionalInfoRequest_Art36" />
+    <bpmn:messageFlow id="MessageFlow_SendAdditionalInfo_Art36"
+                      sourceRef="SendTask_SendAdditionalInfo_Art36"
+                      targetRef="Participant_SupervisoryAuthority_Art36" />
+    <bpmn:messageFlow id="MessageFlow_SendExtensionNotice_Art36"
+                      sourceRef="Participant_SupervisoryAuthority_Art36"
+                      targetRef="ReceiveTask_ReceiveExtensionNotice_Art36" />
+    <bpmn:messageFlow id="MessageFlow_SendWrittenAdvice_Art36"
+                      sourceRef="Participant_SupervisoryAuthority_Art36"
+                      targetRef="ReceiveTask_ReceiveWrittenAdvice_Art36" />
+    <bpmn:messageFlow id="MessageFlow_RequestPriorAuthorisation_Art36"
+                      sourceRef="SendTask_RequestPriorAuthorisation_Art36"
+                      targetRef="Participant_SupervisoryAuthority_Art36" />
+    <bpmn:messageFlow id="MessageFlow_SendPriorAuthorisationOutcome_Art36"
+                      sourceRef="Participant_SupervisoryAuthority_Art36"
+                      targetRef="ReceiveTask_ReceivePriorAuthorisation_Art36" />
+    <bpmn:messageFlow id="MessageFlow_MemberStateConsultSA_Art36"
+                      sourceRef="SendTask_ConsultSA_MemberState_Art36"
+                      targetRef="Participant_SupervisoryAuthority_Art36" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_Controller_Art36"
+                name="Apply Article 36 consultation duties"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 36 based on the real English legal text
+      of Regulation (EU) 2016/679. The model captures the Article 36(1) trigger,
+      the Article 36(3)(a)-(f) information package, the additional-information and
+      timing mechanics in Article 36(2), the written-advice outcome, the Article
+      36(4) Member State consultation duty for legislative or regulatory measures,
+      and the optional Article 36(5) Member-State-law path for prior consultation
+      and authorisation of public-interest processing.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_CompleteDPIA_Art36"
+                     name="Need prior consultation assessment">
+      <bpmn:outgoing>Flow_StartCompleteDPIA_To_TaskAssessResidualHighRisk_Art36</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_AssessResidualHighRisk_Art36"
+               name="Assess residual high risk">
+      <bpmn:incoming>Flow_StartCompleteDPIA_To_TaskAssessResidualHighRisk_Art36</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskAssessResidualHighRisk_To_GatewayResidualHighRisk_Art36</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_ResidualHighRisk_Art36"
+                           name="Would residual high risk remain after controller measures?">
+      <bpmn:incoming>Flow_TaskAssessResidualHighRisk_To_GatewayResidualHighRisk_Art36</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayResidualHighRisk_To_EndNoConsultationRequired_Art36</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayResidualHighRisk_To_GatewaySplitConsultationPackage_Art36</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:parallelGateway id="Gateway_SplitConsultationPackage_Art36">
+      <bpmn:incoming>Flow_GatewayResidualHighRisk_To_GatewaySplitConsultationPackage_Art36</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplitConsultationPackage_To_TaskRecordResponsibilities_Art36</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitConsultationPackage_To_TaskRecordPurposesMeans_Art36</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitConsultationPackage_To_TaskRecordSafeguards_Art36</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitConsultationPackage_To_TaskAttachDPIA_Art36</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_RecordResponsibilities_Art36"
+               name="Record responsibilities">
+      <bpmn:incoming>Flow_GatewaySplitConsultationPackage_To_TaskRecordResponsibilities_Art36</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskRecordResponsibilities_To_GatewayJoinConsultationPackage_Art36</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_RecordPurposesMeans_Art36"
+               name="Record purposes and means">
+      <bpmn:incoming>Flow_GatewaySplitConsultationPackage_To_TaskRecordPurposesMeans_Art36</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskRecordPurposesMeans_To_GatewayJoinConsultationPackage_Art36</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_RecordSafeguards_Art36"
+               name="Record safeguards and measures">
+      <bpmn:incoming>Flow_GatewaySplitConsultationPackage_To_TaskRecordSafeguards_Art36</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskRecordSafeguards_To_GatewayJoinConsultationPackage_Art36</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_AttachDPIA_Art36"
+               name="Attach DPIA">
+      <bpmn:incoming>Flow_GatewaySplitConsultationPackage_To_TaskAttachDPIA_Art36</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskAttachDPIA_To_GatewayJoinConsultationPackage_Art36</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_JoinConsultationPackage_Art36">
+      <bpmn:incoming>Flow_TaskRecordResponsibilities_To_GatewayJoinConsultationPackage_Art36</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskRecordPurposesMeans_To_GatewayJoinConsultationPackage_Art36</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskRecordSafeguards_To_GatewayJoinConsultationPackage_Art36</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskAttachDPIA_To_GatewayJoinConsultationPackage_Art36</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinConsultationPackage_To_GatewayDPODesignated_Art36</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_DPODesignated_Art36"
+                           name="Is a DPO designated?">
+      <bpmn:incoming>Flow_GatewayJoinConsultationPackage_To_GatewayDPODesignated_Art36</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayDPODesignated_To_TaskProvideDPOContact_Art36</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayDPODesignated_To_SendTaskSendPriorConsultation_Art36</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ProvideDPOContact_Art36"
+               name="Provide DPO contact details">
+      <bpmn:incoming>Flow_GatewayDPODesignated_To_TaskProvideDPOContact_Art36</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskProvideDPOContact_To_SendTaskSendPriorConsultation_Art36</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="SendTask_SendPriorConsultation_Art36"
+                   name="Send prior consultation request">
+      <bpmn:incoming>Flow_GatewayDPODesignated_To_SendTaskSendPriorConsultation_Art36</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskProvideDPOContact_To_SendTaskSendPriorConsultation_Art36</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendTaskSendPriorConsultation_To_GatewayAdditionalInfoRequested_Art36</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:exclusiveGateway id="Gateway_AdditionalInfoRequested_Art36"
+                           name="Did the authority request additional information?">
+      <bpmn:incoming>Flow_SendTaskSendPriorConsultation_To_GatewayAdditionalInfoRequested_Art36</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAdditionalInfoRequested_To_ReceiveTaskReceiveAdditionalInfoRequest_Art36</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAdditionalInfoRequested_To_GatewayExtensionNoticeReceived_Art36</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveAdditionalInfoRequest_Art36"
+                      name="Receive additional-info request">
+      <bpmn:incoming>Flow_GatewayAdditionalInfoRequested_To_ReceiveTaskReceiveAdditionalInfoRequest_Art36</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveTaskReceiveAdditionalInfoRequest_To_TaskCollectAdditionalInfo_Art36</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:task id="Task_CollectAdditionalInfo_Art36"
+               name="Collect requested details">
+      <bpmn:incoming>Flow_ReceiveTaskReceiveAdditionalInfoRequest_To_TaskCollectAdditionalInfo_Art36</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskCollectAdditionalInfo_To_SendTaskSendAdditionalInfo_Art36</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="SendTask_SendAdditionalInfo_Art36"
+                   name="Send requested details">
+      <bpmn:incoming>Flow_TaskCollectAdditionalInfo_To_SendTaskSendAdditionalInfo_Art36</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendTaskSendAdditionalInfo_To_GatewayExtensionNoticeReceived_Art36</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:exclusiveGateway id="Gateway_ExtensionNoticeReceived_Art36"
+                           name="Did the authority send an extension notice?">
+      <bpmn:incoming>Flow_GatewayAdditionalInfoRequested_To_GatewayExtensionNoticeReceived_Art36</bpmn:incoming>
+      <bpmn:incoming>Flow_SendTaskSendAdditionalInfo_To_GatewayExtensionNoticeReceived_Art36</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayExtensionNoticeReceived_To_ReceiveTaskReceiveExtensionNotice_Art36</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayExtensionNoticeReceived_To_ReceiveTaskReceiveWrittenAdvice_Art36</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveExtensionNotice_Art36"
+                      name="Receive extension notice with reasons">
+      <bpmn:incoming>Flow_GatewayExtensionNoticeReceived_To_ReceiveTaskReceiveExtensionNotice_Art36</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveTaskReceiveExtensionNotice_To_ReceiveTaskReceiveWrittenAdvice_Art36</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveWrittenAdvice_Art36"
+                      name="Receive written advice or powers notice">
+      <bpmn:incoming>Flow_GatewayExtensionNoticeReceived_To_ReceiveTaskReceiveWrittenAdvice_Art36</bpmn:incoming>
+      <bpmn:incoming>Flow_ReceiveTaskReceiveExtensionNotice_To_ReceiveTaskReceiveWrittenAdvice_Art36</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveTaskReceiveWrittenAdvice_To_EndConsultationCompleted_Art36</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:startEvent id="StartEvent_PublicInterestTask_Art36"
+                     name="Need public-interest processing">
+      <bpmn:outgoing>Flow_StartPublicInterestTask_To_TaskCheckMemberStateRule_Art36</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_CheckMemberStateRule_Art36"
+               name="Check Member State consultation rule">
+      <bpmn:incoming>Flow_StartPublicInterestTask_To_TaskCheckMemberStateRule_Art36</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskCheckMemberStateRule_To_GatewayPriorAuthorisationRequired_Art36</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_PriorAuthorisationRequired_Art36"
+                           name="Does Member State law require prior consultation and authorisation?">
+      <bpmn:incoming>Flow_TaskCheckMemberStateRule_To_GatewayPriorAuthorisationRequired_Art36</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayPriorAuthorisationRequired_To_EndNoArticle365Step_Art36</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayPriorAuthorisationRequired_To_SendTaskRequestPriorAuthorisation_Art36</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="SendTask_RequestPriorAuthorisation_Art36"
+                   name="Request prior authorisation">
+      <bpmn:incoming>Flow_GatewayPriorAuthorisationRequired_To_SendTaskRequestPriorAuthorisation_Art36</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendTaskRequestPriorAuthorisation_To_ReceiveTaskReceivePriorAuthorisation_Art36</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceivePriorAuthorisation_Art36"
+                      name="Receive prior-authorisation outcome">
+      <bpmn:incoming>Flow_SendTaskRequestPriorAuthorisation_To_ReceiveTaskReceivePriorAuthorisation_Art36</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveTaskReceivePriorAuthorisation_To_EndPriorAuthorisationHandled_Art36</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:endEvent id="EndEvent_NoConsultationRequired_Art36"
+                   name="No prior consultation required">
+      <bpmn:incoming>Flow_GatewayResidualHighRisk_To_EndNoConsultationRequired_Art36</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_ConsultationCompleted_Art36"
+                   name="Article 36(1)-(3) completed">
+      <bpmn:incoming>Flow_ReceiveTaskReceiveWrittenAdvice_To_EndConsultationCompleted_Art36</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_NoArticle365Step_Art36"
+                   name="No Article 36(5) step required">
+      <bpmn:incoming>Flow_GatewayPriorAuthorisationRequired_To_EndNoArticle365Step_Art36</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_PriorAuthorisationHandled_Art36"
+                   name="Article 36(5) handled">
+      <bpmn:incoming>Flow_ReceiveTaskReceivePriorAuthorisation_To_EndPriorAuthorisationHandled_Art36</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartCompleteDPIA_To_TaskAssessResidualHighRisk_Art36" sourceRef="StartEvent_CompleteDPIA_Art36" targetRef="Task_AssessResidualHighRisk_Art36" />
+    <bpmn:sequenceFlow id="Flow_TaskAssessResidualHighRisk_To_GatewayResidualHighRisk_Art36" sourceRef="Task_AssessResidualHighRisk_Art36" targetRef="Gateway_ResidualHighRisk_Art36" />
+    <bpmn:sequenceFlow id="Flow_GatewayResidualHighRisk_To_EndNoConsultationRequired_Art36" name="No" sourceRef="Gateway_ResidualHighRisk_Art36" targetRef="EndEvent_NoConsultationRequired_Art36" />
+    <bpmn:sequenceFlow id="Flow_GatewayResidualHighRisk_To_GatewaySplitConsultationPackage_Art36" name="Yes" sourceRef="Gateway_ResidualHighRisk_Art36" targetRef="Gateway_SplitConsultationPackage_Art36" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitConsultationPackage_To_TaskRecordResponsibilities_Art36" sourceRef="Gateway_SplitConsultationPackage_Art36" targetRef="Task_RecordResponsibilities_Art36" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitConsultationPackage_To_TaskRecordPurposesMeans_Art36" sourceRef="Gateway_SplitConsultationPackage_Art36" targetRef="Task_RecordPurposesMeans_Art36" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitConsultationPackage_To_TaskRecordSafeguards_Art36" sourceRef="Gateway_SplitConsultationPackage_Art36" targetRef="Task_RecordSafeguards_Art36" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitConsultationPackage_To_TaskAttachDPIA_Art36" sourceRef="Gateway_SplitConsultationPackage_Art36" targetRef="Task_AttachDPIA_Art36" />
+    <bpmn:sequenceFlow id="Flow_TaskRecordResponsibilities_To_GatewayJoinConsultationPackage_Art36" sourceRef="Task_RecordResponsibilities_Art36" targetRef="Gateway_JoinConsultationPackage_Art36" />
+    <bpmn:sequenceFlow id="Flow_TaskRecordPurposesMeans_To_GatewayJoinConsultationPackage_Art36" sourceRef="Task_RecordPurposesMeans_Art36" targetRef="Gateway_JoinConsultationPackage_Art36" />
+    <bpmn:sequenceFlow id="Flow_TaskRecordSafeguards_To_GatewayJoinConsultationPackage_Art36" sourceRef="Task_RecordSafeguards_Art36" targetRef="Gateway_JoinConsultationPackage_Art36" />
+    <bpmn:sequenceFlow id="Flow_TaskAttachDPIA_To_GatewayJoinConsultationPackage_Art36" sourceRef="Task_AttachDPIA_Art36" targetRef="Gateway_JoinConsultationPackage_Art36" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoinConsultationPackage_To_GatewayDPODesignated_Art36" sourceRef="Gateway_JoinConsultationPackage_Art36" targetRef="Gateway_DPODesignated_Art36" />
+    <bpmn:sequenceFlow id="Flow_GatewayDPODesignated_To_TaskProvideDPOContact_Art36" name="Yes" sourceRef="Gateway_DPODesignated_Art36" targetRef="Task_ProvideDPOContact_Art36" />
+    <bpmn:sequenceFlow id="Flow_GatewayDPODesignated_To_SendTaskSendPriorConsultation_Art36" name="No" sourceRef="Gateway_DPODesignated_Art36" targetRef="SendTask_SendPriorConsultation_Art36" />
+    <bpmn:sequenceFlow id="Flow_TaskProvideDPOContact_To_SendTaskSendPriorConsultation_Art36" sourceRef="Task_ProvideDPOContact_Art36" targetRef="SendTask_SendPriorConsultation_Art36" />
+    <bpmn:sequenceFlow id="Flow_SendTaskSendPriorConsultation_To_GatewayAdditionalInfoRequested_Art36" sourceRef="SendTask_SendPriorConsultation_Art36" targetRef="Gateway_AdditionalInfoRequested_Art36" />
+    <bpmn:sequenceFlow id="Flow_GatewayAdditionalInfoRequested_To_ReceiveTaskReceiveAdditionalInfoRequest_Art36" name="Yes" sourceRef="Gateway_AdditionalInfoRequested_Art36" targetRef="ReceiveTask_ReceiveAdditionalInfoRequest_Art36" />
+    <bpmn:sequenceFlow id="Flow_GatewayAdditionalInfoRequested_To_GatewayExtensionNoticeReceived_Art36" name="No" sourceRef="Gateway_AdditionalInfoRequested_Art36" targetRef="Gateway_ExtensionNoticeReceived_Art36" />
+    <bpmn:sequenceFlow id="Flow_ReceiveTaskReceiveAdditionalInfoRequest_To_TaskCollectAdditionalInfo_Art36" sourceRef="ReceiveTask_ReceiveAdditionalInfoRequest_Art36" targetRef="Task_CollectAdditionalInfo_Art36" />
+    <bpmn:sequenceFlow id="Flow_TaskCollectAdditionalInfo_To_SendTaskSendAdditionalInfo_Art36" sourceRef="Task_CollectAdditionalInfo_Art36" targetRef="SendTask_SendAdditionalInfo_Art36" />
+    <bpmn:sequenceFlow id="Flow_SendTaskSendAdditionalInfo_To_GatewayExtensionNoticeReceived_Art36" sourceRef="SendTask_SendAdditionalInfo_Art36" targetRef="Gateway_ExtensionNoticeReceived_Art36" />
+    <bpmn:sequenceFlow id="Flow_GatewayExtensionNoticeReceived_To_ReceiveTaskReceiveExtensionNotice_Art36" name="Yes" sourceRef="Gateway_ExtensionNoticeReceived_Art36" targetRef="ReceiveTask_ReceiveExtensionNotice_Art36" />
+    <bpmn:sequenceFlow id="Flow_GatewayExtensionNoticeReceived_To_ReceiveTaskReceiveWrittenAdvice_Art36" name="No" sourceRef="Gateway_ExtensionNoticeReceived_Art36" targetRef="ReceiveTask_ReceiveWrittenAdvice_Art36" />
+    <bpmn:sequenceFlow id="Flow_ReceiveTaskReceiveExtensionNotice_To_ReceiveTaskReceiveWrittenAdvice_Art36" sourceRef="ReceiveTask_ReceiveExtensionNotice_Art36" targetRef="ReceiveTask_ReceiveWrittenAdvice_Art36" />
+    <bpmn:sequenceFlow id="Flow_ReceiveTaskReceiveWrittenAdvice_To_EndConsultationCompleted_Art36" sourceRef="ReceiveTask_ReceiveWrittenAdvice_Art36" targetRef="EndEvent_ConsultationCompleted_Art36" />
+    <bpmn:sequenceFlow id="Flow_StartPublicInterestTask_To_TaskCheckMemberStateRule_Art36" sourceRef="StartEvent_PublicInterestTask_Art36" targetRef="Task_CheckMemberStateRule_Art36" />
+    <bpmn:sequenceFlow id="Flow_TaskCheckMemberStateRule_To_GatewayPriorAuthorisationRequired_Art36" sourceRef="Task_CheckMemberStateRule_Art36" targetRef="Gateway_PriorAuthorisationRequired_Art36" />
+    <bpmn:sequenceFlow id="Flow_GatewayPriorAuthorisationRequired_To_EndNoArticle365Step_Art36" name="No" sourceRef="Gateway_PriorAuthorisationRequired_Art36" targetRef="EndEvent_NoArticle365Step_Art36" />
+    <bpmn:sequenceFlow id="Flow_GatewayPriorAuthorisationRequired_To_SendTaskRequestPriorAuthorisation_Art36" name="Yes" sourceRef="Gateway_PriorAuthorisationRequired_Art36" targetRef="SendTask_RequestPriorAuthorisation_Art36" />
+    <bpmn:sequenceFlow id="Flow_SendTaskRequestPriorAuthorisation_To_ReceiveTaskReceivePriorAuthorisation_Art36" sourceRef="SendTask_RequestPriorAuthorisation_Art36" targetRef="ReceiveTask_ReceivePriorAuthorisation_Art36" />
+    <bpmn:sequenceFlow id="Flow_ReceiveTaskReceivePriorAuthorisation_To_EndPriorAuthorisationHandled_Art36" sourceRef="ReceiveTask_ReceivePriorAuthorisation_Art36" targetRef="EndEvent_PriorAuthorisationHandled_Art36" />
+  </bpmn:process>
+
+  <bpmn:process id="Process_MemberState_Art36"
+                name="Apply Article 36(4) consultation duty"
+                isExecutable="false">
+    <bpmn:documentation>
+      This process captures the Article 36(4) duty of Member States to consult the
+      supervisory authority during the preparation of a proposal for a legislative
+      measure to be adopted by a national parliament, or of a regulatory measure
+      based on such a legislative measure, which relates to processing.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_PrepareMeasure_Art36"
+                     name="Prepare legislative measure">
+      <bpmn:outgoing>Flow_StartPrepareMeasure_To_TaskPrepareMeasure_Art36</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_PrepareMeasure_Art36"
+               name="Prepare legislative or regulatory measure">
+      <bpmn:incoming>Flow_StartPrepareMeasure_To_TaskPrepareMeasure_Art36</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskPrepareMeasure_To_SendTaskConsultSA_MemberState_Art36</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="SendTask_ConsultSA_MemberState_Art36"
+                   name="Consult supervisory authority">
+      <bpmn:incoming>Flow_TaskPrepareMeasure_To_SendTaskConsultSA_MemberState_Art36</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendTaskConsultSA_MemberState_To_EndMemberStateConsultation_Art36</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_MemberStateConsultation_Art36"
+                   name="Article 36(4) completed">
+      <bpmn:incoming>Flow_SendTaskConsultSA_MemberState_To_EndMemberStateConsultation_Art36</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartPrepareMeasure_To_TaskPrepareMeasure_Art36" sourceRef="StartEvent_PrepareMeasure_Art36" targetRef="Task_PrepareMeasure_Art36" />
+    <bpmn:sequenceFlow id="Flow_TaskPrepareMeasure_To_SendTaskConsultSA_MemberState_Art36" sourceRef="Task_PrepareMeasure_Art36" targetRef="SendTask_ConsultSA_MemberState_Art36" />
+    <bpmn:sequenceFlow id="Flow_SendTaskConsultSA_MemberState_To_EndMemberStateConsultation_Art36" sourceRef="SendTask_ConsultSA_MemberState_Art36" targetRef="EndEvent_MemberStateConsultation_Art36" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art36_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art36_Reviewed" bpmnElement="Collaboration_Art36_Reviewed">
+      <bpmndi:BPMNShape id="Participant_Controller_Art36_di" bpmnElement="Participant_Controller_Art36" isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="4200" height="860" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_SupervisoryAuthority_Art36_di" bpmnElement="Participant_SupervisoryAuthority_Art36" isHorizontal="true">
+        <dc:Bounds x="60" y="940" width="4200" height="140" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_MemberState_Art36_di" bpmnElement="Participant_MemberState_Art36" isHorizontal="true">
+        <dc:Bounds x="60" y="1120" width="4200" height="140" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_CompleteDPIA_Art36_di" bpmnElement="StartEvent_CompleteDPIA_Art36">
+        <dc:Bounds x="140" y="292" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessResidualHighRisk_Art36_di" bpmnElement="Task_AssessResidualHighRisk_Art36">
+        <dc:Bounds x="220" y="270" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ResidualHighRisk_Art36_di" bpmnElement="Gateway_ResidualHighRisk_Art36" isMarkerVisible="true">
+        <dc:Bounds x="450" y="285" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SplitConsultationPackage_Art36_di" bpmnElement="Gateway_SplitConsultationPackage_Art36" isMarkerVisible="true">
+        <dc:Bounds x="600" y="285" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RecordResponsibilities_Art36_di" bpmnElement="Task_RecordResponsibilities_Art36">
+        <dc:Bounds x="760" y="80" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RecordPurposesMeans_Art36_di" bpmnElement="Task_RecordPurposesMeans_Art36">
+        <dc:Bounds x="1000" y="80" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RecordSafeguards_Art36_di" bpmnElement="Task_RecordSafeguards_Art36">
+        <dc:Bounds x="760" y="450" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AttachDPIA_Art36_di" bpmnElement="Task_AttachDPIA_Art36">
+        <dc:Bounds x="1000" y="450" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinConsultationPackage_Art36_di" bpmnElement="Gateway_JoinConsultationPackage_Art36" isMarkerVisible="true">
+        <dc:Bounds x="1265" y="285" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_DPODesignated_Art36_di" bpmnElement="Gateway_DPODesignated_Art36" isMarkerVisible="true">
+        <dc:Bounds x="1400" y="285" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ProvideDPOContact_Art36_di" bpmnElement="Task_ProvideDPOContact_Art36">
+        <dc:Bounds x="1560" y="150" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_SendPriorConsultation_Art36_di" bpmnElement="SendTask_SendPriorConsultation_Art36">
+        <dc:Bounds x="1560" y="270" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AdditionalInfoRequested_Art36_di" bpmnElement="Gateway_AdditionalInfoRequested_Art36" isMarkerVisible="true">
+        <dc:Bounds x="1840" y="285" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveAdditionalInfoRequest_Art36_di" bpmnElement="ReceiveTask_ReceiveAdditionalInfoRequest_Art36">
+        <dc:Bounds x="2000" y="150" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CollectAdditionalInfo_Art36_di" bpmnElement="Task_CollectAdditionalInfo_Art36">
+        <dc:Bounds x="2230" y="150" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_SendAdditionalInfo_Art36_di" bpmnElement="SendTask_SendAdditionalInfo_Art36">
+        <dc:Bounds x="2460" y="150" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ExtensionNoticeReceived_Art36_di" bpmnElement="Gateway_ExtensionNoticeReceived_Art36" isMarkerVisible="true">
+        <dc:Bounds x="2710" y="285" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveExtensionNotice_Art36_di" bpmnElement="ReceiveTask_ReceiveExtensionNotice_Art36">
+        <dc:Bounds x="2870" y="150" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveWrittenAdvice_Art36_di" bpmnElement="ReceiveTask_ReceiveWrittenAdvice_Art36">
+        <dc:Bounds x="2870" y="380" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NoConsultationRequired_Art36_di" bpmnElement="EndEvent_NoConsultationRequired_Art36">
+        <dc:Bounds x="532" y="552" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ConsultationCompleted_Art36_di" bpmnElement="EndEvent_ConsultationCompleted_Art36">
+        <dc:Bounds x="3162" y="402" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_PublicInterestTask_Art36_di" bpmnElement="StartEvent_PublicInterestTask_Art36">
+        <dc:Bounds x="140" y="622" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CheckMemberStateRule_Art36_di" bpmnElement="Task_CheckMemberStateRule_Art36">
+        <dc:Bounds x="220" y="600" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_PriorAuthorisationRequired_Art36_di" bpmnElement="Gateway_PriorAuthorisationRequired_Art36" isMarkerVisible="true">
+        <dc:Bounds x="460" y="615" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_RequestPriorAuthorisation_Art36_di" bpmnElement="SendTask_RequestPriorAuthorisation_Art36">
+        <dc:Bounds x="590" y="600" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceivePriorAuthorisation_Art36_di" bpmnElement="ReceiveTask_ReceivePriorAuthorisation_Art36">
+        <dc:Bounds x="870" y="600" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NoArticle365Step_Art36_di" bpmnElement="EndEvent_NoArticle365Step_Art36">
+        <dc:Bounds x="532" y="722" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_PriorAuthorisationHandled_Art36_di" bpmnElement="EndEvent_PriorAuthorisationHandled_Art36">
+        <dc:Bounds x="1142" y="622" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_PrepareMeasure_Art36_di" bpmnElement="StartEvent_PrepareMeasure_Art36">
+        <dc:Bounds x="140" y="1172" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareMeasure_Art36_di" bpmnElement="Task_PrepareMeasure_Art36">
+        <dc:Bounds x="220" y="1150" width="230" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_ConsultSA_MemberState_Art36_di" bpmnElement="SendTask_ConsultSA_MemberState_Art36">
+        <dc:Bounds x="530" y="1150" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_MemberStateConsultation_Art36_di" bpmnElement="EndEvent_MemberStateConsultation_Art36">
+        <dc:Bounds x="802" y="1172" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_StartCompleteDPIA_To_TaskAssessResidualHighRisk_Art36_di" bpmnElement="Flow_StartCompleteDPIA_To_TaskAssessResidualHighRisk_Art36">
+        <di:waypoint x="176" y="310" />
+        <di:waypoint x="220" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskAssessResidualHighRisk_To_GatewayResidualHighRisk_Art36_di" bpmnElement="Flow_TaskAssessResidualHighRisk_To_GatewayResidualHighRisk_Art36">
+        <di:waypoint x="400" y="310" />
+        <di:waypoint x="450" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayResidualHighRisk_To_EndNoConsultationRequired_Art36_di" bpmnElement="Flow_GatewayResidualHighRisk_To_EndNoConsultationRequired_Art36">
+        <di:waypoint x="475" y="335" />
+        <di:waypoint x="475" y="570" />
+        <di:waypoint x="532" y="570" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayResidualHighRisk_To_GatewaySplitConsultationPackage_Art36_di" bpmnElement="Flow_GatewayResidualHighRisk_To_GatewaySplitConsultationPackage_Art36">
+        <di:waypoint x="500" y="310" />
+        <di:waypoint x="600" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitConsultationPackage_To_TaskRecordResponsibilities_Art36_di" bpmnElement="Flow_GatewaySplitConsultationPackage_To_TaskRecordResponsibilities_Art36">
+        <di:waypoint x="625" y="285" />
+        <di:waypoint x="625" y="120" />
+        <di:waypoint x="760" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitConsultationPackage_To_TaskRecordPurposesMeans_Art36_di" bpmnElement="Flow_GatewaySplitConsultationPackage_To_TaskRecordPurposesMeans_Art36">
+        <di:waypoint x="625" y="285" />
+        <di:waypoint x="625" y="120" />
+        <di:waypoint x="1000" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitConsultationPackage_To_TaskRecordSafeguards_Art36_di" bpmnElement="Flow_GatewaySplitConsultationPackage_To_TaskRecordSafeguards_Art36">
+        <di:waypoint x="625" y="335" />
+        <di:waypoint x="625" y="490" />
+        <di:waypoint x="760" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitConsultationPackage_To_TaskAttachDPIA_Art36_di" bpmnElement="Flow_GatewaySplitConsultationPackage_To_TaskAttachDPIA_Art36">
+        <di:waypoint x="625" y="335" />
+        <di:waypoint x="625" y="490" />
+        <di:waypoint x="1000" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskRecordResponsibilities_To_GatewayJoinConsultationPackage_Art36_di" bpmnElement="Flow_TaskRecordResponsibilities_To_GatewayJoinConsultationPackage_Art36">
+        <di:waypoint x="940" y="120" />
+        <di:waypoint x="1290" y="120" />
+        <di:waypoint x="1290" y="285" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskRecordPurposesMeans_To_GatewayJoinConsultationPackage_Art36_di" bpmnElement="Flow_TaskRecordPurposesMeans_To_GatewayJoinConsultationPackage_Art36">
+        <di:waypoint x="1180" y="120" />
+        <di:waypoint x="1290" y="120" />
+        <di:waypoint x="1290" y="285" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskRecordSafeguards_To_GatewayJoinConsultationPackage_Art36_di" bpmnElement="Flow_TaskRecordSafeguards_To_GatewayJoinConsultationPackage_Art36">
+        <di:waypoint x="940" y="490" />
+        <di:waypoint x="1290" y="490" />
+        <di:waypoint x="1290" y="335" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskAttachDPIA_To_GatewayJoinConsultationPackage_Art36_di" bpmnElement="Flow_TaskAttachDPIA_To_GatewayJoinConsultationPackage_Art36">
+        <di:waypoint x="1160" y="490" />
+        <di:waypoint x="1290" y="490" />
+        <di:waypoint x="1290" y="335" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinConsultationPackage_To_GatewayDPODesignated_Art36_di" bpmnElement="Flow_GatewayJoinConsultationPackage_To_GatewayDPODesignated_Art36">
+        <di:waypoint x="1315" y="310" />
+        <di:waypoint x="1400" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayDPODesignated_To_TaskProvideDPOContact_Art36_di" bpmnElement="Flow_GatewayDPODesignated_To_TaskProvideDPOContact_Art36">
+        <di:waypoint x="1425" y="285" />
+        <di:waypoint x="1425" y="190" />
+        <di:waypoint x="1560" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayDPODesignated_To_SendTaskSendPriorConsultation_Art36_di" bpmnElement="Flow_GatewayDPODesignated_To_SendTaskSendPriorConsultation_Art36">
+        <di:waypoint x="1450" y="310" />
+        <di:waypoint x="1560" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskProvideDPOContact_To_SendTaskSendPriorConsultation_Art36_di" bpmnElement="Flow_TaskProvideDPOContact_To_SendTaskSendPriorConsultation_Art36">
+        <di:waypoint x="1740" y="190" />
+        <di:waypoint x="1830" y="190" />
+        <di:waypoint x="1830" y="310" />
+        <di:waypoint x="1740" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendTaskSendPriorConsultation_To_GatewayAdditionalInfoRequested_Art36_di" bpmnElement="Flow_SendTaskSendPriorConsultation_To_GatewayAdditionalInfoRequested_Art36">
+        <di:waypoint x="1740" y="310" />
+        <di:waypoint x="1840" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAdditionalInfoRequested_To_ReceiveTaskReceiveAdditionalInfoRequest_Art36_di" bpmnElement="Flow_GatewayAdditionalInfoRequested_To_ReceiveTaskReceiveAdditionalInfoRequest_Art36">
+        <di:waypoint x="1865" y="285" />
+        <di:waypoint x="1865" y="190" />
+        <di:waypoint x="2000" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAdditionalInfoRequested_To_GatewayExtensionNoticeReceived_Art36_di" bpmnElement="Flow_GatewayAdditionalInfoRequested_To_GatewayExtensionNoticeReceived_Art36">
+        <di:waypoint x="1890" y="310" />
+        <di:waypoint x="2710" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveTaskReceiveAdditionalInfoRequest_To_TaskCollectAdditionalInfo_Art36_di" bpmnElement="Flow_ReceiveTaskReceiveAdditionalInfoRequest_To_TaskCollectAdditionalInfo_Art36">
+        <di:waypoint x="2180" y="190" />
+        <di:waypoint x="2230" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskCollectAdditionalInfo_To_SendTaskSendAdditionalInfo_Art36_di" bpmnElement="Flow_TaskCollectAdditionalInfo_To_SendTaskSendAdditionalInfo_Art36">
+        <di:waypoint x="2410" y="190" />
+        <di:waypoint x="2460" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendTaskSendAdditionalInfo_To_GatewayExtensionNoticeReceived_Art36_di" bpmnElement="Flow_SendTaskSendAdditionalInfo_To_GatewayExtensionNoticeReceived_Art36">
+        <di:waypoint x="2620" y="190" />
+        <di:waypoint x="2735" y="190" />
+        <di:waypoint x="2735" y="285" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExtensionNoticeReceived_To_ReceiveTaskReceiveExtensionNotice_Art36_di" bpmnElement="Flow_GatewayExtensionNoticeReceived_To_ReceiveTaskReceiveExtensionNotice_Art36">
+        <di:waypoint x="2785" y="285" />
+        <di:waypoint x="2785" y="190" />
+        <di:waypoint x="2870" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExtensionNoticeReceived_To_ReceiveTaskReceiveWrittenAdvice_Art36_di" bpmnElement="Flow_GatewayExtensionNoticeReceived_To_ReceiveTaskReceiveWrittenAdvice_Art36">
+        <di:waypoint x="2785" y="335" />
+        <di:waypoint x="2785" y="420" />
+        <di:waypoint x="2870" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveTaskReceiveExtensionNotice_To_ReceiveTaskReceiveWrittenAdvice_Art36_di" bpmnElement="Flow_ReceiveTaskReceiveExtensionNotice_To_ReceiveTaskReceiveWrittenAdvice_Art36">
+        <di:waypoint x="3040" y="190" />
+        <di:waypoint x="3120" y="190" />
+        <di:waypoint x="3120" y="420" />
+        <di:waypoint x="3040" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveTaskReceiveWrittenAdvice_To_EndConsultationCompleted_Art36_di" bpmnElement="Flow_ReceiveTaskReceiveWrittenAdvice_To_EndConsultationCompleted_Art36">
+        <di:waypoint x="3040" y="420" />
+        <di:waypoint x="3162" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_StartPublicInterestTask_To_TaskCheckMemberStateRule_Art36_di" bpmnElement="Flow_StartPublicInterestTask_To_TaskCheckMemberStateRule_Art36">
+        <di:waypoint x="176" y="640" />
+        <di:waypoint x="220" y="640" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskCheckMemberStateRule_To_GatewayPriorAuthorisationRequired_Art36_di" bpmnElement="Flow_TaskCheckMemberStateRule_To_GatewayPriorAuthorisationRequired_Art36">
+        <di:waypoint x="410" y="640" />
+        <di:waypoint x="460" y="640" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPriorAuthorisationRequired_To_EndNoArticle365Step_Art36_di" bpmnElement="Flow_GatewayPriorAuthorisationRequired_To_EndNoArticle365Step_Art36">
+        <di:waypoint x="485" y="665" />
+        <di:waypoint x="485" y="740" />
+        <di:waypoint x="532" y="740" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPriorAuthorisationRequired_To_SendTaskRequestPriorAuthorisation_Art36_di" bpmnElement="Flow_GatewayPriorAuthorisationRequired_To_SendTaskRequestPriorAuthorisation_Art36">
+        <di:waypoint x="510" y="640" />
+        <di:waypoint x="590" y="640" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendTaskRequestPriorAuthorisation_To_ReceiveTaskReceivePriorAuthorisation_Art36_di" bpmnElement="Flow_SendTaskRequestPriorAuthorisation_To_ReceiveTaskReceivePriorAuthorisation_Art36">
+        <di:waypoint x="780" y="640" />
+        <di:waypoint x="870" y="640" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveTaskReceivePriorAuthorisation_To_EndPriorAuthorisationHandled_Art36_di" bpmnElement="Flow_ReceiveTaskReceivePriorAuthorisation_To_EndPriorAuthorisationHandled_Art36">
+        <di:waypoint x="1070" y="640" />
+        <di:waypoint x="1142" y="640" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_StartPrepareMeasure_To_TaskPrepareMeasure_Art36_di" bpmnElement="Flow_StartPrepareMeasure_To_TaskPrepareMeasure_Art36">
+        <di:waypoint x="176" y="1190" />
+        <di:waypoint x="220" y="1190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskPrepareMeasure_To_SendTaskConsultSA_MemberState_Art36_di" bpmnElement="Flow_TaskPrepareMeasure_To_SendTaskConsultSA_MemberState_Art36">
+        <di:waypoint x="450" y="1190" />
+        <di:waypoint x="530" y="1190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendTaskConsultSA_MemberState_To_EndMemberStateConsultation_Art36_di" bpmnElement="Flow_SendTaskConsultSA_MemberState_To_EndMemberStateConsultation_Art36">
+        <di:waypoint x="720" y="1190" />
+        <di:waypoint x="802" y="1190" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_SendPriorConsultation_Art36_di" bpmnElement="MessageFlow_SendPriorConsultation_Art36">
+        <di:waypoint x="1650" y="350" />
+        <di:waypoint x="1650" y="940" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_RequestAdditionalInfo_Art36_di" bpmnElement="MessageFlow_RequestAdditionalInfo_Art36">
+        <di:waypoint x="2090" y="940" />
+        <di:waypoint x="2090" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SendAdditionalInfo_Art36_di" bpmnElement="MessageFlow_SendAdditionalInfo_Art36">
+        <di:waypoint x="2540" y="230" />
+        <di:waypoint x="2540" y="940" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SendExtensionNotice_Art36_di" bpmnElement="MessageFlow_SendExtensionNotice_Art36">
+        <di:waypoint x="2955" y="940" />
+        <di:waypoint x="2955" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SendWrittenAdvice_Art36_di" bpmnElement="MessageFlow_SendWrittenAdvice_Art36">
+        <di:waypoint x="2955" y="940" />
+        <di:waypoint x="2955" y="460" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_RequestPriorAuthorisation_Art36_di" bpmnElement="MessageFlow_RequestPriorAuthorisation_Art36">
+        <di:waypoint x="685" y="680" />
+        <di:waypoint x="685" y="940" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SendPriorAuthorisationOutcome_Art36_di" bpmnElement="MessageFlow_SendPriorAuthorisationOutcome_Art36">
+        <di:waypoint x="970" y="940" />
+        <di:waypoint x="970" y="680" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_MemberStateConsultSA_Art36_di" bpmnElement="MessageFlow_MemberStateConsultSA_Art36">
+        <di:waypoint x="625" y="1150" />
+        <di:waypoint x="625" y="1080" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

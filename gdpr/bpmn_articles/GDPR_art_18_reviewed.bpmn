@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art18_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:collaboration id="Collaboration_Art18_Reviewed">
+    <bpmn:participant id="Participant_Controller_Art18" name="Controller" processRef="Process_Controller_Art18" />
+    <bpmn:participant id="Participant_DataSubject_Art18" name="Data Subject" />
+
+    <bpmn:messageFlow id="MessageFlow_SendRestrictionRequest_Art18" sourceRef="Participant_DataSubject_Art18" targetRef="ReceiveTask_ReceiveRestrictionRequest_Art18" />
+    <bpmn:messageFlow id="MessageFlow_InformBeforeLift_Art18" sourceRef="SendTask_InformBeforeLift_Art18" targetRef="Participant_DataSubject_Art18" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_Controller_Art18" name="Apply Article 18 restriction right" isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 18 based on the real English legal
+      text in gdpr_articles. The model covers the four restriction grounds in
+      Article 18(1)(a)-(d), the limited-processing bases in Article 18(2), and
+      the duty in Article 18(3) to inform the data subject before the restriction
+      is lifted. Article-external XML prefilters are intentionally not part of
+      the main flow so that the BPMN stays anchored to the visible legal logic of
+      Article 18 itself.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_RestrictionRequested_Art18" name="Need restriction assessment">
+      <bpmn:outgoing>Flow_Start_To_ReceiveTaskReceiveRestrictionRequest_Art18</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:receiveTask id="ReceiveTask_ReceiveRestrictionRequest_Art18" name="Receive restriction request">
+      <bpmn:incoming>Flow_Start_To_ReceiveTaskReceiveRestrictionRequest_Art18</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveTaskReceiveRestrictionRequest_To_GatewayRestrictionGround_Art18</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:exclusiveGateway id="Gateway_RestrictionGround_Art18" name="Which Article 18(1) ground for restriction applies?">
+      <bpmn:incoming>Flow_ReceiveTaskReceiveRestrictionRequest_To_GatewayRestrictionGround_Art18</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayRestrictionGround_To_TaskGroundAccuracyContested_Art18</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayRestrictionGround_To_TaskGroundUnlawfulInsteadOfErasure_Art18</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayRestrictionGround_To_TaskGroundLegalClaims_Art18</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayRestrictionGround_To_TaskGroundPendingObjectionVerification_Art18</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayRestrictionGround_To_EndNoRestrictionGround_Art18</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_GroundAccuracyContested_Art18" name="Assess contested-accuracy ground">
+      <bpmn:incoming>Flow_GatewayRestrictionGround_To_TaskGroundAccuracyContested_Art18</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskGroundAccuracyContested_To_GatewayJoinGrounds_Art18</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_GroundUnlawfulInsteadOfErasure_Art18" name="Assess unlawful-processing ground">
+      <bpmn:incoming>Flow_GatewayRestrictionGround_To_TaskGroundUnlawfulInsteadOfErasure_Art18</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskGroundUnlawfulInsteadOfErasure_To_GatewayJoinGrounds_Art18</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_GroundLegalClaims_Art18" name="Assess legal-claims ground">
+      <bpmn:incoming>Flow_GatewayRestrictionGround_To_TaskGroundLegalClaims_Art18</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskGroundLegalClaims_To_GatewayJoinGrounds_Art18</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_GroundPendingObjectionVerification_Art18" name="Assess pending-objection ground">
+      <bpmn:incoming>Flow_GatewayRestrictionGround_To_TaskGroundPendingObjectionVerification_Art18</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskGroundPendingObjectionVerification_To_GatewayJoinGrounds_Art18</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_JoinGrounds_Art18">
+      <bpmn:incoming>Flow_TaskGroundAccuracyContested_To_GatewayJoinGrounds_Art18</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskGroundUnlawfulInsteadOfErasure_To_GatewayJoinGrounds_Art18</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskGroundLegalClaims_To_GatewayJoinGrounds_Art18</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskGroundPendingObjectionVerification_To_GatewayJoinGrounds_Art18</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinGrounds_To_TaskRestrictProcessing_Art18</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_RestrictProcessing_Art18" name="Restrict processing">
+      <bpmn:incoming>Flow_GatewayJoinGrounds_To_TaskRestrictProcessing_Art18</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskRestrictProcessing_To_GatewayFurtherProcessingNeeded_Art18</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_FurtherProcessingNeeded_Art18" name="Is processing beyond storage needed?">
+      <bpmn:incoming>Flow_TaskRestrictProcessing_To_GatewayFurtherProcessingNeeded_Art18</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayFurtherProcessingNeeded_To_GatewayAllowedProcessingBasis_Art18</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayFurtherProcessingNeeded_To_GatewayLiftRestriction_Art18</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_AllowedProcessingBasis_Art18" name="Which Article 18(2) basis permits the restricted processing?">
+      <bpmn:incoming>Flow_GatewayFurtherProcessingNeeded_To_GatewayAllowedProcessingBasis_Art18</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAllowedProcessingBasis_To_TaskProcessByConsent_Art18</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAllowedProcessingBasis_To_TaskProcessForLegalClaims_Art18</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAllowedProcessingBasis_To_TaskProcessToProtectRights_Art18</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAllowedProcessingBasis_To_TaskProcessForPublicInterest_Art18</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAllowedProcessingBasis_To_EndNoPermittedProcessing_Art18</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ProcessByConsent_Art18" name="Process with data-subject consent">
+      <bpmn:incoming>Flow_GatewayAllowedProcessingBasis_To_TaskProcessByConsent_Art18</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskProcessByConsent_To_GatewayLiftRestriction_Art18</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ProcessForLegalClaims_Art18" name="Process for legal claims">
+      <bpmn:incoming>Flow_GatewayAllowedProcessingBasis_To_TaskProcessForLegalClaims_Art18</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskProcessForLegalClaims_To_GatewayLiftRestriction_Art18</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ProcessToProtectRights_Art18" name="Process to protect others' rights">
+      <bpmn:incoming>Flow_GatewayAllowedProcessingBasis_To_TaskProcessToProtectRights_Art18</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskProcessToProtectRights_To_GatewayLiftRestriction_Art18</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ProcessForPublicInterest_Art18" name="Process for important public interest">
+      <bpmn:incoming>Flow_GatewayAllowedProcessingBasis_To_TaskProcessForPublicInterest_Art18</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskProcessForPublicInterest_To_GatewayLiftRestriction_Art18</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_LiftRestriction_Art18" name="Will the restriction of processing be lifted?">
+      <bpmn:incoming>Flow_GatewayFurtherProcessingNeeded_To_GatewayLiftRestriction_Art18</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskProcessByConsent_To_GatewayLiftRestriction_Art18</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskProcessForLegalClaims_To_GatewayLiftRestriction_Art18</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskProcessToProtectRights_To_GatewayLiftRestriction_Art18</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskProcessForPublicInterest_To_GatewayLiftRestriction_Art18</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayLiftRestriction_To_SendTaskInformBeforeLift_Art18</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayLiftRestriction_To_EndRestrictionRemains_Art18</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="SendTask_InformBeforeLift_Art18" name="Inform before lifting restriction">
+      <bpmn:incoming>Flow_GatewayLiftRestriction_To_SendTaskInformBeforeLift_Art18</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendTaskInformBeforeLift_To_EndRestrictionLifted_Art18</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_NoRestrictionGround_Art18" name="No restriction ground established">
+      <bpmn:incoming>Flow_GatewayRestrictionGround_To_EndNoRestrictionGround_Art18</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_NoPermittedProcessing_Art18" name="Only storage remains permitted">
+      <bpmn:incoming>Flow_GatewayAllowedProcessingBasis_To_EndNoPermittedProcessing_Art18</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_RestrictionRemains_Art18" name="Restriction remains in place">
+      <bpmn:incoming>Flow_GatewayLiftRestriction_To_EndRestrictionRemains_Art18</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_RestrictionLifted_Art18" name="Article 18 completed">
+      <bpmn:incoming>Flow_SendTaskInformBeforeLift_To_EndRestrictionLifted_Art18</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_ReceiveTaskReceiveRestrictionRequest_Art18" sourceRef="StartEvent_RestrictionRequested_Art18" targetRef="ReceiveTask_ReceiveRestrictionRequest_Art18" />
+    <bpmn:sequenceFlow id="Flow_ReceiveTaskReceiveRestrictionRequest_To_GatewayRestrictionGround_Art18" sourceRef="ReceiveTask_ReceiveRestrictionRequest_Art18" targetRef="Gateway_RestrictionGround_Art18" />
+    <bpmn:sequenceFlow id="Flow_GatewayRestrictionGround_To_TaskGroundAccuracyContested_Art18" name="Accuracy is contested pending verification" sourceRef="Gateway_RestrictionGround_Art18" targetRef="Task_GroundAccuracyContested_Art18" />
+    <bpmn:sequenceFlow id="Flow_GatewayRestrictionGround_To_TaskGroundUnlawfulInsteadOfErasure_Art18" name="Processing is unlawful and restriction is requested instead of erasure" sourceRef="Gateway_RestrictionGround_Art18" targetRef="Task_GroundUnlawfulInsteadOfErasure_Art18" />
+    <bpmn:sequenceFlow id="Flow_GatewayRestrictionGround_To_TaskGroundLegalClaims_Art18" name="Controller no longer needs the data but the data subject needs them for legal claims" sourceRef="Gateway_RestrictionGround_Art18" targetRef="Task_GroundLegalClaims_Art18" />
+    <bpmn:sequenceFlow id="Flow_GatewayRestrictionGround_To_TaskGroundPendingObjectionVerification_Art18" name="Article 21(1) objection is pending verification of overriding grounds" sourceRef="Gateway_RestrictionGround_Art18" targetRef="Task_GroundPendingObjectionVerification_Art18" />
+    <bpmn:sequenceFlow id="Flow_GatewayRestrictionGround_To_EndNoRestrictionGround_Art18" name="No ground" sourceRef="Gateway_RestrictionGround_Art18" targetRef="EndEvent_NoRestrictionGround_Art18" />
+    <bpmn:sequenceFlow id="Flow_TaskGroundAccuracyContested_To_GatewayJoinGrounds_Art18" sourceRef="Task_GroundAccuracyContested_Art18" targetRef="Gateway_JoinGrounds_Art18" />
+    <bpmn:sequenceFlow id="Flow_TaskGroundUnlawfulInsteadOfErasure_To_GatewayJoinGrounds_Art18" sourceRef="Task_GroundUnlawfulInsteadOfErasure_Art18" targetRef="Gateway_JoinGrounds_Art18" />
+    <bpmn:sequenceFlow id="Flow_TaskGroundLegalClaims_To_GatewayJoinGrounds_Art18" sourceRef="Task_GroundLegalClaims_Art18" targetRef="Gateway_JoinGrounds_Art18" />
+    <bpmn:sequenceFlow id="Flow_TaskGroundPendingObjectionVerification_To_GatewayJoinGrounds_Art18" sourceRef="Task_GroundPendingObjectionVerification_Art18" targetRef="Gateway_JoinGrounds_Art18" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoinGrounds_To_TaskRestrictProcessing_Art18" sourceRef="Gateway_JoinGrounds_Art18" targetRef="Task_RestrictProcessing_Art18" />
+    <bpmn:sequenceFlow id="Flow_TaskRestrictProcessing_To_GatewayFurtherProcessingNeeded_Art18" sourceRef="Task_RestrictProcessing_Art18" targetRef="Gateway_FurtherProcessingNeeded_Art18" />
+    <bpmn:sequenceFlow id="Flow_GatewayFurtherProcessingNeeded_To_GatewayAllowedProcessingBasis_Art18" name="Yes" sourceRef="Gateway_FurtherProcessingNeeded_Art18" targetRef="Gateway_AllowedProcessingBasis_Art18" />
+    <bpmn:sequenceFlow id="Flow_GatewayFurtherProcessingNeeded_To_GatewayLiftRestriction_Art18" name="No" sourceRef="Gateway_FurtherProcessingNeeded_Art18" targetRef="Gateway_LiftRestriction_Art18" />
+    <bpmn:sequenceFlow id="Flow_GatewayAllowedProcessingBasis_To_TaskProcessByConsent_Art18" name="The data subject consented to the restricted processing" sourceRef="Gateway_AllowedProcessingBasis_Art18" targetRef="Task_ProcessByConsent_Art18" />
+    <bpmn:sequenceFlow id="Flow_GatewayAllowedProcessingBasis_To_TaskProcessForLegalClaims_Art18" name="Processing is needed for legal claims" sourceRef="Gateway_AllowedProcessingBasis_Art18" targetRef="Task_ProcessForLegalClaims_Art18" />
+    <bpmn:sequenceFlow id="Flow_GatewayAllowedProcessingBasis_To_TaskProcessToProtectRights_Art18" name="Processing is needed to protect the rights of another person" sourceRef="Gateway_AllowedProcessingBasis_Art18" targetRef="Task_ProcessToProtectRights_Art18" />
+    <bpmn:sequenceFlow id="Flow_GatewayAllowedProcessingBasis_To_TaskProcessForPublicInterest_Art18" name="Processing is needed for important public interest" sourceRef="Gateway_AllowedProcessingBasis_Art18" targetRef="Task_ProcessForPublicInterest_Art18" />
+    <bpmn:sequenceFlow id="Flow_GatewayAllowedProcessingBasis_To_EndNoPermittedProcessing_Art18" name="No permitted basis" sourceRef="Gateway_AllowedProcessingBasis_Art18" targetRef="EndEvent_NoPermittedProcessing_Art18" />
+    <bpmn:sequenceFlow id="Flow_TaskProcessByConsent_To_GatewayLiftRestriction_Art18" sourceRef="Task_ProcessByConsent_Art18" targetRef="Gateway_LiftRestriction_Art18" />
+    <bpmn:sequenceFlow id="Flow_TaskProcessForLegalClaims_To_GatewayLiftRestriction_Art18" sourceRef="Task_ProcessForLegalClaims_Art18" targetRef="Gateway_LiftRestriction_Art18" />
+    <bpmn:sequenceFlow id="Flow_TaskProcessToProtectRights_To_GatewayLiftRestriction_Art18" sourceRef="Task_ProcessToProtectRights_Art18" targetRef="Gateway_LiftRestriction_Art18" />
+    <bpmn:sequenceFlow id="Flow_TaskProcessForPublicInterest_To_GatewayLiftRestriction_Art18" sourceRef="Task_ProcessForPublicInterest_Art18" targetRef="Gateway_LiftRestriction_Art18" />
+    <bpmn:sequenceFlow id="Flow_GatewayLiftRestriction_To_SendTaskInformBeforeLift_Art18" name="Yes" sourceRef="Gateway_LiftRestriction_Art18" targetRef="SendTask_InformBeforeLift_Art18" />
+    <bpmn:sequenceFlow id="Flow_GatewayLiftRestriction_To_EndRestrictionRemains_Art18" name="No" sourceRef="Gateway_LiftRestriction_Art18" targetRef="EndEvent_RestrictionRemains_Art18" />
+    <bpmn:sequenceFlow id="Flow_SendTaskInformBeforeLift_To_EndRestrictionLifted_Art18" sourceRef="SendTask_InformBeforeLift_Art18" targetRef="EndEvent_RestrictionLifted_Art18" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art18_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art18_Reviewed" bpmnElement="Collaboration_Art18_Reviewed">
+      <bpmndi:BPMNShape id="Participant_Controller_Art18_di" bpmnElement="Participant_Controller_Art18" isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="5000" height="980" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_DataSubject_Art18_di" bpmnElement="Participant_DataSubject_Art18" isHorizontal="true">
+        <dc:Bounds x="60" y="1060" width="5000" height="120" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_RestrictionRequested_Art18_di" bpmnElement="StartEvent_RestrictionRequested_Art18">
+        <dc:Bounds x="120" y="452" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_ReceiveRestrictionRequest_Art18_di" bpmnElement="ReceiveTask_ReceiveRestrictionRequest_Art18">
+        <dc:Bounds x="240" y="430" width="300" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_RestrictionGround_Art18_di" bpmnElement="Gateway_RestrictionGround_Art18" isMarkerVisible="true">
+        <dc:Bounds x="860" y="445" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_GroundAccuracyContested_Art18_di" bpmnElement="Task_GroundAccuracyContested_Art18">
+        <dc:Bounds x="1120" y="80" width="620" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_GroundUnlawfulInsteadOfErasure_Art18_di" bpmnElement="Task_GroundUnlawfulInsteadOfErasure_Art18">
+        <dc:Bounds x="1120" y="180" width="690" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_GroundLegalClaims_Art18_di" bpmnElement="Task_GroundLegalClaims_Art18">
+        <dc:Bounds x="1120" y="280" width="650" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_GroundPendingObjectionVerification_Art18_di" bpmnElement="Task_GroundPendingObjectionVerification_Art18">
+        <dc:Bounds x="1120" y="380" width="700" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinGrounds_Art18_di" bpmnElement="Gateway_JoinGrounds_Art18" isMarkerVisible="true">
+        <dc:Bounds x="1940" y="445" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RestrictProcessing_Art18_di" bpmnElement="Task_RestrictProcessing_Art18">
+        <dc:Bounds x="2140" y="430" width="360" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_FurtherProcessingNeeded_Art18_di" bpmnElement="Gateway_FurtherProcessingNeeded_Art18" isMarkerVisible="true">
+        <dc:Bounds x="2640" y="445" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AllowedProcessingBasis_Art18_di" bpmnElement="Gateway_AllowedProcessingBasis_Art18" isMarkerVisible="true">
+        <dc:Bounds x="2860" y="445" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ProcessByConsent_Art18_di" bpmnElement="Task_ProcessByConsent_Art18">
+        <dc:Bounds x="3110" y="80" width="460" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ProcessForLegalClaims_Art18_di" bpmnElement="Task_ProcessForLegalClaims_Art18">
+        <dc:Bounds x="3110" y="180" width="540" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ProcessToProtectRights_Art18_di" bpmnElement="Task_ProcessToProtectRights_Art18">
+        <dc:Bounds x="3110" y="280" width="560" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ProcessForPublicInterest_Art18_di" bpmnElement="Task_ProcessForPublicInterest_Art18">
+        <dc:Bounds x="3110" y="380" width="660" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_LiftRestriction_Art18_di" bpmnElement="Gateway_LiftRestriction_Art18" isMarkerVisible="true">
+        <dc:Bounds x="3920" y="445" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_InformBeforeLift_Art18_di" bpmnElement="SendTask_InformBeforeLift_Art18">
+        <dc:Bounds x="4140" y="430" width="520" height="80" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="EndEvent_NoRestrictionGround_Art18_di" bpmnElement="EndEvent_NoRestrictionGround_Art18">
+        <dc:Bounds x="1037" y="717" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NoPermittedProcessing_Art18_di" bpmnElement="EndEvent_NoPermittedProcessing_Art18">
+        <dc:Bounds x="3122" y="717" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_RestrictionRemains_Art18_di" bpmnElement="EndEvent_RestrictionRemains_Art18">
+        <dc:Bounds x="4002" y="717" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_RestrictionLifted_Art18_di" bpmnElement="EndEvent_RestrictionLifted_Art18">
+        <dc:Bounds x="4732" y="452" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_ReceiveTaskReceiveRestrictionRequest_Art18_di" bpmnElement="Flow_Start_To_ReceiveTaskReceiveRestrictionRequest_Art18">
+        <di:waypoint x="156" y="470" />
+        <di:waypoint x="240" y="470" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveTaskReceiveRestrictionRequest_To_GatewayRestrictionGround_Art18_di" bpmnElement="Flow_ReceiveTaskReceiveRestrictionRequest_To_GatewayRestrictionGround_Art18">
+        <di:waypoint x="540" y="470" />
+        <di:waypoint x="860" y="470" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRestrictionGround_To_TaskGroundAccuracyContested_Art18_di" bpmnElement="Flow_GatewayRestrictionGround_To_TaskGroundAccuracyContested_Art18">
+        <di:waypoint x="885" y="445" />
+        <di:waypoint x="885" y="120" />
+        <di:waypoint x="1120" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRestrictionGround_To_TaskGroundUnlawfulInsteadOfErasure_Art18_di" bpmnElement="Flow_GatewayRestrictionGround_To_TaskGroundUnlawfulInsteadOfErasure_Art18">
+        <di:waypoint x="885" y="445" />
+        <di:waypoint x="885" y="220" />
+        <di:waypoint x="1120" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRestrictionGround_To_TaskGroundLegalClaims_Art18_di" bpmnElement="Flow_GatewayRestrictionGround_To_TaskGroundLegalClaims_Art18">
+        <di:waypoint x="885" y="445" />
+        <di:waypoint x="885" y="320" />
+        <di:waypoint x="1120" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRestrictionGround_To_TaskGroundPendingObjectionVerification_Art18_di" bpmnElement="Flow_GatewayRestrictionGround_To_TaskGroundPendingObjectionVerification_Art18">
+        <di:waypoint x="910" y="470" />
+        <di:waypoint x="1120" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRestrictionGround_To_EndNoRestrictionGround_Art18_di" bpmnElement="Flow_GatewayRestrictionGround_To_EndNoRestrictionGround_Art18">
+        <di:waypoint x="885" y="495" />
+        <di:waypoint x="885" y="735" />
+        <di:waypoint x="1037" y="735" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskGroundAccuracyContested_To_GatewayJoinGrounds_Art18_di" bpmnElement="Flow_TaskGroundAccuracyContested_To_GatewayJoinGrounds_Art18">
+        <di:waypoint x="1740" y="120" />
+        <di:waypoint x="1965" y="120" />
+        <di:waypoint x="1965" y="445" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskGroundUnlawfulInsteadOfErasure_To_GatewayJoinGrounds_Art18_di" bpmnElement="Flow_TaskGroundUnlawfulInsteadOfErasure_To_GatewayJoinGrounds_Art18">
+        <di:waypoint x="1810" y="220" />
+        <di:waypoint x="1965" y="220" />
+        <di:waypoint x="1965" y="445" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskGroundLegalClaims_To_GatewayJoinGrounds_Art18_di" bpmnElement="Flow_TaskGroundLegalClaims_To_GatewayJoinGrounds_Art18">
+        <di:waypoint x="1770" y="320" />
+        <di:waypoint x="1965" y="320" />
+        <di:waypoint x="1965" y="445" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskGroundPendingObjectionVerification_To_GatewayJoinGrounds_Art18_di" bpmnElement="Flow_TaskGroundPendingObjectionVerification_To_GatewayJoinGrounds_Art18">
+        <di:waypoint x="1820" y="420" />
+        <di:waypoint x="1940" y="470" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinGrounds_To_TaskRestrictProcessing_Art18_di" bpmnElement="Flow_GatewayJoinGrounds_To_TaskRestrictProcessing_Art18">
+        <di:waypoint x="1990" y="470" />
+        <di:waypoint x="2140" y="470" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskRestrictProcessing_To_GatewayFurtherProcessingNeeded_Art18_di" bpmnElement="Flow_TaskRestrictProcessing_To_GatewayFurtherProcessingNeeded_Art18">
+        <di:waypoint x="2500" y="470" />
+        <di:waypoint x="2640" y="470" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayFurtherProcessingNeeded_To_GatewayAllowedProcessingBasis_Art18_di" bpmnElement="Flow_GatewayFurtherProcessingNeeded_To_GatewayAllowedProcessingBasis_Art18">
+        <di:waypoint x="2690" y="470" />
+        <di:waypoint x="2860" y="470" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayFurtherProcessingNeeded_To_GatewayLiftRestriction_Art18_di" bpmnElement="Flow_GatewayFurtherProcessingNeeded_To_GatewayLiftRestriction_Art18">
+        <di:waypoint x="2665" y="495" />
+        <di:waypoint x="2665" y="735" />
+        <di:waypoint x="3945" y="735" />
+        <di:waypoint x="3945" y="495" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAllowedProcessingBasis_To_TaskProcessByConsent_Art18_di" bpmnElement="Flow_GatewayAllowedProcessingBasis_To_TaskProcessByConsent_Art18">
+        <di:waypoint x="2885" y="445" />
+        <di:waypoint x="2885" y="120" />
+        <di:waypoint x="3110" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAllowedProcessingBasis_To_TaskProcessForLegalClaims_Art18_di" bpmnElement="Flow_GatewayAllowedProcessingBasis_To_TaskProcessForLegalClaims_Art18">
+        <di:waypoint x="2885" y="445" />
+        <di:waypoint x="2885" y="220" />
+        <di:waypoint x="3110" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAllowedProcessingBasis_To_TaskProcessToProtectRights_Art18_di" bpmnElement="Flow_GatewayAllowedProcessingBasis_To_TaskProcessToProtectRights_Art18">
+        <di:waypoint x="2885" y="445" />
+        <di:waypoint x="2885" y="320" />
+        <di:waypoint x="3110" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAllowedProcessingBasis_To_TaskProcessForPublicInterest_Art18_di" bpmnElement="Flow_GatewayAllowedProcessingBasis_To_TaskProcessForPublicInterest_Art18">
+        <di:waypoint x="2910" y="470" />
+        <di:waypoint x="3110" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAllowedProcessingBasis_To_EndNoPermittedProcessing_Art18_di" bpmnElement="Flow_GatewayAllowedProcessingBasis_To_EndNoPermittedProcessing_Art18">
+        <di:waypoint x="2885" y="495" />
+        <di:waypoint x="2885" y="735" />
+        <di:waypoint x="3122" y="735" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskProcessByConsent_To_GatewayLiftRestriction_Art18_di" bpmnElement="Flow_TaskProcessByConsent_To_GatewayLiftRestriction_Art18">
+        <di:waypoint x="3570" y="120" />
+        <di:waypoint x="3945" y="120" />
+        <di:waypoint x="3945" y="445" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskProcessForLegalClaims_To_GatewayLiftRestriction_Art18_di" bpmnElement="Flow_TaskProcessForLegalClaims_To_GatewayLiftRestriction_Art18">
+        <di:waypoint x="3650" y="220" />
+        <di:waypoint x="3945" y="220" />
+        <di:waypoint x="3945" y="445" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskProcessToProtectRights_To_GatewayLiftRestriction_Art18_di" bpmnElement="Flow_TaskProcessToProtectRights_To_GatewayLiftRestriction_Art18">
+        <di:waypoint x="3670" y="320" />
+        <di:waypoint x="3945" y="320" />
+        <di:waypoint x="3945" y="445" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TaskProcessForPublicInterest_To_GatewayLiftRestriction_Art18_di" bpmnElement="Flow_TaskProcessForPublicInterest_To_GatewayLiftRestriction_Art18">
+        <di:waypoint x="3770" y="420" />
+        <di:waypoint x="3920" y="470" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayLiftRestriction_To_SendTaskInformBeforeLift_Art18_di" bpmnElement="Flow_GatewayLiftRestriction_To_SendTaskInformBeforeLift_Art18">
+        <di:waypoint x="3970" y="470" />
+        <di:waypoint x="4140" y="470" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayLiftRestriction_To_EndRestrictionRemains_Art18_di" bpmnElement="Flow_GatewayLiftRestriction_To_EndRestrictionRemains_Art18">
+        <di:waypoint x="3945" y="495" />
+        <di:waypoint x="3945" y="735" />
+        <di:waypoint x="4002" y="735" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendTaskInformBeforeLift_To_EndRestrictionLifted_Art18_di" bpmnElement="Flow_SendTaskInformBeforeLift_To_EndRestrictionLifted_Art18">
+        <di:waypoint x="4660" y="470" />
+        <di:waypoint x="4732" y="470" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_SendRestrictionRequest_Art18_di" bpmnElement="MessageFlow_SendRestrictionRequest_Art18">
+        <di:waypoint x="390" y="1060" />
+        <di:waypoint x="390" y="510" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_InformBeforeLift_Art18_di" bpmnElement="MessageFlow_InformBeforeLift_Art18">
+        <di:waypoint x="4400" y="510" />
+        <di:waypoint x="4400" y="1060" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
