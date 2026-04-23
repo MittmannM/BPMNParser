@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Controller_Art18" name="Controller" poolType="active" processRef="Process_Controller_Art18" />
+    <pool id="Participant_DataSubject_Art18" name="Data Subject" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="ReceiveTask_ReceiveRestrictionRequest_Art18" name="Receive restriction request" type="receiveTask" poolRef="Participant_Controller_Art18" />
+    <task id="SendTask_InformBeforeLift_Art18" name="Inform before lifting restriction" type="sendTask" poolRef="Participant_Controller_Art18" />
+    <task id="Task_GroundAccuracyContested_Art18" name="Assess contested-accuracy ground" type="task" poolRef="Participant_Controller_Art18" />
+    <task id="Task_GroundLegalClaims_Art18" name="Assess legal-claims ground" type="task" poolRef="Participant_Controller_Art18" />
+    <task id="Task_GroundPendingObjectionVerification_Art18" name="Assess pending-objection ground" type="task" poolRef="Participant_Controller_Art18" />
+    <task id="Task_GroundUnlawfulInsteadOfErasure_Art18" name="Assess unlawful-processing ground" type="task" poolRef="Participant_Controller_Art18" />
+    <task id="Task_ProcessByConsent_Art18" name="Process with data-subject consent" type="task" poolRef="Participant_Controller_Art18" />
+    <task id="Task_ProcessForLegalClaims_Art18" name="Process for legal claims" type="task" poolRef="Participant_Controller_Art18" />
+    <task id="Task_ProcessForPublicInterest_Art18" name="Process for important public interest" type="task" poolRef="Participant_Controller_Art18" />
+    <task id="Task_ProcessToProtectRights_Art18" name="Process to protect others' rights" type="task" poolRef="Participant_Controller_Art18" />
+    <task id="Task_RestrictProcessing_Art18" name="Restrict processing" type="task" poolRef="Participant_Controller_Art18" />
+  </tasks>
+  <events>
+    <event id="EndEvent_NoPermittedProcessing_Art18" name="Only storage remains permitted" type="endEvent" poolRef="Participant_Controller_Art18" />
+    <event id="EndEvent_NoRestrictionGround_Art18" name="No restriction ground established" type="endEvent" poolRef="Participant_Controller_Art18" />
+    <event id="EndEvent_RestrictionLifted_Art18" name="Article 18 completed" type="endEvent" poolRef="Participant_Controller_Art18" />
+    <event id="EndEvent_RestrictionRemains_Art18" name="Restriction remains in place" type="endEvent" poolRef="Participant_Controller_Art18" />
+    <event id="StartEvent_RestrictionRequested_Art18" name="Need restriction assessment" type="startEvent" poolRef="Participant_Controller_Art18" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_AllowedProcessingBasis_Art18" name="Which Article 18(2) basis permits the restricted processing?" type="exclusiveGateway" poolRef="Participant_Controller_Art18" />
+    <gateway id="Gateway_FurtherProcessingNeeded_Art18" name="Is processing beyond storage needed?" type="exclusiveGateway" poolRef="Participant_Controller_Art18" />
+    <gateway id="Gateway_JoinGrounds_Art18" type="exclusiveGateway" poolRef="Participant_Controller_Art18" />
+    <gateway id="Gateway_LiftRestriction_Art18" name="Will the restriction of processing be lifted?" type="exclusiveGateway" poolRef="Participant_Controller_Art18" />
+    <gateway id="Gateway_RestrictionGround_Art18" name="Which Article 18(1) ground for restriction applies?" type="exclusiveGateway" poolRef="Participant_Controller_Art18" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_GatewayAllowedProcessingBasis_To_EndNoPermittedProcessing_Art18" name="No permitted basis" sourceRef="Gateway_AllowedProcessingBasis_Art18" targetRef="EndEvent_NoPermittedProcessing_Art18" />
+    <sequenceFlow id="Flow_GatewayAllowedProcessingBasis_To_TaskProcessByConsent_Art18" name="The data subject consented to the restricted processing" sourceRef="Gateway_AllowedProcessingBasis_Art18" targetRef="Task_ProcessByConsent_Art18" />
+    <sequenceFlow id="Flow_GatewayAllowedProcessingBasis_To_TaskProcessForLegalClaims_Art18" name="Processing is needed for legal claims" sourceRef="Gateway_AllowedProcessingBasis_Art18" targetRef="Task_ProcessForLegalClaims_Art18" />
+    <sequenceFlow id="Flow_GatewayAllowedProcessingBasis_To_TaskProcessForPublicInterest_Art18" name="Processing is needed for important public interest" sourceRef="Gateway_AllowedProcessingBasis_Art18" targetRef="Task_ProcessForPublicInterest_Art18" />
+    <sequenceFlow id="Flow_GatewayAllowedProcessingBasis_To_TaskProcessToProtectRights_Art18" name="Processing is needed to protect the rights of another person" sourceRef="Gateway_AllowedProcessingBasis_Art18" targetRef="Task_ProcessToProtectRights_Art18" />
+    <sequenceFlow id="Flow_GatewayFurtherProcessingNeeded_To_GatewayAllowedProcessingBasis_Art18" name="Yes" sourceRef="Gateway_FurtherProcessingNeeded_Art18" targetRef="Gateway_AllowedProcessingBasis_Art18" />
+    <sequenceFlow id="Flow_GatewayFurtherProcessingNeeded_To_GatewayLiftRestriction_Art18" name="No" sourceRef="Gateway_FurtherProcessingNeeded_Art18" targetRef="Gateway_LiftRestriction_Art18" />
+    <sequenceFlow id="Flow_GatewayJoinGrounds_To_TaskRestrictProcessing_Art18" sourceRef="Gateway_JoinGrounds_Art18" targetRef="Task_RestrictProcessing_Art18" />
+    <sequenceFlow id="Flow_GatewayLiftRestriction_To_EndRestrictionRemains_Art18" name="No" sourceRef="Gateway_LiftRestriction_Art18" targetRef="EndEvent_RestrictionRemains_Art18" />
+    <sequenceFlow id="Flow_GatewayLiftRestriction_To_SendTaskInformBeforeLift_Art18" name="Yes" sourceRef="Gateway_LiftRestriction_Art18" targetRef="SendTask_InformBeforeLift_Art18" />
+    <sequenceFlow id="Flow_GatewayRestrictionGround_To_EndNoRestrictionGround_Art18" name="No ground" sourceRef="Gateway_RestrictionGround_Art18" targetRef="EndEvent_NoRestrictionGround_Art18" />
+    <sequenceFlow id="Flow_GatewayRestrictionGround_To_TaskGroundAccuracyContested_Art18" name="Accuracy is contested pending verification" sourceRef="Gateway_RestrictionGround_Art18" targetRef="Task_GroundAccuracyContested_Art18" />
+    <sequenceFlow id="Flow_GatewayRestrictionGround_To_TaskGroundLegalClaims_Art18" name="Controller no longer needs the data but the data subject needs them for legal claims" sourceRef="Gateway_RestrictionGround_Art18" targetRef="Task_GroundLegalClaims_Art18" />
+    <sequenceFlow id="Flow_GatewayRestrictionGround_To_TaskGroundPendingObjectionVerification_Art18" name="Article 21(1) objection is pending verification of overriding grounds" sourceRef="Gateway_RestrictionGround_Art18" targetRef="Task_GroundPendingObjectionVerification_Art18" />
+    <sequenceFlow id="Flow_GatewayRestrictionGround_To_TaskGroundUnlawfulInsteadOfErasure_Art18" name="Processing is unlawful and restriction is requested instead of erasure" sourceRef="Gateway_RestrictionGround_Art18" targetRef="Task_GroundUnlawfulInsteadOfErasure_Art18" />
+    <sequenceFlow id="Flow_ReceiveTaskReceiveRestrictionRequest_To_GatewayRestrictionGround_Art18" sourceRef="ReceiveTask_ReceiveRestrictionRequest_Art18" targetRef="Gateway_RestrictionGround_Art18" />
+    <sequenceFlow id="Flow_SendTaskInformBeforeLift_To_EndRestrictionLifted_Art18" sourceRef="SendTask_InformBeforeLift_Art18" targetRef="EndEvent_RestrictionLifted_Art18" />
+    <sequenceFlow id="Flow_Start_To_ReceiveTaskReceiveRestrictionRequest_Art18" sourceRef="StartEvent_RestrictionRequested_Art18" targetRef="ReceiveTask_ReceiveRestrictionRequest_Art18" />
+    <sequenceFlow id="Flow_TaskGroundAccuracyContested_To_GatewayJoinGrounds_Art18" sourceRef="Task_GroundAccuracyContested_Art18" targetRef="Gateway_JoinGrounds_Art18" />
+    <sequenceFlow id="Flow_TaskGroundLegalClaims_To_GatewayJoinGrounds_Art18" sourceRef="Task_GroundLegalClaims_Art18" targetRef="Gateway_JoinGrounds_Art18" />
+    <sequenceFlow id="Flow_TaskGroundPendingObjectionVerification_To_GatewayJoinGrounds_Art18" sourceRef="Task_GroundPendingObjectionVerification_Art18" targetRef="Gateway_JoinGrounds_Art18" />
+    <sequenceFlow id="Flow_TaskGroundUnlawfulInsteadOfErasure_To_GatewayJoinGrounds_Art18" sourceRef="Task_GroundUnlawfulInsteadOfErasure_Art18" targetRef="Gateway_JoinGrounds_Art18" />
+    <sequenceFlow id="Flow_TaskProcessByConsent_To_GatewayLiftRestriction_Art18" sourceRef="Task_ProcessByConsent_Art18" targetRef="Gateway_LiftRestriction_Art18" />
+    <sequenceFlow id="Flow_TaskProcessForLegalClaims_To_GatewayLiftRestriction_Art18" sourceRef="Task_ProcessForLegalClaims_Art18" targetRef="Gateway_LiftRestriction_Art18" />
+    <sequenceFlow id="Flow_TaskProcessForPublicInterest_To_GatewayLiftRestriction_Art18" sourceRef="Task_ProcessForPublicInterest_Art18" targetRef="Gateway_LiftRestriction_Art18" />
+    <sequenceFlow id="Flow_TaskProcessToProtectRights_To_GatewayLiftRestriction_Art18" sourceRef="Task_ProcessToProtectRights_Art18" targetRef="Gateway_LiftRestriction_Art18" />
+    <sequenceFlow id="Flow_TaskRestrictProcessing_To_GatewayFurtherProcessingNeeded_Art18" sourceRef="Task_RestrictProcessing_Art18" targetRef="Gateway_FurtherProcessingNeeded_Art18" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_InformBeforeLift_Art18" sourceRef="SendTask_InformBeforeLift_Art18" targetRef="Participant_DataSubject_Art18" />
+    <messageFlow id="MessageFlow_SendRestrictionRequest_Art18" sourceRef="Participant_DataSubject_Art18" targetRef="ReceiveTask_ReceiveRestrictionRequest_Art18" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

@@ -6,17 +6,17 @@
   </pools>
   <lanes />
   <tasks>
-    <task id="ReceiveTask_ReceiveThirdCountryRequest_Art48" name="Receive the third-country request requiring transfer or disclosure" type="receiveTask" poolRef="Participant_ControllerProcessor_Art48" />
-    <task id="SendTask_TransferOrDiscloseData_Art48" name="Transfer or disclose the personal data as permitted by the agreement" type="sendTask" poolRef="Participant_ControllerProcessor_Art48" />
-    <task id="Task_ImplementAgreementBasis_Art48" name="Implement the legal claim under the applicable international agreement" type="task" poolRef="Participant_ControllerProcessor_Art48" />
+    <task id="ReceiveTask_ReceiveThirdCountryRequest_Art48" name="Receive transfer or disclosure order" type="receiveTask" poolRef="Participant_ControllerProcessor_Art48" />
+    <task id="SendTask_TransferOrDiscloseData_Art48" name="Transfer or disclose data" type="sendTask" poolRef="Participant_ControllerProcessor_Art48" />
+    <task id="Task_ImplementAgreementBasis_Art48" name="Apply agreement basis" type="task" poolRef="Participant_ControllerProcessor_Art48" />
   </tasks>
   <events>
-    <event id="EndEvent_Completed_Art48" name="Transfer or disclosure completed on the agreement basis" type="endEvent" poolRef="Participant_ControllerProcessor_Art48" />
-    <event id="EndEvent_NotRecognised_Art48" name="The request is not recognised or enforceable under Article 48; assess any other Chapter V ground separately" type="endEvent" poolRef="Participant_ControllerProcessor_Art48" />
-    <event id="StartEvent_AssessThirdCountryRequest_Art48" name="Need to assess a third-country judgment or administrative decision" type="startEvent" poolRef="Participant_ControllerProcessor_Art48" />
+    <event id="EndEvent_Completed_Art48" name="Transfer or disclosure completed" type="endEvent" poolRef="Participant_ControllerProcessor_Art48" />
+    <event id="EndEvent_NotRecognised_Art48" name="Do not recognise or enforce order" type="endEvent" poolRef="Participant_ControllerProcessor_Art48" />
+    <event id="StartEvent_AssessThirdCountryRequest_Art48" name="Receive third-country order" type="startEvent" poolRef="Participant_ControllerProcessor_Art48" />
   </events>
   <gateways>
-    <gateway id="Gateway_InternationalAgreement_Art48" name="Is the request based on an international agreement in force between the requesting third country and the Union or a Member State?" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art48" />
+    <gateway id="Gateway_InternationalAgreement_Art48" name="Is the order based on an international agreement in force?" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art48" />
   </gateways>
   <sequenceFlows>
     <sequenceFlow id="Flow_GatewayAgreement_To_EndNotRecognised_Art48" name="No" sourceRef="Gateway_InternationalAgreement_Art48" targetRef="EndEvent_NotRecognised_Art48" />

@@ -6,29 +6,30 @@
   </pools>
   <lanes />
   <tasks>
-    <task id="SendTask_SendArticle14Notice_Art14" name="Provide the Article 14 information at the applicable Article 14(3) timing point" type="sendTask" poolRef="Participant_Controller_Art14" />
-    <task id="SendTask_SendFurtherPurposeNotice_Art14" name="Inform the data subject of the new purpose and provide relevant further information before the further processing" type="sendTask" poolRef="Participant_Controller_Art14" />
-    <task id="Task_ImplementMeasuresEffort_Art14" name="Implement appropriate measures to protect the data subject's rights and freedoms and legitimate interests" type="task" poolRef="Participant_Controller_Art14" />
-    <task id="Task_ImplementMeasuresLaw_Art14" name="Implement measures required by law to protect the data subject's legitimate interests" type="task" poolRef="Participant_Controller_Art14" />
-    <task id="Task_PrepareAutomatedDecisionInfo_Art14" name="Prepare information about automated decision-making, including profiling, the logic involved, and the significance and envisaged consequences" type="task" poolRef="Participant_Controller_Art14" />
-    <task id="Task_PrepareCategories_Art14" name="Prepare the categories of personal data concerned" type="task" poolRef="Participant_Controller_Art14" />
-    <task id="Task_PrepareDPO_Art14" name="Prepare the data protection officer's contact details where applicable" type="task" poolRef="Participant_Controller_Art14" />
-    <task id="Task_PrepareIdentity_Art14" name="Prepare the controller's identity and contact details and the representative's details where applicable" type="task" poolRef="Participant_Controller_Art14" />
-    <task id="Task_PrepareLegitimateInterests_Art14" name="Prepare the legitimate interests pursued by the controller or by a third party" type="task" poolRef="Participant_Controller_Art14" />
-    <task id="Task_PreparePurposeBasis_Art14" name="Prepare the purposes of processing and the legal basis for the processing" type="task" poolRef="Participant_Controller_Art14" />
-    <task id="Task_PrepareRecipients_Art14" name="Prepare the recipients or categories of recipients where applicable" type="task" poolRef="Participant_Controller_Art14" />
-    <task id="Task_PrepareRetentionInfo_Art14" name="Prepare the storage period or, if that is not possible, the criteria used to determine it" type="task" poolRef="Participant_Controller_Art14" />
-    <task id="Task_PrepareRightsInfo_Art14" name="Prepare rights information including access, rectification, erasure, restriction, portability, objection, withdrawal of consent where relevant, and the right to lodge a complaint" type="task" poolRef="Participant_Controller_Art14" />
-    <task id="Task_PrepareSourceInfo_Art14" name="Prepare information about the source of the personal data and whether it came from publicly accessible sources" type="task" poolRef="Participant_Controller_Art14" />
-    <task id="Task_PrepareTransferInfo_Art14" name="Prepare transfer information, adequacy-decision status, safeguards, and how to obtain a copy or where they are available" type="task" poolRef="Participant_Controller_Art14" />
-    <task id="Task_SendNoticeWithinOneMonth_Art14" name="Ensure the Article 14 information is ready to be sent within one month after obtaining the personal data" type="task" poolRef="Participant_Controller_Art14" />
+    <task id="SendTask_SendArticle14Notice_Art14" name="Send Article 14 notice" type="sendTask" poolRef="Participant_Controller_Art14" />
+    <task id="SendTask_SendFurtherPurposeNotice_Art14" name="Send further-purpose notice" type="sendTask" poolRef="Participant_Controller_Art14" />
+    <task id="Task_ImplementMeasuresEffort_Art14" name="Implement protective measures" type="task" poolRef="Participant_Controller_Art14" />
+    <task id="Task_ImplementMeasuresLaw_Art14" name="Implement legally required measures" type="task" poolRef="Participant_Controller_Art14" />
+    <task id="Task_PrepareAutomatedDecisionInfo_Art14" name="Prepare automated-decision information" type="task" poolRef="Participant_Controller_Art14" />
+    <task id="Task_PrepareCategories_Art14" name="Prepare data categories" type="task" poolRef="Participant_Controller_Art14" />
+    <task id="Task_PrepareDPO_Art14" name="Prepare DPO contact details" type="task" poolRef="Participant_Controller_Art14" />
+    <task id="Task_PrepareIdentity_Art14" name="Prepare identity and contact details" type="task" poolRef="Participant_Controller_Art14" />
+    <task id="Task_PrepareLegitimateInterests_Art14" name="Prepare legitimate interests" type="task" poolRef="Participant_Controller_Art14" />
+    <task id="Task_PreparePurposeBasis_Art14" name="Prepare purposes and legal basis" type="task" poolRef="Participant_Controller_Art14" />
+    <task id="Task_PrepareRecipients_Art14" name="Prepare recipients" type="task" poolRef="Participant_Controller_Art14" />
+    <task id="Task_PrepareRetentionInfo_Art14" name="Prepare retention information" type="task" poolRef="Participant_Controller_Art14" />
+    <task id="Task_PrepareRightsInfo_Art14" name="Prepare rights information" type="task" poolRef="Participant_Controller_Art14" />
+    <task id="Task_PrepareSourceInfo_Art14" name="Prepare source information" type="task" poolRef="Participant_Controller_Art14" />
+    <task id="Task_PrepareTransferInfo_Art14" name="Prepare transfer information" type="task" poolRef="Participant_Controller_Art14" />
+    <task id="Task_SendNoticeWithinOneMonth_Art14" name="Prepare notice within one month" type="task" poolRef="Participant_Controller_Art14" />
   </tasks>
   <events>
-    <event id="EndEvent_Article14Completed_Art14" name="Article 14 information duties are completed" type="endEvent" poolRef="Participant_Controller_Art14" />
-    <event id="EndEvent_NoDirectNotice_Art14" name="No direct Article 14 notice is sent because an Article 14(5) exception applies" type="endEvent" poolRef="Participant_Controller_Art14" />
+    <event id="EndEvent_Article14Completed_Art14" name="Article 14 duties completed" type="endEvent" poolRef="Participant_Controller_Art14" />
+    <event id="EndEvent_NoDirectNotice_Art14" name="No direct Article 14 notice needed" type="endEvent" poolRef="Participant_Controller_Art14" />
     <event id="StartEvent_ObtainData_Art14" name="Obtain personal data from a source other than the data subject" type="startEvent" poolRef="Participant_Controller_Art14" />
   </events>
   <gateways>
+    <gateway id="Gateway_ExceptionA_Art14" name="Does the data subject already have the information?" type="exclusiveGateway" poolRef="Participant_Controller_Art14" />
     <gateway id="Gateway_ExceptionB_Art14" name="Would providing the information prove impossible or involve a disproportionate effort?" type="exclusiveGateway" poolRef="Participant_Controller_Art14" />
     <gateway id="Gateway_ExceptionC_Art14" name="Is obtaining or disclosure expressly laid down by Union or Member State law with appropriate protective measures?" type="exclusiveGateway" poolRef="Participant_Controller_Art14" />
     <gateway id="Gateway_ExceptionD_Art14" name="Is the data covered by an obligation of professional secrecy or another confidentiality obligation?" type="exclusiveGateway" poolRef="Participant_Controller_Art14" />
@@ -41,6 +42,8 @@
     <gateway id="Gateway_TimingDisclosure_Art14" name="Will the personal data be disclosed to another recipient before one month has passed?" type="exclusiveGateway" poolRef="Participant_Controller_Art14" />
   </gateways>
   <sequenceFlows>
+    <sequenceFlow id="Flow_GatewayExceptionA_To_EndNoDirectNotice_Art14" name="Yes" sourceRef="Gateway_ExceptionA_Art14" targetRef="EndEvent_NoDirectNotice_Art14" />
+    <sequenceFlow id="Flow_GatewayExceptionA_To_GatewayExceptionB_Art14" name="No" sourceRef="Gateway_ExceptionA_Art14" targetRef="Gateway_ExceptionB_Art14" />
     <sequenceFlow id="Flow_GatewayExceptionB_To_GatewayExceptionC_Art14" name="No" sourceRef="Gateway_ExceptionB_Art14" targetRef="Gateway_ExceptionC_Art14" />
     <sequenceFlow id="Flow_GatewayExceptionB_To_TaskImplementMeasuresEffort_Art14" name="Yes" sourceRef="Gateway_ExceptionB_Art14" targetRef="Task_ImplementMeasuresEffort_Art14" />
     <sequenceFlow id="Flow_GatewayExceptionC_To_GatewayExceptionD_Art14" name="No" sourceRef="Gateway_ExceptionC_Art14" targetRef="Gateway_ExceptionD_Art14" />
@@ -64,7 +67,7 @@
     <sequenceFlow id="Flow_GatewayTimingDisclosure_To_TaskSendNoticeWithinOneMonth_Art14" name="No" sourceRef="Gateway_TimingDisclosure_Art14" targetRef="Task_SendNoticeWithinOneMonth_Art14" />
     <sequenceFlow id="Flow_SendTaskSendArticle14Notice_To_GatewayFurtherPurpose_Art14" sourceRef="SendTask_SendArticle14Notice_Art14" targetRef="Gateway_FurtherPurpose_Art14" />
     <sequenceFlow id="Flow_SendTaskSendFurtherPurposeNotice_To_EndArticle14Completed_Art14" sourceRef="SendTask_SendFurtherPurposeNotice_Art14" targetRef="EndEvent_Article14Completed_Art14" />
-    <sequenceFlow id="Flow_Start_To_GatewayExceptionB_Art14" sourceRef="StartEvent_ObtainData_Art14" targetRef="Gateway_ExceptionB_Art14" />
+    <sequenceFlow id="Flow_Start_To_GatewayExceptionA_Art14" sourceRef="StartEvent_ObtainData_Art14" targetRef="Gateway_ExceptionA_Art14" />
     <sequenceFlow id="Flow_TaskImplementMeasuresEffort_To_EndNoDirectNotice_Art14" sourceRef="Task_ImplementMeasuresEffort_Art14" targetRef="EndEvent_NoDirectNotice_Art14" />
     <sequenceFlow id="Flow_TaskImplementMeasuresLaw_To_EndNoDirectNotice_Art14" sourceRef="Task_ImplementMeasuresLaw_Art14" targetRef="EndEvent_NoDirectNotice_Art14" />
     <sequenceFlow id="Flow_TaskPrepareAutomatedDecisionInfo_To_GatewayJoinAdditionalInfo_Art14" sourceRef="Task_PrepareAutomatedDecisionInfo_Art14" targetRef="Gateway_JoinAdditionalInfo_Art14" />

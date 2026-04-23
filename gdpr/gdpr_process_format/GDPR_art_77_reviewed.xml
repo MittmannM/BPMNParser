@@ -6,15 +6,15 @@
   </pools>
   <lanes />
   <tasks>
-    <task id="ReceiveTask_ReceiveOutcomeInfo_Art77" name="Receive information on the progress, outcome, and judicial remedy option" type="receiveTask" poolRef="Participant_DataSubject_Art77" />
-    <task id="SendTask_LodgeInfringementComplaint_Art77" name="Lodge the complaint with the supervisory authority of the place of the alleged infringement" type="sendTask" poolRef="Participant_DataSubject_Art77" />
-    <task id="SendTask_LodgeResidenceComplaint_Art77" name="Lodge the complaint with the supervisory authority of the habitual residence" type="sendTask" poolRef="Participant_DataSubject_Art77" />
-    <task id="SendTask_LodgeWorkComplaint_Art77" name="Lodge the complaint with the supervisory authority of the place of work" type="sendTask" poolRef="Participant_DataSubject_Art77" />
-    <task id="Task_PrepareComplaint_Art77" name="Prepare the complaint about the alleged infringement" type="task" poolRef="Participant_DataSubject_Art77" />
+    <task id="ReceiveTask_ReceiveOutcomeInfo_Art77" name="Receive progress, outcome, and Article 78 remedy information" type="receiveTask" poolRef="Participant_DataSubject_Art77" />
+    <task id="SendTask_LodgeInfringementComplaint_Art77" name="Lodge complaint in infringement Member State" type="sendTask" poolRef="Participant_DataSubject_Art77" />
+    <task id="SendTask_LodgeResidenceComplaint_Art77" name="Lodge complaint in habitual-residence Member State" type="sendTask" poolRef="Participant_DataSubject_Art77" />
+    <task id="SendTask_LodgeWorkComplaint_Art77" name="Lodge complaint in place-of-work Member State" type="sendTask" poolRef="Participant_DataSubject_Art77" />
+    <task id="Task_PrepareComplaint_Art77" name="Prepare complaint" type="task" poolRef="Participant_DataSubject_Art77" />
   </tasks>
   <events>
-    <event id="EndEvent_ComplaintHandled_Art77" name="Article 77 complaint route completed" type="endEvent" poolRef="Participant_DataSubject_Art77" />
-    <event id="StartEvent_ConsiderComplaint_Art77" name="Consider that the processing infringes the GDPR" type="startEvent" poolRef="Participant_DataSubject_Art77" />
+    <event id="EndEvent_ComplaintHandled_Art77" name="Complaint route completed" type="endEvent" poolRef="Participant_DataSubject_Art77" />
+    <event id="StartEvent_ConsiderComplaint_Art77" name="Consider GDPR infringement" type="startEvent" poolRef="Participant_DataSubject_Art77" />
   </events>
   <gateways>
     <gateway id="Gateway_ComplaintLodged_Art77" type="exclusiveGateway" poolRef="Participant_DataSubject_Art77" />

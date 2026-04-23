@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_DataSubject_Art26" name="Data Subject" poolType="passive" />
+    <pool id="Participant_JointControllerA_Art26" name="Joint Controller A" poolType="active" processRef="Process_JointControllerA_Art26" />
+    <pool id="Participant_JointControllerB_Art26" name="Joint Controller B" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="ReceiveTask_ReceiveArrangementInput_Art26" name="Receive arrangement input" type="receiveTask" poolRef="Participant_JointControllerA_Art26" />
+    <task id="ReceiveTask_ReceiveRightsRequestA_Art26" name="Receive rights request" type="receiveTask" poolRef="Participant_JointControllerA_Art26" />
+    <task id="SendTask_CoordinateArrangement_Art26" name="Coordinate arrangement" type="sendTask" poolRef="Participant_JointControllerA_Art26" />
+    <task id="SendTask_MakeEssenceAvailable_Art26" name="Make arrangement essence available" type="sendTask" poolRef="Participant_JointControllerA_Art26" />
+    <task id="Task_AllocateRightsNoticeDuties_Art26" name="Allocate rights and notice duties" type="task" poolRef="Participant_JointControllerA_Art26" />
+    <task id="Task_ApplyLegalAllocation_Art26" name="Apply legal allocation" type="task" poolRef="Participant_JointControllerA_Art26" />
+    <task id="Task_DefineResponsibilities_Art26" name="Define responsibilities" type="task" poolRef="Participant_JointControllerA_Art26" />
+    <task id="Task_DesignateContactPoint_Art26" name="Designate contact point" type="task" poolRef="Participant_JointControllerA_Art26" />
+    <task id="Task_ReflectRoles_Art26" name="Reflect roles and relationships" type="task" poolRef="Participant_JointControllerA_Art26" />
+  </tasks>
+  <events>
+    <event id="EndEvent_Article26NotTriggered_Art26" name="Article 26 is not triggered" type="endEvent" poolRef="Participant_JointControllerA_Art26" />
+    <event id="EndEvent_FrameworkEstablished_Art26" name="Article 26 joint-controller framework established" type="endEvent" poolRef="Participant_JointControllerA_Art26" />
+    <event id="StartEvent_PlanJointProcessing_Art26" name="Plan joint processing" type="startEvent" poolRef="Participant_JointControllerA_Art26" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_ContactPointJoin_Art26" type="exclusiveGateway" poolRef="Participant_JointControllerA_Art26" />
+    <gateway id="Gateway_DesignateContactPoint_Art26" name="Designate a contact point for data subjects?" type="exclusiveGateway" poolRef="Participant_JointControllerA_Art26" />
+    <gateway id="Gateway_JointDetermination_Art26" name="Are the purposes and means jointly determined?" type="exclusiveGateway" poolRef="Participant_JointControllerA_Art26" />
+    <gateway id="Gateway_LegalAllocation_Art26" name="Are responsibilities determined by Union or Member State law?" type="exclusiveGateway" poolRef="Participant_JointControllerA_Art26" />
+    <gateway id="Gateway_RightsAgainstA_Art26" name="Did the data subject exercise rights against Joint Controller A?" type="exclusiveGateway" poolRef="Participant_JointControllerA_Art26" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_GatewayContactPointJoin_To_SendTaskMakeEssenceAvailable_Art26" sourceRef="Gateway_ContactPointJoin_Art26" targetRef="SendTask_MakeEssenceAvailable_Art26" />
+    <sequenceFlow id="Flow_GatewayDesignateContactPoint_To_GatewayContactPointJoin_Art26" name="No" sourceRef="Gateway_DesignateContactPoint_Art26" targetRef="Gateway_ContactPointJoin_Art26" />
+    <sequenceFlow id="Flow_GatewayDesignateContactPoint_To_TaskDesignateContactPoint_Art26" name="Yes" sourceRef="Gateway_DesignateContactPoint_Art26" targetRef="Task_DesignateContactPoint_Art26" />
+    <sequenceFlow id="Flow_GatewayJointDetermination_To_EndArticle26NotTriggered_Art26" name="No" sourceRef="Gateway_JointDetermination_Art26" targetRef="EndEvent_Article26NotTriggered_Art26" />
+    <sequenceFlow id="Flow_GatewayJointDetermination_To_GatewayLegalAllocation_Art26" name="Yes" sourceRef="Gateway_JointDetermination_Art26" targetRef="Gateway_LegalAllocation_Art26" />
+    <sequenceFlow id="Flow_GatewayLegalAllocation_To_SendTaskCoordinateArrangement_Art26" name="No" sourceRef="Gateway_LegalAllocation_Art26" targetRef="SendTask_CoordinateArrangement_Art26" />
+    <sequenceFlow id="Flow_GatewayLegalAllocation_To_TaskApplyLegalAllocation_Art26" name="Yes" sourceRef="Gateway_LegalAllocation_Art26" targetRef="Task_ApplyLegalAllocation_Art26" />
+    <sequenceFlow id="Flow_GatewayRightsAgainstA_To_EndFrameworkEstablished_Art26" name="No" sourceRef="Gateway_RightsAgainstA_Art26" targetRef="EndEvent_FrameworkEstablished_Art26" />
+    <sequenceFlow id="Flow_GatewayRightsAgainstA_To_ReceiveTaskReceiveRightsRequestA_Art26" name="Yes" sourceRef="Gateway_RightsAgainstA_Art26" targetRef="ReceiveTask_ReceiveRightsRequestA_Art26" />
+    <sequenceFlow id="Flow_ReceiveTaskReceiveArrangementInput_To_TaskDefineResponsibilities_Art26" sourceRef="ReceiveTask_ReceiveArrangementInput_Art26" targetRef="Task_DefineResponsibilities_Art26" />
+    <sequenceFlow id="Flow_ReceiveTaskReceiveRightsRequestA_To_EndFrameworkEstablished_Art26" sourceRef="ReceiveTask_ReceiveRightsRequestA_Art26" targetRef="EndEvent_FrameworkEstablished_Art26" />
+    <sequenceFlow id="Flow_SendTaskCoordinateArrangement_To_ReceiveTaskReceiveArrangementInput_Art26" sourceRef="SendTask_CoordinateArrangement_Art26" targetRef="ReceiveTask_ReceiveArrangementInput_Art26" />
+    <sequenceFlow id="Flow_SendTaskMakeEssenceAvailable_To_GatewayRightsAgainstA_Art26" sourceRef="SendTask_MakeEssenceAvailable_Art26" targetRef="Gateway_RightsAgainstA_Art26" />
+    <sequenceFlow id="Flow_StartPlanJointProcessing_To_GatewayJointDetermination_Art26" sourceRef="StartEvent_PlanJointProcessing_Art26" targetRef="Gateway_JointDetermination_Art26" />
+    <sequenceFlow id="Flow_TaskAllocateRightsNoticeDuties_To_GatewayDesignateContactPoint_Art26" sourceRef="Task_AllocateRightsNoticeDuties_Art26" targetRef="Gateway_DesignateContactPoint_Art26" />
+    <sequenceFlow id="Flow_TaskApplyLegalAllocation_To_GatewayRightsAgainstA_Art26" sourceRef="Task_ApplyLegalAllocation_Art26" targetRef="Gateway_RightsAgainstA_Art26" />
+    <sequenceFlow id="Flow_TaskDefineResponsibilities_To_TaskReflectRoles_Art26" sourceRef="Task_DefineResponsibilities_Art26" targetRef="Task_ReflectRoles_Art26" />
+    <sequenceFlow id="Flow_TaskDesignateContactPoint_To_GatewayContactPointJoin_Art26" sourceRef="Task_DesignateContactPoint_Art26" targetRef="Gateway_ContactPointJoin_Art26" />
+    <sequenceFlow id="Flow_TaskReflectRoles_To_TaskAllocateRightsNoticeDuties_Art26" sourceRef="Task_ReflectRoles_Art26" targetRef="Task_AllocateRightsNoticeDuties_Art26" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_CoordinateArrangement_Art26" sourceRef="SendTask_CoordinateArrangement_Art26" targetRef="Participant_JointControllerB_Art26" />
+    <messageFlow id="MessageFlow_DataSubjectRequestToA_Art26" sourceRef="Participant_DataSubject_Art26" targetRef="ReceiveTask_ReceiveRightsRequestA_Art26" />
+    <messageFlow id="MessageFlow_DataSubjectRequestToB_Art26" sourceRef="Participant_DataSubject_Art26" targetRef="Participant_JointControllerB_Art26" />
+    <messageFlow id="MessageFlow_MakeEssenceAvailable_Art26" sourceRef="SendTask_MakeEssenceAvailable_Art26" targetRef="Participant_DataSubject_Art26" />
+    <messageFlow id="MessageFlow_ReceiveArrangementInput_Art26" sourceRef="Participant_JointControllerB_Art26" targetRef="ReceiveTask_ReceiveArrangementInput_Art26" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

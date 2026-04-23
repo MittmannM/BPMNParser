@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Controller_Art22" name="Controller" poolType="active" processRef="Process_Controller_Art22" />
+    <pool id="Participant_DataSubject_Art22" name="Data Subject" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="ReceiveTask_ReceiveContest_Art22" name="Receive contest" type="receiveTask" poolRef="Participant_Controller_Art22" />
+    <task id="ReceiveTask_ReceivePointOfView_Art22" name="Receive point of view" type="receiveTask" poolRef="Participant_Controller_Art22" />
+    <task id="SendTask_NotifyDecision_Art22" name="Notify decision and safeguards" type="sendTask" poolRef="Participant_Controller_Art22" />
+    <task id="Task_AssessContractNecessity_Art22" name="Assess contract necessity" type="task" poolRef="Participant_Controller_Art22" />
+    <task id="Task_AssessExplicitConsent_Art22" name="Assess explicit consent" type="task" poolRef="Participant_Controller_Art22" />
+    <task id="Task_AssessLegalAuthorisation_Art22" name="Assess legal authorisation" type="task" poolRef="Participant_Controller_Art22" />
+    <task id="Task_EnableContest_Art22" name="Enable contest" type="task" poolRef="Participant_Controller_Art22" />
+    <task id="Task_EnablePointOfView_Art22" name="Enable point of view" type="task" poolRef="Participant_Controller_Art22" />
+    <task id="Task_ImplementHumanIntervention_Art22" name="Implement human intervention" type="task" poolRef="Participant_Controller_Art22" />
+    <task id="Task_MakeAutomatedDecision_Art22" name="Make automated decision" type="task" poolRef="Participant_Controller_Art22" />
+    <task id="Task_ReconsiderDecision_Art22" name="Reconsider decision" type="task" poolRef="Participant_Controller_Art22" />
+    <task id="Task_ReviewDecision_Art22" name="Review decision" type="task" poolRef="Participant_Controller_Art22" />
+  </tasks>
+  <events>
+    <event id="EndEvent_Article22NotTriggered_Art22" name="Article 22 restriction is not triggered" type="endEvent" poolRef="Participant_Controller_Art22" />
+    <event id="EndEvent_DecisionCompleted_Art22" name="Article 22 decision handling is completed" type="endEvent" poolRef="Participant_Controller_Art22" />
+    <event id="EndEvent_DoNotSubject_Art22" name="Do not subject the data subject to the automated decision" type="endEvent" poolRef="Participant_Controller_Art22" />
+    <event id="EndEvent_DoNotUseSpecialCategories_Art22" name="Do not base the decision on special-category data" type="endEvent" poolRef="Participant_Controller_Art22" />
+    <event id="StartEvent_PlanDecision_Art22" name="Plan an automated decision" type="startEvent" poolRef="Participant_Controller_Art22" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_Article9Exception_Art22" name="Does Article 9(2)(a) or Article 9(2)(g) apply and are suitable safeguards in place?" type="exclusiveGateway" poolRef="Participant_Controller_Art22" />
+    <gateway id="Gateway_ContractNecessity_Art22" name="Is the decision necessary for entering into or performing a contract with the data subject?" type="exclusiveGateway" poolRef="Participant_Controller_Art22" />
+    <gateway id="Gateway_DecisionContested_Art22" name="Did the data subject contest the decision?" type="exclusiveGateway" poolRef="Participant_Controller_Art22" />
+    <gateway id="Gateway_ExceptionType_Art22" name="Does an Article 22(2) exception apply?" type="exclusiveGateway" poolRef="Participant_Controller_Art22" />
+    <gateway id="Gateway_ExplicitConsent_Art22" name="Is the decision based on the data subject's explicit consent?" type="exclusiveGateway" poolRef="Participant_Controller_Art22" />
+    <gateway id="Gateway_LegalAuthorisation_Art22" name="Is the decision authorised by Union or Member State law with suitable safeguards?" type="exclusiveGateway" poolRef="Participant_Controller_Art22" />
+    <gateway id="Gateway_PointOfViewSubmitted_Art22" name="Did the data subject express a point of view?" type="exclusiveGateway" poolRef="Participant_Controller_Art22" />
+    <gateway id="Gateway_SafeguardPath_Art22" name="Does the decision rely on contract necessity or explicit consent?" type="exclusiveGateway" poolRef="Participant_Controller_Art22" />
+    <gateway id="Gateway_SignificantEffect_Art22" name="Does the decision produce legal effects or similarly significantly affect the data subject?" type="exclusiveGateway" poolRef="Participant_Controller_Art22" />
+    <gateway id="Gateway_SolelyAutomated_Art22" name="Is the decision based solely on automated processing, including profiling?" type="exclusiveGateway" poolRef="Participant_Controller_Art22" />
+    <gateway id="Gateway_SpecialCategories_Art22" name="Is the decision based on special categories of personal data under Article 9(1)?" type="exclusiveGateway" poolRef="Participant_Controller_Art22" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_GatewayArticle9Exception_To_EndDoNotUseSpecialCategories_Art22" name="No" sourceRef="Gateway_Article9Exception_Art22" targetRef="EndEvent_DoNotUseSpecialCategories_Art22" />
+    <sequenceFlow id="Flow_GatewayArticle9Exception_To_GatewaySafeguardPath_Art22" name="Yes" sourceRef="Gateway_Article9Exception_Art22" targetRef="Gateway_SafeguardPath_Art22" />
+    <sequenceFlow id="Flow_GatewayContractNecessity_To_GatewaySpecialCategories_Art22" name="Yes" sourceRef="Gateway_ContractNecessity_Art22" targetRef="Gateway_SpecialCategories_Art22" />
+    <sequenceFlow id="Flow_GatewayContractNecessity_To_TaskAssessLegalAuthorisation_Art22" name="No" sourceRef="Gateway_ContractNecessity_Art22" targetRef="Task_AssessLegalAuthorisation_Art22" />
+    <sequenceFlow id="Flow_GatewayDecisionContested_To_EndDecisionCompleted_Art22" name="No" sourceRef="Gateway_DecisionContested_Art22" targetRef="EndEvent_DecisionCompleted_Art22" />
+    <sequenceFlow id="Flow_GatewayDecisionContested_To_ReceiveTaskReceiveContest_Art22" name="Yes" sourceRef="Gateway_DecisionContested_Art22" targetRef="ReceiveTask_ReceiveContest_Art22" />
+    <sequenceFlow id="Flow_GatewayExceptionType_To_EndDoNotSubject_Art22" name="No exception applies" sourceRef="Gateway_ExceptionType_Art22" targetRef="EndEvent_DoNotSubject_Art22" />
+    <sequenceFlow id="Flow_GatewayExceptionType_To_TaskAssessContractNecessity_Art22" name="Assess contract necessity" sourceRef="Gateway_ExceptionType_Art22" targetRef="Task_AssessContractNecessity_Art22" />
+    <sequenceFlow id="Flow_GatewayExceptionType_To_TaskAssessExplicitConsent_Art22" name="Assess explicit consent" sourceRef="Gateway_ExceptionType_Art22" targetRef="Task_AssessExplicitConsent_Art22" />
+    <sequenceFlow id="Flow_GatewayExceptionType_To_TaskAssessLegalAuthorisation_Art22" name="Assess legal authorisation" sourceRef="Gateway_ExceptionType_Art22" targetRef="Task_AssessLegalAuthorisation_Art22" />
+    <sequenceFlow id="Flow_GatewayExplicitConsent_To_EndDoNotSubject_Art22" name="No" sourceRef="Gateway_ExplicitConsent_Art22" targetRef="EndEvent_DoNotSubject_Art22" />
+    <sequenceFlow id="Flow_GatewayExplicitConsent_To_GatewaySpecialCategories_Art22" name="Yes" sourceRef="Gateway_ExplicitConsent_Art22" targetRef="Gateway_SpecialCategories_Art22" />
+    <sequenceFlow id="Flow_GatewayLegalAuthorisation_To_GatewaySpecialCategories_Art22" name="Yes" sourceRef="Gateway_LegalAuthorisation_Art22" targetRef="Gateway_SpecialCategories_Art22" />
+    <sequenceFlow id="Flow_GatewayLegalAuthorisation_To_TaskAssessExplicitConsent_Art22" name="No" sourceRef="Gateway_LegalAuthorisation_Art22" targetRef="Task_AssessExplicitConsent_Art22" />
+    <sequenceFlow id="Flow_GatewayPointOfViewSubmitted_To_GatewayDecisionContested_Art22" name="No" sourceRef="Gateway_PointOfViewSubmitted_Art22" targetRef="Gateway_DecisionContested_Art22" />
+    <sequenceFlow id="Flow_GatewayPointOfViewSubmitted_To_ReceiveTaskReceivePointOfView_Art22" name="Yes" sourceRef="Gateway_PointOfViewSubmitted_Art22" targetRef="ReceiveTask_ReceivePointOfView_Art22" />
+    <sequenceFlow id="Flow_GatewaySafeguardPath_To_TaskImplementHumanIntervention_Art22" name="Yes" sourceRef="Gateway_SafeguardPath_Art22" targetRef="Task_ImplementHumanIntervention_Art22" />
+    <sequenceFlow id="Flow_GatewaySafeguardPath_To_TaskMakeAutomatedDecision_Art22" name="No" sourceRef="Gateway_SafeguardPath_Art22" targetRef="Task_MakeAutomatedDecision_Art22" />
+    <sequenceFlow id="Flow_GatewaySignificantEffect_To_EndArticle22NotTriggered_Art22" name="No" sourceRef="Gateway_SignificantEffect_Art22" targetRef="EndEvent_Article22NotTriggered_Art22" />
+    <sequenceFlow id="Flow_GatewaySignificantEffect_To_GatewayExceptionType_Art22" name="Yes" sourceRef="Gateway_SignificantEffect_Art22" targetRef="Gateway_ExceptionType_Art22" />
+    <sequenceFlow id="Flow_GatewaySolelyAutomated_To_EndArticle22NotTriggered_Art22" name="No" sourceRef="Gateway_SolelyAutomated_Art22" targetRef="EndEvent_Article22NotTriggered_Art22" />
+    <sequenceFlow id="Flow_GatewaySolelyAutomated_To_GatewaySignificantEffect_Art22" name="Yes" sourceRef="Gateway_SolelyAutomated_Art22" targetRef="Gateway_SignificantEffect_Art22" />
+    <sequenceFlow id="Flow_GatewaySpecialCategories_To_GatewayArticle9Exception_Art22" name="Yes" sourceRef="Gateway_SpecialCategories_Art22" targetRef="Gateway_Article9Exception_Art22" />
+    <sequenceFlow id="Flow_GatewaySpecialCategories_To_GatewaySafeguardPath_Art22" name="No" sourceRef="Gateway_SpecialCategories_Art22" targetRef="Gateway_SafeguardPath_Art22" />
+    <sequenceFlow id="Flow_ReceiveTaskReceiveContest_To_TaskReconsiderDecision_Art22" sourceRef="ReceiveTask_ReceiveContest_Art22" targetRef="Task_ReconsiderDecision_Art22" />
+    <sequenceFlow id="Flow_ReceiveTaskReceivePointOfView_To_TaskReviewDecision_Art22" sourceRef="ReceiveTask_ReceivePointOfView_Art22" targetRef="Task_ReviewDecision_Art22" />
+    <sequenceFlow id="Flow_SendTaskNotifyDecision_To_GatewayPointOfViewSubmitted_Art22" sourceRef="SendTask_NotifyDecision_Art22" targetRef="Gateway_PointOfViewSubmitted_Art22" />
+    <sequenceFlow id="Flow_StartPlanDecision_To_GatewaySolelyAutomated_Art22" sourceRef="StartEvent_PlanDecision_Art22" targetRef="Gateway_SolelyAutomated_Art22" />
+    <sequenceFlow id="Flow_TaskAssessContractNecessity_To_GatewayContractNecessity_Art22" sourceRef="Task_AssessContractNecessity_Art22" targetRef="Gateway_ContractNecessity_Art22" />
+    <sequenceFlow id="Flow_TaskAssessExplicitConsent_To_GatewayExplicitConsent_Art22" sourceRef="Task_AssessExplicitConsent_Art22" targetRef="Gateway_ExplicitConsent_Art22" />
+    <sequenceFlow id="Flow_TaskAssessLegalAuthorisation_To_GatewayLegalAuthorisation_Art22" sourceRef="Task_AssessLegalAuthorisation_Art22" targetRef="Gateway_LegalAuthorisation_Art22" />
+    <sequenceFlow id="Flow_TaskEnableContest_To_TaskMakeAutomatedDecision_Art22" sourceRef="Task_EnableContest_Art22" targetRef="Task_MakeAutomatedDecision_Art22" />
+    <sequenceFlow id="Flow_TaskEnablePointOfView_To_TaskEnableContest_Art22" sourceRef="Task_EnablePointOfView_Art22" targetRef="Task_EnableContest_Art22" />
+    <sequenceFlow id="Flow_TaskImplementHumanIntervention_To_TaskEnablePointOfView_Art22" sourceRef="Task_ImplementHumanIntervention_Art22" targetRef="Task_EnablePointOfView_Art22" />
+    <sequenceFlow id="Flow_TaskMakeAutomatedDecision_To_SendTaskNotifyDecision_Art22" sourceRef="Task_MakeAutomatedDecision_Art22" targetRef="SendTask_NotifyDecision_Art22" />
+    <sequenceFlow id="Flow_TaskReconsiderDecision_To_EndDecisionCompleted_Art22" sourceRef="Task_ReconsiderDecision_Art22" targetRef="EndEvent_DecisionCompleted_Art22" />
+    <sequenceFlow id="Flow_TaskReviewDecision_To_GatewayDecisionContested_Art22" sourceRef="Task_ReviewDecision_Art22" targetRef="Gateway_DecisionContested_Art22" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_NotifyDecision_Art22" sourceRef="SendTask_NotifyDecision_Art22" targetRef="Participant_DataSubject_Art22" />
+    <messageFlow id="MessageFlow_ReceiveContest_Art22" sourceRef="Participant_DataSubject_Art22" targetRef="ReceiveTask_ReceiveContest_Art22" />
+    <messageFlow id="MessageFlow_ReceivePointOfView_Art22" sourceRef="Participant_DataSubject_Art22" targetRef="ReceiveTask_ReceivePointOfView_Art22" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

@@ -31,20 +31,22 @@
   </bpmn:collaboration>
 
   <bpmn:process id="Process_DPO_Art39"
-                name="Performing the DPO tasks"
+                name="Apply Article 39 DPO tasks"
                 isExecutable="false">
     <bpmn:documentation>
       Manual BPMN conversion for GDPR Article 39 based on the real English legal text
       of Regulation (EU) 2016/679. The model covers informing and advising the
-      controller or processor and employees, monitoring compliance with data-protection
-      law and policies including responsibilities, awareness, training, and audits,
-      advising on DPIAs and monitoring their performance, cooperating with the
-      supervisory authority, acting as contact point including prior consultation,
-      and performing the tasks with due regard to processing risk.
+      controller or processor and employees on GDPR and other Union or Member State
+      data-protection obligations, monitoring compliance and policies including
+      assignment of responsibilities and awareness-raising and training and audits,
+      advising on DPIAs where requested and monitoring their performance, cooperating
+      with the supervisory authority, acting as contact point including prior
+      consultation and other appropriate consultations, and performing the tasks with
+      due regard to processing risk.
     </bpmn:documentation>
 
     <bpmn:startEvent id="StartEvent_DPOTasks_Art39"
-                     name="Start DPO tasks">
+                     name="Perform DPO tasks">
       <bpmn:outgoing>Flow_Start_To_AssessRisk</bpmn:outgoing>
     </bpmn:startEvent>
 
@@ -65,27 +67,33 @@
     </bpmn:parallelGateway>
 
     <bpmn:sendTask id="Task_InformControllerProcessor"
-                   name="Inform controller or processor">
+                   name="Inform and advise controller or processor">
       <bpmn:incoming>Flow_GatewaySplit_To_InformControllerProcessor</bpmn:incoming>
       <bpmn:outgoing>Flow_InformControllerProcessor_To_GatewayJoin</bpmn:outgoing>
     </bpmn:sendTask>
 
     <bpmn:sendTask id="Task_InformEmployees"
-                   name="Inform employees">
+                   name="Inform and advise employees">
       <bpmn:incoming>Flow_GatewaySplit_To_InformEmployees</bpmn:incoming>
       <bpmn:outgoing>Flow_InformEmployees_To_GatewayJoin</bpmn:outgoing>
     </bpmn:sendTask>
 
     <bpmn:task id="Task_MonitorCompliance"
-               name="Monitor compliance, training, and audits">
+               name="Monitor compliance, responsibilities, awareness, training, and audits">
       <bpmn:incoming>Flow_GatewaySplit_To_MonitorCompliance</bpmn:incoming>
       <bpmn:outgoing>Flow_MonitorCompliance_To_GatewayJoin</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_AdviseDPIA"
-               name="Advise on DPIA">
+               name="Advise on DPIA where requested">
       <bpmn:incoming>Flow_GatewaySplit_To_AdviseDPIA</bpmn:incoming>
-      <bpmn:outgoing>Flow_AdviseDPIA_To_GatewayJoin</bpmn:outgoing>
+      <bpmn:outgoing>Flow_AdviseDPIA_To_MonitorDPIA_Art39</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_MonitorDPIAPerformance_Art39"
+               name="Monitor DPIA performance">
+      <bpmn:incoming>Flow_AdviseDPIA_To_MonitorDPIA_Art39</bpmn:incoming>
+      <bpmn:outgoing>Flow_MonitorDPIA_To_GatewayJoin_Art39</bpmn:outgoing>
     </bpmn:task>
 
     <bpmn:task id="Task_CooperateAuthority"
@@ -95,7 +103,7 @@
     </bpmn:task>
 
     <bpmn:task id="Task_ContactPointAuthority"
-               name="Act as authority contact point">
+               name="Act as authority contact point and consult on other matters">
       <bpmn:incoming>Flow_GatewaySplit_To_ContactPointAuthority</bpmn:incoming>
       <bpmn:outgoing>Flow_ContactPointAuthority_To_GatewayJoin</bpmn:outgoing>
     </bpmn:task>
@@ -104,7 +112,7 @@
       <bpmn:incoming>Flow_InformControllerProcessor_To_GatewayJoin</bpmn:incoming>
       <bpmn:incoming>Flow_InformEmployees_To_GatewayJoin</bpmn:incoming>
       <bpmn:incoming>Flow_MonitorCompliance_To_GatewayJoin</bpmn:incoming>
-      <bpmn:incoming>Flow_AdviseDPIA_To_GatewayJoin</bpmn:incoming>
+      <bpmn:incoming>Flow_MonitorDPIA_To_GatewayJoin_Art39</bpmn:incoming>
       <bpmn:incoming>Flow_CooperateAuthority_To_GatewayJoin</bpmn:incoming>
       <bpmn:incoming>Flow_ContactPointAuthority_To_GatewayJoin</bpmn:incoming>
       <bpmn:outgoing>Flow_GatewayJoin_To_End</bpmn:outgoing>
@@ -148,8 +156,11 @@
     <bpmn:sequenceFlow id="Flow_MonitorCompliance_To_GatewayJoin"
                        sourceRef="Task_MonitorCompliance"
                        targetRef="Gateway_TasksJoin_Art39" />
-    <bpmn:sequenceFlow id="Flow_AdviseDPIA_To_GatewayJoin"
+    <bpmn:sequenceFlow id="Flow_AdviseDPIA_To_MonitorDPIA_Art39"
                        sourceRef="Task_AdviseDPIA"
+                       targetRef="Task_MonitorDPIAPerformance_Art39" />
+    <bpmn:sequenceFlow id="Flow_MonitorDPIA_To_GatewayJoin_Art39"
+                       sourceRef="Task_MonitorDPIAPerformance_Art39"
                        targetRef="Gateway_TasksJoin_Art39" />
     <bpmn:sequenceFlow id="Flow_CooperateAuthority_To_GatewayJoin"
                        sourceRef="Task_CooperateAuthority"
@@ -210,6 +221,10 @@
       <bpmndi:BPMNShape id="Task_AdviseDPIA_di"
                         bpmnElement="Task_AdviseDPIA">
         <dc:Bounds x="660" y="340" width="250" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_MonitorDPIAPerformance_Art39_di"
+                        bpmnElement="Task_MonitorDPIAPerformance_Art39">
+        <dc:Bounds x="990" y="340" width="320" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Task_CooperateAuthority_di"
                         bpmnElement="Task_CooperateAuthority">
@@ -279,8 +294,12 @@
         <di:waypoint x="930" y="280" />
         <di:waypoint x="1410" y="280" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_AdviseDPIA_To_GatewayJoin_di" bpmnElement="Flow_AdviseDPIA_To_GatewayJoin">
+      <bpmndi:BPMNEdge id="Flow_AdviseDPIA_To_MonitorDPIA_Art39_di" bpmnElement="Flow_AdviseDPIA_To_MonitorDPIA_Art39">
         <di:waypoint x="910" y="380" />
+        <di:waypoint x="990" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_MonitorDPIA_To_GatewayJoin_Art39_di" bpmnElement="Flow_MonitorDPIA_To_GatewayJoin_Art39">
+        <di:waypoint x="1310" y="380" />
         <di:waypoint x="1435" y="380" />
         <di:waypoint x="1435" y="305" />
       </bpmndi:BPMNEdge>

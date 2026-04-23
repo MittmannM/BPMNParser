@@ -2,38 +2,38 @@
 <processModel>
   <pools>
     <pool id="Participant_DataSubject_Art47" name="Data Subject" poolType="passive" />
-    <pool id="Participant_GroupMember_Art47" name="Group BCR participant" poolType="active" processRef="Process_GroupMember_Art47" />
+    <pool id="Participant_GroupMember_Art47" name="Group member" poolType="active" processRef="Process_GroupMember_Art47" />
     <pool id="Participant_SupervisoryAuthority_Art47" name="Supervisory Authority" poolType="passive" />
   </pools>
   <lanes />
   <tasks>
-    <task id="ReceiveTask_ReceiveBCRApprovalDecision_Art47" name="Receive the approval decision for the binding corporate rules" type="receiveTask" poolRef="Participant_GroupMember_Art47" />
-    <task id="SendTask_MakeBCRAvailable_Art47" name="Make the binding corporate rules and complaint route available to data subjects" type="sendTask" poolRef="Participant_GroupMember_Art47" />
-    <task id="SendTask_NotifyDataSubjectsAboutChanges_Art47" name="Notify data subjects about relevant changes to the binding corporate rules" type="sendTask" poolRef="Participant_GroupMember_Art47" />
-    <task id="SendTask_NotifySupervisoryAuthority_Art47" name="Notify the supervisory authority about changes and conflicting legal requirements" type="sendTask" poolRef="Participant_GroupMember_Art47" />
-    <task id="SendTask_SubmitBCRApproval_Art47" name="Submit the binding corporate rules for supervisory-authority approval" type="sendTask" poolRef="Participant_GroupMember_Art47" />
-    <task id="Task_AssessBCRProtection_Art47" name="Assess enforceable rights, effective remedies, and legal binding effect" type="task" poolRef="Participant_GroupMember_Art47" />
-    <task id="Task_DefineAuditAndComplaints_Art47" name="Define audit, complaint, liability, and redress arrangements" type="task" poolRef="Participant_GroupMember_Art47" />
-    <task id="Task_DefineNotificationsAndCooperation_Art47" name="Define change-notification and supervisory-authority cooperation arrangements" type="task" poolRef="Participant_GroupMember_Art47" />
-    <task id="Task_DefineRightsAndContacts_Art47" name="Define data protection principles, rights, and third-country contact details" type="task" poolRef="Participant_GroupMember_Art47" />
-    <task id="Task_DescribeTransfers_Art47" name="Describe the group, transfers, and protected data categories" type="task" poolRef="Participant_GroupMember_Art47" />
-    <task id="Task_DraftBCRPackage_Art47" name="Draft the binding corporate rules package" type="task" poolRef="Participant_GroupMember_Art47" />
-    <task id="Task_HandleComplaints_Art47" name="Handle complaints and ensure liability and redress" type="task" poolRef="Participant_GroupMember_Art47" />
-    <task id="Task_ImplementCompliance_Art47" name="Implement GDPR compliance, safeguards, audits, and internal monitoring" type="task" poolRef="Participant_GroupMember_Art47" />
-    <task id="Task_MakeBCRBinding_Art47" name="Make the approved binding corporate rules binding on all relevant group members" type="task" poolRef="Participant_GroupMember_Art47" />
-    <task id="Task_PlanTrainingAndMonitoring_Art47" name="Plan GDPR training and internal compliance monitoring" type="task" poolRef="Participant_GroupMember_Art47" />
-    <task id="Task_ProvideTraining_Art47" name="Provide GDPR training to personnel involved in the transfers" type="task" poolRef="Participant_GroupMember_Art47" />
-    <task id="Task_ReviseBCRPackage_Art47" name="Revise the binding corporate rules package" type="task" poolRef="Participant_GroupMember_Art47" />
+    <task id="ReceiveTask_ReceiveBCRApprovalDecision_Art47" name="Receive BCR approval" type="receiveTask" poolRef="Participant_GroupMember_Art47" />
+    <task id="SendTask_MakeBCRAvailable_Art47" name="Provide BCR information" type="sendTask" poolRef="Participant_GroupMember_Art47" />
+    <task id="SendTask_NotifyDataSubjectsAboutChanges_Art47" name="Notify data subjects of BCR changes" type="sendTask" poolRef="Participant_GroupMember_Art47" />
+    <task id="SendTask_NotifySupervisoryAuthority_Art47" name="Report changes and legal conflicts" type="sendTask" poolRef="Participant_GroupMember_Art47" />
+    <task id="SendTask_SubmitBCRApproval_Art47" name="Submit BCRs for Article 63 approval" type="sendTask" poolRef="Participant_GroupMember_Art47" />
+    <task id="Task_AssessBCRProtection_Art47" name="Check binding effect and rights" type="task" poolRef="Participant_GroupMember_Art47" />
+    <task id="Task_DefineAuditAndComplaints_Art47" name="Define liability, complaints, and redress" type="task" poolRef="Participant_GroupMember_Art47" />
+    <task id="Task_DefineNotificationsAndCooperation_Art47" name="Define reporting and SA cooperation" type="task" poolRef="Participant_GroupMember_Art47" />
+    <task id="Task_DefineRightsAndContacts_Art47" name="Define principles, rights, and notice" type="task" poolRef="Participant_GroupMember_Art47" />
+    <task id="Task_DescribeTransfers_Art47" name="Describe group and transfers" type="task" poolRef="Participant_GroupMember_Art47" />
+    <task id="Task_DraftBCRPackage_Art47" name="Draft BCR package" type="task" poolRef="Participant_GroupMember_Art47" />
+    <task id="Task_HandleComplaints_Art47" name="Handle BCR complaints" type="task" poolRef="Participant_GroupMember_Art47" />
+    <task id="Task_ImplementCompliance_Art47" name="Run audits and corrective actions" type="task" poolRef="Participant_GroupMember_Art47" />
+    <task id="Task_MakeBCRBinding_Art47" name="Bind all group members" type="task" poolRef="Participant_GroupMember_Art47" />
+    <task id="Task_PlanTrainingAndMonitoring_Art47" name="Assign monitoring and training" type="task" poolRef="Participant_GroupMember_Art47" />
+    <task id="Task_ProvideTraining_Art47" name="Provide BCR training" type="task" poolRef="Participant_GroupMember_Art47" />
+    <task id="Task_ReviseBCRPackage_Art47" name="Revise BCR package" type="task" poolRef="Participant_GroupMember_Art47" />
   </tasks>
   <events>
-    <event id="EndEvent_BCRNotApproved_Art47" name="The binding corporate rules were not approved" type="endEvent" poolRef="Participant_GroupMember_Art47" />
-    <event id="EndEvent_GovernanceOperating_Art47" name="Approved binding corporate rules governance is in operation" type="endEvent" poolRef="Participant_GroupMember_Art47" />
-    <event id="StartEvent_NeedBCRTransfer_Art47" name="Need to rely on binding corporate rules for an intra-group transfer" type="startEvent" poolRef="Participant_GroupMember_Art47" />
+    <event id="EndEvent_BCRNotApproved_Art47" name="BCR approval denied" type="endEvent" poolRef="Participant_GroupMember_Art47" />
+    <event id="EndEvent_GovernanceOperating_Art47" name="BCR governance operating" type="endEvent" poolRef="Participant_GroupMember_Art47" />
+    <event id="StartEvent_NeedBCRTransfer_Art47" name="Need BCR transfer" type="startEvent" poolRef="Participant_GroupMember_Art47" />
   </events>
   <gateways>
-    <gateway id="Gateway_BCRApproved_Art47" name="Did the supervisory authority approve the binding corporate rules?" type="exclusiveGateway" poolRef="Participant_GroupMember_Art47" />
+    <gateway id="Gateway_BCRApproved_Art47" name="Did the supervisory authority approve the BCRs?" type="exclusiveGateway" poolRef="Participant_GroupMember_Art47" />
     <gateway id="Gateway_BCRContentPrepared_Art47" type="parallelGateway" poolRef="Participant_GroupMember_Art47" />
-    <gateway id="Gateway_BCRProtectionAdequate_Art47" name="Do the binding corporate rules provide enforceable rights and effective remedies?" type="exclusiveGateway" poolRef="Participant_GroupMember_Art47" />
+    <gateway id="Gateway_BCRProtectionAdequate_Art47" name="Do the BCRs provide binding effect, rights, and remedies?" type="exclusiveGateway" poolRef="Participant_GroupMember_Art47" />
     <gateway id="Gateway_OperationalDutiesCompleted_Art47" type="parallelGateway" poolRef="Participant_GroupMember_Art47" />
     <gateway id="Gateway_OperationalDuties_Art47" type="parallelGateway" poolRef="Participant_GroupMember_Art47" />
     <gateway id="Gateway_PrepareBCRContent_Art47" type="parallelGateway" poolRef="Participant_GroupMember_Art47" />

@@ -3,22 +3,22 @@
   <pools />
   <lanes />
   <tasks>
-    <task id="Task_AssessAuthorization_Art10" name="Assess whether Union or Member State law authorizes the processing and provides appropriate safeguards for the rights and freedoms of the data subject" type="task" poolRef="Process_Controller_Art10" />
-    <task id="Task_IdentifyArticle10Data_Art10" name="Identify whether the processing concerns criminal convictions, offences, related security measures, or a comprehensive criminal-convictions register" type="task" poolRef="Process_Controller_Art10" />
+    <task id="Task_AssessAuthorization_Art10" name="Check legal authorisation and safeguards" type="task" poolRef="Process_Controller_Art10" />
+    <task id="Task_IdentifyArticle10Data_Art10" name="Check Article 10 data or register" type="task" poolRef="Process_Controller_Art10" />
   </tasks>
   <events>
-    <event id="EndEvent_Article10NotTriggered_Art10" name="Article 10 does not restrict the planned processing" type="endEvent" poolRef="Process_Controller_Art10" />
-    <event id="EndEvent_ProcessingAuthorizedByLaw_Art10" name="The processing may proceed based on law with appropriate safeguards" type="endEvent" poolRef="Process_Controller_Art10" />
-    <event id="EndEvent_ProcessingProhibited_Art10" name="The processing may not proceed under Article 10" type="endEvent" poolRef="Process_Controller_Art10" />
-    <event id="EndEvent_ProcessingUnderAuthority_Art10" name="The processing may proceed under official authority" type="endEvent" poolRef="Process_Controller_Art10" />
-    <event id="EndEvent_RegisterAllowed_Art10" name="The comprehensive register may be kept under official authority" type="endEvent" poolRef="Process_Controller_Art10" />
-    <event id="EndEvent_RegisterProhibited_Art10" name="The comprehensive register may not be kept without official authority" type="endEvent" poolRef="Process_Controller_Art10" />
-    <event id="StartEvent_AssessArticle10_Art10" name="Need to assess planned processing based on Article 6(1)" type="startEvent" poolRef="Process_Controller_Art10" />
+    <event id="EndEvent_Article10NotTriggered_Art10" name="Article 10 not triggered" type="endEvent" poolRef="Process_Controller_Art10" />
+    <event id="EndEvent_ProcessingAuthorizedByLaw_Art10" name="Processing authorised by law" type="endEvent" poolRef="Process_Controller_Art10" />
+    <event id="EndEvent_ProcessingProhibited_Art10" name="Processing not permitted" type="endEvent" poolRef="Process_Controller_Art10" />
+    <event id="EndEvent_ProcessingUnderAuthority_Art10" name="Processing under official authority" type="endEvent" poolRef="Process_Controller_Art10" />
+    <event id="EndEvent_RegisterAllowed_Art10" name="Register kept under official authority" type="endEvent" poolRef="Process_Controller_Art10" />
+    <event id="EndEvent_RegisterProhibited_Art10" name="Register not permitted" type="endEvent" poolRef="Process_Controller_Art10" />
+    <event id="StartEvent_AssessArticle10_Art10" name="Need Article 10 assessment" type="startEvent" poolRef="Process_Controller_Art10" />
   </events>
   <gateways>
     <gateway id="Gateway_Article10Applies_Art10" name="Does Article 10 apply to the planned processing?" type="exclusiveGateway" poolRef="Process_Controller_Art10" />
     <gateway id="Gateway_AuthorizedByLaw_Art10" name="Is the processing authorized by Union or Member State law with appropriate safeguards?" type="exclusiveGateway" poolRef="Process_Controller_Art10" />
-    <gateway id="Gateway_ComprehensiveRegister_Art10" name="Does the processing involve a comprehensive register of criminal convictions?" type="exclusiveGateway" poolRef="Process_Controller_Art10" />
+    <gateway id="Gateway_ComprehensiveRegister_Art10" name="Does the processing involve a comprehensive convictions register?" type="exclusiveGateway" poolRef="Process_Controller_Art10" />
     <gateway id="Gateway_OfficialAuthorityGeneral_Art10" name="Is the processing carried out under official authority?" type="exclusiveGateway" poolRef="Process_Controller_Art10" />
     <gateway id="Gateway_OfficialAuthorityRegister_Art10" name="Is the comprehensive register kept under official authority?" type="exclusiveGateway" poolRef="Process_Controller_Art10" />
   </gateways>

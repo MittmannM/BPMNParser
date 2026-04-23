@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Controller_Art30" name="Controller" poolType="active" processRef="Process_Controller_Art30" />
+    <pool id="Participant_Processor_Art30" name="Processor" poolType="active" processRef="Process_Processor_Art30" />
+    <pool id="Participant_SupervisoryAuthority_Art30" name="Supervisory Authority" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="ReceiveTask_ReceiveControllerRequest_Art30" name="Receive authority request" type="receiveTask" poolRef="Participant_Controller_Art30" />
+    <task id="ReceiveTask_ReceiveProcessorRequest_Art30" name="Receive authority request" type="receiveTask" poolRef="Participant_Processor_Art30" />
+    <task id="SendTask_ProvideControllerRecord_Art30" name="Provide controller record" type="sendTask" poolRef="Participant_Controller_Art30" />
+    <task id="SendTask_ProvideProcessorRecord_Art30" name="Provide processor record" type="sendTask" poolRef="Participant_Processor_Art30" />
+    <task id="Task_AssessControllerRecordDuty_Art30" name="Assess controller record duty" type="task" poolRef="Participant_Controller_Art30" />
+    <task id="Task_AssessProcessorRecordDuty_Art30" name="Assess processor record duty" type="task" poolRef="Participant_Processor_Art30" />
+    <task id="Task_KeepControllerRecordInWriting_Art30" name="Keep controller record in writing/electronic form" type="task" poolRef="Participant_Controller_Art30" />
+    <task id="Task_KeepProcessorRecordInWriting_Art30" name="Keep processor record in writing/electronic form" type="task" poolRef="Participant_Processor_Art30" />
+    <task id="Task_RecordControllerDetails_Art30" name="Record controller-side details" type="task" poolRef="Participant_Controller_Art30" />
+    <task id="Task_RecordControllerSecurityMeasures_Art30" name="Record Article 32(1) security measures" type="task" poolRef="Participant_Controller_Art30" />
+    <task id="Task_RecordDataCategories_Art30" name="Record data-subject and data categories" type="task" poolRef="Participant_Controller_Art30" />
+    <task id="Task_RecordErasurePeriods_Art30" name="Record erasure periods" type="task" poolRef="Participant_Controller_Art30" />
+    <task id="Task_RecordProcessingCategories_Art30" name="Record processing categories" type="task" poolRef="Participant_Processor_Art30" />
+    <task id="Task_RecordProcessingPurposes_Art30" name="Record processing purposes" type="task" poolRef="Participant_Controller_Art30" />
+    <task id="Task_RecordProcessorDetails_Art30" name="Record processor and controller details" type="task" poolRef="Participant_Processor_Art30" />
+    <task id="Task_RecordProcessorSecurityMeasures_Art30" name="Record Article 32(1) security measures" type="task" poolRef="Participant_Processor_Art30" />
+    <task id="Task_RecordProcessorTransferDetails_Art30" name="Record transfers and Article 49(1) safeguards" type="task" poolRef="Participant_Processor_Art30" />
+    <task id="Task_RecordRecipientCategories_Art30" name="Record recipient categories" type="task" poolRef="Participant_Controller_Art30" />
+    <task id="Task_RecordTransferDetails_Art30" name="Record transfers and Article 49(1) safeguards" type="task" poolRef="Participant_Controller_Art30" />
+    <task id="Task_SetUpControllerRecord_Art30" name="Set up controller record" type="task" poolRef="Participant_Controller_Art30" />
+    <task id="Task_SetUpProcessorRecord_Art30" name="Set up processor record" type="task" poolRef="Participant_Processor_Art30" />
+  </tasks>
+  <events>
+    <event id="EndEvent_ControllerRecordAvailable_Art30" name="Controller record available to authority" type="endEvent" poolRef="Participant_Controller_Art30" />
+    <event id="EndEvent_KeepControllerRecordAvailable_Art30" name="Keep controller record available" type="endEvent" poolRef="Participant_Controller_Art30" />
+    <event id="EndEvent_KeepProcessorRecordAvailable_Art30" name="Keep processor record available" type="endEvent" poolRef="Participant_Processor_Art30" />
+    <event id="EndEvent_NoControllerRecordDuty_Art30" name="No controller record duty" type="endEvent" poolRef="Participant_Controller_Art30" />
+    <event id="EndEvent_NoProcessorRecordDuty_Art30" name="No processor record duty" type="endEvent" poolRef="Participant_Processor_Art30" />
+    <event id="EndEvent_ProcessorRecordAvailable_Art30" name="Processor record available to authority" type="endEvent" poolRef="Participant_Processor_Art30" />
+    <event id="StartEvent_CarryOutControllerProcessing_Art30" name="Carry out processing" type="startEvent" poolRef="Participant_Controller_Art30" />
+    <event id="StartEvent_ProcessForController_Art30" name="Process data for a controller" type="startEvent" poolRef="Participant_Processor_Art30" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_ControllerExceptionCriteria_Art30" name="Is the processing likely to risk rights, not occasional, or Article 9(1)/10 data involved?" type="exclusiveGateway" poolRef="Participant_Controller_Art30" />
+    <gateway id="Gateway_ControllerFewEmployees_Art30" name="Does the organisation employ fewer than 250 persons?" type="exclusiveGateway" poolRef="Participant_Controller_Art30" />
+    <gateway id="Gateway_ControllerRequestReceived_Art30" name="Did the supervisory authority request the record?" type="exclusiveGateway" poolRef="Participant_Controller_Art30" />
+    <gateway id="Gateway_JoinControllerContents_Art30" type="parallelGateway" poolRef="Participant_Controller_Art30" />
+    <gateway id="Gateway_JoinProcessorContents_Art30" type="parallelGateway" poolRef="Participant_Processor_Art30" />
+    <gateway id="Gateway_ProcessorExceptionCriteria_Art30" name="Is the processing likely to risk rights, not occasional, or Article 9(1)/10 data involved?" type="exclusiveGateway" poolRef="Participant_Processor_Art30" />
+    <gateway id="Gateway_ProcessorFewEmployees_Art30" name="Does the organisation employ fewer than 250 persons?" type="exclusiveGateway" poolRef="Participant_Processor_Art30" />
+    <gateway id="Gateway_ProcessorRequestReceived_Art30" name="Did the supervisory authority request the record?" type="exclusiveGateway" poolRef="Participant_Processor_Art30" />
+    <gateway id="Gateway_SplitControllerContents_Art30" type="parallelGateway" poolRef="Participant_Controller_Art30" />
+    <gateway id="Gateway_SplitProcessorContents_Art30" type="parallelGateway" poolRef="Participant_Processor_Art30" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_GatewayControllerExceptionCriteria_To_EndNoControllerRecordDuty_Art30" name="No" sourceRef="Gateway_ControllerExceptionCriteria_Art30" targetRef="EndEvent_NoControllerRecordDuty_Art30" />
+    <sequenceFlow id="Flow_GatewayControllerExceptionCriteria_To_TaskSetUpControllerRecord_Art30" name="Yes" sourceRef="Gateway_ControllerExceptionCriteria_Art30" targetRef="Task_SetUpControllerRecord_Art30" />
+    <sequenceFlow id="Flow_GatewayControllerFewEmployees_To_GatewayControllerExceptionCriteria_Art30" name="Yes" sourceRef="Gateway_ControllerFewEmployees_Art30" targetRef="Gateway_ControllerExceptionCriteria_Art30" />
+    <sequenceFlow id="Flow_GatewayControllerFewEmployees_To_TaskSetUpControllerRecord_Art30" name="No" sourceRef="Gateway_ControllerFewEmployees_Art30" targetRef="Task_SetUpControllerRecord_Art30" />
+    <sequenceFlow id="Flow_GatewayControllerRequestReceived_To_EndKeepControllerRecordAvailable_Art30" name="No" sourceRef="Gateway_ControllerRequestReceived_Art30" targetRef="EndEvent_KeepControllerRecordAvailable_Art30" />
+    <sequenceFlow id="Flow_GatewayControllerRequestReceived_To_ReceiveTaskReceiveControllerRequest_Art30" name="Yes" sourceRef="Gateway_ControllerRequestReceived_Art30" targetRef="ReceiveTask_ReceiveControllerRequest_Art30" />
+    <sequenceFlow id="Flow_GatewayJoinControllerContents_To_TaskKeepControllerRecordInWriting_Art30" sourceRef="Gateway_JoinControllerContents_Art30" targetRef="Task_KeepControllerRecordInWriting_Art30" />
+    <sequenceFlow id="Flow_GatewayJoinProcessorContents_To_TaskKeepProcessorRecordInWriting_Art30" sourceRef="Gateway_JoinProcessorContents_Art30" targetRef="Task_KeepProcessorRecordInWriting_Art30" />
+    <sequenceFlow id="Flow_GatewayProcessorExceptionCriteria_To_EndNoProcessorRecordDuty_Art30" name="No" sourceRef="Gateway_ProcessorExceptionCriteria_Art30" targetRef="EndEvent_NoProcessorRecordDuty_Art30" />
+    <sequenceFlow id="Flow_GatewayProcessorExceptionCriteria_To_TaskSetUpProcessorRecord_Art30" name="Yes" sourceRef="Gateway_ProcessorExceptionCriteria_Art30" targetRef="Task_SetUpProcessorRecord_Art30" />
+    <sequenceFlow id="Flow_GatewayProcessorFewEmployees_To_GatewayProcessorExceptionCriteria_Art30" name="Yes" sourceRef="Gateway_ProcessorFewEmployees_Art30" targetRef="Gateway_ProcessorExceptionCriteria_Art30" />
+    <sequenceFlow id="Flow_GatewayProcessorFewEmployees_To_TaskSetUpProcessorRecord_Art30" name="No" sourceRef="Gateway_ProcessorFewEmployees_Art30" targetRef="Task_SetUpProcessorRecord_Art30" />
+    <sequenceFlow id="Flow_GatewayProcessorRequestReceived_To_EndKeepProcessorRecordAvailable_Art30" name="No" sourceRef="Gateway_ProcessorRequestReceived_Art30" targetRef="EndEvent_KeepProcessorRecordAvailable_Art30" />
+    <sequenceFlow id="Flow_GatewayProcessorRequestReceived_To_ReceiveTaskReceiveProcessorRequest_Art30" name="Yes" sourceRef="Gateway_ProcessorRequestReceived_Art30" targetRef="ReceiveTask_ReceiveProcessorRequest_Art30" />
+    <sequenceFlow id="Flow_GatewaySplitControllerContents_To_TaskRecordControllerDetails_Art30" sourceRef="Gateway_SplitControllerContents_Art30" targetRef="Task_RecordControllerDetails_Art30" />
+    <sequenceFlow id="Flow_GatewaySplitControllerContents_To_TaskRecordControllerSecurityMeasures_Art30" sourceRef="Gateway_SplitControllerContents_Art30" targetRef="Task_RecordControllerSecurityMeasures_Art30" />
+    <sequenceFlow id="Flow_GatewaySplitControllerContents_To_TaskRecordDataCategories_Art30" sourceRef="Gateway_SplitControllerContents_Art30" targetRef="Task_RecordDataCategories_Art30" />
+    <sequenceFlow id="Flow_GatewaySplitControllerContents_To_TaskRecordErasurePeriods_Art30" sourceRef="Gateway_SplitControllerContents_Art30" targetRef="Task_RecordErasurePeriods_Art30" />
+    <sequenceFlow id="Flow_GatewaySplitControllerContents_To_TaskRecordProcessingPurposes_Art30" sourceRef="Gateway_SplitControllerContents_Art30" targetRef="Task_RecordProcessingPurposes_Art30" />
+    <sequenceFlow id="Flow_GatewaySplitControllerContents_To_TaskRecordRecipientCategories_Art30" sourceRef="Gateway_SplitControllerContents_Art30" targetRef="Task_RecordRecipientCategories_Art30" />
+    <sequenceFlow id="Flow_GatewaySplitControllerContents_To_TaskRecordTransferDetails_Art30" sourceRef="Gateway_SplitControllerContents_Art30" targetRef="Task_RecordTransferDetails_Art30" />
+    <sequenceFlow id="Flow_GatewaySplitProcessorContents_To_TaskRecordProcessingCategories_Art30" sourceRef="Gateway_SplitProcessorContents_Art30" targetRef="Task_RecordProcessingCategories_Art30" />
+    <sequenceFlow id="Flow_GatewaySplitProcessorContents_To_TaskRecordProcessorDetails_Art30" sourceRef="Gateway_SplitProcessorContents_Art30" targetRef="Task_RecordProcessorDetails_Art30" />
+    <sequenceFlow id="Flow_GatewaySplitProcessorContents_To_TaskRecordProcessorSecurityMeasures_Art30" sourceRef="Gateway_SplitProcessorContents_Art30" targetRef="Task_RecordProcessorSecurityMeasures_Art30" />
+    <sequenceFlow id="Flow_GatewaySplitProcessorContents_To_TaskRecordProcessorTransferDetails_Art30" sourceRef="Gateway_SplitProcessorContents_Art30" targetRef="Task_RecordProcessorTransferDetails_Art30" />
+    <sequenceFlow id="Flow_ReceiveTaskReceiveControllerRequest_To_SendTaskProvideControllerRecord_Art30" sourceRef="ReceiveTask_ReceiveControllerRequest_Art30" targetRef="SendTask_ProvideControllerRecord_Art30" />
+    <sequenceFlow id="Flow_ReceiveTaskReceiveProcessorRequest_To_SendTaskProvideProcessorRecord_Art30" sourceRef="ReceiveTask_ReceiveProcessorRequest_Art30" targetRef="SendTask_ProvideProcessorRecord_Art30" />
+    <sequenceFlow id="Flow_SendTaskProvideControllerRecord_To_EndControllerRecordAvailable_Art30" sourceRef="SendTask_ProvideControllerRecord_Art30" targetRef="EndEvent_ControllerRecordAvailable_Art30" />
+    <sequenceFlow id="Flow_SendTaskProvideProcessorRecord_To_EndProcessorRecordAvailable_Art30" sourceRef="SendTask_ProvideProcessorRecord_Art30" targetRef="EndEvent_ProcessorRecordAvailable_Art30" />
+    <sequenceFlow id="Flow_StartControllerProcessing_To_TaskAssessControllerDuty_Art30" sourceRef="StartEvent_CarryOutControllerProcessing_Art30" targetRef="Task_AssessControllerRecordDuty_Art30" />
+    <sequenceFlow id="Flow_StartProcessorProcessing_To_TaskAssessProcessorDuty_Art30" sourceRef="StartEvent_ProcessForController_Art30" targetRef="Task_AssessProcessorRecordDuty_Art30" />
+    <sequenceFlow id="Flow_TaskAssessControllerDuty_To_GatewayControllerFewEmployees_Art30" sourceRef="Task_AssessControllerRecordDuty_Art30" targetRef="Gateway_ControllerFewEmployees_Art30" />
+    <sequenceFlow id="Flow_TaskAssessProcessorDuty_To_GatewayProcessorFewEmployees_Art30" sourceRef="Task_AssessProcessorRecordDuty_Art30" targetRef="Gateway_ProcessorFewEmployees_Art30" />
+    <sequenceFlow id="Flow_TaskKeepControllerRecordInWriting_To_GatewayControllerRequestReceived_Art30" sourceRef="Task_KeepControllerRecordInWriting_Art30" targetRef="Gateway_ControllerRequestReceived_Art30" />
+    <sequenceFlow id="Flow_TaskKeepProcessorRecordInWriting_To_GatewayProcessorRequestReceived_Art30" sourceRef="Task_KeepProcessorRecordInWriting_Art30" targetRef="Gateway_ProcessorRequestReceived_Art30" />
+    <sequenceFlow id="Flow_TaskRecordControllerDetails_To_GatewayJoinControllerContents_Art30" sourceRef="Task_RecordControllerDetails_Art30" targetRef="Gateway_JoinControllerContents_Art30" />
+    <sequenceFlow id="Flow_TaskRecordControllerSecurityMeasures_To_GatewayJoinControllerContents_Art30" sourceRef="Task_RecordControllerSecurityMeasures_Art30" targetRef="Gateway_JoinControllerContents_Art30" />
+    <sequenceFlow id="Flow_TaskRecordDataCategories_To_GatewayJoinControllerContents_Art30" sourceRef="Task_RecordDataCategories_Art30" targetRef="Gateway_JoinControllerContents_Art30" />
+    <sequenceFlow id="Flow_TaskRecordErasurePeriods_To_GatewayJoinControllerContents_Art30" sourceRef="Task_RecordErasurePeriods_Art30" targetRef="Gateway_JoinControllerContents_Art30" />
+    <sequenceFlow id="Flow_TaskRecordProcessingCategories_To_GatewayJoinProcessorContents_Art30" sourceRef="Task_RecordProcessingCategories_Art30" targetRef="Gateway_JoinProcessorContents_Art30" />
+    <sequenceFlow id="Flow_TaskRecordProcessingPurposes_To_GatewayJoinControllerContents_Art30" sourceRef="Task_RecordProcessingPurposes_Art30" targetRef="Gateway_JoinControllerContents_Art30" />
+    <sequenceFlow id="Flow_TaskRecordProcessorDetails_To_GatewayJoinProcessorContents_Art30" sourceRef="Task_RecordProcessorDetails_Art30" targetRef="Gateway_JoinProcessorContents_Art30" />
+    <sequenceFlow id="Flow_TaskRecordProcessorSecurityMeasures_To_GatewayJoinProcessorContents_Art30" sourceRef="Task_RecordProcessorSecurityMeasures_Art30" targetRef="Gateway_JoinProcessorContents_Art30" />
+    <sequenceFlow id="Flow_TaskRecordProcessorTransferDetails_To_GatewayJoinProcessorContents_Art30" sourceRef="Task_RecordProcessorTransferDetails_Art30" targetRef="Gateway_JoinProcessorContents_Art30" />
+    <sequenceFlow id="Flow_TaskRecordRecipientCategories_To_GatewayJoinControllerContents_Art30" sourceRef="Task_RecordRecipientCategories_Art30" targetRef="Gateway_JoinControllerContents_Art30" />
+    <sequenceFlow id="Flow_TaskRecordTransferDetails_To_GatewayJoinControllerContents_Art30" sourceRef="Task_RecordTransferDetails_Art30" targetRef="Gateway_JoinControllerContents_Art30" />
+    <sequenceFlow id="Flow_TaskSetUpControllerRecord_To_GatewaySplitControllerContents_Art30" sourceRef="Task_SetUpControllerRecord_Art30" targetRef="Gateway_SplitControllerContents_Art30" />
+    <sequenceFlow id="Flow_TaskSetUpProcessorRecord_To_GatewaySplitProcessorContents_Art30" sourceRef="Task_SetUpProcessorRecord_Art30" targetRef="Gateway_SplitProcessorContents_Art30" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_ProvideControllerRecord_Art30" sourceRef="SendTask_ProvideControllerRecord_Art30" targetRef="Participant_SupervisoryAuthority_Art30" />
+    <messageFlow id="MessageFlow_ProvideProcessorRecord_Art30" sourceRef="SendTask_ProvideProcessorRecord_Art30" targetRef="Participant_SupervisoryAuthority_Art30" />
+    <messageFlow id="MessageFlow_SARequestControllerRecord_Art30" sourceRef="Participant_SupervisoryAuthority_Art30" targetRef="ReceiveTask_ReceiveControllerRequest_Art30" />
+    <messageFlow id="MessageFlow_SARequestProcessorRecord_Art30" sourceRef="Participant_SupervisoryAuthority_Art30" targetRef="ReceiveTask_ReceiveProcessorRequest_Art30" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

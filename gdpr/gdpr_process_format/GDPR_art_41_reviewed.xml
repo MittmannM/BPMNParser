@@ -1,75 +1,123 @@
 <?xml version='1.0' encoding='utf-8'?>
 <processModel>
   <pools>
+    <pool id="Participant_Board_Art41" name="Board" poolType="passive" />
     <pool id="Participant_ControllerProcessor_Art41" name="Adhering Controller or Processor" poolType="passive" />
     <pool id="Participant_DataSubject_Art41" name="Data Subject" poolType="passive" />
     <pool id="Participant_MonitoringBody_Art41" name="Monitoring Body" poolType="active" processRef="Process_MonitoringBody_Art41" />
-    <pool id="Participant_SupervisoryAuthority_Art41" name="Supervisory Authority" poolType="passive" />
+    <pool id="Participant_SupervisoryAuthority_Art41" name="Supervisory Authority" poolType="active" processRef="Process_SupervisoryAuthority_Art41" />
   </pools>
   <lanes />
   <tasks>
-    <task id="ReceiveTask_ReceiveAccreditationDecision_Art41" name="Receive the accreditation decision" type="receiveTask" poolRef="Participant_MonitoringBody_Art41" />
-    <task id="SendTask_InformAuthority_Art41" name="Communicate the non-compliance and the measures taken to the supervisory authority" type="sendTask" poolRef="Participant_MonitoringBody_Art41" />
-    <task id="SendTask_SubmitAccreditationRequest_Art41" name="Submit the accreditation request to the supervisory authority" type="sendTask" poolRef="Participant_MonitoringBody_Art41" />
-    <task id="SendTask_SuspendOrExclude_Art41" name="Suspend or exclude the controller or processor from the code" type="sendTask" poolRef="Participant_MonitoringBody_Art41" />
-    <task id="Task_DemonstrateExpertise_Art41" name="Demonstrate expertise in the code subject matter" type="task" poolRef="Participant_MonitoringBody_Art41" />
-    <task id="Task_DemonstrateNoConflict_Art41" name="Demonstrate the absence of conflicts of interest" type="task" poolRef="Participant_MonitoringBody_Art41" />
-    <task id="Task_MonitorAndHandleComplaints_Art41" name="Monitor compliance with the code and handle complaints" type="task" poolRef="Participant_MonitoringBody_Art41" />
-    <task id="Task_PublishProcedures_Art41" name="Publish the monitoring and complaint-handling procedures" type="task" poolRef="Participant_MonitoringBody_Art41" />
-    <task id="Task_SetupComplaintHandling_Art41" name="Set up procedures to receive and handle complaints" type="task" poolRef="Participant_MonitoringBody_Art41" />
-    <task id="Task_SetupControllerMonitoring_Art41" name="Set up procedures to monitor controllers' compliance with the code" type="task" poolRef="Participant_MonitoringBody_Art41" />
-    <task id="Task_SetupProcessorMonitoring_Art41" name="Set up procedures to monitor processors' compliance with the code" type="task" poolRef="Participant_MonitoringBody_Art41" />
-    <task id="Task_TakeAction_Art41" name="Take action to address the non-compliance" type="task" poolRef="Participant_MonitoringBody_Art41" />
+    <task id="ReceiveTask_ReceiveAccreditationDecision_Art41" name="Receive accreditation decision" type="receiveTask" poolRef="Participant_MonitoringBody_Art41" />
+    <task id="ReceiveTask_ReceiveAccreditationRequest_Art41" name="Receive accreditation request" type="receiveTask" poolRef="Participant_SupervisoryAuthority_Art41" />
+    <task id="ReceiveTask_ReceiveInfringementInfo_Art41" name="Receive infringement information" type="receiveTask" poolRef="Participant_SupervisoryAuthority_Art41" />
+    <task id="ReceiveTask_ReceiveRevocationNotice_Art41" name="Receive revocation notice" type="receiveTask" poolRef="Participant_MonitoringBody_Art41" />
+    <task id="SendTask_InformAuthority_Art41" name="Inform supervisory authority" type="sendTask" poolRef="Participant_MonitoringBody_Art41" />
+    <task id="SendTask_SendAccreditationDecision_Art41" name="Send accreditation decision" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art41" />
+    <task id="SendTask_SendRevocationNotice_Art41" name="Send revocation notice" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art41" />
+    <task id="SendTask_SubmitAccreditationRequest_Art41" name="Submit accreditation request" type="sendTask" poolRef="Participant_MonitoringBody_Art41" />
+    <task id="SendTask_SubmitRequirementsToBoard_Art41" name="Submit Article 63 draft" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art41" />
+    <task id="SendTask_SuspendOrExcludeAdherent_Art41" name="Suspend or exclude adherent" type="sendTask" poolRef="Participant_MonitoringBody_Art41" />
+    <task id="Task_AssessAdherentEligibility_Art41" name="Assess adherent eligibility" type="task" poolRef="Participant_MonitoringBody_Art41" />
+    <task id="Task_AssessExpertiseAndIndependence_Art41" name="Assess expertise and independence" type="task" poolRef="Participant_SupervisoryAuthority_Art41" />
+    <task id="Task_AssessProceduresAndSafeguards_Art41" name="Assess procedures and safeguards" type="task" poolRef="Participant_SupervisoryAuthority_Art41" />
+    <task id="Task_AssessRevocationGrounds_Art41" name="Assess revocation grounds" type="task" poolRef="Participant_SupervisoryAuthority_Art41" />
+    <task id="Task_DemonstrateExpertise_Art41" name="Demonstrate expertise" type="task" poolRef="Participant_MonitoringBody_Art41" />
+    <task id="Task_DemonstrateIndependence_Art41" name="Demonstrate independence" type="task" poolRef="Participant_MonitoringBody_Art41" />
+    <task id="Task_DraftAccreditationRequirements_Art41" name="Draft accreditation requirements" type="task" poolRef="Participant_SupervisoryAuthority_Art41" />
+    <task id="Task_HandleCodeComplaints_Art41" name="Handle code complaints" type="task" poolRef="Participant_MonitoringBody_Art41" />
+    <task id="Task_MonitorCodeCompliance_Art41" name="Monitor code compliance" type="task" poolRef="Participant_MonitoringBody_Art41" />
+    <task id="Task_PublishProcedures_Art41" name="Publish procedures" type="task" poolRef="Participant_MonitoringBody_Art41" />
+    <task id="Task_ReviewCodeOperation_Art41" name="Review code operation" type="task" poolRef="Participant_MonitoringBody_Art41" />
+    <task id="Task_SetComplaintProcedures_Art41" name="Set complaint procedures" type="task" poolRef="Participant_MonitoringBody_Art41" />
+    <task id="Task_SetComplianceMonitoring_Art41" name="Set compliance monitoring" type="task" poolRef="Participant_MonitoringBody_Art41" />
+    <task id="Task_SetEligibilityAssessment_Art41" name="Set eligibility assessment" type="task" poolRef="Participant_MonitoringBody_Art41" />
+    <task id="Task_SetPeriodicReview_Art41" name="Set periodic review" type="task" poolRef="Participant_MonitoringBody_Art41" />
+    <task id="Task_ShowNoConflicts_Art41" name="Show no conflicts" type="task" poolRef="Participant_MonitoringBody_Art41" />
+    <task id="Task_TakeAppropriateAction_Art41" name="Take appropriate action" type="task" poolRef="Participant_MonitoringBody_Art41" />
   </tasks>
   <events>
-    <event id="EndEvent_AuthorityInformed_Art41" name="Non-compliance and measures communicated" type="endEvent" poolRef="Participant_MonitoringBody_Art41" />
-    <event id="EndEvent_Compliant_Art41" name="Monitoring continues without enforcement action" type="endEvent" poolRef="Participant_MonitoringBody_Art41" />
-    <event id="EndEvent_NotAccredited_Art41" name="Body not accredited to monitor the code" type="endEvent" poolRef="Participant_MonitoringBody_Art41" />
-    <event id="EndEvent_NotApplicable_Art41" name="Article 41 monitoring-body regime does not apply" type="endEvent" poolRef="Participant_MonitoringBody_Art41" />
-    <event id="StartEvent_MonitoringConsidered_Art41" name="Monitoring under an approved code is considered" type="startEvent" poolRef="Participant_MonitoringBody_Art41" />
+    <event id="EndEvent_AccreditationMaintained_Art41" name="Accreditation maintained" type="endEvent" poolRef="Participant_SupervisoryAuthority_Art41" />
+    <event id="EndEvent_AccreditationRevoked_Art41" name="Accreditation revoked" type="endEvent" poolRef="Participant_MonitoringBody_Art41" />
+    <event id="EndEvent_AccreditationRevoked_Art41_SA" name="Accreditation revoked by authority" type="endEvent" poolRef="Participant_SupervisoryAuthority_Art41" />
+    <event id="EndEvent_AuthorityInformed_Art41" name="Authority informed" type="endEvent" poolRef="Participant_MonitoringBody_Art41" />
+    <event id="EndEvent_MonitoringContinues_Art41" name="Monitoring continues" type="endEvent" poolRef="Participant_MonitoringBody_Art41" />
+    <event id="EndEvent_NotAccredited_Art41" name="Monitoring body not accredited" type="endEvent" poolRef="Participant_MonitoringBody_Art41" />
+    <event id="EndEvent_NotApplicable_Art41" name="Article 41 monitoring does not apply" type="endEvent" poolRef="Participant_MonitoringBody_Art41" />
+    <event id="StartEvent_ConsiderMonitoringRole_Art41" name="Consider monitoring role" type="startEvent" poolRef="Participant_MonitoringBody_Art41" />
+    <event id="StartEvent_SetAccreditationFramework_Art41" name="Set accreditation framework" type="startEvent" poolRef="Participant_SupervisoryAuthority_Art41" />
   </events>
   <gateways>
+    <gateway id="Gateway_AccreditationRevoked_Art41" name="Was the accreditation revoked?" type="exclusiveGateway" poolRef="Participant_MonitoringBody_Art41" />
     <gateway id="Gateway_Accredited_Art41" name="Was the body accredited?" type="exclusiveGateway" poolRef="Participant_MonitoringBody_Art41" />
-    <gateway id="Gateway_NonCompliance_Art41" name="Was non-compliance with the code identified?" type="exclusiveGateway" poolRef="Participant_MonitoringBody_Art41" />
-    <gateway id="Gateway_PublicAuthority_Art41" name="Is the monitored controller or processor a public authority or body?" type="exclusiveGateway" poolRef="Participant_MonitoringBody_Art41" />
-    <gateway id="Gateway_SetupJoin_Art41" type="parallelGateway" poolRef="Participant_MonitoringBody_Art41" />
-    <gateway id="Gateway_SetupSplit_Art41" type="parallelGateway" poolRef="Participant_MonitoringBody_Art41" />
-    <gateway id="Gateway_SuspensionRequired_Art41" name="Is suspension or exclusion from the code required?" type="exclusiveGateway" poolRef="Participant_MonitoringBody_Art41" />
+    <gateway id="Gateway_InfringementFound_Art41" name="Was an infringement of the code identified?" type="exclusiveGateway" poolRef="Participant_MonitoringBody_Art41" />
+    <gateway id="Gateway_JoinSetup_Art41" type="parallelGateway" poolRef="Participant_MonitoringBody_Art41" />
+    <gateway id="Gateway_MeetsRequirements_Art41" name="Does the body meet the accreditation requirements?" type="exclusiveGateway" poolRef="Participant_SupervisoryAuthority_Art41" />
+    <gateway id="Gateway_PublicAuthority_Art41" name="Does the code apply to public authorities or bodies?" type="exclusiveGateway" poolRef="Participant_MonitoringBody_Art41" />
+    <gateway id="Gateway_RevokeAccreditation_Art41" name="Should the accreditation be revoked?" type="exclusiveGateway" poolRef="Participant_SupervisoryAuthority_Art41" />
+    <gateway id="Gateway_SplitSetup_Art41" type="parallelGateway" poolRef="Participant_MonitoringBody_Art41" />
+    <gateway id="Gateway_SuspendExclude_Art41" name="Is suspension or exclusion required?" type="exclusiveGateway" poolRef="Participant_MonitoringBody_Art41" />
   </gateways>
   <sequenceFlows>
-    <sequenceFlow id="Flow_ComplaintHandling_To_SetupJoin_Art41" sourceRef="Task_SetupComplaintHandling_Art41" targetRef="Gateway_SetupJoin_Art41" />
-    <sequenceFlow id="Flow_ControllerMonitoring_To_SetupJoin_Art41" sourceRef="Task_SetupControllerMonitoring_Art41" targetRef="Gateway_SetupJoin_Art41" />
-    <sequenceFlow id="Flow_DemonstrateExpertise_To_DemonstrateNoConflict_Art41" sourceRef="Task_DemonstrateExpertise_Art41" targetRef="Task_DemonstrateNoConflict_Art41" />
-    <sequenceFlow id="Flow_DemonstrateNoConflict_To_SetupSplit_Art41" sourceRef="Task_DemonstrateNoConflict_Art41" targetRef="Gateway_SetupSplit_Art41" />
+    <sequenceFlow id="Flow_GatewayAccreditationRevoked_To_EndAccreditationRevoked_Art41" name="Yes" sourceRef="Gateway_AccreditationRevoked_Art41" targetRef="EndEvent_AccreditationRevoked_Art41" />
+    <sequenceFlow id="Flow_GatewayAccreditationRevoked_To_EndAuthorityInformed_Art41" name="No" sourceRef="Gateway_AccreditationRevoked_Art41" targetRef="EndEvent_AuthorityInformed_Art41" />
     <sequenceFlow id="Flow_GatewayAccredited_To_EndNotAccredited_Art41" name="No" sourceRef="Gateway_Accredited_Art41" targetRef="EndEvent_NotAccredited_Art41" />
-    <sequenceFlow id="Flow_GatewayAccredited_To_MonitorAndHandleComplaints_Art41" name="Yes" sourceRef="Gateway_Accredited_Art41" targetRef="Task_MonitorAndHandleComplaints_Art41" />
-    <sequenceFlow id="Flow_GatewayNonCompliance_To_EndCompliant_Art41" name="No" sourceRef="Gateway_NonCompliance_Art41" targetRef="EndEvent_Compliant_Art41" />
-    <sequenceFlow id="Flow_GatewayNonCompliance_To_TakeAction_Art41" name="Yes" sourceRef="Gateway_NonCompliance_Art41" targetRef="Task_TakeAction_Art41" />
-    <sequenceFlow id="Flow_GatewayPublicAuthority_To_DemonstrateExpertise_Art41" name="No" sourceRef="Gateway_PublicAuthority_Art41" targetRef="Task_DemonstrateExpertise_Art41" />
+    <sequenceFlow id="Flow_GatewayAccredited_To_TaskAssessAdherentEligibility_Art41" name="Yes" sourceRef="Gateway_Accredited_Art41" targetRef="Task_AssessAdherentEligibility_Art41" />
+    <sequenceFlow id="Flow_GatewayInfringementFound_To_EndMonitoringContinues_Art41" name="No" sourceRef="Gateway_InfringementFound_Art41" targetRef="EndEvent_MonitoringContinues_Art41" />
+    <sequenceFlow id="Flow_GatewayInfringementFound_To_TaskTakeAppropriateAction_Art41" name="Yes" sourceRef="Gateway_InfringementFound_Art41" targetRef="Task_TakeAppropriateAction_Art41" />
+    <sequenceFlow id="Flow_GatewayJoinSetup_To_SendTaskSubmitAccreditationRequest_Art41" sourceRef="Gateway_JoinSetup_Art41" targetRef="SendTask_SubmitAccreditationRequest_Art41" />
+    <sequenceFlow id="Flow_GatewayMeetsRequirements_To_SendTaskSendAccreditationDecision_Art41" name="Yes" sourceRef="Gateway_MeetsRequirements_Art41" targetRef="SendTask_SendAccreditationDecision_Art41" />
+    <sequenceFlow id="Flow_GatewayMeetsRequirements_To_SendTaskSendAccreditationDecision_Art41_Default" name="No" sourceRef="Gateway_MeetsRequirements_Art41" targetRef="SendTask_SendAccreditationDecision_Art41" />
     <sequenceFlow id="Flow_GatewayPublicAuthority_To_EndNotApplicable_Art41" name="Yes" sourceRef="Gateway_PublicAuthority_Art41" targetRef="EndEvent_NotApplicable_Art41" />
-    <sequenceFlow id="Flow_GatewaySuspension_To_InformAuthority_Art41" name="No" sourceRef="Gateway_SuspensionRequired_Art41" targetRef="SendTask_InformAuthority_Art41" />
-    <sequenceFlow id="Flow_GatewaySuspension_To_SuspendOrExclude_Art41" name="Yes" sourceRef="Gateway_SuspensionRequired_Art41" targetRef="SendTask_SuspendOrExclude_Art41" />
-    <sequenceFlow id="Flow_InformAuthority_To_EndInformed_Art41" sourceRef="SendTask_InformAuthority_Art41" targetRef="EndEvent_AuthorityInformed_Art41" />
-    <sequenceFlow id="Flow_MonitorAndHandleComplaints_To_GatewayNonCompliance_Art41" sourceRef="Task_MonitorAndHandleComplaints_Art41" targetRef="Gateway_NonCompliance_Art41" />
-    <sequenceFlow id="Flow_ProcessorMonitoring_To_SetupJoin_Art41" sourceRef="Task_SetupProcessorMonitoring_Art41" targetRef="Gateway_SetupJoin_Art41" />
-    <sequenceFlow id="Flow_PublishProcedures_To_SetupJoin_Art41" sourceRef="Task_PublishProcedures_Art41" targetRef="Gateway_SetupJoin_Art41" />
-    <sequenceFlow id="Flow_ReceiveDecision_To_GatewayAccredited_Art41" sourceRef="ReceiveTask_ReceiveAccreditationDecision_Art41" targetRef="Gateway_Accredited_Art41" />
-    <sequenceFlow id="Flow_SetupJoin_To_SubmitAccreditation_Art41" sourceRef="Gateway_SetupJoin_Art41" targetRef="SendTask_SubmitAccreditationRequest_Art41" />
-    <sequenceFlow id="Flow_SetupSplit_To_ComplaintHandling_Art41" sourceRef="Gateway_SetupSplit_Art41" targetRef="Task_SetupComplaintHandling_Art41" />
-    <sequenceFlow id="Flow_SetupSplit_To_ControllerMonitoring_Art41" sourceRef="Gateway_SetupSplit_Art41" targetRef="Task_SetupControllerMonitoring_Art41" />
-    <sequenceFlow id="Flow_SetupSplit_To_ProcessorMonitoring_Art41" sourceRef="Gateway_SetupSplit_Art41" targetRef="Task_SetupProcessorMonitoring_Art41" />
-    <sequenceFlow id="Flow_SetupSplit_To_PublishProcedures_Art41" sourceRef="Gateway_SetupSplit_Art41" targetRef="Task_PublishProcedures_Art41" />
-    <sequenceFlow id="Flow_Start_To_GatewayPublicAuthority_Art41" sourceRef="StartEvent_MonitoringConsidered_Art41" targetRef="Gateway_PublicAuthority_Art41" />
-    <sequenceFlow id="Flow_SubmitAccreditation_To_ReceiveDecision_Art41" sourceRef="SendTask_SubmitAccreditationRequest_Art41" targetRef="ReceiveTask_ReceiveAccreditationDecision_Art41" />
-    <sequenceFlow id="Flow_SuspendOrExclude_To_InformAuthority_Art41" sourceRef="SendTask_SuspendOrExclude_Art41" targetRef="SendTask_InformAuthority_Art41" />
-    <sequenceFlow id="Flow_TakeAction_To_GatewaySuspension_Art41" sourceRef="Task_TakeAction_Art41" targetRef="Gateway_SuspensionRequired_Art41" />
+    <sequenceFlow id="Flow_GatewayPublicAuthority_To_TaskDemonstrateExpertise_Art41" name="No" sourceRef="Gateway_PublicAuthority_Art41" targetRef="Task_DemonstrateExpertise_Art41" />
+    <sequenceFlow id="Flow_GatewayRevokeAccreditation_To_EndAccreditationMaintained_Art41" name="No" sourceRef="Gateway_RevokeAccreditation_Art41" targetRef="EndEvent_AccreditationMaintained_Art41" />
+    <sequenceFlow id="Flow_GatewayRevokeAccreditation_To_SendTaskSendRevocationNotice_Art41" name="Yes" sourceRef="Gateway_RevokeAccreditation_Art41" targetRef="SendTask_SendRevocationNotice_Art41" />
+    <sequenceFlow id="Flow_GatewaySplitSetup_To_TaskPublishProcedures_Art41" sourceRef="Gateway_SplitSetup_Art41" targetRef="Task_PublishProcedures_Art41" />
+    <sequenceFlow id="Flow_GatewaySplitSetup_To_TaskSetComplaintProcedures_Art41" sourceRef="Gateway_SplitSetup_Art41" targetRef="Task_SetComplaintProcedures_Art41" />
+    <sequenceFlow id="Flow_GatewaySplitSetup_To_TaskSetComplianceMonitoring_Art41" sourceRef="Gateway_SplitSetup_Art41" targetRef="Task_SetComplianceMonitoring_Art41" />
+    <sequenceFlow id="Flow_GatewaySplitSetup_To_TaskSetEligibilityAssessment_Art41" sourceRef="Gateway_SplitSetup_Art41" targetRef="Task_SetEligibilityAssessment_Art41" />
+    <sequenceFlow id="Flow_GatewaySplitSetup_To_TaskSetPeriodicReview_Art41" sourceRef="Gateway_SplitSetup_Art41" targetRef="Task_SetPeriodicReview_Art41" />
+    <sequenceFlow id="Flow_GatewaySuspendExclude_To_SendTaskInformAuthority_Art41" name="No" sourceRef="Gateway_SuspendExclude_Art41" targetRef="SendTask_InformAuthority_Art41" />
+    <sequenceFlow id="Flow_GatewaySuspendExclude_To_SendTaskSuspendOrExcludeAdherent_Art41" name="Yes" sourceRef="Gateway_SuspendExclude_Art41" targetRef="SendTask_SuspendOrExcludeAdherent_Art41" />
+    <sequenceFlow id="Flow_ReceiveTaskReceiveAccreditationDecision_To_GatewayAccredited_Art41" sourceRef="ReceiveTask_ReceiveAccreditationDecision_Art41" targetRef="Gateway_Accredited_Art41" />
+    <sequenceFlow id="Flow_ReceiveTaskReceiveAccreditationRequest_To_TaskAssessExpertiseAndIndependence_Art41" sourceRef="ReceiveTask_ReceiveAccreditationRequest_Art41" targetRef="Task_AssessExpertiseAndIndependence_Art41" />
+    <sequenceFlow id="Flow_ReceiveTaskReceiveInfringementInfo_To_TaskAssessRevocationGrounds_Art41" sourceRef="ReceiveTask_ReceiveInfringementInfo_Art41" targetRef="Task_AssessRevocationGrounds_Art41" />
+    <sequenceFlow id="Flow_ReceiveTaskReceiveRevocationNotice_To_GatewayAccreditationRevoked_Art41" sourceRef="ReceiveTask_ReceiveRevocationNotice_Art41" targetRef="Gateway_AccreditationRevoked_Art41" />
+    <sequenceFlow id="Flow_SendTaskInformAuthority_To_ReceiveTaskReceiveRevocationNotice_Art41" sourceRef="SendTask_InformAuthority_Art41" targetRef="ReceiveTask_ReceiveRevocationNotice_Art41" />
+    <sequenceFlow id="Flow_SendTaskSendAccreditationDecision_To_ReceiveTaskReceiveInfringementInfo_Art41" sourceRef="SendTask_SendAccreditationDecision_Art41" targetRef="ReceiveTask_ReceiveInfringementInfo_Art41" />
+    <sequenceFlow id="Flow_SendTaskSendRevocationNotice_To_EndAccreditationRevoked_Art41" sourceRef="SendTask_SendRevocationNotice_Art41" targetRef="EndEvent_AccreditationRevoked_Art41_SA" />
+    <sequenceFlow id="Flow_SendTaskSubmitAccreditationRequest_To_ReceiveTaskReceiveAccreditationDecision_Art41" sourceRef="SendTask_SubmitAccreditationRequest_Art41" targetRef="ReceiveTask_ReceiveAccreditationDecision_Art41" />
+    <sequenceFlow id="Flow_SendTaskSubmitRequirementsToBoard_To_ReceiveTaskReceiveAccreditationRequest_Art41" sourceRef="SendTask_SubmitRequirementsToBoard_Art41" targetRef="ReceiveTask_ReceiveAccreditationRequest_Art41" />
+    <sequenceFlow id="Flow_SendTaskSuspendOrExcludeAdherent_To_SendTaskInformAuthority_Art41" sourceRef="SendTask_SuspendOrExcludeAdherent_Art41" targetRef="SendTask_InformAuthority_Art41" />
+    <sequenceFlow id="Flow_StartConsiderMonitoringRole_To_GatewayPublicAuthority_Art41" sourceRef="StartEvent_ConsiderMonitoringRole_Art41" targetRef="Gateway_PublicAuthority_Art41" />
+    <sequenceFlow id="Flow_StartSetAccreditationFramework_To_TaskDraftAccreditationRequirements_Art41" sourceRef="StartEvent_SetAccreditationFramework_Art41" targetRef="Task_DraftAccreditationRequirements_Art41" />
+    <sequenceFlow id="Flow_TaskAssessAdherentEligibility_To_TaskMonitorCodeCompliance_Art41" sourceRef="Task_AssessAdherentEligibility_Art41" targetRef="Task_MonitorCodeCompliance_Art41" />
+    <sequenceFlow id="Flow_TaskAssessExpertiseAndIndependence_To_TaskAssessProceduresAndSafeguards_Art41" sourceRef="Task_AssessExpertiseAndIndependence_Art41" targetRef="Task_AssessProceduresAndSafeguards_Art41" />
+    <sequenceFlow id="Flow_TaskAssessProceduresAndSafeguards_To_GatewayMeetsRequirements_Art41" sourceRef="Task_AssessProceduresAndSafeguards_Art41" targetRef="Gateway_MeetsRequirements_Art41" />
+    <sequenceFlow id="Flow_TaskAssessRevocationGrounds_To_GatewayRevokeAccreditation_Art41" sourceRef="Task_AssessRevocationGrounds_Art41" targetRef="Gateway_RevokeAccreditation_Art41" />
+    <sequenceFlow id="Flow_TaskDemonstrateExpertise_To_TaskDemonstrateIndependence_Art41" sourceRef="Task_DemonstrateExpertise_Art41" targetRef="Task_DemonstrateIndependence_Art41" />
+    <sequenceFlow id="Flow_TaskDemonstrateIndependence_To_TaskShowNoConflicts_Art41" sourceRef="Task_DemonstrateIndependence_Art41" targetRef="Task_ShowNoConflicts_Art41" />
+    <sequenceFlow id="Flow_TaskDraftAccreditationRequirements_To_SendTaskSubmitRequirementsToBoard_Art41" sourceRef="Task_DraftAccreditationRequirements_Art41" targetRef="SendTask_SubmitRequirementsToBoard_Art41" />
+    <sequenceFlow id="Flow_TaskHandleCodeComplaints_To_GatewayInfringementFound_Art41" sourceRef="Task_HandleCodeComplaints_Art41" targetRef="Gateway_InfringementFound_Art41" />
+    <sequenceFlow id="Flow_TaskMonitorCodeCompliance_To_TaskReviewCodeOperation_Art41" sourceRef="Task_MonitorCodeCompliance_Art41" targetRef="Task_ReviewCodeOperation_Art41" />
+    <sequenceFlow id="Flow_TaskPublishProcedures_To_GatewayJoinSetup_Art41" sourceRef="Task_PublishProcedures_Art41" targetRef="Gateway_JoinSetup_Art41" />
+    <sequenceFlow id="Flow_TaskReviewCodeOperation_To_TaskHandleCodeComplaints_Art41" sourceRef="Task_ReviewCodeOperation_Art41" targetRef="Task_HandleCodeComplaints_Art41" />
+    <sequenceFlow id="Flow_TaskSetComplaintProcedures_To_GatewayJoinSetup_Art41" sourceRef="Task_SetComplaintProcedures_Art41" targetRef="Gateway_JoinSetup_Art41" />
+    <sequenceFlow id="Flow_TaskSetComplianceMonitoring_To_GatewayJoinSetup_Art41" sourceRef="Task_SetComplianceMonitoring_Art41" targetRef="Gateway_JoinSetup_Art41" />
+    <sequenceFlow id="Flow_TaskSetEligibilityAssessment_To_GatewayJoinSetup_Art41" sourceRef="Task_SetEligibilityAssessment_Art41" targetRef="Gateway_JoinSetup_Art41" />
+    <sequenceFlow id="Flow_TaskSetPeriodicReview_To_GatewayJoinSetup_Art41" sourceRef="Task_SetPeriodicReview_Art41" targetRef="Gateway_JoinSetup_Art41" />
+    <sequenceFlow id="Flow_TaskShowNoConflicts_To_GatewaySplitSetup_Art41" sourceRef="Task_ShowNoConflicts_Art41" targetRef="Gateway_SplitSetup_Art41" />
+    <sequenceFlow id="Flow_TaskTakeAppropriateAction_To_GatewaySuspendExclude_Art41" sourceRef="Task_TakeAppropriateAction_Art41" targetRef="Gateway_SuspendExclude_Art41" />
   </sequenceFlows>
   <messageFlows>
-    <messageFlow id="MessageFlow_AccreditationDecision_Art41" sourceRef="Participant_SupervisoryAuthority_Art41" targetRef="ReceiveTask_ReceiveAccreditationDecision_Art41" />
-    <messageFlow id="MessageFlow_Complaint_Art41" sourceRef="Participant_DataSubject_Art41" targetRef="Task_MonitorAndHandleComplaints_Art41" />
-    <messageFlow id="MessageFlow_InformAuthority_Art41" sourceRef="SendTask_InformAuthority_Art41" targetRef="Participant_SupervisoryAuthority_Art41" />
-    <messageFlow id="MessageFlow_SubmitAccreditationRequest_Art41" sourceRef="SendTask_SubmitAccreditationRequest_Art41" targetRef="Participant_SupervisoryAuthority_Art41" />
-    <messageFlow id="MessageFlow_SuspendOrExclude_Art41" sourceRef="SendTask_SuspendOrExclude_Art41" targetRef="Participant_ControllerProcessor_Art41" />
+    <messageFlow id="MessageFlow_AccreditationDecision_Art41" sourceRef="SendTask_SendAccreditationDecision_Art41" targetRef="ReceiveTask_ReceiveAccreditationDecision_Art41" />
+    <messageFlow id="MessageFlow_DataSubjectComplaint_Art41" sourceRef="Participant_DataSubject_Art41" targetRef="Task_HandleCodeComplaints_Art41" />
+    <messageFlow id="MessageFlow_InformAuthority_Art41" sourceRef="SendTask_InformAuthority_Art41" targetRef="ReceiveTask_ReceiveInfringementInfo_Art41" />
+    <messageFlow id="MessageFlow_SendRevocationNotice_Art41" sourceRef="SendTask_SendRevocationNotice_Art41" targetRef="ReceiveTask_ReceiveRevocationNotice_Art41" />
+    <messageFlow id="MessageFlow_SubmitAccreditationRequest_Art41" sourceRef="SendTask_SubmitAccreditationRequest_Art41" targetRef="ReceiveTask_ReceiveAccreditationRequest_Art41" />
+    <messageFlow id="MessageFlow_SubmitRequirementsToBoard_Art41" sourceRef="SendTask_SubmitRequirementsToBoard_Art41" targetRef="Participant_Board_Art41" />
+    <messageFlow id="MessageFlow_SuspendOrExclude_Art41" sourceRef="SendTask_SuspendOrExcludeAdherent_Art41" targetRef="Participant_ControllerProcessor_Art41" />
   </messageFlows>
   <dataObjects />
   <dataStores />

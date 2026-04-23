@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Controller_Art28" name="Controller" poolType="active" processRef="Process_Controller_Art28" />
+    <pool id="Participant_Processor_Art28" name="Processor" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="ReceiveTask_ReceiveComplianceInfo_Art28" name="Receive compliance information" type="receiveTask" poolRef="Participant_Controller_Art28" />
+    <task id="ReceiveTask_ReceiveInfringementNotice_Art28" name="Receive infringement notice" type="receiveTask" poolRef="Participant_Controller_Art28" />
+    <task id="SendTask_RequestComplianceInfo_Art28" name="Request compliance information" type="sendTask" poolRef="Participant_Controller_Art28" />
+    <task id="SendTask_SendProcessorContract_Art28" name="Send processor contract" type="sendTask" poolRef="Participant_Controller_Art28" />
+    <task id="Task_AssessProcessorGuarantees_Art28" name="Assess processor guarantees" type="task" poolRef="Participant_Controller_Art28" />
+    <task id="Task_DefineProcessingTerms_Art28" name="Define processing terms" type="task" poolRef="Participant_Controller_Art28" />
+    <task id="Task_MonitorProcessorRole_Art28" name="Monitor processor role" type="task" poolRef="Participant_Controller_Art28" />
+    <task id="Task_PutContractInWriting_Art28" name="Put contract in writing" type="task" poolRef="Participant_Controller_Art28" />
+    <task id="Task_SelectDemonstrationElement_Art28" name="Select code, certification, or clauses" type="task" poolRef="Participant_Controller_Art28" />
+    <task id="Task_SetArticle32Clause_Art28" name="Set Article 32 clause" type="task" poolRef="Participant_Controller_Art28" />
+    <task id="Task_SetAuditClause_Art28" name="Set audit clause" type="task" poolRef="Participant_Controller_Art28" />
+    <task id="Task_SetComplianceAssistanceClause_Art28" name="Set Articles 32 to 36 clause" type="task" poolRef="Participant_Controller_Art28" />
+    <task id="Task_SetConfidentialityClause_Art28" name="Set confidentiality clause" type="task" poolRef="Participant_Controller_Art28" />
+    <task id="Task_SetDeleteReturnClause_Art28" name="Set delete-or-return clause" type="task" poolRef="Participant_Controller_Art28" />
+    <task id="Task_SetInstructionClause_Art28" name="Set instruction clause" type="task" poolRef="Participant_Controller_Art28" />
+    <task id="Task_SetRightsAssistanceClause_Art28" name="Set rights-assistance clause" type="task" poolRef="Participant_Controller_Art28" />
+    <task id="Task_SetSubProcessorClause_Art28" name="Set sub-processor clause" type="task" poolRef="Participant_Controller_Art28" />
+  </tasks>
+  <events>
+    <event id="EndEvent_ArrangementEstablished_Art28" name="Article 28 processor arrangement established" type="endEvent" poolRef="Participant_Controller_Art28" />
+    <event id="EndEvent_DoNotUseProcessor_Art28" name="Do not use the processor" type="endEvent" poolRef="Participant_Controller_Art28" />
+    <event id="EndEvent_ProcessorBecomesController_Art28" name="Processor is considered controller" type="endEvent" poolRef="Participant_Controller_Art28" />
+    <event id="StartEvent_NeedProcessorSupport_Art28" name="Need processor support" type="startEvent" poolRef="Participant_Controller_Art28" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_JoinContractClauses_Art28" type="parallelGateway" poolRef="Participant_Controller_Art28" />
+    <gateway id="Gateway_PurposesMeansDetermined_Art28" name="Did the processor determine purposes and means?" type="exclusiveGateway" poolRef="Participant_Controller_Art28" />
+    <gateway id="Gateway_SplitContractClauses_Art28" type="parallelGateway" poolRef="Participant_Controller_Art28" />
+    <gateway id="Gateway_SufficientGuarantees_Art28" name="Do sufficient guarantees exist?" type="exclusiveGateway" poolRef="Participant_Controller_Art28" />
+    <gateway id="Gateway_UseDemonstrationElement_Art28" name="Use Article 40, Article 42, or standard clauses?" type="exclusiveGateway" poolRef="Participant_Controller_Art28" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_GatewayJoinContractClauses_To_GatewayUseDemonstrationElement_Art28" sourceRef="Gateway_JoinContractClauses_Art28" targetRef="Gateway_UseDemonstrationElement_Art28" />
+    <sequenceFlow id="Flow_GatewayPurposesMeansDetermined_To_EndArrangementEstablished_Art28" name="No" sourceRef="Gateway_PurposesMeansDetermined_Art28" targetRef="EndEvent_ArrangementEstablished_Art28" />
+    <sequenceFlow id="Flow_GatewayPurposesMeansDetermined_To_EndProcessorBecomesController_Art28" name="Yes" sourceRef="Gateway_PurposesMeansDetermined_Art28" targetRef="EndEvent_ProcessorBecomesController_Art28" />
+    <sequenceFlow id="Flow_GatewaySplitContractClauses_To_TaskSetArticle32Clause_Art28" sourceRef="Gateway_SplitContractClauses_Art28" targetRef="Task_SetArticle32Clause_Art28" />
+    <sequenceFlow id="Flow_GatewaySplitContractClauses_To_TaskSetAuditClause_Art28" sourceRef="Gateway_SplitContractClauses_Art28" targetRef="Task_SetAuditClause_Art28" />
+    <sequenceFlow id="Flow_GatewaySplitContractClauses_To_TaskSetComplianceAssistanceClause_Art28" sourceRef="Gateway_SplitContractClauses_Art28" targetRef="Task_SetComplianceAssistanceClause_Art28" />
+    <sequenceFlow id="Flow_GatewaySplitContractClauses_To_TaskSetConfidentialityClause_Art28" sourceRef="Gateway_SplitContractClauses_Art28" targetRef="Task_SetConfidentialityClause_Art28" />
+    <sequenceFlow id="Flow_GatewaySplitContractClauses_To_TaskSetDeleteReturnClause_Art28" sourceRef="Gateway_SplitContractClauses_Art28" targetRef="Task_SetDeleteReturnClause_Art28" />
+    <sequenceFlow id="Flow_GatewaySplitContractClauses_To_TaskSetInstructionClause_Art28" sourceRef="Gateway_SplitContractClauses_Art28" targetRef="Task_SetInstructionClause_Art28" />
+    <sequenceFlow id="Flow_GatewaySplitContractClauses_To_TaskSetRightsAssistanceClause_Art28" sourceRef="Gateway_SplitContractClauses_Art28" targetRef="Task_SetRightsAssistanceClause_Art28" />
+    <sequenceFlow id="Flow_GatewaySplitContractClauses_To_TaskSetSubProcessorClause_Art28" sourceRef="Gateway_SplitContractClauses_Art28" targetRef="Task_SetSubProcessorClause_Art28" />
+    <sequenceFlow id="Flow_GatewaySufficientGuarantees_To_EndDoNotUseProcessor_Art28" name="No" sourceRef="Gateway_SufficientGuarantees_Art28" targetRef="EndEvent_DoNotUseProcessor_Art28" />
+    <sequenceFlow id="Flow_GatewaySufficientGuarantees_To_TaskDefineProcessingTerms_Art28" name="Yes" sourceRef="Gateway_SufficientGuarantees_Art28" targetRef="Task_DefineProcessingTerms_Art28" />
+    <sequenceFlow id="Flow_GatewayUseDemonstrationElement_To_TaskPutContractInWriting_Art28" name="No" sourceRef="Gateway_UseDemonstrationElement_Art28" targetRef="Task_PutContractInWriting_Art28" />
+    <sequenceFlow id="Flow_GatewayUseDemonstrationElement_To_TaskSelectDemonstrationElement_Art28" name="Yes" sourceRef="Gateway_UseDemonstrationElement_Art28" targetRef="Task_SelectDemonstrationElement_Art28" />
+    <sequenceFlow id="Flow_ReceiveTaskReceiveComplianceInfo_To_ReceiveTaskReceiveInfringementNotice_Art28" sourceRef="ReceiveTask_ReceiveComplianceInfo_Art28" targetRef="ReceiveTask_ReceiveInfringementNotice_Art28" />
+    <sequenceFlow id="Flow_ReceiveTaskReceiveInfringementNotice_To_TaskMonitorProcessorRole_Art28" sourceRef="ReceiveTask_ReceiveInfringementNotice_Art28" targetRef="Task_MonitorProcessorRole_Art28" />
+    <sequenceFlow id="Flow_SendTaskRequestComplianceInfo_To_ReceiveTaskReceiveComplianceInfo_Art28" sourceRef="SendTask_RequestComplianceInfo_Art28" targetRef="ReceiveTask_ReceiveComplianceInfo_Art28" />
+    <sequenceFlow id="Flow_SendTaskSendProcessorContract_To_SendTaskRequestComplianceInfo_Art28" sourceRef="SendTask_SendProcessorContract_Art28" targetRef="SendTask_RequestComplianceInfo_Art28" />
+    <sequenceFlow id="Flow_StartNeedProcessorSupport_To_TaskAssessProcessorGuarantees_Art28" sourceRef="StartEvent_NeedProcessorSupport_Art28" targetRef="Task_AssessProcessorGuarantees_Art28" />
+    <sequenceFlow id="Flow_TaskAssessProcessorGuarantees_To_GatewaySufficientGuarantees_Art28" sourceRef="Task_AssessProcessorGuarantees_Art28" targetRef="Gateway_SufficientGuarantees_Art28" />
+    <sequenceFlow id="Flow_TaskDefineProcessingTerms_To_GatewaySplitContractClauses_Art28" sourceRef="Task_DefineProcessingTerms_Art28" targetRef="Gateway_SplitContractClauses_Art28" />
+    <sequenceFlow id="Flow_TaskMonitorProcessorRole_To_GatewayPurposesMeansDetermined_Art28" sourceRef="Task_MonitorProcessorRole_Art28" targetRef="Gateway_PurposesMeansDetermined_Art28" />
+    <sequenceFlow id="Flow_TaskPutContractInWriting_To_SendTaskSendProcessorContract_Art28" sourceRef="Task_PutContractInWriting_Art28" targetRef="SendTask_SendProcessorContract_Art28" />
+    <sequenceFlow id="Flow_TaskSelectDemonstrationElement_To_TaskPutContractInWriting_Art28" sourceRef="Task_SelectDemonstrationElement_Art28" targetRef="Task_PutContractInWriting_Art28" />
+    <sequenceFlow id="Flow_TaskSetArticle32Clause_To_GatewayJoinContractClauses_Art28" sourceRef="Task_SetArticle32Clause_Art28" targetRef="Gateway_JoinContractClauses_Art28" />
+    <sequenceFlow id="Flow_TaskSetAuditClause_To_GatewayJoinContractClauses_Art28" sourceRef="Task_SetAuditClause_Art28" targetRef="Gateway_JoinContractClauses_Art28" />
+    <sequenceFlow id="Flow_TaskSetComplianceAssistanceClause_To_GatewayJoinContractClauses_Art28" sourceRef="Task_SetComplianceAssistanceClause_Art28" targetRef="Gateway_JoinContractClauses_Art28" />
+    <sequenceFlow id="Flow_TaskSetConfidentialityClause_To_GatewayJoinContractClauses_Art28" sourceRef="Task_SetConfidentialityClause_Art28" targetRef="Gateway_JoinContractClauses_Art28" />
+    <sequenceFlow id="Flow_TaskSetDeleteReturnClause_To_GatewayJoinContractClauses_Art28" sourceRef="Task_SetDeleteReturnClause_Art28" targetRef="Gateway_JoinContractClauses_Art28" />
+    <sequenceFlow id="Flow_TaskSetInstructionClause_To_GatewayJoinContractClauses_Art28" sourceRef="Task_SetInstructionClause_Art28" targetRef="Gateway_JoinContractClauses_Art28" />
+    <sequenceFlow id="Flow_TaskSetRightsAssistanceClause_To_GatewayJoinContractClauses_Art28" sourceRef="Task_SetRightsAssistanceClause_Art28" targetRef="Gateway_JoinContractClauses_Art28" />
+    <sequenceFlow id="Flow_TaskSetSubProcessorClause_To_GatewayJoinContractClauses_Art28" sourceRef="Task_SetSubProcessorClause_Art28" targetRef="Gateway_JoinContractClauses_Art28" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_ReceiveComplianceInfo_Art28" sourceRef="Participant_Processor_Art28" targetRef="ReceiveTask_ReceiveComplianceInfo_Art28" />
+    <messageFlow id="MessageFlow_ReceiveInfringementNotice_Art28" sourceRef="Participant_Processor_Art28" targetRef="ReceiveTask_ReceiveInfringementNotice_Art28" />
+    <messageFlow id="MessageFlow_RequestComplianceInfo_Art28" sourceRef="SendTask_RequestComplianceInfo_Art28" targetRef="Participant_Processor_Art28" />
+    <messageFlow id="MessageFlow_SendProcessorContract_Art28" sourceRef="SendTask_SendProcessorContract_Art28" targetRef="Participant_Processor_Art28" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

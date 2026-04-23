@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_AuthorizedPerson_Art29" name="Authorized Person" poolType="passive" />
+    <pool id="Participant_ControllerOrProcessor_Art29" name="Controller or Processor" poolType="active" processRef="Process_ControllerOrProcessor_Art29" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="SendTask_SendProcessingInstruction_Art29" name="Send processing instruction" type="sendTask" poolRef="Participant_ControllerOrProcessor_Art29" />
+  </tasks>
+  <events>
+    <event id="EndEvent_Article29NotTriggered_Art29" name="Article 29 is not triggered" type="endEvent" poolRef="Participant_ControllerOrProcessor_Art29" />
+    <event id="EndEvent_ProcessingAllowedByInstruction_Art29" name="Processing is allowed on instruction" type="endEvent" poolRef="Participant_ControllerOrProcessor_Art29" />
+    <event id="EndEvent_ProcessingAllowedByLaw_Art29" name="Processing is allowed by law" type="endEvent" poolRef="Participant_ControllerOrProcessor_Art29" />
+    <event id="StartEvent_ProvideAccess_Art29" name="Provide access to personal data" type="startEvent" poolRef="Participant_ControllerOrProcessor_Art29" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_AuthorityAccess_Art29" name="Is the person acting under the authority of the controller or processor and does the person have access to personal data?" type="exclusiveGateway" poolRef="Participant_ControllerOrProcessor_Art29" />
+    <gateway id="Gateway_LawRequiresProcessing_Art29" name="Is the processing required by Union or Member State law?" type="exclusiveGateway" poolRef="Participant_ControllerOrProcessor_Art29" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_GatewayAuthorityAccess_To_EndArticle29NotTriggered_Art29" name="No" sourceRef="Gateway_AuthorityAccess_Art29" targetRef="EndEvent_Article29NotTriggered_Art29" />
+    <sequenceFlow id="Flow_GatewayAuthorityAccess_To_GatewayLawRequiresProcessing_Art29" name="Yes" sourceRef="Gateway_AuthorityAccess_Art29" targetRef="Gateway_LawRequiresProcessing_Art29" />
+    <sequenceFlow id="Flow_GatewayLawRequiresProcessing_To_EndProcessingAllowedByLaw_Art29" name="Yes" sourceRef="Gateway_LawRequiresProcessing_Art29" targetRef="EndEvent_ProcessingAllowedByLaw_Art29" />
+    <sequenceFlow id="Flow_GatewayLawRequiresProcessing_To_SendTaskSendProcessingInstruction_Art29" name="No" sourceRef="Gateway_LawRequiresProcessing_Art29" targetRef="SendTask_SendProcessingInstruction_Art29" />
+    <sequenceFlow id="Flow_SendTaskSendProcessingInstruction_To_EndProcessingAllowedByInstruction_Art29" sourceRef="SendTask_SendProcessingInstruction_Art29" targetRef="EndEvent_ProcessingAllowedByInstruction_Art29" />
+    <sequenceFlow id="Flow_StartProvideAccess_To_GatewayAuthorityAccess_Art29" sourceRef="StartEvent_ProvideAccess_Art29" targetRef="Gateway_AuthorityAccess_Art29" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_SendProcessingInstruction_Art29" sourceRef="SendTask_SendProcessingInstruction_Art29" targetRef="Participant_AuthorizedPerson_Art29" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

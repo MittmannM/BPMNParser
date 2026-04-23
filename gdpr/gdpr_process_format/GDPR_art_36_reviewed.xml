@@ -1,62 +1,95 @@
 <?xml version='1.0' encoding='utf-8'?>
 <processModel>
   <pools>
-    <pool id="Participant_Controller" name="Controller" poolType="active" processRef="Process_Controller_Art36" />
-    <pool id="Participant_SupervisoryAuthority" name="Supervisory Authority" poolType="passive" />
+    <pool id="Participant_Controller_Art36" name="Controller" poolType="active" processRef="Process_Controller_Art36" />
+    <pool id="Participant_MemberState_Art36" name="Member State" poolType="active" processRef="Process_MemberState_Art36" />
+    <pool id="Participant_SupervisoryAuthority_Art36" name="Supervisory Authority" poolType="passive" />
   </pools>
   <lanes />
   <tasks>
-    <task id="Task_AssessResidualHighRisk" name="Assess whether the DPIA indicates residual high risk" type="task" poolRef="Participant_Controller" />
-    <task id="Task_AttachDPIA" name="Attach the data protection impact assessment" type="task" poolRef="Participant_Controller" />
-    <task id="Task_CollectAdditionalInformation" name="Collect additional information requested by the supervisory authority" type="task" poolRef="Participant_Controller" />
-    <task id="Task_DocumentDPOContact" name="Provide the DPO contact details" type="task" poolRef="Participant_Controller" />
-    <task id="Task_DocumentMeasuresSafeguards" name="Document measures and safeguards for protecting rights and freedoms" type="task" poolRef="Participant_Controller" />
-    <task id="Task_DocumentPurposesMeans" name="Document the purposes and means of the intended processing" type="task" poolRef="Participant_Controller" />
-    <task id="Task_DocumentResponsibilities" name="Document controller and processor responsibilities" type="task" poolRef="Participant_Controller" />
-    <task id="Task_ReceiveAdditionalInfoRequest" name="Receive additional information request from the supervisory authority" type="receiveTask" poolRef="Participant_Controller" />
-    <task id="Task_SendAdditionalInformation" name="Send additional requested information to the supervisory authority" type="sendTask" poolRef="Participant_Controller" />
-    <task id="Task_SendPriorConsultation" name="Send prior consultation request to the supervisory authority" type="sendTask" poolRef="Participant_Controller" />
+    <task id="ReceiveTask_ReceiveAdditionalInfoRequest_Art36" name="Receive additional-info request" type="receiveTask" poolRef="Participant_Controller_Art36" />
+    <task id="ReceiveTask_ReceiveExtensionNotice_Art36" name="Receive extension notice with reasons" type="receiveTask" poolRef="Participant_Controller_Art36" />
+    <task id="ReceiveTask_ReceivePriorAuthorisation_Art36" name="Receive prior-authorisation outcome" type="receiveTask" poolRef="Participant_Controller_Art36" />
+    <task id="ReceiveTask_ReceiveWrittenAdvice_Art36" name="Receive written advice or powers notice" type="receiveTask" poolRef="Participant_Controller_Art36" />
+    <task id="SendTask_ConsultSA_MemberState_Art36" name="Consult supervisory authority" type="sendTask" poolRef="Participant_MemberState_Art36" />
+    <task id="SendTask_RequestPriorAuthorisation_Art36" name="Request prior authorisation" type="sendTask" poolRef="Participant_Controller_Art36" />
+    <task id="SendTask_SendAdditionalInfo_Art36" name="Send requested details" type="sendTask" poolRef="Participant_Controller_Art36" />
+    <task id="SendTask_SendPriorConsultation_Art36" name="Send prior consultation request" type="sendTask" poolRef="Participant_Controller_Art36" />
+    <task id="Task_AssessResidualHighRisk_Art36" name="Assess residual high risk" type="task" poolRef="Participant_Controller_Art36" />
+    <task id="Task_AttachDPIA_Art36" name="Attach DPIA" type="task" poolRef="Participant_Controller_Art36" />
+    <task id="Task_CheckMemberStateRule_Art36" name="Check Member State consultation rule" type="task" poolRef="Participant_Controller_Art36" />
+    <task id="Task_CollectAdditionalInfo_Art36" name="Collect requested details" type="task" poolRef="Participant_Controller_Art36" />
+    <task id="Task_PrepareMeasure_Art36" name="Prepare legislative or regulatory measure" type="task" poolRef="Participant_MemberState_Art36" />
+    <task id="Task_ProvideDPOContact_Art36" name="Provide DPO contact details" type="task" poolRef="Participant_Controller_Art36" />
+    <task id="Task_RecordPurposesMeans_Art36" name="Record purposes and means" type="task" poolRef="Participant_Controller_Art36" />
+    <task id="Task_RecordResponsibilities_Art36" name="Record responsibilities" type="task" poolRef="Participant_Controller_Art36" />
+    <task id="Task_RecordSafeguards_Art36" name="Record safeguards and measures" type="task" poolRef="Participant_Controller_Art36" />
   </tasks>
   <events>
-    <event id="EndEvent_ConsultationSubmitted" name="Prior consultation submitted" type="endEvent" poolRef="Participant_Controller" />
-    <event id="EndEvent_NoConsultationRequired" name="No prior consultation required" type="endEvent" poolRef="Participant_Controller" />
-    <event id="StartEvent_DPIACompleted" name="Controller completed the impact assessment" type="startEvent" poolRef="Participant_Controller" />
+    <event id="EndEvent_ConsultationCompleted_Art36" name="Article 36(1)-(3) completed" type="endEvent" poolRef="Participant_Controller_Art36" />
+    <event id="EndEvent_MemberStateConsultation_Art36" name="Article 36(4) completed" type="endEvent" poolRef="Participant_MemberState_Art36" />
+    <event id="EndEvent_NoArticle365Step_Art36" name="No Article 36(5) step required" type="endEvent" poolRef="Participant_Controller_Art36" />
+    <event id="EndEvent_NoConsultationRequired_Art36" name="No prior consultation required" type="endEvent" poolRef="Participant_Controller_Art36" />
+    <event id="EndEvent_PriorAuthorisationHandled_Art36" name="Article 36(5) handled" type="endEvent" poolRef="Participant_Controller_Art36" />
+    <event id="StartEvent_CompleteDPIA_Art36" name="Need prior consultation assessment" type="startEvent" poolRef="Participant_Controller_Art36" />
+    <event id="StartEvent_PrepareMeasure_Art36" name="Prepare legislative measure" type="startEvent" poolRef="Participant_MemberState_Art36" />
+    <event id="StartEvent_PublicInterestTask_Art36" name="Need public-interest processing" type="startEvent" poolRef="Participant_Controller_Art36" />
   </events>
   <gateways>
-    <gateway id="Gateway_AdditionalInfoRequested" name="Additional information requested by the supervisory authority?" type="exclusiveGateway" poolRef="Participant_Controller" />
-    <gateway id="Gateway_CompileJoin" type="parallelGateway" poolRef="Participant_Controller" />
-    <gateway id="Gateway_CompileSplit" type="parallelGateway" poolRef="Participant_Controller" />
-    <gateway id="Gateway_DPODesignated" name="Is a DPO designated?" type="exclusiveGateway" poolRef="Participant_Controller" />
-    <gateway id="Gateway_ResidualHighRisk" name="Residual high risk remains without sufficient mitigation?" type="exclusiveGateway" poolRef="Participant_Controller" />
+    <gateway id="Gateway_AdditionalInfoRequested_Art36" name="Did the authority request additional information?" type="exclusiveGateway" poolRef="Participant_Controller_Art36" />
+    <gateway id="Gateway_DPODesignated_Art36" name="Is a DPO designated?" type="exclusiveGateway" poolRef="Participant_Controller_Art36" />
+    <gateway id="Gateway_ExtensionNoticeReceived_Art36" name="Did the authority send an extension notice?" type="exclusiveGateway" poolRef="Participant_Controller_Art36" />
+    <gateway id="Gateway_JoinConsultationPackage_Art36" type="parallelGateway" poolRef="Participant_Controller_Art36" />
+    <gateway id="Gateway_PriorAuthorisationRequired_Art36" name="Does Member State law require prior consultation and authorisation?" type="exclusiveGateway" poolRef="Participant_Controller_Art36" />
+    <gateway id="Gateway_ResidualHighRisk_Art36" name="Would residual high risk remain after controller measures?" type="exclusiveGateway" poolRef="Participant_Controller_Art36" />
+    <gateway id="Gateway_SplitConsultationPackage_Art36" type="parallelGateway" poolRef="Participant_Controller_Art36" />
   </gateways>
   <sequenceFlows>
-    <sequenceFlow id="Flow_AssessResidualHighRisk_To_GatewayResidualHighRisk" sourceRef="Task_AssessResidualHighRisk" targetRef="Gateway_ResidualHighRisk" />
-    <sequenceFlow id="Flow_AttachDPIA_To_GatewayCompileJoin" sourceRef="Task_AttachDPIA" targetRef="Gateway_CompileJoin" />
-    <sequenceFlow id="Flow_CollectAdditionalInformation_To_SendAdditionalInformation" sourceRef="Task_CollectAdditionalInformation" targetRef="Task_SendAdditionalInformation" />
-    <sequenceFlow id="Flow_DocumentMeasuresSafeguards_To_GatewayCompileJoin" sourceRef="Task_DocumentMeasuresSafeguards" targetRef="Gateway_CompileJoin" />
-    <sequenceFlow id="Flow_DocumentPurposesMeans_To_GatewayCompileJoin" sourceRef="Task_DocumentPurposesMeans" targetRef="Gateway_CompileJoin" />
-    <sequenceFlow id="Flow_DocumentResponsibilities_To_GatewayCompileJoin" sourceRef="Task_DocumentResponsibilities" targetRef="Gateway_CompileJoin" />
-    <sequenceFlow id="Flow_GatewayAdditionalInfoRequested_To_EndConsultationSubmitted" name="No" sourceRef="Gateway_AdditionalInfoRequested" targetRef="EndEvent_ConsultationSubmitted" />
-    <sequenceFlow id="Flow_GatewayAdditionalInfoRequested_To_ReceiveAdditionalInfoRequest" name="Yes" sourceRef="Gateway_AdditionalInfoRequested" targetRef="Task_ReceiveAdditionalInfoRequest" />
-    <sequenceFlow id="Flow_GatewayCompileJoin_To_GatewayDPODesignated" sourceRef="Gateway_CompileJoin" targetRef="Gateway_DPODesignated" />
-    <sequenceFlow id="Flow_GatewayCompileSplit_To_AttachDPIA" sourceRef="Gateway_CompileSplit" targetRef="Task_AttachDPIA" />
-    <sequenceFlow id="Flow_GatewayCompileSplit_To_DocumentMeasuresSafeguards" sourceRef="Gateway_CompileSplit" targetRef="Task_DocumentMeasuresSafeguards" />
-    <sequenceFlow id="Flow_GatewayCompileSplit_To_DocumentPurposesMeans" sourceRef="Gateway_CompileSplit" targetRef="Task_DocumentPurposesMeans" />
-    <sequenceFlow id="Flow_GatewayCompileSplit_To_DocumentResponsibilities" sourceRef="Gateway_CompileSplit" targetRef="Task_DocumentResponsibilities" />
-    <sequenceFlow id="Flow_GatewayDPODesignated_To_SendPriorConsultation" name="No" sourceRef="Gateway_DPODesignated" targetRef="Task_SendPriorConsultation" />
-    <sequenceFlow id="Flow_GatewayDPODesignated_To_TaskDocumentDPOContact" name="Yes" sourceRef="Gateway_DPODesignated" targetRef="Task_DocumentDPOContact" />
-    <sequenceFlow id="Flow_GatewayResidualHighRisk_To_EndNoConsultation" name="No" sourceRef="Gateway_ResidualHighRisk" targetRef="EndEvent_NoConsultationRequired" />
-    <sequenceFlow id="Flow_GatewayResidualHighRisk_To_GatewayCompileSplit" name="Yes" sourceRef="Gateway_ResidualHighRisk" targetRef="Gateway_CompileSplit" />
-    <sequenceFlow id="Flow_ReceiveAdditionalInfoRequest_To_CollectAdditionalInformation" sourceRef="Task_ReceiveAdditionalInfoRequest" targetRef="Task_CollectAdditionalInformation" />
-    <sequenceFlow id="Flow_SendAdditionalInformation_To_EndConsultationSubmitted" sourceRef="Task_SendAdditionalInformation" targetRef="EndEvent_ConsultationSubmitted" />
-    <sequenceFlow id="Flow_SendPriorConsultation_To_GatewayAdditionalInfoRequested" sourceRef="Task_SendPriorConsultation" targetRef="Gateway_AdditionalInfoRequested" />
-    <sequenceFlow id="Flow_Start_To_AssessResidualHighRisk" sourceRef="StartEvent_DPIACompleted" targetRef="Task_AssessResidualHighRisk" />
-    <sequenceFlow id="Flow_TaskDocumentDPOContact_To_SendPriorConsultation" sourceRef="Task_DocumentDPOContact" targetRef="Task_SendPriorConsultation" />
+    <sequenceFlow id="Flow_GatewayAdditionalInfoRequested_To_GatewayExtensionNoticeReceived_Art36" name="No" sourceRef="Gateway_AdditionalInfoRequested_Art36" targetRef="Gateway_ExtensionNoticeReceived_Art36" />
+    <sequenceFlow id="Flow_GatewayAdditionalInfoRequested_To_ReceiveTaskReceiveAdditionalInfoRequest_Art36" name="Yes" sourceRef="Gateway_AdditionalInfoRequested_Art36" targetRef="ReceiveTask_ReceiveAdditionalInfoRequest_Art36" />
+    <sequenceFlow id="Flow_GatewayDPODesignated_To_SendTaskSendPriorConsultation_Art36" name="No" sourceRef="Gateway_DPODesignated_Art36" targetRef="SendTask_SendPriorConsultation_Art36" />
+    <sequenceFlow id="Flow_GatewayDPODesignated_To_TaskProvideDPOContact_Art36" name="Yes" sourceRef="Gateway_DPODesignated_Art36" targetRef="Task_ProvideDPOContact_Art36" />
+    <sequenceFlow id="Flow_GatewayExtensionNoticeReceived_To_ReceiveTaskReceiveExtensionNotice_Art36" name="Yes" sourceRef="Gateway_ExtensionNoticeReceived_Art36" targetRef="ReceiveTask_ReceiveExtensionNotice_Art36" />
+    <sequenceFlow id="Flow_GatewayExtensionNoticeReceived_To_ReceiveTaskReceiveWrittenAdvice_Art36" name="No" sourceRef="Gateway_ExtensionNoticeReceived_Art36" targetRef="ReceiveTask_ReceiveWrittenAdvice_Art36" />
+    <sequenceFlow id="Flow_GatewayJoinConsultationPackage_To_GatewayDPODesignated_Art36" sourceRef="Gateway_JoinConsultationPackage_Art36" targetRef="Gateway_DPODesignated_Art36" />
+    <sequenceFlow id="Flow_GatewayPriorAuthorisationRequired_To_EndNoArticle365Step_Art36" name="No" sourceRef="Gateway_PriorAuthorisationRequired_Art36" targetRef="EndEvent_NoArticle365Step_Art36" />
+    <sequenceFlow id="Flow_GatewayPriorAuthorisationRequired_To_SendTaskRequestPriorAuthorisation_Art36" name="Yes" sourceRef="Gateway_PriorAuthorisationRequired_Art36" targetRef="SendTask_RequestPriorAuthorisation_Art36" />
+    <sequenceFlow id="Flow_GatewayResidualHighRisk_To_EndNoConsultationRequired_Art36" name="No" sourceRef="Gateway_ResidualHighRisk_Art36" targetRef="EndEvent_NoConsultationRequired_Art36" />
+    <sequenceFlow id="Flow_GatewayResidualHighRisk_To_GatewaySplitConsultationPackage_Art36" name="Yes" sourceRef="Gateway_ResidualHighRisk_Art36" targetRef="Gateway_SplitConsultationPackage_Art36" />
+    <sequenceFlow id="Flow_GatewaySplitConsultationPackage_To_TaskAttachDPIA_Art36" sourceRef="Gateway_SplitConsultationPackage_Art36" targetRef="Task_AttachDPIA_Art36" />
+    <sequenceFlow id="Flow_GatewaySplitConsultationPackage_To_TaskRecordPurposesMeans_Art36" sourceRef="Gateway_SplitConsultationPackage_Art36" targetRef="Task_RecordPurposesMeans_Art36" />
+    <sequenceFlow id="Flow_GatewaySplitConsultationPackage_To_TaskRecordResponsibilities_Art36" sourceRef="Gateway_SplitConsultationPackage_Art36" targetRef="Task_RecordResponsibilities_Art36" />
+    <sequenceFlow id="Flow_GatewaySplitConsultationPackage_To_TaskRecordSafeguards_Art36" sourceRef="Gateway_SplitConsultationPackage_Art36" targetRef="Task_RecordSafeguards_Art36" />
+    <sequenceFlow id="Flow_ReceiveTaskReceiveAdditionalInfoRequest_To_TaskCollectAdditionalInfo_Art36" sourceRef="ReceiveTask_ReceiveAdditionalInfoRequest_Art36" targetRef="Task_CollectAdditionalInfo_Art36" />
+    <sequenceFlow id="Flow_ReceiveTaskReceiveExtensionNotice_To_ReceiveTaskReceiveWrittenAdvice_Art36" sourceRef="ReceiveTask_ReceiveExtensionNotice_Art36" targetRef="ReceiveTask_ReceiveWrittenAdvice_Art36" />
+    <sequenceFlow id="Flow_ReceiveTaskReceivePriorAuthorisation_To_EndPriorAuthorisationHandled_Art36" sourceRef="ReceiveTask_ReceivePriorAuthorisation_Art36" targetRef="EndEvent_PriorAuthorisationHandled_Art36" />
+    <sequenceFlow id="Flow_ReceiveTaskReceiveWrittenAdvice_To_EndConsultationCompleted_Art36" sourceRef="ReceiveTask_ReceiveWrittenAdvice_Art36" targetRef="EndEvent_ConsultationCompleted_Art36" />
+    <sequenceFlow id="Flow_SendTaskConsultSA_MemberState_To_EndMemberStateConsultation_Art36" sourceRef="SendTask_ConsultSA_MemberState_Art36" targetRef="EndEvent_MemberStateConsultation_Art36" />
+    <sequenceFlow id="Flow_SendTaskRequestPriorAuthorisation_To_ReceiveTaskReceivePriorAuthorisation_Art36" sourceRef="SendTask_RequestPriorAuthorisation_Art36" targetRef="ReceiveTask_ReceivePriorAuthorisation_Art36" />
+    <sequenceFlow id="Flow_SendTaskSendAdditionalInfo_To_GatewayExtensionNoticeReceived_Art36" sourceRef="SendTask_SendAdditionalInfo_Art36" targetRef="Gateway_ExtensionNoticeReceived_Art36" />
+    <sequenceFlow id="Flow_SendTaskSendPriorConsultation_To_GatewayAdditionalInfoRequested_Art36" sourceRef="SendTask_SendPriorConsultation_Art36" targetRef="Gateway_AdditionalInfoRequested_Art36" />
+    <sequenceFlow id="Flow_StartCompleteDPIA_To_TaskAssessResidualHighRisk_Art36" sourceRef="StartEvent_CompleteDPIA_Art36" targetRef="Task_AssessResidualHighRisk_Art36" />
+    <sequenceFlow id="Flow_StartPrepareMeasure_To_TaskPrepareMeasure_Art36" sourceRef="StartEvent_PrepareMeasure_Art36" targetRef="Task_PrepareMeasure_Art36" />
+    <sequenceFlow id="Flow_StartPublicInterestTask_To_TaskCheckMemberStateRule_Art36" sourceRef="StartEvent_PublicInterestTask_Art36" targetRef="Task_CheckMemberStateRule_Art36" />
+    <sequenceFlow id="Flow_TaskAssessResidualHighRisk_To_GatewayResidualHighRisk_Art36" sourceRef="Task_AssessResidualHighRisk_Art36" targetRef="Gateway_ResidualHighRisk_Art36" />
+    <sequenceFlow id="Flow_TaskAttachDPIA_To_GatewayJoinConsultationPackage_Art36" sourceRef="Task_AttachDPIA_Art36" targetRef="Gateway_JoinConsultationPackage_Art36" />
+    <sequenceFlow id="Flow_TaskCheckMemberStateRule_To_GatewayPriorAuthorisationRequired_Art36" sourceRef="Task_CheckMemberStateRule_Art36" targetRef="Gateway_PriorAuthorisationRequired_Art36" />
+    <sequenceFlow id="Flow_TaskCollectAdditionalInfo_To_SendTaskSendAdditionalInfo_Art36" sourceRef="Task_CollectAdditionalInfo_Art36" targetRef="SendTask_SendAdditionalInfo_Art36" />
+    <sequenceFlow id="Flow_TaskPrepareMeasure_To_SendTaskConsultSA_MemberState_Art36" sourceRef="Task_PrepareMeasure_Art36" targetRef="SendTask_ConsultSA_MemberState_Art36" />
+    <sequenceFlow id="Flow_TaskProvideDPOContact_To_SendTaskSendPriorConsultation_Art36" sourceRef="Task_ProvideDPOContact_Art36" targetRef="SendTask_SendPriorConsultation_Art36" />
+    <sequenceFlow id="Flow_TaskRecordPurposesMeans_To_GatewayJoinConsultationPackage_Art36" sourceRef="Task_RecordPurposesMeans_Art36" targetRef="Gateway_JoinConsultationPackage_Art36" />
+    <sequenceFlow id="Flow_TaskRecordResponsibilities_To_GatewayJoinConsultationPackage_Art36" sourceRef="Task_RecordResponsibilities_Art36" targetRef="Gateway_JoinConsultationPackage_Art36" />
+    <sequenceFlow id="Flow_TaskRecordSafeguards_To_GatewayJoinConsultationPackage_Art36" sourceRef="Task_RecordSafeguards_Art36" targetRef="Gateway_JoinConsultationPackage_Art36" />
   </sequenceFlows>
   <messageFlows>
-    <messageFlow id="MessageFlow_ControllerToSA_AdditionalInfo" sourceRef="Task_SendAdditionalInformation" targetRef="Participant_SupervisoryAuthority" />
-    <messageFlow id="MessageFlow_ControllerToSA_Consultation" sourceRef="Task_SendPriorConsultation" targetRef="Participant_SupervisoryAuthority" />
-    <messageFlow id="MessageFlow_SAToController_AdditionalInfoRequest" sourceRef="Participant_SupervisoryAuthority" targetRef="Task_ReceiveAdditionalInfoRequest" />
+    <messageFlow id="MessageFlow_MemberStateConsultSA_Art36" sourceRef="SendTask_ConsultSA_MemberState_Art36" targetRef="Participant_SupervisoryAuthority_Art36" />
+    <messageFlow id="MessageFlow_RequestAdditionalInfo_Art36" sourceRef="Participant_SupervisoryAuthority_Art36" targetRef="ReceiveTask_ReceiveAdditionalInfoRequest_Art36" />
+    <messageFlow id="MessageFlow_RequestPriorAuthorisation_Art36" sourceRef="SendTask_RequestPriorAuthorisation_Art36" targetRef="Participant_SupervisoryAuthority_Art36" />
+    <messageFlow id="MessageFlow_SendAdditionalInfo_Art36" sourceRef="SendTask_SendAdditionalInfo_Art36" targetRef="Participant_SupervisoryAuthority_Art36" />
+    <messageFlow id="MessageFlow_SendExtensionNotice_Art36" sourceRef="Participant_SupervisoryAuthority_Art36" targetRef="ReceiveTask_ReceiveExtensionNotice_Art36" />
+    <messageFlow id="MessageFlow_SendPriorAuthorisationOutcome_Art36" sourceRef="Participant_SupervisoryAuthority_Art36" targetRef="ReceiveTask_ReceivePriorAuthorisation_Art36" />
+    <messageFlow id="MessageFlow_SendPriorConsultation_Art36" sourceRef="SendTask_SendPriorConsultation_Art36" targetRef="Participant_SupervisoryAuthority_Art36" />
+    <messageFlow id="MessageFlow_SendWrittenAdvice_Art36" sourceRef="Participant_SupervisoryAuthority_Art36" targetRef="ReceiveTask_ReceiveWrittenAdvice_Art36" />
   </messageFlows>
   <dataObjects />
   <dataStores />

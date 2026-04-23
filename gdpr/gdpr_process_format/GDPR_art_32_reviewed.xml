@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools />
+  <lanes />
+  <tasks>
+    <task id="Task_AssessProcessingRisks_Art32" name="Assess security risks" type="task" poolRef="Process_ControllerOrProcessor_Art32" />
+    <task id="Task_AssessSecurityContext_Art32" name="Assess state, costs, and processing context" type="task" poolRef="Process_ControllerOrProcessor_Art32" />
+    <task id="Task_DefineSecurityLevel_Art32" name="Define risk-appropriate security level" type="task" poolRef="Process_ControllerOrProcessor_Art32" />
+    <task id="Task_EnsureCIAResilience_Art32" name="Ensure confidentiality, integrity, availability, and resilience" type="task" poolRef="Process_ControllerOrProcessor_Art32" />
+    <task id="Task_ImplementPseudonymisationEncryption_Art32" name="Implement pseudonymisation and encryption" type="task" poolRef="Process_ControllerOrProcessor_Art32" />
+    <task id="Task_SetInstructionOnlyRules_Art32" name="Set instruction-only processing rules" type="task" poolRef="Process_ControllerOrProcessor_Art32" />
+    <task id="Task_SetRestorationCapability_Art32" name="Set restoration capability" type="task" poolRef="Process_ControllerOrProcessor_Art32" />
+    <task id="Task_SetTestingProcess_Art32" name="Set testing and evaluation process" type="task" poolRef="Process_ControllerOrProcessor_Art32" />
+    <task id="Task_UseCodeOrCertification_Art32" name="Use Article 40 or 42 evidence" type="task" poolRef="Process_ControllerOrProcessor_Art32" />
+  </tasks>
+  <events>
+    <event id="EndEvent_LawExceptionPreserved_Art32" name="Law-based processing exception preserved" type="endEvent" poolRef="Process_ControllerOrProcessor_Art32" />
+    <event id="EndEvent_SecurityMeasuresImplemented_Art32" name="Security measures implemented" type="endEvent" poolRef="Process_ControllerOrProcessor_Art32" />
+    <event id="StartEvent_CarryOutProcessing_Art32" name="Carry out processing" type="startEvent" poolRef="Process_ControllerOrProcessor_Art32" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_JoinSecurityMeasures_Art32" type="parallelGateway" poolRef="Process_ControllerOrProcessor_Art32" />
+    <gateway id="Gateway_LawRequiresProcessing_Art32" name="Is processing required by Union or Member State law?" type="exclusiveGateway" poolRef="Process_ControllerOrProcessor_Art32" />
+    <gateway id="Gateway_SplitSecurityMeasures_Art32" type="parallelGateway" poolRef="Process_ControllerOrProcessor_Art32" />
+    <gateway id="Gateway_UseCodeOrCertification_Art32" name="Use Article 40 or Article 42 evidence?" type="exclusiveGateway" poolRef="Process_ControllerOrProcessor_Art32" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_GatewayJoinSecurityMeasures_To_GatewayUseCodeOrCertification_Art32" sourceRef="Gateway_JoinSecurityMeasures_Art32" targetRef="Gateway_UseCodeOrCertification_Art32" />
+    <sequenceFlow id="Flow_GatewayLawRequiresProcessing_To_EndLawExceptionPreserved_Art32" name="Yes" sourceRef="Gateway_LawRequiresProcessing_Art32" targetRef="EndEvent_LawExceptionPreserved_Art32" />
+    <sequenceFlow id="Flow_GatewayLawRequiresProcessing_To_EndSecurityMeasuresImplemented_Art32" name="No" sourceRef="Gateway_LawRequiresProcessing_Art32" targetRef="EndEvent_SecurityMeasuresImplemented_Art32" />
+    <sequenceFlow id="Flow_GatewaySplitSecurityMeasures_To_TaskEnsureCIAResilience_Art32" sourceRef="Gateway_SplitSecurityMeasures_Art32" targetRef="Task_EnsureCIAResilience_Art32" />
+    <sequenceFlow id="Flow_GatewaySplitSecurityMeasures_To_TaskImplementPseudonymisationEncryption_Art32" sourceRef="Gateway_SplitSecurityMeasures_Art32" targetRef="Task_ImplementPseudonymisationEncryption_Art32" />
+    <sequenceFlow id="Flow_GatewaySplitSecurityMeasures_To_TaskSetRestorationCapability_Art32" sourceRef="Gateway_SplitSecurityMeasures_Art32" targetRef="Task_SetRestorationCapability_Art32" />
+    <sequenceFlow id="Flow_GatewaySplitSecurityMeasures_To_TaskSetTestingProcess_Art32" sourceRef="Gateway_SplitSecurityMeasures_Art32" targetRef="Task_SetTestingProcess_Art32" />
+    <sequenceFlow id="Flow_GatewayUseCodeOrCertification_To_TaskSetInstructionOnlyRules_Art32" name="No" sourceRef="Gateway_UseCodeOrCertification_Art32" targetRef="Task_SetInstructionOnlyRules_Art32" />
+    <sequenceFlow id="Flow_GatewayUseCodeOrCertification_To_TaskUseCodeOrCertification_Art32" name="Yes" sourceRef="Gateway_UseCodeOrCertification_Art32" targetRef="Task_UseCodeOrCertification_Art32" />
+    <sequenceFlow id="Flow_StartCarryOutProcessing_To_TaskAssessSecurityContext_Art32" sourceRef="StartEvent_CarryOutProcessing_Art32" targetRef="Task_AssessSecurityContext_Art32" />
+    <sequenceFlow id="Flow_TaskAssessProcessingRisks_To_TaskDefineSecurityLevel_Art32" sourceRef="Task_AssessProcessingRisks_Art32" targetRef="Task_DefineSecurityLevel_Art32" />
+    <sequenceFlow id="Flow_TaskAssessSecurityContext_To_TaskAssessProcessingRisks_Art32" sourceRef="Task_AssessSecurityContext_Art32" targetRef="Task_AssessProcessingRisks_Art32" />
+    <sequenceFlow id="Flow_TaskDefineSecurityLevel_To_GatewaySplitSecurityMeasures_Art32" sourceRef="Task_DefineSecurityLevel_Art32" targetRef="Gateway_SplitSecurityMeasures_Art32" />
+    <sequenceFlow id="Flow_TaskEnsureCIAResilience_To_GatewayJoinSecurityMeasures_Art32" sourceRef="Task_EnsureCIAResilience_Art32" targetRef="Gateway_JoinSecurityMeasures_Art32" />
+    <sequenceFlow id="Flow_TaskImplementPseudonymisationEncryption_To_GatewayJoinSecurityMeasures_Art32" sourceRef="Task_ImplementPseudonymisationEncryption_Art32" targetRef="Gateway_JoinSecurityMeasures_Art32" />
+    <sequenceFlow id="Flow_TaskSetInstructionOnlyRules_To_GatewayLawRequiresProcessing_Art32" sourceRef="Task_SetInstructionOnlyRules_Art32" targetRef="Gateway_LawRequiresProcessing_Art32" />
+    <sequenceFlow id="Flow_TaskSetRestorationCapability_To_GatewayJoinSecurityMeasures_Art32" sourceRef="Task_SetRestorationCapability_Art32" targetRef="Gateway_JoinSecurityMeasures_Art32" />
+    <sequenceFlow id="Flow_TaskSetTestingProcess_To_GatewayJoinSecurityMeasures_Art32" sourceRef="Task_SetTestingProcess_Art32" targetRef="Gateway_JoinSecurityMeasures_Art32" />
+    <sequenceFlow id="Flow_TaskUseCodeOrCertification_To_TaskSetInstructionOnlyRules_Art32" sourceRef="Task_UseCodeOrCertification_Art32" targetRef="Task_SetInstructionOnlyRules_Art32" />
+  </sequenceFlows>
+  <messageFlows />
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

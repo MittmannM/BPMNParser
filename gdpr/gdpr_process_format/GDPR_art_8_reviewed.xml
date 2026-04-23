@@ -7,25 +7,25 @@
   </pools>
   <lanes />
   <tasks>
-    <task id="ReceiveTask_ReceiveChildConsent_Art8" name="Receive the child's consent" type="receiveTask" poolRef="Participant_Controller_Art8" />
-    <task id="ReceiveTask_ReceiveParentalAuthorisation_Art8" name="Receive consent or authorisation from the holder of parental responsibility" type="receiveTask" poolRef="Participant_Controller_Art8" />
-    <task id="SendTask_RequestChildConsent_Art8" name="Request consent from the child" type="sendTask" poolRef="Participant_Controller_Art8" />
-    <task id="SendTask_RequestParentalAuthorisation_Art8" name="Request consent or authorisation from the holder of parental responsibility" type="sendTask" poolRef="Participant_Controller_Art8" />
-    <task id="Task_AssessApplicabilityAndAge_Art8" name="Assess whether Article 8 applies and determine the applicable minimum consent age" type="task" poolRef="Participant_Controller_Art8" />
-    <task id="Task_VerifyReasonableEfforts_Art8" name="Verify with reasonable efforts that consent or authorisation was given by the holder of parental responsibility" type="task" poolRef="Participant_Controller_Art8" />
+    <task id="ReceiveTask_ReceiveChildConsent_Art8" name="Receive child consent" type="receiveTask" poolRef="Participant_Controller_Art8" />
+    <task id="ReceiveTask_ReceiveParentalAuthorisation_Art8" name="Receive parental authorisation" type="receiveTask" poolRef="Participant_Controller_Art8" />
+    <task id="SendTask_RequestChildConsent_Art8" name="Request child consent" type="sendTask" poolRef="Participant_Controller_Art8" />
+    <task id="SendTask_RequestParentalAuthorisation_Art8" name="Request parental authorisation" type="sendTask" poolRef="Participant_Controller_Art8" />
+    <task id="Task_AssessApplicabilityAndAge_Art8" name="Check applicability and age threshold" type="task" poolRef="Participant_Controller_Art8" />
+    <task id="Task_VerifyReasonableEfforts_Art8" name="Verify parental authorisation" type="task" poolRef="Participant_Controller_Art8" />
   </tasks>
   <events>
-    <event id="EndEvent_Article8NotApplicable_Art8" name="Article 8 child-consent conditions do not apply" type="endEvent" poolRef="Participant_Controller_Art8" />
-    <event id="EndEvent_LawfulChildConsent_Art8" name="Processing is lawful based on the child's consent" type="endEvent" poolRef="Participant_Controller_Art8" />
-    <event id="EndEvent_LawfulParentalAuthorisation_Art8" name="Processing is lawful based on parental consent or authorisation" type="endEvent" poolRef="Participant_Controller_Art8" />
-    <event id="EndEvent_NoValidConsent_Art8" name="No valid Article 8 consent route is available" type="endEvent" poolRef="Participant_Controller_Art8" />
-    <event id="StartEvent_AssessArticle8_Art8" name="Need to assess consent for a child-facing information society service" type="startEvent" poolRef="Participant_Controller_Art8" />
+    <event id="EndEvent_Article8NotApplicable_Art8" name="Article 8 not applicable" type="endEvent" poolRef="Participant_Controller_Art8" />
+    <event id="EndEvent_LawfulChildConsent_Art8" name="Child consent available" type="endEvent" poolRef="Participant_Controller_Art8" />
+    <event id="EndEvent_LawfulParentalAuthorisation_Art8" name="Parental authorisation verified" type="endEvent" poolRef="Participant_Controller_Art8" />
+    <event id="EndEvent_NoValidConsent_Art8" name="No valid Article 8 consent" type="endEvent" poolRef="Participant_Controller_Art8" />
+    <event id="StartEvent_AssessArticle8_Art8" name="Need child consent assessment" type="startEvent" poolRef="Participant_Controller_Art8" />
   </events>
   <gateways>
-    <gateway id="Gateway_Article8Applies_Art8" name="Do Article 8 child-consent conditions apply?" type="exclusiveGateway" poolRef="Participant_Controller_Art8" />
-    <gateway id="Gateway_ChildAge_Art8" name="Is the child at least the applicable minimum consent age?" type="exclusiveGateway" poolRef="Participant_Controller_Art8" />
+    <gateway id="Gateway_Article8Applies_Art8" name="Does Article 8 apply?" type="exclusiveGateway" poolRef="Participant_Controller_Art8" />
+    <gateway id="Gateway_ChildAge_Art8" name="Is the child at least the age threshold?" type="exclusiveGateway" poolRef="Participant_Controller_Art8" />
     <gateway id="Gateway_ChildConsentReceived_Art8" name="Did the child give consent?" type="exclusiveGateway" poolRef="Participant_Controller_Art8" />
-    <gateway id="Gateway_ParentalAuthorisationReceived_Art8" name="Was consent given or authorised by the holder of parental responsibility?" type="exclusiveGateway" poolRef="Participant_Controller_Art8" />
+    <gateway id="Gateway_ParentalAuthorisationReceived_Art8" name="Was parental authorisation given?" type="exclusiveGateway" poolRef="Participant_Controller_Art8" />
   </gateways>
   <sequenceFlows>
     <sequenceFlow id="Flow_GatewayArticle8Applies_To_EndArticle8NotApplicable_Art8" name="No" sourceRef="Gateway_Article8Applies_Art8" targetRef="EndEvent_Article8NotApplicable_Art8" />

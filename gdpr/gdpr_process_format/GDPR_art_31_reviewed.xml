@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_ControllerProcessorRepresentative_Art31" name="Controller, Processor, or Representative" poolType="active" processRef="Process_ControllerProcessorRepresentative_Art31" />
+    <pool id="Participant_SupervisoryAuthority_Art31" name="Supervisory Authority" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="SendTask_ProvideCooperation_Art31" name="Provide cooperation" type="sendTask" poolRef="Participant_ControllerProcessorRepresentative_Art31" />
+    <task id="Task_PrepareCooperation_Art31" name="Prepare cooperation" type="task" poolRef="Participant_ControllerProcessorRepresentative_Art31" />
+  </tasks>
+  <events>
+    <event id="EndEvent_CooperationProvided_Art31" name="Cooperation provided" type="endEvent" poolRef="Participant_ControllerProcessorRepresentative_Art31" />
+    <event id="StartEvent_RequestReceived_Art31" name="Authority request received" type="startEvent" poolRef="Participant_ControllerProcessorRepresentative_Art31" />
+  </events>
+  <gateways />
+  <sequenceFlows>
+    <sequenceFlow id="Flow_SendTaskProvideCooperation_To_EndCooperationProvided_Art31" sourceRef="SendTask_ProvideCooperation_Art31" targetRef="EndEvent_CooperationProvided_Art31" />
+    <sequenceFlow id="Flow_StartRequestReceived_To_TaskPrepareCooperation_Art31" sourceRef="StartEvent_RequestReceived_Art31" targetRef="Task_PrepareCooperation_Art31" />
+    <sequenceFlow id="Flow_TaskPrepareCooperation_To_SendTaskProvideCooperation_Art31" sourceRef="Task_PrepareCooperation_Art31" targetRef="SendTask_ProvideCooperation_Art31" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_ProvideCooperation_Art31" sourceRef="SendTask_ProvideCooperation_Art31" targetRef="Participant_SupervisoryAuthority_Art31" />
+    <messageFlow id="MessageFlow_RequestCooperation_Art31" sourceRef="Participant_SupervisoryAuthority_Art31" targetRef="StartEvent_RequestReceived_Art31" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

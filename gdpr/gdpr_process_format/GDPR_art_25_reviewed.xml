@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools />
+  <lanes />
+  <tasks>
+    <task id="Task_AssessDesignFactors_Art25" name="Assess design factors" type="task" poolRef="Process_Controller_Art25" />
+    <task id="Task_ConfigureDefaultSettings_Art25" name="Configure default settings" type="task" poolRef="Process_Controller_Art25" />
+    <task id="Task_DefineDesignMeasures_Art25" name="Define design measures" type="task" poolRef="Process_Controller_Art25" />
+    <task id="Task_ImplementDesignPhaseMeasures_Art25" name="Implement design-phase measures" type="task" poolRef="Process_Controller_Art25" />
+    <task id="Task_ImplementProcessingPhaseMeasures_Art25" name="Implement processing-phase measures" type="task" poolRef="Process_Controller_Art25" />
+    <task id="Task_IntegrateSafeguards_Art25" name="Integrate safeguards" type="task" poolRef="Process_Controller_Art25" />
+    <task id="Task_LimitDataAmount_Art25" name="Limit data amount" type="task" poolRef="Process_Controller_Art25" />
+    <task id="Task_LimitProcessingExtent_Art25" name="Limit processing extent" type="task" poolRef="Process_Controller_Art25" />
+    <task id="Task_LimitStoragePeriod_Art25" name="Limit storage period" type="task" poolRef="Process_Controller_Art25" />
+    <task id="Task_PreventIndefiniteAccess_Art25" name="Prevent indefinite access" type="task" poolRef="Process_Controller_Art25" />
+    <task id="Task_RestrictAccessibility_Art25" name="Restrict accessibility" type="task" poolRef="Process_Controller_Art25" />
+    <task id="Task_UseCertification_Art25" name="Use Article 42 certification" type="task" poolRef="Process_Controller_Art25" />
+  </tasks>
+  <events>
+    <event id="EndEvent_DesignDefaultApplied_Art25" name="Article 25 design and default measures applied" type="endEvent" poolRef="Process_Controller_Art25" />
+    <event id="StartEvent_DesignProcessing_Art25" name="Design a processing operation" type="startEvent" poolRef="Process_Controller_Art25" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_IndefiniteAccess_Art25" name="Could the data be accessible without the individual's intervention to an indefinite number of natural persons?" type="exclusiveGateway" poolRef="Process_Controller_Art25" />
+    <gateway id="Gateway_JoinDefaults_Art25" type="parallelGateway" poolRef="Process_Controller_Art25" />
+    <gateway id="Gateway_SplitDefaults_Art25" type="parallelGateway" poolRef="Process_Controller_Art25" />
+    <gateway id="Gateway_UseCertification_Art25" name="Use approved Article 42 certification to demonstrate compliance?" type="exclusiveGateway" poolRef="Process_Controller_Art25" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_GatewayIndefiniteAccess_To_GatewayUseCertification_Art25" name="No" sourceRef="Gateway_IndefiniteAccess_Art25" targetRef="Gateway_UseCertification_Art25" />
+    <sequenceFlow id="Flow_GatewayIndefiniteAccess_To_TaskPreventIndefiniteAccess_Art25" name="Yes" sourceRef="Gateway_IndefiniteAccess_Art25" targetRef="Task_PreventIndefiniteAccess_Art25" />
+    <sequenceFlow id="Flow_GatewayJoinDefaults_To_GatewayIndefiniteAccess_Art25" sourceRef="Gateway_JoinDefaults_Art25" targetRef="Gateway_IndefiniteAccess_Art25" />
+    <sequenceFlow id="Flow_GatewaySplitDefaults_To_TaskLimitDataAmount_Art25" sourceRef="Gateway_SplitDefaults_Art25" targetRef="Task_LimitDataAmount_Art25" />
+    <sequenceFlow id="Flow_GatewaySplitDefaults_To_TaskLimitProcessingExtent_Art25" sourceRef="Gateway_SplitDefaults_Art25" targetRef="Task_LimitProcessingExtent_Art25" />
+    <sequenceFlow id="Flow_GatewaySplitDefaults_To_TaskLimitStoragePeriod_Art25" sourceRef="Gateway_SplitDefaults_Art25" targetRef="Task_LimitStoragePeriod_Art25" />
+    <sequenceFlow id="Flow_GatewaySplitDefaults_To_TaskRestrictAccessibility_Art25" sourceRef="Gateway_SplitDefaults_Art25" targetRef="Task_RestrictAccessibility_Art25" />
+    <sequenceFlow id="Flow_GatewayUseCertification_To_EndDesignDefaultApplied_Art25" name="No" sourceRef="Gateway_UseCertification_Art25" targetRef="EndEvent_DesignDefaultApplied_Art25" />
+    <sequenceFlow id="Flow_GatewayUseCertification_To_TaskUseCertification_Art25" name="Yes" sourceRef="Gateway_UseCertification_Art25" targetRef="Task_UseCertification_Art25" />
+    <sequenceFlow id="Flow_StartDesignProcessing_To_TaskAssessDesignFactors_Art25" sourceRef="StartEvent_DesignProcessing_Art25" targetRef="Task_AssessDesignFactors_Art25" />
+    <sequenceFlow id="Flow_TaskAssessDesignFactors_To_TaskDefineDesignMeasures_Art25" sourceRef="Task_AssessDesignFactors_Art25" targetRef="Task_DefineDesignMeasures_Art25" />
+    <sequenceFlow id="Flow_TaskConfigureDefaultSettings_To_GatewaySplitDefaults_Art25" sourceRef="Task_ConfigureDefaultSettings_Art25" targetRef="Gateway_SplitDefaults_Art25" />
+    <sequenceFlow id="Flow_TaskDefineDesignMeasures_To_TaskImplementDesignPhaseMeasures_Art25" sourceRef="Task_DefineDesignMeasures_Art25" targetRef="Task_ImplementDesignPhaseMeasures_Art25" />
+    <sequenceFlow id="Flow_TaskImplementDesignPhaseMeasures_To_TaskImplementProcessingPhaseMeasures_Art25" sourceRef="Task_ImplementDesignPhaseMeasures_Art25" targetRef="Task_ImplementProcessingPhaseMeasures_Art25" />
+    <sequenceFlow id="Flow_TaskImplementProcessingPhaseMeasures_To_TaskIntegrateSafeguards_Art25" sourceRef="Task_ImplementProcessingPhaseMeasures_Art25" targetRef="Task_IntegrateSafeguards_Art25" />
+    <sequenceFlow id="Flow_TaskIntegrateSafeguards_To_TaskConfigureDefaultSettings_Art25" sourceRef="Task_IntegrateSafeguards_Art25" targetRef="Task_ConfigureDefaultSettings_Art25" />
+    <sequenceFlow id="Flow_TaskLimitDataAmount_To_GatewayJoinDefaults_Art25" sourceRef="Task_LimitDataAmount_Art25" targetRef="Gateway_JoinDefaults_Art25" />
+    <sequenceFlow id="Flow_TaskLimitProcessingExtent_To_GatewayJoinDefaults_Art25" sourceRef="Task_LimitProcessingExtent_Art25" targetRef="Gateway_JoinDefaults_Art25" />
+    <sequenceFlow id="Flow_TaskLimitStoragePeriod_To_GatewayJoinDefaults_Art25" sourceRef="Task_LimitStoragePeriod_Art25" targetRef="Gateway_JoinDefaults_Art25" />
+    <sequenceFlow id="Flow_TaskPreventIndefiniteAccess_To_GatewayUseCertification_Art25" sourceRef="Task_PreventIndefiniteAccess_Art25" targetRef="Gateway_UseCertification_Art25" />
+    <sequenceFlow id="Flow_TaskRestrictAccessibility_To_GatewayJoinDefaults_Art25" sourceRef="Task_RestrictAccessibility_Art25" targetRef="Gateway_JoinDefaults_Art25" />
+    <sequenceFlow id="Flow_TaskUseCertification_To_EndDesignDefaultApplied_Art25" sourceRef="Task_UseCertification_Art25" targetRef="EndEvent_DesignDefaultApplied_Art25" />
+  </sequenceFlows>
+  <messageFlows />
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

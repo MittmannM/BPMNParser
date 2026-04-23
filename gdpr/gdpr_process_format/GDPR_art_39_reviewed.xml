@@ -7,24 +7,25 @@
   </pools>
   <lanes />
   <tasks>
-    <task id="Task_AdviseDPIA" name="Advise on DPIAs and monitor their performance" type="task" poolRef="Participant_DPO_Art39" />
-    <task id="Task_AssessRisk" name="Assess the risk to rights and freedoms of data subjects" type="task" poolRef="Participant_DPO_Art39" />
-    <task id="Task_ContactPointAuthority" name="Act as the contact point for the supervisory authority and consult on related matters" type="task" poolRef="Participant_DPO_Art39" />
-    <task id="Task_CooperateAuthority" name="Cooperate with the supervisory authority" type="task" poolRef="Participant_DPO_Art39" />
-    <task id="Task_InformControllerProcessor" name="Inform and advise the controller or processor on applicable obligations" type="sendTask" poolRef="Participant_DPO_Art39" />
-    <task id="Task_InformEmployees" name="Inform and advise employees involved in processing on applicable obligations" type="sendTask" poolRef="Participant_DPO_Art39" />
-    <task id="Task_MonitorCompliance" name="Monitor compliance with GDPR, Union, Member-State law, and data protection policies" type="task" poolRef="Participant_DPO_Art39" />
+    <task id="Task_AdviseDPIA" name="Advise on DPIA where requested" type="task" poolRef="Participant_DPO_Art39" />
+    <task id="Task_AssessRisk" name="Assess task-related risk" type="task" poolRef="Participant_DPO_Art39" />
+    <task id="Task_ContactPointAuthority" name="Act as authority contact point and consult on other matters" type="task" poolRef="Participant_DPO_Art39" />
+    <task id="Task_CooperateAuthority" name="Cooperate with authority" type="task" poolRef="Participant_DPO_Art39" />
+    <task id="Task_InformControllerProcessor" name="Inform and advise controller or processor" type="sendTask" poolRef="Participant_DPO_Art39" />
+    <task id="Task_InformEmployees" name="Inform and advise employees" type="sendTask" poolRef="Participant_DPO_Art39" />
+    <task id="Task_MonitorCompliance" name="Monitor compliance, responsibilities, awareness, training, and audits" type="task" poolRef="Participant_DPO_Art39" />
+    <task id="Task_MonitorDPIAPerformance_Art39" name="Monitor DPIA performance" type="task" poolRef="Participant_DPO_Art39" />
   </tasks>
   <events>
-    <event id="EndEvent_DPOTasksCompleted_Art39" name="DPO tasks performed with a risk-based approach" type="endEvent" poolRef="Participant_DPO_Art39" />
-    <event id="StartEvent_DPOTasks_Art39" name="DPO tasks are triggered" type="startEvent" poolRef="Participant_DPO_Art39" />
+    <event id="EndEvent_DPOTasksCompleted_Art39" name="DPO tasks performed" type="endEvent" poolRef="Participant_DPO_Art39" />
+    <event id="StartEvent_DPOTasks_Art39" name="Perform DPO tasks" type="startEvent" poolRef="Participant_DPO_Art39" />
   </events>
   <gateways>
     <gateway id="Gateway_TasksJoin_Art39" type="parallelGateway" poolRef="Participant_DPO_Art39" />
     <gateway id="Gateway_TasksSplit_Art39" type="parallelGateway" poolRef="Participant_DPO_Art39" />
   </gateways>
   <sequenceFlows>
-    <sequenceFlow id="Flow_AdviseDPIA_To_GatewayJoin" sourceRef="Task_AdviseDPIA" targetRef="Gateway_TasksJoin_Art39" />
+    <sequenceFlow id="Flow_AdviseDPIA_To_MonitorDPIA_Art39" sourceRef="Task_AdviseDPIA" targetRef="Task_MonitorDPIAPerformance_Art39" />
     <sequenceFlow id="Flow_AssessRisk_To_GatewaySplit" sourceRef="Task_AssessRisk" targetRef="Gateway_TasksSplit_Art39" />
     <sequenceFlow id="Flow_ContactPointAuthority_To_GatewayJoin" sourceRef="Task_ContactPointAuthority" targetRef="Gateway_TasksJoin_Art39" />
     <sequenceFlow id="Flow_CooperateAuthority_To_GatewayJoin" sourceRef="Task_CooperateAuthority" targetRef="Gateway_TasksJoin_Art39" />
@@ -38,6 +39,7 @@
     <sequenceFlow id="Flow_InformControllerProcessor_To_GatewayJoin" sourceRef="Task_InformControllerProcessor" targetRef="Gateway_TasksJoin_Art39" />
     <sequenceFlow id="Flow_InformEmployees_To_GatewayJoin" sourceRef="Task_InformEmployees" targetRef="Gateway_TasksJoin_Art39" />
     <sequenceFlow id="Flow_MonitorCompliance_To_GatewayJoin" sourceRef="Task_MonitorCompliance" targetRef="Gateway_TasksJoin_Art39" />
+    <sequenceFlow id="Flow_MonitorDPIA_To_GatewayJoin_Art39" sourceRef="Task_MonitorDPIAPerformance_Art39" targetRef="Gateway_TasksJoin_Art39" />
     <sequenceFlow id="Flow_Start_To_AssessRisk" sourceRef="StartEvent_DPOTasks_Art39" targetRef="Task_AssessRisk" />
   </sequenceFlows>
   <messageFlows>

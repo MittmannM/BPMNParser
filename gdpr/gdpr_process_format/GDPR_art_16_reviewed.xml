@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Controller_Art16" name="Controller" poolType="active" processRef="Process_Controller_Art16" />
+    <pool id="Participant_DataSubject_Art16" name="Data Subject" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="ReceiveTask_ReceiveRectificationRequest_Art16" name="Receive rectification request" type="receiveTask" poolRef="Participant_Controller_Art16" />
+    <task id="Task_CompleteData_Art16" name="Complete incomplete data with supplementary statement" type="task" poolRef="Participant_Controller_Art16" />
+    <task id="Task_RectifyData_Art16" name="Rectify inaccurate data without undue delay" type="task" poolRef="Participant_Controller_Art16" />
+  </tasks>
+  <events>
+    <event id="EndEvent_RectificationCompleted_Art16" name="Article 16 completed" type="endEvent" poolRef="Participant_Controller_Art16" />
+    <event id="StartEvent_RectificationRequested_Art16" name="Data subject seeks rectification or completion of personal data" type="startEvent" poolRef="Participant_Controller_Art16" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_RequestType_Art16" name="Does the request seek rectification of inaccurate data?" type="exclusiveGateway" poolRef="Participant_Controller_Art16" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_GatewayRequestType_To_TaskCompleteData_Art16" name="No" sourceRef="Gateway_RequestType_Art16" targetRef="Task_CompleteData_Art16" />
+    <sequenceFlow id="Flow_GatewayRequestType_To_TaskRectifyData_Art16" name="Yes" sourceRef="Gateway_RequestType_Art16" targetRef="Task_RectifyData_Art16" />
+    <sequenceFlow id="Flow_ReceiveTaskReceiveRectificationRequest_To_GatewayRequestType_Art16" sourceRef="ReceiveTask_ReceiveRectificationRequest_Art16" targetRef="Gateway_RequestType_Art16" />
+    <sequenceFlow id="Flow_Start_To_ReceiveTaskReceiveRectificationRequest_Art16" sourceRef="StartEvent_RectificationRequested_Art16" targetRef="ReceiveTask_ReceiveRectificationRequest_Art16" />
+    <sequenceFlow id="Flow_TaskCompleteData_To_EndRectificationCompleted_Art16" sourceRef="Task_CompleteData_Art16" targetRef="EndEvent_RectificationCompleted_Art16" />
+    <sequenceFlow id="Flow_TaskRectifyData_To_EndRectificationCompleted_Art16" sourceRef="Task_RectifyData_Art16" targetRef="EndEvent_RectificationCompleted_Art16" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_SendRectificationRequest_Art16" sourceRef="Participant_DataSubject_Art16" targetRef="ReceiveTask_ReceiveRectificationRequest_Art16" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

@@ -3,25 +3,27 @@
   <pools />
   <lanes />
   <tasks>
-    <task id="Task_CollectionContext_Art6" name="Take into account the context in which the personal data were collected" type="task" poolRef="Process_Controller_Art6" />
-    <task id="Task_Consent_Art6" name="Confirm that the data subject gave consent for one or more specific purposes" type="task" poolRef="Process_Controller_Art6" />
-    <task id="Task_Consequences_Art6" name="Take into account the possible consequences of the intended further processing for data subjects" type="task" poolRef="Process_Controller_Art6" />
-    <task id="Task_Contract_Art6" name="Confirm that the processing is necessary for a contract or for pre-contract steps requested by the data subject" type="task" poolRef="Process_Controller_Art6" />
-    <task id="Task_LegalObligation_Art6" name="Confirm that the processing is necessary for compliance with a legal obligation" type="task" poolRef="Process_Controller_Art6" />
-    <task id="Task_LegitimateInterests_Art6" name="Confirm legitimate interests and weigh them against the interests and rights of the data subject" type="task" poolRef="Process_Controller_Art6" />
-    <task id="Task_LinkBetweenPurposes_Art6" name="Take into account the link between the original purpose and the intended further purpose" type="task" poolRef="Process_Controller_Art6" />
-    <task id="Task_NatureOfData_Art6" name="Take into account the nature of the personal data" type="task" poolRef="Process_Controller_Art6" />
-    <task id="Task_PublicInterest_Art6" name="Confirm that the processing is necessary for a public-interest task or the exercise of official authority" type="task" poolRef="Process_Controller_Art6" />
-    <task id="Task_Safeguards_Art6" name="Take into account appropriate safeguards such as encryption or pseudonymisation" type="task" poolRef="Process_Controller_Art6" />
-    <task id="Task_VitalInterests_Art6" name="Confirm that the processing is necessary to protect vital interests" type="task" poolRef="Process_Controller_Art6" />
+    <task id="Task_CheckLawDetails_Art6" name="Check Union or Member State law basis and specific rules" type="task" poolRef="Process_Controller_Art6" />
+    <task id="Task_CollectionContext_Art6" name="Check collection context" type="task" poolRef="Process_Controller_Art6" />
+    <task id="Task_Consent_Art6" name="Check consent" type="task" poolRef="Process_Controller_Art6" />
+    <task id="Task_Consequences_Art6" name="Check consequences for data subjects" type="task" poolRef="Process_Controller_Art6" />
+    <task id="Task_Contract_Art6" name="Check contract necessity" type="task" poolRef="Process_Controller_Art6" />
+    <task id="Task_LegalObligation_Art6" name="Check legal-obligation necessity" type="task" poolRef="Process_Controller_Art6" />
+    <task id="Task_LegitimateInterests_Art6" name="Check legitimate interests and public-authority exclusion" type="task" poolRef="Process_Controller_Art6" />
+    <task id="Task_LinkBetweenPurposes_Art6" name="Check link between purposes" type="task" poolRef="Process_Controller_Art6" />
+    <task id="Task_NatureOfData_Art6" name="Check nature of data" type="task" poolRef="Process_Controller_Art6" />
+    <task id="Task_PublicInterest_Art6" name="Check public-interest or official-authority necessity" type="task" poolRef="Process_Controller_Art6" />
+    <task id="Task_Safeguards_Art6" name="Check safeguards" type="task" poolRef="Process_Controller_Art6" />
+    <task id="Task_VitalInterests_Art6" name="Check vital-interests necessity" type="task" poolRef="Process_Controller_Art6" />
   </tasks>
   <events>
-    <event id="EndEvent_LawfulnessEstablished_Art6" name="Article 6 lawfulness assessment completed" type="endEvent" poolRef="Process_Controller_Art6" />
-    <event id="StartEvent_AssessLawfulness_Art6" name="Need to establish a lawful basis for processing" type="startEvent" poolRef="Process_Controller_Art6" />
+    <event id="EndEvent_LawfulnessEstablished_Art6" name="Article 6 lawfulness established" type="endEvent" poolRef="Process_Controller_Art6" />
+    <event id="StartEvent_AssessLawfulness_Art6" name="Need lawful basis" type="startEvent" poolRef="Process_Controller_Art6" />
   </events>
   <gateways>
-    <gateway id="Gateway_FurtherProcessing_Art6" name="Is further processing for another purpose planned without consent or a specific Union or Member State legal basis?" type="exclusiveGateway" poolRef="Process_Controller_Art6" />
+    <gateway id="Gateway_FurtherProcessing_Art6" name="Is further processing planned without consent or specific Union or Member State law?" type="exclusiveGateway" poolRef="Process_Controller_Art6" />
     <gateway id="Gateway_JoinCompatibilityFactors_Art6" type="parallelGateway" poolRef="Process_Controller_Art6" />
+    <gateway id="Gateway_LawSpecificProvisions_Art6" name="Is the legal basis point (c) or (e)?" type="exclusiveGateway" poolRef="Process_Controller_Art6" />
     <gateway id="Gateway_LegalBasisJoin_Art6" type="exclusiveGateway" poolRef="Process_Controller_Art6" />
     <gateway id="Gateway_LegalBasis_Art6" name="Which Article 6 legal basis applies?" type="exclusiveGateway" poolRef="Process_Controller_Art6" />
     <gateway id="Gateway_SplitCompatibilityFactors_Art6" type="parallelGateway" poolRef="Process_Controller_Art6" />
@@ -30,7 +32,9 @@
     <sequenceFlow id="Flow_GatewayFurtherProcessing_To_EndLawfulnessEstablished_Art6" name="No" sourceRef="Gateway_FurtherProcessing_Art6" targetRef="EndEvent_LawfulnessEstablished_Art6" />
     <sequenceFlow id="Flow_GatewayFurtherProcessing_To_GatewaySplitCompatibilityFactors_Art6" name="Yes" sourceRef="Gateway_FurtherProcessing_Art6" targetRef="Gateway_SplitCompatibilityFactors_Art6" />
     <sequenceFlow id="Flow_GatewayJoinCompatibilityFactors_To_EndLawfulnessEstablished_Art6" sourceRef="Gateway_JoinCompatibilityFactors_Art6" targetRef="EndEvent_LawfulnessEstablished_Art6" />
-    <sequenceFlow id="Flow_GatewayLegalBasisJoin_To_GatewayFurtherProcessing_Art6" sourceRef="Gateway_LegalBasisJoin_Art6" targetRef="Gateway_FurtherProcessing_Art6" />
+    <sequenceFlow id="Flow_GatewayLawSpecificProvisions_To_GatewayFurtherProcessing_Art6" name="No" sourceRef="Gateway_LawSpecificProvisions_Art6" targetRef="Gateway_FurtherProcessing_Art6" />
+    <sequenceFlow id="Flow_GatewayLawSpecificProvisions_To_TaskCheckLawDetails_Art6" name="Yes" sourceRef="Gateway_LawSpecificProvisions_Art6" targetRef="Task_CheckLawDetails_Art6" />
+    <sequenceFlow id="Flow_GatewayLegalBasisJoin_To_GatewayLawSpecificProvisions_Art6" sourceRef="Gateway_LegalBasisJoin_Art6" targetRef="Gateway_LawSpecificProvisions_Art6" />
     <sequenceFlow id="Flow_GatewayLegalBasis_To_TaskConsent_Art6" name="Consent" sourceRef="Gateway_LegalBasis_Art6" targetRef="Task_Consent_Art6" />
     <sequenceFlow id="Flow_GatewayLegalBasis_To_TaskContract_Art6" name="Contract or pre-contract request" sourceRef="Gateway_LegalBasis_Art6" targetRef="Task_Contract_Art6" />
     <sequenceFlow id="Flow_GatewayLegalBasis_To_TaskLegalObligation_Art6" name="Legal obligation" sourceRef="Gateway_LegalBasis_Art6" targetRef="Task_LegalObligation_Art6" />
@@ -43,6 +47,7 @@
     <sequenceFlow id="Flow_GatewaySplitCompatibilityFactors_To_TaskNatureOfData_Art6" sourceRef="Gateway_SplitCompatibilityFactors_Art6" targetRef="Task_NatureOfData_Art6" />
     <sequenceFlow id="Flow_GatewaySplitCompatibilityFactors_To_TaskSafeguards_Art6" sourceRef="Gateway_SplitCompatibilityFactors_Art6" targetRef="Task_Safeguards_Art6" />
     <sequenceFlow id="Flow_Start_To_GatewayLegalBasis_Art6" sourceRef="StartEvent_AssessLawfulness_Art6" targetRef="Gateway_LegalBasis_Art6" />
+    <sequenceFlow id="Flow_TaskCheckLawDetails_To_GatewayFurtherProcessing_Art6" sourceRef="Task_CheckLawDetails_Art6" targetRef="Gateway_FurtherProcessing_Art6" />
     <sequenceFlow id="Flow_TaskCollectionContext_To_GatewayJoinCompatibilityFactors_Art6" sourceRef="Task_CollectionContext_Art6" targetRef="Gateway_JoinCompatibilityFactors_Art6" />
     <sequenceFlow id="Flow_TaskConsent_To_GatewayLegalBasisJoin_Art6" sourceRef="Task_Consent_Art6" targetRef="Gateway_LegalBasisJoin_Art6" />
     <sequenceFlow id="Flow_TaskConsequences_To_GatewayJoinCompatibilityFactors_Art6" sourceRef="Task_Consequences_Art6" targetRef="Gateway_JoinCompatibilityFactors_Art6" />

@@ -3,18 +3,19 @@
   <pools />
   <lanes />
   <tasks>
-    <task id="Task_Accuracy_Art5" name="Keep personal data accurate and up to date for the processing purpose" type="task" poolRef="Process_Controller_Art5" />
-    <task id="Task_DataMinimisation_Art5" name="Limit the personal data to what is adequate, relevant, and necessary for the purpose" type="task" poolRef="Process_Controller_Art5" />
-    <task id="Task_LawfulnessFairnessTransparency_Art5" name="Ensure that the processing is lawful, fair, and transparent in relation to the data subject" type="task" poolRef="Process_Controller_Art5" />
-    <task id="Task_PlanProcessing_Art5" name="Plan the processing operation and its purposes" type="task" poolRef="Process_Controller_Art5" />
-    <task id="Task_PurposeLimitation_Art5" name="Specify explicit legitimate purposes and verify the compatibility of any further processing" type="task" poolRef="Process_Controller_Art5" />
-    <task id="Task_RectifyOrErase_Art5" name="Rectify or erase inaccurate personal data without delay" type="task" poolRef="Process_Controller_Art5" />
-    <task id="Task_Security_Art5" name="Ensure integrity and confidentiality with appropriate technical and organisational security measures" type="task" poolRef="Process_Controller_Art5" />
-    <task id="Task_StorageLimitation_Art5" name="Limit storage so data subjects are identifiable for no longer than necessary" type="task" poolRef="Process_Controller_Art5" />
+    <task id="Task_Accuracy_Art5" name="Keep data accurate and up to date" type="task" poolRef="Process_Controller_Art5" />
+    <task id="Task_DataMinimisation_Art5" name="Limit data to what is necessary" type="task" poolRef="Process_Controller_Art5" />
+    <task id="Task_DemonstrateCompliance_Art5" name="Demonstrate compliance" type="task" poolRef="Process_Controller_Art5" />
+    <task id="Task_LawfulnessFairnessTransparency_Art5" name="Ensure lawful, fair, and transparent processing" type="task" poolRef="Process_Controller_Art5" />
+    <task id="Task_PlanProcessing_Art5" name="Define processing and purposes" type="task" poolRef="Process_Controller_Art5" />
+    <task id="Task_PurposeLimitation_Art5" name="Define purposes and check further-processing compatibility" type="task" poolRef="Process_Controller_Art5" />
+    <task id="Task_RectifyOrErase_Art5" name="Rectify or erase inaccurate data" type="task" poolRef="Process_Controller_Art5" />
+    <task id="Task_Security_Art5" name="Protect data with appropriate security measures" type="task" poolRef="Process_Controller_Art5" />
+    <task id="Task_StorageLimitation_Art5" name="Limit retention and apply Article 89 safeguards for longer storage" type="task" poolRef="Process_Controller_Art5" />
   </tasks>
   <events>
-    <event id="EndEvent_PrinciplesConfigured_Art5" name="Article 5 processing principles configured" type="endEvent" poolRef="Process_Controller_Art5" />
-    <event id="StartEvent_PlanProcessing_Art5" name="Need to define a personal-data processing operation" type="startEvent" poolRef="Process_Controller_Art5" />
+    <event id="EndEvent_PrinciplesConfigured_Art5" name="Article 5 principles applied" type="endEvent" poolRef="Process_Controller_Art5" />
+    <event id="StartEvent_PlanProcessing_Art5" name="Need processing design" type="startEvent" poolRef="Process_Controller_Art5" />
   </events>
   <gateways>
     <gateway id="Gateway_AccuracyJoin_Art5" type="exclusiveGateway" poolRef="Process_Controller_Art5" />
@@ -23,10 +24,11 @@
     <gateway id="Gateway_SplitPrinciples_Art5" type="parallelGateway" poolRef="Process_Controller_Art5" />
   </gateways>
   <sequenceFlows>
+    <sequenceFlow id="Flow_DemonstrateCompliance_To_EndPrinciplesConfigured_Art5" sourceRef="Task_DemonstrateCompliance_Art5" targetRef="EndEvent_PrinciplesConfigured_Art5" />
     <sequenceFlow id="Flow_GatewayAccuracyJoin_To_GatewayJoinPrinciples_Art5" sourceRef="Gateway_AccuracyJoin_Art5" targetRef="Gateway_JoinPrinciples_Art5" />
     <sequenceFlow id="Flow_GatewayInaccurateData_To_GatewayAccuracyJoin_Art5" name="No" sourceRef="Gateway_InaccurateData_Art5" targetRef="Gateway_AccuracyJoin_Art5" />
     <sequenceFlow id="Flow_GatewayInaccurateData_To_TaskRectifyOrErase_Art5" name="Yes" sourceRef="Gateway_InaccurateData_Art5" targetRef="Task_RectifyOrErase_Art5" />
-    <sequenceFlow id="Flow_GatewayJoinPrinciples_To_EndPrinciplesConfigured_Art5" sourceRef="Gateway_JoinPrinciples_Art5" targetRef="EndEvent_PrinciplesConfigured_Art5" />
+    <sequenceFlow id="Flow_GatewayJoinPrinciples_To_DemonstrateCompliance_Art5" sourceRef="Gateway_JoinPrinciples_Art5" targetRef="Task_DemonstrateCompliance_Art5" />
     <sequenceFlow id="Flow_GatewaySplitPrinciples_To_TaskAccuracy_Art5" sourceRef="Gateway_SplitPrinciples_Art5" targetRef="Task_Accuracy_Art5" />
     <sequenceFlow id="Flow_GatewaySplitPrinciples_To_TaskDataMinimisation_Art5" sourceRef="Gateway_SplitPrinciples_Art5" targetRef="Task_DataMinimisation_Art5" />
     <sequenceFlow id="Flow_GatewaySplitPrinciples_To_TaskLawfulnessFairnessTransparency_Art5" sourceRef="Gateway_SplitPrinciples_Art5" targetRef="Task_LawfulnessFairnessTransparency_Art5" />

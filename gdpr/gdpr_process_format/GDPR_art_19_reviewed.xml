@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Controller_Art19" name="Controller" poolType="active" processRef="Process_Controller_Art19" />
+    <pool id="Participant_DataSubject_Art19" name="Data Subject" poolType="passive" />
+    <pool id="Participant_Recipients_Art19" name="Recipients" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="SendTask_InformDataSubjectAboutRecipients_Art19" name="Inform data subject of notified recipients" type="sendTask" poolRef="Participant_Controller_Art19" />
+    <task id="SendTask_NotifyRecipients_Art19" name="Communicate the rectification, erasure, or restriction to each recipient" type="sendTask" poolRef="Participant_Controller_Art19" />
+    <task id="Task_ErasureOccurred_Art19" name="Register Article 17(1) erasure" type="task" poolRef="Participant_Controller_Art19" />
+    <task id="Task_RectificationOccurred_Art19" name="Register Article 16 rectification" type="task" poolRef="Participant_Controller_Art19" />
+    <task id="Task_RestrictionOccurred_Art19" name="Register Article 18 restriction" type="task" poolRef="Participant_Controller_Art19" />
+  </tasks>
+  <events>
+    <event id="EndEvent_RecipientNotificationCompleted_Art19" name="Article 19 notification handling is completed" type="endEvent" poolRef="Participant_Controller_Art19" />
+    <event id="EndEvent_RequestBlocked_Art19" name="Recipient notification is excused because it proves impossible or involves disproportionate effort" type="endEvent" poolRef="Participant_Controller_Art19" />
+    <event id="StartEvent_ChangeOccurred_Art19" name="An Article 16 rectification, Article 17(1) erasure, or Article 18 restriction was carried out" type="startEvent" poolRef="Participant_Controller_Art19" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_ChangeType_Art19" name="Which Article 19 measure was carried out?" type="exclusiveGateway" poolRef="Participant_Controller_Art19" />
+    <gateway id="Gateway_JoinChange_Art19" type="exclusiveGateway" poolRef="Participant_Controller_Art19" />
+    <gateway id="Gateway_RecipientInfoRequested_Art19" name="Did the data subject request information about those recipients?" type="exclusiveGateway" poolRef="Participant_Controller_Art19" />
+    <gateway id="Gateway_RequestExceptions_Art19" name="Would notifying the recipients prove impossible or involve disproportionate effort?" type="exclusiveGateway" poolRef="Participant_Controller_Art19" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_GatewayChangeType_To_TaskErasureOccurred_Art19" name="Article 17(1) erasure carried out" sourceRef="Gateway_ChangeType_Art19" targetRef="Task_ErasureOccurred_Art19" />
+    <sequenceFlow id="Flow_GatewayChangeType_To_TaskRectificationOccurred_Art19" name="Article 16 rectification carried out" sourceRef="Gateway_ChangeType_Art19" targetRef="Task_RectificationOccurred_Art19" />
+    <sequenceFlow id="Flow_GatewayChangeType_To_TaskRestrictionOccurred_Art19" name="Article 18 restriction carried out" sourceRef="Gateway_ChangeType_Art19" targetRef="Task_RestrictionOccurred_Art19" />
+    <sequenceFlow id="Flow_GatewayJoinChange_To_GatewayRequestExceptions_Art19" sourceRef="Gateway_JoinChange_Art19" targetRef="Gateway_RequestExceptions_Art19" />
+    <sequenceFlow id="Flow_GatewayRecipientInfoRequested_To_EndRecipientNotificationCompleted_Art19" name="No" sourceRef="Gateway_RecipientInfoRequested_Art19" targetRef="EndEvent_RecipientNotificationCompleted_Art19" />
+    <sequenceFlow id="Flow_GatewayRecipientInfoRequested_To_SendTaskInformDataSubjectAboutRecipients_Art19" name="Yes" sourceRef="Gateway_RecipientInfoRequested_Art19" targetRef="SendTask_InformDataSubjectAboutRecipients_Art19" />
+    <sequenceFlow id="Flow_GatewayRequestExceptions_To_EndRequestBlocked_Art19" name="Yes" sourceRef="Gateway_RequestExceptions_Art19" targetRef="EndEvent_RequestBlocked_Art19" />
+    <sequenceFlow id="Flow_GatewayRequestExceptions_To_GatewayRecipientNotificationEffort_Art19" name="No" sourceRef="Gateway_RequestExceptions_Art19" targetRef="SendTask_NotifyRecipients_Art19" />
+    <sequenceFlow id="Flow_SendTaskInformDataSubjectAboutRecipients_To_EndRecipientNotificationCompleted_Art19" sourceRef="SendTask_InformDataSubjectAboutRecipients_Art19" targetRef="EndEvent_RecipientNotificationCompleted_Art19" />
+    <sequenceFlow id="Flow_SendTaskNotifyRecipients_To_GatewayRecipientInfoRequested_Art19" sourceRef="SendTask_NotifyRecipients_Art19" targetRef="Gateway_RecipientInfoRequested_Art19" />
+    <sequenceFlow id="Flow_Start_To_GatewayChangeType_Art19" sourceRef="StartEvent_ChangeOccurred_Art19" targetRef="Gateway_ChangeType_Art19" />
+    <sequenceFlow id="Flow_TaskErasureOccurred_To_GatewayJoinChange_Art19" sourceRef="Task_ErasureOccurred_Art19" targetRef="Gateway_JoinChange_Art19" />
+    <sequenceFlow id="Flow_TaskRectificationOccurred_To_GatewayJoinChange_Art19" sourceRef="Task_RectificationOccurred_Art19" targetRef="Gateway_JoinChange_Art19" />
+    <sequenceFlow id="Flow_TaskRestrictionOccurred_To_GatewayJoinChange_Art19" sourceRef="Task_RestrictionOccurred_Art19" targetRef="Gateway_JoinChange_Art19" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_InformDataSubjectAboutRecipients_Art19" sourceRef="SendTask_InformDataSubjectAboutRecipients_Art19" targetRef="Participant_DataSubject_Art19" />
+    <messageFlow id="MessageFlow_NotifyRecipients_Art19" sourceRef="SendTask_NotifyRecipients_Art19" targetRef="Participant_Recipients_Art19" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

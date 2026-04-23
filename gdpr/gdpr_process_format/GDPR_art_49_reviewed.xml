@@ -8,32 +8,32 @@
   </pools>
   <lanes />
   <tasks>
-    <task id="ReceiveTask_ReceiveExplicitConsent_Art49" name="Receive the data subject's explicit consent to the proposed transfer" type="receiveTask" poolRef="Participant_ControllerProcessor_Art49" />
-    <task id="SendTask_InformDataSubjectAboutFallbackTransfer_Art49" name="Inform the data subject about the fallback transfer and the compelling legitimate interests pursued" type="sendTask" poolRef="Participant_ControllerProcessor_Art49" />
-    <task id="SendTask_InformDataSubjectAboutRisks_Art49" name="Inform the data subject about the transfer risks due to the absence of adequacy and safeguards" type="sendTask" poolRef="Participant_ControllerProcessor_Art49" />
-    <task id="SendTask_InformSupervisoryAuthority_Art49" name="Inform the supervisory authority about the fallback transfer" type="sendTask" poolRef="Participant_ControllerProcessor_Art49" />
-    <task id="SendTask_TransferUnderDerogation_Art49" name="Transfer the personal data under the applicable Article 49 derogation" type="sendTask" poolRef="Participant_ControllerProcessor_Art49" />
-    <task id="Task_AssessFallback_Art49" name="Assess compelling legitimate interests, limited data subjects, non-repetitive use, and suitable safeguards" type="task" poolRef="Participant_ControllerProcessor_Art49" />
-    <task id="Task_AssessRegisterTransfer_Art49" name="Assess whether the transfer from the register is lawfully consultable and limited to the permitted extract" type="task" poolRef="Participant_ControllerProcessor_Art49" />
-    <task id="Task_DocumentFallbackAssessment_Art49" name="Document the assessment and suitable safeguards in the Article 30 records" type="task" poolRef="Participant_ControllerProcessor_Art49" />
-    <task id="Task_VerifyDataSubjectContract_Art49" name="Verify that the transfer is necessary for the data subject's contract or requested pre-contractual measures" type="task" poolRef="Participant_ControllerProcessor_Art49" />
-    <task id="Task_VerifyDataSubjectInterestContract_Art49" name="Verify that the transfer is necessary for a contract concluded in the data subject's interest" type="task" poolRef="Participant_ControllerProcessor_Art49" />
-    <task id="Task_VerifyLegalClaims_Art49" name="Verify that the transfer is necessary for the establishment, exercise, or defence of legal claims" type="task" poolRef="Participant_ControllerProcessor_Art49" />
-    <task id="Task_VerifyPublicInterest_Art49" name="Verify that the transfer is necessary for important reasons of public interest" type="task" poolRef="Participant_ControllerProcessor_Art49" />
-    <task id="Task_VerifyVitalInterests_Art49" name="Verify that vital interests require the transfer and the data subject cannot give consent" type="task" poolRef="Participant_ControllerProcessor_Art49" />
+    <task id="ReceiveTask_ReceiveExplicitConsent_Art49" name="Receive explicit consent" type="receiveTask" poolRef="Participant_ControllerProcessor_Art49" />
+    <task id="SendTask_InformDataSubjectAboutFallbackTransfer_Art49" name="Inform data subject of fallback transfer" type="sendTask" poolRef="Participant_ControllerProcessor_Art49" />
+    <task id="SendTask_InformDataSubjectAboutRisks_Art49" name="Inform data subject of transfer risks" type="sendTask" poolRef="Participant_ControllerProcessor_Art49" />
+    <task id="SendTask_InformSupervisoryAuthority_Art49" name="Inform supervisory authority" type="sendTask" poolRef="Participant_ControllerProcessor_Art49" />
+    <task id="SendTask_TransferUnderDerogation_Art49" name="Transfer data under derogation" type="sendTask" poolRef="Participant_ControllerProcessor_Art49" />
+    <task id="Task_AssessFallback_Art49" name="Check fallback conditions and safeguards" type="task" poolRef="Participant_ControllerProcessor_Art49" />
+    <task id="Task_AssessRegisterTransfer_Art49" name="Check register access and transfer scope" type="task" poolRef="Participant_ControllerProcessor_Art49" />
+    <task id="Task_DocumentFallbackAssessment_Art49" name="Document fallback assessment and safeguards" type="task" poolRef="Participant_ControllerProcessor_Art49" />
+    <task id="Task_VerifyDataSubjectContract_Art49" name="Check data-subject contract necessity" type="task" poolRef="Participant_ControllerProcessor_Art49" />
+    <task id="Task_VerifyDataSubjectInterestContract_Art49" name="Check contract in data subject's interest" type="task" poolRef="Participant_ControllerProcessor_Art49" />
+    <task id="Task_VerifyLegalClaims_Art49" name="Check legal-claims necessity" type="task" poolRef="Participant_ControllerProcessor_Art49" />
+    <task id="Task_VerifyPublicInterest_Art49" name="Check recognised public interest and any transfer limits" type="task" poolRef="Participant_ControllerProcessor_Art49" />
+    <task id="Task_VerifyVitalInterests_Art49" name="Check vital-interests necessity" type="task" poolRef="Participant_ControllerProcessor_Art49" />
   </tasks>
   <events>
-    <event id="EndEvent_NoDerogation_Art49" name="No Article 49 derogation permits the transfer" type="endEvent" poolRef="Participant_ControllerProcessor_Art49" />
-    <event id="EndEvent_TransferCompleted_Art49" name="Transfer completed under an Article 49 derogation" type="endEvent" poolRef="Participant_ControllerProcessor_Art49" />
-    <event id="EndEvent_UsePrimaryTool_Art49" name="Use the Article 45 or 46 transfer route instead of Article 49" type="endEvent" poolRef="Participant_ControllerProcessor_Art49" />
-    <event id="StartEvent_NeedExceptionalTransfer_Art49" name="Need to assess a transfer to a third country or international organisation" type="startEvent" poolRef="Participant_ControllerProcessor_Art49" />
+    <event id="EndEvent_NoDerogation_Art49" name="No Article 49 derogation applies" type="endEvent" poolRef="Participant_ControllerProcessor_Art49" />
+    <event id="EndEvent_TransferCompleted_Art49" name="Transfer completed" type="endEvent" poolRef="Participant_ControllerProcessor_Art49" />
+    <event id="EndEvent_UsePrimaryTool_Art49" name="Use Article 45 or 46 route" type="endEvent" poolRef="Participant_ControllerProcessor_Art49" />
+    <event id="StartEvent_NeedExceptionalTransfer_Art49" name="Need transfer" type="startEvent" poolRef="Participant_ControllerProcessor_Art49" />
   </events>
   <gateways>
-    <gateway id="Gateway_FallbackConditions_Art49" name="Are all fallback conditions for compelling legitimate interests met?" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art49" />
+    <gateway id="Gateway_FallbackConditions_Art49" name="Are all fallback conditions met?" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art49" />
     <gateway id="Gateway_FullDerogation_Art49" name="Which Article 49 derogation applies?" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art49" />
-    <gateway id="Gateway_PrimaryTransferTool_Art49" name="Is an Article 45 adequacy decision or an Article 46 safeguard available?" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art49" />
-    <gateway id="Gateway_PublicAuthorityPowers_Art49" name="Is a public authority acting in the exercise of its public powers?" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art49" />
-    <gateway id="Gateway_RegisterCompliant_Art49" name="Is the register transfer limited and, where required, requested by an entitled recipient?" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art49" />
+    <gateway id="Gateway_PrimaryTransferTool_Art49" name="Is an Article 45 or 46 transfer tool available?" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art49" />
+    <gateway id="Gateway_PublicAuthorityPowers_Art49" name="Is a public authority exercising public powers?" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art49" />
+    <gateway id="Gateway_RegisterCompliant_Art49" name="Is the register transfer limited and lawfully requested?" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art49" />
     <gateway id="Gateway_RestrictedDerogation_Art49" name="Which Article 49 derogation applies for the public authority?" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art49" />
     <gateway id="Gateway_TransferReady_Art49" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art49" />
   </gateways>

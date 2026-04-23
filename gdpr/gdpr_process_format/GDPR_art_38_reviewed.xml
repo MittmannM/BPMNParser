@@ -7,67 +7,71 @@
   </pools>
   <lanes />
   <tasks>
-    <task id="Task_AssessConflict" name="Assess whether the other tasks create a conflict of interests" type="task" poolRef="Participant_ControllerProcessor_Art38" />
-    <task id="Task_AssistDataSubject" name="Assist on the processing or rights matter" type="task" poolRef="Participant_DPO_Art38" />
-    <task id="Task_AssistIssue" name="Assist on the personal-data-protection issue" type="task" poolRef="Participant_DPO_Art38" />
-    <task id="Task_EnableContact" name="Maintain a direct contact channel for data subjects to reach the DPO" type="task" poolRef="Participant_ControllerProcessor_Art38" />
-    <task id="Task_EnsureReporting" name="Ensure direct reporting to the highest management level" type="task" poolRef="Participant_ControllerProcessor_Art38" />
-    <task id="Task_IdentifyIssue" name="Identify an issue related to the protection of personal data" type="task" poolRef="Participant_ControllerProcessor_Art38" />
-    <task id="Task_InvolveDPO" name="Involve the DPO without delay" type="sendTask" poolRef="Participant_ControllerProcessor_Art38" />
-    <task id="Task_ObserveConfidentialityIssue" name="Observe secrecy or confidentiality while assisting on the issue" type="task" poolRef="Participant_DPO_Art38" />
-    <task id="Task_ObserveConfidentialityRights" name="Observe secrecy or confidentiality while handling the rights matter" type="task" poolRef="Participant_DPO_Art38" />
-    <task id="Task_ProvideSupport" name="Provide resources, access, and assistance for the DPO tasks" type="task" poolRef="Participant_ControllerProcessor_Art38" />
-    <task id="Task_ReceiveDataSubjectMatter" name="Receive a data subject matter about processing or rights" type="receiveTask" poolRef="Participant_DPO_Art38" />
-    <task id="Task_ReceiveInvolvementRequest" name="Receive involvement in a personal-data-protection issue" type="receiveTask" poolRef="Participant_DPO_Art38" />
-    <task id="Task_RemoveConflict" name="Remove or reassign the conflicting tasks" type="task" poolRef="Participant_ControllerProcessor_Art38" />
-    <task id="Task_StopSanction" name="Stop the dismissal or penalty measure" type="task" poolRef="Participant_ControllerProcessor_Art38" />
-    <task id="Task_WithdrawInstruction" name="Withdraw the instruction and preserve DPO independence" type="task" poolRef="Participant_ControllerProcessor_Art38" />
+    <task id="ReceiveTask_ReceiveDataSubjectMatter_Art38" name="Receive data-subject matter" type="receiveTask" poolRef="Participant_DPO_Art38" />
+    <task id="ReceiveTask_ReceiveIssue_Art38" name="Receive DPO issue" type="receiveTask" poolRef="Participant_DPO_Art38" />
+    <task id="SendTask_InvolveDPO_Art38" name="Involve DPO properly and timely" type="sendTask" poolRef="Participant_ControllerProcessor_Art38" />
+    <task id="Task_AssessConflict_Art38" name="Assess conflict of interests" type="task" poolRef="Participant_ControllerProcessor_Art38" />
+    <task id="Task_EnableContact_Art38" name="Enable data-subject contact" type="task" poolRef="Participant_ControllerProcessor_Art38" />
+    <task id="Task_EnsureReporting_Art38" name="Ensure direct reporting to top management" type="task" poolRef="Participant_ControllerProcessor_Art38" />
+    <task id="Task_GrantAccess_Art38" name="Grant access to data and processing" type="task" poolRef="Participant_ControllerProcessor_Art38" />
+    <task id="Task_HandleIssue_Art38" name="Handle DPO issue" type="task" poolRef="Participant_DPO_Art38" />
+    <task id="Task_HandleRightsMatter_Art38" name="Handle processing or rights matter" type="task" poolRef="Participant_DPO_Art38" />
+    <task id="Task_IdentifyIssue_Art38" name="Identify personal-data-protection issue" type="task" poolRef="Participant_ControllerProcessor_Art38" />
+    <task id="Task_ObserveConfidentialityIssue_Art38" name="Observe secrecy or confidentiality" type="task" poolRef="Participant_DPO_Art38" />
+    <task id="Task_ObserveConfidentialityRights_Art38" name="Observe secrecy or confidentiality" type="task" poolRef="Participant_DPO_Art38" />
+    <task id="Task_ProvideResources_Art38" name="Provide necessary resources" type="task" poolRef="Participant_ControllerProcessor_Art38" />
+    <task id="Task_RemoveConflict_Art38" name="Remove or reassign conflicting tasks" type="task" poolRef="Participant_ControllerProcessor_Art38" />
+    <task id="Task_StopSanction_Art38" name="Stop dismissal or penalty" type="task" poolRef="Participant_ControllerProcessor_Art38" />
+    <task id="Task_SupportExpertKnowledge_Art38" name="Support expert knowledge" type="task" poolRef="Participant_ControllerProcessor_Art38" />
+    <task id="Task_WithdrawInstruction_Art38" name="Withdraw instruction" type="task" poolRef="Participant_ControllerProcessor_Art38" />
   </tasks>
   <events>
-    <event id="EndEvent_ControllerCompleted_Art38" name="DPO position safeguards maintained" type="endEvent" poolRef="Participant_ControllerProcessor_Art38" />
-    <event id="EndEvent_DPODataSubjectPath_Art38" name="Data subject matter handled" type="endEvent" poolRef="Participant_DPO_Art38" />
-    <event id="EndEvent_DPOIssuePath_Art38" name="Issue support provided" type="endEvent" poolRef="Participant_DPO_Art38" />
-    <event id="StartEvent_DPODesignated_Art38" name="DPO designated for the processing context" type="startEvent" poolRef="Participant_ControllerProcessor_Art38" />
-    <event id="StartEvent_DPOIssuePath_Art38" name="DPO involvement path available" type="startEvent" poolRef="Participant_DPO_Art38" />
-    <event id="StartEvent_DataSubjectPath_Art38" name="Data subject contact path available" type="startEvent" poolRef="Participant_DPO_Art38" />
+    <event id="EndEvent_Completed_Art38" name="Article 38 safeguards maintained" type="endEvent" poolRef="Participant_ControllerProcessor_Art38" />
+    <event id="EndEvent_DataSubjectPath_Art38" name="Data-subject matter handled" type="endEvent" poolRef="Participant_DPO_Art38" />
+    <event id="EndEvent_IssuePath_Art38" name="Issue handled" type="endEvent" poolRef="Participant_DPO_Art38" />
+    <event id="StartEvent_DataSubjectPath_Art38" name="Data-subject path available" type="startEvent" poolRef="Participant_DPO_Art38" />
+    <event id="StartEvent_IssuePath_Art38" name="Issue path available" type="startEvent" poolRef="Participant_DPO_Art38" />
+    <event id="StartEvent_MaintainDPO_Art38" name="Maintain DPO safeguards" type="startEvent" poolRef="Participant_ControllerProcessor_Art38" />
   </events>
   <gateways>
-    <gateway id="Gateway_Conflict" name="Do the other tasks create a conflict of interests?" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art38" />
-    <gateway id="Gateway_Instruction" name="Is an instruction on DPO task performance being considered?" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art38" />
-    <gateway id="Gateway_OtherDuties" name="Does the DPO perform other tasks or duties?" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art38" />
-    <gateway id="Gateway_Sanction" name="Is dismissal or a penalty being considered because of DPO tasks?" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art38" />
+    <gateway id="Gateway_Conflict_Art38" name="Do the other tasks create a conflict of interests?" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art38" />
+    <gateway id="Gateway_Instruction_Art38" name="Is an instruction on DPO task performance being considered?" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art38" />
+    <gateway id="Gateway_OtherDuties_Art38" name="Does the DPO perform other tasks or duties?" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art38" />
+    <gateway id="Gateway_Sanction_Art38" name="Is dismissal or a penalty being considered for DPO tasks?" type="exclusiveGateway" poolRef="Participant_ControllerProcessor_Art38" />
   </gateways>
   <sequenceFlows>
-    <sequenceFlow id="Flow_AssessConflict_To_GatewayConflict" sourceRef="Task_AssessConflict" targetRef="Gateway_Conflict" />
-    <sequenceFlow id="Flow_AssistDataSubject_To_ObserveConfidentialityRights" sourceRef="Task_AssistDataSubject" targetRef="Task_ObserveConfidentialityRights" />
-    <sequenceFlow id="Flow_AssistIssue_To_ObserveConfidentialityIssue" sourceRef="Task_AssistIssue" targetRef="Task_ObserveConfidentialityIssue" />
-    <sequenceFlow id="Flow_DPOIssueStart_To_ReceiveInvolvementRequest" sourceRef="StartEvent_DPOIssuePath_Art38" targetRef="Task_ReceiveInvolvementRequest" />
-    <sequenceFlow id="Flow_DataSubjectStart_To_ReceiveDataSubjectMatter" sourceRef="StartEvent_DataSubjectPath_Art38" targetRef="Task_ReceiveDataSubjectMatter" />
-    <sequenceFlow id="Flow_EnableContact_To_GatewayOtherDuties" sourceRef="Task_EnableContact" targetRef="Gateway_OtherDuties" />
-    <sequenceFlow id="Flow_EnsureReporting_To_EnableContact" sourceRef="Task_EnsureReporting" targetRef="Task_EnableContact" />
-    <sequenceFlow id="Flow_GatewayConflict_To_EndCompleted" name="No" sourceRef="Gateway_Conflict" targetRef="EndEvent_ControllerCompleted_Art38" />
-    <sequenceFlow id="Flow_GatewayConflict_To_RemoveConflict" name="Yes" sourceRef="Gateway_Conflict" targetRef="Task_RemoveConflict" />
-    <sequenceFlow id="Flow_GatewayInstruction_To_GatewaySanction" name="No" sourceRef="Gateway_Instruction" targetRef="Gateway_Sanction" />
-    <sequenceFlow id="Flow_GatewayInstruction_To_WithdrawInstruction" name="Yes" sourceRef="Gateway_Instruction" targetRef="Task_WithdrawInstruction" />
-    <sequenceFlow id="Flow_GatewayOtherDuties_To_AssessConflict" name="Yes" sourceRef="Gateway_OtherDuties" targetRef="Task_AssessConflict" />
-    <sequenceFlow id="Flow_GatewayOtherDuties_To_EndCompleted" name="No" sourceRef="Gateway_OtherDuties" targetRef="EndEvent_ControllerCompleted_Art38" />
-    <sequenceFlow id="Flow_GatewaySanction_To_EnsureReporting" name="No" sourceRef="Gateway_Sanction" targetRef="Task_EnsureReporting" />
-    <sequenceFlow id="Flow_GatewaySanction_To_StopSanction" name="Yes" sourceRef="Gateway_Sanction" targetRef="Task_StopSanction" />
-    <sequenceFlow id="Flow_IdentifyIssue_To_InvolveDPO" sourceRef="Task_IdentifyIssue" targetRef="Task_InvolveDPO" />
-    <sequenceFlow id="Flow_InvolveDPO_To_ProvideSupport" sourceRef="Task_InvolveDPO" targetRef="Task_ProvideSupport" />
-    <sequenceFlow id="Flow_ObserveConfidentialityIssue_To_EndIssuePath" sourceRef="Task_ObserveConfidentialityIssue" targetRef="EndEvent_DPOIssuePath_Art38" />
-    <sequenceFlow id="Flow_ObserveConfidentialityRights_To_EndDataSubjectPath" sourceRef="Task_ObserveConfidentialityRights" targetRef="EndEvent_DPODataSubjectPath_Art38" />
-    <sequenceFlow id="Flow_ProvideSupport_To_GatewayInstruction" sourceRef="Task_ProvideSupport" targetRef="Gateway_Instruction" />
-    <sequenceFlow id="Flow_ReceiveDataSubjectMatter_To_AssistDataSubject" sourceRef="Task_ReceiveDataSubjectMatter" targetRef="Task_AssistDataSubject" />
-    <sequenceFlow id="Flow_ReceiveInvolvementRequest_To_AssistIssue" sourceRef="Task_ReceiveInvolvementRequest" targetRef="Task_AssistIssue" />
-    <sequenceFlow id="Flow_RemoveConflict_To_EndCompleted" sourceRef="Task_RemoveConflict" targetRef="EndEvent_ControllerCompleted_Art38" />
-    <sequenceFlow id="Flow_Start_To_IdentifyIssue" sourceRef="StartEvent_DPODesignated_Art38" targetRef="Task_IdentifyIssue" />
-    <sequenceFlow id="Flow_StopSanction_To_EnsureReporting" sourceRef="Task_StopSanction" targetRef="Task_EnsureReporting" />
-    <sequenceFlow id="Flow_WithdrawInstruction_To_GatewaySanction" sourceRef="Task_WithdrawInstruction" targetRef="Gateway_Sanction" />
+    <sequenceFlow id="Flow_GatewayConflict_To_EndCompleted_Art38" name="No" sourceRef="Gateway_Conflict_Art38" targetRef="EndEvent_Completed_Art38" />
+    <sequenceFlow id="Flow_GatewayConflict_To_TaskRemoveConflict_Art38" name="Yes" sourceRef="Gateway_Conflict_Art38" targetRef="Task_RemoveConflict_Art38" />
+    <sequenceFlow id="Flow_GatewayInstruction_To_GatewaySanction_Art38" name="No" sourceRef="Gateway_Instruction_Art38" targetRef="Gateway_Sanction_Art38" />
+    <sequenceFlow id="Flow_GatewayInstruction_To_TaskWithdrawInstruction_Art38" name="Yes" sourceRef="Gateway_Instruction_Art38" targetRef="Task_WithdrawInstruction_Art38" />
+    <sequenceFlow id="Flow_GatewayOtherDuties_To_EndCompleted_Art38" name="No" sourceRef="Gateway_OtherDuties_Art38" targetRef="EndEvent_Completed_Art38" />
+    <sequenceFlow id="Flow_GatewayOtherDuties_To_TaskAssessConflict_Art38" name="Yes" sourceRef="Gateway_OtherDuties_Art38" targetRef="Task_AssessConflict_Art38" />
+    <sequenceFlow id="Flow_GatewaySanction_To_TaskEnsureReporting_Art38" name="No" sourceRef="Gateway_Sanction_Art38" targetRef="Task_EnsureReporting_Art38" />
+    <sequenceFlow id="Flow_GatewaySanction_To_TaskStopSanction_Art38" name="Yes" sourceRef="Gateway_Sanction_Art38" targetRef="Task_StopSanction_Art38" />
+    <sequenceFlow id="Flow_ReceiveDataSubjectMatter_To_TaskHandleRightsMatter_Art38" sourceRef="ReceiveTask_ReceiveDataSubjectMatter_Art38" targetRef="Task_HandleRightsMatter_Art38" />
+    <sequenceFlow id="Flow_ReceiveIssue_To_TaskHandleIssue_Art38" sourceRef="ReceiveTask_ReceiveIssue_Art38" targetRef="Task_HandleIssue_Art38" />
+    <sequenceFlow id="Flow_SendTaskInvolveDPO_To_TaskProvideResources_Art38" sourceRef="SendTask_InvolveDPO_Art38" targetRef="Task_ProvideResources_Art38" />
+    <sequenceFlow id="Flow_StartDataSubjectPath_To_ReceiveDataSubjectMatter_Art38" sourceRef="StartEvent_DataSubjectPath_Art38" targetRef="ReceiveTask_ReceiveDataSubjectMatter_Art38" />
+    <sequenceFlow id="Flow_StartIssuePath_To_ReceiveIssue_Art38" sourceRef="StartEvent_IssuePath_Art38" targetRef="ReceiveTask_ReceiveIssue_Art38" />
+    <sequenceFlow id="Flow_Start_To_IdentifyIssue_Art38" sourceRef="StartEvent_MaintainDPO_Art38" targetRef="Task_IdentifyIssue_Art38" />
+    <sequenceFlow id="Flow_TaskAssessConflict_To_GatewayConflict_Art38" sourceRef="Task_AssessConflict_Art38" targetRef="Gateway_Conflict_Art38" />
+    <sequenceFlow id="Flow_TaskEnableContact_To_GatewayOtherDuties_Art38" sourceRef="Task_EnableContact_Art38" targetRef="Gateway_OtherDuties_Art38" />
+    <sequenceFlow id="Flow_TaskEnsureReporting_To_TaskEnableContact_Art38" sourceRef="Task_EnsureReporting_Art38" targetRef="Task_EnableContact_Art38" />
+    <sequenceFlow id="Flow_TaskGrantAccess_To_TaskSupportExpertKnowledge_Art38" sourceRef="Task_GrantAccess_Art38" targetRef="Task_SupportExpertKnowledge_Art38" />
+    <sequenceFlow id="Flow_TaskHandleIssue_To_TaskObserveConfidentialityIssue_Art38" sourceRef="Task_HandleIssue_Art38" targetRef="Task_ObserveConfidentialityIssue_Art38" />
+    <sequenceFlow id="Flow_TaskHandleRightsMatter_To_TaskObserveConfidentialityRights_Art38" sourceRef="Task_HandleRightsMatter_Art38" targetRef="Task_ObserveConfidentialityRights_Art38" />
+    <sequenceFlow id="Flow_TaskIdentifyIssue_To_SendTaskInvolveDPO_Art38" sourceRef="Task_IdentifyIssue_Art38" targetRef="SendTask_InvolveDPO_Art38" />
+    <sequenceFlow id="Flow_TaskObserveConfidentialityIssue_To_EndIssuePath_Art38" sourceRef="Task_ObserveConfidentialityIssue_Art38" targetRef="EndEvent_IssuePath_Art38" />
+    <sequenceFlow id="Flow_TaskObserveConfidentialityRights_To_EndDataSubjectPath_Art38" sourceRef="Task_ObserveConfidentialityRights_Art38" targetRef="EndEvent_DataSubjectPath_Art38" />
+    <sequenceFlow id="Flow_TaskProvideResources_To_TaskGrantAccess_Art38" sourceRef="Task_ProvideResources_Art38" targetRef="Task_GrantAccess_Art38" />
+    <sequenceFlow id="Flow_TaskRemoveConflict_To_EndCompleted_Art38" sourceRef="Task_RemoveConflict_Art38" targetRef="EndEvent_Completed_Art38" />
+    <sequenceFlow id="Flow_TaskStopSanction_To_TaskEnsureReporting_Art38" sourceRef="Task_StopSanction_Art38" targetRef="Task_EnsureReporting_Art38" />
+    <sequenceFlow id="Flow_TaskSupportExpertKnowledge_To_GatewayInstruction_Art38" sourceRef="Task_SupportExpertKnowledge_Art38" targetRef="Gateway_Instruction_Art38" />
+    <sequenceFlow id="Flow_TaskWithdrawInstruction_To_GatewaySanction_Art38" sourceRef="Task_WithdrawInstruction_Art38" targetRef="Gateway_Sanction_Art38" />
   </sequenceFlows>
   <messageFlows>
-    <messageFlow id="MessageFlow_DataSubjectToDPO" sourceRef="Participant_DataSubject_Art38" targetRef="Task_ReceiveDataSubjectMatter" />
-    <messageFlow id="MessageFlow_InvolveDPO" sourceRef="Task_InvolveDPO" targetRef="Task_ReceiveInvolvementRequest" />
+    <messageFlow id="MessageFlow_DataSubjectContact_Art38" sourceRef="Participant_DataSubject_Art38" targetRef="ReceiveTask_ReceiveDataSubjectMatter_Art38" />
+    <messageFlow id="MessageFlow_InvolveDPO_Art38" sourceRef="SendTask_InvolveDPO_Art38" targetRef="ReceiveTask_ReceiveIssue_Art38" />
   </messageFlows>
   <dataObjects />
   <dataStores />

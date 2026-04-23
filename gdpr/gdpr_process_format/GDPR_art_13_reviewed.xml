@@ -6,24 +6,26 @@
   </pools>
   <lanes />
   <tasks>
-    <task id="SendTask_SendFurtherPurposeNotice_Art13" name="Inform the data subject of the new purpose and provide relevant further information before the further processing" type="sendTask" poolRef="Participant_Controller_Art13" />
-    <task id="SendTask_SendInitialNotice_Art13" name="Provide the Article 13 information at the time when the personal data are obtained" type="sendTask" poolRef="Participant_Controller_Art13" />
-    <task id="Task_PrepareAutomatedDecisionInfo_Art13" name="Prepare information about automated decision-making, including profiling, the logic involved, and the significance and envisaged consequences" type="task" poolRef="Participant_Controller_Art13" />
-    <task id="Task_PrepareDPO_Art13" name="Prepare the data protection officer's contact details where applicable" type="task" poolRef="Participant_Controller_Art13" />
-    <task id="Task_PrepareIdentity_Art13" name="Prepare the controller's identity and contact details and the representative's details where applicable" type="task" poolRef="Participant_Controller_Art13" />
-    <task id="Task_PrepareLegitimateInterests_Art13" name="Prepare the legitimate interests pursued by the controller or by a third party" type="task" poolRef="Participant_Controller_Art13" />
-    <task id="Task_PrepareProvisionInfo_Art13" name="Prepare whether provision of the data is a statutory or contractual requirement or necessary to enter into a contract and the consequences of failure to provide the data" type="task" poolRef="Participant_Controller_Art13" />
-    <task id="Task_PreparePurposeBasis_Art13" name="Prepare the purposes of processing and the legal basis for the processing" type="task" poolRef="Participant_Controller_Art13" />
-    <task id="Task_PrepareRecipients_Art13" name="Prepare the recipients or categories of recipients of the personal data where applicable" type="task" poolRef="Participant_Controller_Art13" />
-    <task id="Task_PrepareRetentionInfo_Art13" name="Prepare the storage period or, if that is not possible, the criteria used to determine it" type="task" poolRef="Participant_Controller_Art13" />
-    <task id="Task_PrepareRightsInfo_Art13" name="Prepare information about access, rectification, erasure, restriction, portability, objection, withdrawal of consent where relevant, and the right to lodge a complaint" type="task" poolRef="Participant_Controller_Art13" />
-    <task id="Task_PrepareTransferInfo_Art13" name="Prepare transfer information, adequacy-decision status, safeguards, and how to obtain a copy or where they are available" type="task" poolRef="Participant_Controller_Art13" />
+    <task id="SendTask_SendFurtherPurposeNotice_Art13" name="Send further-purpose notice" type="sendTask" poolRef="Participant_Controller_Art13" />
+    <task id="SendTask_SendInitialNotice_Art13" name="Send Article 13 notice" type="sendTask" poolRef="Participant_Controller_Art13" />
+    <task id="Task_PrepareAutomatedDecisionInfo_Art13" name="Prepare automated-decision information" type="task" poolRef="Participant_Controller_Art13" />
+    <task id="Task_PrepareDPO_Art13" name="Prepare DPO contact details" type="task" poolRef="Participant_Controller_Art13" />
+    <task id="Task_PrepareIdentity_Art13" name="Prepare identity and contact details" type="task" poolRef="Participant_Controller_Art13" />
+    <task id="Task_PrepareLegitimateInterests_Art13" name="Prepare legitimate interests" type="task" poolRef="Participant_Controller_Art13" />
+    <task id="Task_PrepareProvisionInfo_Art13" name="Prepare provision requirement information" type="task" poolRef="Participant_Controller_Art13" />
+    <task id="Task_PreparePurposeBasis_Art13" name="Prepare purposes and legal basis" type="task" poolRef="Participant_Controller_Art13" />
+    <task id="Task_PrepareRecipients_Art13" name="Prepare recipients" type="task" poolRef="Participant_Controller_Art13" />
+    <task id="Task_PrepareRetentionInfo_Art13" name="Prepare retention information" type="task" poolRef="Participant_Controller_Art13" />
+    <task id="Task_PrepareRightsInfo_Art13" name="Prepare rights information" type="task" poolRef="Participant_Controller_Art13" />
+    <task id="Task_PrepareTransferInfo_Art13" name="Prepare transfer information" type="task" poolRef="Participant_Controller_Art13" />
   </tasks>
   <events>
-    <event id="EndEvent_InformationDutiesCompleted_Art13" name="Article 13 information duties are completed" type="endEvent" poolRef="Participant_Controller_Art13" />
+    <event id="EndEvent_InformationDutiesCompleted_Art13" name="Article 13 duties completed" type="endEvent" poolRef="Participant_Controller_Art13" />
+    <event id="EndEvent_NoNoticeNeeded_Art13" name="No Article 13 notice needed" type="endEvent" poolRef="Participant_Controller_Art13" />
     <event id="StartEvent_CollectData_Art13" name="Collect personal data from the data subject" type="startEvent" poolRef="Participant_Controller_Art13" />
   </events>
   <gateways>
+    <gateway id="Gateway_AlreadyHasInfo_Art13" name="Does the data subject already have the information?" type="exclusiveGateway" poolRef="Participant_Controller_Art13" />
     <gateway id="Gateway_FurtherPurpose_Art13" name="Will the personal data later be processed for another purpose?" type="exclusiveGateway" poolRef="Participant_Controller_Art13" />
     <gateway id="Gateway_JoinSupplementaryInfo_Art13" type="parallelGateway" poolRef="Participant_Controller_Art13" />
     <gateway id="Gateway_LegitimateInterests_Art13" name="Is the processing based on Article 6(1)(f)?" type="exclusiveGateway" poolRef="Participant_Controller_Art13" />
@@ -31,6 +33,8 @@
     <gateway id="Gateway_ThirdCountryTransfer_Art13" name="Is a transfer to a third country or international organisation intended?" type="exclusiveGateway" poolRef="Participant_Controller_Art13" />
   </gateways>
   <sequenceFlows>
+    <sequenceFlow id="Flow_GatewayAlreadyHasInfo_To_EndNoNoticeNeeded_Art13" name="Yes" sourceRef="Gateway_AlreadyHasInfo_Art13" targetRef="EndEvent_NoNoticeNeeded_Art13" />
+    <sequenceFlow id="Flow_GatewayAlreadyHasInfo_To_TaskPrepareIdentity_Art13" name="No" sourceRef="Gateway_AlreadyHasInfo_Art13" targetRef="Task_PrepareIdentity_Art13" />
     <sequenceFlow id="Flow_GatewayFurtherPurpose_To_EndInformationDutiesCompleted_Art13" name="No" sourceRef="Gateway_FurtherPurpose_Art13" targetRef="EndEvent_InformationDutiesCompleted_Art13" />
     <sequenceFlow id="Flow_GatewayFurtherPurpose_To_SendTaskSendFurtherPurposeNotice_Art13" name="Yes" sourceRef="Gateway_FurtherPurpose_Art13" targetRef="SendTask_SendFurtherPurposeNotice_Art13" />
     <sequenceFlow id="Flow_GatewayJoinSupplementaryInfo_To_SendTaskSendInitialNotice_Art13" sourceRef="Gateway_JoinSupplementaryInfo_Art13" targetRef="SendTask_SendInitialNotice_Art13" />
@@ -44,7 +48,7 @@
     <sequenceFlow id="Flow_GatewayThirdCountryTransfer_To_TaskPrepareTransferInfo_Art13" name="Yes" sourceRef="Gateway_ThirdCountryTransfer_Art13" targetRef="Task_PrepareTransferInfo_Art13" />
     <sequenceFlow id="Flow_SendTaskSendFurtherPurposeNotice_To_EndInformationDutiesCompleted_Art13" sourceRef="SendTask_SendFurtherPurposeNotice_Art13" targetRef="EndEvent_InformationDutiesCompleted_Art13" />
     <sequenceFlow id="Flow_SendTaskSendInitialNotice_To_GatewayFurtherPurpose_Art13" sourceRef="SendTask_SendInitialNotice_Art13" targetRef="Gateway_FurtherPurpose_Art13" />
-    <sequenceFlow id="Flow_Start_To_TaskPrepareIdentity_Art13" sourceRef="StartEvent_CollectData_Art13" targetRef="Task_PrepareIdentity_Art13" />
+    <sequenceFlow id="Flow_Start_To_GatewayAlreadyHasInfo_Art13" sourceRef="StartEvent_CollectData_Art13" targetRef="Gateway_AlreadyHasInfo_Art13" />
     <sequenceFlow id="Flow_TaskPrepareAutomatedDecisionInfo_To_GatewayJoinSupplementaryInfo_Art13" sourceRef="Task_PrepareAutomatedDecisionInfo_Art13" targetRef="Gateway_JoinSupplementaryInfo_Art13" />
     <sequenceFlow id="Flow_TaskPrepareDPO_To_TaskPreparePurposeBasis_Art13" sourceRef="Task_PrepareDPO_Art13" targetRef="Task_PreparePurposeBasis_Art13" />
     <sequenceFlow id="Flow_TaskPrepareIdentity_To_TaskPrepareDPO_Art13" sourceRef="Task_PrepareIdentity_Art13" targetRef="Task_PrepareDPO_Art13" />

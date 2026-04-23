@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Controller_Art21" name="Controller" poolType="active" processRef="Process_Controller_Art21" />
+    <pool id="Participant_DataSubject_Art21" name="Data Subject" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="ReceiveTask_ReceiveObjection_Art21" name="Receive objection" type="receiveTask" poolRef="Participant_Controller_Art21" />
+    <task id="SendTask_InformRightToObject_Art21" name="Inform data subject of right to object" type="sendTask" poolRef="Participant_Controller_Art21" />
+    <task id="Task_AssessOverridingGrounds_Art21" name="Assess overriding grounds" type="task" poolRef="Participant_Controller_Art21" />
+    <task id="Task_EnableAutomatedObjection_Art21" name="Enable automated objection" type="task" poolRef="Participant_Controller_Art21" />
+    <task id="Task_RecordParticularSituation_Art21" name="Record particular-situation grounds" type="task" poolRef="Participant_Controller_Art21" />
+    <task id="Task_StopArticle6Processing_Art21" name="Stop Article 6(1)(e)/(f) processing" type="task" poolRef="Participant_Controller_Art21" />
+    <task id="Task_StopDirectMarketing_Art21" name="Stop direct marketing processing" type="task" poolRef="Participant_Controller_Art21" />
+    <task id="Task_StopResearchProcessing_Art21" name="Stop Article 89(1) processing" type="task" poolRef="Participant_Controller_Art21" />
+  </tasks>
+  <events>
+    <event id="EndEvent_Article6ProcessingStopped_Art21" name="Article 21(1) processing is stopped" type="endEvent" poolRef="Participant_Controller_Art21" />
+    <event id="EndEvent_ContinueProcessing_Art21" name="Processing may continue because overriding grounds or legal claims were demonstrated" type="endEvent" poolRef="Participant_Controller_Art21" />
+    <event id="EndEvent_DirectMarketingStopped_Art21" name="Direct marketing processing is stopped" type="endEvent" poolRef="Participant_Controller_Art21" />
+    <event id="EndEvent_NoApplicableContext_Art21" name="No applicable Article 21 objection context was established" type="endEvent" poolRef="Participant_Controller_Art21" />
+    <event id="EndEvent_NoticeCompleted_Art21" name="Article 21 notice handling is completed" type="endEvent" poolRef="Participant_Controller_Art21" />
+    <event id="EndEvent_ResearchContinue_Art21" name="Research or statistics processing may continue because it is necessary for a public-interest task" type="endEvent" poolRef="Participant_Controller_Art21" />
+    <event id="EndEvent_ResearchStopped_Art21" name="Research or statistics processing is stopped" type="endEvent" poolRef="Participant_Controller_Art21" />
+    <event id="StartEvent_FirstCommunication_Art21" name="The first communication with the data subject is prepared" type="startEvent" poolRef="Participant_Controller_Art21" />
+    <event id="StartEvent_ObjectionExercise_Art21" name="The data subject seeks to exercise the right to object" type="startEvent" poolRef="Participant_Controller_Art21" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_Article6Basis_Art21" name="Is the processing based on Article 6(1)(e) or Article 6(1)(f), including profiling based on those provisions?" type="exclusiveGateway" poolRef="Participant_Controller_Art21" />
+    <gateway id="Gateway_DirectMarketing_Art21" name="Is the objection directed at direct marketing, including profiling related to such direct marketing?" type="exclusiveGateway" poolRef="Participant_Controller_Art21" />
+    <gateway id="Gateway_InfoSocietyServices_Art21" name="Are information society services used?" type="exclusiveGateway" poolRef="Participant_Controller_Art21" />
+    <gateway id="Gateway_OverridingGrounds_Art21" name="Does the controller demonstrate overriding grounds or a need to establish, exercise, or defend legal claims?" type="exclusiveGateway" poolRef="Participant_Controller_Art21" />
+    <gateway id="Gateway_PublicInterestTask_Art21" name="Is the processing necessary for the performance of a task carried out for reasons of public interest?" type="exclusiveGateway" poolRef="Participant_Controller_Art21" />
+    <gateway id="Gateway_ResearchStats_Art21" name="Is the processing for scientific or historical research purposes or statistical purposes pursuant to Article 89(1)?" type="exclusiveGateway" poolRef="Participant_Controller_Art21" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_GatewayArticle6Basis_To_GatewayResearchStats_Art21" name="No" sourceRef="Gateway_Article6Basis_Art21" targetRef="Gateway_ResearchStats_Art21" />
+    <sequenceFlow id="Flow_GatewayArticle6Basis_To_TaskAssessOverridingGrounds_Art21" name="Yes" sourceRef="Gateway_Article6Basis_Art21" targetRef="Task_AssessOverridingGrounds_Art21" />
+    <sequenceFlow id="Flow_GatewayDirectMarketing_To_TaskRecordParticularSituation_Art21" name="No" sourceRef="Gateway_DirectMarketing_Art21" targetRef="Task_RecordParticularSituation_Art21" />
+    <sequenceFlow id="Flow_GatewayDirectMarketing_To_TaskStopDirectMarketing_Art21" name="Yes" sourceRef="Gateway_DirectMarketing_Art21" targetRef="Task_StopDirectMarketing_Art21" />
+    <sequenceFlow id="Flow_GatewayInfoSocietyServices_To_EndNoticeCompleted_Art21" name="No" sourceRef="Gateway_InfoSocietyServices_Art21" targetRef="EndEvent_NoticeCompleted_Art21" />
+    <sequenceFlow id="Flow_GatewayInfoSocietyServices_To_TaskEnableAutomatedObjection_Art21" name="Yes" sourceRef="Gateway_InfoSocietyServices_Art21" targetRef="Task_EnableAutomatedObjection_Art21" />
+    <sequenceFlow id="Flow_GatewayOverridingGrounds_To_EndContinueProcessing_Art21" name="Yes" sourceRef="Gateway_OverridingGrounds_Art21" targetRef="EndEvent_ContinueProcessing_Art21" />
+    <sequenceFlow id="Flow_GatewayOverridingGrounds_To_TaskStopArticle6Processing_Art21" name="No" sourceRef="Gateway_OverridingGrounds_Art21" targetRef="Task_StopArticle6Processing_Art21" />
+    <sequenceFlow id="Flow_GatewayPublicInterestTask_To_EndResearchContinue_Art21" name="Yes" sourceRef="Gateway_PublicInterestTask_Art21" targetRef="EndEvent_ResearchContinue_Art21" />
+    <sequenceFlow id="Flow_GatewayPublicInterestTask_To_TaskStopResearchProcessing_Art21" name="No" sourceRef="Gateway_PublicInterestTask_Art21" targetRef="Task_StopResearchProcessing_Art21" />
+    <sequenceFlow id="Flow_GatewayResearchStats_To_EndNoApplicableContext_Art21" name="No" sourceRef="Gateway_ResearchStats_Art21" targetRef="EndEvent_NoApplicableContext_Art21" />
+    <sequenceFlow id="Flow_GatewayResearchStats_To_GatewayPublicInterestTask_Art21" name="Yes" sourceRef="Gateway_ResearchStats_Art21" targetRef="Gateway_PublicInterestTask_Art21" />
+    <sequenceFlow id="Flow_ReceiveTaskReceiveObjection_To_GatewayDirectMarketing_Art21" sourceRef="ReceiveTask_ReceiveObjection_Art21" targetRef="Gateway_DirectMarketing_Art21" />
+    <sequenceFlow id="Flow_SendTaskInformRightToObject_To_GatewayInfoSocietyServices_Art21" sourceRef="SendTask_InformRightToObject_Art21" targetRef="Gateway_InfoSocietyServices_Art21" />
+    <sequenceFlow id="Flow_StartFirstCommunication_To_SendTaskInformRightToObject_Art21" sourceRef="StartEvent_FirstCommunication_Art21" targetRef="SendTask_InformRightToObject_Art21" />
+    <sequenceFlow id="Flow_StartObjectionExercise_To_ReceiveTaskReceiveObjection_Art21" sourceRef="StartEvent_ObjectionExercise_Art21" targetRef="ReceiveTask_ReceiveObjection_Art21" />
+    <sequenceFlow id="Flow_TaskAssessOverridingGrounds_To_GatewayOverridingGrounds_Art21" sourceRef="Task_AssessOverridingGrounds_Art21" targetRef="Gateway_OverridingGrounds_Art21" />
+    <sequenceFlow id="Flow_TaskEnableAutomatedObjection_To_EndNoticeCompleted_Art21" sourceRef="Task_EnableAutomatedObjection_Art21" targetRef="EndEvent_NoticeCompleted_Art21" />
+    <sequenceFlow id="Flow_TaskRecordParticularSituation_To_GatewayArticle6Basis_Art21" sourceRef="Task_RecordParticularSituation_Art21" targetRef="Gateway_Article6Basis_Art21" />
+    <sequenceFlow id="Flow_TaskStopArticle6Processing_To_EndArticle6ProcessingStopped_Art21" sourceRef="Task_StopArticle6Processing_Art21" targetRef="EndEvent_Article6ProcessingStopped_Art21" />
+    <sequenceFlow id="Flow_TaskStopDirectMarketing_To_EndDirectMarketingStopped_Art21" sourceRef="Task_StopDirectMarketing_Art21" targetRef="EndEvent_DirectMarketingStopped_Art21" />
+    <sequenceFlow id="Flow_TaskStopResearchProcessing_To_EndResearchStopped_Art21" sourceRef="Task_StopResearchProcessing_Art21" targetRef="EndEvent_ResearchStopped_Art21" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_InformRightToObject_Art21" sourceRef="SendTask_InformRightToObject_Art21" targetRef="Participant_DataSubject_Art21" />
+    <messageFlow id="MessageFlow_ReceiveObjection_Art21" sourceRef="Participant_DataSubject_Art21" targetRef="ReceiveTask_ReceiveObjection_Art21" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

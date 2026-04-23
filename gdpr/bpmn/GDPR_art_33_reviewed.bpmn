@@ -1,514 +1,531 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
-  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
-  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
-  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  id="Definitions_GDPR_Art_33"
-  targetNamespace="https://example.org/gdpr/bpmn">
-  <bpmn:message id="Message_ProcessorBreachNotice" name="Processor breach notice" />
-  <bpmn:signal id="Signal_InternalBreachDetected" name="Internal breach detected" />
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Defs_Art33_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:message id="Message_ProcessorBreachNotice_Art33" name="Processor breach notice" />
 
-  <bpmn:collaboration id="Collaboration_GDPR_Art_33">
-    <bpmn:participant id="Participant_Controller" name="Controller" processRef="Process_Controller_Art33" />
-    <bpmn:participant id="Participant_SupervisoryAuthority" name="Supervisory Authority" />
-    <bpmn:participant id="Participant_Processor" name="Processor" processRef="Process_Processor_Art33" />
+  <bpmn:collaboration id="Collaboration_Art33_Reviewed">
+    <bpmn:participant id="Participant_Controller_Art33"
+                      name="Controller"
+                      processRef="Process_Controller_Art33" />
+    <bpmn:participant id="Participant_SupervisoryAuthority_Art33"
+                      name="Supervisory Authority" />
+    <bpmn:participant id="Participant_Processor_Art33"
+                      name="Processor"
+                      processRef="Process_Processor_Art33" />
 
-    <bpmn:messageFlow id="MessageFlow_ProcessorToController" sourceRef="Task_ProcessorNotifyController" targetRef="Event_ControllerReceivesProcessorNotice" />
-    <bpmn:messageFlow id="MessageFlow_ControllerFullNotification" sourceRef="Task_SendFullNotification" targetRef="Participant_SupervisoryAuthority" />
-    <bpmn:messageFlow id="MessageFlow_ControllerInitialNotification" sourceRef="Task_SendInitialNotification" targetRef="Participant_SupervisoryAuthority" />
-    <bpmn:messageFlow id="MessageFlow_ControllerFollowUpNotification" sourceRef="Task_SendFollowUpInformation" targetRef="Participant_SupervisoryAuthority" />
+    <bpmn:messageFlow id="MessageFlow_ProcessorToController_Art33"
+                      sourceRef="SendTask_ProcessorNotifyController_Art33"
+                      targetRef="Event_ControllerReceivesProcessorNotice_Art33" />
+    <bpmn:messageFlow id="MessageFlow_SendFullNotice_Art33"
+                      sourceRef="SendTask_SendFullNotice_Art33"
+                      targetRef="Participant_SupervisoryAuthority_Art33" />
+    <bpmn:messageFlow id="MessageFlow_SendInitialNotice_Art33"
+                      sourceRef="SendTask_SendInitialNotice_Art33"
+                      targetRef="Participant_SupervisoryAuthority_Art33" />
+    <bpmn:messageFlow id="MessageFlow_SendPhasedInfo_Art33"
+                      sourceRef="SendTask_SendPhasedInfo_Art33"
+                      targetRef="Participant_SupervisoryAuthority_Art33" />
   </bpmn:collaboration>
 
-  <bpmn:process id="Process_Controller_Art33" name="Controller breach notification handling" isExecutable="false">
+  <bpmn:process id="Process_Controller_Art33"
+                name="Apply Article 33 breach-notification duties"
+                isExecutable="false">
     <bpmn:documentation>
-      Manual BPMN conversion for GDPR Article 33 based on the real English legal text
-      of Regulation (EU) 2016/679. The model captures awareness via internal detection
-      or processor notice, the Article 33(1) risk threshold, the Article 33(3) content
-      block, the Article 33(1) 72-hour timing and delay-reasons logic, phased follow-up
-      information under Article 33(4), the processor notice under Article 33(2), and
-      the documentation duty in Article 33(5).
+      Manual BPMN conversion for GDPR Article 33 based on the real English legal
+      text in gdpr_articles. The model captures controller awareness by internal
+      detection or processor notice, the Article 33(1) risk threshold, the full
+      Article 33(3)(a)-(d) notification content including categories and approximate
+      numbers where possible, the 72-hour timing and delay-reasons logic, phased
+      provision of information under Article 33(4), and the Article 33(5)
+      documentation duty for facts, effects, and remedial action.
     </bpmn:documentation>
-    <bpmn:startEvent id="StartEvent_ControllerHandlingStarted" name="Start Article 33 handling">
-      <bpmn:outgoing>Flow_Controller_Start_To_AwarenessGateway</bpmn:outgoing>
+
+    <bpmn:startEvent id="StartEvent_HandleBreach_Art33"
+                     name="Need breach handling">
+      <bpmn:outgoing>Flow_Start_To_AwarenessGateway_Art33</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:eventBasedGateway id="Gateway_ControllerAwareness" instantiate="false">
-      <bpmn:incoming>Flow_Controller_Start_To_AwarenessGateway</bpmn:incoming>
-      <bpmn:outgoing>Flow_AwarenessGateway_To_ProcessorNotice</bpmn:outgoing>
-      <bpmn:outgoing>Flow_AwarenessGateway_To_InternalDetection</bpmn:outgoing>
+
+    <bpmn:eventBasedGateway id="Gateway_Awareness_Art33">
+      <bpmn:incoming>Flow_Start_To_AwarenessGateway_Art33</bpmn:incoming>
+      <bpmn:outgoing>Flow_AwarenessGateway_To_ProcessorNotice_Art33</bpmn:outgoing>
+      <bpmn:outgoing>Flow_AwarenessGateway_To_InternalDetection_Art33</bpmn:outgoing>
     </bpmn:eventBasedGateway>
-    <bpmn:intermediateCatchEvent id="Event_ControllerReceivesProcessorNotice" name="Processor breach notice received">
-      <bpmn:incoming>Flow_AwarenessGateway_To_ProcessorNotice</bpmn:incoming>
-      <bpmn:outgoing>Flow_ProcessorNotice_To_AwarenessMerge</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_ProcessorNotice" messageRef="Message_ProcessorBreachNotice" />
+
+    <bpmn:intermediateCatchEvent id="Event_ControllerReceivesProcessorNotice_Art33"
+                                 name="Receive processor breach notice">
+      <bpmn:incoming>Flow_AwarenessGateway_To_ProcessorNotice_Art33</bpmn:incoming>
+      <bpmn:outgoing>Flow_ProcessorNotice_To_AwarenessMerge_Art33</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDef_ProcessorNotice_Art33"
+                                   messageRef="Message_ProcessorBreachNotice_Art33" />
     </bpmn:intermediateCatchEvent>
-    <bpmn:intermediateCatchEvent id="Event_ControllerDetectsInternally" name="Internal breach detection raised">
-      <bpmn:incoming>Flow_AwarenessGateway_To_InternalDetection</bpmn:incoming>
-      <bpmn:outgoing>Flow_InternalDetection_To_AwarenessMerge</bpmn:outgoing>
-      <bpmn:signalEventDefinition id="SignalEventDefinition_InternalDetection" signalRef="Signal_InternalBreachDetected" />
+
+    <bpmn:intermediateCatchEvent id="Event_ControllerDetectsBreach_Art33"
+                                 name="Detect breach internally">
+      <bpmn:incoming>Flow_AwarenessGateway_To_InternalDetection_Art33</bpmn:incoming>
+      <bpmn:outgoing>Flow_InternalDetection_To_AwarenessMerge_Art33</bpmn:outgoing>
+      <bpmn:signalEventDefinition id="SignalEventDef_InternalDetection_Art33" />
     </bpmn:intermediateCatchEvent>
-    <bpmn:exclusiveGateway id="Gateway_AwarenessMerge">
-      <bpmn:incoming>Flow_ProcessorNotice_To_AwarenessMerge</bpmn:incoming>
-      <bpmn:incoming>Flow_InternalDetection_To_AwarenessMerge</bpmn:incoming>
-      <bpmn:outgoing>Flow_AwarenessMerge_To_AssessRisk</bpmn:outgoing>
+
+    <bpmn:exclusiveGateway id="Gateway_AwarenessMerge_Art33">
+      <bpmn:incoming>Flow_ProcessorNotice_To_AwarenessMerge_Art33</bpmn:incoming>
+      <bpmn:incoming>Flow_InternalDetection_To_AwarenessMerge_Art33</bpmn:incoming>
+      <bpmn:outgoing>Flow_AwarenessMerge_To_AssessRisk_Art33</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:task id="Task_AssessRisk" name="Assess risk to rights and freedoms">
-      <bpmn:incoming>Flow_AwarenessMerge_To_AssessRisk</bpmn:incoming>
-      <bpmn:outgoing>Flow_AssessRisk_To_RiskGateway</bpmn:outgoing>
+
+    <bpmn:task id="Task_AssessRisk_Art33"
+               name="Assess risk to rights and freedoms">
+      <bpmn:incoming>Flow_AwarenessMerge_To_AssessRisk_Art33</bpmn:incoming>
+      <bpmn:outgoing>Flow_AssessRisk_To_GatewayRisk_Art33</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:exclusiveGateway id="Gateway_RiskUnlikely" name="Risk to rights and freedoms unlikely?">
-      <bpmn:incoming>Flow_AssessRisk_To_RiskGateway</bpmn:incoming>
-      <bpmn:outgoing>Flow_RiskGateway_To_DocumentOnly</bpmn:outgoing>
-      <bpmn:outgoing>Flow_RiskGateway_To_CompileSplit</bpmn:outgoing>
+
+    <bpmn:exclusiveGateway id="Gateway_Risk_Art33"
+                           name="Is the breach unlikely to result in risk?">
+      <bpmn:incoming>Flow_AssessRisk_To_GatewayRisk_Art33</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayRisk_To_TaskDocumentBreach_Art33</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayRisk_To_GatewayCompileSplit_Art33</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:parallelGateway id="Gateway_CompileSplit">
-      <bpmn:incoming>Flow_RiskGateway_To_CompileSplit</bpmn:incoming>
-      <bpmn:outgoing>Flow_CompileSplit_To_DescribeNature</bpmn:outgoing>
-      <bpmn:outgoing>Flow_CompileSplit_To_ProvideContact</bpmn:outgoing>
-      <bpmn:outgoing>Flow_CompileSplit_To_DescribeConsequences</bpmn:outgoing>
-      <bpmn:outgoing>Flow_CompileSplit_To_DescribeMeasures</bpmn:outgoing>
+
+    <bpmn:parallelGateway id="Gateway_CompileSplit_Art33">
+      <bpmn:incoming>Flow_GatewayRisk_To_GatewayCompileSplit_Art33</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayCompileSplit_To_TaskDescribeNature_Art33</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayCompileSplit_To_TaskProvideContact_Art33</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayCompileSplit_To_TaskDescribeConsequences_Art33</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayCompileSplit_To_TaskDescribeMeasures_Art33</bpmn:outgoing>
     </bpmn:parallelGateway>
-    <bpmn:task id="Task_DescribeNature" name="Describe breach nature and scope">
-      <bpmn:incoming>Flow_CompileSplit_To_DescribeNature</bpmn:incoming>
-      <bpmn:outgoing>Flow_DescribeNature_To_CompileJoin</bpmn:outgoing>
+
+    <bpmn:task id="Task_DescribeNature_Art33"
+               name="Describe breach nature, categories, and approximate numbers">
+      <bpmn:incoming>Flow_GatewayCompileSplit_To_TaskDescribeNature_Art33</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskDescribeNature_To_GatewayCompileJoin_Art33</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:task id="Task_ProvideContact" name="Provide DPO or contact point details">
-      <bpmn:incoming>Flow_CompileSplit_To_ProvideContact</bpmn:incoming>
-      <bpmn:outgoing>Flow_ProvideContact_To_CompileJoin</bpmn:outgoing>
+
+    <bpmn:task id="Task_ProvideContact_Art33"
+               name="Provide DPO or contact point details">
+      <bpmn:incoming>Flow_GatewayCompileSplit_To_TaskProvideContact_Art33</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskProvideContact_To_GatewayCompileJoin_Art33</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:task id="Task_DescribeConsequences" name="Describe likely consequences">
-      <bpmn:incoming>Flow_CompileSplit_To_DescribeConsequences</bpmn:incoming>
-      <bpmn:outgoing>Flow_DescribeConsequences_To_CompileJoin</bpmn:outgoing>
+
+    <bpmn:task id="Task_DescribeConsequences_Art33"
+               name="Describe likely consequences">
+      <bpmn:incoming>Flow_GatewayCompileSplit_To_TaskDescribeConsequences_Art33</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskDescribeConsequences_To_GatewayCompileJoin_Art33</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:task id="Task_DescribeMeasures" name="Describe remedial and mitigation measures">
-      <bpmn:incoming>Flow_CompileSplit_To_DescribeMeasures</bpmn:incoming>
-      <bpmn:outgoing>Flow_DescribeMeasures_To_CompileJoin</bpmn:outgoing>
+
+    <bpmn:task id="Task_DescribeMeasures_Art33"
+               name="Describe taken or proposed measures and mitigation">
+      <bpmn:incoming>Flow_GatewayCompileSplit_To_TaskDescribeMeasures_Art33</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskDescribeMeasures_To_GatewayCompileJoin_Art33</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:parallelGateway id="Gateway_CompileJoin">
-      <bpmn:incoming>Flow_DescribeNature_To_CompileJoin</bpmn:incoming>
-      <bpmn:incoming>Flow_ProvideContact_To_CompileJoin</bpmn:incoming>
-      <bpmn:incoming>Flow_DescribeConsequences_To_CompileJoin</bpmn:incoming>
-      <bpmn:incoming>Flow_DescribeMeasures_To_CompileJoin</bpmn:incoming>
-      <bpmn:outgoing>Flow_CompileJoin_To_AllInfoGateway</bpmn:outgoing>
+
+    <bpmn:parallelGateway id="Gateway_CompileJoin_Art33">
+      <bpmn:incoming>Flow_TaskDescribeNature_To_GatewayCompileJoin_Art33</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskProvideContact_To_GatewayCompileJoin_Art33</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskDescribeConsequences_To_GatewayCompileJoin_Art33</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskDescribeMeasures_To_GatewayCompileJoin_Art33</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayCompileJoin_To_GatewayAllInfo_Art33</bpmn:outgoing>
     </bpmn:parallelGateway>
-    <bpmn:exclusiveGateway id="Gateway_AllInfoAvailable" name="All required information available now?">
-      <bpmn:incoming>Flow_CompileJoin_To_AllInfoGateway</bpmn:incoming>
-      <bpmn:outgoing>Flow_AllInfoGateway_To_FullWithin72h</bpmn:outgoing>
-      <bpmn:outgoing>Flow_AllInfoGateway_To_PhasedWithin72h</bpmn:outgoing>
+
+    <bpmn:exclusiveGateway id="Gateway_AllInfo_Art33"
+                           name="Is all notification information available now?">
+      <bpmn:incoming>Flow_GatewayCompileJoin_To_GatewayAllInfo_Art33</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAllInfo_To_GatewayFullWithin72h_Art33</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAllInfo_To_GatewayInitialWithin72h_Art33</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:exclusiveGateway id="Gateway_FullWithin72h" name="72 hours elapsed since awareness?">
-      <bpmn:incoming>Flow_AllInfoGateway_To_FullWithin72h</bpmn:incoming>
-      <bpmn:outgoing>Flow_FullWithin72h_To_SendFull</bpmn:outgoing>
-      <bpmn:outgoing>Flow_FullWithin72h_To_RecordDelayFull</bpmn:outgoing>
+
+    <bpmn:exclusiveGateway id="Gateway_FullWithin72h_Art33"
+                           name="Will the notice be sent within 72 hours?">
+      <bpmn:incoming>Flow_GatewayAllInfo_To_GatewayFullWithin72h_Art33</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayFullWithin72h_To_SendFullNotice_Art33</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayFullWithin72h_To_RecordDelayFull_Art33</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:task id="Task_RecordDelayReasonsFull" name="Record reasons for delay">
-      <bpmn:incoming>Flow_FullWithin72h_To_RecordDelayFull</bpmn:incoming>
-      <bpmn:outgoing>Flow_RecordDelayFull_To_SendFull</bpmn:outgoing>
+
+    <bpmn:task id="Task_RecordDelayFull_Art33"
+               name="Record delay reasons">
+      <bpmn:incoming>Flow_GatewayFullWithin72h_To_RecordDelayFull_Art33</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskRecordDelayFull_To_SendFullNotice_Art33</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:sendTask id="Task_SendFullNotification" name="Notify supervisory authority">
-      <bpmn:incoming>Flow_FullWithin72h_To_SendFull</bpmn:incoming>
-      <bpmn:incoming>Flow_RecordDelayFull_To_SendFull</bpmn:incoming>
-      <bpmn:outgoing>Flow_SendFull_To_DocumentBreach</bpmn:outgoing>
-      <bpmn:dataInputAssociation id="DataInputAssoc_SendFullNotification">
-        <bpmn:sourceRef>DataRef_NotificationDossier</bpmn:sourceRef>
-      </bpmn:dataInputAssociation>
+
+    <bpmn:sendTask id="SendTask_SendFullNotice_Art33"
+                   name="Notify competent supervisory authority">
+      <bpmn:incoming>Flow_GatewayFullWithin72h_To_SendFullNotice_Art33</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskRecordDelayFull_To_SendFullNotice_Art33</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendFullNotice_To_TaskDocumentBreach_Art33</bpmn:outgoing>
     </bpmn:sendTask>
-    <bpmn:exclusiveGateway id="Gateway_PhasedWithin72h" name="72 hours elapsed since awareness?">
-      <bpmn:incoming>Flow_AllInfoGateway_To_PhasedWithin72h</bpmn:incoming>
-      <bpmn:outgoing>Flow_PhasedWithin72h_To_SendInitial</bpmn:outgoing>
-      <bpmn:outgoing>Flow_PhasedWithin72h_To_RecordDelayInitial</bpmn:outgoing>
+
+    <bpmn:exclusiveGateway id="Gateway_InitialWithin72h_Art33"
+                           name="Will the initial notice be sent within 72 hours?">
+      <bpmn:incoming>Flow_GatewayAllInfo_To_GatewayInitialWithin72h_Art33</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayInitialWithin72h_To_SendInitialNotice_Art33</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayInitialWithin72h_To_RecordDelayInitial_Art33</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:task id="Task_RecordDelayReasonsInitial" name="Record reasons for delay">
-      <bpmn:incoming>Flow_PhasedWithin72h_To_RecordDelayInitial</bpmn:incoming>
-      <bpmn:outgoing>Flow_RecordDelayInitial_To_SendInitial</bpmn:outgoing>
+
+    <bpmn:task id="Task_RecordDelayInitial_Art33"
+               name="Record delay reasons">
+      <bpmn:incoming>Flow_GatewayInitialWithin72h_To_RecordDelayInitial_Art33</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskRecordDelayInitial_To_SendInitialNotice_Art33</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:sendTask id="Task_SendInitialNotification" name="Send initial notification">
-      <bpmn:incoming>Flow_PhasedWithin72h_To_SendInitial</bpmn:incoming>
-      <bpmn:incoming>Flow_RecordDelayInitial_To_SendInitial</bpmn:incoming>
-      <bpmn:outgoing>Flow_SendInitial_To_CollectRemaining</bpmn:outgoing>
-      <bpmn:dataInputAssociation id="DataInputAssoc_SendInitialNotification">
-        <bpmn:sourceRef>DataRef_NotificationDossier</bpmn:sourceRef>
-      </bpmn:dataInputAssociation>
+
+    <bpmn:sendTask id="SendTask_SendInitialNotice_Art33"
+                   name="Send initial notice">
+      <bpmn:incoming>Flow_GatewayInitialWithin72h_To_SendInitialNotice_Art33</bpmn:incoming>
+      <bpmn:incoming>Flow_TaskRecordDelayInitial_To_SendInitialNotice_Art33</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendInitialNotice_To_TaskCollectRemainingInfo_Art33</bpmn:outgoing>
     </bpmn:sendTask>
-    <bpmn:task id="Task_CollectRemainingInformation" name="Collect remaining details">
-      <bpmn:incoming>Flow_SendInitial_To_CollectRemaining</bpmn:incoming>
-      <bpmn:outgoing>Flow_CollectRemaining_To_SendFollowUp</bpmn:outgoing>
+
+    <bpmn:task id="Task_CollectRemainingInfo_Art33"
+               name="Collect remaining information">
+      <bpmn:incoming>Flow_SendInitialNotice_To_TaskCollectRemainingInfo_Art33</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskCollectRemainingInfo_To_SendPhasedInfo_Art33</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:sendTask id="Task_SendFollowUpInformation" name="Send follow-up details">
-      <bpmn:incoming>Flow_CollectRemaining_To_SendFollowUp</bpmn:incoming>
-      <bpmn:outgoing>Flow_SendFollowUp_To_DocumentBreach</bpmn:outgoing>
-      <bpmn:dataInputAssociation id="DataInputAssoc_SendFollowUpInformation">
-        <bpmn:sourceRef>DataRef_NotificationDossier</bpmn:sourceRef>
-      </bpmn:dataInputAssociation>
+
+    <bpmn:sendTask id="SendTask_SendPhasedInfo_Art33"
+                   name="Send phased information without undue further delay">
+      <bpmn:incoming>Flow_TaskCollectRemainingInfo_To_SendPhasedInfo_Art33</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendPhasedInfo_To_TaskDocumentBreach_Art33</bpmn:outgoing>
     </bpmn:sendTask>
-    <bpmn:task id="Task_DocumentBreach" name="Document breach and response">
-      <bpmn:incoming>Flow_RiskGateway_To_DocumentOnly</bpmn:incoming>
-      <bpmn:incoming>Flow_SendFull_To_DocumentBreach</bpmn:incoming>
-      <bpmn:incoming>Flow_SendFollowUp_To_DocumentBreach</bpmn:incoming>
-      <bpmn:outgoing>Flow_DocumentBreach_To_End</bpmn:outgoing>
-      <bpmn:dataOutputAssociation id="DataOutputAssoc_DocumentBreach">
-        <bpmn:targetRef>DataRef_BreachRegister</bpmn:targetRef>
-      </bpmn:dataOutputAssociation>
+
+    <bpmn:task id="Task_DocumentBreach_Art33"
+               name="Document breach facts, effects, and remedial action">
+      <bpmn:incoming>Flow_GatewayRisk_To_TaskDocumentBreach_Art33</bpmn:incoming>
+      <bpmn:incoming>Flow_SendFullNotice_To_TaskDocumentBreach_Art33</bpmn:incoming>
+      <bpmn:incoming>Flow_SendPhasedInfo_To_TaskDocumentBreach_Art33</bpmn:incoming>
+      <bpmn:outgoing>Flow_TaskDocumentBreach_To_EndCompleted_Art33</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:endEvent id="EndEvent_ControllerHandled" name="Article 33 obligations documented">
-      <bpmn:incoming>Flow_DocumentBreach_To_End</bpmn:incoming>
+
+    <bpmn:endEvent id="EndEvent_Completed_Art33"
+                   name="Article 33 completed">
+      <bpmn:incoming>Flow_TaskDocumentBreach_To_EndCompleted_Art33</bpmn:incoming>
     </bpmn:endEvent>
 
-    <bpmn:dataObject id="DataObject_NotificationDossier" name="Notification dossier" />
-    <bpmn:dataObjectReference id="DataRef_NotificationDossier" dataObjectRef="DataObject_NotificationDossier" name="Notification dossier" />
-    <bpmn:dataObject id="DataObject_BreachRegister" name="Breach register entry" />
-    <bpmn:dataObjectReference id="DataRef_BreachRegister" dataObjectRef="DataObject_BreachRegister" name="Breach register entry" />
-
-    <bpmn:textAnnotation id="Annotation_DocumentationDuty">
-      <bpmn:text>Article 33(5): document every personal data breach, including facts, effects, and remedial action, so the supervisory authority can verify compliance.</bpmn:text>
-    </bpmn:textAnnotation>
-    <bpmn:association id="Association_DocumentationDuty" sourceRef="Task_DocumentBreach" targetRef="Annotation_DocumentationDuty" />
-
-    <bpmn:sequenceFlow id="Flow_Controller_Start_To_AwarenessGateway" sourceRef="StartEvent_ControllerHandlingStarted" targetRef="Gateway_ControllerAwareness" />
-    <bpmn:sequenceFlow id="Flow_AwarenessGateway_To_ProcessorNotice" sourceRef="Gateway_ControllerAwareness" targetRef="Event_ControllerReceivesProcessorNotice" />
-    <bpmn:sequenceFlow id="Flow_AwarenessGateway_To_InternalDetection" sourceRef="Gateway_ControllerAwareness" targetRef="Event_ControllerDetectsInternally" />
-    <bpmn:sequenceFlow id="Flow_ProcessorNotice_To_AwarenessMerge" sourceRef="Event_ControllerReceivesProcessorNotice" targetRef="Gateway_AwarenessMerge" />
-    <bpmn:sequenceFlow id="Flow_InternalDetection_To_AwarenessMerge" sourceRef="Event_ControllerDetectsInternally" targetRef="Gateway_AwarenessMerge" />
-    <bpmn:sequenceFlow id="Flow_AwarenessMerge_To_AssessRisk" sourceRef="Gateway_AwarenessMerge" targetRef="Task_AssessRisk" />
-    <bpmn:sequenceFlow id="Flow_AssessRisk_To_RiskGateway" sourceRef="Task_AssessRisk" targetRef="Gateway_RiskUnlikely" />
-    <bpmn:sequenceFlow id="Flow_RiskGateway_To_DocumentOnly" name="Yes" sourceRef="Gateway_RiskUnlikely" targetRef="Task_DocumentBreach" />
-    <bpmn:sequenceFlow id="Flow_RiskGateway_To_CompileSplit" name="No" sourceRef="Gateway_RiskUnlikely" targetRef="Gateway_CompileSplit" />
-    <bpmn:sequenceFlow id="Flow_CompileSplit_To_DescribeNature" sourceRef="Gateway_CompileSplit" targetRef="Task_DescribeNature" />
-    <bpmn:sequenceFlow id="Flow_CompileSplit_To_ProvideContact" sourceRef="Gateway_CompileSplit" targetRef="Task_ProvideContact" />
-    <bpmn:sequenceFlow id="Flow_CompileSplit_To_DescribeConsequences" sourceRef="Gateway_CompileSplit" targetRef="Task_DescribeConsequences" />
-    <bpmn:sequenceFlow id="Flow_CompileSplit_To_DescribeMeasures" sourceRef="Gateway_CompileSplit" targetRef="Task_DescribeMeasures" />
-    <bpmn:sequenceFlow id="Flow_DescribeNature_To_CompileJoin" sourceRef="Task_DescribeNature" targetRef="Gateway_CompileJoin" />
-    <bpmn:sequenceFlow id="Flow_ProvideContact_To_CompileJoin" sourceRef="Task_ProvideContact" targetRef="Gateway_CompileJoin" />
-    <bpmn:sequenceFlow id="Flow_DescribeConsequences_To_CompileJoin" sourceRef="Task_DescribeConsequences" targetRef="Gateway_CompileJoin" />
-    <bpmn:sequenceFlow id="Flow_DescribeMeasures_To_CompileJoin" sourceRef="Task_DescribeMeasures" targetRef="Gateway_CompileJoin" />
-    <bpmn:sequenceFlow id="Flow_CompileJoin_To_AllInfoGateway" sourceRef="Gateway_CompileJoin" targetRef="Gateway_AllInfoAvailable" />
-    <bpmn:sequenceFlow id="Flow_AllInfoGateway_To_FullWithin72h" name="Yes" sourceRef="Gateway_AllInfoAvailable" targetRef="Gateway_FullWithin72h" />
-    <bpmn:sequenceFlow id="Flow_AllInfoGateway_To_PhasedWithin72h" name="No" sourceRef="Gateway_AllInfoAvailable" targetRef="Gateway_PhasedWithin72h" />
-    <bpmn:sequenceFlow id="Flow_FullWithin72h_To_SendFull" name="No" sourceRef="Gateway_FullWithin72h" targetRef="Task_SendFullNotification" />
-    <bpmn:sequenceFlow id="Flow_FullWithin72h_To_RecordDelayFull" name="Yes" sourceRef="Gateway_FullWithin72h" targetRef="Task_RecordDelayReasonsFull" />
-    <bpmn:sequenceFlow id="Flow_RecordDelayFull_To_SendFull" sourceRef="Task_RecordDelayReasonsFull" targetRef="Task_SendFullNotification" />
-    <bpmn:sequenceFlow id="Flow_PhasedWithin72h_To_SendInitial" name="No" sourceRef="Gateway_PhasedWithin72h" targetRef="Task_SendInitialNotification" />
-    <bpmn:sequenceFlow id="Flow_PhasedWithin72h_To_RecordDelayInitial" name="Yes" sourceRef="Gateway_PhasedWithin72h" targetRef="Task_RecordDelayReasonsInitial" />
-    <bpmn:sequenceFlow id="Flow_RecordDelayInitial_To_SendInitial" sourceRef="Task_RecordDelayReasonsInitial" targetRef="Task_SendInitialNotification" />
-    <bpmn:sequenceFlow id="Flow_SendFull_To_DocumentBreach" sourceRef="Task_SendFullNotification" targetRef="Task_DocumentBreach" />
-    <bpmn:sequenceFlow id="Flow_SendInitial_To_CollectRemaining" sourceRef="Task_SendInitialNotification" targetRef="Task_CollectRemainingInformation" />
-    <bpmn:sequenceFlow id="Flow_CollectRemaining_To_SendFollowUp" sourceRef="Task_CollectRemainingInformation" targetRef="Task_SendFollowUpInformation" />
-    <bpmn:sequenceFlow id="Flow_SendFollowUp_To_DocumentBreach" sourceRef="Task_SendFollowUpInformation" targetRef="Task_DocumentBreach" />
-    <bpmn:sequenceFlow id="Flow_DocumentBreach_To_End" sourceRef="Task_DocumentBreach" targetRef="EndEvent_ControllerHandled" />
+    <bpmn:sequenceFlow id="Flow_Start_To_AwarenessGateway_Art33" sourceRef="StartEvent_HandleBreach_Art33" targetRef="Gateway_Awareness_Art33" />
+    <bpmn:sequenceFlow id="Flow_AwarenessGateway_To_ProcessorNotice_Art33" sourceRef="Gateway_Awareness_Art33" targetRef="Event_ControllerReceivesProcessorNotice_Art33" />
+    <bpmn:sequenceFlow id="Flow_AwarenessGateway_To_InternalDetection_Art33" sourceRef="Gateway_Awareness_Art33" targetRef="Event_ControllerDetectsBreach_Art33" />
+    <bpmn:sequenceFlow id="Flow_ProcessorNotice_To_AwarenessMerge_Art33" sourceRef="Event_ControllerReceivesProcessorNotice_Art33" targetRef="Gateway_AwarenessMerge_Art33" />
+    <bpmn:sequenceFlow id="Flow_InternalDetection_To_AwarenessMerge_Art33" sourceRef="Event_ControllerDetectsBreach_Art33" targetRef="Gateway_AwarenessMerge_Art33" />
+    <bpmn:sequenceFlow id="Flow_AwarenessMerge_To_AssessRisk_Art33" sourceRef="Gateway_AwarenessMerge_Art33" targetRef="Task_AssessRisk_Art33" />
+    <bpmn:sequenceFlow id="Flow_AssessRisk_To_GatewayRisk_Art33" sourceRef="Task_AssessRisk_Art33" targetRef="Gateway_Risk_Art33" />
+    <bpmn:sequenceFlow id="Flow_GatewayRisk_To_TaskDocumentBreach_Art33" name="Yes" sourceRef="Gateway_Risk_Art33" targetRef="Task_DocumentBreach_Art33" />
+    <bpmn:sequenceFlow id="Flow_GatewayRisk_To_GatewayCompileSplit_Art33" name="No" sourceRef="Gateway_Risk_Art33" targetRef="Gateway_CompileSplit_Art33" />
+    <bpmn:sequenceFlow id="Flow_GatewayCompileSplit_To_TaskDescribeNature_Art33" sourceRef="Gateway_CompileSplit_Art33" targetRef="Task_DescribeNature_Art33" />
+    <bpmn:sequenceFlow id="Flow_GatewayCompileSplit_To_TaskProvideContact_Art33" sourceRef="Gateway_CompileSplit_Art33" targetRef="Task_ProvideContact_Art33" />
+    <bpmn:sequenceFlow id="Flow_GatewayCompileSplit_To_TaskDescribeConsequences_Art33" sourceRef="Gateway_CompileSplit_Art33" targetRef="Task_DescribeConsequences_Art33" />
+    <bpmn:sequenceFlow id="Flow_GatewayCompileSplit_To_TaskDescribeMeasures_Art33" sourceRef="Gateway_CompileSplit_Art33" targetRef="Task_DescribeMeasures_Art33" />
+    <bpmn:sequenceFlow id="Flow_TaskDescribeNature_To_GatewayCompileJoin_Art33" sourceRef="Task_DescribeNature_Art33" targetRef="Gateway_CompileJoin_Art33" />
+    <bpmn:sequenceFlow id="Flow_TaskProvideContact_To_GatewayCompileJoin_Art33" sourceRef="Task_ProvideContact_Art33" targetRef="Gateway_CompileJoin_Art33" />
+    <bpmn:sequenceFlow id="Flow_TaskDescribeConsequences_To_GatewayCompileJoin_Art33" sourceRef="Task_DescribeConsequences_Art33" targetRef="Gateway_CompileJoin_Art33" />
+    <bpmn:sequenceFlow id="Flow_TaskDescribeMeasures_To_GatewayCompileJoin_Art33" sourceRef="Task_DescribeMeasures_Art33" targetRef="Gateway_CompileJoin_Art33" />
+    <bpmn:sequenceFlow id="Flow_GatewayCompileJoin_To_GatewayAllInfo_Art33" sourceRef="Gateway_CompileJoin_Art33" targetRef="Gateway_AllInfo_Art33" />
+    <bpmn:sequenceFlow id="Flow_GatewayAllInfo_To_GatewayFullWithin72h_Art33" name="Yes" sourceRef="Gateway_AllInfo_Art33" targetRef="Gateway_FullWithin72h_Art33" />
+    <bpmn:sequenceFlow id="Flow_GatewayAllInfo_To_GatewayInitialWithin72h_Art33" name="No" sourceRef="Gateway_AllInfo_Art33" targetRef="Gateway_InitialWithin72h_Art33" />
+    <bpmn:sequenceFlow id="Flow_GatewayFullWithin72h_To_SendFullNotice_Art33" name="Yes" sourceRef="Gateway_FullWithin72h_Art33" targetRef="SendTask_SendFullNotice_Art33" />
+    <bpmn:sequenceFlow id="Flow_GatewayFullWithin72h_To_RecordDelayFull_Art33" name="No" sourceRef="Gateway_FullWithin72h_Art33" targetRef="Task_RecordDelayFull_Art33" />
+    <bpmn:sequenceFlow id="Flow_TaskRecordDelayFull_To_SendFullNotice_Art33" sourceRef="Task_RecordDelayFull_Art33" targetRef="SendTask_SendFullNotice_Art33" />
+    <bpmn:sequenceFlow id="Flow_GatewayInitialWithin72h_To_SendInitialNotice_Art33" name="Yes" sourceRef="Gateway_InitialWithin72h_Art33" targetRef="SendTask_SendInitialNotice_Art33" />
+    <bpmn:sequenceFlow id="Flow_GatewayInitialWithin72h_To_RecordDelayInitial_Art33" name="No" sourceRef="Gateway_InitialWithin72h_Art33" targetRef="Task_RecordDelayInitial_Art33" />
+    <bpmn:sequenceFlow id="Flow_TaskRecordDelayInitial_To_SendInitialNotice_Art33" sourceRef="Task_RecordDelayInitial_Art33" targetRef="SendTask_SendInitialNotice_Art33" />
+    <bpmn:sequenceFlow id="Flow_SendFullNotice_To_TaskDocumentBreach_Art33" sourceRef="SendTask_SendFullNotice_Art33" targetRef="Task_DocumentBreach_Art33" />
+    <bpmn:sequenceFlow id="Flow_SendInitialNotice_To_TaskCollectRemainingInfo_Art33" sourceRef="SendTask_SendInitialNotice_Art33" targetRef="Task_CollectRemainingInfo_Art33" />
+    <bpmn:sequenceFlow id="Flow_TaskCollectRemainingInfo_To_SendPhasedInfo_Art33" sourceRef="Task_CollectRemainingInfo_Art33" targetRef="SendTask_SendPhasedInfo_Art33" />
+    <bpmn:sequenceFlow id="Flow_SendPhasedInfo_To_TaskDocumentBreach_Art33" sourceRef="SendTask_SendPhasedInfo_Art33" targetRef="Task_DocumentBreach_Art33" />
+    <bpmn:sequenceFlow id="Flow_TaskDocumentBreach_To_EndCompleted_Art33" sourceRef="Task_DocumentBreach_Art33" targetRef="EndEvent_Completed_Art33" />
   </bpmn:process>
 
-  <bpmn:process id="Process_Processor_Art33" name="Processor breach notice handling" isExecutable="false">
-    <bpmn:startEvent id="StartEvent_ProcessorAware" name="Processor becomes aware of personal data breach">
-      <bpmn:outgoing>Flow_ProcessorStart_To_NotifyController</bpmn:outgoing>
+  <bpmn:process id="Process_Processor_Art33"
+                name="Apply Article 33 processor notice duty"
+                isExecutable="false">
+    <bpmn:documentation>
+      This process captures the Article 33(2) duty of the processor to notify the
+      controller without undue delay after becoming aware of a personal data breach.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_ProcessorAware_Art33"
+                     name="Processor becomes aware of breach">
+      <bpmn:outgoing>Flow_StartProcessor_To_SendNotice_Art33</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:sendTask id="Task_ProcessorNotifyController" name="Notify controller without undue delay">
-      <bpmn:incoming>Flow_ProcessorStart_To_NotifyController</bpmn:incoming>
-      <bpmn:outgoing>Flow_NotifyController_To_ProcessorEnd</bpmn:outgoing>
+
+    <bpmn:sendTask id="SendTask_ProcessorNotifyController_Art33"
+                   name="Notify controller without undue delay">
+      <bpmn:incoming>Flow_StartProcessor_To_SendNotice_Art33</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendNotice_To_EndProcessor_Art33</bpmn:outgoing>
     </bpmn:sendTask>
-    <bpmn:endEvent id="EndEvent_ProcessorHandled" name="Controller notified">
-      <bpmn:incoming>Flow_NotifyController_To_ProcessorEnd</bpmn:incoming>
+
+    <bpmn:endEvent id="EndEvent_ProcessorCompleted_Art33"
+                   name="Controller notified">
+      <bpmn:incoming>Flow_SendNotice_To_EndProcessor_Art33</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_ProcessorStart_To_NotifyController" sourceRef="StartEvent_ProcessorAware" targetRef="Task_ProcessorNotifyController" />
-    <bpmn:sequenceFlow id="Flow_NotifyController_To_ProcessorEnd" sourceRef="Task_ProcessorNotifyController" targetRef="EndEvent_ProcessorHandled" />
+
+    <bpmn:sequenceFlow id="Flow_StartProcessor_To_SendNotice_Art33" sourceRef="StartEvent_ProcessorAware_Art33" targetRef="SendTask_ProcessorNotifyController_Art33" />
+    <bpmn:sequenceFlow id="Flow_SendNotice_To_EndProcessor_Art33" sourceRef="SendTask_ProcessorNotifyController_Art33" targetRef="EndEvent_ProcessorCompleted_Art33" />
   </bpmn:process>
 
-  <bpmndi:BPMNDiagram id="BPMNDiagram_GDPR_Art_33">
-    <bpmndi:BPMNPlane id="BPMNPlane_GDPR_Art_33" bpmnElement="Collaboration_GDPR_Art_33">
-      <bpmndi:BPMNShape id="Participant_Controller_di" bpmnElement="Participant_Controller" isHorizontal="true">
-        <dc:Bounds x="40" y="40" width="2600" height="420" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art33_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art33_Reviewed" bpmnElement="Collaboration_Art33_Reviewed">
+      <bpmndi:BPMNShape id="Participant_Controller_Art33_di" bpmnElement="Participant_Controller_Art33" isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="3900" height="680" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Participant_SupervisoryAuthority_di" bpmnElement="Participant_SupervisoryAuthority" isHorizontal="true">
-        <dc:Bounds x="40" y="500" width="2600" height="160" />
+      <bpmndi:BPMNShape id="Participant_SupervisoryAuthority_Art33_di" bpmnElement="Participant_SupervisoryAuthority_Art33" isHorizontal="true">
+        <dc:Bounds x="60" y="760" width="3900" height="120" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Participant_Processor_di" bpmnElement="Participant_Processor" isHorizontal="true">
-        <dc:Bounds x="40" y="700" width="2600" height="180" />
-      </bpmndi:BPMNShape>
-
-      <bpmndi:BPMNShape id="StartEvent_ControllerHandlingStarted_di" bpmnElement="StartEvent_ControllerHandlingStarted">
-        <dc:Bounds x="110" y="182" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_ControllerAwareness_di" bpmnElement="Gateway_ControllerAwareness">
-        <dc:Bounds x="190" y="175" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_ControllerReceivesProcessorNotice_di" bpmnElement="Event_ControllerReceivesProcessorNotice">
-        <dc:Bounds x="315" y="118" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_ControllerDetectsInternally_di" bpmnElement="Event_ControllerDetectsInternally">
-        <dc:Bounds x="315" y="242" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_AwarenessMerge_di" bpmnElement="Gateway_AwarenessMerge" isMarkerVisible="true">
-        <dc:Bounds x="415" y="175" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Task_AssessRisk_di" bpmnElement="Task_AssessRisk">
-        <dc:Bounds x="520" y="160" width="160" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_RiskUnlikely_di" bpmnElement="Gateway_RiskUnlikely" isMarkerVisible="true">
-        <dc:Bounds x="725" y="175" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_CompileSplit_di" bpmnElement="Gateway_CompileSplit" isMarkerVisible="true">
-        <dc:Bounds x="845" y="175" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Task_DescribeNature_di" bpmnElement="Task_DescribeNature">
-        <dc:Bounds x="950" y="40" width="190" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Task_ProvideContact_di" bpmnElement="Task_ProvideContact">
-        <dc:Bounds x="950" y="125" width="190" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Task_DescribeConsequences_di" bpmnElement="Task_DescribeConsequences">
-        <dc:Bounds x="950" y="210" width="190" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Task_DescribeMeasures_di" bpmnElement="Task_DescribeMeasures">
-        <dc:Bounds x="950" y="295" width="190" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_CompileJoin_di" bpmnElement="Gateway_CompileJoin" isMarkerVisible="true">
-        <dc:Bounds x="1190" y="175" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_AllInfoAvailable_di" bpmnElement="Gateway_AllInfoAvailable" isMarkerVisible="true">
-        <dc:Bounds x="1290" y="175" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_FullWithin72h_di" bpmnElement="Gateway_FullWithin72h" isMarkerVisible="true">
-        <dc:Bounds x="1400" y="90" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Task_RecordDelayReasonsFull_di" bpmnElement="Task_RecordDelayReasonsFull">
-        <dc:Bounds x="1510" y="90" width="170" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Task_SendFullNotification_di" bpmnElement="Task_SendFullNotification">
-        <dc:Bounds x="1700" y="40" width="180" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_PhasedWithin72h_di" bpmnElement="Gateway_PhasedWithin72h" isMarkerVisible="true">
-        <dc:Bounds x="1400" y="260" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Task_RecordDelayReasonsInitial_di" bpmnElement="Task_RecordDelayReasonsInitial">
-        <dc:Bounds x="1510" y="285" width="170" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Task_SendInitialNotification_di" bpmnElement="Task_SendInitialNotification">
-        <dc:Bounds x="1700" y="220" width="180" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Task_CollectRemainingInformation_di" bpmnElement="Task_CollectRemainingInformation">
-        <dc:Bounds x="1910" y="220" width="180" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Task_SendFollowUpInformation_di" bpmnElement="Task_SendFollowUpInformation">
-        <dc:Bounds x="2120" y="220" width="210" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="DataRef_NotificationDossier_di" bpmnElement="DataRef_NotificationDossier">
-        <dc:Bounds x="1850" y="135" width="36" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Task_DocumentBreach_di" bpmnElement="Task_DocumentBreach">
-        <dc:Bounds x="2390" y="160" width="180" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="DataRef_BreachRegister_di" bpmnElement="DataRef_BreachRegister">
-        <dc:Bounds x="2455" y="95" width="36" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="EndEvent_ControllerHandled_di" bpmnElement="EndEvent_ControllerHandled">
-        <dc:Bounds x="2600" y="182" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Annotation_DocumentationDuty_di" bpmnElement="Annotation_DocumentationDuty">
-        <dc:Bounds x="2340" y="260" width="240" height="90" />
+      <bpmndi:BPMNShape id="Participant_Processor_Art33_di" bpmnElement="Participant_Processor_Art33" isHorizontal="true">
+        <dc:Bounds x="60" y="920" width="3900" height="180" />
       </bpmndi:BPMNShape>
 
-      <bpmndi:BPMNShape id="StartEvent_ProcessorAware_di" bpmnElement="StartEvent_ProcessorAware">
-        <dc:Bounds x="110" y="772" width="36" height="36" />
+      <bpmndi:BPMNShape id="StartEvent_HandleBreach_Art33_di" bpmnElement="StartEvent_HandleBreach_Art33">
+        <dc:Bounds x="120" y="342" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Task_ProcessorNotifyController_di" bpmnElement="Task_ProcessorNotifyController">
-        <dc:Bounds x="210" y="750" width="180" height="80" />
+      <bpmndi:BPMNShape id="Gateway_Awareness_Art33_di" bpmnElement="Gateway_Awareness_Art33">
+        <dc:Bounds x="220" y="335" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="EndEvent_ProcessorHandled_di" bpmnElement="EndEvent_ProcessorHandled">
-        <dc:Bounds x="440" y="772" width="36" height="36" />
+      <bpmndi:BPMNShape id="Event_ControllerReceivesProcessorNotice_Art33_di" bpmnElement="Event_ControllerReceivesProcessorNotice_Art33">
+        <dc:Bounds x="350" y="250" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Flow_Controller_Start_To_AwarenessGateway_di" bpmnElement="Flow_Controller_Start_To_AwarenessGateway">
-        <di:waypoint x="146" y="200" />
-        <di:waypoint x="190" y="200" />
+      <bpmndi:BPMNShape id="Event_ControllerDetectsBreach_Art33_di" bpmnElement="Event_ControllerDetectsBreach_Art33">
+        <dc:Bounds x="350" y="420" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AwarenessMerge_Art33_di" bpmnElement="Gateway_AwarenessMerge_Art33" isMarkerVisible="true">
+        <dc:Bounds x="470" y="335" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessRisk_Art33_di" bpmnElement="Task_AssessRisk_Art33">
+        <dc:Bounds x="580" y="320" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Risk_Art33_di" bpmnElement="Gateway_Risk_Art33" isMarkerVisible="true">
+        <dc:Bounds x="870" y="335" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_CompileSplit_Art33_di" bpmnElement="Gateway_CompileSplit_Art33" isMarkerVisible="true">
+        <dc:Bounds x="1000" y="335" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DescribeNature_Art33_di" bpmnElement="Task_DescribeNature_Art33">
+        <dc:Bounds x="1140" y="80" width="330" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ProvideContact_Art33_di" bpmnElement="Task_ProvideContact_Art33">
+        <dc:Bounds x="1140" y="190" width="300" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DescribeConsequences_Art33_di" bpmnElement="Task_DescribeConsequences_Art33">
+        <dc:Bounds x="1140" y="410" width="270" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DescribeMeasures_Art33_di" bpmnElement="Task_DescribeMeasures_Art33">
+        <dc:Bounds x="1140" y="520" width="350" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_CompileJoin_Art33_di" bpmnElement="Gateway_CompileJoin_Art33" isMarkerVisible="true">
+        <dc:Bounds x="1600" y="335" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AllInfo_Art33_di" bpmnElement="Gateway_AllInfo_Art33" isMarkerVisible="true">
+        <dc:Bounds x="1730" y="335" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_FullWithin72h_Art33_di" bpmnElement="Gateway_FullWithin72h_Art33" isMarkerVisible="true">
+        <dc:Bounds x="1890" y="175" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RecordDelayFull_Art33_di" bpmnElement="Task_RecordDelayFull_Art33">
+        <dc:Bounds x="2050" y="70" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_SendFullNotice_Art33_di" bpmnElement="SendTask_SendFullNotice_Art33">
+        <dc:Bounds x="2300" y="160" width="260" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_InitialWithin72h_Art33_di" bpmnElement="Gateway_InitialWithin72h_Art33" isMarkerVisible="true">
+        <dc:Bounds x="1890" y="505" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RecordDelayInitial_Art33_di" bpmnElement="Task_RecordDelayInitial_Art33">
+        <dc:Bounds x="2050" y="420" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_SendInitialNotice_Art33_di" bpmnElement="SendTask_SendInitialNotice_Art33">
+        <dc:Bounds x="2300" y="490" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CollectRemainingInfo_Art33_di" bpmnElement="Task_CollectRemainingInfo_Art33">
+        <dc:Bounds x="2610" y="490" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_SendPhasedInfo_Art33_di" bpmnElement="SendTask_SendPhasedInfo_Art33">
+        <dc:Bounds x="2920" y="490" width="310" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DocumentBreach_Art33_di" bpmnElement="Task_DocumentBreach_Art33">
+        <dc:Bounds x="3310" y="320" width="330" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Completed_Art33_di" bpmnElement="EndEvent_Completed_Art33">
+        <dc:Bounds x="3722" y="342" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_ProcessorAware_Art33_di" bpmnElement="StartEvent_ProcessorAware_Art33">
+        <dc:Bounds x="120" y="992" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_ProcessorNotifyController_Art33_di" bpmnElement="SendTask_ProcessorNotifyController_Art33">
+        <dc:Bounds x="220" y="970" width="250" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ProcessorCompleted_Art33_di" bpmnElement="EndEvent_ProcessorCompleted_Art33">
+        <dc:Bounds x="552" y="992" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_AwarenessGateway_Art33_di" bpmnElement="Flow_Start_To_AwarenessGateway_Art33">
+        <di:waypoint x="156" y="360" />
+        <di:waypoint x="220" y="360" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_AwarenessGateway_To_ProcessorNotice_di" bpmnElement="Flow_AwarenessGateway_To_ProcessorNotice">
-        <di:waypoint x="240" y="200" />
-        <di:waypoint x="278" y="200" />
-        <di:waypoint x="278" y="136" />
-        <di:waypoint x="315" y="136" />
+      <bpmndi:BPMNEdge id="Flow_AwarenessGateway_To_ProcessorNotice_Art33_di" bpmnElement="Flow_AwarenessGateway_To_ProcessorNotice_Art33">
+        <di:waypoint x="245" y="335" />
+        <di:waypoint x="245" y="268" />
+        <di:waypoint x="350" y="268" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_AwarenessGateway_To_InternalDetection_di" bpmnElement="Flow_AwarenessGateway_To_InternalDetection">
-        <di:waypoint x="240" y="200" />
-        <di:waypoint x="278" y="200" />
-        <di:waypoint x="278" y="260" />
-        <di:waypoint x="315" y="260" />
+      <bpmndi:BPMNEdge id="Flow_AwarenessGateway_To_InternalDetection_Art33_di" bpmnElement="Flow_AwarenessGateway_To_InternalDetection_Art33">
+        <di:waypoint x="245" y="385" />
+        <di:waypoint x="245" y="438" />
+        <di:waypoint x="350" y="438" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_ProcessorNotice_To_AwarenessMerge_di" bpmnElement="Flow_ProcessorNotice_To_AwarenessMerge">
-        <di:waypoint x="351" y="136" />
-        <di:waypoint x="390" y="136" />
-        <di:waypoint x="390" y="200" />
-        <di:waypoint x="415" y="200" />
+      <bpmndi:BPMNEdge id="Flow_ProcessorNotice_To_AwarenessMerge_Art33_di" bpmnElement="Flow_ProcessorNotice_To_AwarenessMerge_Art33">
+        <di:waypoint x="386" y="268" />
+        <di:waypoint x="495" y="268" />
+        <di:waypoint x="495" y="335" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_InternalDetection_To_AwarenessMerge_di" bpmnElement="Flow_InternalDetection_To_AwarenessMerge">
-        <di:waypoint x="351" y="260" />
-        <di:waypoint x="390" y="260" />
-        <di:waypoint x="390" y="200" />
-        <di:waypoint x="415" y="200" />
+      <bpmndi:BPMNEdge id="Flow_InternalDetection_To_AwarenessMerge_Art33_di" bpmnElement="Flow_InternalDetection_To_AwarenessMerge_Art33">
+        <di:waypoint x="386" y="438" />
+        <di:waypoint x="495" y="438" />
+        <di:waypoint x="495" y="385" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_AwarenessMerge_To_AssessRisk_di" bpmnElement="Flow_AwarenessMerge_To_AssessRisk">
-        <di:waypoint x="465" y="200" />
-        <di:waypoint x="520" y="200" />
+      <bpmndi:BPMNEdge id="Flow_AwarenessMerge_To_AssessRisk_Art33_di" bpmnElement="Flow_AwarenessMerge_To_AssessRisk_Art33">
+        <di:waypoint x="520" y="360" />
+        <di:waypoint x="580" y="360" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_AssessRisk_To_RiskGateway_di" bpmnElement="Flow_AssessRisk_To_RiskGateway">
-        <di:waypoint x="680" y="200" />
-        <di:waypoint x="725" y="200" />
+      <bpmndi:BPMNEdge id="Flow_AssessRisk_To_GatewayRisk_Art33_di" bpmnElement="Flow_AssessRisk_To_GatewayRisk_Art33">
+        <di:waypoint x="800" y="360" />
+        <di:waypoint x="870" y="360" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_RiskGateway_To_DocumentOnly_di" bpmnElement="Flow_RiskGateway_To_DocumentOnly">
-        <di:waypoint x="750" y="225" />
-        <di:waypoint x="750" y="200" />
-        <di:waypoint x="2390" y="200" />
+      <bpmndi:BPMNEdge id="Flow_GatewayRisk_To_TaskDocumentBreach_Art33_di" bpmnElement="Flow_GatewayRisk_To_TaskDocumentBreach_Art33">
+        <di:waypoint x="920" y="360" />
+        <di:waypoint x="3310" y="360" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_RiskGateway_To_CompileSplit_di" bpmnElement="Flow_RiskGateway_To_CompileSplit">
-        <di:waypoint x="775" y="200" />
-        <di:waypoint x="845" y="200" />
+      <bpmndi:BPMNEdge id="Flow_GatewayRisk_To_GatewayCompileSplit_Art33_di" bpmnElement="Flow_GatewayRisk_To_GatewayCompileSplit_Art33">
+        <di:waypoint x="920" y="360" />
+        <di:waypoint x="1000" y="360" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_CompileSplit_To_DescribeNature_di" bpmnElement="Flow_CompileSplit_To_DescribeNature">
-        <di:waypoint x="870" y="200" />
-        <di:waypoint x="900" y="200" />
-        <di:waypoint x="900" y="80" />
-        <di:waypoint x="950" y="80" />
+      <bpmndi:BPMNEdge id="Flow_GatewayCompileSplit_To_TaskDescribeNature_Art33_di" bpmnElement="Flow_GatewayCompileSplit_To_TaskDescribeNature_Art33">
+        <di:waypoint x="1025" y="335" />
+        <di:waypoint x="1025" y="120" />
+        <di:waypoint x="1140" y="120" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_CompileSplit_To_ProvideContact_di" bpmnElement="Flow_CompileSplit_To_ProvideContact">
-        <di:waypoint x="895" y="200" />
-        <di:waypoint x="950" y="165" />
+      <bpmndi:BPMNEdge id="Flow_GatewayCompileSplit_To_TaskProvideContact_Art33_di" bpmnElement="Flow_GatewayCompileSplit_To_TaskProvideContact_Art33">
+        <di:waypoint x="1025" y="335" />
+        <di:waypoint x="1025" y="230" />
+        <di:waypoint x="1140" y="230" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_CompileSplit_To_DescribeConsequences_di" bpmnElement="Flow_CompileSplit_To_DescribeConsequences">
-        <di:waypoint x="895" y="200" />
-        <di:waypoint x="950" y="250" />
+      <bpmndi:BPMNEdge id="Flow_GatewayCompileSplit_To_TaskDescribeConsequences_Art33_di" bpmnElement="Flow_GatewayCompileSplit_To_TaskDescribeConsequences_Art33">
+        <di:waypoint x="1025" y="385" />
+        <di:waypoint x="1025" y="450" />
+        <di:waypoint x="1140" y="450" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_CompileSplit_To_DescribeMeasures_di" bpmnElement="Flow_CompileSplit_To_DescribeMeasures">
-        <di:waypoint x="870" y="200" />
-        <di:waypoint x="900" y="200" />
-        <di:waypoint x="900" y="335" />
-        <di:waypoint x="950" y="335" />
+      <bpmndi:BPMNEdge id="Flow_GatewayCompileSplit_To_TaskDescribeMeasures_Art33_di" bpmnElement="Flow_GatewayCompileSplit_To_TaskDescribeMeasures_Art33">
+        <di:waypoint x="1025" y="385" />
+        <di:waypoint x="1025" y="560" />
+        <di:waypoint x="1140" y="560" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_DescribeNature_To_CompileJoin_di" bpmnElement="Flow_DescribeNature_To_CompileJoin">
-        <di:waypoint x="1140" y="80" />
-        <di:waypoint x="1170" y="80" />
-        <di:waypoint x="1170" y="200" />
-        <di:waypoint x="1190" y="200" />
+      <bpmndi:BPMNEdge id="Flow_TaskDescribeNature_To_GatewayCompileJoin_Art33_di" bpmnElement="Flow_TaskDescribeNature_To_GatewayCompileJoin_Art33">
+        <di:waypoint x="1470" y="120" />
+        <di:waypoint x="1625" y="120" />
+        <di:waypoint x="1625" y="335" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_ProvideContact_To_CompileJoin_di" bpmnElement="Flow_ProvideContact_To_CompileJoin">
-        <di:waypoint x="1140" y="165" />
-        <di:waypoint x="1190" y="200" />
+      <bpmndi:BPMNEdge id="Flow_TaskProvideContact_To_GatewayCompileJoin_Art33_di" bpmnElement="Flow_TaskProvideContact_To_GatewayCompileJoin_Art33">
+        <di:waypoint x="1440" y="230" />
+        <di:waypoint x="1625" y="230" />
+        <di:waypoint x="1625" y="335" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_DescribeConsequences_To_CompileJoin_di" bpmnElement="Flow_DescribeConsequences_To_CompileJoin">
-        <di:waypoint x="1140" y="250" />
-        <di:waypoint x="1190" y="200" />
+      <bpmndi:BPMNEdge id="Flow_TaskDescribeConsequences_To_GatewayCompileJoin_Art33_di" bpmnElement="Flow_TaskDescribeConsequences_To_GatewayCompileJoin_Art33">
+        <di:waypoint x="1410" y="450" />
+        <di:waypoint x="1625" y="450" />
+        <di:waypoint x="1625" y="385" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_DescribeMeasures_To_CompileJoin_di" bpmnElement="Flow_DescribeMeasures_To_CompileJoin">
-        <di:waypoint x="1140" y="335" />
-        <di:waypoint x="1170" y="335" />
-        <di:waypoint x="1170" y="200" />
-        <di:waypoint x="1190" y="200" />
+      <bpmndi:BPMNEdge id="Flow_TaskDescribeMeasures_To_GatewayCompileJoin_Art33_di" bpmnElement="Flow_TaskDescribeMeasures_To_GatewayCompileJoin_Art33">
+        <di:waypoint x="1490" y="560" />
+        <di:waypoint x="1625" y="560" />
+        <di:waypoint x="1625" y="385" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_CompileJoin_To_AllInfoGateway_di" bpmnElement="Flow_CompileJoin_To_AllInfoGateway">
-        <di:waypoint x="1240" y="200" />
-        <di:waypoint x="1290" y="200" />
+      <bpmndi:BPMNEdge id="Flow_GatewayCompileJoin_To_GatewayAllInfo_Art33_di" bpmnElement="Flow_GatewayCompileJoin_To_GatewayAllInfo_Art33">
+        <di:waypoint x="1650" y="360" />
+        <di:waypoint x="1730" y="360" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_AllInfoGateway_To_FullWithin72h_di" bpmnElement="Flow_AllInfoGateway_To_FullWithin72h">
-        <di:waypoint x="1315" y="175" />
-        <di:waypoint x="1315" y="115" />
-        <di:waypoint x="1400" y="115" />
+      <bpmndi:BPMNEdge id="Flow_GatewayAllInfo_To_GatewayFullWithin72h_Art33_di" bpmnElement="Flow_GatewayAllInfo_To_GatewayFullWithin72h_Art33">
+        <di:waypoint x="1755" y="335" />
+        <di:waypoint x="1755" y="200" />
+        <di:waypoint x="1890" y="200" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_AllInfoGateway_To_PhasedWithin72h_di" bpmnElement="Flow_AllInfoGateway_To_PhasedWithin72h">
-        <di:waypoint x="1315" y="225" />
-        <di:waypoint x="1315" y="285" />
-        <di:waypoint x="1400" y="285" />
+      <bpmndi:BPMNEdge id="Flow_GatewayAllInfo_To_GatewayInitialWithin72h_Art33_di" bpmnElement="Flow_GatewayAllInfo_To_GatewayInitialWithin72h_Art33">
+        <di:waypoint x="1755" y="385" />
+        <di:waypoint x="1755" y="530" />
+        <di:waypoint x="1890" y="530" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_FullWithin72h_To_SendFull_di" bpmnElement="Flow_FullWithin72h_To_SendFull">
-        <di:waypoint x="1450" y="115" />
-        <di:waypoint x="1700" y="80" />
+      <bpmndi:BPMNEdge id="Flow_GatewayFullWithin72h_To_SendFullNotice_Art33_di" bpmnElement="Flow_GatewayFullWithin72h_To_SendFullNotice_Art33">
+        <di:waypoint x="1940" y="200" />
+        <di:waypoint x="2300" y="200" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_FullWithin72h_To_RecordDelayFull_di" bpmnElement="Flow_FullWithin72h_To_RecordDelayFull">
-        <di:waypoint x="1425" y="140" />
-        <di:waypoint x="1425" y="170" />
-        <di:waypoint x="1510" y="170" />
+      <bpmndi:BPMNEdge id="Flow_GatewayFullWithin72h_To_RecordDelayFull_Art33_di" bpmnElement="Flow_GatewayFullWithin72h_To_RecordDelayFull_Art33">
+        <di:waypoint x="1915" y="175" />
+        <di:waypoint x="1915" y="110" />
+        <di:waypoint x="2050" y="110" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_RecordDelayFull_To_SendFull_di" bpmnElement="Flow_RecordDelayFull_To_SendFull">
-        <di:waypoint x="1680" y="130" />
-        <di:waypoint x="1700" y="130" />
-        <di:waypoint x="1700" y="80" />
+      <bpmndi:BPMNEdge id="Flow_TaskRecordDelayFull_To_SendFullNotice_Art33_di" bpmnElement="Flow_TaskRecordDelayFull_To_SendFullNotice_Art33">
+        <di:waypoint x="2230" y="110" />
+        <di:waypoint x="2430" y="110" />
+        <di:waypoint x="2430" y="160" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_PhasedWithin72h_To_SendInitial_di" bpmnElement="Flow_PhasedWithin72h_To_SendInitial">
-        <di:waypoint x="1450" y="285" />
-        <di:waypoint x="1700" y="260" />
+      <bpmndi:BPMNEdge id="Flow_GatewayInitialWithin72h_To_SendInitialNotice_Art33_di" bpmnElement="Flow_GatewayInitialWithin72h_To_SendInitialNotice_Art33">
+        <di:waypoint x="1940" y="530" />
+        <di:waypoint x="2300" y="530" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_PhasedWithin72h_To_RecordDelayInitial_di" bpmnElement="Flow_PhasedWithin72h_To_RecordDelayInitial">
-        <di:waypoint x="1425" y="310" />
-        <di:waypoint x="1425" y="325" />
-        <di:waypoint x="1510" y="325" />
+      <bpmndi:BPMNEdge id="Flow_GatewayInitialWithin72h_To_RecordDelayInitial_Art33_di" bpmnElement="Flow_GatewayInitialWithin72h_To_RecordDelayInitial_Art33">
+        <di:waypoint x="1915" y="505" />
+        <di:waypoint x="1915" y="460" />
+        <di:waypoint x="2050" y="460" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_RecordDelayInitial_To_SendInitial_di" bpmnElement="Flow_RecordDelayInitial_To_SendInitial">
-        <di:waypoint x="1680" y="325" />
-        <di:waypoint x="1700" y="325" />
-        <di:waypoint x="1700" y="260" />
+      <bpmndi:BPMNEdge id="Flow_TaskRecordDelayInitial_To_SendInitialNotice_Art33_di" bpmnElement="Flow_TaskRecordDelayInitial_To_SendInitialNotice_Art33">
+        <di:waypoint x="2230" y="460" />
+        <di:waypoint x="2410" y="460" />
+        <di:waypoint x="2410" y="490" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_SendFull_To_DocumentBreach_di" bpmnElement="Flow_SendFull_To_DocumentBreach">
-        <di:waypoint x="1880" y="80" />
-        <di:waypoint x="2320" y="80" />
-        <di:waypoint x="2320" y="200" />
-        <di:waypoint x="2390" y="200" />
+      <bpmndi:BPMNEdge id="Flow_SendFullNotice_To_TaskDocumentBreach_Art33_di" bpmnElement="Flow_SendFullNotice_To_TaskDocumentBreach_Art33">
+        <di:waypoint x="2560" y="200" />
+        <di:waypoint x="3475" y="200" />
+        <di:waypoint x="3475" y="320" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_SendInitial_To_CollectRemaining_di" bpmnElement="Flow_SendInitial_To_CollectRemaining">
-        <di:waypoint x="1880" y="260" />
-        <di:waypoint x="1910" y="260" />
+      <bpmndi:BPMNEdge id="Flow_SendInitialNotice_To_TaskCollectRemainingInfo_Art33_di" bpmnElement="Flow_SendInitialNotice_To_TaskCollectRemainingInfo_Art33">
+        <di:waypoint x="2520" y="530" />
+        <di:waypoint x="2610" y="530" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_CollectRemaining_To_SendFollowUp_di" bpmnElement="Flow_CollectRemaining_To_SendFollowUp">
-        <di:waypoint x="2090" y="260" />
-        <di:waypoint x="2120" y="260" />
+      <bpmndi:BPMNEdge id="Flow_TaskCollectRemainingInfo_To_SendPhasedInfo_Art33_di" bpmnElement="Flow_TaskCollectRemainingInfo_To_SendPhasedInfo_Art33">
+        <di:waypoint x="2830" y="530" />
+        <di:waypoint x="2920" y="530" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_SendFollowUp_To_DocumentBreach_di" bpmnElement="Flow_SendFollowUp_To_DocumentBreach">
-        <di:waypoint x="2330" y="260" />
-        <di:waypoint x="2390" y="260" />
-        <di:waypoint x="2390" y="200" />
+      <bpmndi:BPMNEdge id="Flow_SendPhasedInfo_To_TaskDocumentBreach_Art33_di" bpmnElement="Flow_SendPhasedInfo_To_TaskDocumentBreach_Art33">
+        <di:waypoint x="3230" y="530" />
+        <di:waypoint x="3475" y="530" />
+        <di:waypoint x="3475" y="400" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_DocumentBreach_To_End_di" bpmnElement="Flow_DocumentBreach_To_End">
-        <di:waypoint x="2570" y="200" />
-        <di:waypoint x="2600" y="200" />
+      <bpmndi:BPMNEdge id="Flow_TaskDocumentBreach_To_EndCompleted_Art33_di" bpmnElement="Flow_TaskDocumentBreach_To_EndCompleted_Art33">
+        <di:waypoint x="3640" y="360" />
+        <di:waypoint x="3722" y="360" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_DocumentationDuty_di" bpmnElement="Association_DocumentationDuty">
-        <di:waypoint x="2480" y="240" />
-        <di:waypoint x="2480" y="260" />
+
+      <bpmndi:BPMNEdge id="Flow_StartProcessor_To_SendNotice_Art33_di" bpmnElement="Flow_StartProcessor_To_SendNotice_Art33">
+        <di:waypoint x="156" y="1010" />
+        <di:waypoint x="220" y="1010" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="DataInputAssoc_SendFullNotification_di" bpmnElement="DataInputAssoc_SendFullNotification">
-        <di:waypoint x="1868" y="160" />
-        <di:waypoint x="1790" y="120" />
+      <bpmndi:BPMNEdge id="Flow_SendNotice_To_EndProcessor_Art33_di" bpmnElement="Flow_SendNotice_To_EndProcessor_Art33">
+        <di:waypoint x="470" y="1010" />
+        <di:waypoint x="552" y="1010" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="DataInputAssoc_SendInitialNotification_di" bpmnElement="DataInputAssoc_SendInitialNotification">
-        <di:waypoint x="1868" y="160" />
-        <di:waypoint x="1790" y="260" />
+
+      <bpmndi:BPMNEdge id="MessageFlow_ProcessorToController_Art33_di" bpmnElement="MessageFlow_ProcessorToController_Art33">
+        <di:waypoint x="345" y="970" />
+        <di:waypoint x="345" y="286" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="DataInputAssoc_SendFollowUpInformation_di" bpmnElement="DataInputAssoc_SendFollowUpInformation">
-        <di:waypoint x="1868" y="160" />
-        <di:waypoint x="2225" y="220" />
+      <bpmndi:BPMNEdge id="MessageFlow_SendFullNotice_Art33_di" bpmnElement="MessageFlow_SendFullNotice_Art33">
+        <di:waypoint x="2430" y="240" />
+        <di:waypoint x="2430" y="760" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="DataOutputAssoc_DocumentBreach_di" bpmnElement="DataOutputAssoc_DocumentBreach">
-        <di:waypoint x="2480" y="160" />
-        <di:waypoint x="2473" y="145" />
+      <bpmndi:BPMNEdge id="MessageFlow_SendInitialNotice_Art33_di" bpmnElement="MessageFlow_SendInitialNotice_Art33">
+        <di:waypoint x="2410" y="570" />
+        <di:waypoint x="2410" y="760" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_ProcessorStart_To_NotifyController_di" bpmnElement="Flow_ProcessorStart_To_NotifyController">
-        <di:waypoint x="146" y="790" />
-        <di:waypoint x="210" y="790" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_NotifyController_To_ProcessorEnd_di" bpmnElement="Flow_NotifyController_To_ProcessorEnd">
-        <di:waypoint x="390" y="790" />
-        <di:waypoint x="440" y="790" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="MessageFlow_ProcessorToController_di" bpmnElement="MessageFlow_ProcessorToController">
-        <di:waypoint x="300" y="750" />
-        <di:waypoint x="300" y="154" />
-        <di:waypoint x="333" y="154" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="MessageFlow_ControllerFullNotification_di" bpmnElement="MessageFlow_ControllerFullNotification">
-        <di:waypoint x="1790" y="40" />
-        <di:waypoint x="1790" y="500" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="MessageFlow_ControllerInitialNotification_di" bpmnElement="MessageFlow_ControllerInitialNotification">
-        <di:waypoint x="1790" y="220" />
-        <di:waypoint x="1790" y="500" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="MessageFlow_ControllerFollowUpNotification_di" bpmnElement="MessageFlow_ControllerFollowUpNotification">
-        <di:waypoint x="2225" y="220" />
-        <di:waypoint x="2225" y="500" />
+      <bpmndi:BPMNEdge id="MessageFlow_SendPhasedInfo_Art33_di" bpmnElement="MessageFlow_SendPhasedInfo_Art33">
+        <di:waypoint x="3075" y="570" />
+        <di:waypoint x="3075" y="760" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

@@ -1,63 +1,86 @@
 <?xml version='1.0' encoding='utf-8'?>
 <processModel>
   <pools>
-    <pool id="Participant_Controller" name="Controller" poolType="active" processRef="Process_Controller_Art34" />
-    <pool id="Participant_DataSubject" name="Data Subject" poolType="passive" />
-    <pool id="Participant_Public" name="Public" poolType="passive" />
+    <pool id="Participant_Controller_Art34" name="Controller" poolType="active" processRef="Process_Controller_Art34" />
+    <pool id="Participant_DataSubject_Art34" name="Data Subject" poolType="passive" />
+    <pool id="Participant_Public_Art34" name="Public" poolType="passive" />
+    <pool id="Participant_SupervisoryAuthority_Art34" name="Supervisory Authority" poolType="active" processRef="Process_SupervisoryAuthority_Art34" />
   </pools>
   <lanes />
   <tasks>
-    <task id="Task_AssessHighRisk" name="Assess whether the breach is likely to result in high risk" type="task" poolRef="Participant_Controller" />
-    <task id="Task_CheckDisproportionateEffort" name="Assess whether individual communication requires disproportionate effort" type="task" poolRef="Participant_Controller" />
-    <task id="Task_CheckProtectionMeasures" name="Assess whether protection measures already nullify the breach risk" type="task" poolRef="Participant_Controller" />
-    <task id="Task_CheckSubsequentMeasures" name="Assess whether subsequent measures removed the likely high risk" type="task" poolRef="Participant_Controller" />
-    <task id="Task_DescribeConsequences" name="Describe the likely consequences of the breach" type="task" poolRef="Participant_Controller" />
-    <task id="Task_DescribeMeasures" name="Describe taken or proposed measures, including mitigation" type="task" poolRef="Participant_Controller" />
-    <task id="Task_NotifyDataSubject" name="Communicate the breach information to the data subject without undue delay" type="sendTask" poolRef="Participant_Controller" />
-    <task id="Task_ProvideContact" name="Provide DPO or other contact point details" type="task" poolRef="Participant_Controller" />
-    <task id="Task_PublicCommunication" name="Issue an equivalent public communication" type="sendTask" poolRef="Participant_Controller" />
+    <task id="SendTask_CommunicateDataSubject_Art34" name="Communicate breach without undue delay" type="sendTask" poolRef="Participant_Controller_Art34" />
+    <task id="SendTask_PublicCommunication_Art34" name="Issue public communication or similar measure" type="sendTask" poolRef="Participant_Controller_Art34" />
+    <task id="SendTask_RequireCommunication_Art34" name="Require controller communication" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art34" />
+    <task id="Task_AssessArticle34Exceptions_SA_Art34" name="Assess Article 34(3) conditions" type="task" poolRef="Participant_SupervisoryAuthority_Art34" />
+    <task id="Task_AssessCommunicationEffort_Art34" name="Assess communication effort" type="task" poolRef="Participant_Controller_Art34" />
+    <task id="Task_AssessHighRisk_Art34" name="Assess likely high risk" type="task" poolRef="Participant_Controller_Art34" />
+    <task id="Task_AssessHighRisk_SA_Art34" name="Assess likely high risk" type="task" poolRef="Participant_SupervisoryAuthority_Art34" />
+    <task id="Task_AssessProtectionMeasures_Art34" name="Assess protection measures" type="task" poolRef="Participant_Controller_Art34" />
+    <task id="Task_AssessSubsequentMeasures_Art34" name="Assess subsequent measures" type="task" poolRef="Participant_Controller_Art34" />
+    <task id="Task_DescribeConsequences_Art34" name="Describe likely consequences" type="task" poolRef="Participant_Controller_Art34" />
+    <task id="Task_DescribeMeasures_Art34" name="Describe measures taken or proposed" type="task" poolRef="Participant_Controller_Art34" />
+    <task id="Task_DescribeNature_Art34" name="Describe breach nature" type="task" poolRef="Participant_Controller_Art34" />
+    <task id="Task_PrepareNotice_Art34" name="Prepare clear and plain-language notice" type="task" poolRef="Participant_Controller_Art34" />
+    <task id="Task_ProvideContact_Art34" name="Provide DPO or contact point details" type="task" poolRef="Participant_Controller_Art34" />
   </tasks>
   <events>
-    <event id="EndEvent_CommunicationCompleted" name="Direct communication completed" type="endEvent" poolRef="Participant_Controller" />
-    <event id="EndEvent_NoCommunicationRequired" name="No direct data subject communication required" type="endEvent" poolRef="Participant_Controller" />
-    <event id="EndEvent_PublicCommunicationCompleted" name="Public communication completed" type="endEvent" poolRef="Participant_Controller" />
-    <event id="StartEvent_Art34AssessmentStarted" name="Controller starts Article 34 assessment" type="startEvent" poolRef="Participant_Controller" />
+    <event id="EndEvent_DirectCommunicationCompleted_Art34" name="Direct communication completed" type="endEvent" poolRef="Participant_Controller_Art34" />
+    <event id="EndEvent_ExceptionsMet_Art34" name="Article 34(3) conditions met" type="endEvent" poolRef="Participant_SupervisoryAuthority_Art34" />
+    <event id="EndEvent_NoCommunicationRequired_Art34" name="No direct communication required" type="endEvent" poolRef="Participant_Controller_Art34" />
+    <event id="EndEvent_NoSAAction_Art34" name="No supervisory authority action required" type="endEvent" poolRef="Participant_SupervisoryAuthority_Art34" />
+    <event id="EndEvent_PublicCommunicationCompleted_Art34" name="Public communication completed" type="endEvent" poolRef="Participant_Controller_Art34" />
+    <event id="EndEvent_RequirementSent_Art34" name="Communication requirement sent" type="endEvent" poolRef="Participant_SupervisoryAuthority_Art34" />
+    <event id="StartEvent_AssessArticle34_Art34" name="Assess Article 34 duties" type="startEvent" poolRef="Participant_Controller_Art34" />
+    <event id="StartEvent_ReviewArticle34_Art34" name="Review Article 34 case" type="startEvent" poolRef="Participant_SupervisoryAuthority_Art34" />
   </events>
   <gateways>
-    <gateway id="Gateway_CompileJoin" type="parallelGateway" poolRef="Participant_Controller" />
-    <gateway id="Gateway_CompileSplit" type="parallelGateway" poolRef="Participant_Controller" />
-    <gateway id="Gateway_DisproportionateEffort" name="Individual communication requires disproportionate effort?" type="exclusiveGateway" poolRef="Participant_Controller" />
-    <gateway id="Gateway_HighRiskLikely" name="High risk to rights and freedoms likely?" type="exclusiveGateway" poolRef="Participant_Controller" />
-    <gateway id="Gateway_HighRiskRemoved" name="Subsequent measures removed the likely high risk?" type="exclusiveGateway" poolRef="Participant_Controller" />
-    <gateway id="Gateway_RiskNullified" name="Protection measures nullify the breach risk?" type="exclusiveGateway" poolRef="Participant_Controller" />
+    <gateway id="Gateway_CompileJoin_Art34" type="parallelGateway" poolRef="Participant_Controller_Art34" />
+    <gateway id="Gateway_CompileSplit_Art34" type="parallelGateway" poolRef="Participant_Controller_Art34" />
+    <gateway id="Gateway_ControllerCommunicated_Art34" name="Has the controller already communicated?" type="exclusiveGateway" poolRef="Participant_SupervisoryAuthority_Art34" />
+    <gateway id="Gateway_DisproportionateEffort_Art34" name="Would individual communication require disproportionate effort?" type="exclusiveGateway" poolRef="Participant_Controller_Art34" />
+    <gateway id="Gateway_ExceptionsApply_SA_Art34" name="Do Article 34(3) conditions apply?" type="exclusiveGateway" poolRef="Participant_SupervisoryAuthority_Art34" />
+    <gateway id="Gateway_HighRiskLikely_Art34" name="Is the breach likely to result in high risk?" type="exclusiveGateway" poolRef="Participant_Controller_Art34" />
+    <gateway id="Gateway_ProtectionEffective_Art34" name="Do the applied measures render the data unintelligible?" type="exclusiveGateway" poolRef="Participant_Controller_Art34" />
+    <gateway id="Gateway_SubsequentMeasuresEffective_Art34" name="Do subsequent measures remove the likely high risk?" type="exclusiveGateway" poolRef="Participant_Controller_Art34" />
   </gateways>
   <sequenceFlows>
-    <sequenceFlow id="Flow_AssessHighRisk_To_GatewayHighRisk" sourceRef="Task_AssessHighRisk" targetRef="Gateway_HighRiskLikely" />
-    <sequenceFlow id="Flow_CheckDisproportionateEffort_To_GatewayDisproportionateEffort" sourceRef="Task_CheckDisproportionateEffort" targetRef="Gateway_DisproportionateEffort" />
-    <sequenceFlow id="Flow_CheckProtectionMeasures_To_GatewayRiskNullified" sourceRef="Task_CheckProtectionMeasures" targetRef="Gateway_RiskNullified" />
-    <sequenceFlow id="Flow_CheckSubsequentMeasures_To_GatewayHighRiskRemoved" sourceRef="Task_CheckSubsequentMeasures" targetRef="Gateway_HighRiskRemoved" />
-    <sequenceFlow id="Flow_DescribeConsequences_To_GatewayCompileJoin" sourceRef="Task_DescribeConsequences" targetRef="Gateway_CompileJoin" />
-    <sequenceFlow id="Flow_DescribeMeasures_To_GatewayCompileJoin" sourceRef="Task_DescribeMeasures" targetRef="Gateway_CompileJoin" />
-    <sequenceFlow id="Flow_GatewayCompileJoin_To_NotifyDataSubject" sourceRef="Gateway_CompileJoin" targetRef="Task_NotifyDataSubject" />
-    <sequenceFlow id="Flow_GatewayCompileSplit_To_DescribeConsequences" sourceRef="Gateway_CompileSplit" targetRef="Task_DescribeConsequences" />
-    <sequenceFlow id="Flow_GatewayCompileSplit_To_DescribeMeasures" sourceRef="Gateway_CompileSplit" targetRef="Task_DescribeMeasures" />
-    <sequenceFlow id="Flow_GatewayCompileSplit_To_ProvideContact" sourceRef="Gateway_CompileSplit" targetRef="Task_ProvideContact" />
-    <sequenceFlow id="Flow_GatewayDisproportionateEffort_To_GatewayCompileSplit" name="No" sourceRef="Gateway_DisproportionateEffort" targetRef="Gateway_CompileSplit" />
-    <sequenceFlow id="Flow_GatewayDisproportionateEffort_To_TaskPublicCommunication" name="Yes" sourceRef="Gateway_DisproportionateEffort" targetRef="Task_PublicCommunication" />
-    <sequenceFlow id="Flow_GatewayHighRiskRemoved_To_CheckDisproportionateEffort" name="No" sourceRef="Gateway_HighRiskRemoved" targetRef="Task_CheckDisproportionateEffort" />
-    <sequenceFlow id="Flow_GatewayHighRiskRemoved_To_EndNoCommunication" name="Yes" sourceRef="Gateway_HighRiskRemoved" targetRef="EndEvent_NoCommunicationRequired" />
-    <sequenceFlow id="Flow_GatewayHighRisk_To_CheckProtectionMeasures" name="Yes" sourceRef="Gateway_HighRiskLikely" targetRef="Task_CheckProtectionMeasures" />
-    <sequenceFlow id="Flow_GatewayHighRisk_To_EndNoCommunication" name="No" sourceRef="Gateway_HighRiskLikely" targetRef="EndEvent_NoCommunicationRequired" />
-    <sequenceFlow id="Flow_GatewayRiskNullified_To_CheckSubsequentMeasures" name="No" sourceRef="Gateway_RiskNullified" targetRef="Task_CheckSubsequentMeasures" />
-    <sequenceFlow id="Flow_GatewayRiskNullified_To_EndNoCommunication" name="Yes" sourceRef="Gateway_RiskNullified" targetRef="EndEvent_NoCommunicationRequired" />
-    <sequenceFlow id="Flow_NotifyDataSubject_To_EndCommunicationCompleted" sourceRef="Task_NotifyDataSubject" targetRef="EndEvent_CommunicationCompleted" />
-    <sequenceFlow id="Flow_ProvideContact_To_GatewayCompileJoin" sourceRef="Task_ProvideContact" targetRef="Gateway_CompileJoin" />
-    <sequenceFlow id="Flow_Start_To_AssessHighRisk" sourceRef="StartEvent_Art34AssessmentStarted" targetRef="Task_AssessHighRisk" />
-    <sequenceFlow id="Flow_TaskPublicCommunication_To_EndPublicCommunicationCompleted" sourceRef="Task_PublicCommunication" targetRef="EndEvent_PublicCommunicationCompleted" />
+    <sequenceFlow id="Flow_AssessEffort_To_GatewayEffort_Art34" sourceRef="Task_AssessCommunicationEffort_Art34" targetRef="Gateway_DisproportionateEffort_Art34" />
+    <sequenceFlow id="Flow_AssessExceptions_To_GatewayExceptions_Art34" sourceRef="Task_AssessArticle34Exceptions_SA_Art34" targetRef="Gateway_ExceptionsApply_SA_Art34" />
+    <sequenceFlow id="Flow_AssessHighRisk_To_GatewayHighRisk_Art34" sourceRef="Task_AssessHighRisk_Art34" targetRef="Gateway_HighRiskLikely_Art34" />
+    <sequenceFlow id="Flow_AssessProtection_To_GatewayProtection_Art34" sourceRef="Task_AssessProtectionMeasures_Art34" targetRef="Gateway_ProtectionEffective_Art34" />
+    <sequenceFlow id="Flow_AssessSubsequent_To_GatewaySubsequent_Art34" sourceRef="Task_AssessSubsequentMeasures_Art34" targetRef="Gateway_SubsequentMeasuresEffective_Art34" />
+    <sequenceFlow id="Flow_Communicate_To_EndDirectCommunication_Art34" sourceRef="SendTask_CommunicateDataSubject_Art34" targetRef="EndEvent_DirectCommunicationCompleted_Art34" />
+    <sequenceFlow id="Flow_DescribeConsequences_To_GatewayCompileJoin_Art34" sourceRef="Task_DescribeConsequences_Art34" targetRef="Gateway_CompileJoin_Art34" />
+    <sequenceFlow id="Flow_DescribeMeasures_To_GatewayCompileJoin_Art34" sourceRef="Task_DescribeMeasures_Art34" targetRef="Gateway_CompileJoin_Art34" />
+    <sequenceFlow id="Flow_DescribeNature_To_GatewayCompileJoin_Art34" sourceRef="Task_DescribeNature_Art34" targetRef="Gateway_CompileJoin_Art34" />
+    <sequenceFlow id="Flow_GatewayCommunicated_To_AssessExceptions_Art34" name="No" sourceRef="Gateway_ControllerCommunicated_Art34" targetRef="Task_AssessArticle34Exceptions_SA_Art34" />
+    <sequenceFlow id="Flow_GatewayCommunicated_To_EndNoSAAction_Art34" name="Yes" sourceRef="Gateway_ControllerCommunicated_Art34" targetRef="EndEvent_NoSAAction_Art34" />
+    <sequenceFlow id="Flow_GatewayCompileJoin_To_Communicate_Art34" sourceRef="Gateway_CompileJoin_Art34" targetRef="SendTask_CommunicateDataSubject_Art34" />
+    <sequenceFlow id="Flow_GatewayCompileSplit_To_DescribeConsequences_Art34" sourceRef="Gateway_CompileSplit_Art34" targetRef="Task_DescribeConsequences_Art34" />
+    <sequenceFlow id="Flow_GatewayCompileSplit_To_DescribeMeasures_Art34" sourceRef="Gateway_CompileSplit_Art34" targetRef="Task_DescribeMeasures_Art34" />
+    <sequenceFlow id="Flow_GatewayCompileSplit_To_DescribeNature_Art34" sourceRef="Gateway_CompileSplit_Art34" targetRef="Task_DescribeNature_Art34" />
+    <sequenceFlow id="Flow_GatewayCompileSplit_To_ProvideContact_Art34" sourceRef="Gateway_CompileSplit_Art34" targetRef="Task_ProvideContact_Art34" />
+    <sequenceFlow id="Flow_GatewayEffort_To_PrepareNotice_Art34" name="No" sourceRef="Gateway_DisproportionateEffort_Art34" targetRef="Task_PrepareNotice_Art34" />
+    <sequenceFlow id="Flow_GatewayEffort_To_PublicCommunication_Art34" name="Yes" sourceRef="Gateway_DisproportionateEffort_Art34" targetRef="SendTask_PublicCommunication_Art34" />
+    <sequenceFlow id="Flow_GatewayExceptions_To_EndExceptionsMet_Art34" name="Yes" sourceRef="Gateway_ExceptionsApply_SA_Art34" targetRef="EndEvent_ExceptionsMet_Art34" />
+    <sequenceFlow id="Flow_GatewayExceptions_To_RequireCommunication_Art34" name="No" sourceRef="Gateway_ExceptionsApply_SA_Art34" targetRef="SendTask_RequireCommunication_Art34" />
+    <sequenceFlow id="Flow_GatewayHighRisk_To_AssessProtection_Art34" name="Yes" sourceRef="Gateway_HighRiskLikely_Art34" targetRef="Task_AssessProtectionMeasures_Art34" />
+    <sequenceFlow id="Flow_GatewayHighRisk_To_EndNoCommunication_Art34" name="No" sourceRef="Gateway_HighRiskLikely_Art34" targetRef="EndEvent_NoCommunicationRequired_Art34" />
+    <sequenceFlow id="Flow_GatewayProtection_To_AssessSubsequent_Art34" name="No" sourceRef="Gateway_ProtectionEffective_Art34" targetRef="Task_AssessSubsequentMeasures_Art34" />
+    <sequenceFlow id="Flow_GatewayProtection_To_EndNoCommunication_Art34" name="Yes" sourceRef="Gateway_ProtectionEffective_Art34" targetRef="EndEvent_NoCommunicationRequired_Art34" />
+    <sequenceFlow id="Flow_GatewaySubsequent_To_AssessEffort_Art34" name="No" sourceRef="Gateway_SubsequentMeasuresEffective_Art34" targetRef="Task_AssessCommunicationEffort_Art34" />
+    <sequenceFlow id="Flow_GatewaySubsequent_To_EndNoCommunication_Art34" name="Yes" sourceRef="Gateway_SubsequentMeasuresEffective_Art34" targetRef="EndEvent_NoCommunicationRequired_Art34" />
+    <sequenceFlow id="Flow_PrepareNotice_To_GatewayCompileSplit_Art34" sourceRef="Task_PrepareNotice_Art34" targetRef="Gateway_CompileSplit_Art34" />
+    <sequenceFlow id="Flow_ProvideContact_To_GatewayCompileJoin_Art34" sourceRef="Task_ProvideContact_Art34" targetRef="Gateway_CompileJoin_Art34" />
+    <sequenceFlow id="Flow_PublicCommunication_To_EndPublicCommunication_Art34" sourceRef="SendTask_PublicCommunication_Art34" targetRef="EndEvent_PublicCommunicationCompleted_Art34" />
+    <sequenceFlow id="Flow_RequireCommunication_To_EndRequirementSent_Art34" sourceRef="SendTask_RequireCommunication_Art34" targetRef="EndEvent_RequirementSent_Art34" />
+    <sequenceFlow id="Flow_SAAssessHighRisk_To_GatewayCommunicated_Art34" sourceRef="Task_AssessHighRisk_SA_Art34" targetRef="Gateway_ControllerCommunicated_Art34" />
+    <sequenceFlow id="Flow_SAStart_To_AssessHighRisk_Art34" sourceRef="StartEvent_ReviewArticle34_Art34" targetRef="Task_AssessHighRisk_SA_Art34" />
+    <sequenceFlow id="Flow_Start_To_AssessHighRisk_Art34" sourceRef="StartEvent_AssessArticle34_Art34" targetRef="Task_AssessHighRisk_Art34" />
   </sequenceFlows>
   <messageFlows>
-    <messageFlow id="MessageFlow_ControllerToDataSubject" sourceRef="Task_NotifyDataSubject" targetRef="Participant_DataSubject" />
-    <messageFlow id="MessageFlow_ControllerToPublic" sourceRef="Task_PublicCommunication" targetRef="Participant_Public" />
+    <messageFlow id="MessageFlow_CommunicateToDataSubject_Art34" sourceRef="SendTask_CommunicateDataSubject_Art34" targetRef="Participant_DataSubject_Art34" />
+    <messageFlow id="MessageFlow_PublicCommunication_Art34" sourceRef="SendTask_PublicCommunication_Art34" targetRef="Participant_Public_Art34" />
   </messageFlows>
   <dataObjects />
   <dataStores />

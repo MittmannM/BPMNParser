@@ -3,34 +3,49 @@
   <pools />
   <lanes />
   <tasks>
-    <task id="Task_EnsureDataMinimisation_Art89" name="Ensure that the measures respect the principle of data minimisation" type="task" poolRef="Process_Controller_Art89" />
-    <task id="Task_EstablishSafeguards_Art89" name="Establish appropriate safeguards for the rights and freedoms of data subjects" type="task" poolRef="Process_Controller_Art89" />
-    <task id="Task_ImplementMeasures_Art89" name="Implement technical and organisational measures for the processing" type="task" poolRef="Process_Controller_Art89" />
-    <task id="Task_ProcessWithoutIdentification_Art89" name="Fulfil the purpose through processing that does not or no longer permits identification" type="task" poolRef="Process_Controller_Art89" />
-    <task id="Task_UsePseudonymisation_Art89" name="Use pseudonymisation as part of the safeguards" type="task" poolRef="Process_Controller_Art89" />
+    <task id="Task_CheckArchivingDerogation_Art89" name="Check archiving derogation" type="task" poolRef="Process_Controller_Art89" />
+    <task id="Task_CheckResearchDerogation_Art89" name="Check research or statistics derogation" type="task" poolRef="Process_Controller_Art89" />
+    <task id="Task_EnsureDataMinimisation_Art89" name="Ensure data minimisation" type="task" poolRef="Process_Controller_Art89" />
+    <task id="Task_EstablishSafeguards_Art89" name="Establish safeguards" type="task" poolRef="Process_Controller_Art89" />
+    <task id="Task_ImplementMeasures_Art89" name="Implement technical and organisational measures" type="task" poolRef="Process_Controller_Art89" />
+    <task id="Task_LimitDerogationScope_Art89" name="Limit derogation to Article 89 processing" type="task" poolRef="Process_Controller_Art89" />
+    <task id="Task_ProcessWithoutIdentification_Art89" name="Process without identification" type="task" poolRef="Process_Controller_Art89" />
+    <task id="Task_UsePseudonymisation_Art89" name="Use pseudonymisation" type="task" poolRef="Process_Controller_Art89" />
   </tasks>
   <events>
-    <event id="EndEvent_NoArticle89Regime_Art89" name="No Article 89 special safeguarding regime applies" type="endEvent" poolRef="Process_Controller_Art89" />
+    <event id="EndEvent_NoArticle89Regime_Art89" name="No Article 89 regime applies" type="endEvent" poolRef="Process_Controller_Art89" />
     <event id="EndEvent_SafeguardsConfigured_Art89" name="Article 89 safeguards configured" type="endEvent" poolRef="Process_Controller_Art89" />
-    <event id="StartEvent_AssessPurpose_Art89" name="Need to configure processing for an Article 89 purpose" type="startEvent" poolRef="Process_Controller_Art89" />
+    <event id="StartEvent_AssessPurpose_Art89" name="Need Article 89 processing" type="startEvent" poolRef="Process_Controller_Art89" />
   </events>
   <gateways>
-    <gateway id="Gateway_Article89Purpose_Art89" name="Is the processing for archiving in the public interest, research, or statistical purposes?" type="exclusiveGateway" poolRef="Process_Controller_Art89" />
-    <gateway id="Gateway_NonIdentifyingMode_Art89" name="Can the purpose be fulfilled by processing that does not or no longer identifies data subjects?" type="exclusiveGateway" poolRef="Process_Controller_Art89" />
+    <gateway id="Gateway_Article89Purpose_Art89" name="Is the processing for an Article 89 purpose?" type="exclusiveGateway" poolRef="Process_Controller_Art89" />
+    <gateway id="Gateway_DerogationLaw_Art89" name="Does Union or Member State law provide an Article 89 derogation?" type="exclusiveGateway" poolRef="Process_Controller_Art89" />
+    <gateway id="Gateway_DerogationPurpose_Art89" name="Which Article 89 derogation context applies?" type="exclusiveGateway" poolRef="Process_Controller_Art89" />
+    <gateway id="Gateway_NonIdentifyingMode_Art89" name="Can the purpose be fulfilled without identifying data subjects?" type="exclusiveGateway" poolRef="Process_Controller_Art89" />
+    <gateway id="Gateway_OtherPurpose_Art89" name="Does the processing also serve another purpose?" type="exclusiveGateway" poolRef="Process_Controller_Art89" />
     <gateway id="Gateway_Pseudonymisation_Art89" name="Can the purpose be fulfilled with pseudonymisation?" type="exclusiveGateway" poolRef="Process_Controller_Art89" />
   </gateways>
   <sequenceFlows>
-    <sequenceFlow id="Flow_GatewayNonIdentifyingMode_To_EndSafeguardsConfigured_Art89" name="No" sourceRef="Gateway_NonIdentifyingMode_Art89" targetRef="EndEvent_SafeguardsConfigured_Art89" />
+    <sequenceFlow id="Flow_CheckArchivingDerogation_To_GatewayOtherPurpose_Art89" sourceRef="Task_CheckArchivingDerogation_Art89" targetRef="Gateway_OtherPurpose_Art89" />
+    <sequenceFlow id="Flow_CheckResearchDerogation_To_GatewayOtherPurpose_Art89" sourceRef="Task_CheckResearchDerogation_Art89" targetRef="Gateway_OtherPurpose_Art89" />
+    <sequenceFlow id="Flow_GatewayDerogationLaw_To_EndSafeguardsConfigured_Art89" name="No" sourceRef="Gateway_DerogationLaw_Art89" targetRef="EndEvent_SafeguardsConfigured_Art89" />
+    <sequenceFlow id="Flow_GatewayDerogationLaw_To_GatewayDerogationPurpose_Art89" name="Yes" sourceRef="Gateway_DerogationLaw_Art89" targetRef="Gateway_DerogationPurpose_Art89" />
+    <sequenceFlow id="Flow_GatewayDerogationPurpose_To_CheckArchivingDerogation_Art89" name="Archiving in the public interest" sourceRef="Gateway_DerogationPurpose_Art89" targetRef="Task_CheckArchivingDerogation_Art89" />
+    <sequenceFlow id="Flow_GatewayDerogationPurpose_To_CheckResearchDerogation_Art89" name="Research or statistics" sourceRef="Gateway_DerogationPurpose_Art89" targetRef="Task_CheckResearchDerogation_Art89" />
+    <sequenceFlow id="Flow_GatewayNonIdentifyingMode_To_GatewayDerogationLaw_Art89" name="No" sourceRef="Gateway_NonIdentifyingMode_Art89" targetRef="Gateway_DerogationLaw_Art89" />
     <sequenceFlow id="Flow_GatewayNonIdentifyingMode_To_TaskProcessWithoutIdentification_Art89" name="Yes" sourceRef="Gateway_NonIdentifyingMode_Art89" targetRef="Task_ProcessWithoutIdentification_Art89" />
+    <sequenceFlow id="Flow_GatewayOtherPurpose_To_EndSafeguardsConfigured_Art89" name="No" sourceRef="Gateway_OtherPurpose_Art89" targetRef="EndEvent_SafeguardsConfigured_Art89" />
+    <sequenceFlow id="Flow_GatewayOtherPurpose_To_LimitDerogationScope_Art89" name="Yes" sourceRef="Gateway_OtherPurpose_Art89" targetRef="Task_LimitDerogationScope_Art89" />
     <sequenceFlow id="Flow_GatewayPseudonymisation_To_GatewayNonIdentifyingMode_Art89" name="No" sourceRef="Gateway_Pseudonymisation_Art89" targetRef="Gateway_NonIdentifyingMode_Art89" />
     <sequenceFlow id="Flow_GatewayPseudonymisation_To_TaskUsePseudonymisation_Art89" name="Yes" sourceRef="Gateway_Pseudonymisation_Art89" targetRef="Task_UsePseudonymisation_Art89" />
     <sequenceFlow id="Flow_GatewayPurpose_To_EndNoArticle89Regime_Art89" name="No" sourceRef="Gateway_Article89Purpose_Art89" targetRef="EndEvent_NoArticle89Regime_Art89" />
     <sequenceFlow id="Flow_GatewayPurpose_To_TaskEstablishSafeguards_Art89" name="Yes" sourceRef="Gateway_Article89Purpose_Art89" targetRef="Task_EstablishSafeguards_Art89" />
+    <sequenceFlow id="Flow_LimitDerogationScope_To_EndSafeguardsConfigured_Art89" sourceRef="Task_LimitDerogationScope_Art89" targetRef="EndEvent_SafeguardsConfigured_Art89" />
     <sequenceFlow id="Flow_Start_To_GatewayPurpose_Art89" sourceRef="StartEvent_AssessPurpose_Art89" targetRef="Gateway_Article89Purpose_Art89" />
     <sequenceFlow id="Flow_TaskEnsureMinimisation_To_GatewayPseudonymisation_Art89" sourceRef="Task_EnsureDataMinimisation_Art89" targetRef="Gateway_Pseudonymisation_Art89" />
     <sequenceFlow id="Flow_TaskEstablishSafeguards_To_TaskImplementMeasures_Art89" sourceRef="Task_EstablishSafeguards_Art89" targetRef="Task_ImplementMeasures_Art89" />
     <sequenceFlow id="Flow_TaskImplementMeasures_To_TaskEnsureMinimisation_Art89" sourceRef="Task_ImplementMeasures_Art89" targetRef="Task_EnsureDataMinimisation_Art89" />
-    <sequenceFlow id="Flow_TaskProcessWithoutIdentification_To_EndSafeguardsConfigured_Art89" sourceRef="Task_ProcessWithoutIdentification_Art89" targetRef="EndEvent_SafeguardsConfigured_Art89" />
+    <sequenceFlow id="Flow_TaskProcessWithoutIdentification_To_GatewayDerogationLaw_Art89" sourceRef="Task_ProcessWithoutIdentification_Art89" targetRef="Gateway_DerogationLaw_Art89" />
     <sequenceFlow id="Flow_TaskUsePseudonymisation_To_GatewayNonIdentifyingMode_Art89" sourceRef="Task_UsePseudonymisation_Art89" targetRef="Gateway_NonIdentifyingMode_Art89" />
   </sequenceFlows>
   <messageFlows />

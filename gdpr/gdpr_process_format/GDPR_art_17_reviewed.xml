@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Controller_Art17" name="Controller" poolType="active" processRef="Process_Controller_Art17" />
+    <pool id="Participant_DataSubject_Art17" name="Data Subject" poolType="passive" />
+    <pool id="Participant_OtherControllers_Art17" name="Other Controllers" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="ReceiveTask_ReceiveErasureRequest_Art17" name="Receive erasure request" type="receiveTask" poolRef="Participant_Controller_Art17" />
+    <task id="SendTask_InformOtherControllers_Art17" name="Inform other controllers to erase links and copies" type="sendTask" poolRef="Participant_Controller_Art17" />
+    <task id="Task_ErasePersonalData_Art17" name="Erase data without undue delay" type="task" poolRef="Participant_Controller_Art17" />
+    <task id="Task_GroundChildConsent_Art17" name="Assess child-service ground" type="task" poolRef="Participant_Controller_Art17" />
+    <task id="Task_GroundLegalObligation_Art17" name="Assess legal-obligation ground" type="task" poolRef="Participant_Controller_Art17" />
+    <task id="Task_GroundNoLongerNecessary_Art17" name="Assess no-longer-necessary ground" type="task" poolRef="Participant_Controller_Art17" />
+    <task id="Task_GroundSuccessfulObjection_Art17" name="Assess Article 21 objection ground" type="task" poolRef="Participant_Controller_Art17" />
+    <task id="Task_GroundUnlawfulProcessing_Art17" name="Assess unlawful-processing ground" type="task" poolRef="Participant_Controller_Art17" />
+    <task id="Task_GroundWithdrawnConsent_Art17" name="Assess withdrawn-consent ground" type="task" poolRef="Participant_Controller_Art17" />
+  </tasks>
+  <events>
+    <event id="EndEvent_ErasureCompleted_Art17" name="Article 17 completed" type="endEvent" poolRef="Participant_Controller_Art17" />
+    <event id="EndEvent_FreedomExpressionException_Art17" name="Freedom-of-expression exception applies" type="endEvent" poolRef="Participant_Controller_Art17" />
+    <event id="EndEvent_LegalClaimsException_Art17" name="Legal-claims exception applies" type="endEvent" poolRef="Participant_Controller_Art17" />
+    <event id="EndEvent_LegalObligationException_Art17" name="Legal-obligation or public-task exception applies" type="endEvent" poolRef="Participant_Controller_Art17" />
+    <event id="EndEvent_NoErasureGround_Art17" name="No erasure ground established" type="endEvent" poolRef="Participant_Controller_Art17" />
+    <event id="EndEvent_PublicHealthException_Art17" name="Public-health exception applies" type="endEvent" poolRef="Participant_Controller_Art17" />
+    <event id="EndEvent_ResearchException_Art17" name="Article 89 exception applies" type="endEvent" poolRef="Participant_Controller_Art17" />
+    <event id="StartEvent_ErasureRequested_Art17" name="Need erasure assessment" type="startEvent" poolRef="Participant_Controller_Art17" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_Art17Exception_Art17" name="Does an Article 17(3) exception prevent erasure?" type="exclusiveGateway" poolRef="Participant_Controller_Art17" />
+    <gateway id="Gateway_ErasureGround_Art17" name="Which Article 17(1) erasure ground applies?" type="exclusiveGateway" poolRef="Participant_Controller_Art17" />
+    <gateway id="Gateway_ExceptionType_Art17" name="Which Article 17(3) exception applies?" type="exclusiveGateway" poolRef="Participant_Controller_Art17" />
+    <gateway id="Gateway_JoinGrounds_Art17" type="exclusiveGateway" poolRef="Participant_Controller_Art17" />
+    <gateway id="Gateway_PublicData_Art17" name="Were the personal data made public?" type="exclusiveGateway" poolRef="Participant_Controller_Art17" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_GatewayArt17Exception_To_GatewayExceptionType_Art17" name="Yes" sourceRef="Gateway_Art17Exception_Art17" targetRef="Gateway_ExceptionType_Art17" />
+    <sequenceFlow id="Flow_GatewayArt17Exception_To_TaskErasePersonalData_Art17" name="No" sourceRef="Gateway_Art17Exception_Art17" targetRef="Task_ErasePersonalData_Art17" />
+    <sequenceFlow id="Flow_GatewayErasureGround_To_EndNoErasureGround_Art17" name="No ground" sourceRef="Gateway_ErasureGround_Art17" targetRef="EndEvent_NoErasureGround_Art17" />
+    <sequenceFlow id="Flow_GatewayErasureGround_To_TaskGroundChildConsent_Art17" name="Data were collected from a child for information society services" sourceRef="Gateway_ErasureGround_Art17" targetRef="Task_GroundChildConsent_Art17" />
+    <sequenceFlow id="Flow_GatewayErasureGround_To_TaskGroundLegalObligation_Art17" name="Erasure is required by Union or Member State law" sourceRef="Gateway_ErasureGround_Art17" targetRef="Task_GroundLegalObligation_Art17" />
+    <sequenceFlow id="Flow_GatewayErasureGround_To_TaskGroundNoLongerNecessary_Art17" name="Data no longer necessary for the processing purposes" sourceRef="Gateway_ErasureGround_Art17" targetRef="Task_GroundNoLongerNecessary_Art17" />
+    <sequenceFlow id="Flow_GatewayErasureGround_To_TaskGroundSuccessfulObjection_Art17" name="Objection prevails or the processing concerns direct marketing" sourceRef="Gateway_ErasureGround_Art17" targetRef="Task_GroundSuccessfulObjection_Art17" />
+    <sequenceFlow id="Flow_GatewayErasureGround_To_TaskGroundUnlawfulProcessing_Art17" name="Personal data were processed unlawfully" sourceRef="Gateway_ErasureGround_Art17" targetRef="Task_GroundUnlawfulProcessing_Art17" />
+    <sequenceFlow id="Flow_GatewayErasureGround_To_TaskGroundWithdrawnConsent_Art17" name="Consent withdrawn and no other legal ground remains" sourceRef="Gateway_ErasureGround_Art17" targetRef="Task_GroundWithdrawnConsent_Art17" />
+    <sequenceFlow id="Flow_GatewayExceptionType_To_EndFreedomExpressionException_Art17" name="Necessary for freedom of expression and information" sourceRef="Gateway_ExceptionType_Art17" targetRef="EndEvent_FreedomExpressionException_Art17" />
+    <sequenceFlow id="Flow_GatewayExceptionType_To_EndLegalClaimsException_Art17" name="Necessary for the establishment, exercise, or defence of legal claims" sourceRef="Gateway_ExceptionType_Art17" targetRef="EndEvent_LegalClaimsException_Art17" />
+    <sequenceFlow id="Flow_GatewayExceptionType_To_EndLegalObligationException_Art17" name="Necessary for a legal obligation, a public task, or official authority" sourceRef="Gateway_ExceptionType_Art17" targetRef="EndEvent_LegalObligationException_Art17" />
+    <sequenceFlow id="Flow_GatewayExceptionType_To_EndPublicHealthException_Art17" name="Necessary for reasons of public interest in public health" sourceRef="Gateway_ExceptionType_Art17" targetRef="EndEvent_PublicHealthException_Art17" />
+    <sequenceFlow id="Flow_GatewayExceptionType_To_EndResearchException_Art17" name="Necessary for archiving, research, or statistical purposes" sourceRef="Gateway_ExceptionType_Art17" targetRef="EndEvent_ResearchException_Art17" />
+    <sequenceFlow id="Flow_GatewayJoinGrounds_To_GatewayArt17Exception_Art17" sourceRef="Gateway_JoinGrounds_Art17" targetRef="Gateway_Art17Exception_Art17" />
+    <sequenceFlow id="Flow_GatewayPublicData_To_EndErasureCompleted_Art17" name="No" sourceRef="Gateway_PublicData_Art17" targetRef="EndEvent_ErasureCompleted_Art17" />
+    <sequenceFlow id="Flow_GatewayPublicData_To_SendTaskInformOtherControllers_Art17" name="Yes" sourceRef="Gateway_PublicData_Art17" targetRef="SendTask_InformOtherControllers_Art17" />
+    <sequenceFlow id="Flow_ReceiveTaskReceiveErasureRequest_To_GatewayErasureGround_Art17" sourceRef="ReceiveTask_ReceiveErasureRequest_Art17" targetRef="Gateway_ErasureGround_Art17" />
+    <sequenceFlow id="Flow_SendTaskInformOtherControllers_To_EndErasureCompleted_Art17" sourceRef="SendTask_InformOtherControllers_Art17" targetRef="EndEvent_ErasureCompleted_Art17" />
+    <sequenceFlow id="Flow_Start_To_ReceiveTaskReceiveErasureRequest_Art17" sourceRef="StartEvent_ErasureRequested_Art17" targetRef="ReceiveTask_ReceiveErasureRequest_Art17" />
+    <sequenceFlow id="Flow_TaskErasePersonalData_To_GatewayPublicData_Art17" sourceRef="Task_ErasePersonalData_Art17" targetRef="Gateway_PublicData_Art17" />
+    <sequenceFlow id="Flow_TaskGroundChildConsent_To_GatewayJoinGrounds_Art17" sourceRef="Task_GroundChildConsent_Art17" targetRef="Gateway_JoinGrounds_Art17" />
+    <sequenceFlow id="Flow_TaskGroundLegalObligation_To_GatewayJoinGrounds_Art17" sourceRef="Task_GroundLegalObligation_Art17" targetRef="Gateway_JoinGrounds_Art17" />
+    <sequenceFlow id="Flow_TaskGroundNoLongerNecessary_To_GatewayJoinGrounds_Art17" sourceRef="Task_GroundNoLongerNecessary_Art17" targetRef="Gateway_JoinGrounds_Art17" />
+    <sequenceFlow id="Flow_TaskGroundSuccessfulObjection_To_GatewayJoinGrounds_Art17" sourceRef="Task_GroundSuccessfulObjection_Art17" targetRef="Gateway_JoinGrounds_Art17" />
+    <sequenceFlow id="Flow_TaskGroundUnlawfulProcessing_To_GatewayJoinGrounds_Art17" sourceRef="Task_GroundUnlawfulProcessing_Art17" targetRef="Gateway_JoinGrounds_Art17" />
+    <sequenceFlow id="Flow_TaskGroundWithdrawnConsent_To_GatewayJoinGrounds_Art17" sourceRef="Task_GroundWithdrawnConsent_Art17" targetRef="Gateway_JoinGrounds_Art17" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_InformOtherControllers_Art17" sourceRef="SendTask_InformOtherControllers_Art17" targetRef="Participant_OtherControllers_Art17" />
+    <messageFlow id="MessageFlow_SendErasureRequest_Art17" sourceRef="Participant_DataSubject_Art17" targetRef="ReceiveTask_ReceiveErasureRequest_Art17" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

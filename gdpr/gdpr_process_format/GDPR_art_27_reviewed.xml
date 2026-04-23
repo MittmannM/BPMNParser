@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_ControllerOrProcessor_Art27" name="Controller or Processor" poolType="active" processRef="Process_ControllerOrProcessor_Art27" />
+    <pool id="Participant_DataSubject_Art27" name="Data Subject" poolType="passive" />
+    <pool id="Participant_Representative_Art27" name="Representative in the Union" poolType="passive" />
+    <pool id="Participant_SupervisoryAuthority_Art27" name="Supervisory Authority" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="SendTask_IssueWrittenDesignation_Art27" name="Issue written designation" type="sendTask" poolRef="Participant_ControllerOrProcessor_Art27" />
+    <task id="Task_MandateRepresentative_Art27" name="Mandate representative" type="task" poolRef="Participant_ControllerOrProcessor_Art27" />
+    <task id="Task_SelectMemberState_Art27" name="Select representative Member State" type="task" poolRef="Participant_ControllerOrProcessor_Art27" />
+  </tasks>
+  <events>
+    <event id="EndEvent_NoRepresentativeRequired_Art27" name="No Article 27 representative required" type="endEvent" poolRef="Participant_ControllerOrProcessor_Art27" />
+    <event id="EndEvent_RepresentativeDesignated_Art27" name="Article 27 representative designated" type="endEvent" poolRef="Participant_ControllerOrProcessor_Art27" />
+    <event id="StartEvent_PlanUnionFacingProcessing_Art27" name="Plan Union-facing processing" type="startEvent" poolRef="Participant_ControllerOrProcessor_Art27" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_Article3Scope_Art27" name="Does Article 3(2) apply?" type="exclusiveGateway" poolRef="Participant_ControllerOrProcessor_Art27" />
+    <gateway id="Gateway_Article9Or10LargeScale_Art27" name="Does the processing include large-scale Article 9(1) or Article 10 data?" type="exclusiveGateway" poolRef="Participant_ControllerOrProcessor_Art27" />
+    <gateway id="Gateway_OccasionalProcessing_Art27" name="Is the processing occasional?" type="exclusiveGateway" poolRef="Participant_ControllerOrProcessor_Art27" />
+    <gateway id="Gateway_PublicAuthority_Art27" name="Is the actor a public authority or body?" type="exclusiveGateway" poolRef="Participant_ControllerOrProcessor_Art27" />
+    <gateway id="Gateway_UnlikelyRisk_Art27" name="Is the processing unlikely to result in a risk to rights and freedoms?" type="exclusiveGateway" poolRef="Participant_ControllerOrProcessor_Art27" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_GatewayArticle3Scope_To_EndNoRepresentativeRequired_Art27" name="No" sourceRef="Gateway_Article3Scope_Art27" targetRef="EndEvent_NoRepresentativeRequired_Art27" />
+    <sequenceFlow id="Flow_GatewayArticle3Scope_To_GatewayPublicAuthority_Art27" name="Yes" sourceRef="Gateway_Article3Scope_Art27" targetRef="Gateway_PublicAuthority_Art27" />
+    <sequenceFlow id="Flow_GatewayArticle9Or10LargeScale_To_GatewayUnlikelyRisk_Art27" name="No" sourceRef="Gateway_Article9Or10LargeScale_Art27" targetRef="Gateway_UnlikelyRisk_Art27" />
+    <sequenceFlow id="Flow_GatewayArticle9Or10LargeScale_To_SendTaskIssueWrittenDesignation_Art27" name="Yes" sourceRef="Gateway_Article9Or10LargeScale_Art27" targetRef="SendTask_IssueWrittenDesignation_Art27" />
+    <sequenceFlow id="Flow_GatewayOccasionalProcessing_To_GatewayArticle9Or10LargeScale_Art27" name="Yes" sourceRef="Gateway_OccasionalProcessing_Art27" targetRef="Gateway_Article9Or10LargeScale_Art27" />
+    <sequenceFlow id="Flow_GatewayOccasionalProcessing_To_SendTaskIssueWrittenDesignation_Art27" name="No" sourceRef="Gateway_OccasionalProcessing_Art27" targetRef="SendTask_IssueWrittenDesignation_Art27" />
+    <sequenceFlow id="Flow_GatewayPublicAuthority_To_EndNoRepresentativeRequired_Art27" name="Yes" sourceRef="Gateway_PublicAuthority_Art27" targetRef="EndEvent_NoRepresentativeRequired_Art27" />
+    <sequenceFlow id="Flow_GatewayPublicAuthority_To_GatewayOccasionalProcessing_Art27" name="No" sourceRef="Gateway_PublicAuthority_Art27" targetRef="Gateway_OccasionalProcessing_Art27" />
+    <sequenceFlow id="Flow_GatewayUnlikelyRisk_To_EndNoRepresentativeRequired_Art27" name="Yes" sourceRef="Gateway_UnlikelyRisk_Art27" targetRef="EndEvent_NoRepresentativeRequired_Art27" />
+    <sequenceFlow id="Flow_GatewayUnlikelyRisk_To_SendTaskIssueWrittenDesignation_Art27" name="No" sourceRef="Gateway_UnlikelyRisk_Art27" targetRef="SendTask_IssueWrittenDesignation_Art27" />
+    <sequenceFlow id="Flow_SendTaskIssueWrittenDesignation_To_TaskSelectMemberState_Art27" sourceRef="SendTask_IssueWrittenDesignation_Art27" targetRef="Task_SelectMemberState_Art27" />
+    <sequenceFlow id="Flow_StartPlanUnionFacingProcessing_To_GatewayArticle3Scope_Art27" sourceRef="StartEvent_PlanUnionFacingProcessing_Art27" targetRef="Gateway_Article3Scope_Art27" />
+    <sequenceFlow id="Flow_TaskMandateRepresentative_To_EndRepresentativeDesignated_Art27" sourceRef="Task_MandateRepresentative_Art27" targetRef="EndEvent_RepresentativeDesignated_Art27" />
+    <sequenceFlow id="Flow_TaskSelectMemberState_To_TaskMandateRepresentative_Art27" sourceRef="Task_SelectMemberState_Art27" targetRef="Task_MandateRepresentative_Art27" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_DataSubject_To_ControllerOrProcessor_Art27" sourceRef="Participant_DataSubject_Art27" targetRef="Participant_ControllerOrProcessor_Art27" />
+    <messageFlow id="MessageFlow_DataSubject_To_Representative_Art27" sourceRef="Participant_DataSubject_Art27" targetRef="Participant_Representative_Art27" />
+    <messageFlow id="MessageFlow_IssueWrittenDesignation_Art27" sourceRef="SendTask_IssueWrittenDesignation_Art27" targetRef="Participant_Representative_Art27" />
+    <messageFlow id="MessageFlow_SA_To_ControllerOrProcessor_Art27" sourceRef="Participant_SupervisoryAuthority_Art27" targetRef="Participant_ControllerOrProcessor_Art27" />
+    <messageFlow id="MessageFlow_SA_To_Representative_Art27" sourceRef="Participant_SupervisoryAuthority_Art27" targetRef="Participant_Representative_Art27" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

@@ -6,18 +6,18 @@
   </pools>
   <lanes />
   <tasks>
-    <task id="ReceiveTask_ReceiveRightsRequest_Art11" name="Receive the rights request and any additional identifying information from the data subject" type="receiveTask" poolRef="Participant_Controller_Art11" />
-    <task id="SendTask_InformDataSubject_Art11" name="Inform the data subject that the controller is not in a position to identify him or her" type="sendTask" poolRef="Participant_Controller_Art11" />
-    <task id="Task_AssessIdentificationNeed_Art11" name="Assess whether the processing purpose requires identification of the data subject" type="task" poolRef="Participant_Controller_Art11" />
-    <task id="Task_AvoidAdditionalIdentification_Art11" name="Avoid maintaining, acquiring, or processing additional information solely to identify the data subject" type="task" poolRef="Participant_Controller_Art11" />
+    <task id="ReceiveTask_ReceiveRightsRequest_Art11" name="Receive rights request and added information" type="receiveTask" poolRef="Participant_Controller_Art11" />
+    <task id="SendTask_InformDataSubject_Art11" name="Inform inability to identify" type="sendTask" poolRef="Participant_Controller_Art11" />
+    <task id="Task_AssessIdentificationNeed_Art11" name="Check identification need" type="task" poolRef="Participant_Controller_Art11" />
+    <task id="Task_AvoidAdditionalIdentification_Art11" name="Avoid extra identification data" type="task" poolRef="Participant_Controller_Art11" />
   </tasks>
   <events>
-    <event id="EndEvent_Article11NotApplicable_Art11" name="Article 11 does not relieve the controller from identification steps" type="endEvent" poolRef="Participant_Controller_Art11" />
-    <event id="EndEvent_NoArt11Par2Relief_Art11" name="No additional identification is required solely for compliance, but Article 11(2) relief is not established" type="endEvent" poolRef="Participant_Controller_Art11" />
-    <event id="EndEvent_NoFurtherIdentificationNeeded_Art11" name="No additional identification is required for compliance and no rights request is pursued" type="endEvent" poolRef="Participant_Controller_Art11" />
-    <event id="EndEvent_RightsDoNotApply_Art11" name="Articles 15 to 20 do not apply because identification remains impossible" type="endEvent" poolRef="Participant_Controller_Art11" />
-    <event id="EndEvent_RightsMayProceed_Art11" name="The rights request may proceed because identification becomes possible" type="endEvent" poolRef="Participant_Controller_Art11" />
-    <event id="StartEvent_AssessArticle11_Art11" name="Need to assess whether identification is required for the processing purpose" type="startEvent" poolRef="Participant_Controller_Art11" />
+    <event id="EndEvent_Article11NotApplicable_Art11" name="Article 11 not applicable" type="endEvent" poolRef="Participant_Controller_Art11" />
+    <event id="EndEvent_NoArt11Par2Relief_Art11" name="Article 11(2) relief not established" type="endEvent" poolRef="Participant_Controller_Art11" />
+    <event id="EndEvent_NoFurtherIdentificationNeeded_Art11" name="No further identification needed" type="endEvent" poolRef="Participant_Controller_Art11" />
+    <event id="EndEvent_RightsDoNotApply_Art11" name="Articles 15 to 20 do not apply" type="endEvent" poolRef="Participant_Controller_Art11" />
+    <event id="EndEvent_RightsMayProceed_Art11" name="Rights request may proceed" type="endEvent" poolRef="Participant_Controller_Art11" />
+    <event id="StartEvent_AssessArticle11_Art11" name="Need Article 11 assessment" type="startEvent" poolRef="Participant_Controller_Art11" />
   </events>
   <gateways>
     <gateway id="Gateway_AdditionalInfo_Art11" name="Did the data subject provide additional information enabling identification?" type="exclusiveGateway" poolRef="Participant_Controller_Art11" />

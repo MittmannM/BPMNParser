@@ -6,17 +6,17 @@
   </pools>
   <lanes />
   <tasks>
-    <task id="SendTask_BringProceedings_Art79" name="Bring proceedings for an effective judicial remedy against the controller or processor" type="sendTask" poolRef="Participant_DataSubject_Art79" />
-    <task id="Task_UseEstablishmentCourt_Art79" name="Use the court of the Member State where the controller or processor has an establishment" type="task" poolRef="Participant_DataSubject_Art79" />
-    <task id="Task_UseResidenceCourt_Art79" name="Use the court of the Member State of the data subject's habitual residence" type="task" poolRef="Participant_DataSubject_Art79" />
-    <task id="Task_VerifyInfringement_Art79" name="Verify that the controller or processor infringed rights and freedoms through non-compliant processing" type="task" poolRef="Participant_DataSubject_Art79" />
+    <task id="SendTask_BringProceedings_Art79" name="Bring proceedings against controller or processor" type="sendTask" poolRef="Participant_DataSubject_Art79" />
+    <task id="Task_UseEstablishmentCourt_Art79" name="Use establishment Member-State court" type="task" poolRef="Participant_DataSubject_Art79" />
+    <task id="Task_UseResidenceCourt_Art79" name="Use habitual-residence Member-State court" type="task" poolRef="Participant_DataSubject_Art79" />
+    <task id="Task_VerifyInfringement_Art79" name="Check non-compliant processing infringement" type="task" poolRef="Participant_DataSubject_Art79" />
   </tasks>
   <events>
-    <event id="EndEvent_RemedyRequested_Art79" name="Judicial remedy against the controller or processor requested" type="endEvent" poolRef="Participant_DataSubject_Art79" />
-    <event id="StartEvent_AssessControllerProcessorRemedy_Art79" name="Consider that personal-data processing infringes GDPR rights" type="startEvent" poolRef="Participant_DataSubject_Art79" />
+    <event id="EndEvent_RemedyRequested_Art79" name="Judicial remedy requested" type="endEvent" poolRef="Participant_DataSubject_Art79" />
+    <event id="StartEvent_AssessControllerProcessorRemedy_Art79" name="Consider GDPR-rights infringement" type="startEvent" poolRef="Participant_DataSubject_Art79" />
   </events>
   <gateways>
-    <gateway id="Gateway_PublicAuthorityVenue_Art79" name="Is the controller or processor a public authority acting in the exercise of its public powers?" type="exclusiveGateway" poolRef="Participant_DataSubject_Art79" />
+    <gateway id="Gateway_PublicAuthorityVenue_Art79" name="Is the controller or processor a public authority exercising public powers?" type="exclusiveGateway" poolRef="Participant_DataSubject_Art79" />
     <gateway id="Gateway_VenueChoice_Art79" name="Which court venue will be used?" type="exclusiveGateway" poolRef="Participant_DataSubject_Art79" />
     <gateway id="Gateway_VenueReady_Art79" type="exclusiveGateway" poolRef="Participant_DataSubject_Art79" />
   </gateways>

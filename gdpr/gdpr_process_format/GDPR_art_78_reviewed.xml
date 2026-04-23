@@ -7,24 +7,24 @@
   </pools>
   <lanes />
   <tasks>
-    <task id="ReceiveTask_ReceiveNoticeOfProceedings_Art78" name="Receive notice that proceedings concern a supervisory-authority decision" type="receiveTask" poolRef="Participant_SupervisoryAuthority_Art78" />
-    <task id="SendTask_BringProceedingsToCourt_Art78" name="Bring proceedings before the court of the Member State where the supervisory authority is established" type="sendTask" poolRef="Participant_Applicant_Art78" />
-    <task id="SendTask_ForwardBoardMaterial_Art78" name="Forward the Board opinion or decision to the court" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art78" />
-    <task id="Task_VerifyComplaintNotHandled_Art78" name="Verify that the competent supervisory authority did not handle the Article 77 complaint" type="task" poolRef="Participant_Applicant_Art78" />
-    <task id="Task_VerifyLegalPersonDecision_Art78" name="Verify that a legally binding supervisory-authority decision concerns the legal person" type="task" poolRef="Participant_Applicant_Art78" />
-    <task id="Task_VerifyNaturalPersonDecision_Art78" name="Verify that a legally binding supervisory-authority decision concerns the natural person" type="task" poolRef="Participant_Applicant_Art78" />
-    <task id="Task_VerifyNoThreeMonthInfo_Art78" name="Verify that no progress or outcome information was received within three months" type="task" poolRef="Participant_Applicant_Art78" />
+    <task id="ReceiveTask_ReceiveNoticeOfProceedings_Art78" name="Receive notice of proceedings" type="receiveTask" poolRef="Participant_SupervisoryAuthority_Art78" />
+    <task id="SendTask_BringProceedingsToCourt_Art78" name="Bring proceedings before SA Member-State court" type="sendTask" poolRef="Participant_Applicant_Art78" />
+    <task id="SendTask_ForwardBoardMaterial_Art78" name="Forward Board material to court" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art78" />
+    <task id="Task_VerifyComplaintNotHandled_Art78" name="Check complaint not handled" type="task" poolRef="Participant_Applicant_Art78" />
+    <task id="Task_VerifyLegalPersonDecision_Art78" name="Check binding decision concerning legal person" type="task" poolRef="Participant_Applicant_Art78" />
+    <task id="Task_VerifyNaturalPersonDecision_Art78" name="Check binding decision concerning natural person" type="task" poolRef="Participant_Applicant_Art78" />
+    <task id="Task_VerifyNoThreeMonthInfo_Art78" name="Check no information within three months" type="task" poolRef="Participant_Applicant_Art78" />
   </tasks>
   <events>
-    <event id="EndEvent_ForwardingCompleted_Art78" name="Board opinion or decision forwarded to the court" type="endEvent" poolRef="Participant_SupervisoryAuthority_Art78" />
-    <event id="EndEvent_NoForwardingNeeded_Art78" name="No Board opinion or decision must be forwarded" type="endEvent" poolRef="Participant_SupervisoryAuthority_Art78" />
-    <event id="EndEvent_NoRemedyRoute_Art78" name="No Article 78 judicial remedy route is available" type="endEvent" poolRef="Participant_Applicant_Art78" />
-    <event id="EndEvent_RemedyRequested_Art78" name="Judicial remedy requested before the competent court" type="endEvent" poolRef="Participant_Applicant_Art78" />
-    <event id="StartEvent_AssessJudicialRemedy_Art78" name="Need to assess a judicial remedy against a supervisory authority" type="startEvent" poolRef="Participant_Applicant_Art78" />
-    <event id="StartEvent_ProceedingsNotice_Art78" name="Proceedings against a supervisory-authority decision are pending before the court" type="startEvent" poolRef="Participant_SupervisoryAuthority_Art78" />
+    <event id="EndEvent_ForwardingCompleted_Art78" name="Board material forwarded" type="endEvent" poolRef="Participant_SupervisoryAuthority_Art78" />
+    <event id="EndEvent_NoForwardingNeeded_Art78" name="No Board material to forward" type="endEvent" poolRef="Participant_SupervisoryAuthority_Art78" />
+    <event id="EndEvent_NoRemedyRoute_Art78" name="No Article 78 route available" type="endEvent" poolRef="Participant_Applicant_Art78" />
+    <event id="EndEvent_RemedyRequested_Art78" name="Judicial remedy requested" type="endEvent" poolRef="Participant_Applicant_Art78" />
+    <event id="StartEvent_AssessJudicialRemedy_Art78" name="Need judicial remedy" type="startEvent" poolRef="Participant_Applicant_Art78" />
+    <event id="StartEvent_ProceedingsNotice_Art78" name="Proceedings pending before court" type="startEvent" poolRef="Participant_SupervisoryAuthority_Art78" />
   </events>
   <gateways>
-    <gateway id="Gateway_BoardMaterial_Art78" name="Was the contested decision preceded by a Board opinion or decision?" type="exclusiveGateway" poolRef="Participant_SupervisoryAuthority_Art78" />
+    <gateway id="Gateway_BoardMaterial_Art78" name="Was the contested decision preceded by Board material?" type="exclusiveGateway" poolRef="Participant_SupervisoryAuthority_Art78" />
     <gateway id="Gateway_RemedyGroundReady_Art78" type="exclusiveGateway" poolRef="Participant_Applicant_Art78" />
     <gateway id="Gateway_RemedyTrigger_Art78" name="What triggers the judicial remedy?" type="exclusiveGateway" poolRef="Participant_Applicant_Art78" />
   </gateways>

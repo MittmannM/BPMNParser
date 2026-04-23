@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools />
+  <lanes />
+  <tasks>
+    <task id="Task_AdhereCertification_Art24" name="Adhere to approved certification" type="task" poolRef="Process_Controller_Art24" />
+    <task id="Task_AdhereCode_Art24" name="Adhere to approved code" type="task" poolRef="Process_Controller_Art24" />
+    <task id="Task_AssessContextRisk_Art24" name="Assess context and risk" type="task" poolRef="Process_Controller_Art24" />
+    <task id="Task_DefineMeasures_Art24" name="Define accountability measures" type="task" poolRef="Process_Controller_Art24" />
+    <task id="Task_ImplementMeasures_Art24" name="Implement measures" type="task" poolRef="Process_Controller_Art24" />
+    <task id="Task_ImplementPolicies_Art24" name="Implement data protection policies" type="task" poolRef="Process_Controller_Art24" />
+    <task id="Task_ReviewMeasures_Art24" name="Review measures" type="task" poolRef="Process_Controller_Art24" />
+    <task id="Task_UpdateMeasures_Art24" name="Update measures" type="task" poolRef="Process_Controller_Art24" />
+  </tasks>
+  <events>
+    <event id="EndEvent_AccountabilityMaintained_Art24" name="Article 24 accountability measures maintained" type="endEvent" poolRef="Process_Controller_Art24" />
+    <event id="StartEvent_PlanProcessing_Art24" name="Plan a processing activity" type="startEvent" poolRef="Process_Controller_Art24" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_EvidenceChoice_Art24" name="Which compliance evidence is used?" type="exclusiveGateway" poolRef="Process_Controller_Art24" />
+    <gateway id="Gateway_EvidenceJoin_Art24" type="exclusiveGateway" poolRef="Process_Controller_Art24" />
+    <gateway id="Gateway_PoliciesJoin_Art24" type="exclusiveGateway" poolRef="Process_Controller_Art24" />
+    <gateway id="Gateway_PoliciesProportionate_Art24" name="Are data protection policies proportionate to the processing activities?" type="exclusiveGateway" poolRef="Process_Controller_Art24" />
+    <gateway id="Gateway_UpdatesNecessary_Art24" name="Are measure updates necessary?" type="exclusiveGateway" poolRef="Process_Controller_Art24" />
+    <gateway id="Gateway_UseEvidence_Art24" name="Use Article 40 code of conduct or Article 42 certification to demonstrate compliance?" type="exclusiveGateway" poolRef="Process_Controller_Art24" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_GatewayEvidenceChoice_To_TaskAdhereCertification_Art24" name="Article 42 certification" sourceRef="Gateway_EvidenceChoice_Art24" targetRef="Task_AdhereCertification_Art24" />
+    <sequenceFlow id="Flow_GatewayEvidenceChoice_To_TaskAdhereCode_Art24" name="Article 40 code of conduct" sourceRef="Gateway_EvidenceChoice_Art24" targetRef="Task_AdhereCode_Art24" />
+    <sequenceFlow id="Flow_GatewayEvidenceJoin_To_TaskReviewMeasures_Art24" sourceRef="Gateway_EvidenceJoin_Art24" targetRef="Task_ReviewMeasures_Art24" />
+    <sequenceFlow id="Flow_GatewayPoliciesJoin_To_GatewayUseEvidence_Art24" sourceRef="Gateway_PoliciesJoin_Art24" targetRef="Gateway_UseEvidence_Art24" />
+    <sequenceFlow id="Flow_GatewayPoliciesProportionate_To_GatewayPoliciesJoin_Art24" name="No" sourceRef="Gateway_PoliciesProportionate_Art24" targetRef="Gateway_PoliciesJoin_Art24" />
+    <sequenceFlow id="Flow_GatewayPoliciesProportionate_To_TaskImplementPolicies_Art24" name="Yes" sourceRef="Gateway_PoliciesProportionate_Art24" targetRef="Task_ImplementPolicies_Art24" />
+    <sequenceFlow id="Flow_GatewayUpdatesNecessary_To_EndAccountabilityMaintained_Art24" name="No" sourceRef="Gateway_UpdatesNecessary_Art24" targetRef="EndEvent_AccountabilityMaintained_Art24" />
+    <sequenceFlow id="Flow_GatewayUpdatesNecessary_To_TaskUpdateMeasures_Art24" name="Yes" sourceRef="Gateway_UpdatesNecessary_Art24" targetRef="Task_UpdateMeasures_Art24" />
+    <sequenceFlow id="Flow_GatewayUseEvidence_To_GatewayEvidenceChoice_Art24" name="Yes" sourceRef="Gateway_UseEvidence_Art24" targetRef="Gateway_EvidenceChoice_Art24" />
+    <sequenceFlow id="Flow_GatewayUseEvidence_To_TaskReviewMeasures_Art24" name="No" sourceRef="Gateway_UseEvidence_Art24" targetRef="Task_ReviewMeasures_Art24" />
+    <sequenceFlow id="Flow_StartPlanProcessing_To_TaskAssessContextRisk_Art24" sourceRef="StartEvent_PlanProcessing_Art24" targetRef="Task_AssessContextRisk_Art24" />
+    <sequenceFlow id="Flow_TaskAdhereCertification_To_GatewayEvidenceJoin_Art24" sourceRef="Task_AdhereCertification_Art24" targetRef="Gateway_EvidenceJoin_Art24" />
+    <sequenceFlow id="Flow_TaskAdhereCode_To_GatewayEvidenceJoin_Art24" sourceRef="Task_AdhereCode_Art24" targetRef="Gateway_EvidenceJoin_Art24" />
+    <sequenceFlow id="Flow_TaskAssessContextRisk_To_TaskDefineMeasures_Art24" sourceRef="Task_AssessContextRisk_Art24" targetRef="Task_DefineMeasures_Art24" />
+    <sequenceFlow id="Flow_TaskDefineMeasures_To_TaskImplementMeasures_Art24" sourceRef="Task_DefineMeasures_Art24" targetRef="Task_ImplementMeasures_Art24" />
+    <sequenceFlow id="Flow_TaskImplementMeasures_To_GatewayPoliciesProportionate_Art24" sourceRef="Task_ImplementMeasures_Art24" targetRef="Gateway_PoliciesProportionate_Art24" />
+    <sequenceFlow id="Flow_TaskImplementPolicies_To_GatewayPoliciesJoin_Art24" sourceRef="Task_ImplementPolicies_Art24" targetRef="Gateway_PoliciesJoin_Art24" />
+    <sequenceFlow id="Flow_TaskReviewMeasures_To_GatewayUpdatesNecessary_Art24" sourceRef="Task_ReviewMeasures_Art24" targetRef="Gateway_UpdatesNecessary_Art24" />
+    <sequenceFlow id="Flow_TaskUpdateMeasures_To_EndAccountabilityMaintained_Art24" sourceRef="Task_UpdateMeasures_Art24" targetRef="EndEvent_AccountabilityMaintained_Art24" />
+  </sequenceFlows>
+  <messageFlows />
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

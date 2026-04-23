@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Controller_Art20" name="Controller" poolType="active" processRef="Process_Controller_Art20" />
+    <pool id="Participant_DataSubject_Art20" name="Data Subject" poolType="passive" />
+    <pool id="Participant_ReceivingController_Art20" name="Receiving Controller" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="ReceiveTask_ReceivePortabilityRequest_Art20" name="Receive portability request" type="receiveTask" poolRef="Participant_Controller_Art20" />
+    <task id="SendTask_ProvidePortableDataToDataSubject_Art20" name="Provide portable data set" type="sendTask" poolRef="Participant_Controller_Art20" />
+    <task id="SendTask_TransmitDataToReceivingController_Art20" name="Transmit portable data to receiving controller" type="sendTask" poolRef="Participant_Controller_Art20" />
+    <task id="Task_PreparePortableDataset_Art20" name="Prepare portable data set" type="task" poolRef="Participant_Controller_Art20" />
+  </tasks>
+  <events>
+    <event id="EndEvent_NoPortabilityBasis_Art20" name="No portability right arises because the processing is not carried out by automated means" type="endEvent" poolRef="Participant_Controller_Art20" />
+    <event id="EndEvent_NoPortableDataset_Art20" name="No portability right arises because the processing is not based on Article 6(1)(a), Article 9(2)(a), or Article 6(1)(b)" type="endEvent" poolRef="Participant_Controller_Art20" />
+    <event id="EndEvent_NotAutomated_Art20" name="No portability right arises because the processing is not carried out by automated means" type="endEvent" poolRef="Participant_Controller_Art20" />
+    <event id="EndEvent_PortabilityCompleted_Art20" name="Article 20 portability handling is completed without prejudice to Article 17" type="endEvent" poolRef="Participant_Controller_Art20" />
+    <event id="EndEvent_PublicTaskException_Art20" name="The portability right does not apply because the processing is necessary for a public-interest task or official authority" type="endEvent" poolRef="Participant_Controller_Art20" />
+    <event id="EndEvent_RequestBlocked_Art20" name="No portability right arises because the relevant data were not provided by the data subject in a portable electronic form" type="endEvent" poolRef="Participant_Controller_Art20" />
+    <event id="EndEvent_RightsFreedomsLimit_Art20" name="The portability request is not fulfilled because it would adversely affect the rights and freedoms of others" type="endEvent" poolRef="Participant_Controller_Art20" />
+    <event id="StartEvent_PortabilityRequested_Art20" name="Data subject seeks data portability" type="startEvent" poolRef="Participant_Controller_Art20" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_AutomatedProcessing_Art20" name="Is the processing carried out by automated means?" type="exclusiveGateway" poolRef="Participant_Controller_Art20" />
+    <gateway id="Gateway_DirectTransmissionRequested_Art20" name="Did the data subject request direct transmission to another controller?" type="exclusiveGateway" poolRef="Participant_Controller_Art20" />
+    <gateway id="Gateway_LegalBasis_Art20" name="Is the processing carried out by automated means?" type="exclusiveGateway" poolRef="Participant_Controller_Art20" />
+    <gateway id="Gateway_ProvidedData_Art20" name="Is the processing based on Article 6(1)(a), Article 9(2)(a), or Article 6(1)(b)?" type="exclusiveGateway" poolRef="Participant_Controller_Art20" />
+    <gateway id="Gateway_PublicTaskException_Art20" name="Is the processing necessary for a task carried out in the public interest or in the exercise of official authority?" type="exclusiveGateway" poolRef="Participant_Controller_Art20" />
+    <gateway id="Gateway_RequestExceptions_Art20" name="Were the relevant personal data provided by the data subject and are they available in a portable electronic form?" type="exclusiveGateway" poolRef="Participant_Controller_Art20" />
+    <gateway id="Gateway_RightsFreedoms_Art20" name="Would portability adversely affect the rights and freedoms of others?" type="exclusiveGateway" poolRef="Participant_Controller_Art20" />
+    <gateway id="Gateway_TechnicalFeasibility_Art20" name="Is direct controller-to-controller transmission technically feasible?" type="exclusiveGateway" poolRef="Participant_Controller_Art20" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_GatewayAutomatedProcessing_To_EndNotAutomated_Art20" name="No" sourceRef="Gateway_AutomatedProcessing_Art20" targetRef="EndEvent_NotAutomated_Art20" />
+    <sequenceFlow id="Flow_GatewayAutomatedProcessing_To_GatewayPublicTaskException_Art20" name="Yes" sourceRef="Gateway_AutomatedProcessing_Art20" targetRef="Gateway_PublicTaskException_Art20" />
+    <sequenceFlow id="Flow_GatewayDirectTransmissionRequested_To_GatewayTechnicalFeasibility_Art20" name="Yes" sourceRef="Gateway_DirectTransmissionRequested_Art20" targetRef="Gateway_TechnicalFeasibility_Art20" />
+    <sequenceFlow id="Flow_GatewayDirectTransmissionRequested_To_SendTaskProvidePortableDataToDataSubject_Art20" name="No" sourceRef="Gateway_DirectTransmissionRequested_Art20" targetRef="SendTask_ProvidePortableDataToDataSubject_Art20" />
+    <sequenceFlow id="Flow_GatewayLegalBasis_To_EndNoPortabilityBasis_Art20" name="No" sourceRef="Gateway_LegalBasis_Art20" targetRef="EndEvent_NoPortabilityBasis_Art20" />
+    <sequenceFlow id="Flow_GatewayLegalBasis_To_GatewayAutomatedProcessing_Art20" name="Yes" sourceRef="Gateway_LegalBasis_Art20" targetRef="Gateway_AutomatedProcessing_Art20" />
+    <sequenceFlow id="Flow_GatewayProvidedData_To_EndNoPortableDataset_Art20" name="No" sourceRef="Gateway_ProvidedData_Art20" targetRef="EndEvent_NoPortableDataset_Art20" />
+    <sequenceFlow id="Flow_GatewayProvidedData_To_GatewayLegalBasis_Art20" name="Yes" sourceRef="Gateway_ProvidedData_Art20" targetRef="Gateway_LegalBasis_Art20" />
+    <sequenceFlow id="Flow_GatewayPublicTaskException_To_EndPublicTaskException_Art20" name="Yes" sourceRef="Gateway_PublicTaskException_Art20" targetRef="EndEvent_PublicTaskException_Art20" />
+    <sequenceFlow id="Flow_GatewayPublicTaskException_To_GatewayRightsFreedoms_Art20" name="No" sourceRef="Gateway_PublicTaskException_Art20" targetRef="Gateway_RightsFreedoms_Art20" />
+    <sequenceFlow id="Flow_GatewayRequestExceptions_To_EndRequestBlocked_Art20" name="No" sourceRef="Gateway_RequestExceptions_Art20" targetRef="EndEvent_RequestBlocked_Art20" />
+    <sequenceFlow id="Flow_GatewayRequestExceptions_To_GatewayProvidedData_Art20" name="Yes" sourceRef="Gateway_RequestExceptions_Art20" targetRef="Gateway_ProvidedData_Art20" />
+    <sequenceFlow id="Flow_GatewayRightsFreedoms_To_EndRightsFreedomsLimit_Art20" name="Yes" sourceRef="Gateway_RightsFreedoms_Art20" targetRef="EndEvent_RightsFreedomsLimit_Art20" />
+    <sequenceFlow id="Flow_GatewayRightsFreedoms_To_TaskPreparePortableDataset_Art20" name="No" sourceRef="Gateway_RightsFreedoms_Art20" targetRef="Task_PreparePortableDataset_Art20" />
+    <sequenceFlow id="Flow_GatewayTechnicalFeasibility_To_SendTaskProvidePortableDataToDataSubject_Art20" name="No" sourceRef="Gateway_TechnicalFeasibility_Art20" targetRef="SendTask_ProvidePortableDataToDataSubject_Art20" />
+    <sequenceFlow id="Flow_GatewayTechnicalFeasibility_To_SendTaskTransmitDataToReceivingController_Art20" name="Yes" sourceRef="Gateway_TechnicalFeasibility_Art20" targetRef="SendTask_TransmitDataToReceivingController_Art20" />
+    <sequenceFlow id="Flow_ReceiveTaskReceivePortabilityRequest_To_GatewayRequestExceptions_Art20" sourceRef="ReceiveTask_ReceivePortabilityRequest_Art20" targetRef="Gateway_RequestExceptions_Art20" />
+    <sequenceFlow id="Flow_SendTaskProvidePortableDataToDataSubject_To_EndPortabilityCompleted_Art20" sourceRef="SendTask_ProvidePortableDataToDataSubject_Art20" targetRef="EndEvent_PortabilityCompleted_Art20" />
+    <sequenceFlow id="Flow_SendTaskTransmitDataToReceivingController_To_EndPortabilityCompleted_Art20" sourceRef="SendTask_TransmitDataToReceivingController_Art20" targetRef="EndEvent_PortabilityCompleted_Art20" />
+    <sequenceFlow id="Flow_Start_To_ReceiveTaskReceivePortabilityRequest_Art20" sourceRef="StartEvent_PortabilityRequested_Art20" targetRef="ReceiveTask_ReceivePortabilityRequest_Art20" />
+    <sequenceFlow id="Flow_TaskPreparePortableDataset_To_GatewayDirectTransmissionRequested_Art20" sourceRef="Task_PreparePortableDataset_Art20" targetRef="Gateway_DirectTransmissionRequested_Art20" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_ProvidePortableDataToDataSubject_Art20" sourceRef="SendTask_ProvidePortableDataToDataSubject_Art20" targetRef="Participant_DataSubject_Art20" />
+    <messageFlow id="MessageFlow_ReceivePortabilityRequest_Art20" sourceRef="Participant_DataSubject_Art20" targetRef="ReceiveTask_ReceivePortabilityRequest_Art20" />
+    <messageFlow id="MessageFlow_TransmitDataToReceivingController_Art20" sourceRef="SendTask_TransmitDataToReceivingController_Art20" targetRef="Participant_ReceivingController_Art20" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>
