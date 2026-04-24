@@ -1,0 +1,593 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art56_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art56_Reviewed">
+    <bpmn:participant id="Participant_LocalSupervisoryAuthority_Art56"
+                      name="Local Supervisory Authority"
+                      processRef="Process_LocalSupervisoryAuthority_Art56" />
+    <bpmn:participant id="Participant_LeadSupervisoryAuthority_Art56"
+                      name="Lead Supervisory Authority"
+                      processRef="Process_LeadSupervisoryAuthority_Art56" />
+    <bpmn:participant id="Participant_ControllerOrProcessor_Art56"
+                      name="Controller or Processor" />
+
+    <bpmn:messageFlow id="MessageFlow_InformLeadAuthority_Art56"
+                      sourceRef="Task_InformLeadAuthority_Art56"
+                      targetRef="StartEvent_ReceiveReferral_Art56" />
+    <bpmn:messageFlow id="MessageFlow_SendLeadHandlingConfirmation_Art56"
+                      sourceRef="Task_SendLeadHandlingConfirmation_Art56"
+                      targetRef="Task_ReceiveLeadHandlingConfirmation_Art56" />
+    <bpmn:messageFlow id="MessageFlow_SendLeadDeclineDecision_Art56"
+                      sourceRef="Task_SendLeadDeclineDecision_Art56"
+                      targetRef="Task_ReceiveLeadDeclineDecision_Art56" />
+    <bpmn:messageFlow id="MessageFlow_SubmitLocalDraft_Art56"
+                      sourceRef="Task_SubmitDraftDecision_Art56"
+                      targetRef="Task_ReceiveLocalDraftDecision_Art56" />
+    <bpmn:messageFlow id="MessageFlow_LeadInterlocutor_Art56"
+                      sourceRef="Task_ActAsSoleInterlocutor_Art56"
+                      targetRef="Participant_ControllerOrProcessor_Art56" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_LocalSupervisoryAuthority_Art56"
+                name="Handle Article 56 local-authority derogation"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 56 based on the real English legal text from
+      gdpr_articles/article_56.txt. This process captures the local supervisory authority's
+      competence to handle a complaint or possible infringement when the subject matter is
+      confined to its Member State, the duty to inform the lead supervisory authority without
+      delay, the alternative incoming decisions from the lead supervisory authority, the
+      optional draft-decision contribution under Article 56(4), and the fallback to Articles 61
+      and 62 when the lead authority declines to handle the case.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_ReceiveLocalMatter_Art56"
+                     name="Receive complaint or infringement matter">
+      <bpmn:outgoing>Flow_StartLocalMatter_To_GatewayLocalDerogation_Art56</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_LocalDerogation_Art56"
+                           name="Does the matter relate only to a local establishment or substantially affect data subjects only in this Member State?">
+      <bpmn:incoming>Flow_StartLocalMatter_To_GatewayLocalDerogation_Art56</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayLocalDerogation_To_InformLeadAuthority_Art56</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayLocalDerogation_To_EndNoLocalDerogation_Art56</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="Task_InformLeadAuthority_Art56"
+                   name="Inform lead supervisory authority">
+      <bpmn:incoming>Flow_GatewayLocalDerogation_To_InformLeadAuthority_Art56</bpmn:incoming>
+      <bpmn:outgoing>Flow_InformLeadAuthority_To_GatewayLeadDecisionEvent_Art56</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:eventBasedGateway id="Gateway_LeadDecisionEvent_Art56"
+                            name="Which lead decision is received?">
+      <bpmn:incoming>Flow_InformLeadAuthority_To_GatewayLeadDecisionEvent_Art56</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayLeadDecisionEvent_To_ReceiveLeadHandlingConfirmation_Art56</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayLeadDecisionEvent_To_ReceiveLeadDeclineDecision_Art56</bpmn:outgoing>
+    </bpmn:eventBasedGateway>
+
+    <bpmn:receiveTask id="Task_ReceiveLeadHandlingConfirmation_Art56"
+                      name="Receive lead handling confirmation">
+      <bpmn:incoming>Flow_GatewayLeadDecisionEvent_To_ReceiveLeadHandlingConfirmation_Art56</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveLeadHandlingConfirmation_To_PrepareDraftDecision_Art56</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:task id="Task_PrepareDraftDecision_Art56"
+               name="Prepare draft decision">
+      <bpmn:incoming>Flow_ReceiveLeadHandlingConfirmation_To_PrepareDraftDecision_Art56</bpmn:incoming>
+      <bpmn:outgoing>Flow_PrepareDraftDecision_To_SubmitDraftDecision_Art56</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="Task_SubmitDraftDecision_Art56"
+                   name="Submit draft decision">
+      <bpmn:incoming>Flow_PrepareDraftDecision_To_SubmitDraftDecision_Art56</bpmn:incoming>
+      <bpmn:outgoing>Flow_SubmitDraftDecision_To_EndLeadHandledCase_Art56</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:receiveTask id="Task_ReceiveLeadDeclineDecision_Art56"
+                      name="Receive lead decline decision">
+      <bpmn:incoming>Flow_GatewayLeadDecisionEvent_To_ReceiveLeadDeclineDecision_Art56</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveLeadDeclineDecision_To_HandleCaseLocally_Art56</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:task id="Task_HandleCaseLocally_Art56"
+               name="Handle case under Articles 61 and 62">
+      <bpmn:incoming>Flow_ReceiveLeadDeclineDecision_To_HandleCaseLocally_Art56</bpmn:incoming>
+      <bpmn:outgoing>Flow_HandleCaseLocally_To_EndLocalCaseHandled_Art56</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_NoLocalDerogation_Art56"
+                   name="No local derogation triggered">
+      <bpmn:incoming>Flow_GatewayLocalDerogation_To_EndNoLocalDerogation_Art56</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_LeadHandledCase_Art56"
+                   name="Lead authority handling supported">
+      <bpmn:incoming>Flow_SubmitDraftDecision_To_EndLeadHandledCase_Art56</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_LocalCaseHandled_Art56"
+                   name="Local case handling completed">
+      <bpmn:incoming>Flow_HandleCaseLocally_To_EndLocalCaseHandled_Art56</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartLocalMatter_To_GatewayLocalDerogation_Art56"
+                       sourceRef="StartEvent_ReceiveLocalMatter_Art56"
+                       targetRef="Gateway_LocalDerogation_Art56" />
+    <bpmn:sequenceFlow id="Flow_GatewayLocalDerogation_To_InformLeadAuthority_Art56"
+                       name="Yes"
+                       sourceRef="Gateway_LocalDerogation_Art56"
+                       targetRef="Task_InformLeadAuthority_Art56" />
+    <bpmn:sequenceFlow id="Flow_GatewayLocalDerogation_To_EndNoLocalDerogation_Art56"
+                       name="No"
+                       sourceRef="Gateway_LocalDerogation_Art56"
+                       targetRef="EndEvent_NoLocalDerogation_Art56" />
+    <bpmn:sequenceFlow id="Flow_InformLeadAuthority_To_GatewayLeadDecisionEvent_Art56"
+                       sourceRef="Task_InformLeadAuthority_Art56"
+                       targetRef="Gateway_LeadDecisionEvent_Art56" />
+    <bpmn:sequenceFlow id="Flow_GatewayLeadDecisionEvent_To_ReceiveLeadHandlingConfirmation_Art56"
+                       sourceRef="Gateway_LeadDecisionEvent_Art56"
+                       targetRef="Task_ReceiveLeadHandlingConfirmation_Art56" />
+    <bpmn:sequenceFlow id="Flow_GatewayLeadDecisionEvent_To_ReceiveLeadDeclineDecision_Art56"
+                       sourceRef="Gateway_LeadDecisionEvent_Art56"
+                       targetRef="Task_ReceiveLeadDeclineDecision_Art56" />
+    <bpmn:sequenceFlow id="Flow_ReceiveLeadHandlingConfirmation_To_PrepareDraftDecision_Art56"
+                       sourceRef="Task_ReceiveLeadHandlingConfirmation_Art56"
+                       targetRef="Task_PrepareDraftDecision_Art56" />
+    <bpmn:sequenceFlow id="Flow_PrepareDraftDecision_To_SubmitDraftDecision_Art56"
+                       sourceRef="Task_PrepareDraftDecision_Art56"
+                       targetRef="Task_SubmitDraftDecision_Art56" />
+    <bpmn:sequenceFlow id="Flow_SubmitDraftDecision_To_EndLeadHandledCase_Art56"
+                       sourceRef="Task_SubmitDraftDecision_Art56"
+                       targetRef="EndEvent_LeadHandledCase_Art56" />
+    <bpmn:sequenceFlow id="Flow_ReceiveLeadDeclineDecision_To_HandleCaseLocally_Art56"
+                       sourceRef="Task_ReceiveLeadDeclineDecision_Art56"
+                       targetRef="Task_HandleCaseLocally_Art56" />
+    <bpmn:sequenceFlow id="Flow_HandleCaseLocally_To_EndLocalCaseHandled_Art56"
+                       sourceRef="Task_HandleCaseLocally_Art56"
+                       targetRef="EndEvent_LocalCaseHandled_Art56" />
+  </bpmn:process>
+
+  <bpmn:process id="Process_LeadSupervisoryAuthority_Art56"
+                name="Act as Article 56 lead supervisory authority"
+                isExecutable="false">
+    <bpmn:documentation>
+      This process captures the competence of the supervisory authority of the main or single
+      establishment to act as lead supervisory authority for cross-border processing in
+      accordance with Article 60, the three-week handling decision for a referred local matter,
+      the Article 60 handling route, the duty to take utmost account of the local draft
+      decision, and the sole-interlocutor role toward the controller or processor.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_AssessCrossBorderProcessing_Art56"
+                     name="Assess cross-border processing">
+      <bpmn:outgoing>Flow_StartCrossBorder_To_IdentifyLeadAuthority_Art56</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_IdentifyLeadAuthority_Art56"
+               name="Identify main or single establishment authority">
+      <bpmn:incoming>Flow_StartCrossBorder_To_IdentifyLeadAuthority_Art56</bpmn:incoming>
+      <bpmn:outgoing>Flow_IdentifyLeadAuthority_To_ActAsLeadAuthority_Art56</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ActAsLeadAuthority_Art56"
+               name="Act as lead supervisory authority">
+      <bpmn:incoming>Flow_IdentifyLeadAuthority_To_ActAsLeadAuthority_Art56</bpmn:incoming>
+      <bpmn:outgoing>Flow_ActAsLeadAuthority_To_ActAsSoleInterlocutor_Art56</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="Task_ActAsSoleInterlocutor_Art56"
+                   name="Act as sole interlocutor">
+      <bpmn:incoming>Flow_ActAsLeadAuthority_To_ActAsSoleInterlocutor_Art56</bpmn:incoming>
+      <bpmn:incoming>Flow_TakeUtmostAccount_To_ActAsSoleInterlocutor_Art56</bpmn:incoming>
+      <bpmn:outgoing>Flow_ActAsSoleInterlocutor_To_EndLeadCompetence_Art56</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:startEvent id="StartEvent_ReceiveReferral_Art56"
+                     name="Receive local-authority referral">
+      <bpmn:outgoing>Flow_StartReferral_To_DecideHandling_Art56</bpmn:outgoing>
+      <bpmn:messageEventDefinition />
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_DecideHandlingWithinThreeWeeks_Art56"
+               name="Decide within three weeks whether to handle the case">
+      <bpmn:incoming>Flow_StartReferral_To_DecideHandling_Art56</bpmn:incoming>
+      <bpmn:outgoing>Flow_DecideHandling_To_GatewayHandleCase_Art56</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_HandleCase_Art56"
+                           name="Will the lead authority handle the case under Article 60?">
+      <bpmn:incoming>Flow_DecideHandling_To_GatewayHandleCase_Art56</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayHandleCase_To_SendLeadHandlingConfirmation_Art56</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayHandleCase_To_SendLeadDeclineDecision_Art56</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="Task_SendLeadHandlingConfirmation_Art56"
+                   name="Send lead handling confirmation">
+      <bpmn:incoming>Flow_GatewayHandleCase_To_SendLeadHandlingConfirmation_Art56</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendLeadHandlingConfirmation_To_HandleCaseArticle60_Art56</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:task id="Task_HandleCaseArticle60_Art56"
+               name="Handle case under Article 60">
+      <bpmn:incoming>Flow_SendLeadHandlingConfirmation_To_HandleCaseArticle60_Art56</bpmn:incoming>
+      <bpmn:outgoing>Flow_HandleCaseArticle60_To_ReceiveLocalDraftDecision_Art56</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:receiveTask id="Task_ReceiveLocalDraftDecision_Art56"
+                      name="Receive local draft decision">
+      <bpmn:incoming>Flow_HandleCaseArticle60_To_ReceiveLocalDraftDecision_Art56</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveLocalDraftDecision_To_TakeUtmostAccount_Art56</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:task id="Task_TakeUtmostAccount_Art56"
+               name="Take utmost account of the local draft">
+      <bpmn:incoming>Flow_ReceiveLocalDraftDecision_To_TakeUtmostAccount_Art56</bpmn:incoming>
+      <bpmn:outgoing>Flow_TakeUtmostAccount_To_ActAsSoleInterlocutor_Art56</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="Task_SendLeadDeclineDecision_Art56"
+                   name="Send lead decline decision">
+      <bpmn:incoming>Flow_GatewayHandleCase_To_SendLeadDeclineDecision_Art56</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendLeadDeclineDecision_To_EndLocalAuthorityHandles_Art56</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_LeadCompetenceEstablished_Art56"
+                   name="Lead authority competence established">
+      <bpmn:incoming>Flow_ActAsSoleInterlocutor_To_EndLeadCompetence_Art56</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_LocalAuthorityHandles_Art56"
+                   name="Local authority handles the case">
+      <bpmn:incoming>Flow_SendLeadDeclineDecision_To_EndLocalAuthorityHandles_Art56</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartCrossBorder_To_IdentifyLeadAuthority_Art56"
+                       sourceRef="StartEvent_AssessCrossBorderProcessing_Art56"
+                       targetRef="Task_IdentifyLeadAuthority_Art56" />
+    <bpmn:sequenceFlow id="Flow_IdentifyLeadAuthority_To_ActAsLeadAuthority_Art56"
+                       sourceRef="Task_IdentifyLeadAuthority_Art56"
+                       targetRef="Task_ActAsLeadAuthority_Art56" />
+    <bpmn:sequenceFlow id="Flow_ActAsLeadAuthority_To_ActAsSoleInterlocutor_Art56"
+                       sourceRef="Task_ActAsLeadAuthority_Art56"
+                       targetRef="Task_ActAsSoleInterlocutor_Art56" />
+    <bpmn:sequenceFlow id="Flow_ActAsSoleInterlocutor_To_EndLeadCompetence_Art56"
+                       sourceRef="Task_ActAsSoleInterlocutor_Art56"
+                       targetRef="EndEvent_LeadCompetenceEstablished_Art56" />
+    <bpmn:sequenceFlow id="Flow_StartReferral_To_DecideHandling_Art56"
+                       sourceRef="StartEvent_ReceiveReferral_Art56"
+                       targetRef="Task_DecideHandlingWithinThreeWeeks_Art56" />
+    <bpmn:sequenceFlow id="Flow_DecideHandling_To_GatewayHandleCase_Art56"
+                       sourceRef="Task_DecideHandlingWithinThreeWeeks_Art56"
+                       targetRef="Gateway_HandleCase_Art56" />
+    <bpmn:sequenceFlow id="Flow_GatewayHandleCase_To_SendLeadHandlingConfirmation_Art56"
+                       name="Yes"
+                       sourceRef="Gateway_HandleCase_Art56"
+                       targetRef="Task_SendLeadHandlingConfirmation_Art56" />
+    <bpmn:sequenceFlow id="Flow_GatewayHandleCase_To_SendLeadDeclineDecision_Art56"
+                       name="No"
+                       sourceRef="Gateway_HandleCase_Art56"
+                       targetRef="Task_SendLeadDeclineDecision_Art56" />
+    <bpmn:sequenceFlow id="Flow_SendLeadHandlingConfirmation_To_HandleCaseArticle60_Art56"
+                       sourceRef="Task_SendLeadHandlingConfirmation_Art56"
+                       targetRef="Task_HandleCaseArticle60_Art56" />
+    <bpmn:sequenceFlow id="Flow_HandleCaseArticle60_To_ReceiveLocalDraftDecision_Art56"
+                       sourceRef="Task_HandleCaseArticle60_Art56"
+                       targetRef="Task_ReceiveLocalDraftDecision_Art56" />
+    <bpmn:sequenceFlow id="Flow_ReceiveLocalDraftDecision_To_TakeUtmostAccount_Art56"
+                       sourceRef="Task_ReceiveLocalDraftDecision_Art56"
+                       targetRef="Task_TakeUtmostAccount_Art56" />
+    <bpmn:sequenceFlow id="Flow_TakeUtmostAccount_To_ActAsSoleInterlocutor_Art56"
+                       sourceRef="Task_TakeUtmostAccount_Art56"
+                       targetRef="Task_ActAsSoleInterlocutor_Art56" />
+    <bpmn:sequenceFlow id="Flow_SendLeadDeclineDecision_To_EndLocalAuthorityHandles_Art56"
+                       sourceRef="Task_SendLeadDeclineDecision_Art56"
+                       targetRef="EndEvent_LocalAuthorityHandles_Art56" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art56_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art56_Reviewed"
+                      bpmnElement="Collaboration_Art56_Reviewed">
+      <bpmndi:BPMNShape id="Participant_LocalSupervisoryAuthority_Art56_di"
+                        bpmnElement="Participant_LocalSupervisoryAuthority_Art56"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="2860" height="300" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_LeadSupervisoryAuthority_Art56_di"
+                        bpmnElement="Participant_LeadSupervisoryAuthority_Art56"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="380" width="2860" height="410" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_ControllerOrProcessor_Art56_di"
+                        bpmnElement="Participant_ControllerOrProcessor_Art56"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="830" width="2860" height="120" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_ReceiveLocalMatter_Art56_di"
+                        bpmnElement="StartEvent_ReceiveLocalMatter_Art56">
+        <dc:Bounds x="120" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_LocalDerogation_Art56_di"
+                        bpmnElement="Gateway_LocalDerogation_Art56"
+                        isMarkerVisible="true">
+        <dc:Bounds x="250" y="175" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_InformLeadAuthority_Art56_di"
+                        bpmnElement="Task_InformLeadAuthority_Art56">
+        <dc:Bounds x="390" y="160" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_LeadDecisionEvent_Art56_di"
+                        bpmnElement="Gateway_LeadDecisionEvent_Art56">
+        <dc:Bounds x="730" y="175" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReceiveLeadHandlingConfirmation_Art56_di"
+                        bpmnElement="Task_ReceiveLeadHandlingConfirmation_Art56">
+        <dc:Bounds x="900" y="70" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareDraftDecision_Art56_di"
+                        bpmnElement="Task_PrepareDraftDecision_Art56">
+        <dc:Bounds x="1220" y="70" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SubmitDraftDecision_Art56_di"
+                        bpmnElement="Task_SubmitDraftDecision_Art56">
+        <dc:Bounds x="1510" y="70" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReceiveLeadDeclineDecision_Art56_di"
+                        bpmnElement="Task_ReceiveLeadDeclineDecision_Art56">
+        <dc:Bounds x="900" y="230" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_HandleCaseLocally_Art56_di"
+                        bpmnElement="Task_HandleCaseLocally_Art56">
+        <dc:Bounds x="1220" y="230" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NoLocalDerogation_Art56_di"
+                        bpmnElement="EndEvent_NoLocalDerogation_Art56">
+        <dc:Bounds x="390" y="262" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_LeadHandledCase_Art56_di"
+                        bpmnElement="EndEvent_LeadHandledCase_Art56">
+        <dc:Bounds x="1780" y="92" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_LocalCaseHandled_Art56_di"
+                        bpmnElement="EndEvent_LocalCaseHandled_Art56">
+        <dc:Bounds x="1540" y="252" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_AssessCrossBorderProcessing_Art56_di"
+                        bpmnElement="StartEvent_AssessCrossBorderProcessing_Art56">
+        <dc:Bounds x="120" y="548" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_IdentifyLeadAuthority_Art56_di"
+                        bpmnElement="Task_IdentifyLeadAuthority_Art56">
+        <dc:Bounds x="220" y="526" width="240" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ActAsLeadAuthority_Art56_di"
+                        bpmnElement="Task_ActAsLeadAuthority_Art56">
+        <dc:Bounds x="560" y="526" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ActAsSoleInterlocutor_Art56_di"
+                        bpmnElement="Task_ActAsSoleInterlocutor_Art56">
+        <dc:Bounds x="2200" y="526" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_ReceiveReferral_Art56_di"
+                        bpmnElement="StartEvent_ReceiveReferral_Art56">
+        <dc:Bounds x="560" y="662" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DecideHandlingWithinThreeWeeks_Art56_di"
+                        bpmnElement="Task_DecideHandlingWithinThreeWeeks_Art56">
+        <dc:Bounds x="680" y="640" width="260" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_HandleCase_Art56_di"
+                        bpmnElement="Gateway_HandleCase_Art56"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1040" y="655" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SendLeadHandlingConfirmation_Art56_di"
+                        bpmnElement="Task_SendLeadHandlingConfirmation_Art56">
+        <dc:Bounds x="1200" y="560" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_HandleCaseArticle60_Art56_di"
+                        bpmnElement="Task_HandleCaseArticle60_Art56">
+        <dc:Bounds x="1510" y="560" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReceiveLocalDraftDecision_Art56_di"
+                        bpmnElement="Task_ReceiveLocalDraftDecision_Art56">
+        <dc:Bounds x="1790" y="560" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_TakeUtmostAccount_Art56_di"
+                        bpmnElement="Task_TakeUtmostAccount_Art56">
+        <dc:Bounds x="2050" y="680" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SendLeadDeclineDecision_Art56_di"
+                        bpmnElement="Task_SendLeadDeclineDecision_Art56">
+        <dc:Bounds x="1200" y="680" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_LeadCompetenceEstablished_Art56_di"
+                        bpmnElement="EndEvent_LeadCompetenceEstablished_Art56">
+        <dc:Bounds x="2480" y="548" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_LocalAuthorityHandles_Art56_di"
+                        bpmnElement="EndEvent_LocalAuthorityHandles_Art56">
+        <dc:Bounds x="1490" y="702" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_StartLocalMatter_To_GatewayLocalDerogation_Art56_di"
+                       bpmnElement="Flow_StartLocalMatter_To_GatewayLocalDerogation_Art56">
+        <di:waypoint x="156" y="200" />
+        <di:waypoint x="250" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayLocalDerogation_To_InformLeadAuthority_Art56_di"
+                       bpmnElement="Flow_GatewayLocalDerogation_To_InformLeadAuthority_Art56">
+        <di:waypoint x="300" y="200" />
+        <di:waypoint x="390" y="200" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="330" y="182" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayLocalDerogation_To_EndNoLocalDerogation_Art56_di"
+                       bpmnElement="Flow_GatewayLocalDerogation_To_EndNoLocalDerogation_Art56">
+        <di:waypoint x="275" y="225" />
+        <di:waypoint x="275" y="280" />
+        <di:waypoint x="390" y="280" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="283" y="242" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_InformLeadAuthority_To_GatewayLeadDecisionEvent_Art56_di"
+                       bpmnElement="Flow_InformLeadAuthority_To_GatewayLeadDecisionEvent_Art56">
+        <di:waypoint x="610" y="200" />
+        <di:waypoint x="730" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayLeadDecisionEvent_To_ReceiveLeadHandlingConfirmation_Art56_di"
+                       bpmnElement="Flow_GatewayLeadDecisionEvent_To_ReceiveLeadHandlingConfirmation_Art56">
+        <di:waypoint x="755" y="175" />
+        <di:waypoint x="755" y="110" />
+        <di:waypoint x="900" y="110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayLeadDecisionEvent_To_ReceiveLeadDeclineDecision_Art56_di"
+                       bpmnElement="Flow_GatewayLeadDecisionEvent_To_ReceiveLeadDeclineDecision_Art56">
+        <di:waypoint x="755" y="225" />
+        <di:waypoint x="755" y="270" />
+        <di:waypoint x="900" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveLeadHandlingConfirmation_To_PrepareDraftDecision_Art56_di"
+                       bpmnElement="Flow_ReceiveLeadHandlingConfirmation_To_PrepareDraftDecision_Art56">
+        <di:waypoint x="1110" y="110" />
+        <di:waypoint x="1220" y="110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_PrepareDraftDecision_To_SubmitDraftDecision_Art56_di"
+                       bpmnElement="Flow_PrepareDraftDecision_To_SubmitDraftDecision_Art56">
+        <di:waypoint x="1400" y="110" />
+        <di:waypoint x="1510" y="110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SubmitDraftDecision_To_EndLeadHandledCase_Art56_di"
+                       bpmnElement="Flow_SubmitDraftDecision_To_EndLeadHandledCase_Art56">
+        <di:waypoint x="1680" y="110" />
+        <di:waypoint x="1780" y="110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveLeadDeclineDecision_To_HandleCaseLocally_Art56_di"
+                       bpmnElement="Flow_ReceiveLeadDeclineDecision_To_HandleCaseLocally_Art56">
+        <di:waypoint x="1090" y="270" />
+        <di:waypoint x="1220" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_HandleCaseLocally_To_EndLocalCaseHandled_Art56_di"
+                       bpmnElement="Flow_HandleCaseLocally_To_EndLocalCaseHandled_Art56">
+        <di:waypoint x="1440" y="270" />
+        <di:waypoint x="1540" y="270" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_StartCrossBorder_To_IdentifyLeadAuthority_Art56_di"
+                       bpmnElement="Flow_StartCrossBorder_To_IdentifyLeadAuthority_Art56">
+        <di:waypoint x="156" y="566" />
+        <di:waypoint x="220" y="566" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_IdentifyLeadAuthority_To_ActAsLeadAuthority_Art56_di"
+                       bpmnElement="Flow_IdentifyLeadAuthority_To_ActAsLeadAuthority_Art56">
+        <di:waypoint x="460" y="566" />
+        <di:waypoint x="560" y="566" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ActAsLeadAuthority_To_ActAsSoleInterlocutor_Art56_di"
+                       bpmnElement="Flow_ActAsLeadAuthority_To_ActAsSoleInterlocutor_Art56">
+        <di:waypoint x="770" y="566" />
+        <di:waypoint x="880" y="566" />
+        <di:waypoint x="880" y="470" />
+        <di:waypoint x="2290" y="470" />
+        <di:waypoint x="2290" y="526" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ActAsSoleInterlocutor_To_EndLeadCompetence_Art56_di"
+                       bpmnElement="Flow_ActAsSoleInterlocutor_To_EndLeadCompetence_Art56">
+        <di:waypoint x="2380" y="566" />
+        <di:waypoint x="2480" y="566" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_StartReferral_To_DecideHandling_Art56_di"
+                       bpmnElement="Flow_StartReferral_To_DecideHandling_Art56">
+        <di:waypoint x="596" y="680" />
+        <di:waypoint x="680" y="680" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_DecideHandling_To_GatewayHandleCase_Art56_di"
+                       bpmnElement="Flow_DecideHandling_To_GatewayHandleCase_Art56">
+        <di:waypoint x="940" y="680" />
+        <di:waypoint x="1040" y="680" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayHandleCase_To_SendLeadHandlingConfirmation_Art56_di"
+                       bpmnElement="Flow_GatewayHandleCase_To_SendLeadHandlingConfirmation_Art56">
+        <di:waypoint x="1065" y="655" />
+        <di:waypoint x="1065" y="600" />
+        <di:waypoint x="1200" y="600" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1073" y="622" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayHandleCase_To_SendLeadDeclineDecision_Art56_di"
+                       bpmnElement="Flow_GatewayHandleCase_To_SendLeadDeclineDecision_Art56">
+        <di:waypoint x="1090" y="680" />
+        <di:waypoint x="1200" y="720" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1126" y="700" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendLeadHandlingConfirmation_To_HandleCaseArticle60_Art56_di"
+                       bpmnElement="Flow_SendLeadHandlingConfirmation_To_HandleCaseArticle60_Art56">
+        <di:waypoint x="1400" y="600" />
+        <di:waypoint x="1510" y="600" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_HandleCaseArticle60_To_ReceiveLocalDraftDecision_Art56_di"
+                       bpmnElement="Flow_HandleCaseArticle60_To_ReceiveLocalDraftDecision_Art56">
+        <di:waypoint x="1680" y="600" />
+        <di:waypoint x="1790" y="600" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveLocalDraftDecision_To_TakeUtmostAccount_Art56_di"
+                       bpmnElement="Flow_ReceiveLocalDraftDecision_To_TakeUtmostAccount_Art56">
+        <di:waypoint x="1970" y="600" />
+        <di:waypoint x="2050" y="720" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TakeUtmostAccount_To_ActAsSoleInterlocutor_Art56_di"
+                       bpmnElement="Flow_TakeUtmostAccount_To_ActAsSoleInterlocutor_Art56">
+        <di:waypoint x="2250" y="720" />
+        <di:waypoint x="2290" y="720" />
+        <di:waypoint x="2290" y="606" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendLeadDeclineDecision_To_EndLocalAuthorityHandles_Art56_di"
+                       bpmnElement="Flow_SendLeadDeclineDecision_To_EndLocalAuthorityHandles_Art56">
+        <di:waypoint x="1380" y="720" />
+        <di:waypoint x="1490" y="720" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_InformLeadAuthority_Art56_di"
+                       bpmnElement="MessageFlow_InformLeadAuthority_Art56">
+        <di:waypoint x="500" y="160" />
+        <di:waypoint x="500" y="680" />
+        <di:waypoint x="560" y="680" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SendLeadHandlingConfirmation_Art56_di"
+                       bpmnElement="MessageFlow_SendLeadHandlingConfirmation_Art56">
+        <di:waypoint x="1300" y="560" />
+        <di:waypoint x="1300" y="110" />
+        <di:waypoint x="1110" y="110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SendLeadDeclineDecision_Art56_di"
+                       bpmnElement="MessageFlow_SendLeadDeclineDecision_Art56">
+        <di:waypoint x="1290" y="680" />
+        <di:waypoint x="1290" y="270" />
+        <di:waypoint x="1090" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SubmitLocalDraft_Art56_di"
+                       bpmnElement="MessageFlow_SubmitLocalDraft_Art56">
+        <di:waypoint x="1595" y="150" />
+        <di:waypoint x="1595" y="600" />
+        <di:waypoint x="1790" y="600" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_LeadInterlocutor_Art56_di"
+                       bpmnElement="MessageFlow_LeadInterlocutor_Art56">
+        <di:waypoint x="2290" y="606" />
+        <di:waypoint x="2290" y="830" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

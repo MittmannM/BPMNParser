@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art63_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art63_Reviewed">
+    <bpmn:participant id="Participant_SupervisoryAuthorities_Art63"
+                      name="Supervisory Authorities"
+                      processRef="Process_SupervisoryAuthorities_Art63" />
+    <bpmn:participant id="Participant_Commission_Art63"
+                      name="Commission" />
+
+    <bpmn:messageFlow id="MessageFlow_CooperateWithCommission_Art63"
+                      sourceRef="Task_CooperateWithCommission_Art63"
+                      targetRef="Participant_Commission_Art63" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_SupervisoryAuthorities_Art63"
+                name="Apply the consistency mechanism"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 63 based on the real English legal text from
+      gdpr_articles/article_63.txt. This compact process captures the article's normative core:
+      supervisory authorities cooperate with each other and, where relevant, with the Commission
+      through the consistency mechanism in order to contribute to the consistent application of
+      the Regulation throughout the Union.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_NeedConsistentApplication_Art63"
+                     name="Need consistent application">
+      <bpmn:outgoing>Flow_StartNeedConsistentApplication_To_CooperateWithAuthorities_Art63</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_CooperateWithAuthorities_Art63"
+               name="Cooperate with supervisory authorities">
+      <bpmn:incoming>Flow_StartNeedConsistentApplication_To_CooperateWithAuthorities_Art63</bpmn:incoming>
+      <bpmn:outgoing>Flow_CooperateWithAuthorities_To_ApplyConsistencyMechanism_Art63</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ApplyConsistencyMechanism_Art63"
+               name="Apply consistency mechanism">
+      <bpmn:incoming>Flow_CooperateWithAuthorities_To_ApplyConsistencyMechanism_Art63</bpmn:incoming>
+      <bpmn:outgoing>Flow_ApplyConsistencyMechanism_To_GatewayCommissionRelevant_Art63</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_IsCommissionRelevant_Art63"
+                           name="Is Commission involvement relevant?">
+      <bpmn:incoming>Flow_ApplyConsistencyMechanism_To_GatewayCommissionRelevant_Art63</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayCommissionRelevant_To_CooperateWithCommission_Art63</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayCommissionRelevant_To_EndConsistentApplicationSupported_Art63</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="Task_CooperateWithCommission_Art63"
+                   name="Cooperate with Commission">
+      <bpmn:incoming>Flow_GatewayCommissionRelevant_To_CooperateWithCommission_Art63</bpmn:incoming>
+      <bpmn:outgoing>Flow_CooperateWithCommission_To_EndConsistentApplicationSupported_Art63</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_ConsistentApplicationSupported_Art63"
+                   name="Consistent application supported">
+      <bpmn:incoming>Flow_GatewayCommissionRelevant_To_EndConsistentApplicationSupported_Art63</bpmn:incoming>
+      <bpmn:incoming>Flow_CooperateWithCommission_To_EndConsistentApplicationSupported_Art63</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartNeedConsistentApplication_To_CooperateWithAuthorities_Art63"
+                       sourceRef="StartEvent_NeedConsistentApplication_Art63"
+                       targetRef="Task_CooperateWithAuthorities_Art63" />
+    <bpmn:sequenceFlow id="Flow_CooperateWithAuthorities_To_ApplyConsistencyMechanism_Art63"
+                       sourceRef="Task_CooperateWithAuthorities_Art63"
+                       targetRef="Task_ApplyConsistencyMechanism_Art63" />
+    <bpmn:sequenceFlow id="Flow_ApplyConsistencyMechanism_To_GatewayCommissionRelevant_Art63"
+                       sourceRef="Task_ApplyConsistencyMechanism_Art63"
+                       targetRef="Gateway_IsCommissionRelevant_Art63" />
+    <bpmn:sequenceFlow id="Flow_GatewayCommissionRelevant_To_CooperateWithCommission_Art63"
+                       name="Yes"
+                       sourceRef="Gateway_IsCommissionRelevant_Art63"
+                       targetRef="Task_CooperateWithCommission_Art63" />
+    <bpmn:sequenceFlow id="Flow_GatewayCommissionRelevant_To_EndConsistentApplicationSupported_Art63"
+                       name="No"
+                       sourceRef="Gateway_IsCommissionRelevant_Art63"
+                       targetRef="EndEvent_ConsistentApplicationSupported_Art63" />
+    <bpmn:sequenceFlow id="Flow_CooperateWithCommission_To_EndConsistentApplicationSupported_Art63"
+                       sourceRef="Task_CooperateWithCommission_Art63"
+                       targetRef="EndEvent_ConsistentApplicationSupported_Art63" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art63_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art63_Reviewed"
+                      bpmnElement="Collaboration_Art63_Reviewed">
+      <bpmndi:BPMNShape id="Participant_SupervisoryAuthorities_Art63_di"
+                        bpmnElement="Participant_SupervisoryAuthorities_Art63"
+                        isHorizontal="true">
+        <dc:Bounds x="20" y="20" width="1650" height="260" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Commission_Art63_di"
+                        bpmnElement="Participant_Commission_Art63"
+                        isHorizontal="true">
+        <dc:Bounds x="20" y="320" width="1650" height="120" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_NeedConsistentApplication_Art63_di"
+                        bpmnElement="StartEvent_NeedConsistentApplication_Art63">
+        <dc:Bounds x="120" y="132" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CooperateWithAuthorities_Art63_di"
+                        bpmnElement="Task_CooperateWithAuthorities_Art63">
+        <dc:Bounds x="230" y="110" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ApplyConsistencyMechanism_Art63_di"
+                        bpmnElement="Task_ApplyConsistencyMechanism_Art63">
+        <dc:Bounds x="500" y="110" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_IsCommissionRelevant_Art63_di"
+                        bpmnElement="Gateway_IsCommissionRelevant_Art63"
+                        isMarkerVisible="true">
+        <dc:Bounds x="740" y="125" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CooperateWithCommission_Art63_di"
+                        bpmnElement="Task_CooperateWithCommission_Art63">
+        <dc:Bounds x="860" y="60" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ConsistentApplicationSupported_Art63_di"
+                        bpmnElement="EndEvent_ConsistentApplicationSupported_Art63">
+        <dc:Bounds x="1140" y="132" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_StartNeedConsistentApplication_To_CooperateWithAuthorities_Art63_di"
+                       bpmnElement="Flow_StartNeedConsistentApplication_To_CooperateWithAuthorities_Art63">
+        <di:waypoint x="156" y="150" />
+        <di:waypoint x="230" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_CooperateWithAuthorities_To_ApplyConsistencyMechanism_Art63_di"
+                       bpmnElement="Flow_CooperateWithAuthorities_To_ApplyConsistencyMechanism_Art63">
+        <di:waypoint x="430" y="150" />
+        <di:waypoint x="500" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ApplyConsistencyMechanism_To_GatewayCommissionRelevant_Art63_di"
+                       bpmnElement="Flow_ApplyConsistencyMechanism_To_GatewayCommissionRelevant_Art63">
+        <di:waypoint x="680" y="150" />
+        <di:waypoint x="740" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayCommissionRelevant_To_CooperateWithCommission_Art63_di"
+                       bpmnElement="Flow_GatewayCommissionRelevant_To_CooperateWithCommission_Art63">
+        <di:waypoint x="765" y="125" />
+        <di:waypoint x="765" y="100" />
+        <di:waypoint x="860" y="100" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="774" y="101" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayCommissionRelevant_To_EndConsistentApplicationSupported_Art63_di"
+                       bpmnElement="Flow_GatewayCommissionRelevant_To_EndConsistentApplicationSupported_Art63">
+        <di:waypoint x="790" y="150" />
+        <di:waypoint x="1140" y="150" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="948" y="132" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_CooperateWithCommission_To_EndConsistentApplicationSupported_Art63_di"
+                       bpmnElement="Flow_CooperateWithCommission_To_EndConsistentApplicationSupported_Art63">
+        <di:waypoint x="1040" y="100" />
+        <di:waypoint x="1158" y="100" />
+        <di:waypoint x="1158" y="132" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_CooperateWithCommission_Art63_di"
+                       bpmnElement="MessageFlow_CooperateWithCommission_Art63">
+        <di:waypoint x="950" y="140" />
+        <di:waypoint x="950" y="320" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

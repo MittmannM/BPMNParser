@@ -1,0 +1,730 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art64_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art64_Reviewed">
+    <bpmn:participant id="Participant_CompetentSupervisoryAuthority_Art64"
+                      name="Competent Supervisory Authority"
+                      processRef="Process_CompetentSupervisoryAuthority_Art64" />
+    <bpmn:participant id="Participant_Board_Art64"
+                      name="Board"
+                      processRef="Process_Board_Art64" />
+    <bpmn:participant id="Participant_OtherAuthorityOrChair_Art64"
+                      name="Other Supervisory Authority or Chair" />
+    <bpmn:participant id="Participant_Commission_Art64"
+                      name="Commission" />
+    <bpmn:participant id="Participant_Public_Art64"
+                      name="Public" />
+
+    <bpmn:messageFlow id="MessageFlow_SendDraftDecision_Art64"
+                      sourceRef="Task_SendDraftDecisionToBoard_Art64"
+                      targetRef="StartEvent_ReceiveDraftDecision_Art64" />
+    <bpmn:messageFlow id="MessageFlow_RequestBoardExamination_Art64"
+                      sourceRef="Participant_OtherAuthorityOrChair_Art64"
+                      targetRef="StartEvent_ReceiveExaminationRequest_Art64" />
+    <bpmn:messageFlow id="MessageFlow_CommissionRequestsBoardExamination_Art64"
+                      sourceRef="Participant_Commission_Art64"
+                      targetRef="StartEvent_ReceiveExaminationRequest_Art64" />
+    <bpmn:messageFlow id="MessageFlow_CirculateInfoToCommission_Art64"
+                      sourceRef="Task_CirculateRelevantInformation_Art64"
+                      targetRef="Participant_Commission_Art64" />
+    <bpmn:messageFlow id="MessageFlow_SendOpinionToAuthority_Art64"
+                      sourceRef="Task_SendOpinionAndInformCommission_Art64"
+                      targetRef="Task_ReceiveBoardOpinion_Art64" />
+    <bpmn:messageFlow id="MessageFlow_SendOpinionToOtherAuthorityOrChair_Art64"
+                      sourceRef="Task_SendOpinionAndInformCommission_Art64"
+                      targetRef="Participant_OtherAuthorityOrChair_Art64" />
+    <bpmn:messageFlow id="MessageFlow_SendOpinionToCommission_Art64"
+                      sourceRef="Task_SendOpinionAndInformCommission_Art64"
+                      targetRef="Participant_Commission_Art64" />
+    <bpmn:messageFlow id="MessageFlow_MakeOpinionPublic_Art64"
+                      sourceRef="Task_MakeOpinionPublic_Art64"
+                      targetRef="Participant_Public_Art64" />
+    <bpmn:messageFlow id="MessageFlow_SendMaintainedDraft_Art64"
+                      sourceRef="Task_SendMaintainedDraft_Art64"
+                      targetRef="Participant_Board_Art64" />
+    <bpmn:messageFlow id="MessageFlow_SendAmendedDraft_Art64"
+                      sourceRef="Task_SendAmendedDraft_Art64"
+                      targetRef="Participant_Board_Art64" />
+    <bpmn:messageFlow id="MessageFlow_SendNonFollowNotice_Art64"
+                      sourceRef="Task_SendNonFollowNotice_Art64"
+                      targetRef="Participant_Board_Art64" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_CompetentSupervisoryAuthority_Art64"
+                name="Handle Article 64 opinion process"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 64 based on the real English legal text from
+      gdpr_articles/article_64.txt. This process captures the competent supervisory authority's
+      paragraph-1 draft-decision submission to the Board, the duty not to adopt the draft during
+      the opinion period, the duty to take utmost account of the Board opinion, the two-week
+      response to the Chair on whether the draft will be maintained or amended, and the
+      Article 65(1) consequence where the authority does not intend to follow the opinion in
+      whole or in part.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_IntendMeasureUnderArticle64_Art64"
+                     name="Intend Article 64 measure">
+      <bpmn:outgoing>Flow_StartMeasure_To_PrepareDraftDecision_Art64</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_PrepareDraftDecision_Art64"
+               name="Prepare draft decision">
+      <bpmn:incoming>Flow_StartMeasure_To_PrepareDraftDecision_Art64</bpmn:incoming>
+      <bpmn:outgoing>Flow_PrepareDraftDecision_To_SendDraftDecision_Art64</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="Task_SendDraftDecisionToBoard_Art64"
+                   name="Send draft decision to Board">
+      <bpmn:incoming>Flow_PrepareDraftDecision_To_SendDraftDecision_Art64</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendDraftDecision_To_WaitForOpinion_Art64</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:task id="Task_WaitWithoutAdoptingDraft_Art64"
+               name="Withhold adoption during opinion period">
+      <bpmn:incoming>Flow_SendDraftDecision_To_WaitForOpinion_Art64</bpmn:incoming>
+      <bpmn:outgoing>Flow_WaitForOpinion_To_ReceiveBoardOpinion_Art64</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:receiveTask id="Task_ReceiveBoardOpinion_Art64"
+                      name="Receive Board opinion">
+      <bpmn:incoming>Flow_WaitForOpinion_To_ReceiveBoardOpinion_Art64</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveBoardOpinion_To_TakeUtmostAccount_Art64</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:task id="Task_TakeUtmostAccount_Art64"
+               name="Take utmost account of opinion">
+      <bpmn:incoming>Flow_ReceiveBoardOpinion_To_TakeUtmostAccount_Art64</bpmn:incoming>
+      <bpmn:outgoing>Flow_TakeUtmostAccount_To_GatewayFollowOpinion_Art64</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_WillAuthorityFollowOpinion_Art64"
+                           name="Will the authority follow the opinion?">
+      <bpmn:incoming>Flow_TakeUtmostAccount_To_GatewayFollowOpinion_Art64</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayFollowOpinion_To_GatewayAmendDraft_Art64</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayFollowOpinion_To_SendNonFollowNotice_Art64</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_WillAuthorityAmendDraft_Art64"
+                           name="Will the authority amend the draft?">
+      <bpmn:incoming>Flow_GatewayFollowOpinion_To_GatewayAmendDraft_Art64</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAmendDraft_To_SendAmendedDraft_Art64</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAmendDraft_To_SendMaintainedDraft_Art64</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="Task_SendAmendedDraft_Art64"
+                   name="Send amended draft within two weeks">
+      <bpmn:incoming>Flow_GatewayAmendDraft_To_SendAmendedDraft_Art64</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendAmendedDraft_To_EndDraftAmended_Art64</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:sendTask id="Task_SendMaintainedDraft_Art64"
+                   name="Send maintained draft within two weeks">
+      <bpmn:incoming>Flow_GatewayAmendDraft_To_SendMaintainedDraft_Art64</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendMaintainedDraft_To_EndDraftMaintained_Art64</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:sendTask id="Task_SendNonFollowNotice_Art64"
+                   name="Send non-follow notice with grounds">
+      <bpmn:incoming>Flow_GatewayFollowOpinion_To_SendNonFollowNotice_Art64</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendNonFollowNotice_To_EndArticle65Applies_Art64</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_DraftAmended_Art64"
+                   name="Amended draft sent">
+      <bpmn:incoming>Flow_SendAmendedDraft_To_EndDraftAmended_Art64</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_DraftMaintained_Art64"
+                   name="Maintained draft sent">
+      <bpmn:incoming>Flow_SendMaintainedDraft_To_EndDraftMaintained_Art64</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_Article65Applies_Art64"
+                   name="Article 65 applies">
+      <bpmn:incoming>Flow_SendNonFollowNotice_To_EndArticle65Applies_Art64</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartMeasure_To_PrepareDraftDecision_Art64"
+                       sourceRef="StartEvent_IntendMeasureUnderArticle64_Art64"
+                       targetRef="Task_PrepareDraftDecision_Art64" />
+    <bpmn:sequenceFlow id="Flow_PrepareDraftDecision_To_SendDraftDecision_Art64"
+                       sourceRef="Task_PrepareDraftDecision_Art64"
+                       targetRef="Task_SendDraftDecisionToBoard_Art64" />
+    <bpmn:sequenceFlow id="Flow_SendDraftDecision_To_WaitForOpinion_Art64"
+                       sourceRef="Task_SendDraftDecisionToBoard_Art64"
+                       targetRef="Task_WaitWithoutAdoptingDraft_Art64" />
+    <bpmn:sequenceFlow id="Flow_WaitForOpinion_To_ReceiveBoardOpinion_Art64"
+                       sourceRef="Task_WaitWithoutAdoptingDraft_Art64"
+                       targetRef="Task_ReceiveBoardOpinion_Art64" />
+    <bpmn:sequenceFlow id="Flow_ReceiveBoardOpinion_To_TakeUtmostAccount_Art64"
+                       sourceRef="Task_ReceiveBoardOpinion_Art64"
+                       targetRef="Task_TakeUtmostAccount_Art64" />
+    <bpmn:sequenceFlow id="Flow_TakeUtmostAccount_To_GatewayFollowOpinion_Art64"
+                       sourceRef="Task_TakeUtmostAccount_Art64"
+                       targetRef="Gateway_WillAuthorityFollowOpinion_Art64" />
+    <bpmn:sequenceFlow id="Flow_GatewayFollowOpinion_To_GatewayAmendDraft_Art64"
+                       name="Yes"
+                       sourceRef="Gateway_WillAuthorityFollowOpinion_Art64"
+                       targetRef="Gateway_WillAuthorityAmendDraft_Art64" />
+    <bpmn:sequenceFlow id="Flow_GatewayFollowOpinion_To_SendNonFollowNotice_Art64"
+                       name="No"
+                       sourceRef="Gateway_WillAuthorityFollowOpinion_Art64"
+                       targetRef="Task_SendNonFollowNotice_Art64" />
+    <bpmn:sequenceFlow id="Flow_GatewayAmendDraft_To_SendAmendedDraft_Art64"
+                       name="Yes"
+                       sourceRef="Gateway_WillAuthorityAmendDraft_Art64"
+                       targetRef="Task_SendAmendedDraft_Art64" />
+    <bpmn:sequenceFlow id="Flow_GatewayAmendDraft_To_SendMaintainedDraft_Art64"
+                       name="No"
+                       sourceRef="Gateway_WillAuthorityAmendDraft_Art64"
+                       targetRef="Task_SendMaintainedDraft_Art64" />
+    <bpmn:sequenceFlow id="Flow_SendAmendedDraft_To_EndDraftAmended_Art64"
+                       sourceRef="Task_SendAmendedDraft_Art64"
+                       targetRef="EndEvent_DraftAmended_Art64" />
+    <bpmn:sequenceFlow id="Flow_SendMaintainedDraft_To_EndDraftMaintained_Art64"
+                       sourceRef="Task_SendMaintainedDraft_Art64"
+                       targetRef="EndEvent_DraftMaintained_Art64" />
+    <bpmn:sequenceFlow id="Flow_SendNonFollowNotice_To_EndArticle65Applies_Art64"
+                       sourceRef="Task_SendNonFollowNotice_Art64"
+                       targetRef="EndEvent_Article65Applies_Art64" />
+  </bpmn:process>
+
+  <bpmn:process id="Process_Board_Art64"
+                name="Issue Article 64 opinion"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 64 based on the real English legal text from
+      gdpr_articles/article_64.txt. This process captures paragraph-1 draft-decision referrals,
+      paragraph-2 requests to examine matters of general application or multi-state effect, the
+      circulation of relevant information using electronic means and a standardised format, the
+      no-duplicate-opinion rule, the opinion timetable with possible six-week extension,
+      simple-majority adoption, and the communication and publication duties.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_ReceiveDraftDecision_Art64"
+                     name="Receive draft decision">
+      <bpmn:messageEventDefinition />
+      <bpmn:outgoing>Flow_StartReceiveDraftDecision_To_GatewayMergeSubmission_Art64</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:startEvent id="StartEvent_ReceiveExaminationRequest_Art64"
+                     name="Receive examination request">
+      <bpmn:messageEventDefinition />
+      <bpmn:outgoing>Flow_StartReceiveExaminationRequest_To_GatewayMergeSubmission_Art64</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_MergeSubmission_Art64">
+      <bpmn:incoming>Flow_StartReceiveDraftDecision_To_GatewayMergeSubmission_Art64</bpmn:incoming>
+      <bpmn:incoming>Flow_StartReceiveExaminationRequest_To_GatewayMergeSubmission_Art64</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayMergeSubmission_To_CirculateRelevantInformation_Art64</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_CirculateRelevantInformation_Art64"
+               name="Circulate relevant information">
+      <bpmn:incoming>Flow_GatewayMergeSubmission_To_CirculateRelevantInformation_Art64</bpmn:incoming>
+      <bpmn:outgoing>Flow_CirculateInformation_To_GatewayPriorOpinion_Art64</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_HasBoardAlreadyIssuedOpinion_Art64"
+                           name="Has the Board already issued an opinion?">
+      <bpmn:incoming>Flow_CirculateInformation_To_GatewayPriorOpinion_Art64</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayPriorOpinion_To_UseExistingOpinion_Art64</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayPriorOpinion_To_GatewayComplexSubject_Art64</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_UseExistingOpinion_Art64"
+               name="Use existing opinion">
+      <bpmn:incoming>Flow_GatewayPriorOpinion_To_UseExistingOpinion_Art64</bpmn:incoming>
+      <bpmn:outgoing>Flow_UseExistingOpinion_To_SendOpinionAndInformCommission_Art64</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_IsSubjectComplex_Art64"
+                           name="Is the subject matter complex?">
+      <bpmn:incoming>Flow_GatewayPriorOpinion_To_GatewayComplexSubject_Art64</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayComplexSubject_To_ExtendOpinionPeriod_Art64</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayComplexSubject_To_GatewayMergeOpinionTiming_Art64</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ExtendOpinionPeriod_Art64"
+               name="Extend opinion period by six weeks">
+      <bpmn:incoming>Flow_GatewayComplexSubject_To_ExtendOpinionPeriod_Art64</bpmn:incoming>
+      <bpmn:outgoing>Flow_ExtendOpinionPeriod_To_GatewayMergeOpinionTiming_Art64</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_MergeOpinionTiming_Art64">
+      <bpmn:incoming>Flow_GatewayComplexSubject_To_GatewayMergeOpinionTiming_Art64</bpmn:incoming>
+      <bpmn:incoming>Flow_ExtendOpinionPeriod_To_GatewayMergeOpinionTiming_Art64</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayMergeOpinionTiming_To_CollectMemberPositions_Art64</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_CollectMemberPositions_Art64"
+               name="Collect member positions">
+      <bpmn:incoming>Flow_GatewayMergeOpinionTiming_To_CollectMemberPositions_Art64</bpmn:incoming>
+      <bpmn:outgoing>Flow_CollectMemberPositions_To_AdoptOpinion_Art64</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_AdoptOpinion_Art64"
+               name="Adopt opinion within eight weeks">
+      <bpmn:incoming>Flow_CollectMemberPositions_To_AdoptOpinion_Art64</bpmn:incoming>
+      <bpmn:outgoing>Flow_AdoptOpinion_To_SendOpinionAndInformCommission_Art64</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="Task_SendOpinionAndInformCommission_Art64"
+                   name="Send opinion and inform Commission">
+      <bpmn:incoming>Flow_UseExistingOpinion_To_SendOpinionAndInformCommission_Art64</bpmn:incoming>
+      <bpmn:incoming>Flow_AdoptOpinion_To_SendOpinionAndInformCommission_Art64</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendOpinionAndInformCommission_To_MakeOpinionPublic_Art64</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:sendTask id="Task_MakeOpinionPublic_Art64"
+                   name="Make opinion public">
+      <bpmn:incoming>Flow_SendOpinionAndInformCommission_To_MakeOpinionPublic_Art64</bpmn:incoming>
+      <bpmn:outgoing>Flow_MakeOpinionPublic_To_EndOpinionHandled_Art64</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_OpinionHandled_Art64"
+                   name="Opinion handled">
+      <bpmn:incoming>Flow_MakeOpinionPublic_To_EndOpinionHandled_Art64</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartReceiveDraftDecision_To_GatewayMergeSubmission_Art64"
+                       sourceRef="StartEvent_ReceiveDraftDecision_Art64"
+                       targetRef="Gateway_MergeSubmission_Art64" />
+    <bpmn:sequenceFlow id="Flow_StartReceiveExaminationRequest_To_GatewayMergeSubmission_Art64"
+                       sourceRef="StartEvent_ReceiveExaminationRequest_Art64"
+                       targetRef="Gateway_MergeSubmission_Art64" />
+    <bpmn:sequenceFlow id="Flow_GatewayMergeSubmission_To_CirculateRelevantInformation_Art64"
+                       sourceRef="Gateway_MergeSubmission_Art64"
+                       targetRef="Task_CirculateRelevantInformation_Art64" />
+    <bpmn:sequenceFlow id="Flow_CirculateInformation_To_GatewayPriorOpinion_Art64"
+                       sourceRef="Task_CirculateRelevantInformation_Art64"
+                       targetRef="Gateway_HasBoardAlreadyIssuedOpinion_Art64" />
+    <bpmn:sequenceFlow id="Flow_GatewayPriorOpinion_To_UseExistingOpinion_Art64"
+                       name="Yes"
+                       sourceRef="Gateway_HasBoardAlreadyIssuedOpinion_Art64"
+                       targetRef="Task_UseExistingOpinion_Art64" />
+    <bpmn:sequenceFlow id="Flow_GatewayPriorOpinion_To_GatewayComplexSubject_Art64"
+                       name="No"
+                       sourceRef="Gateway_HasBoardAlreadyIssuedOpinion_Art64"
+                       targetRef="Gateway_IsSubjectComplex_Art64" />
+    <bpmn:sequenceFlow id="Flow_UseExistingOpinion_To_SendOpinionAndInformCommission_Art64"
+                       sourceRef="Task_UseExistingOpinion_Art64"
+                       targetRef="Task_SendOpinionAndInformCommission_Art64" />
+    <bpmn:sequenceFlow id="Flow_GatewayComplexSubject_To_ExtendOpinionPeriod_Art64"
+                       name="Yes"
+                       sourceRef="Gateway_IsSubjectComplex_Art64"
+                       targetRef="Task_ExtendOpinionPeriod_Art64" />
+    <bpmn:sequenceFlow id="Flow_GatewayComplexSubject_To_GatewayMergeOpinionTiming_Art64"
+                       name="No"
+                       sourceRef="Gateway_IsSubjectComplex_Art64"
+                       targetRef="Gateway_MergeOpinionTiming_Art64" />
+    <bpmn:sequenceFlow id="Flow_ExtendOpinionPeriod_To_GatewayMergeOpinionTiming_Art64"
+                       sourceRef="Task_ExtendOpinionPeriod_Art64"
+                       targetRef="Gateway_MergeOpinionTiming_Art64" />
+    <bpmn:sequenceFlow id="Flow_GatewayMergeOpinionTiming_To_CollectMemberPositions_Art64"
+                       sourceRef="Gateway_MergeOpinionTiming_Art64"
+                       targetRef="Task_CollectMemberPositions_Art64" />
+    <bpmn:sequenceFlow id="Flow_CollectMemberPositions_To_AdoptOpinion_Art64"
+                       sourceRef="Task_CollectMemberPositions_Art64"
+                       targetRef="Task_AdoptOpinion_Art64" />
+    <bpmn:sequenceFlow id="Flow_AdoptOpinion_To_SendOpinionAndInformCommission_Art64"
+                       sourceRef="Task_AdoptOpinion_Art64"
+                       targetRef="Task_SendOpinionAndInformCommission_Art64" />
+    <bpmn:sequenceFlow id="Flow_SendOpinionAndInformCommission_To_MakeOpinionPublic_Art64"
+                       sourceRef="Task_SendOpinionAndInformCommission_Art64"
+                       targetRef="Task_MakeOpinionPublic_Art64" />
+    <bpmn:sequenceFlow id="Flow_MakeOpinionPublic_To_EndOpinionHandled_Art64"
+                       sourceRef="Task_MakeOpinionPublic_Art64"
+                       targetRef="EndEvent_OpinionHandled_Art64" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art64_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art64_Reviewed"
+                      bpmnElement="Collaboration_Art64_Reviewed">
+      <bpmndi:BPMNShape id="Participant_CompetentSupervisoryAuthority_Art64_di"
+                        bpmnElement="Participant_CompetentSupervisoryAuthority_Art64"
+                        isHorizontal="true">
+        <dc:Bounds x="20" y="20" width="2620" height="320" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Board_Art64_di"
+                        bpmnElement="Participant_Board_Art64"
+                        isHorizontal="true">
+        <dc:Bounds x="20" y="360" width="2620" height="380" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_OtherAuthorityOrChair_Art64_di"
+                        bpmnElement="Participant_OtherAuthorityOrChair_Art64"
+                        isHorizontal="true">
+        <dc:Bounds x="20" y="760" width="2620" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Commission_Art64_di"
+                        bpmnElement="Participant_Commission_Art64"
+                        isHorizontal="true">
+        <dc:Bounds x="20" y="880" width="2620" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Public_Art64_di"
+                        bpmnElement="Participant_Public_Art64"
+                        isHorizontal="true">
+        <dc:Bounds x="20" y="1000" width="2620" height="100" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_IntendMeasureUnderArticle64_Art64_di"
+                        bpmnElement="StartEvent_IntendMeasureUnderArticle64_Art64">
+        <dc:Bounds x="120" y="132" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareDraftDecision_Art64_di"
+                        bpmnElement="Task_PrepareDraftDecision_Art64">
+        <dc:Bounds x="220" y="110" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SendDraftDecisionToBoard_Art64_di"
+                        bpmnElement="Task_SendDraftDecisionToBoard_Art64">
+        <dc:Bounds x="450" y="110" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_WaitWithoutAdoptingDraft_Art64_di"
+                        bpmnElement="Task_WaitWithoutAdoptingDraft_Art64">
+        <dc:Bounds x="690" y="110" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReceiveBoardOpinion_Art64_di"
+                        bpmnElement="Task_ReceiveBoardOpinion_Art64">
+        <dc:Bounds x="960" y="110" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_TakeUtmostAccount_Art64_di"
+                        bpmnElement="Task_TakeUtmostAccount_Art64">
+        <dc:Bounds x="1190" y="110" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_WillAuthorityFollowOpinion_Art64_di"
+                        bpmnElement="Gateway_WillAuthorityFollowOpinion_Art64"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1450" y="125" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_WillAuthorityAmendDraft_Art64_di"
+                        bpmnElement="Gateway_WillAuthorityAmendDraft_Art64"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1580" y="125" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SendAmendedDraft_Art64_di"
+                        bpmnElement="Task_SendAmendedDraft_Art64">
+        <dc:Bounds x="1710" y="60" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SendMaintainedDraft_Art64_di"
+                        bpmnElement="Task_SendMaintainedDraft_Art64">
+        <dc:Bounds x="1710" y="160" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SendNonFollowNotice_Art64_di"
+                        bpmnElement="Task_SendNonFollowNotice_Art64">
+        <dc:Bounds x="1580" y="250" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_DraftAmended_Art64_di"
+                        bpmnElement="EndEvent_DraftAmended_Art64">
+        <dc:Bounds x="1980" y="82" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_DraftMaintained_Art64_di"
+                        bpmnElement="EndEvent_DraftMaintained_Art64">
+        <dc:Bounds x="1980" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Article65Applies_Art64_di"
+                        bpmnElement="EndEvent_Article65Applies_Art64">
+        <dc:Bounds x="1870" y="272" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_ReceiveDraftDecision_Art64_di"
+                        bpmnElement="StartEvent_ReceiveDraftDecision_Art64">
+        <dc:Bounds x="120" y="462" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_ReceiveExaminationRequest_Art64_di"
+                        bpmnElement="StartEvent_ReceiveExaminationRequest_Art64">
+        <dc:Bounds x="120" y="602" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_MergeSubmission_Art64_di"
+                        bpmnElement="Gateway_MergeSubmission_Art64"
+                        isMarkerVisible="true">
+        <dc:Bounds x="250" y="545" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CirculateRelevantInformation_Art64_di"
+                        bpmnElement="Task_CirculateRelevantInformation_Art64">
+        <dc:Bounds x="380" y="530" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_HasBoardAlreadyIssuedOpinion_Art64_di"
+                        bpmnElement="Gateway_HasBoardAlreadyIssuedOpinion_Art64"
+                        isMarkerVisible="true">
+        <dc:Bounds x="650" y="545" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_UseExistingOpinion_Art64_di"
+                        bpmnElement="Task_UseExistingOpinion_Art64">
+        <dc:Bounds x="790" y="460" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_IsSubjectComplex_Art64_di"
+                        bpmnElement="Gateway_IsSubjectComplex_Art64"
+                        isMarkerVisible="true">
+        <dc:Bounds x="790" y="620" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ExtendOpinionPeriod_Art64_di"
+                        bpmnElement="Task_ExtendOpinionPeriod_Art64">
+        <dc:Bounds x="930" y="605" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_MergeOpinionTiming_Art64_di"
+                        bpmnElement="Gateway_MergeOpinionTiming_Art64"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1220" y="620" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CollectMemberPositions_Art64_di"
+                        bpmnElement="Task_CollectMemberPositions_Art64">
+        <dc:Bounds x="1350" y="605" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AdoptOpinion_Art64_di"
+                        bpmnElement="Task_AdoptOpinion_Art64">
+        <dc:Bounds x="1580" y="605" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SendOpinionAndInformCommission_Art64_di"
+                        bpmnElement="Task_SendOpinionAndInformCommission_Art64">
+        <dc:Bounds x="1870" y="530" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_MakeOpinionPublic_Art64_di"
+                        bpmnElement="Task_MakeOpinionPublic_Art64">
+        <dc:Bounds x="2150" y="530" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_OpinionHandled_Art64_di"
+                        bpmnElement="EndEvent_OpinionHandled_Art64">
+        <dc:Bounds x="2390" y="552" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_StartMeasure_To_PrepareDraftDecision_Art64_di"
+                       bpmnElement="Flow_StartMeasure_To_PrepareDraftDecision_Art64">
+        <di:waypoint x="156" y="150" />
+        <di:waypoint x="220" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_PrepareDraftDecision_To_SendDraftDecision_Art64_di"
+                       bpmnElement="Flow_PrepareDraftDecision_To_SendDraftDecision_Art64">
+        <di:waypoint x="400" y="150" />
+        <di:waypoint x="450" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendDraftDecision_To_WaitForOpinion_Art64_di"
+                       bpmnElement="Flow_SendDraftDecision_To_WaitForOpinion_Art64">
+        <di:waypoint x="630" y="150" />
+        <di:waypoint x="690" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_WaitForOpinion_To_ReceiveBoardOpinion_Art64_di"
+                       bpmnElement="Flow_WaitForOpinion_To_ReceiveBoardOpinion_Art64">
+        <di:waypoint x="900" y="150" />
+        <di:waypoint x="960" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveBoardOpinion_To_TakeUtmostAccount_Art64_di"
+                       bpmnElement="Flow_ReceiveBoardOpinion_To_TakeUtmostAccount_Art64">
+        <di:waypoint x="1130" y="150" />
+        <di:waypoint x="1190" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TakeUtmostAccount_To_GatewayFollowOpinion_Art64_di"
+                       bpmnElement="Flow_TakeUtmostAccount_To_GatewayFollowOpinion_Art64">
+        <di:waypoint x="1380" y="150" />
+        <di:waypoint x="1450" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayFollowOpinion_To_GatewayAmendDraft_Art64_di"
+                       bpmnElement="Flow_GatewayFollowOpinion_To_GatewayAmendDraft_Art64">
+        <di:waypoint x="1500" y="150" />
+        <di:waypoint x="1580" y="150" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1528" y="132" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayFollowOpinion_To_SendNonFollowNotice_Art64_di"
+                       bpmnElement="Flow_GatewayFollowOpinion_To_SendNonFollowNotice_Art64">
+        <di:waypoint x="1475" y="175" />
+        <di:waypoint x="1475" y="290" />
+        <di:waypoint x="1580" y="290" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1486" y="214" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAmendDraft_To_SendAmendedDraft_Art64_di"
+                       bpmnElement="Flow_GatewayAmendDraft_To_SendAmendedDraft_Art64">
+        <di:waypoint x="1605" y="125" />
+        <di:waypoint x="1605" y="100" />
+        <di:waypoint x="1710" y="100" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1614" y="101" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAmendDraft_To_SendMaintainedDraft_Art64_di"
+                       bpmnElement="Flow_GatewayAmendDraft_To_SendMaintainedDraft_Art64">
+        <di:waypoint x="1630" y="150" />
+        <di:waypoint x="1710" y="200" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1648" y="168" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendAmendedDraft_To_EndDraftAmended_Art64_di"
+                       bpmnElement="Flow_SendAmendedDraft_To_EndDraftAmended_Art64">
+        <di:waypoint x="1910" y="100" />
+        <di:waypoint x="1980" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendMaintainedDraft_To_EndDraftMaintained_Art64_di"
+                       bpmnElement="Flow_SendMaintainedDraft_To_EndDraftMaintained_Art64">
+        <di:waypoint x="1910" y="200" />
+        <di:waypoint x="1980" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendNonFollowNotice_To_EndArticle65Applies_Art64_di"
+                       bpmnElement="Flow_SendNonFollowNotice_To_EndArticle65Applies_Art64">
+        <di:waypoint x="1800" y="290" />
+        <di:waypoint x="1870" y="290" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_StartReceiveDraftDecision_To_GatewayMergeSubmission_Art64_di"
+                       bpmnElement="Flow_StartReceiveDraftDecision_To_GatewayMergeSubmission_Art64">
+        <di:waypoint x="156" y="480" />
+        <di:waypoint x="220" y="480" />
+        <di:waypoint x="220" y="570" />
+        <di:waypoint x="250" y="570" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_StartReceiveExaminationRequest_To_GatewayMergeSubmission_Art64_di"
+                       bpmnElement="Flow_StartReceiveExaminationRequest_To_GatewayMergeSubmission_Art64">
+        <di:waypoint x="156" y="620" />
+        <di:waypoint x="250" y="620" />
+        <di:waypoint x="250" y="570" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayMergeSubmission_To_CirculateRelevantInformation_Art64_di"
+                       bpmnElement="Flow_GatewayMergeSubmission_To_CirculateRelevantInformation_Art64">
+        <di:waypoint x="300" y="570" />
+        <di:waypoint x="380" y="570" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_CirculateInformation_To_GatewayPriorOpinion_Art64_di"
+                       bpmnElement="Flow_CirculateInformation_To_GatewayPriorOpinion_Art64">
+        <di:waypoint x="580" y="570" />
+        <di:waypoint x="650" y="570" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPriorOpinion_To_UseExistingOpinion_Art64_di"
+                       bpmnElement="Flow_GatewayPriorOpinion_To_UseExistingOpinion_Art64">
+        <di:waypoint x="675" y="545" />
+        <di:waypoint x="675" y="500" />
+        <di:waypoint x="790" y="500" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="684" y="501" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPriorOpinion_To_GatewayComplexSubject_Art64_di"
+                       bpmnElement="Flow_GatewayPriorOpinion_To_GatewayComplexSubject_Art64">
+        <di:waypoint x="700" y="570" />
+        <di:waypoint x="790" y="645" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="728" y="595" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_UseExistingOpinion_To_SendOpinionAndInformCommission_Art64_di"
+                       bpmnElement="Flow_UseExistingOpinion_To_SendOpinionAndInformCommission_Art64">
+        <di:waypoint x="960" y="500" />
+        <di:waypoint x="1980" y="500" />
+        <di:waypoint x="1980" y="530" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayComplexSubject_To_ExtendOpinionPeriod_Art64_di"
+                       bpmnElement="Flow_GatewayComplexSubject_To_ExtendOpinionPeriod_Art64">
+        <di:waypoint x="840" y="645" />
+        <di:waypoint x="930" y="645" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="872" y="627" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayComplexSubject_To_GatewayMergeOpinionTiming_Art64_di"
+                       bpmnElement="Flow_GatewayComplexSubject_To_GatewayMergeOpinionTiming_Art64">
+        <di:waypoint x="815" y="670" />
+        <di:waypoint x="815" y="760" />
+        <di:waypoint x="1245" y="760" />
+        <di:waypoint x="1245" y="670" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="822" y="716" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ExtendOpinionPeriod_To_GatewayMergeOpinionTiming_Art64_di"
+                       bpmnElement="Flow_ExtendOpinionPeriod_To_GatewayMergeOpinionTiming_Art64">
+        <di:waypoint x="1140" y="645" />
+        <di:waypoint x="1220" y="645" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayMergeOpinionTiming_To_CollectMemberPositions_Art64_di"
+                       bpmnElement="Flow_GatewayMergeOpinionTiming_To_CollectMemberPositions_Art64">
+        <di:waypoint x="1270" y="645" />
+        <di:waypoint x="1350" y="645" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_CollectMemberPositions_To_AdoptOpinion_Art64_di"
+                       bpmnElement="Flow_CollectMemberPositions_To_AdoptOpinion_Art64">
+        <di:waypoint x="1530" y="645" />
+        <di:waypoint x="1580" y="645" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AdoptOpinion_To_SendOpinionAndInformCommission_Art64_di"
+                       bpmnElement="Flow_AdoptOpinion_To_SendOpinionAndInformCommission_Art64">
+        <di:waypoint x="1780" y="645" />
+        <di:waypoint x="1980" y="645" />
+        <di:waypoint x="1980" y="610" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendOpinionAndInformCommission_To_MakeOpinionPublic_Art64_di"
+                       bpmnElement="Flow_SendOpinionAndInformCommission_To_MakeOpinionPublic_Art64">
+        <di:waypoint x="2090" y="570" />
+        <di:waypoint x="2150" y="570" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_MakeOpinionPublic_To_EndOpinionHandled_Art64_di"
+                       bpmnElement="Flow_MakeOpinionPublic_To_EndOpinionHandled_Art64">
+        <di:waypoint x="2330" y="570" />
+        <di:waypoint x="2390" y="570" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_SendDraftDecision_Art64_di"
+                       bpmnElement="MessageFlow_SendDraftDecision_Art64">
+        <di:waypoint x="540" y="190" />
+        <di:waypoint x="540" y="462" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_RequestBoardExamination_Art64_di"
+                       bpmnElement="MessageFlow_RequestBoardExamination_Art64">
+        <di:waypoint x="120" y="760" />
+        <di:waypoint x="120" y="620" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_CommissionRequestsBoardExamination_Art64_di"
+                       bpmnElement="MessageFlow_CommissionRequestsBoardExamination_Art64">
+        <di:waypoint x="180" y="880" />
+        <di:waypoint x="180" y="620" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_CirculateInfoToCommission_Art64_di"
+                       bpmnElement="MessageFlow_CirculateInfoToCommission_Art64">
+        <di:waypoint x="480" y="610" />
+        <di:waypoint x="480" y="880" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SendOpinionToAuthority_Art64_di"
+                       bpmnElement="MessageFlow_SendOpinionToAuthority_Art64">
+        <di:waypoint x="1980" y="530" />
+        <di:waypoint x="1980" y="150" />
+        <di:waypoint x="1130" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SendOpinionToOtherAuthorityOrChair_Art64_di"
+                       bpmnElement="MessageFlow_SendOpinionToOtherAuthorityOrChair_Art64">
+        <di:waypoint x="2010" y="610" />
+        <di:waypoint x="2010" y="760" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SendOpinionToCommission_Art64_di"
+                       bpmnElement="MessageFlow_SendOpinionToCommission_Art64">
+        <di:waypoint x="2050" y="610" />
+        <di:waypoint x="2050" y="880" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_MakeOpinionPublic_Art64_di"
+                       bpmnElement="MessageFlow_MakeOpinionPublic_Art64">
+        <di:waypoint x="2240" y="610" />
+        <di:waypoint x="2240" y="1000" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SendMaintainedDraft_Art64_di"
+                       bpmnElement="MessageFlow_SendMaintainedDraft_Art64">
+        <di:waypoint x="1810" y="160" />
+        <di:waypoint x="1810" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SendAmendedDraft_Art64_di"
+                       bpmnElement="MessageFlow_SendAmendedDraft_Art64">
+        <di:waypoint x="1810" y="140" />
+        <di:waypoint x="1810" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SendNonFollowNotice_Art64_di"
+                       bpmnElement="MessageFlow_SendNonFollowNotice_Art64">
+        <di:waypoint x="1690" y="250" />
+        <di:waypoint x="1690" y="360" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

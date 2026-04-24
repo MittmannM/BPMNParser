@@ -1,0 +1,1280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art58_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art58_Reviewed">
+    <bpmn:participant id="Participant_SupervisoryAuthority_Art58"
+                      name="Supervisory Authority"
+                      processRef="Process_SupervisoryAuthority_Art58" />
+    <bpmn:participant id="Participant_ControllerProcessorRepresentative_Art58"
+                      name="Controller, Processor, or Representative" />
+    <bpmn:participant id="Participant_DataSubject_Art58"
+                      name="Data Subject" />
+    <bpmn:participant id="Participant_CertificationBody_Art58"
+                      name="Certification Body" />
+    <bpmn:participant id="Participant_NationalInstitutionsAndPublic_Art58"
+                      name="National Institutions and Public" />
+    <bpmn:participant id="Participant_JudicialAuthorities_Art58"
+                      name="Judicial Authorities" />
+
+    <bpmn:messageFlow id="MessageFlow_OrderRequiredInformation_Art58"
+                      sourceRef="Task_OrderRequiredInformation_Art58"
+                      targetRef="Participant_ControllerProcessorRepresentative_Art58" />
+    <bpmn:messageFlow id="MessageFlow_NotifyAllegedInfringement_Art58"
+                      sourceRef="Task_NotifyAllegedInfringement_Art58"
+                      targetRef="Participant_ControllerProcessorRepresentative_Art58" />
+    <bpmn:messageFlow id="MessageFlow_IssueWarning_Art58"
+                      sourceRef="Task_IssueWarning_Art58"
+                      targetRef="Participant_ControllerProcessorRepresentative_Art58" />
+    <bpmn:messageFlow id="MessageFlow_IssueReprimand_Art58"
+                      sourceRef="Task_IssueReprimand_Art58"
+                      targetRef="Participant_ControllerProcessorRepresentative_Art58" />
+    <bpmn:messageFlow id="MessageFlow_OrderRightsCompliance_Art58"
+                      sourceRef="Task_OrderRightsCompliance_Art58"
+                      targetRef="Participant_ControllerProcessorRepresentative_Art58" />
+    <bpmn:messageFlow id="MessageFlow_OrderProcessingCompliance_Art58"
+                      sourceRef="Task_OrderProcessingCompliance_Art58"
+                      targetRef="Participant_ControllerProcessorRepresentative_Art58" />
+    <bpmn:messageFlow id="MessageFlow_OrderBreachCommunication_Art58"
+                      sourceRef="Task_OrderBreachCommunication_Art58"
+                      targetRef="Participant_ControllerProcessorRepresentative_Art58" />
+    <bpmn:messageFlow id="MessageFlow_LimitOrBanProcessing_Art58"
+                      sourceRef="Task_LimitOrBanProcessing_Art58"
+                      targetRef="Participant_ControllerProcessorRepresentative_Art58" />
+    <bpmn:messageFlow id="MessageFlow_OrderRectificationErasureRestriction_Art58"
+                      sourceRef="Task_OrderRectificationErasureRestriction_Art58"
+                      targetRef="Participant_ControllerProcessorRepresentative_Art58" />
+    <bpmn:messageFlow id="MessageFlow_SuspendThirdCountryDataFlows_Art58"
+                      sourceRef="Task_SuspendThirdCountryDataFlows_Art58"
+                      targetRef="Participant_ControllerProcessorRepresentative_Art58" />
+    <bpmn:messageFlow id="MessageFlow_AdviseUnderArticle36_Art58"
+                      sourceRef="Task_AdviseUnderArticle36_Art58"
+                      targetRef="Participant_ControllerProcessorRepresentative_Art58" />
+    <bpmn:messageFlow id="MessageFlow_IssueOpinions_Art58"
+                      sourceRef="Task_IssueOpinions_Art58"
+                      targetRef="Participant_NationalInstitutionsAndPublic_Art58" />
+    <bpmn:messageFlow id="MessageFlow_WithdrawOrBlockCertification_Art58"
+                      sourceRef="Task_WithdrawOrBlockCertification_Art58"
+                      targetRef="Participant_CertificationBody_Art58" />
+    <bpmn:messageFlow id="MessageFlow_BringInfringementsToJudicialAuthorities_Art58"
+                      sourceRef="Task_BringInfringementsToJudicialAuthorities_Art58"
+                      targetRef="Participant_JudicialAuthorities_Art58" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_SupervisoryAuthority_Art58"
+                name="Maintain Article 58 supervisory authority powers"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 58 based on the real English legal text from
+      gdpr_articles/article_58.txt. The model organizes the full power set into coherent blocks:
+      Article 58(4) safeguards, the Article 58(1)(a)-(f) investigative powers, the Article
+      58(2)(a)-(j) corrective powers, the Article 58(3)(a)-(j) authorisation and advisory
+      powers, Article 58(5) judicial-authority escalation power, and Article 58(6) optional
+      additional powers with the Chapter VII non-impairment limit.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_MaintainArticle58Powers_Art58"
+                     name="Maintain Article 58 powers">
+      <bpmn:outgoing>Flow_Start_To_ApplySafeguards_Art58</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_ApplySafeguardsAndDueProcess_Art58"
+               name="Apply safeguards, judicial remedy, and due process">
+      <bpmn:incoming>Flow_Start_To_ApplySafeguards_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_ApplySafeguards_To_GatewaySplitPowerBlocks_Art58</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_SplitPowerBlocks_Art58">
+      <bpmn:incoming>Flow_ApplySafeguards_To_GatewaySplitPowerBlocks_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplitPowerBlocks_To_GatewaySplitInvestigative_Art58</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitPowerBlocks_To_GatewaySplitCorrective_Art58</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitPowerBlocks_To_GatewaySplitAdvisory_Art58</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitPowerBlocks_To_GatewayAdditionalPowersProvided_Art58</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:parallelGateway id="Gateway_SplitInvestigative_Art58">
+      <bpmn:incoming>Flow_GatewaySplitPowerBlocks_To_GatewaySplitInvestigative_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplitInvestigative_To_OrderRequiredInformation_Art58</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitInvestigative_To_ConductAudits_Art58</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitInvestigative_To_ReviewCertifications_Art58</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitInvestigative_To_NotifyAllegedInfringement_Art58</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitInvestigative_To_ObtainDataAccess_Art58</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitInvestigative_To_ObtainPremisesAccess_Art58</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:sendTask id="Task_OrderRequiredInformation_Art58"
+                   name="Order required information">
+      <bpmn:incoming>Flow_GatewaySplitInvestigative_To_OrderRequiredInformation_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_OrderRequiredInformation_To_GatewayJoinInvestigative_Art58</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:task id="Task_ConductDataProtectionAudits_Art58"
+               name="Conduct data protection audits">
+      <bpmn:incoming>Flow_GatewaySplitInvestigative_To_ConductAudits_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_ConductAudits_To_GatewayJoinInvestigative_Art58</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ReviewArticle42Certifications_Art58"
+               name="Review Article 42(7) certifications">
+      <bpmn:incoming>Flow_GatewaySplitInvestigative_To_ReviewCertifications_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReviewCertifications_To_GatewayJoinInvestigative_Art58</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="Task_NotifyAllegedInfringement_Art58"
+                   name="Notify alleged infringement">
+      <bpmn:incoming>Flow_GatewaySplitInvestigative_To_NotifyAllegedInfringement_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_NotifyAllegedInfringement_To_GatewayJoinInvestigative_Art58</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:task id="Task_ObtainDataAndInformationAccess_Art58"
+               name="Obtain data and information access">
+      <bpmn:incoming>Flow_GatewaySplitInvestigative_To_ObtainDataAccess_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_ObtainDataAccess_To_GatewayJoinInvestigative_Art58</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ObtainPremisesAndEquipmentAccess_Art58"
+               name="Obtain premises and equipment access">
+      <bpmn:incoming>Flow_GatewaySplitInvestigative_To_ObtainPremisesAccess_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_ObtainPremisesAccess_To_GatewayJoinInvestigative_Art58</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_JoinInvestigative_Art58">
+      <bpmn:incoming>Flow_OrderRequiredInformation_To_GatewayJoinInvestigative_Art58</bpmn:incoming>
+      <bpmn:incoming>Flow_ConductAudits_To_GatewayJoinInvestigative_Art58</bpmn:incoming>
+      <bpmn:incoming>Flow_ReviewCertifications_To_GatewayJoinInvestigative_Art58</bpmn:incoming>
+      <bpmn:incoming>Flow_NotifyAllegedInfringement_To_GatewayJoinInvestigative_Art58</bpmn:incoming>
+      <bpmn:incoming>Flow_ObtainDataAccess_To_GatewayJoinInvestigative_Art58</bpmn:incoming>
+      <bpmn:incoming>Flow_ObtainPremisesAccess_To_GatewayJoinInvestigative_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinInvestigative_To_GatewayJoinPowerBlocks_Art58</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:parallelGateway id="Gateway_SplitCorrective_Art58">
+      <bpmn:incoming>Flow_GatewaySplitPowerBlocks_To_GatewaySplitCorrective_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplitCorrective_To_IssueWarning_Art58</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitCorrective_To_IssueReprimand_Art58</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitCorrective_To_OrderRightsCompliance_Art58</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitCorrective_To_OrderProcessingCompliance_Art58</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitCorrective_To_OrderBreachCommunication_Art58</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitCorrective_To_LimitOrBanProcessing_Art58</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitCorrective_To_OrderRectificationErasureRestriction_Art58</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitCorrective_To_WithdrawOrBlockCertification_Art58</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitCorrective_To_ImposeAdministrativeFine_Art58</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitCorrective_To_SuspendThirdCountryDataFlows_Art58</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:sendTask id="Task_IssueWarning_Art58"
+                   name="Issue warning">
+      <bpmn:incoming>Flow_GatewaySplitCorrective_To_IssueWarning_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_IssueWarning_To_GatewayJoinCorrective_Art58</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:sendTask id="Task_IssueReprimand_Art58"
+                   name="Issue reprimand">
+      <bpmn:incoming>Flow_GatewaySplitCorrective_To_IssueReprimand_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_IssueReprimand_To_GatewayJoinCorrective_Art58</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:sendTask id="Task_OrderRightsCompliance_Art58"
+                   name="Order rights compliance">
+      <bpmn:incoming>Flow_GatewaySplitCorrective_To_OrderRightsCompliance_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_OrderRightsCompliance_To_GatewayJoinCorrective_Art58</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:sendTask id="Task_OrderProcessingCompliance_Art58"
+                   name="Order processing compliance">
+      <bpmn:incoming>Flow_GatewaySplitCorrective_To_OrderProcessingCompliance_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_OrderProcessingCompliance_To_GatewayJoinCorrective_Art58</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:sendTask id="Task_OrderBreachCommunication_Art58"
+                   name="Order breach communication to data subject">
+      <bpmn:incoming>Flow_GatewaySplitCorrective_To_OrderBreachCommunication_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_OrderBreachCommunication_To_GatewayJoinCorrective_Art58</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:sendTask id="Task_LimitOrBanProcessing_Art58"
+                   name="Limit or ban processing">
+      <bpmn:incoming>Flow_GatewaySplitCorrective_To_LimitOrBanProcessing_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_LimitOrBanProcessing_To_GatewayJoinCorrective_Art58</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:sendTask id="Task_OrderRectificationErasureRestriction_Art58"
+                   name="Order rectification, erasure, or restriction">
+      <bpmn:incoming>Flow_GatewaySplitCorrective_To_OrderRectificationErasureRestriction_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_OrderRectificationErasureRestriction_To_GatewayJoinCorrective_Art58</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:sendTask id="Task_WithdrawOrBlockCertification_Art58"
+                   name="Withdraw or block certification">
+      <bpmn:incoming>Flow_GatewaySplitCorrective_To_WithdrawOrBlockCertification_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_WithdrawOrBlockCertification_To_GatewayJoinCorrective_Art58</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:task id="Task_ImposeAdministrativeFine_Art58"
+               name="Impose administrative fine">
+      <bpmn:incoming>Flow_GatewaySplitCorrective_To_ImposeAdministrativeFine_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_ImposeAdministrativeFine_To_GatewayJoinCorrective_Art58</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="Task_SuspendThirdCountryDataFlows_Art58"
+                   name="Suspend third-country data flows">
+      <bpmn:incoming>Flow_GatewaySplitCorrective_To_SuspendThirdCountryDataFlows_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_SuspendThirdCountryDataFlows_To_GatewayJoinCorrective_Art58</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:parallelGateway id="Gateway_JoinCorrective_Art58">
+      <bpmn:incoming>Flow_IssueWarning_To_GatewayJoinCorrective_Art58</bpmn:incoming>
+      <bpmn:incoming>Flow_IssueReprimand_To_GatewayJoinCorrective_Art58</bpmn:incoming>
+      <bpmn:incoming>Flow_OrderRightsCompliance_To_GatewayJoinCorrective_Art58</bpmn:incoming>
+      <bpmn:incoming>Flow_OrderProcessingCompliance_To_GatewayJoinCorrective_Art58</bpmn:incoming>
+      <bpmn:incoming>Flow_OrderBreachCommunication_To_GatewayJoinCorrective_Art58</bpmn:incoming>
+      <bpmn:incoming>Flow_LimitOrBanProcessing_To_GatewayJoinCorrective_Art58</bpmn:incoming>
+      <bpmn:incoming>Flow_OrderRectificationErasureRestriction_To_GatewayJoinCorrective_Art58</bpmn:incoming>
+      <bpmn:incoming>Flow_WithdrawOrBlockCertification_To_GatewayJoinCorrective_Art58</bpmn:incoming>
+      <bpmn:incoming>Flow_ImposeAdministrativeFine_To_GatewayJoinCorrective_Art58</bpmn:incoming>
+      <bpmn:incoming>Flow_SuspendThirdCountryDataFlows_To_GatewayJoinCorrective_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinCorrective_To_GatewayJoinPowerBlocks_Art58</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:parallelGateway id="Gateway_SplitAdvisory_Art58">
+      <bpmn:incoming>Flow_GatewaySplitPowerBlocks_To_GatewaySplitAdvisory_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplitAdvisory_To_AdviseUnderArticle36_Art58</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitAdvisory_To_IssueOpinions_Art58</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitAdvisory_To_AuthoriseArticle365Processing_Art58</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitAdvisory_To_ApproveDraftCodes_Art58</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitAdvisory_To_AccreditCertificationBodies_Art58</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitAdvisory_To_IssueCertifications_Art58</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitAdvisory_To_AdoptStandardClauses_Art58</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitAdvisory_To_AuthoriseContractualClauses_Art58</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitAdvisory_To_AuthoriseAdministrativeArrangements_Art58</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitAdvisory_To_ApproveBCRs_Art58</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:sendTask id="Task_AdviseUnderArticle36_Art58"
+                   name="Advise under Article 36">
+      <bpmn:incoming>Flow_GatewaySplitAdvisory_To_AdviseUnderArticle36_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_AdviseUnderArticle36_To_GatewayJoinAdvisory_Art58</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:sendTask id="Task_IssueOpinions_Art58"
+                   name="Issue opinions">
+      <bpmn:incoming>Flow_GatewaySplitAdvisory_To_IssueOpinions_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_IssueOpinions_To_GatewayJoinAdvisory_Art58</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:task id="Task_AuthoriseArticle365Processing_Art58"
+               name="Authorise Article 36(5) processing">
+      <bpmn:incoming>Flow_GatewaySplitAdvisory_To_AuthoriseArticle365Processing_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_AuthoriseArticle365Processing_To_GatewayJoinAdvisory_Art58</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ApproveDraftCodesOfConduct_Art58"
+               name="Approve draft codes of conduct">
+      <bpmn:incoming>Flow_GatewaySplitAdvisory_To_ApproveDraftCodes_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_ApproveDraftCodes_To_GatewayJoinAdvisory_Art58</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_AccreditCertificationBodies_Art58"
+               name="Accredit certification bodies">
+      <bpmn:incoming>Flow_GatewaySplitAdvisory_To_AccreditCertificationBodies_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_AccreditCertificationBodies_To_GatewayJoinAdvisory_Art58</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_IssueCertificationsAndApproveCriteria_Art58"
+               name="Issue certifications and approve criteria">
+      <bpmn:incoming>Flow_GatewaySplitAdvisory_To_IssueCertifications_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_IssueCertifications_To_GatewayJoinAdvisory_Art58</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_AdoptStandardDataProtectionClauses_Art58"
+               name="Adopt standard data protection clauses">
+      <bpmn:incoming>Flow_GatewaySplitAdvisory_To_AdoptStandardClauses_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_AdoptStandardClauses_To_GatewayJoinAdvisory_Art58</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_AuthoriseContractualClauses_Art58"
+               name="Authorise Article 46(3)(a) contractual clauses">
+      <bpmn:incoming>Flow_GatewaySplitAdvisory_To_AuthoriseContractualClauses_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_AuthoriseContractualClauses_To_GatewayJoinAdvisory_Art58</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_AuthoriseAdministrativeArrangements_Art58"
+               name="Authorise Article 46(3)(b) administrative arrangements">
+      <bpmn:incoming>Flow_GatewaySplitAdvisory_To_AuthoriseAdministrativeArrangements_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_AuthoriseAdministrativeArrangements_To_GatewayJoinAdvisory_Art58</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ApproveBindingCorporateRules_Art58"
+               name="Approve binding corporate rules">
+      <bpmn:incoming>Flow_GatewaySplitAdvisory_To_ApproveBCRs_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_ApproveBCRs_To_GatewayJoinAdvisory_Art58</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_JoinAdvisory_Art58">
+      <bpmn:incoming>Flow_AdviseUnderArticle36_To_GatewayJoinAdvisory_Art58</bpmn:incoming>
+      <bpmn:incoming>Flow_IssueOpinions_To_GatewayJoinAdvisory_Art58</bpmn:incoming>
+      <bpmn:incoming>Flow_AuthoriseArticle365Processing_To_GatewayJoinAdvisory_Art58</bpmn:incoming>
+      <bpmn:incoming>Flow_ApproveDraftCodes_To_GatewayJoinAdvisory_Art58</bpmn:incoming>
+      <bpmn:incoming>Flow_AccreditCertificationBodies_To_GatewayJoinAdvisory_Art58</bpmn:incoming>
+      <bpmn:incoming>Flow_IssueCertifications_To_GatewayJoinAdvisory_Art58</bpmn:incoming>
+      <bpmn:incoming>Flow_AdoptStandardClauses_To_GatewayJoinAdvisory_Art58</bpmn:incoming>
+      <bpmn:incoming>Flow_AuthoriseContractualClauses_To_GatewayJoinAdvisory_Art58</bpmn:incoming>
+      <bpmn:incoming>Flow_AuthoriseAdministrativeArrangements_To_GatewayJoinAdvisory_Art58</bpmn:incoming>
+      <bpmn:incoming>Flow_ApproveBCRs_To_GatewayJoinAdvisory_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinAdvisory_To_GatewayJoinPowerBlocks_Art58</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_AdditionalPowersProvided_Art58"
+                           name="Are additional powers provided by Member State law?">
+      <bpmn:incoming>Flow_GatewaySplitPowerBlocks_To_GatewayAdditionalPowersProvided_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAdditionalPowersProvided_To_BringInfringements_Art58</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAdditionalPowersProvided_To_GatewayJoinPowerBlocks_Art58</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="Task_BringInfringementsToJudicialAuthorities_Art58"
+                   name="Bring infringements to judicial authorities">
+      <bpmn:incoming>Flow_GatewayAdditionalPowersProvided_To_BringInfringements_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_BringInfringements_To_GatewayImpairChapterVII_Art58</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:exclusiveGateway id="Gateway_ImpairChapterVII_Art58"
+                           name="Would additional powers impair the effective operation of Chapter VII?">
+      <bpmn:incoming>Flow_BringInfringements_To_GatewayImpairChapterVII_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayImpairChapterVII_To_GatewayJoinPowerBlocks_Art58</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayImpairChapterVII_To_ExerciseAdditionalPowers_Art58</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ExerciseAdditionalPowers_Art58"
+               name="Exercise additional powers">
+      <bpmn:incoming>Flow_GatewayImpairChapterVII_To_ExerciseAdditionalPowers_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_ExerciseAdditionalPowers_To_GatewayJoinPowerBlocks_Art58</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_JoinPowerBlocks_Art58">
+      <bpmn:incoming>Flow_GatewayJoinInvestigative_To_GatewayJoinPowerBlocks_Art58</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayJoinCorrective_To_GatewayJoinPowerBlocks_Art58</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayJoinAdvisory_To_GatewayJoinPowerBlocks_Art58</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayAdditionalPowersProvided_To_GatewayJoinPowerBlocks_Art58</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayImpairChapterVII_To_GatewayJoinPowerBlocks_Art58</bpmn:incoming>
+      <bpmn:incoming>Flow_ExerciseAdditionalPowers_To_GatewayJoinPowerBlocks_Art58</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinPowerBlocks_To_EndPowersMaintained_Art58</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:endEvent id="EndEvent_Article58PowersMaintained_Art58"
+                   name="Article 58 powers maintained">
+      <bpmn:incoming>Flow_GatewayJoinPowerBlocks_To_EndPowersMaintained_Art58</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_ApplySafeguards_Art58"
+                       sourceRef="StartEvent_MaintainArticle58Powers_Art58"
+                       targetRef="Task_ApplySafeguardsAndDueProcess_Art58" />
+    <bpmn:sequenceFlow id="Flow_ApplySafeguards_To_GatewaySplitPowerBlocks_Art58"
+                       sourceRef="Task_ApplySafeguardsAndDueProcess_Art58"
+                       targetRef="Gateway_SplitPowerBlocks_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitPowerBlocks_To_GatewaySplitInvestigative_Art58"
+                       sourceRef="Gateway_SplitPowerBlocks_Art58"
+                       targetRef="Gateway_SplitInvestigative_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitPowerBlocks_To_GatewaySplitCorrective_Art58"
+                       sourceRef="Gateway_SplitPowerBlocks_Art58"
+                       targetRef="Gateway_SplitCorrective_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitPowerBlocks_To_GatewaySplitAdvisory_Art58"
+                       sourceRef="Gateway_SplitPowerBlocks_Art58"
+                       targetRef="Gateway_SplitAdvisory_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitPowerBlocks_To_GatewayAdditionalPowersProvided_Art58"
+                       sourceRef="Gateway_SplitPowerBlocks_Art58"
+                       targetRef="Gateway_AdditionalPowersProvided_Art58" />
+
+    <bpmn:sequenceFlow id="Flow_GatewaySplitInvestigative_To_OrderRequiredInformation_Art58"
+                       sourceRef="Gateway_SplitInvestigative_Art58"
+                       targetRef="Task_OrderRequiredInformation_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitInvestigative_To_ConductAudits_Art58"
+                       sourceRef="Gateway_SplitInvestigative_Art58"
+                       targetRef="Task_ConductDataProtectionAudits_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitInvestigative_To_ReviewCertifications_Art58"
+                       sourceRef="Gateway_SplitInvestigative_Art58"
+                       targetRef="Task_ReviewArticle42Certifications_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitInvestigative_To_NotifyAllegedInfringement_Art58"
+                       sourceRef="Gateway_SplitInvestigative_Art58"
+                       targetRef="Task_NotifyAllegedInfringement_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitInvestigative_To_ObtainDataAccess_Art58"
+                       sourceRef="Gateway_SplitInvestigative_Art58"
+                       targetRef="Task_ObtainDataAndInformationAccess_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitInvestigative_To_ObtainPremisesAccess_Art58"
+                       sourceRef="Gateway_SplitInvestigative_Art58"
+                       targetRef="Task_ObtainPremisesAndEquipmentAccess_Art58" />
+    <bpmn:sequenceFlow id="Flow_OrderRequiredInformation_To_GatewayJoinInvestigative_Art58"
+                       sourceRef="Task_OrderRequiredInformation_Art58"
+                       targetRef="Gateway_JoinInvestigative_Art58" />
+    <bpmn:sequenceFlow id="Flow_ConductAudits_To_GatewayJoinInvestigative_Art58"
+                       sourceRef="Task_ConductDataProtectionAudits_Art58"
+                       targetRef="Gateway_JoinInvestigative_Art58" />
+    <bpmn:sequenceFlow id="Flow_ReviewCertifications_To_GatewayJoinInvestigative_Art58"
+                       sourceRef="Task_ReviewArticle42Certifications_Art58"
+                       targetRef="Gateway_JoinInvestigative_Art58" />
+    <bpmn:sequenceFlow id="Flow_NotifyAllegedInfringement_To_GatewayJoinInvestigative_Art58"
+                       sourceRef="Task_NotifyAllegedInfringement_Art58"
+                       targetRef="Gateway_JoinInvestigative_Art58" />
+    <bpmn:sequenceFlow id="Flow_ObtainDataAccess_To_GatewayJoinInvestigative_Art58"
+                       sourceRef="Task_ObtainDataAndInformationAccess_Art58"
+                       targetRef="Gateway_JoinInvestigative_Art58" />
+    <bpmn:sequenceFlow id="Flow_ObtainPremisesAccess_To_GatewayJoinInvestigative_Art58"
+                       sourceRef="Task_ObtainPremisesAndEquipmentAccess_Art58"
+                       targetRef="Gateway_JoinInvestigative_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoinInvestigative_To_GatewayJoinPowerBlocks_Art58"
+                       sourceRef="Gateway_JoinInvestigative_Art58"
+                       targetRef="Gateway_JoinPowerBlocks_Art58" />
+
+    <bpmn:sequenceFlow id="Flow_GatewaySplitCorrective_To_IssueWarning_Art58"
+                       sourceRef="Gateway_SplitCorrective_Art58"
+                       targetRef="Task_IssueWarning_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitCorrective_To_IssueReprimand_Art58"
+                       sourceRef="Gateway_SplitCorrective_Art58"
+                       targetRef="Task_IssueReprimand_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitCorrective_To_OrderRightsCompliance_Art58"
+                       sourceRef="Gateway_SplitCorrective_Art58"
+                       targetRef="Task_OrderRightsCompliance_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitCorrective_To_OrderProcessingCompliance_Art58"
+                       sourceRef="Gateway_SplitCorrective_Art58"
+                       targetRef="Task_OrderProcessingCompliance_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitCorrective_To_OrderBreachCommunication_Art58"
+                       sourceRef="Gateway_SplitCorrective_Art58"
+                       targetRef="Task_OrderBreachCommunication_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitCorrective_To_LimitOrBanProcessing_Art58"
+                       sourceRef="Gateway_SplitCorrective_Art58"
+                       targetRef="Task_LimitOrBanProcessing_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitCorrective_To_OrderRectificationErasureRestriction_Art58"
+                       sourceRef="Gateway_SplitCorrective_Art58"
+                       targetRef="Task_OrderRectificationErasureRestriction_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitCorrective_To_WithdrawOrBlockCertification_Art58"
+                       sourceRef="Gateway_SplitCorrective_Art58"
+                       targetRef="Task_WithdrawOrBlockCertification_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitCorrective_To_ImposeAdministrativeFine_Art58"
+                       sourceRef="Gateway_SplitCorrective_Art58"
+                       targetRef="Task_ImposeAdministrativeFine_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitCorrective_To_SuspendThirdCountryDataFlows_Art58"
+                       sourceRef="Gateway_SplitCorrective_Art58"
+                       targetRef="Task_SuspendThirdCountryDataFlows_Art58" />
+    <bpmn:sequenceFlow id="Flow_IssueWarning_To_GatewayJoinCorrective_Art58"
+                       sourceRef="Task_IssueWarning_Art58"
+                       targetRef="Gateway_JoinCorrective_Art58" />
+    <bpmn:sequenceFlow id="Flow_IssueReprimand_To_GatewayJoinCorrective_Art58"
+                       sourceRef="Task_IssueReprimand_Art58"
+                       targetRef="Gateway_JoinCorrective_Art58" />
+    <bpmn:sequenceFlow id="Flow_OrderRightsCompliance_To_GatewayJoinCorrective_Art58"
+                       sourceRef="Task_OrderRightsCompliance_Art58"
+                       targetRef="Gateway_JoinCorrective_Art58" />
+    <bpmn:sequenceFlow id="Flow_OrderProcessingCompliance_To_GatewayJoinCorrective_Art58"
+                       sourceRef="Task_OrderProcessingCompliance_Art58"
+                       targetRef="Gateway_JoinCorrective_Art58" />
+    <bpmn:sequenceFlow id="Flow_OrderBreachCommunication_To_GatewayJoinCorrective_Art58"
+                       sourceRef="Task_OrderBreachCommunication_Art58"
+                       targetRef="Gateway_JoinCorrective_Art58" />
+    <bpmn:sequenceFlow id="Flow_LimitOrBanProcessing_To_GatewayJoinCorrective_Art58"
+                       sourceRef="Task_LimitOrBanProcessing_Art58"
+                       targetRef="Gateway_JoinCorrective_Art58" />
+    <bpmn:sequenceFlow id="Flow_OrderRectificationErasureRestriction_To_GatewayJoinCorrective_Art58"
+                       sourceRef="Task_OrderRectificationErasureRestriction_Art58"
+                       targetRef="Gateway_JoinCorrective_Art58" />
+    <bpmn:sequenceFlow id="Flow_WithdrawOrBlockCertification_To_GatewayJoinCorrective_Art58"
+                       sourceRef="Task_WithdrawOrBlockCertification_Art58"
+                       targetRef="Gateway_JoinCorrective_Art58" />
+    <bpmn:sequenceFlow id="Flow_ImposeAdministrativeFine_To_GatewayJoinCorrective_Art58"
+                       sourceRef="Task_ImposeAdministrativeFine_Art58"
+                       targetRef="Gateway_JoinCorrective_Art58" />
+    <bpmn:sequenceFlow id="Flow_SuspendThirdCountryDataFlows_To_GatewayJoinCorrective_Art58"
+                       sourceRef="Task_SuspendThirdCountryDataFlows_Art58"
+                       targetRef="Gateway_JoinCorrective_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoinCorrective_To_GatewayJoinPowerBlocks_Art58"
+                       sourceRef="Gateway_JoinCorrective_Art58"
+                       targetRef="Gateway_JoinPowerBlocks_Art58" />
+
+    <bpmn:sequenceFlow id="Flow_GatewaySplitAdvisory_To_AdviseUnderArticle36_Art58"
+                       sourceRef="Gateway_SplitAdvisory_Art58"
+                       targetRef="Task_AdviseUnderArticle36_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitAdvisory_To_IssueOpinions_Art58"
+                       sourceRef="Gateway_SplitAdvisory_Art58"
+                       targetRef="Task_IssueOpinions_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitAdvisory_To_AuthoriseArticle365Processing_Art58"
+                       sourceRef="Gateway_SplitAdvisory_Art58"
+                       targetRef="Task_AuthoriseArticle365Processing_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitAdvisory_To_ApproveDraftCodes_Art58"
+                       sourceRef="Gateway_SplitAdvisory_Art58"
+                       targetRef="Task_ApproveDraftCodesOfConduct_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitAdvisory_To_AccreditCertificationBodies_Art58"
+                       sourceRef="Gateway_SplitAdvisory_Art58"
+                       targetRef="Task_AccreditCertificationBodies_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitAdvisory_To_IssueCertifications_Art58"
+                       sourceRef="Gateway_SplitAdvisory_Art58"
+                       targetRef="Task_IssueCertificationsAndApproveCriteria_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitAdvisory_To_AdoptStandardClauses_Art58"
+                       sourceRef="Gateway_SplitAdvisory_Art58"
+                       targetRef="Task_AdoptStandardDataProtectionClauses_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitAdvisory_To_AuthoriseContractualClauses_Art58"
+                       sourceRef="Gateway_SplitAdvisory_Art58"
+                       targetRef="Task_AuthoriseContractualClauses_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitAdvisory_To_AuthoriseAdministrativeArrangements_Art58"
+                       sourceRef="Gateway_SplitAdvisory_Art58"
+                       targetRef="Task_AuthoriseAdministrativeArrangements_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitAdvisory_To_ApproveBCRs_Art58"
+                       sourceRef="Gateway_SplitAdvisory_Art58"
+                       targetRef="Task_ApproveBindingCorporateRules_Art58" />
+    <bpmn:sequenceFlow id="Flow_AdviseUnderArticle36_To_GatewayJoinAdvisory_Art58"
+                       sourceRef="Task_AdviseUnderArticle36_Art58"
+                       targetRef="Gateway_JoinAdvisory_Art58" />
+    <bpmn:sequenceFlow id="Flow_IssueOpinions_To_GatewayJoinAdvisory_Art58"
+                       sourceRef="Task_IssueOpinions_Art58"
+                       targetRef="Gateway_JoinAdvisory_Art58" />
+    <bpmn:sequenceFlow id="Flow_AuthoriseArticle365Processing_To_GatewayJoinAdvisory_Art58"
+                       sourceRef="Task_AuthoriseArticle365Processing_Art58"
+                       targetRef="Gateway_JoinAdvisory_Art58" />
+    <bpmn:sequenceFlow id="Flow_ApproveDraftCodes_To_GatewayJoinAdvisory_Art58"
+                       sourceRef="Task_ApproveDraftCodesOfConduct_Art58"
+                       targetRef="Gateway_JoinAdvisory_Art58" />
+    <bpmn:sequenceFlow id="Flow_AccreditCertificationBodies_To_GatewayJoinAdvisory_Art58"
+                       sourceRef="Task_AccreditCertificationBodies_Art58"
+                       targetRef="Gateway_JoinAdvisory_Art58" />
+    <bpmn:sequenceFlow id="Flow_IssueCertifications_To_GatewayJoinAdvisory_Art58"
+                       sourceRef="Task_IssueCertificationsAndApproveCriteria_Art58"
+                       targetRef="Gateway_JoinAdvisory_Art58" />
+    <bpmn:sequenceFlow id="Flow_AdoptStandardClauses_To_GatewayJoinAdvisory_Art58"
+                       sourceRef="Task_AdoptStandardDataProtectionClauses_Art58"
+                       targetRef="Gateway_JoinAdvisory_Art58" />
+    <bpmn:sequenceFlow id="Flow_AuthoriseContractualClauses_To_GatewayJoinAdvisory_Art58"
+                       sourceRef="Task_AuthoriseContractualClauses_Art58"
+                       targetRef="Gateway_JoinAdvisory_Art58" />
+    <bpmn:sequenceFlow id="Flow_AuthoriseAdministrativeArrangements_To_GatewayJoinAdvisory_Art58"
+                       sourceRef="Task_AuthoriseAdministrativeArrangements_Art58"
+                       targetRef="Gateway_JoinAdvisory_Art58" />
+    <bpmn:sequenceFlow id="Flow_ApproveBCRs_To_GatewayJoinAdvisory_Art58"
+                       sourceRef="Task_ApproveBindingCorporateRules_Art58"
+                       targetRef="Gateway_JoinAdvisory_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoinAdvisory_To_GatewayJoinPowerBlocks_Art58"
+                       sourceRef="Gateway_JoinAdvisory_Art58"
+                       targetRef="Gateway_JoinPowerBlocks_Art58" />
+
+    <bpmn:sequenceFlow id="Flow_GatewayAdditionalPowersProvided_To_BringInfringements_Art58"
+                       name="Yes"
+                       sourceRef="Gateway_AdditionalPowersProvided_Art58"
+                       targetRef="Task_BringInfringementsToJudicialAuthorities_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewayAdditionalPowersProvided_To_GatewayJoinPowerBlocks_Art58"
+                       name="No"
+                       sourceRef="Gateway_AdditionalPowersProvided_Art58"
+                       targetRef="Gateway_JoinPowerBlocks_Art58" />
+    <bpmn:sequenceFlow id="Flow_BringInfringements_To_GatewayImpairChapterVII_Art58"
+                       sourceRef="Task_BringInfringementsToJudicialAuthorities_Art58"
+                       targetRef="Gateway_ImpairChapterVII_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewayImpairChapterVII_To_GatewayJoinPowerBlocks_Art58"
+                       name="Yes"
+                       sourceRef="Gateway_ImpairChapterVII_Art58"
+                       targetRef="Gateway_JoinPowerBlocks_Art58" />
+    <bpmn:sequenceFlow id="Flow_GatewayImpairChapterVII_To_ExerciseAdditionalPowers_Art58"
+                       name="No"
+                       sourceRef="Gateway_ImpairChapterVII_Art58"
+                       targetRef="Task_ExerciseAdditionalPowers_Art58" />
+    <bpmn:sequenceFlow id="Flow_ExerciseAdditionalPowers_To_GatewayJoinPowerBlocks_Art58"
+                       sourceRef="Task_ExerciseAdditionalPowers_Art58"
+                       targetRef="Gateway_JoinPowerBlocks_Art58" />
+
+    <bpmn:sequenceFlow id="Flow_GatewayJoinPowerBlocks_To_EndPowersMaintained_Art58"
+                       sourceRef="Gateway_JoinPowerBlocks_Art58"
+                       targetRef="EndEvent_Article58PowersMaintained_Art58" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art58_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art58_Reviewed"
+                      bpmnElement="Collaboration_Art58_Reviewed">
+      <bpmndi:BPMNShape id="Participant_SupervisoryAuthority_Art58_di"
+                        bpmnElement="Participant_SupervisoryAuthority_Art58"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="4260" height="1500" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_ControllerProcessorRepresentative_Art58_di"
+                        bpmnElement="Participant_ControllerProcessorRepresentative_Art58"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="1580" width="4260" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_DataSubject_Art58_di"
+                        bpmnElement="Participant_DataSubject_Art58"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="1700" width="4260" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_CertificationBody_Art58_di"
+                        bpmnElement="Participant_CertificationBody_Art58"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="1820" width="4260" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_NationalInstitutionsAndPublic_Art58_di"
+                        bpmnElement="Participant_NationalInstitutionsAndPublic_Art58"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="1940" width="4260" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_JudicialAuthorities_Art58_di"
+                        bpmnElement="Participant_JudicialAuthorities_Art58"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="2060" width="4260" height="100" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_MaintainArticle58Powers_Art58_di"
+                        bpmnElement="StartEvent_MaintainArticle58Powers_Art58">
+        <dc:Bounds x="120" y="742" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ApplySafeguardsAndDueProcess_Art58_di"
+                        bpmnElement="Task_ApplySafeguardsAndDueProcess_Art58">
+        <dc:Bounds x="230" y="720" width="250" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SplitPowerBlocks_Art58_di"
+                        bpmnElement="Gateway_SplitPowerBlocks_Art58"
+                        isMarkerVisible="true">
+        <dc:Bounds x="560" y="735" width="50" height="50" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Gateway_SplitInvestigative_Art58_di"
+                        bpmnElement="Gateway_SplitInvestigative_Art58"
+                        isMarkerVisible="true">
+        <dc:Bounds x="760" y="285" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_OrderRequiredInformation_Art58_di"
+                        bpmnElement="Task_OrderRequiredInformation_Art58">
+        <dc:Bounds x="930" y="40" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ConductDataProtectionAudits_Art58_di"
+                        bpmnElement="Task_ConductDataProtectionAudits_Art58">
+        <dc:Bounds x="930" y="140" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReviewArticle42Certifications_Art58_di"
+                        bpmnElement="Task_ReviewArticle42Certifications_Art58">
+        <dc:Bounds x="930" y="240" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_NotifyAllegedInfringement_Art58_di"
+                        bpmnElement="Task_NotifyAllegedInfringement_Art58">
+        <dc:Bounds x="930" y="340" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ObtainDataAndInformationAccess_Art58_di"
+                        bpmnElement="Task_ObtainDataAndInformationAccess_Art58">
+        <dc:Bounds x="930" y="440" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ObtainPremisesAndEquipmentAccess_Art58_di"
+                        bpmnElement="Task_ObtainPremisesAndEquipmentAccess_Art58">
+        <dc:Bounds x="930" y="540" width="230" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinInvestigative_Art58_di"
+                        bpmnElement="Gateway_JoinInvestigative_Art58"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1300" y="285" width="50" height="50" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Gateway_SplitCorrective_Art58_di"
+                        bpmnElement="Gateway_SplitCorrective_Art58"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1510" y="735" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_IssueWarning_Art58_di"
+                        bpmnElement="Task_IssueWarning_Art58">
+        <dc:Bounds x="1710" y="40" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_IssueReprimand_Art58_di"
+                        bpmnElement="Task_IssueReprimand_Art58">
+        <dc:Bounds x="1710" y="140" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_OrderRightsCompliance_Art58_di"
+                        bpmnElement="Task_OrderRightsCompliance_Art58">
+        <dc:Bounds x="1710" y="240" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_OrderProcessingCompliance_Art58_di"
+                        bpmnElement="Task_OrderProcessingCompliance_Art58">
+        <dc:Bounds x="1710" y="340" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_OrderBreachCommunication_Art58_di"
+                        bpmnElement="Task_OrderBreachCommunication_Art58">
+        <dc:Bounds x="1710" y="440" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_LimitOrBanProcessing_Art58_di"
+                        bpmnElement="Task_LimitOrBanProcessing_Art58">
+        <dc:Bounds x="1710" y="540" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_OrderRectificationErasureRestriction_Art58_di"
+                        bpmnElement="Task_OrderRectificationErasureRestriction_Art58">
+        <dc:Bounds x="1710" y="640" width="230" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_WithdrawOrBlockCertification_Art58_di"
+                        bpmnElement="Task_WithdrawOrBlockCertification_Art58">
+        <dc:Bounds x="1710" y="740" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ImposeAdministrativeFine_Art58_di"
+                        bpmnElement="Task_ImposeAdministrativeFine_Art58">
+        <dc:Bounds x="1710" y="840" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SuspendThirdCountryDataFlows_Art58_di"
+                        bpmnElement="Task_SuspendThirdCountryDataFlows_Art58">
+        <dc:Bounds x="1710" y="940" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinCorrective_Art58_di"
+                        bpmnElement="Gateway_JoinCorrective_Art58"
+                        isMarkerVisible="true">
+        <dc:Bounds x="2050" y="735" width="50" height="50" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Gateway_SplitAdvisory_Art58_di"
+                        bpmnElement="Gateway_SplitAdvisory_Art58"
+                        isMarkerVisible="true">
+        <dc:Bounds x="2270" y="735" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AdviseUnderArticle36_Art58_di"
+                        bpmnElement="Task_AdviseUnderArticle36_Art58">
+        <dc:Bounds x="2450" y="40" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_IssueOpinions_Art58_di"
+                        bpmnElement="Task_IssueOpinions_Art58">
+        <dc:Bounds x="2450" y="140" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AuthoriseArticle365Processing_Art58_di"
+                        bpmnElement="Task_AuthoriseArticle365Processing_Art58">
+        <dc:Bounds x="2450" y="240" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ApproveDraftCodesOfConduct_Art58_di"
+                        bpmnElement="Task_ApproveDraftCodesOfConduct_Art58">
+        <dc:Bounds x="2450" y="340" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AccreditCertificationBodies_Art58_di"
+                        bpmnElement="Task_AccreditCertificationBodies_Art58">
+        <dc:Bounds x="2450" y="440" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_IssueCertificationsAndApproveCriteria_Art58_di"
+                        bpmnElement="Task_IssueCertificationsAndApproveCriteria_Art58">
+        <dc:Bounds x="2450" y="540" width="230" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AdoptStandardDataProtectionClauses_Art58_di"
+                        bpmnElement="Task_AdoptStandardDataProtectionClauses_Art58">
+        <dc:Bounds x="2450" y="640" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AuthoriseContractualClauses_Art58_di"
+                        bpmnElement="Task_AuthoriseContractualClauses_Art58">
+        <dc:Bounds x="2450" y="740" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AuthoriseAdministrativeArrangements_Art58_di"
+                        bpmnElement="Task_AuthoriseAdministrativeArrangements_Art58">
+        <dc:Bounds x="2450" y="840" width="240" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ApproveBindingCorporateRules_Art58_di"
+                        bpmnElement="Task_ApproveBindingCorporateRules_Art58">
+        <dc:Bounds x="2450" y="940" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinAdvisory_Art58_di"
+                        bpmnElement="Gateway_JoinAdvisory_Art58"
+                        isMarkerVisible="true">
+        <dc:Bounds x="2810" y="735" width="50" height="50" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Gateway_AdditionalPowersProvided_Art58_di"
+                        bpmnElement="Gateway_AdditionalPowersProvided_Art58"
+                        isMarkerVisible="true">
+        <dc:Bounds x="3070" y="735" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_BringInfringementsToJudicialAuthorities_Art58_di"
+                        bpmnElement="Task_BringInfringementsToJudicialAuthorities_Art58">
+        <dc:Bounds x="3240" y="640" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ImpairChapterVII_Art58_di"
+                        bpmnElement="Gateway_ImpairChapterVII_Art58"
+                        isMarkerVisible="true">
+        <dc:Bounds x="3570" y="655" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ExerciseAdditionalPowers_Art58_di"
+                        bpmnElement="Task_ExerciseAdditionalPowers_Art58">
+        <dc:Bounds x="3740" y="760" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinPowerBlocks_Art58_di"
+                        bpmnElement="Gateway_JoinPowerBlocks_Art58"
+                        isMarkerVisible="true">
+        <dc:Bounds x="3970" y="735" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Article58PowersMaintained_Art58_di"
+                        bpmnElement="EndEvent_Article58PowersMaintained_Art58">
+        <dc:Bounds x="4140" y="742" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_ApplySafeguards_Art58_di"
+                       bpmnElement="Flow_Start_To_ApplySafeguards_Art58">
+        <di:waypoint x="156" y="760" />
+        <di:waypoint x="230" y="760" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ApplySafeguards_To_GatewaySplitPowerBlocks_Art58_di"
+                       bpmnElement="Flow_ApplySafeguards_To_GatewaySplitPowerBlocks_Art58">
+        <di:waypoint x="480" y="760" />
+        <di:waypoint x="560" y="760" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitPowerBlocks_To_GatewaySplitInvestigative_Art58_di"
+                       bpmnElement="Flow_GatewaySplitPowerBlocks_To_GatewaySplitInvestigative_Art58">
+        <di:waypoint x="585" y="735" />
+        <di:waypoint x="585" y="310" />
+        <di:waypoint x="760" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitPowerBlocks_To_GatewaySplitCorrective_Art58_di"
+                       bpmnElement="Flow_GatewaySplitPowerBlocks_To_GatewaySplitCorrective_Art58">
+        <di:waypoint x="610" y="760" />
+        <di:waypoint x="1510" y="760" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitPowerBlocks_To_GatewaySplitAdvisory_Art58_di"
+                       bpmnElement="Flow_GatewaySplitPowerBlocks_To_GatewaySplitAdvisory_Art58">
+        <di:waypoint x="610" y="770" />
+        <di:waypoint x="2270" y="760" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitPowerBlocks_To_GatewayAdditionalPowersProvided_Art58_di"
+                       bpmnElement="Flow_GatewaySplitPowerBlocks_To_GatewayAdditionalPowersProvided_Art58">
+        <di:waypoint x="610" y="780" />
+        <di:waypoint x="3070" y="760" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitInvestigative_To_OrderRequiredInformation_Art58_di"
+                       bpmnElement="Flow_GatewaySplitInvestigative_To_OrderRequiredInformation_Art58">
+        <di:waypoint x="785" y="285" />
+        <di:waypoint x="785" y="80" />
+        <di:waypoint x="930" y="80" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitInvestigative_To_ConductAudits_Art58_di"
+                       bpmnElement="Flow_GatewaySplitInvestigative_To_ConductAudits_Art58">
+        <di:waypoint x="785" y="285" />
+        <di:waypoint x="785" y="180" />
+        <di:waypoint x="930" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitInvestigative_To_ReviewCertifications_Art58_di"
+                       bpmnElement="Flow_GatewaySplitInvestigative_To_ReviewCertifications_Art58">
+        <di:waypoint x="810" y="300" />
+        <di:waypoint x="930" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitInvestigative_To_NotifyAllegedInfringement_Art58_di"
+                       bpmnElement="Flow_GatewaySplitInvestigative_To_NotifyAllegedInfringement_Art58">
+        <di:waypoint x="785" y="335" />
+        <di:waypoint x="785" y="380" />
+        <di:waypoint x="930" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitInvestigative_To_ObtainDataAccess_Art58_di"
+                       bpmnElement="Flow_GatewaySplitInvestigative_To_ObtainDataAccess_Art58">
+        <di:waypoint x="785" y="335" />
+        <di:waypoint x="785" y="480" />
+        <di:waypoint x="930" y="480" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitInvestigative_To_ObtainPremisesAccess_Art58_di"
+                       bpmnElement="Flow_GatewaySplitInvestigative_To_ObtainPremisesAccess_Art58">
+        <di:waypoint x="785" y="335" />
+        <di:waypoint x="785" y="580" />
+        <di:waypoint x="930" y="580" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_OrderRequiredInformation_To_GatewayJoinInvestigative_Art58_di"
+                       bpmnElement="Flow_OrderRequiredInformation_To_GatewayJoinInvestigative_Art58">
+        <di:waypoint x="1130" y="80" />
+        <di:waypoint x="1325" y="80" />
+        <di:waypoint x="1325" y="285" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ConductAudits_To_GatewayJoinInvestigative_Art58_di"
+                       bpmnElement="Flow_ConductAudits_To_GatewayJoinInvestigative_Art58">
+        <di:waypoint x="1130" y="180" />
+        <di:waypoint x="1325" y="180" />
+        <di:waypoint x="1325" y="285" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReviewCertifications_To_GatewayJoinInvestigative_Art58_di"
+                       bpmnElement="Flow_ReviewCertifications_To_GatewayJoinInvestigative_Art58">
+        <di:waypoint x="1150" y="280" />
+        <di:waypoint x="1300" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_NotifyAllegedInfringement_To_GatewayJoinInvestigative_Art58_di"
+                       bpmnElement="Flow_NotifyAllegedInfringement_To_GatewayJoinInvestigative_Art58">
+        <di:waypoint x="1130" y="380" />
+        <di:waypoint x="1325" y="380" />
+        <di:waypoint x="1325" y="335" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ObtainDataAccess_To_GatewayJoinInvestigative_Art58_di"
+                       bpmnElement="Flow_ObtainDataAccess_To_GatewayJoinInvestigative_Art58">
+        <di:waypoint x="1150" y="480" />
+        <di:waypoint x="1325" y="480" />
+        <di:waypoint x="1325" y="335" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ObtainPremisesAccess_To_GatewayJoinInvestigative_Art58_di"
+                       bpmnElement="Flow_ObtainPremisesAccess_To_GatewayJoinInvestigative_Art58">
+        <di:waypoint x="1160" y="580" />
+        <di:waypoint x="1325" y="580" />
+        <di:waypoint x="1325" y="335" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinInvestigative_To_GatewayJoinPowerBlocks_Art58_di"
+                       bpmnElement="Flow_GatewayJoinInvestigative_To_GatewayJoinPowerBlocks_Art58">
+        <di:waypoint x="1350" y="310" />
+        <di:waypoint x="3995" y="310" />
+        <di:waypoint x="3995" y="735" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitCorrective_To_IssueWarning_Art58_di"
+                       bpmnElement="Flow_GatewaySplitCorrective_To_IssueWarning_Art58">
+        <di:waypoint x="1535" y="735" />
+        <di:waypoint x="1535" y="80" />
+        <di:waypoint x="1710" y="80" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitCorrective_To_IssueReprimand_Art58_di"
+                       bpmnElement="Flow_GatewaySplitCorrective_To_IssueReprimand_Art58">
+        <di:waypoint x="1535" y="735" />
+        <di:waypoint x="1535" y="180" />
+        <di:waypoint x="1710" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitCorrective_To_OrderRightsCompliance_Art58_di"
+                       bpmnElement="Flow_GatewaySplitCorrective_To_OrderRightsCompliance_Art58">
+        <di:waypoint x="1535" y="735" />
+        <di:waypoint x="1535" y="280" />
+        <di:waypoint x="1710" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitCorrective_To_OrderProcessingCompliance_Art58_di"
+                       bpmnElement="Flow_GatewaySplitCorrective_To_OrderProcessingCompliance_Art58">
+        <di:waypoint x="1535" y="735" />
+        <di:waypoint x="1535" y="380" />
+        <di:waypoint x="1710" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitCorrective_To_OrderBreachCommunication_Art58_di"
+                       bpmnElement="Flow_GatewaySplitCorrective_To_OrderBreachCommunication_Art58">
+        <di:waypoint x="1535" y="735" />
+        <di:waypoint x="1535" y="480" />
+        <di:waypoint x="1710" y="480" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitCorrective_To_LimitOrBanProcessing_Art58_di"
+                       bpmnElement="Flow_GatewaySplitCorrective_To_LimitOrBanProcessing_Art58">
+        <di:waypoint x="1535" y="735" />
+        <di:waypoint x="1535" y="580" />
+        <di:waypoint x="1710" y="580" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitCorrective_To_OrderRectificationErasureRestriction_Art58_di"
+                       bpmnElement="Flow_GatewaySplitCorrective_To_OrderRectificationErasureRestriction_Art58">
+        <di:waypoint x="1535" y="735" />
+        <di:waypoint x="1535" y="680" />
+        <di:waypoint x="1710" y="680" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitCorrective_To_WithdrawOrBlockCertification_Art58_di"
+                       bpmnElement="Flow_GatewaySplitCorrective_To_WithdrawOrBlockCertification_Art58">
+        <di:waypoint x="1560" y="760" />
+        <di:waypoint x="1710" y="780" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitCorrective_To_ImposeAdministrativeFine_Art58_di"
+                       bpmnElement="Flow_GatewaySplitCorrective_To_ImposeAdministrativeFine_Art58">
+        <di:waypoint x="1535" y="785" />
+        <di:waypoint x="1535" y="880" />
+        <di:waypoint x="1710" y="880" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitCorrective_To_SuspendThirdCountryDataFlows_Art58_di"
+                       bpmnElement="Flow_GatewaySplitCorrective_To_SuspendThirdCountryDataFlows_Art58">
+        <di:waypoint x="1535" y="785" />
+        <di:waypoint x="1535" y="980" />
+        <di:waypoint x="1710" y="980" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_IssueWarning_To_GatewayJoinCorrective_Art58_di"
+                       bpmnElement="Flow_IssueWarning_To_GatewayJoinCorrective_Art58">
+        <di:waypoint x="1880" y="80" />
+        <di:waypoint x="2075" y="80" />
+        <di:waypoint x="2075" y="735" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_IssueReprimand_To_GatewayJoinCorrective_Art58_di"
+                       bpmnElement="Flow_IssueReprimand_To_GatewayJoinCorrective_Art58">
+        <di:waypoint x="1880" y="180" />
+        <di:waypoint x="2075" y="180" />
+        <di:waypoint x="2075" y="735" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_OrderRightsCompliance_To_GatewayJoinCorrective_Art58_di"
+                       bpmnElement="Flow_OrderRightsCompliance_To_GatewayJoinCorrective_Art58">
+        <di:waypoint x="1900" y="280" />
+        <di:waypoint x="2075" y="280" />
+        <di:waypoint x="2075" y="735" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_OrderProcessingCompliance_To_GatewayJoinCorrective_Art58_di"
+                       bpmnElement="Flow_OrderProcessingCompliance_To_GatewayJoinCorrective_Art58">
+        <di:waypoint x="1910" y="380" />
+        <di:waypoint x="2075" y="380" />
+        <di:waypoint x="2075" y="735" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_OrderBreachCommunication_To_GatewayJoinCorrective_Art58_di"
+                       bpmnElement="Flow_OrderBreachCommunication_To_GatewayJoinCorrective_Art58">
+        <di:waypoint x="1930" y="480" />
+        <di:waypoint x="2075" y="480" />
+        <di:waypoint x="2075" y="735" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_LimitOrBanProcessing_To_GatewayJoinCorrective_Art58_di"
+                       bpmnElement="Flow_LimitOrBanProcessing_To_GatewayJoinCorrective_Art58">
+        <di:waypoint x="1890" y="580" />
+        <di:waypoint x="2075" y="580" />
+        <di:waypoint x="2075" y="735" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_OrderRectificationErasureRestriction_To_GatewayJoinCorrective_Art58_di"
+                       bpmnElement="Flow_OrderRectificationErasureRestriction_To_GatewayJoinCorrective_Art58">
+        <di:waypoint x="1940" y="680" />
+        <di:waypoint x="2075" y="680" />
+        <di:waypoint x="2075" y="735" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_WithdrawOrBlockCertification_To_GatewayJoinCorrective_Art58_di"
+                       bpmnElement="Flow_WithdrawOrBlockCertification_To_GatewayJoinCorrective_Art58">
+        <di:waypoint x="1920" y="780" />
+        <di:waypoint x="2050" y="760" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ImposeAdministrativeFine_To_GatewayJoinCorrective_Art58_di"
+                       bpmnElement="Flow_ImposeAdministrativeFine_To_GatewayJoinCorrective_Art58">
+        <di:waypoint x="1900" y="880" />
+        <di:waypoint x="2075" y="880" />
+        <di:waypoint x="2075" y="785" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SuspendThirdCountryDataFlows_To_GatewayJoinCorrective_Art58_di"
+                       bpmnElement="Flow_SuspendThirdCountryDataFlows_To_GatewayJoinCorrective_Art58">
+        <di:waypoint x="1920" y="980" />
+        <di:waypoint x="2075" y="980" />
+        <di:waypoint x="2075" y="785" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinCorrective_To_GatewayJoinPowerBlocks_Art58_di"
+                       bpmnElement="Flow_GatewayJoinCorrective_To_GatewayJoinPowerBlocks_Art58">
+        <di:waypoint x="2100" y="760" />
+        <di:waypoint x="3970" y="760" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitAdvisory_To_AdviseUnderArticle36_Art58_di"
+                       bpmnElement="Flow_GatewaySplitAdvisory_To_AdviseUnderArticle36_Art58">
+        <di:waypoint x="2295" y="735" />
+        <di:waypoint x="2295" y="80" />
+        <di:waypoint x="2450" y="80" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitAdvisory_To_IssueOpinions_Art58_di"
+                       bpmnElement="Flow_GatewaySplitAdvisory_To_IssueOpinions_Art58">
+        <di:waypoint x="2295" y="735" />
+        <di:waypoint x="2295" y="180" />
+        <di:waypoint x="2450" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitAdvisory_To_AuthoriseArticle365Processing_Art58_di"
+                       bpmnElement="Flow_GatewaySplitAdvisory_To_AuthoriseArticle365Processing_Art58">
+        <di:waypoint x="2295" y="735" />
+        <di:waypoint x="2295" y="280" />
+        <di:waypoint x="2450" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitAdvisory_To_ApproveDraftCodes_Art58_di"
+                       bpmnElement="Flow_GatewaySplitAdvisory_To_ApproveDraftCodes_Art58">
+        <di:waypoint x="2295" y="735" />
+        <di:waypoint x="2295" y="380" />
+        <di:waypoint x="2450" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitAdvisory_To_AccreditCertificationBodies_Art58_di"
+                       bpmnElement="Flow_GatewaySplitAdvisory_To_AccreditCertificationBodies_Art58">
+        <di:waypoint x="2295" y="735" />
+        <di:waypoint x="2295" y="480" />
+        <di:waypoint x="2450" y="480" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitAdvisory_To_IssueCertifications_Art58_di"
+                       bpmnElement="Flow_GatewaySplitAdvisory_To_IssueCertifications_Art58">
+        <di:waypoint x="2295" y="735" />
+        <di:waypoint x="2295" y="580" />
+        <di:waypoint x="2450" y="580" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitAdvisory_To_AdoptStandardClauses_Art58_di"
+                       bpmnElement="Flow_GatewaySplitAdvisory_To_AdoptStandardClauses_Art58">
+        <di:waypoint x="2295" y="735" />
+        <di:waypoint x="2295" y="680" />
+        <di:waypoint x="2450" y="680" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitAdvisory_To_AuthoriseContractualClauses_Art58_di"
+                       bpmnElement="Flow_GatewaySplitAdvisory_To_AuthoriseContractualClauses_Art58">
+        <di:waypoint x="2320" y="760" />
+        <di:waypoint x="2450" y="780" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitAdvisory_To_AuthoriseAdministrativeArrangements_Art58_di"
+                       bpmnElement="Flow_GatewaySplitAdvisory_To_AuthoriseAdministrativeArrangements_Art58">
+        <di:waypoint x="2295" y="785" />
+        <di:waypoint x="2295" y="880" />
+        <di:waypoint x="2450" y="880" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitAdvisory_To_ApproveBCRs_Art58_di"
+                       bpmnElement="Flow_GatewaySplitAdvisory_To_ApproveBCRs_Art58">
+        <di:waypoint x="2295" y="785" />
+        <di:waypoint x="2295" y="980" />
+        <di:waypoint x="2450" y="980" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AdviseUnderArticle36_To_GatewayJoinAdvisory_Art58_di"
+                       bpmnElement="Flow_AdviseUnderArticle36_To_GatewayJoinAdvisory_Art58">
+        <di:waypoint x="2630" y="80" />
+        <di:waypoint x="2835" y="80" />
+        <di:waypoint x="2835" y="735" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_IssueOpinions_To_GatewayJoinAdvisory_Art58_di"
+                       bpmnElement="Flow_IssueOpinions_To_GatewayJoinAdvisory_Art58">
+        <di:waypoint x="2610" y="180" />
+        <di:waypoint x="2835" y="180" />
+        <di:waypoint x="2835" y="735" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AuthoriseArticle365Processing_To_GatewayJoinAdvisory_Art58_di"
+                       bpmnElement="Flow_AuthoriseArticle365Processing_To_GatewayJoinAdvisory_Art58">
+        <di:waypoint x="2660" y="280" />
+        <di:waypoint x="2835" y="280" />
+        <di:waypoint x="2835" y="735" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ApproveDraftCodes_To_GatewayJoinAdvisory_Art58_di"
+                       bpmnElement="Flow_ApproveDraftCodes_To_GatewayJoinAdvisory_Art58">
+        <di:waypoint x="2650" y="380" />
+        <di:waypoint x="2835" y="380" />
+        <di:waypoint x="2835" y="735" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AccreditCertificationBodies_To_GatewayJoinAdvisory_Art58_di"
+                       bpmnElement="Flow_AccreditCertificationBodies_To_GatewayJoinAdvisory_Art58">
+        <di:waypoint x="2640" y="480" />
+        <di:waypoint x="2835" y="480" />
+        <di:waypoint x="2835" y="735" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_IssueCertifications_To_GatewayJoinAdvisory_Art58_di"
+                       bpmnElement="Flow_IssueCertifications_To_GatewayJoinAdvisory_Art58">
+        <di:waypoint x="2680" y="580" />
+        <di:waypoint x="2835" y="580" />
+        <di:waypoint x="2835" y="735" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AdoptStandardClauses_To_GatewayJoinAdvisory_Art58_di"
+                       bpmnElement="Flow_AdoptStandardClauses_To_GatewayJoinAdvisory_Art58">
+        <di:waypoint x="2670" y="680" />
+        <di:waypoint x="2810" y="760" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AuthoriseContractualClauses_To_GatewayJoinAdvisory_Art58_di"
+                       bpmnElement="Flow_AuthoriseContractualClauses_To_GatewayJoinAdvisory_Art58">
+        <di:waypoint x="2670" y="780" />
+        <di:waypoint x="2835" y="780" />
+        <di:waypoint x="2835" y="785" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AuthoriseAdministrativeArrangements_To_GatewayJoinAdvisory_Art58_di"
+                       bpmnElement="Flow_AuthoriseAdministrativeArrangements_To_GatewayJoinAdvisory_Art58">
+        <di:waypoint x="2690" y="880" />
+        <di:waypoint x="2835" y="880" />
+        <di:waypoint x="2835" y="785" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ApproveBCRs_To_GatewayJoinAdvisory_Art58_di"
+                       bpmnElement="Flow_ApproveBCRs_To_GatewayJoinAdvisory_Art58">
+        <di:waypoint x="2650" y="980" />
+        <di:waypoint x="2835" y="980" />
+        <di:waypoint x="2835" y="785" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinAdvisory_To_GatewayJoinPowerBlocks_Art58_di"
+                       bpmnElement="Flow_GatewayJoinAdvisory_To_GatewayJoinPowerBlocks_Art58">
+        <di:waypoint x="2860" y="760" />
+        <di:waypoint x="3970" y="760" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_GatewayAdditionalPowersProvided_To_BringInfringements_Art58_di"
+                       bpmnElement="Flow_GatewayAdditionalPowersProvided_To_BringInfringements_Art58">
+        <di:waypoint x="3120" y="760" />
+        <di:waypoint x="3240" y="680" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3160" y="706" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAdditionalPowersProvided_To_GatewayJoinPowerBlocks_Art58_di"
+                       bpmnElement="Flow_GatewayAdditionalPowersProvided_To_GatewayJoinPowerBlocks_Art58">
+        <di:waypoint x="3120" y="760" />
+        <di:waypoint x="3970" y="760" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3500" y="742" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_BringInfringements_To_GatewayImpairChapterVII_Art58_di"
+                       bpmnElement="Flow_BringInfringements_To_GatewayImpairChapterVII_Art58">
+        <di:waypoint x="3450" y="680" />
+        <di:waypoint x="3570" y="680" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayImpairChapterVII_To_GatewayJoinPowerBlocks_Art58_di"
+                       bpmnElement="Flow_GatewayImpairChapterVII_To_GatewayJoinPowerBlocks_Art58">
+        <di:waypoint x="3620" y="680" />
+        <di:waypoint x="3995" y="680" />
+        <di:waypoint x="3995" y="735" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3780" y="662" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayImpairChapterVII_To_ExerciseAdditionalPowers_Art58_di"
+                       bpmnElement="Flow_GatewayImpairChapterVII_To_ExerciseAdditionalPowers_Art58">
+        <di:waypoint x="3595" y="705" />
+        <di:waypoint x="3595" y="800" />
+        <di:waypoint x="3740" y="800" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3603" y="738" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ExerciseAdditionalPowers_To_GatewayJoinPowerBlocks_Art58_di"
+                       bpmnElement="Flow_ExerciseAdditionalPowers_To_GatewayJoinPowerBlocks_Art58">
+        <di:waypoint x="3920" y="800" />
+        <di:waypoint x="3995" y="785" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinPowerBlocks_To_EndPowersMaintained_Art58_di"
+                       bpmnElement="Flow_GatewayJoinPowerBlocks_To_EndPowersMaintained_Art58">
+        <di:waypoint x="4020" y="760" />
+        <di:waypoint x="4140" y="760" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_OrderRequiredInformation_Art58_di"
+                       bpmnElement="MessageFlow_OrderRequiredInformation_Art58">
+        <di:waypoint x="1030" y="120" />
+        <di:waypoint x="1030" y="1580" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_NotifyAllegedInfringement_Art58_di"
+                       bpmnElement="MessageFlow_NotifyAllegedInfringement_Art58">
+        <di:waypoint x="1030" y="420" />
+        <di:waypoint x="1030" y="1580" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_IssueWarning_Art58_di"
+                       bpmnElement="MessageFlow_IssueWarning_Art58">
+        <di:waypoint x="1795" y="120" />
+        <di:waypoint x="1795" y="1580" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_IssueReprimand_Art58_di"
+                       bpmnElement="MessageFlow_IssueReprimand_Art58">
+        <di:waypoint x="1795" y="220" />
+        <di:waypoint x="1795" y="1580" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_OrderRightsCompliance_Art58_di"
+                       bpmnElement="MessageFlow_OrderRightsCompliance_Art58">
+        <di:waypoint x="1805" y="320" />
+        <di:waypoint x="1805" y="1580" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_OrderProcessingCompliance_Art58_di"
+                       bpmnElement="MessageFlow_OrderProcessingCompliance_Art58">
+        <di:waypoint x="1810" y="420" />
+        <di:waypoint x="1810" y="1580" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_OrderBreachCommunication_Art58_di"
+                       bpmnElement="MessageFlow_OrderBreachCommunication_Art58">
+        <di:waypoint x="1820" y="520" />
+        <di:waypoint x="1820" y="1700" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_LimitOrBanProcessing_Art58_di"
+                       bpmnElement="MessageFlow_LimitOrBanProcessing_Art58">
+        <di:waypoint x="1800" y="620" />
+        <di:waypoint x="1800" y="1580" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_OrderRectificationErasureRestriction_Art58_di"
+                       bpmnElement="MessageFlow_OrderRectificationErasureRestriction_Art58">
+        <di:waypoint x="1825" y="720" />
+        <di:waypoint x="1825" y="1580" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SuspendThirdCountryDataFlows_Art58_di"
+                       bpmnElement="MessageFlow_SuspendThirdCountryDataFlows_Art58">
+        <di:waypoint x="1815" y="1020" />
+        <di:waypoint x="1815" y="1580" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_AdviseUnderArticle36_Art58_di"
+                       bpmnElement="MessageFlow_AdviseUnderArticle36_Art58">
+        <di:waypoint x="2540" y="120" />
+        <di:waypoint x="2540" y="1580" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_IssueOpinions_Art58_di"
+                       bpmnElement="MessageFlow_IssueOpinions_Art58">
+        <di:waypoint x="2530" y="220" />
+        <di:waypoint x="2530" y="1940" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_WithdrawOrBlockCertification_Art58_di"
+                       bpmnElement="MessageFlow_WithdrawOrBlockCertification_Art58">
+        <di:waypoint x="1815" y="820" />
+        <di:waypoint x="1815" y="1820" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_BringInfringementsToJudicialAuthorities_Art58_di"
+                       bpmnElement="MessageFlow_BringInfringementsToJudicialAuthorities_Art58">
+        <di:waypoint x="3345" y="720" />
+        <di:waypoint x="3345" y="2060" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

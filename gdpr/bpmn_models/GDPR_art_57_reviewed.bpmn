@@ -1,0 +1,1305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art57_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art57_Reviewed">
+    <bpmn:participant id="Participant_SupervisoryAuthority_Art57"
+                      name="Supervisory Authority"
+                      processRef="Process_SupervisoryAuthority_Art57" />
+    <bpmn:participant id="Participant_DataSubjectOrArticle80Body_Art57"
+                      name="Data Subject or Article 80 Body" />
+    <bpmn:participant id="Participant_NationalInstitutions_Art57"
+                      name="National Parliament, Government, or Other Institution" />
+    <bpmn:participant id="Participant_OtherSupervisoryAuthorities_Art57"
+                      name="Other Supervisory Authorities" />
+    <bpmn:participant id="Participant_Board_Art57"
+                      name="Board" />
+
+    <bpmn:messageFlow id="MessageFlow_RequestRightsInformation_Art57"
+                      sourceRef="Participant_DataSubjectOrArticle80Body_Art57"
+                      targetRef="Task_ReceiveRightsRequest_Art57" />
+    <bpmn:messageFlow id="MessageFlow_ProvideRightsInformation_Art57"
+                      sourceRef="Task_ProvideRightsInformation_Art57"
+                      targetRef="Participant_DataSubjectOrArticle80Body_Art57" />
+    <bpmn:messageFlow id="MessageFlow_FileComplaint_Art57"
+                      sourceRef="Participant_DataSubjectOrArticle80Body_Art57"
+                      targetRef="Task_ReceiveComplaint_Art57" />
+    <bpmn:messageFlow id="MessageFlow_InformComplainant_Art57"
+                      sourceRef="Task_InformComplainant_Art57"
+                      targetRef="Participant_DataSubjectOrArticle80Body_Art57" />
+    <bpmn:messageFlow id="MessageFlow_AdviseNationalInstitutions_Art57"
+                      sourceRef="Task_AdviseNationalInstitutions_Art57"
+                      targetRef="Participant_NationalInstitutions_Art57" />
+    <bpmn:messageFlow id="MessageFlow_CooperateOnRightsRequest_Art57"
+                      sourceRef="Task_CooperateOnRightsRequest_Art57"
+                      targetRef="Participant_OtherSupervisoryAuthorities_Art57" />
+    <bpmn:messageFlow id="MessageFlow_ProvideMutualAssistance_Art57"
+                      sourceRef="Task_CooperateAndProvideMutualAssistance_Art57"
+                      targetRef="Participant_OtherSupervisoryAuthorities_Art57" />
+    <bpmn:messageFlow id="MessageFlow_ContributeToBoard_Art57"
+                      sourceRef="Task_ContributeToBoardActivities_Art57"
+                      targetRef="Participant_Board_Art57" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_SupervisoryAuthority_Art57"
+                name="Perform Article 57 supervisory authority tasks"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 57 based on the real English legal text from
+      gdpr_articles/article_57.txt. The model groups the full supervisory-authority task set
+      into coherent duty blocks while keeping the Article 57(1)(a)-(v) content visible:
+      monitoring and enforcement, awareness and advice and obligation-promotion, data-subject
+      request handling and complaint handling with Article 57(2)-(4) facilitation and free-of-
+      charge and manifestly-unfounded-or-excessive exception logic, cooperation and
+      investigations and monitoring of developments, the Article 28 and 35 and 36 and 40 and 41
+      and 42 and 43 and 46 and 47 related standard-setting and approval tasks, Board
+      contribution, internal infringement records, and residual data-protection tasks.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_PerformArticle57Tasks_Art57"
+                     name="Perform Article 57 tasks">
+      <bpmn:outgoing>Flow_Start_To_GatewaySplitMainTasks_Art57</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:parallelGateway id="Gateway_SplitMainTasks_Art57">
+      <bpmn:incoming>Flow_Start_To_GatewaySplitMainTasks_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplitMain_To_GatewaySplitAwareness_Art57</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitMain_To_GatewaySplitDataSubjectTasks_Art57</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitMain_To_GatewaySplitCooperation_Art57</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitMain_To_GatewaySplitStandards_Art57</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitMain_To_GatewaySplitInstitutionalTasks_Art57</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:parallelGateway id="Gateway_SplitAwareness_Art57">
+      <bpmn:incoming>Flow_GatewaySplitMain_To_GatewaySplitAwareness_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplitAwareness_To_MonitorEnforce_Art57</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitAwareness_To_PromotePublicAwareness_Art57</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitAwareness_To_AdviseInstitutions_Art57</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitAwareness_To_PromoteControllerAwareness_Art57</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_MonitorAndEnforceApplication_Art57"
+               name="Monitor and enforce application">
+      <bpmn:incoming>Flow_GatewaySplitAwareness_To_MonitorEnforce_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_MonitorEnforce_To_GatewayJoinAwareness_Art57</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_PromotePublicAwareness_Art57"
+               name="Promote public awareness, with child focus">
+      <bpmn:incoming>Flow_GatewaySplitAwareness_To_PromotePublicAwareness_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_PromotePublicAwareness_To_GatewayJoinAwareness_Art57</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="Task_AdviseNationalInstitutions_Art57"
+                   name="Advise on legislative and administrative measures">
+      <bpmn:incoming>Flow_GatewaySplitAwareness_To_AdviseInstitutions_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_AdviseInstitutions_To_GatewayJoinAwareness_Art57</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:task id="Task_PromoteControllerProcessorAwareness_Art57"
+               name="Promote controller and processor awareness">
+      <bpmn:incoming>Flow_GatewaySplitAwareness_To_PromoteControllerAwareness_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_PromoteControllerAwareness_To_GatewayJoinAwareness_Art57</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_JoinAwareness_Art57">
+      <bpmn:incoming>Flow_MonitorEnforce_To_GatewayJoinAwareness_Art57</bpmn:incoming>
+      <bpmn:incoming>Flow_PromotePublicAwareness_To_GatewayJoinAwareness_Art57</bpmn:incoming>
+      <bpmn:incoming>Flow_AdviseInstitutions_To_GatewayJoinAwareness_Art57</bpmn:incoming>
+      <bpmn:incoming>Flow_PromoteControllerAwareness_To_GatewayJoinAwareness_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinAwareness_To_GatewayJoinMainTasks_Art57</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:parallelGateway id="Gateway_SplitDataSubjectTasks_Art57">
+      <bpmn:incoming>Flow_GatewaySplitMain_To_GatewaySplitDataSubjectTasks_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplitDataSubjectTasks_To_ReceiveRightsRequest_Art57</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitDataSubjectTasks_To_FacilitateComplaintSubmission_Art57</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:receiveTask id="Task_ReceiveRightsRequest_Art57"
+                      name="Receive rights request">
+      <bpmn:incoming>Flow_GatewaySplitDataSubjectTasks_To_ReceiveRightsRequest_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveRightsRequest_To_GatewayExcessiveRequest_Art57</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:exclusiveGateway id="Gateway_ExcessiveRequest_Art57"
+                           name="Is the request manifestly unfounded or excessive?">
+      <bpmn:incoming>Flow_ReceiveRightsRequest_To_GatewayExcessiveRequest_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayExcessiveRequest_To_ProvideRightsInformation_Art57</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayExcessiveRequest_To_DemonstrateExcessiveRequest_Art57</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="Task_ProvideRightsInformation_Art57"
+                   name="Provide rights information free of charge">
+      <bpmn:incoming>Flow_GatewayExcessiveRequest_To_ProvideRightsInformation_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_ProvideRightsInformation_To_GatewayCooperateRightsRequest_Art57</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:exclusiveGateway id="Gateway_CooperateRightsRequest_Art57"
+                           name="Is cooperation with other supervisory authorities appropriate?">
+      <bpmn:incoming>Flow_ProvideRightsInformation_To_GatewayCooperateRightsRequest_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayCooperateRightsRequest_To_CooperateOnRightsRequest_Art57</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayCooperateRightsRequest_To_GatewayJoinDataSubjectTasks_Art57</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="Task_CooperateOnRightsRequest_Art57"
+                   name="Cooperate on rights request">
+      <bpmn:incoming>Flow_GatewayCooperateRightsRequest_To_CooperateOnRightsRequest_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_CooperateOnRightsRequest_To_GatewayJoinDataSubjectTasks_Art57</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:task id="Task_DemonstrateExcessiveRequest_Art57"
+               name="Demonstrate excessive request">
+      <bpmn:incoming>Flow_GatewayExcessiveRequest_To_DemonstrateExcessiveRequest_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_DemonstrateExcessiveRequest_To_GatewayChargeFee_Art57</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_ChargeFee_Art57"
+                           name="Will the authority charge a reasonable fee?">
+      <bpmn:incoming>Flow_DemonstrateExcessiveRequest_To_GatewayChargeFee_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayChargeFee_To_ChargeReasonableFee_Art57</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayChargeFee_To_RefuseRequest_Art57</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ChargeReasonableFee_Art57"
+               name="Charge reasonable fee">
+      <bpmn:incoming>Flow_GatewayChargeFee_To_ChargeReasonableFee_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_ChargeReasonableFee_To_GatewayJoinDataSubjectTasks_Art57</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_RefuseRequest_Art57"
+               name="Refuse request">
+      <bpmn:incoming>Flow_GatewayChargeFee_To_RefuseRequest_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_RefuseRequest_To_GatewayJoinDataSubjectTasks_Art57</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_FacilitateComplaintSubmission_Art57"
+               name="Facilitate free complaint submission">
+      <bpmn:incoming>Flow_GatewaySplitDataSubjectTasks_To_FacilitateComplaintSubmission_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_FacilitateComplaintSubmission_To_ReceiveComplaint_Art57</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:receiveTask id="Task_ReceiveComplaint_Art57"
+                      name="Receive complaint">
+      <bpmn:incoming>Flow_FacilitateComplaintSubmission_To_ReceiveComplaint_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveComplaint_To_InvestigateComplaint_Art57</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:task id="Task_InvestigateComplaint_Art57"
+               name="Investigate complaint as appropriate">
+      <bpmn:incoming>Flow_ReceiveComplaint_To_InvestigateComplaint_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_InvestigateComplaint_To_InformComplainant_Art57</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="Task_InformComplainant_Art57"
+                   name="Inform complainant of progress and outcome">
+      <bpmn:incoming>Flow_InvestigateComplaint_To_InformComplainant_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_InformComplainant_To_GatewayJoinDataSubjectTasks_Art57</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:parallelGateway id="Gateway_JoinDataSubjectTasks_Art57">
+      <bpmn:incoming>Flow_GatewayCooperateRightsRequest_To_GatewayJoinDataSubjectTasks_Art57</bpmn:incoming>
+      <bpmn:incoming>Flow_CooperateOnRightsRequest_To_GatewayJoinDataSubjectTasks_Art57</bpmn:incoming>
+      <bpmn:incoming>Flow_ChargeReasonableFee_To_GatewayJoinDataSubjectTasks_Art57</bpmn:incoming>
+      <bpmn:incoming>Flow_RefuseRequest_To_GatewayJoinDataSubjectTasks_Art57</bpmn:incoming>
+      <bpmn:incoming>Flow_InformComplainant_To_GatewayJoinDataSubjectTasks_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinDataSubjectTasks_To_GatewayJoinMainTasks_Art57</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:parallelGateway id="Gateway_SplitCooperation_Art57">
+      <bpmn:incoming>Flow_GatewaySplitMain_To_GatewaySplitCooperation_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplitCooperation_To_CooperateMutualAssistance_Art57</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitCooperation_To_ConductInvestigations_Art57</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitCooperation_To_MonitorDevelopments_Art57</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:sendTask id="Task_CooperateAndProvideMutualAssistance_Art57"
+                   name="Cooperate and provide mutual assistance">
+      <bpmn:incoming>Flow_GatewaySplitCooperation_To_CooperateMutualAssistance_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_CooperateMutualAssistance_To_GatewayJoinCooperation_Art57</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:task id="Task_ConductInvestigations_Art57"
+               name="Conduct investigations">
+      <bpmn:incoming>Flow_GatewaySplitCooperation_To_ConductInvestigations_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_ConductInvestigations_To_GatewayJoinCooperation_Art57</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_MonitorRelevantDevelopments_Art57"
+               name="Monitor relevant developments">
+      <bpmn:incoming>Flow_GatewaySplitCooperation_To_MonitorDevelopments_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_MonitorDevelopments_To_GatewayJoinCooperation_Art57</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_JoinCooperation_Art57">
+      <bpmn:incoming>Flow_CooperateMutualAssistance_To_GatewayJoinCooperation_Art57</bpmn:incoming>
+      <bpmn:incoming>Flow_ConductInvestigations_To_GatewayJoinCooperation_Art57</bpmn:incoming>
+      <bpmn:incoming>Flow_MonitorDevelopments_To_GatewayJoinCooperation_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinCooperation_To_GatewayJoinMainTasks_Art57</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:parallelGateway id="Gateway_SplitStandards_Art57">
+      <bpmn:incoming>Flow_GatewaySplitMain_To_GatewaySplitStandards_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplitStandards_To_AdoptSCCs_Art57</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitStandards_To_MaintainDPIAList_Art57</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitStandards_To_GiveArticle36Advice_Art57</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitStandards_To_EncourageCodes_Art57</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitStandards_To_EncourageCertification_Art57</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitStandards_To_ReviewCertifications_Art57</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitStandards_To_DraftAccreditationCriteria_Art57</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitStandards_To_ConductAccreditation_Art57</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitStandards_To_AuthoriseArticle46Clauses_Art57</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitStandards_To_ApproveBCRs_Art57</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_AdoptStandardContractualClauses_Art57"
+               name="Adopt standard contractual clauses">
+      <bpmn:incoming>Flow_GatewaySplitStandards_To_AdoptSCCs_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_AdoptSCCs_To_GatewayJoinStandards_Art57</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_MaintainDPIAList_Art57"
+               name="Establish and maintain DPIA list">
+      <bpmn:incoming>Flow_GatewaySplitStandards_To_MaintainDPIAList_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_MaintainDPIAList_To_GatewayJoinStandards_Art57</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_GiveArticle36Advice_Art57"
+               name="Give Article 36(2) advice">
+      <bpmn:incoming>Flow_GatewaySplitStandards_To_GiveArticle36Advice_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_GiveArticle36Advice_To_GatewayJoinStandards_Art57</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_EncourageAndApproveCodes_Art57"
+               name="Encourage and approve codes of conduct">
+      <bpmn:incoming>Flow_GatewaySplitStandards_To_EncourageCodes_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_EncourageCodes_To_GatewayJoinStandards_Art57</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_EncourageCertification_Art57"
+               name="Encourage certification and approve criteria">
+      <bpmn:incoming>Flow_GatewaySplitStandards_To_EncourageCertification_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_EncourageCertification_To_GatewayJoinStandards_Art57</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ReviewCertifications_Art57"
+               name="Review certifications periodically">
+      <bpmn:incoming>Flow_GatewaySplitStandards_To_ReviewCertifications_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReviewCertifications_To_GatewayJoinStandards_Art57</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_DraftPublishAccreditationCriteria_Art57"
+               name="Draft and publish accreditation criteria">
+      <bpmn:incoming>Flow_GatewaySplitStandards_To_DraftAccreditationCriteria_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_DraftAccreditationCriteria_To_GatewayJoinStandards_Art57</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ConductAccreditation_Art57"
+               name="Conduct accreditation">
+      <bpmn:incoming>Flow_GatewaySplitStandards_To_ConductAccreditation_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_ConductAccreditation_To_GatewayJoinStandards_Art57</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_AuthoriseArticle46Clauses_Art57"
+               name="Authorise Article 46(3) clauses">
+      <bpmn:incoming>Flow_GatewaySplitStandards_To_AuthoriseArticle46Clauses_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_AuthoriseArticle46Clauses_To_GatewayJoinStandards_Art57</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ApproveBindingCorporateRules_Art57"
+               name="Approve binding corporate rules">
+      <bpmn:incoming>Flow_GatewaySplitStandards_To_ApproveBCRs_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_ApproveBCRs_To_GatewayJoinStandards_Art57</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_JoinStandards_Art57">
+      <bpmn:incoming>Flow_AdoptSCCs_To_GatewayJoinStandards_Art57</bpmn:incoming>
+      <bpmn:incoming>Flow_MaintainDPIAList_To_GatewayJoinStandards_Art57</bpmn:incoming>
+      <bpmn:incoming>Flow_GiveArticle36Advice_To_GatewayJoinStandards_Art57</bpmn:incoming>
+      <bpmn:incoming>Flow_EncourageCodes_To_GatewayJoinStandards_Art57</bpmn:incoming>
+      <bpmn:incoming>Flow_EncourageCertification_To_GatewayJoinStandards_Art57</bpmn:incoming>
+      <bpmn:incoming>Flow_ReviewCertifications_To_GatewayJoinStandards_Art57</bpmn:incoming>
+      <bpmn:incoming>Flow_DraftAccreditationCriteria_To_GatewayJoinStandards_Art57</bpmn:incoming>
+      <bpmn:incoming>Flow_ConductAccreditation_To_GatewayJoinStandards_Art57</bpmn:incoming>
+      <bpmn:incoming>Flow_AuthoriseArticle46Clauses_To_GatewayJoinStandards_Art57</bpmn:incoming>
+      <bpmn:incoming>Flow_ApproveBCRs_To_GatewayJoinStandards_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinStandards_To_GatewayJoinMainTasks_Art57</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:parallelGateway id="Gateway_SplitInstitutionalTasks_Art57">
+      <bpmn:incoming>Flow_GatewaySplitMain_To_GatewaySplitInstitutionalTasks_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplitInstitutionalTasks_To_ContributeBoard_Art57</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitInstitutionalTasks_To_KeepInfringementRecords_Art57</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitInstitutionalTasks_To_FulfilOtherTasks_Art57</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:sendTask id="Task_ContributeToBoardActivities_Art57"
+                   name="Contribute to Board activities">
+      <bpmn:incoming>Flow_GatewaySplitInstitutionalTasks_To_ContributeBoard_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_ContributeBoard_To_GatewayJoinInstitutionalTasks_Art57</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:task id="Task_KeepInternalInfringementRecords_Art57"
+               name="Keep internal infringement records">
+      <bpmn:incoming>Flow_GatewaySplitInstitutionalTasks_To_KeepInfringementRecords_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_KeepInfringementRecords_To_GatewayJoinInstitutionalTasks_Art57</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_FulfilOtherDataProtectionTasks_Art57"
+               name="Fulfil other data protection tasks">
+      <bpmn:incoming>Flow_GatewaySplitInstitutionalTasks_To_FulfilOtherTasks_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_FulfilOtherTasks_To_GatewayJoinInstitutionalTasks_Art57</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_JoinInstitutionalTasks_Art57">
+      <bpmn:incoming>Flow_ContributeBoard_To_GatewayJoinInstitutionalTasks_Art57</bpmn:incoming>
+      <bpmn:incoming>Flow_KeepInfringementRecords_To_GatewayJoinInstitutionalTasks_Art57</bpmn:incoming>
+      <bpmn:incoming>Flow_FulfilOtherTasks_To_GatewayJoinInstitutionalTasks_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinInstitutionalTasks_To_GatewayJoinMainTasks_Art57</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:parallelGateway id="Gateway_JoinMainTasks_Art57">
+      <bpmn:incoming>Flow_GatewayJoinAwareness_To_GatewayJoinMainTasks_Art57</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayJoinDataSubjectTasks_To_GatewayJoinMainTasks_Art57</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayJoinCooperation_To_GatewayJoinMainTasks_Art57</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayJoinStandards_To_GatewayJoinMainTasks_Art57</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayJoinInstitutionalTasks_To_GatewayJoinMainTasks_Art57</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinMainTasks_To_EndTasksMaintained_Art57</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:endEvent id="EndEvent_Article57TasksMaintained_Art57"
+                   name="Article 57 tasks maintained">
+      <bpmn:incoming>Flow_GatewayJoinMainTasks_To_EndTasksMaintained_Art57</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_GatewaySplitMainTasks_Art57"
+                       sourceRef="StartEvent_PerformArticle57Tasks_Art57"
+                       targetRef="Gateway_SplitMainTasks_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitMain_To_GatewaySplitAwareness_Art57"
+                       sourceRef="Gateway_SplitMainTasks_Art57"
+                       targetRef="Gateway_SplitAwareness_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitMain_To_GatewaySplitDataSubjectTasks_Art57"
+                       sourceRef="Gateway_SplitMainTasks_Art57"
+                       targetRef="Gateway_SplitDataSubjectTasks_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitMain_To_GatewaySplitCooperation_Art57"
+                       sourceRef="Gateway_SplitMainTasks_Art57"
+                       targetRef="Gateway_SplitCooperation_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitMain_To_GatewaySplitStandards_Art57"
+                       sourceRef="Gateway_SplitMainTasks_Art57"
+                       targetRef="Gateway_SplitStandards_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitMain_To_GatewaySplitInstitutionalTasks_Art57"
+                       sourceRef="Gateway_SplitMainTasks_Art57"
+                       targetRef="Gateway_SplitInstitutionalTasks_Art57" />
+
+    <bpmn:sequenceFlow id="Flow_GatewaySplitAwareness_To_MonitorEnforce_Art57"
+                       sourceRef="Gateway_SplitAwareness_Art57"
+                       targetRef="Task_MonitorAndEnforceApplication_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitAwareness_To_PromotePublicAwareness_Art57"
+                       sourceRef="Gateway_SplitAwareness_Art57"
+                       targetRef="Task_PromotePublicAwareness_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitAwareness_To_AdviseInstitutions_Art57"
+                       sourceRef="Gateway_SplitAwareness_Art57"
+                       targetRef="Task_AdviseNationalInstitutions_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitAwareness_To_PromoteControllerAwareness_Art57"
+                       sourceRef="Gateway_SplitAwareness_Art57"
+                       targetRef="Task_PromoteControllerProcessorAwareness_Art57" />
+    <bpmn:sequenceFlow id="Flow_MonitorEnforce_To_GatewayJoinAwareness_Art57"
+                       sourceRef="Task_MonitorAndEnforceApplication_Art57"
+                       targetRef="Gateway_JoinAwareness_Art57" />
+    <bpmn:sequenceFlow id="Flow_PromotePublicAwareness_To_GatewayJoinAwareness_Art57"
+                       sourceRef="Task_PromotePublicAwareness_Art57"
+                       targetRef="Gateway_JoinAwareness_Art57" />
+    <bpmn:sequenceFlow id="Flow_AdviseInstitutions_To_GatewayJoinAwareness_Art57"
+                       sourceRef="Task_AdviseNationalInstitutions_Art57"
+                       targetRef="Gateway_JoinAwareness_Art57" />
+    <bpmn:sequenceFlow id="Flow_PromoteControllerAwareness_To_GatewayJoinAwareness_Art57"
+                       sourceRef="Task_PromoteControllerProcessorAwareness_Art57"
+                       targetRef="Gateway_JoinAwareness_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoinAwareness_To_GatewayJoinMainTasks_Art57"
+                       sourceRef="Gateway_JoinAwareness_Art57"
+                       targetRef="Gateway_JoinMainTasks_Art57" />
+
+    <bpmn:sequenceFlow id="Flow_GatewaySplitDataSubjectTasks_To_ReceiveRightsRequest_Art57"
+                       sourceRef="Gateway_SplitDataSubjectTasks_Art57"
+                       targetRef="Task_ReceiveRightsRequest_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitDataSubjectTasks_To_FacilitateComplaintSubmission_Art57"
+                       sourceRef="Gateway_SplitDataSubjectTasks_Art57"
+                       targetRef="Task_FacilitateComplaintSubmission_Art57" />
+    <bpmn:sequenceFlow id="Flow_ReceiveRightsRequest_To_GatewayExcessiveRequest_Art57"
+                       sourceRef="Task_ReceiveRightsRequest_Art57"
+                       targetRef="Gateway_ExcessiveRequest_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewayExcessiveRequest_To_ProvideRightsInformation_Art57"
+                       name="No"
+                       sourceRef="Gateway_ExcessiveRequest_Art57"
+                       targetRef="Task_ProvideRightsInformation_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewayExcessiveRequest_To_DemonstrateExcessiveRequest_Art57"
+                       name="Yes"
+                       sourceRef="Gateway_ExcessiveRequest_Art57"
+                       targetRef="Task_DemonstrateExcessiveRequest_Art57" />
+    <bpmn:sequenceFlow id="Flow_ProvideRightsInformation_To_GatewayCooperateRightsRequest_Art57"
+                       sourceRef="Task_ProvideRightsInformation_Art57"
+                       targetRef="Gateway_CooperateRightsRequest_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewayCooperateRightsRequest_To_CooperateOnRightsRequest_Art57"
+                       name="Yes"
+                       sourceRef="Gateway_CooperateRightsRequest_Art57"
+                       targetRef="Task_CooperateOnRightsRequest_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewayCooperateRightsRequest_To_GatewayJoinDataSubjectTasks_Art57"
+                       name="No"
+                       sourceRef="Gateway_CooperateRightsRequest_Art57"
+                       targetRef="Gateway_JoinDataSubjectTasks_Art57" />
+    <bpmn:sequenceFlow id="Flow_CooperateOnRightsRequest_To_GatewayJoinDataSubjectTasks_Art57"
+                       sourceRef="Task_CooperateOnRightsRequest_Art57"
+                       targetRef="Gateway_JoinDataSubjectTasks_Art57" />
+    <bpmn:sequenceFlow id="Flow_DemonstrateExcessiveRequest_To_GatewayChargeFee_Art57"
+                       sourceRef="Task_DemonstrateExcessiveRequest_Art57"
+                       targetRef="Gateway_ChargeFee_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewayChargeFee_To_ChargeReasonableFee_Art57"
+                       name="Yes"
+                       sourceRef="Gateway_ChargeFee_Art57"
+                       targetRef="Task_ChargeReasonableFee_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewayChargeFee_To_RefuseRequest_Art57"
+                       name="No"
+                       sourceRef="Gateway_ChargeFee_Art57"
+                       targetRef="Task_RefuseRequest_Art57" />
+    <bpmn:sequenceFlow id="Flow_ChargeReasonableFee_To_GatewayJoinDataSubjectTasks_Art57"
+                       sourceRef="Task_ChargeReasonableFee_Art57"
+                       targetRef="Gateway_JoinDataSubjectTasks_Art57" />
+    <bpmn:sequenceFlow id="Flow_RefuseRequest_To_GatewayJoinDataSubjectTasks_Art57"
+                       sourceRef="Task_RefuseRequest_Art57"
+                       targetRef="Gateway_JoinDataSubjectTasks_Art57" />
+    <bpmn:sequenceFlow id="Flow_FacilitateComplaintSubmission_To_ReceiveComplaint_Art57"
+                       sourceRef="Task_FacilitateComplaintSubmission_Art57"
+                       targetRef="Task_ReceiveComplaint_Art57" />
+    <bpmn:sequenceFlow id="Flow_ReceiveComplaint_To_InvestigateComplaint_Art57"
+                       sourceRef="Task_ReceiveComplaint_Art57"
+                       targetRef="Task_InvestigateComplaint_Art57" />
+    <bpmn:sequenceFlow id="Flow_InvestigateComplaint_To_InformComplainant_Art57"
+                       sourceRef="Task_InvestigateComplaint_Art57"
+                       targetRef="Task_InformComplainant_Art57" />
+    <bpmn:sequenceFlow id="Flow_InformComplainant_To_GatewayJoinDataSubjectTasks_Art57"
+                       sourceRef="Task_InformComplainant_Art57"
+                       targetRef="Gateway_JoinDataSubjectTasks_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoinDataSubjectTasks_To_GatewayJoinMainTasks_Art57"
+                       sourceRef="Gateway_JoinDataSubjectTasks_Art57"
+                       targetRef="Gateway_JoinMainTasks_Art57" />
+
+    <bpmn:sequenceFlow id="Flow_GatewaySplitCooperation_To_CooperateMutualAssistance_Art57"
+                       sourceRef="Gateway_SplitCooperation_Art57"
+                       targetRef="Task_CooperateAndProvideMutualAssistance_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitCooperation_To_ConductInvestigations_Art57"
+                       sourceRef="Gateway_SplitCooperation_Art57"
+                       targetRef="Task_ConductInvestigations_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitCooperation_To_MonitorDevelopments_Art57"
+                       sourceRef="Gateway_SplitCooperation_Art57"
+                       targetRef="Task_MonitorRelevantDevelopments_Art57" />
+    <bpmn:sequenceFlow id="Flow_CooperateMutualAssistance_To_GatewayJoinCooperation_Art57"
+                       sourceRef="Task_CooperateAndProvideMutualAssistance_Art57"
+                       targetRef="Gateway_JoinCooperation_Art57" />
+    <bpmn:sequenceFlow id="Flow_ConductInvestigations_To_GatewayJoinCooperation_Art57"
+                       sourceRef="Task_ConductInvestigations_Art57"
+                       targetRef="Gateway_JoinCooperation_Art57" />
+    <bpmn:sequenceFlow id="Flow_MonitorDevelopments_To_GatewayJoinCooperation_Art57"
+                       sourceRef="Task_MonitorRelevantDevelopments_Art57"
+                       targetRef="Gateway_JoinCooperation_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoinCooperation_To_GatewayJoinMainTasks_Art57"
+                       sourceRef="Gateway_JoinCooperation_Art57"
+                       targetRef="Gateway_JoinMainTasks_Art57" />
+
+    <bpmn:sequenceFlow id="Flow_GatewaySplitStandards_To_AdoptSCCs_Art57"
+                       sourceRef="Gateway_SplitStandards_Art57"
+                       targetRef="Task_AdoptStandardContractualClauses_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitStandards_To_MaintainDPIAList_Art57"
+                       sourceRef="Gateway_SplitStandards_Art57"
+                       targetRef="Task_MaintainDPIAList_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitStandards_To_GiveArticle36Advice_Art57"
+                       sourceRef="Gateway_SplitStandards_Art57"
+                       targetRef="Task_GiveArticle36Advice_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitStandards_To_EncourageCodes_Art57"
+                       sourceRef="Gateway_SplitStandards_Art57"
+                       targetRef="Task_EncourageAndApproveCodes_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitStandards_To_EncourageCertification_Art57"
+                       sourceRef="Gateway_SplitStandards_Art57"
+                       targetRef="Task_EncourageCertification_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitStandards_To_ReviewCertifications_Art57"
+                       sourceRef="Gateway_SplitStandards_Art57"
+                       targetRef="Task_ReviewCertifications_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitStandards_To_DraftAccreditationCriteria_Art57"
+                       sourceRef="Gateway_SplitStandards_Art57"
+                       targetRef="Task_DraftPublishAccreditationCriteria_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitStandards_To_ConductAccreditation_Art57"
+                       sourceRef="Gateway_SplitStandards_Art57"
+                       targetRef="Task_ConductAccreditation_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitStandards_To_AuthoriseArticle46Clauses_Art57"
+                       sourceRef="Gateway_SplitStandards_Art57"
+                       targetRef="Task_AuthoriseArticle46Clauses_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitStandards_To_ApproveBCRs_Art57"
+                       sourceRef="Gateway_SplitStandards_Art57"
+                       targetRef="Task_ApproveBindingCorporateRules_Art57" />
+    <bpmn:sequenceFlow id="Flow_AdoptSCCs_To_GatewayJoinStandards_Art57"
+                       sourceRef="Task_AdoptStandardContractualClauses_Art57"
+                       targetRef="Gateway_JoinStandards_Art57" />
+    <bpmn:sequenceFlow id="Flow_MaintainDPIAList_To_GatewayJoinStandards_Art57"
+                       sourceRef="Task_MaintainDPIAList_Art57"
+                       targetRef="Gateway_JoinStandards_Art57" />
+    <bpmn:sequenceFlow id="Flow_GiveArticle36Advice_To_GatewayJoinStandards_Art57"
+                       sourceRef="Task_GiveArticle36Advice_Art57"
+                       targetRef="Gateway_JoinStandards_Art57" />
+    <bpmn:sequenceFlow id="Flow_EncourageCodes_To_GatewayJoinStandards_Art57"
+                       sourceRef="Task_EncourageAndApproveCodes_Art57"
+                       targetRef="Gateway_JoinStandards_Art57" />
+    <bpmn:sequenceFlow id="Flow_EncourageCertification_To_GatewayJoinStandards_Art57"
+                       sourceRef="Task_EncourageCertification_Art57"
+                       targetRef="Gateway_JoinStandards_Art57" />
+    <bpmn:sequenceFlow id="Flow_ReviewCertifications_To_GatewayJoinStandards_Art57"
+                       sourceRef="Task_ReviewCertifications_Art57"
+                       targetRef="Gateway_JoinStandards_Art57" />
+    <bpmn:sequenceFlow id="Flow_DraftAccreditationCriteria_To_GatewayJoinStandards_Art57"
+                       sourceRef="Task_DraftPublishAccreditationCriteria_Art57"
+                       targetRef="Gateway_JoinStandards_Art57" />
+    <bpmn:sequenceFlow id="Flow_ConductAccreditation_To_GatewayJoinStandards_Art57"
+                       sourceRef="Task_ConductAccreditation_Art57"
+                       targetRef="Gateway_JoinStandards_Art57" />
+    <bpmn:sequenceFlow id="Flow_AuthoriseArticle46Clauses_To_GatewayJoinStandards_Art57"
+                       sourceRef="Task_AuthoriseArticle46Clauses_Art57"
+                       targetRef="Gateway_JoinStandards_Art57" />
+    <bpmn:sequenceFlow id="Flow_ApproveBCRs_To_GatewayJoinStandards_Art57"
+                       sourceRef="Task_ApproveBindingCorporateRules_Art57"
+                       targetRef="Gateway_JoinStandards_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoinStandards_To_GatewayJoinMainTasks_Art57"
+                       sourceRef="Gateway_JoinStandards_Art57"
+                       targetRef="Gateway_JoinMainTasks_Art57" />
+
+    <bpmn:sequenceFlow id="Flow_GatewaySplitInstitutionalTasks_To_ContributeBoard_Art57"
+                       sourceRef="Gateway_SplitInstitutionalTasks_Art57"
+                       targetRef="Task_ContributeToBoardActivities_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitInstitutionalTasks_To_KeepInfringementRecords_Art57"
+                       sourceRef="Gateway_SplitInstitutionalTasks_Art57"
+                       targetRef="Task_KeepInternalInfringementRecords_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitInstitutionalTasks_To_FulfilOtherTasks_Art57"
+                       sourceRef="Gateway_SplitInstitutionalTasks_Art57"
+                       targetRef="Task_FulfilOtherDataProtectionTasks_Art57" />
+    <bpmn:sequenceFlow id="Flow_ContributeBoard_To_GatewayJoinInstitutionalTasks_Art57"
+                       sourceRef="Task_ContributeToBoardActivities_Art57"
+                       targetRef="Gateway_JoinInstitutionalTasks_Art57" />
+    <bpmn:sequenceFlow id="Flow_KeepInfringementRecords_To_GatewayJoinInstitutionalTasks_Art57"
+                       sourceRef="Task_KeepInternalInfringementRecords_Art57"
+                       targetRef="Gateway_JoinInstitutionalTasks_Art57" />
+    <bpmn:sequenceFlow id="Flow_FulfilOtherTasks_To_GatewayJoinInstitutionalTasks_Art57"
+                       sourceRef="Task_FulfilOtherDataProtectionTasks_Art57"
+                       targetRef="Gateway_JoinInstitutionalTasks_Art57" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoinInstitutionalTasks_To_GatewayJoinMainTasks_Art57"
+                       sourceRef="Gateway_JoinInstitutionalTasks_Art57"
+                       targetRef="Gateway_JoinMainTasks_Art57" />
+
+    <bpmn:sequenceFlow id="Flow_GatewayJoinMainTasks_To_EndTasksMaintained_Art57"
+                       sourceRef="Gateway_JoinMainTasks_Art57"
+                       targetRef="EndEvent_Article57TasksMaintained_Art57" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art57_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art57_Reviewed"
+                      bpmnElement="Collaboration_Art57_Reviewed">
+      <bpmndi:BPMNShape id="Participant_SupervisoryAuthority_Art57_di"
+                        bpmnElement="Participant_SupervisoryAuthority_Art57"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="5300" height="1460" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_DataSubjectOrArticle80Body_Art57_di"
+                        bpmnElement="Participant_DataSubjectOrArticle80Body_Art57"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="1540" width="5300" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_NationalInstitutions_Art57_di"
+                        bpmnElement="Participant_NationalInstitutions_Art57"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="1660" width="5300" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_OtherSupervisoryAuthorities_Art57_di"
+                        bpmnElement="Participant_OtherSupervisoryAuthorities_Art57"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="1780" width="5300" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Board_Art57_di"
+                        bpmnElement="Participant_Board_Art57"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="1900" width="5300" height="100" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_PerformArticle57Tasks_Art57_di"
+                        bpmnElement="StartEvent_PerformArticle57Tasks_Art57">
+        <dc:Bounds x="120" y="668" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SplitMainTasks_Art57_di"
+                        bpmnElement="Gateway_SplitMainTasks_Art57"
+                        isMarkerVisible="true">
+        <dc:Bounds x="250" y="661" width="50" height="50" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Gateway_SplitAwareness_Art57_di"
+                        bpmnElement="Gateway_SplitAwareness_Art57"
+                        isMarkerVisible="true">
+        <dc:Bounds x="520" y="165" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_MonitorAndEnforceApplication_Art57_di"
+                        bpmnElement="Task_MonitorAndEnforceApplication_Art57">
+        <dc:Bounds x="740" y="40" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PromotePublicAwareness_Art57_di"
+                        bpmnElement="Task_PromotePublicAwareness_Art57">
+        <dc:Bounds x="740" y="140" width="240" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AdviseNationalInstitutions_Art57_di"
+                        bpmnElement="Task_AdviseNationalInstitutions_Art57">
+        <dc:Bounds x="740" y="240" width="250" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PromoteControllerProcessorAwareness_Art57_di"
+                        bpmnElement="Task_PromoteControllerProcessorAwareness_Art57">
+        <dc:Bounds x="740" y="340" width="250" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinAwareness_Art57_di"
+                        bpmnElement="Gateway_JoinAwareness_Art57"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1170" y="185" width="50" height="50" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Gateway_SplitDataSubjectTasks_Art57_di"
+                        bpmnElement="Gateway_SplitDataSubjectTasks_Art57"
+                        isMarkerVisible="true">
+        <dc:Bounds x="520" y="655" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReceiveRightsRequest_Art57_di"
+                        bpmnElement="Task_ReceiveRightsRequest_Art57">
+        <dc:Bounds x="740" y="470" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ExcessiveRequest_Art57_di"
+                        bpmnElement="Gateway_ExcessiveRequest_Art57"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1030" y="485" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ProvideRightsInformation_Art57_di"
+                        bpmnElement="Task_ProvideRightsInformation_Art57">
+        <dc:Bounds x="1190" y="380" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_CooperateRightsRequest_Art57_di"
+                        bpmnElement="Gateway_CooperateRightsRequest_Art57"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1510" y="395" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CooperateOnRightsRequest_Art57_di"
+                        bpmnElement="Task_CooperateOnRightsRequest_Art57">
+        <dc:Bounds x="1670" y="380" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DemonstrateExcessiveRequest_Art57_di"
+                        bpmnElement="Task_DemonstrateExcessiveRequest_Art57">
+        <dc:Bounds x="1190" y="540" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ChargeFee_Art57_di"
+                        bpmnElement="Gateway_ChargeFee_Art57"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1490" y="555" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ChargeReasonableFee_Art57_di"
+                        bpmnElement="Task_ChargeReasonableFee_Art57">
+        <dc:Bounds x="1650" y="490" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RefuseRequest_Art57_di"
+                        bpmnElement="Task_RefuseRequest_Art57">
+        <dc:Bounds x="1650" y="620" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_FacilitateComplaintSubmission_Art57_di"
+                        bpmnElement="Task_FacilitateComplaintSubmission_Art57">
+        <dc:Bounds x="740" y="760" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReceiveComplaint_Art57_di"
+                        bpmnElement="Task_ReceiveComplaint_Art57">
+        <dc:Bounds x="1070" y="760" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_InvestigateComplaint_Art57_di"
+                        bpmnElement="Task_InvestigateComplaint_Art57">
+        <dc:Bounds x="1350" y="760" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_InformComplainant_Art57_di"
+                        bpmnElement="Task_InformComplainant_Art57">
+        <dc:Bounds x="1680" y="760" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinDataSubjectTasks_Art57_di"
+                        bpmnElement="Gateway_JoinDataSubjectTasks_Art57"
+                        isMarkerVisible="true">
+        <dc:Bounds x="2120" y="665" width="50" height="50" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Gateway_SplitCooperation_Art57_di"
+                        bpmnElement="Gateway_SplitCooperation_Art57"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1440" y="165" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CooperateAndProvideMutualAssistance_Art57_di"
+                        bpmnElement="Task_CooperateAndProvideMutualAssistance_Art57">
+        <dc:Bounds x="1660" y="40" width="240" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ConductInvestigations_Art57_di"
+                        bpmnElement="Task_ConductInvestigations_Art57">
+        <dc:Bounds x="1660" y="150" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_MonitorRelevantDevelopments_Art57_di"
+                        bpmnElement="Task_MonitorRelevantDevelopments_Art57">
+        <dc:Bounds x="1660" y="260" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinCooperation_Art57_di"
+                        bpmnElement="Gateway_JoinCooperation_Art57"
+                        isMarkerVisible="true">
+        <dc:Bounds x="2080" y="185" width="50" height="50" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Gateway_SplitStandards_Art57_di"
+                        bpmnElement="Gateway_SplitStandards_Art57"
+                        isMarkerVisible="true">
+        <dc:Bounds x="2450" y="655" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AdoptStandardContractualClauses_Art57_di"
+                        bpmnElement="Task_AdoptStandardContractualClauses_Art57">
+        <dc:Bounds x="2680" y="360" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_MaintainDPIAList_Art57_di"
+                        bpmnElement="Task_MaintainDPIAList_Art57">
+        <dc:Bounds x="2680" y="450" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_GiveArticle36Advice_Art57_di"
+                        bpmnElement="Task_GiveArticle36Advice_Art57">
+        <dc:Bounds x="2680" y="540" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_EncourageAndApproveCodes_Art57_di"
+                        bpmnElement="Task_EncourageAndApproveCodes_Art57">
+        <dc:Bounds x="2680" y="630" width="230" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_EncourageCertification_Art57_di"
+                        bpmnElement="Task_EncourageCertification_Art57">
+        <dc:Bounds x="2680" y="720" width="240" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReviewCertifications_Art57_di"
+                        bpmnElement="Task_ReviewCertifications_Art57">
+        <dc:Bounds x="2680" y="810" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DraftPublishAccreditationCriteria_Art57_di"
+                        bpmnElement="Task_DraftPublishAccreditationCriteria_Art57">
+        <dc:Bounds x="2680" y="900" width="240" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ConductAccreditation_Art57_di"
+                        bpmnElement="Task_ConductAccreditation_Art57">
+        <dc:Bounds x="2680" y="990" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AuthoriseArticle46Clauses_Art57_di"
+                        bpmnElement="Task_AuthoriseArticle46Clauses_Art57">
+        <dc:Bounds x="2680" y="1080" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ApproveBindingCorporateRules_Art57_di"
+                        bpmnElement="Task_ApproveBindingCorporateRules_Art57">
+        <dc:Bounds x="2680" y="1170" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinStandards_Art57_di"
+                        bpmnElement="Gateway_JoinStandards_Art57"
+                        isMarkerVisible="true">
+        <dc:Bounds x="3200" y="665" width="50" height="50" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Gateway_SplitInstitutionalTasks_Art57_di"
+                        bpmnElement="Gateway_SplitInstitutionalTasks_Art57"
+                        isMarkerVisible="true">
+        <dc:Bounds x="3550" y="655" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ContributeToBoardActivities_Art57_di"
+                        bpmnElement="Task_ContributeToBoardActivities_Art57">
+        <dc:Bounds x="3790" y="540" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_KeepInternalInfringementRecords_Art57_di"
+                        bpmnElement="Task_KeepInternalInfringementRecords_Art57">
+        <dc:Bounds x="3790" y="650" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_FulfilOtherDataProtectionTasks_Art57_di"
+                        bpmnElement="Task_FulfilOtherDataProtectionTasks_Art57">
+        <dc:Bounds x="3790" y="760" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinInstitutionalTasks_Art57_di"
+                        bpmnElement="Gateway_JoinInstitutionalTasks_Art57"
+                        isMarkerVisible="true">
+        <dc:Bounds x="4230" y="665" width="50" height="50" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Gateway_JoinMainTasks_Art57_di"
+                        bpmnElement="Gateway_JoinMainTasks_Art57"
+                        isMarkerVisible="true">
+        <dc:Bounds x="4700" y="665" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Article57TasksMaintained_Art57_di"
+                        bpmnElement="EndEvent_Article57TasksMaintained_Art57">
+        <dc:Bounds x="4900" y="672" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_GatewaySplitMainTasks_Art57_di"
+                       bpmnElement="Flow_Start_To_GatewaySplitMainTasks_Art57">
+        <di:waypoint x="156" y="686" />
+        <di:waypoint x="250" y="686" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitMain_To_GatewaySplitAwareness_Art57_di"
+                       bpmnElement="Flow_GatewaySplitMain_To_GatewaySplitAwareness_Art57">
+        <di:waypoint x="275" y="661" />
+        <di:waypoint x="275" y="190" />
+        <di:waypoint x="520" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitMain_To_GatewaySplitDataSubjectTasks_Art57_di"
+                       bpmnElement="Flow_GatewaySplitMain_To_GatewaySplitDataSubjectTasks_Art57">
+        <di:waypoint x="300" y="680" />
+        <di:waypoint x="520" y="680" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitMain_To_GatewaySplitCooperation_Art57_di"
+                       bpmnElement="Flow_GatewaySplitMain_To_GatewaySplitCooperation_Art57">
+        <di:waypoint x="300" y="670" />
+        <di:waypoint x="1330" y="670" />
+        <di:waypoint x="1330" y="190" />
+        <di:waypoint x="1440" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitMain_To_GatewaySplitStandards_Art57_di"
+                       bpmnElement="Flow_GatewaySplitMain_To_GatewaySplitStandards_Art57">
+        <di:waypoint x="300" y="690" />
+        <di:waypoint x="2450" y="680" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitMain_To_GatewaySplitInstitutionalTasks_Art57_di"
+                       bpmnElement="Flow_GatewaySplitMain_To_GatewaySplitInstitutionalTasks_Art57">
+        <di:waypoint x="300" y="700" />
+        <di:waypoint x="3550" y="680" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitAwareness_To_MonitorEnforce_Art57_di"
+                       bpmnElement="Flow_GatewaySplitAwareness_To_MonitorEnforce_Art57">
+        <di:waypoint x="545" y="165" />
+        <di:waypoint x="545" y="80" />
+        <di:waypoint x="740" y="80" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitAwareness_To_PromotePublicAwareness_Art57_di"
+                       bpmnElement="Flow_GatewaySplitAwareness_To_PromotePublicAwareness_Art57">
+        <di:waypoint x="570" y="180" />
+        <di:waypoint x="740" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitAwareness_To_AdviseInstitutions_Art57_di"
+                       bpmnElement="Flow_GatewaySplitAwareness_To_AdviseInstitutions_Art57">
+        <di:waypoint x="545" y="215" />
+        <di:waypoint x="545" y="280" />
+        <di:waypoint x="740" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitAwareness_To_PromoteControllerAwareness_Art57_di"
+                       bpmnElement="Flow_GatewaySplitAwareness_To_PromoteControllerAwareness_Art57">
+        <di:waypoint x="545" y="215" />
+        <di:waypoint x="545" y="380" />
+        <di:waypoint x="740" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_MonitorEnforce_To_GatewayJoinAwareness_Art57_di"
+                       bpmnElement="Flow_MonitorEnforce_To_GatewayJoinAwareness_Art57">
+        <di:waypoint x="960" y="80" />
+        <di:waypoint x="1195" y="80" />
+        <di:waypoint x="1195" y="185" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_PromotePublicAwareness_To_GatewayJoinAwareness_Art57_di"
+                       bpmnElement="Flow_PromotePublicAwareness_To_GatewayJoinAwareness_Art57">
+        <di:waypoint x="980" y="180" />
+        <di:waypoint x="1170" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AdviseInstitutions_To_GatewayJoinAwareness_Art57_di"
+                       bpmnElement="Flow_AdviseInstitutions_To_GatewayJoinAwareness_Art57">
+        <di:waypoint x="990" y="280" />
+        <di:waypoint x="1195" y="280" />
+        <di:waypoint x="1195" y="235" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_PromoteControllerAwareness_To_GatewayJoinAwareness_Art57_di"
+                       bpmnElement="Flow_PromoteControllerAwareness_To_GatewayJoinAwareness_Art57">
+        <di:waypoint x="990" y="380" />
+        <di:waypoint x="1195" y="380" />
+        <di:waypoint x="1195" y="235" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinAwareness_To_GatewayJoinMainTasks_Art57_di"
+                       bpmnElement="Flow_GatewayJoinAwareness_To_GatewayJoinMainTasks_Art57">
+        <di:waypoint x="1220" y="210" />
+        <di:waypoint x="4730" y="210" />
+        <di:waypoint x="4730" y="665" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitDataSubjectTasks_To_ReceiveRightsRequest_Art57_di"
+                       bpmnElement="Flow_GatewaySplitDataSubjectTasks_To_ReceiveRightsRequest_Art57">
+        <di:waypoint x="545" y="655" />
+        <di:waypoint x="545" y="510" />
+        <di:waypoint x="740" y="510" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitDataSubjectTasks_To_FacilitateComplaintSubmission_Art57_di"
+                       bpmnElement="Flow_GatewaySplitDataSubjectTasks_To_FacilitateComplaintSubmission_Art57">
+        <di:waypoint x="545" y="705" />
+        <di:waypoint x="545" y="800" />
+        <di:waypoint x="740" y="800" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveRightsRequest_To_GatewayExcessiveRequest_Art57_di"
+                       bpmnElement="Flow_ReceiveRightsRequest_To_GatewayExcessiveRequest_Art57">
+        <di:waypoint x="920" y="510" />
+        <di:waypoint x="1030" y="510" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExcessiveRequest_To_ProvideRightsInformation_Art57_di"
+                       bpmnElement="Flow_GatewayExcessiveRequest_To_ProvideRightsInformation_Art57">
+        <di:waypoint x="1055" y="485" />
+        <di:waypoint x="1055" y="420" />
+        <di:waypoint x="1190" y="420" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1063" y="452" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExcessiveRequest_To_DemonstrateExcessiveRequest_Art57_di"
+                       bpmnElement="Flow_GatewayExcessiveRequest_To_DemonstrateExcessiveRequest_Art57">
+        <di:waypoint x="1080" y="510" />
+        <di:waypoint x="1190" y="580" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1114" y="532" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ProvideRightsInformation_To_GatewayCooperateRightsRequest_Art57_di"
+                       bpmnElement="Flow_ProvideRightsInformation_To_GatewayCooperateRightsRequest_Art57">
+        <di:waypoint x="1410" y="420" />
+        <di:waypoint x="1510" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayCooperateRightsRequest_To_CooperateOnRightsRequest_Art57_di"
+                       bpmnElement="Flow_GatewayCooperateRightsRequest_To_CooperateOnRightsRequest_Art57">
+        <di:waypoint x="1560" y="420" />
+        <di:waypoint x="1670" y="420" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1590" y="402" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayCooperateRightsRequest_To_GatewayJoinDataSubjectTasks_Art57_di"
+                       bpmnElement="Flow_GatewayCooperateRightsRequest_To_GatewayJoinDataSubjectTasks_Art57">
+        <di:waypoint x="1535" y="445" />
+        <di:waypoint x="1535" y="690" />
+        <di:waypoint x="2120" y="690" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1543" y="554" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_CooperateOnRightsRequest_To_GatewayJoinDataSubjectTasks_Art57_di"
+                       bpmnElement="Flow_CooperateOnRightsRequest_To_GatewayJoinDataSubjectTasks_Art57">
+        <di:waypoint x="1870" y="420" />
+        <di:waypoint x="2145" y="420" />
+        <di:waypoint x="2145" y="665" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_DemonstrateExcessiveRequest_To_GatewayChargeFee_Art57_di"
+                       bpmnElement="Flow_DemonstrateExcessiveRequest_To_GatewayChargeFee_Art57">
+        <di:waypoint x="1390" y="580" />
+        <di:waypoint x="1490" y="580" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayChargeFee_To_ChargeReasonableFee_Art57_di"
+                       bpmnElement="Flow_GatewayChargeFee_To_ChargeReasonableFee_Art57">
+        <di:waypoint x="1515" y="555" />
+        <di:waypoint x="1515" y="530" />
+        <di:waypoint x="1650" y="530" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1523" y="536" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayChargeFee_To_RefuseRequest_Art57_di"
+                       bpmnElement="Flow_GatewayChargeFee_To_RefuseRequest_Art57">
+        <di:waypoint x="1515" y="605" />
+        <di:waypoint x="1515" y="660" />
+        <di:waypoint x="1650" y="660" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1523" y="618" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ChargeReasonableFee_To_GatewayJoinDataSubjectTasks_Art57_di"
+                       bpmnElement="Flow_ChargeReasonableFee_To_GatewayJoinDataSubjectTasks_Art57">
+        <di:waypoint x="1820" y="530" />
+        <di:waypoint x="2145" y="530" />
+        <di:waypoint x="2145" y="665" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_RefuseRequest_To_GatewayJoinDataSubjectTasks_Art57_di"
+                       bpmnElement="Flow_RefuseRequest_To_GatewayJoinDataSubjectTasks_Art57">
+        <di:waypoint x="1820" y="660" />
+        <di:waypoint x="2120" y="690" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_FacilitateComplaintSubmission_To_ReceiveComplaint_Art57_di"
+                       bpmnElement="Flow_FacilitateComplaintSubmission_To_ReceiveComplaint_Art57">
+        <di:waypoint x="960" y="800" />
+        <di:waypoint x="1070" y="800" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveComplaint_To_InvestigateComplaint_Art57_di"
+                       bpmnElement="Flow_ReceiveComplaint_To_InvestigateComplaint_Art57">
+        <di:waypoint x="1240" y="800" />
+        <di:waypoint x="1350" y="800" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_InvestigateComplaint_To_InformComplainant_Art57_di"
+                       bpmnElement="Flow_InvestigateComplaint_To_InformComplainant_Art57">
+        <di:waypoint x="1570" y="800" />
+        <di:waypoint x="1680" y="800" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_InformComplainant_To_GatewayJoinDataSubjectTasks_Art57_di"
+                       bpmnElement="Flow_InformComplainant_To_GatewayJoinDataSubjectTasks_Art57">
+        <di:waypoint x="1900" y="800" />
+        <di:waypoint x="2145" y="800" />
+        <di:waypoint x="2145" y="715" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinDataSubjectTasks_To_GatewayJoinMainTasks_Art57_di"
+                       bpmnElement="Flow_GatewayJoinDataSubjectTasks_To_GatewayJoinMainTasks_Art57">
+        <di:waypoint x="2170" y="690" />
+        <di:waypoint x="4730" y="690" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitCooperation_To_CooperateMutualAssistance_Art57_di"
+                       bpmnElement="Flow_GatewaySplitCooperation_To_CooperateMutualAssistance_Art57">
+        <di:waypoint x="1465" y="165" />
+        <di:waypoint x="1465" y="80" />
+        <di:waypoint x="1660" y="80" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitCooperation_To_ConductInvestigations_Art57_di"
+                       bpmnElement="Flow_GatewaySplitCooperation_To_ConductInvestigations_Art57">
+        <di:waypoint x="1490" y="190" />
+        <di:waypoint x="1660" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitCooperation_To_MonitorDevelopments_Art57_di"
+                       bpmnElement="Flow_GatewaySplitCooperation_To_MonitorDevelopments_Art57">
+        <di:waypoint x="1465" y="215" />
+        <di:waypoint x="1465" y="300" />
+        <di:waypoint x="1660" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_CooperateMutualAssistance_To_GatewayJoinCooperation_Art57_di"
+                       bpmnElement="Flow_CooperateMutualAssistance_To_GatewayJoinCooperation_Art57">
+        <di:waypoint x="1900" y="80" />
+        <di:waypoint x="2105" y="80" />
+        <di:waypoint x="2105" y="185" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ConductInvestigations_To_GatewayJoinCooperation_Art57_di"
+                       bpmnElement="Flow_ConductInvestigations_To_GatewayJoinCooperation_Art57">
+        <di:waypoint x="1840" y="190" />
+        <di:waypoint x="2080" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_MonitorDevelopments_To_GatewayJoinCooperation_Art57_di"
+                       bpmnElement="Flow_MonitorDevelopments_To_GatewayJoinCooperation_Art57">
+        <di:waypoint x="1880" y="300" />
+        <di:waypoint x="2105" y="300" />
+        <di:waypoint x="2105" y="235" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinCooperation_To_GatewayJoinMainTasks_Art57_di"
+                       bpmnElement="Flow_GatewayJoinCooperation_To_GatewayJoinMainTasks_Art57">
+        <di:waypoint x="2130" y="210" />
+        <di:waypoint x="4730" y="210" />
+        <di:waypoint x="4730" y="665" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitStandards_To_AdoptSCCs_Art57_di"
+                       bpmnElement="Flow_GatewaySplitStandards_To_AdoptSCCs_Art57">
+        <di:waypoint x="2475" y="655" />
+        <di:waypoint x="2475" y="400" />
+        <di:waypoint x="2680" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitStandards_To_MaintainDPIAList_Art57_di"
+                       bpmnElement="Flow_GatewaySplitStandards_To_MaintainDPIAList_Art57">
+        <di:waypoint x="2475" y="655" />
+        <di:waypoint x="2475" y="490" />
+        <di:waypoint x="2680" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitStandards_To_GiveArticle36Advice_Art57_di"
+                       bpmnElement="Flow_GatewaySplitStandards_To_GiveArticle36Advice_Art57">
+        <di:waypoint x="2475" y="655" />
+        <di:waypoint x="2475" y="580" />
+        <di:waypoint x="2680" y="580" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitStandards_To_EncourageCodes_Art57_di"
+                       bpmnElement="Flow_GatewaySplitStandards_To_EncourageCodes_Art57">
+        <di:waypoint x="2500" y="670" />
+        <di:waypoint x="2680" y="670" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitStandards_To_EncourageCertification_Art57_di"
+                       bpmnElement="Flow_GatewaySplitStandards_To_EncourageCertification_Art57">
+        <di:waypoint x="2475" y="705" />
+        <di:waypoint x="2475" y="760" />
+        <di:waypoint x="2680" y="760" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitStandards_To_ReviewCertifications_Art57_di"
+                       bpmnElement="Flow_GatewaySplitStandards_To_ReviewCertifications_Art57">
+        <di:waypoint x="2475" y="705" />
+        <di:waypoint x="2475" y="850" />
+        <di:waypoint x="2680" y="850" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitStandards_To_DraftAccreditationCriteria_Art57_di"
+                       bpmnElement="Flow_GatewaySplitStandards_To_DraftAccreditationCriteria_Art57">
+        <di:waypoint x="2475" y="705" />
+        <di:waypoint x="2475" y="940" />
+        <di:waypoint x="2680" y="940" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitStandards_To_ConductAccreditation_Art57_di"
+                       bpmnElement="Flow_GatewaySplitStandards_To_ConductAccreditation_Art57">
+        <di:waypoint x="2475" y="705" />
+        <di:waypoint x="2475" y="1030" />
+        <di:waypoint x="2680" y="1030" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitStandards_To_AuthoriseArticle46Clauses_Art57_di"
+                       bpmnElement="Flow_GatewaySplitStandards_To_AuthoriseArticle46Clauses_Art57">
+        <di:waypoint x="2475" y="705" />
+        <di:waypoint x="2475" y="1120" />
+        <di:waypoint x="2680" y="1120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitStandards_To_ApproveBCRs_Art57_di"
+                       bpmnElement="Flow_GatewaySplitStandards_To_ApproveBCRs_Art57">
+        <di:waypoint x="2475" y="705" />
+        <di:waypoint x="2475" y="1210" />
+        <di:waypoint x="2680" y="1210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AdoptSCCs_To_GatewayJoinStandards_Art57_di"
+                       bpmnElement="Flow_AdoptSCCs_To_GatewayJoinStandards_Art57">
+        <di:waypoint x="2900" y="400" />
+        <di:waypoint x="3225" y="400" />
+        <di:waypoint x="3225" y="665" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_MaintainDPIAList_To_GatewayJoinStandards_Art57_di"
+                       bpmnElement="Flow_MaintainDPIAList_To_GatewayJoinStandards_Art57">
+        <di:waypoint x="2900" y="490" />
+        <di:waypoint x="3225" y="490" />
+        <di:waypoint x="3225" y="665" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GiveArticle36Advice_To_GatewayJoinStandards_Art57_di"
+                       bpmnElement="Flow_GiveArticle36Advice_To_GatewayJoinStandards_Art57">
+        <di:waypoint x="2880" y="580" />
+        <di:waypoint x="3225" y="580" />
+        <di:waypoint x="3225" y="665" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_EncourageCodes_To_GatewayJoinStandards_Art57_di"
+                       bpmnElement="Flow_EncourageCodes_To_GatewayJoinStandards_Art57">
+        <di:waypoint x="2910" y="670" />
+        <di:waypoint x="3200" y="690" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_EncourageCertification_To_GatewayJoinStandards_Art57_di"
+                       bpmnElement="Flow_EncourageCertification_To_GatewayJoinStandards_Art57">
+        <di:waypoint x="2920" y="760" />
+        <di:waypoint x="3225" y="760" />
+        <di:waypoint x="3225" y="715" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReviewCertifications_To_GatewayJoinStandards_Art57_di"
+                       bpmnElement="Flow_ReviewCertifications_To_GatewayJoinStandards_Art57">
+        <di:waypoint x="2890" y="850" />
+        <di:waypoint x="3225" y="850" />
+        <di:waypoint x="3225" y="715" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_DraftAccreditationCriteria_To_GatewayJoinStandards_Art57_di"
+                       bpmnElement="Flow_DraftAccreditationCriteria_To_GatewayJoinStandards_Art57">
+        <di:waypoint x="2920" y="940" />
+        <di:waypoint x="3225" y="940" />
+        <di:waypoint x="3225" y="715" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ConductAccreditation_To_GatewayJoinStandards_Art57_di"
+                       bpmnElement="Flow_ConductAccreditation_To_GatewayJoinStandards_Art57">
+        <di:waypoint x="2860" y="1030" />
+        <di:waypoint x="3225" y="1030" />
+        <di:waypoint x="3225" y="715" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AuthoriseArticle46Clauses_To_GatewayJoinStandards_Art57_di"
+                       bpmnElement="Flow_AuthoriseArticle46Clauses_To_GatewayJoinStandards_Art57">
+        <di:waypoint x="2890" y="1120" />
+        <di:waypoint x="3225" y="1120" />
+        <di:waypoint x="3225" y="715" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ApproveBCRs_To_GatewayJoinStandards_Art57_di"
+                       bpmnElement="Flow_ApproveBCRs_To_GatewayJoinStandards_Art57">
+        <di:waypoint x="2900" y="1210" />
+        <di:waypoint x="3225" y="1210" />
+        <di:waypoint x="3225" y="715" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinStandards_To_GatewayJoinMainTasks_Art57_di"
+                       bpmnElement="Flow_GatewayJoinStandards_To_GatewayJoinMainTasks_Art57">
+        <di:waypoint x="3250" y="690" />
+        <di:waypoint x="4700" y="690" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitInstitutionalTasks_To_ContributeBoard_Art57_di"
+                       bpmnElement="Flow_GatewaySplitInstitutionalTasks_To_ContributeBoard_Art57">
+        <di:waypoint x="3575" y="655" />
+        <di:waypoint x="3575" y="580" />
+        <di:waypoint x="3790" y="580" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitInstitutionalTasks_To_KeepInfringementRecords_Art57_di"
+                       bpmnElement="Flow_GatewaySplitInstitutionalTasks_To_KeepInfringementRecords_Art57">
+        <di:waypoint x="3600" y="680" />
+        <di:waypoint x="3790" y="690" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitInstitutionalTasks_To_FulfilOtherTasks_Art57_di"
+                       bpmnElement="Flow_GatewaySplitInstitutionalTasks_To_FulfilOtherTasks_Art57">
+        <di:waypoint x="3575" y="705" />
+        <di:waypoint x="3575" y="800" />
+        <di:waypoint x="3790" y="800" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ContributeBoard_To_GatewayJoinInstitutionalTasks_Art57_di"
+                       bpmnElement="Flow_ContributeBoard_To_GatewayJoinInstitutionalTasks_Art57">
+        <di:waypoint x="3980" y="580" />
+        <di:waypoint x="4255" y="580" />
+        <di:waypoint x="4255" y="665" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_KeepInfringementRecords_To_GatewayJoinInstitutionalTasks_Art57_di"
+                       bpmnElement="Flow_KeepInfringementRecords_To_GatewayJoinInstitutionalTasks_Art57">
+        <di:waypoint x="4010" y="690" />
+        <di:waypoint x="4230" y="690" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_FulfilOtherTasks_To_GatewayJoinInstitutionalTasks_Art57_di"
+                       bpmnElement="Flow_FulfilOtherTasks_To_GatewayJoinInstitutionalTasks_Art57">
+        <di:waypoint x="4010" y="800" />
+        <di:waypoint x="4255" y="800" />
+        <di:waypoint x="4255" y="715" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinInstitutionalTasks_To_GatewayJoinMainTasks_Art57_di"
+                       bpmnElement="Flow_GatewayJoinInstitutionalTasks_To_GatewayJoinMainTasks_Art57">
+        <di:waypoint x="4280" y="690" />
+        <di:waypoint x="4700" y="690" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinMainTasks_To_EndTasksMaintained_Art57_di"
+                       bpmnElement="Flow_GatewayJoinMainTasks_To_EndTasksMaintained_Art57">
+        <di:waypoint x="4750" y="690" />
+        <di:waypoint x="4900" y="690" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_RequestRightsInformation_Art57_di"
+                       bpmnElement="MessageFlow_RequestRightsInformation_Art57">
+        <di:waypoint x="830" y="1540" />
+        <di:waypoint x="830" y="550" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ProvideRightsInformation_Art57_di"
+                       bpmnElement="MessageFlow_ProvideRightsInformation_Art57">
+        <di:waypoint x="1300" y="460" />
+        <di:waypoint x="1300" y="1540" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_FileComplaint_Art57_di"
+                       bpmnElement="MessageFlow_FileComplaint_Art57">
+        <di:waypoint x="1150" y="1540" />
+        <di:waypoint x="1150" y="840" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_InformComplainant_Art57_di"
+                       bpmnElement="MessageFlow_InformComplainant_Art57">
+        <di:waypoint x="1790" y="840" />
+        <di:waypoint x="1790" y="1540" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_AdviseNationalInstitutions_Art57_di"
+                       bpmnElement="MessageFlow_AdviseNationalInstitutions_Art57">
+        <di:waypoint x="865" y="320" />
+        <di:waypoint x="865" y="1660" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_CooperateOnRightsRequest_Art57_di"
+                       bpmnElement="MessageFlow_CooperateOnRightsRequest_Art57">
+        <di:waypoint x="1770" y="460" />
+        <di:waypoint x="1770" y="1780" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ProvideMutualAssistance_Art57_di"
+                       bpmnElement="MessageFlow_ProvideMutualAssistance_Art57">
+        <di:waypoint x="1780" y="120" />
+        <di:waypoint x="1780" y="1780" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ContributeToBoard_Art57_di"
+                       bpmnElement="MessageFlow_ContributeToBoard_Art57">
+        <di:waypoint x="3885" y="620" />
+        <di:waypoint x="3885" y="1900" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art44_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:process id="Process_AssessTransfer_Art44"
+                name="Apply Article 44 transfer principles"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 44 based on the real English legal text from
+      gdpr_articles/article_44.txt. The model captures the rule that any transfer to a third
+      country or an international organisation, including onward transfers, may take place only
+      if the Chapter V conditions are complied with by the controller and processor, subject to
+      the other provisions of the Regulation, and only where the level of protection guaranteed
+      by the GDPR is not undermined.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_NeedTransferAssessment_Art44"
+                     name="Need transfer assessment">
+      <bpmn:outgoing>Flow_Start_To_IdentifyTransfer_Art44</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_IdentifyTransfer_Art44"
+               name="Identify third-country or international-organisation transfer">
+      <bpmn:incoming>Flow_Start_To_IdentifyTransfer_Art44</bpmn:incoming>
+      <bpmn:outgoing>Flow_IdentifyTransfer_To_GatewayOnwardTransfer_Art44</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_OnwardTransfer_Art44"
+                           name="Does the transfer chain include onward transfers?">
+      <bpmn:incoming>Flow_IdentifyTransfer_To_GatewayOnwardTransfer_Art44</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayOnwardTransfer_To_AssessOnwardTransfers_Art44</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayOnwardTransfer_To_CheckOtherProvisions_Art44</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_AssessOnwardTransfers_Art44"
+               name="Assess onward transfer chain">
+      <bpmn:incoming>Flow_GatewayOnwardTransfer_To_AssessOnwardTransfers_Art44</bpmn:incoming>
+      <bpmn:outgoing>Flow_AssessOnwardTransfers_To_CheckOtherProvisions_Art44</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_CheckOtherProvisions_Art44"
+               name="Check other GDPR provisions">
+      <bpmn:incoming>Flow_GatewayOnwardTransfer_To_CheckOtherProvisions_Art44</bpmn:incoming>
+      <bpmn:incoming>Flow_AssessOnwardTransfers_To_CheckOtherProvisions_Art44</bpmn:incoming>
+      <bpmn:outgoing>Flow_CheckOtherProvisions_To_CheckChapterVConditions_Art44</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_CheckChapterVConditions_Art44"
+               name="Check Chapter V conditions">
+      <bpmn:incoming>Flow_CheckOtherProvisions_To_CheckChapterVConditions_Art44</bpmn:incoming>
+      <bpmn:outgoing>Flow_CheckChapterVConditions_To_GatewayConditionsComplied_Art44</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_ConditionsComplied_Art44"
+                           name="Are the Chapter V conditions complied with by the controller and processor?">
+      <bpmn:incoming>Flow_CheckChapterVConditions_To_GatewayConditionsComplied_Art44</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayConditionsComplied_To_EndTransferNotAllowed_Art44</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayConditionsComplied_To_ApplyChapterV_Art44</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ApplyChapterVProvisions_Art44"
+               name="Apply all Chapter V provisions">
+      <bpmn:incoming>Flow_GatewayConditionsComplied_To_ApplyChapterV_Art44</bpmn:incoming>
+      <bpmn:outgoing>Flow_ApplyChapterV_To_EnsureProtectionLevel_Art44</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_EnsureProtectionLevel_Art44"
+               name="Ensure GDPR protection level is not undermined">
+      <bpmn:incoming>Flow_ApplyChapterV_To_EnsureProtectionLevel_Art44</bpmn:incoming>
+      <bpmn:outgoing>Flow_EnsureProtectionLevel_To_EndTransferAllowed_Art44</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_TransferNotAllowed_Art44"
+                   name="Transfer not allowed under Article 44">
+      <bpmn:incoming>Flow_GatewayConditionsComplied_To_EndTransferNotAllowed_Art44</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_TransferAllowed_Art44"
+                   name="Article 44 transfer principles applied">
+      <bpmn:incoming>Flow_EnsureProtectionLevel_To_EndTransferAllowed_Art44</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_IdentifyTransfer_Art44"
+                       sourceRef="StartEvent_NeedTransferAssessment_Art44"
+                       targetRef="Task_IdentifyTransfer_Art44" />
+    <bpmn:sequenceFlow id="Flow_IdentifyTransfer_To_GatewayOnwardTransfer_Art44"
+                       sourceRef="Task_IdentifyTransfer_Art44"
+                       targetRef="Gateway_OnwardTransfer_Art44" />
+    <bpmn:sequenceFlow id="Flow_GatewayOnwardTransfer_To_AssessOnwardTransfers_Art44"
+                       name="Yes"
+                       sourceRef="Gateway_OnwardTransfer_Art44"
+                       targetRef="Task_AssessOnwardTransfers_Art44" />
+    <bpmn:sequenceFlow id="Flow_GatewayOnwardTransfer_To_CheckOtherProvisions_Art44"
+                       name="No"
+                       sourceRef="Gateway_OnwardTransfer_Art44"
+                       targetRef="Task_CheckOtherProvisions_Art44" />
+    <bpmn:sequenceFlow id="Flow_AssessOnwardTransfers_To_CheckOtherProvisions_Art44"
+                       sourceRef="Task_AssessOnwardTransfers_Art44"
+                       targetRef="Task_CheckOtherProvisions_Art44" />
+    <bpmn:sequenceFlow id="Flow_CheckOtherProvisions_To_CheckChapterVConditions_Art44"
+                       sourceRef="Task_CheckOtherProvisions_Art44"
+                       targetRef="Task_CheckChapterVConditions_Art44" />
+    <bpmn:sequenceFlow id="Flow_CheckChapterVConditions_To_GatewayConditionsComplied_Art44"
+                       sourceRef="Task_CheckChapterVConditions_Art44"
+                       targetRef="Gateway_ConditionsComplied_Art44" />
+    <bpmn:sequenceFlow id="Flow_GatewayConditionsComplied_To_EndTransferNotAllowed_Art44"
+                       name="No"
+                       sourceRef="Gateway_ConditionsComplied_Art44"
+                       targetRef="EndEvent_TransferNotAllowed_Art44" />
+    <bpmn:sequenceFlow id="Flow_GatewayConditionsComplied_To_ApplyChapterV_Art44"
+                       name="Yes"
+                       sourceRef="Gateway_ConditionsComplied_Art44"
+                       targetRef="Task_ApplyChapterVProvisions_Art44" />
+    <bpmn:sequenceFlow id="Flow_ApplyChapterV_To_EnsureProtectionLevel_Art44"
+                       sourceRef="Task_ApplyChapterVProvisions_Art44"
+                       targetRef="Task_EnsureProtectionLevel_Art44" />
+    <bpmn:sequenceFlow id="Flow_EnsureProtectionLevel_To_EndTransferAllowed_Art44"
+                       sourceRef="Task_EnsureProtectionLevel_Art44"
+                       targetRef="EndEvent_TransferAllowed_Art44" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art44_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art44_Reviewed"
+                      bpmnElement="Process_AssessTransfer_Art44">
+      <bpmndi:BPMNShape id="StartEvent_NeedTransferAssessment_Art44_di"
+                        bpmnElement="StartEvent_NeedTransferAssessment_Art44">
+        <dc:Bounds x="120" y="382" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_IdentifyTransfer_Art44_di"
+                        bpmnElement="Task_IdentifyTransfer_Art44">
+        <dc:Bounds x="220" y="360" width="320" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_OnwardTransfer_Art44_di"
+                        bpmnElement="Gateway_OnwardTransfer_Art44"
+                        isMarkerVisible="true">
+        <dc:Bounds x="660" y="375" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessOnwardTransfers_Art44_di"
+                        bpmnElement="Task_AssessOnwardTransfers_Art44">
+        <dc:Bounds x="820" y="220" width="240" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CheckOtherProvisions_Art44_di"
+                        bpmnElement="Task_CheckOtherProvisions_Art44">
+        <dc:Bounds x="840" y="500" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CheckChapterVConditions_Art44_di"
+                        bpmnElement="Task_CheckChapterVConditions_Art44">
+        <dc:Bounds x="1180" y="500" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ConditionsComplied_Art44_di"
+                        bpmnElement="Gateway_ConditionsComplied_Art44"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1530" y="515" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_TransferNotAllowed_Art44_di"
+                        bpmnElement="EndEvent_TransferNotAllowed_Art44">
+        <dc:Bounds x="1730" y="522" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ApplyChapterVProvisions_Art44_di"
+                        bpmnElement="Task_ApplyChapterVProvisions_Art44">
+        <dc:Bounds x="1710" y="220" width="230" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_EnsureProtectionLevel_Art44_di"
+                        bpmnElement="Task_EnsureProtectionLevel_Art44">
+        <dc:Bounds x="2060" y="220" width="280" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_TransferAllowed_Art44_di"
+                        bpmnElement="EndEvent_TransferAllowed_Art44">
+        <dc:Bounds x="2470" y="242" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_IdentifyTransfer_Art44_di"
+                       bpmnElement="Flow_Start_To_IdentifyTransfer_Art44">
+        <di:waypoint x="156" y="400" />
+        <di:waypoint x="220" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_IdentifyTransfer_To_GatewayOnwardTransfer_Art44_di"
+                       bpmnElement="Flow_IdentifyTransfer_To_GatewayOnwardTransfer_Art44">
+        <di:waypoint x="540" y="400" />
+        <di:waypoint x="660" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayOnwardTransfer_To_AssessOnwardTransfers_Art44_di"
+                       bpmnElement="Flow_GatewayOnwardTransfer_To_AssessOnwardTransfers_Art44">
+        <di:waypoint x="685" y="375" />
+        <di:waypoint x="685" y="260" />
+        <di:waypoint x="820" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayOnwardTransfer_To_CheckOtherProvisions_Art44_di"
+                       bpmnElement="Flow_GatewayOnwardTransfer_To_CheckOtherProvisions_Art44">
+        <di:waypoint x="685" y="425" />
+        <di:waypoint x="685" y="540" />
+        <di:waypoint x="840" y="540" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AssessOnwardTransfers_To_CheckOtherProvisions_Art44_di"
+                       bpmnElement="Flow_AssessOnwardTransfers_To_CheckOtherProvisions_Art44">
+        <di:waypoint x="940" y="300" />
+        <di:waypoint x="940" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_CheckOtherProvisions_To_CheckChapterVConditions_Art44_di"
+                       bpmnElement="Flow_CheckOtherProvisions_To_CheckChapterVConditions_Art44">
+        <di:waypoint x="1050" y="540" />
+        <di:waypoint x="1180" y="540" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_CheckChapterVConditions_To_GatewayConditionsComplied_Art44_di"
+                       bpmnElement="Flow_CheckChapterVConditions_To_GatewayConditionsComplied_Art44">
+        <di:waypoint x="1400" y="540" />
+        <di:waypoint x="1530" y="540" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayConditionsComplied_To_EndTransferNotAllowed_Art44_di"
+                       bpmnElement="Flow_GatewayConditionsComplied_To_EndTransferNotAllowed_Art44">
+        <di:waypoint x="1580" y="540" />
+        <di:waypoint x="1730" y="540" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayConditionsComplied_To_ApplyChapterV_Art44_di"
+                       bpmnElement="Flow_GatewayConditionsComplied_To_ApplyChapterV_Art44">
+        <di:waypoint x="1555" y="515" />
+        <di:waypoint x="1555" y="260" />
+        <di:waypoint x="1710" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ApplyChapterV_To_EnsureProtectionLevel_Art44_di"
+                       bpmnElement="Flow_ApplyChapterV_To_EnsureProtectionLevel_Art44">
+        <di:waypoint x="1940" y="260" />
+        <di:waypoint x="2060" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_EnsureProtectionLevel_To_EndTransferAllowed_Art44_di"
+                       bpmnElement="Flow_EnsureProtectionLevel_To_EndTransferAllowed_Art44">
+        <di:waypoint x="2340" y="260" />
+        <di:waypoint x="2470" y="260" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art3_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:process id="Process_AssessScope_Art3"
+                name="Assess territorial scope under Article 3"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 3 based on the real English legal text from
+      gdpr_articles/article_3.txt. The model captures the Article 3(1) establishment-in-the-Union
+      trigger regardless of where the processing takes place, the Article 3(2) path for controllers
+      or processors not established in the Union where processing relates to offering goods or services
+      to data subjects in the Union or monitoring their behaviour within the Union, and the Article 3(3)
+      path where Member State law applies by virtue of public international law.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_AssessTerritorialScope_Art3"
+                     name="Assess territorial scope">
+      <bpmn:outgoing>Flow_Start_To_AssessUnionEstablishment_Art3</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_AssessUnionEstablishment_Art3"
+               name="Assess Union establishment context">
+      <bpmn:incoming>Flow_Start_To_AssessUnionEstablishment_Art3</bpmn:incoming>
+      <bpmn:outgoing>Flow_AssessUnionEstablishment_To_GatewayUnionEstablishment_Art3</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_UnionEstablishment_Art3"
+                           name="Is processing carried out in the context of activities of an establishment in the Union?">
+      <bpmn:incoming>Flow_AssessUnionEstablishment_To_GatewayUnionEstablishment_Art3</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayUnionEstablishment_To_TaskApplyRegardlessLocation_Art3</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayUnionEstablishment_To_AssessNonUnionRoute_Art3</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ApplyRegardlessLocation_Art3"
+               name="Apply GDPR regardless of processing location">
+      <bpmn:incoming>Flow_GatewayUnionEstablishment_To_TaskApplyRegardlessLocation_Art3</bpmn:incoming>
+      <bpmn:outgoing>Flow_ApplyRegardlessLocation_To_EndApplies_Art3</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_AssessNonUnionRoute_Art3"
+               name="Assess non-Union applicability route">
+      <bpmn:incoming>Flow_GatewayUnionEstablishment_To_AssessNonUnionRoute_Art3</bpmn:incoming>
+      <bpmn:outgoing>Flow_AssessNonUnionRoute_To_GatewayDataSubjectsInUnion_Art3</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_DataSubjectsInUnion_Art3"
+                           name="Are the affected data subjects in the Union?">
+      <bpmn:incoming>Flow_AssessNonUnionRoute_To_GatewayDataSubjectsInUnion_Art3</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayDataSubjectsInUnion_To_GatewayGoodsServices_Art3</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayDataSubjectsInUnion_To_AssessPublicInternationalLaw_Art3</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_GoodsServices_Art3"
+                           name="Is the processing related to offering goods or services to data subjects in the Union?">
+      <bpmn:incoming>Flow_GatewayDataSubjectsInUnion_To_GatewayGoodsServices_Art3</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayGoodsServices_To_EndApplies_Art3</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayGoodsServices_To_GatewayMonitoring_Art3</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_Monitoring_Art3"
+                           name="Is the processing related to monitoring behaviour within the Union?">
+      <bpmn:incoming>Flow_GatewayGoodsServices_To_GatewayMonitoring_Art3</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayMonitoring_To_EndApplies_Art3</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayMonitoring_To_AssessPublicInternationalLaw_Art3</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_AssessPublicInternationalLaw_Art3"
+               name="Assess Member State law applicability by public international law">
+      <bpmn:incoming>Flow_GatewayDataSubjectsInUnion_To_AssessPublicInternationalLaw_Art3</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayMonitoring_To_AssessPublicInternationalLaw_Art3</bpmn:incoming>
+      <bpmn:outgoing>Flow_AssessPublicInternationalLaw_To_GatewayPublicInternationalLaw_Art3</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_PublicInternationalLaw_Art3"
+                           name="Does Member State law apply by virtue of public international law?">
+      <bpmn:incoming>Flow_AssessPublicInternationalLaw_To_GatewayPublicInternationalLaw_Art3</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayPublicInternationalLaw_To_EndApplies_Art3</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayPublicInternationalLaw_To_EndNotApplies_Art3</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_GDPRApplies_Art3"
+                   name="GDPR applies under Article 3">
+      <bpmn:incoming>Flow_ApplyRegardlessLocation_To_EndApplies_Art3</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayGoodsServices_To_EndApplies_Art3</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayMonitoring_To_EndApplies_Art3</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayPublicInternationalLaw_To_EndApplies_Art3</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_GDPRDoesNotApply_Art3"
+                   name="Article 3 territorial scope not established">
+      <bpmn:incoming>Flow_GatewayPublicInternationalLaw_To_EndNotApplies_Art3</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_AssessUnionEstablishment_Art3"
+                       sourceRef="StartEvent_AssessTerritorialScope_Art3"
+                       targetRef="Task_AssessUnionEstablishment_Art3" />
+    <bpmn:sequenceFlow id="Flow_AssessUnionEstablishment_To_GatewayUnionEstablishment_Art3"
+                       sourceRef="Task_AssessUnionEstablishment_Art3"
+                       targetRef="Gateway_UnionEstablishment_Art3" />
+    <bpmn:sequenceFlow id="Flow_GatewayUnionEstablishment_To_TaskApplyRegardlessLocation_Art3"
+                       name="Yes"
+                       sourceRef="Gateway_UnionEstablishment_Art3"
+                       targetRef="Task_ApplyRegardlessLocation_Art3" />
+    <bpmn:sequenceFlow id="Flow_GatewayUnionEstablishment_To_AssessNonUnionRoute_Art3"
+                       name="No"
+                       sourceRef="Gateway_UnionEstablishment_Art3"
+                       targetRef="Task_AssessNonUnionRoute_Art3" />
+    <bpmn:sequenceFlow id="Flow_ApplyRegardlessLocation_To_EndApplies_Art3"
+                       sourceRef="Task_ApplyRegardlessLocation_Art3"
+                       targetRef="EndEvent_GDPRApplies_Art3" />
+    <bpmn:sequenceFlow id="Flow_AssessNonUnionRoute_To_GatewayDataSubjectsInUnion_Art3"
+                       sourceRef="Task_AssessNonUnionRoute_Art3"
+                       targetRef="Gateway_DataSubjectsInUnion_Art3" />
+    <bpmn:sequenceFlow id="Flow_GatewayDataSubjectsInUnion_To_GatewayGoodsServices_Art3"
+                       name="Yes"
+                       sourceRef="Gateway_DataSubjectsInUnion_Art3"
+                       targetRef="Gateway_GoodsServices_Art3" />
+    <bpmn:sequenceFlow id="Flow_GatewayDataSubjectsInUnion_To_AssessPublicInternationalLaw_Art3"
+                       name="No"
+                       sourceRef="Gateway_DataSubjectsInUnion_Art3"
+                       targetRef="Task_AssessPublicInternationalLaw_Art3" />
+    <bpmn:sequenceFlow id="Flow_GatewayGoodsServices_To_EndApplies_Art3"
+                       name="Yes"
+                       sourceRef="Gateway_GoodsServices_Art3"
+                       targetRef="EndEvent_GDPRApplies_Art3" />
+    <bpmn:sequenceFlow id="Flow_GatewayGoodsServices_To_GatewayMonitoring_Art3"
+                       name="No"
+                       sourceRef="Gateway_GoodsServices_Art3"
+                       targetRef="Gateway_Monitoring_Art3" />
+    <bpmn:sequenceFlow id="Flow_GatewayMonitoring_To_EndApplies_Art3"
+                       name="Yes"
+                       sourceRef="Gateway_Monitoring_Art3"
+                       targetRef="EndEvent_GDPRApplies_Art3" />
+    <bpmn:sequenceFlow id="Flow_GatewayMonitoring_To_AssessPublicInternationalLaw_Art3"
+                       name="No"
+                       sourceRef="Gateway_Monitoring_Art3"
+                       targetRef="Task_AssessPublicInternationalLaw_Art3" />
+    <bpmn:sequenceFlow id="Flow_AssessPublicInternationalLaw_To_GatewayPublicInternationalLaw_Art3"
+                       sourceRef="Task_AssessPublicInternationalLaw_Art3"
+                       targetRef="Gateway_PublicInternationalLaw_Art3" />
+    <bpmn:sequenceFlow id="Flow_GatewayPublicInternationalLaw_To_EndApplies_Art3"
+                       name="Yes"
+                       sourceRef="Gateway_PublicInternationalLaw_Art3"
+                       targetRef="EndEvent_GDPRApplies_Art3" />
+    <bpmn:sequenceFlow id="Flow_GatewayPublicInternationalLaw_To_EndNotApplies_Art3"
+                       name="No"
+                       sourceRef="Gateway_PublicInternationalLaw_Art3"
+                       targetRef="EndEvent_GDPRDoesNotApply_Art3" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art3_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art3_Reviewed"
+                      bpmnElement="Process_AssessScope_Art3">
+      <bpmndi:BPMNShape id="StartEvent_AssessTerritorialScope_Art3_di"
+                        bpmnElement="StartEvent_AssessTerritorialScope_Art3">
+        <dc:Bounds x="120" y="382" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessUnionEstablishment_Art3_di"
+                        bpmnElement="Task_AssessUnionEstablishment_Art3">
+        <dc:Bounds x="230" y="360" width="250" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_UnionEstablishment_Art3_di"
+                        bpmnElement="Gateway_UnionEstablishment_Art3"
+                        isMarkerVisible="true">
+        <dc:Bounds x="600" y="375" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ApplyRegardlessLocation_Art3_di"
+                        bpmnElement="Task_ApplyRegardlessLocation_Art3">
+        <dc:Bounds x="770" y="220" width="270" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessNonUnionRoute_Art3_di"
+                        bpmnElement="Task_AssessNonUnionRoute_Art3">
+        <dc:Bounds x="760" y="500" width="260" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_DataSubjectsInUnion_Art3_di"
+                        bpmnElement="Gateway_DataSubjectsInUnion_Art3"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1140" y="515" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_GoodsServices_Art3_di"
+                        bpmnElement="Gateway_GoodsServices_Art3"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1310" y="375" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Monitoring_Art3_di"
+                        bpmnElement="Gateway_Monitoring_Art3"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1560" y="375" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessPublicInternationalLaw_Art3_di"
+                        bpmnElement="Task_AssessPublicInternationalLaw_Art3">
+        <dc:Bounds x="1360" y="620" width="330" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_PublicInternationalLaw_Art3_di"
+                        bpmnElement="Gateway_PublicInternationalLaw_Art3"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1810" y="635" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_GDPRApplies_Art3_di"
+                        bpmnElement="EndEvent_GDPRApplies_Art3">
+        <dc:Bounds x="2080" y="382" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_GDPRDoesNotApply_Art3_di"
+                        bpmnElement="EndEvent_GDPRDoesNotApply_Art3">
+        <dc:Bounds x="2080" y="642" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_AssessUnionEstablishment_Art3_di"
+                       bpmnElement="Flow_Start_To_AssessUnionEstablishment_Art3">
+        <di:waypoint x="156" y="400" />
+        <di:waypoint x="230" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AssessUnionEstablishment_To_GatewayUnionEstablishment_Art3_di"
+                       bpmnElement="Flow_AssessUnionEstablishment_To_GatewayUnionEstablishment_Art3">
+        <di:waypoint x="480" y="400" />
+        <di:waypoint x="600" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayUnionEstablishment_To_TaskApplyRegardlessLocation_Art3_di"
+                       bpmnElement="Flow_GatewayUnionEstablishment_To_TaskApplyRegardlessLocation_Art3">
+        <di:waypoint x="625" y="375" />
+        <di:waypoint x="625" y="260" />
+        <di:waypoint x="770" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayUnionEstablishment_To_AssessNonUnionRoute_Art3_di"
+                       bpmnElement="Flow_GatewayUnionEstablishment_To_AssessNonUnionRoute_Art3">
+        <di:waypoint x="625" y="425" />
+        <di:waypoint x="625" y="540" />
+        <di:waypoint x="760" y="540" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ApplyRegardlessLocation_To_EndApplies_Art3_di"
+                       bpmnElement="Flow_ApplyRegardlessLocation_To_EndApplies_Art3">
+        <di:waypoint x="1040" y="260" />
+        <di:waypoint x="2098" y="260" />
+        <di:waypoint x="2098" y="382" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AssessNonUnionRoute_To_GatewayDataSubjectsInUnion_Art3_di"
+                       bpmnElement="Flow_AssessNonUnionRoute_To_GatewayDataSubjectsInUnion_Art3">
+        <di:waypoint x="1020" y="540" />
+        <di:waypoint x="1140" y="540" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayDataSubjectsInUnion_To_GatewayGoodsServices_Art3_di"
+                       bpmnElement="Flow_GatewayDataSubjectsInUnion_To_GatewayGoodsServices_Art3">
+        <di:waypoint x="1165" y="515" />
+        <di:waypoint x="1165" y="400" />
+        <di:waypoint x="1310" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayDataSubjectsInUnion_To_AssessPublicInternationalLaw_Art3_di"
+                       bpmnElement="Flow_GatewayDataSubjectsInUnion_To_AssessPublicInternationalLaw_Art3">
+        <di:waypoint x="1190" y="540" />
+        <di:waypoint x="1360" y="660" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayGoodsServices_To_EndApplies_Art3_di"
+                       bpmnElement="Flow_GatewayGoodsServices_To_EndApplies_Art3">
+        <di:waypoint x="1360" y="400" />
+        <di:waypoint x="2080" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayGoodsServices_To_GatewayMonitoring_Art3_di"
+                       bpmnElement="Flow_GatewayGoodsServices_To_GatewayMonitoring_Art3">
+        <di:waypoint x="1360" y="400" />
+        <di:waypoint x="1560" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayMonitoring_To_EndApplies_Art3_di"
+                       bpmnElement="Flow_GatewayMonitoring_To_EndApplies_Art3">
+        <di:waypoint x="1610" y="400" />
+        <di:waypoint x="2080" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayMonitoring_To_AssessPublicInternationalLaw_Art3_di"
+                       bpmnElement="Flow_GatewayMonitoring_To_AssessPublicInternationalLaw_Art3">
+        <di:waypoint x="1585" y="425" />
+        <di:waypoint x="1585" y="660" />
+        <di:waypoint x="1690" y="660" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AssessPublicInternationalLaw_To_GatewayPublicInternationalLaw_Art3_di"
+                       bpmnElement="Flow_AssessPublicInternationalLaw_To_GatewayPublicInternationalLaw_Art3">
+        <di:waypoint x="1690" y="660" />
+        <di:waypoint x="1810" y="660" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPublicInternationalLaw_To_EndApplies_Art3_di"
+                       bpmnElement="Flow_GatewayPublicInternationalLaw_To_EndApplies_Art3">
+        <di:waypoint x="1835" y="635" />
+        <di:waypoint x="1835" y="400" />
+        <di:waypoint x="2080" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPublicInternationalLaw_To_EndNotApplies_Art3_di"
+                       bpmnElement="Flow_GatewayPublicInternationalLaw_To_EndNotApplies_Art3">
+        <di:waypoint x="1860" y="660" />
+        <di:waypoint x="2080" y="660" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

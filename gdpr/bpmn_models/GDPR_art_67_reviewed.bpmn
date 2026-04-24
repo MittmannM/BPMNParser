@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art67_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art67_Reviewed">
+    <bpmn:participant id="Participant_Commission_Art67"
+                      name="Commission"
+                      processRef="Process_Commission_Art67" />
+    <bpmn:participant id="Participant_SupervisoryAuthorities_Art67"
+                      name="Supervisory Authorities" />
+    <bpmn:participant id="Participant_Board_Art67"
+                      name="Board" />
+
+    <bpmn:messageFlow id="MessageFlow_SpecifyElectronicExchangeArrangements_Art67"
+                      sourceRef="Task_SpecifyElectronicExchangeArrangements_Art67"
+                      targetRef="Participant_SupervisoryAuthorities_Art67" />
+    <bpmn:messageFlow id="MessageFlow_SpecifyExchangeArrangementsForBoard_Art67"
+                      sourceRef="Task_SpecifyElectronicExchangeArrangements_Art67"
+                      targetRef="Participant_Board_Art67" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_Commission_Art67"
+                name="Adopt Article 67 implementing acts"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 67 based on the real English legal text from
+      gdpr_articles/article_67.txt. This compact process captures the Commission's adoption of
+      implementing acts of general scope to specify arrangements for the electronic exchange of
+      information between supervisory authorities and between supervisory authorities and the
+      Board, with explicit visibility for the standardised format referred to in Article 64 and
+      the Article 93(2) examination procedure.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_NeedElectronicExchangeArrangements_Art67"
+                     name="Need electronic exchange arrangements">
+      <bpmn:outgoing>Flow_StartNeedExchangeArrangements_To_SpecifyElectronicExchangeArrangements_Art67</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_SpecifyElectronicExchangeArrangements_Art67"
+               name="Specify electronic exchange arrangements">
+      <bpmn:incoming>Flow_StartNeedExchangeArrangements_To_SpecifyElectronicExchangeArrangements_Art67</bpmn:incoming>
+      <bpmn:outgoing>Flow_SpecifyElectronicExchangeArrangements_To_SpecifyStandardizedFormat_Art67</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_SpecifyStandardizedFormat_Art67"
+               name="Specify Article 64 standardized format">
+      <bpmn:incoming>Flow_SpecifyElectronicExchangeArrangements_To_SpecifyStandardizedFormat_Art67</bpmn:incoming>
+      <bpmn:outgoing>Flow_SpecifyStandardizedFormat_To_UseExaminationProcedure_Art67</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_UseExaminationProcedure_Art67"
+               name="Use Article 93(2) examination procedure">
+      <bpmn:incoming>Flow_SpecifyStandardizedFormat_To_UseExaminationProcedure_Art67</bpmn:incoming>
+      <bpmn:outgoing>Flow_UseExaminationProcedure_To_AdoptImplementingActs_Art67</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_AdoptImplementingActs_Art67"
+               name="Adopt implementing acts of general scope">
+      <bpmn:incoming>Flow_UseExaminationProcedure_To_AdoptImplementingActs_Art67</bpmn:incoming>
+      <bpmn:outgoing>Flow_AdoptImplementingActs_To_EndImplementingActsAdopted_Art67</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_ImplementingActsAdopted_Art67"
+                   name="Implementing acts adopted">
+      <bpmn:incoming>Flow_AdoptImplementingActs_To_EndImplementingActsAdopted_Art67</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartNeedExchangeArrangements_To_SpecifyElectronicExchangeArrangements_Art67"
+                       sourceRef="StartEvent_NeedElectronicExchangeArrangements_Art67"
+                       targetRef="Task_SpecifyElectronicExchangeArrangements_Art67" />
+    <bpmn:sequenceFlow id="Flow_SpecifyElectronicExchangeArrangements_To_SpecifyStandardizedFormat_Art67"
+                       sourceRef="Task_SpecifyElectronicExchangeArrangements_Art67"
+                       targetRef="Task_SpecifyStandardizedFormat_Art67" />
+    <bpmn:sequenceFlow id="Flow_SpecifyStandardizedFormat_To_UseExaminationProcedure_Art67"
+                       sourceRef="Task_SpecifyStandardizedFormat_Art67"
+                       targetRef="Task_UseExaminationProcedure_Art67" />
+    <bpmn:sequenceFlow id="Flow_UseExaminationProcedure_To_AdoptImplementingActs_Art67"
+                       sourceRef="Task_UseExaminationProcedure_Art67"
+                       targetRef="Task_AdoptImplementingActs_Art67" />
+    <bpmn:sequenceFlow id="Flow_AdoptImplementingActs_To_EndImplementingActsAdopted_Art67"
+                       sourceRef="Task_AdoptImplementingActs_Art67"
+                       targetRef="EndEvent_ImplementingActsAdopted_Art67" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art67_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art67_Reviewed"
+                      bpmnElement="Collaboration_Art67_Reviewed">
+      <bpmndi:BPMNShape id="Participant_Commission_Art67_di"
+                        bpmnElement="Participant_Commission_Art67"
+                        isHorizontal="true">
+        <dc:Bounds x="20" y="20" width="1800" height="220" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_SupervisoryAuthorities_Art67_di"
+                        bpmnElement="Participant_SupervisoryAuthorities_Art67"
+                        isHorizontal="true">
+        <dc:Bounds x="20" y="270" width="1800" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Board_Art67_di"
+                        bpmnElement="Participant_Board_Art67"
+                        isHorizontal="true">
+        <dc:Bounds x="20" y="390" width="1800" height="100" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_NeedElectronicExchangeArrangements_Art67_di"
+                        bpmnElement="StartEvent_NeedElectronicExchangeArrangements_Art67">
+        <dc:Bounds x="120" y="112" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SpecifyElectronicExchangeArrangements_Art67_di"
+                        bpmnElement="Task_SpecifyElectronicExchangeArrangements_Art67">
+        <dc:Bounds x="240" y="90" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SpecifyStandardizedFormat_Art67_di"
+                        bpmnElement="Task_SpecifyStandardizedFormat_Art67">
+        <dc:Bounds x="550" y="90" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_UseExaminationProcedure_Art67_di"
+                        bpmnElement="Task_UseExaminationProcedure_Art67">
+        <dc:Bounds x="850" y="90" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AdoptImplementingActs_Art67_di"
+                        bpmnElement="Task_AdoptImplementingActs_Art67">
+        <dc:Bounds x="1160" y="90" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ImplementingActsAdopted_Art67_di"
+                        bpmnElement="EndEvent_ImplementingActsAdopted_Art67">
+        <dc:Bounds x="1480" y="112" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_StartNeedExchangeArrangements_To_SpecifyElectronicExchangeArrangements_Art67_di"
+                       bpmnElement="Flow_StartNeedExchangeArrangements_To_SpecifyElectronicExchangeArrangements_Art67">
+        <di:waypoint x="156" y="130" />
+        <di:waypoint x="240" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SpecifyElectronicExchangeArrangements_To_SpecifyStandardizedFormat_Art67_di"
+                       bpmnElement="Flow_SpecifyElectronicExchangeArrangements_To_SpecifyStandardizedFormat_Art67">
+        <di:waypoint x="460" y="130" />
+        <di:waypoint x="550" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SpecifyStandardizedFormat_To_UseExaminationProcedure_Art67_di"
+                       bpmnElement="Flow_SpecifyStandardizedFormat_To_UseExaminationProcedure_Art67">
+        <di:waypoint x="760" y="130" />
+        <di:waypoint x="850" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_UseExaminationProcedure_To_AdoptImplementingActs_Art67_di"
+                       bpmnElement="Flow_UseExaminationProcedure_To_AdoptImplementingActs_Art67">
+        <di:waypoint x="1070" y="130" />
+        <di:waypoint x="1160" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AdoptImplementingActs_To_EndImplementingActsAdopted_Art67_di"
+                       bpmnElement="Flow_AdoptImplementingActs_To_EndImplementingActsAdopted_Art67">
+        <di:waypoint x="1380" y="130" />
+        <di:waypoint x="1480" y="130" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_SpecifyElectronicExchangeArrangements_Art67_di"
+                       bpmnElement="MessageFlow_SpecifyElectronicExchangeArrangements_Art67">
+        <di:waypoint x="350" y="170" />
+        <di:waypoint x="350" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SpecifyExchangeArrangementsForBoard_Art67_di"
+                       bpmnElement="MessageFlow_SpecifyExchangeArrangementsForBoard_Art67">
+        <di:waypoint x="405" y="170" />
+        <di:waypoint x="405" y="390" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

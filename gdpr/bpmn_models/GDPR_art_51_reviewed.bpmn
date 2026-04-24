@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art51_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art51_Reviewed">
+    <bpmn:participant id="Participant_MemberState_Art51"
+                      name="Member State"
+                      processRef="Process_MemberState_Art51" />
+    <bpmn:participant id="Participant_SupervisoryAuthorities_Art51"
+                      name="Supervisory Authority or Authorities"
+                      processRef="Process_SupervisoryAuthorities_Art51" />
+    <bpmn:participant id="Participant_Commission_Art51"
+                      name="Commission" />
+
+    <bpmn:messageFlow id="MessageFlow_NotifyCommission_Art51"
+                      sourceRef="SendTask_NotifyCommission_Art51"
+                      targetRef="Participant_Commission_Art51" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_MemberState_Art51"
+                name="Set up Article 51 supervisory authority structure"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 51 based on the real English legal text from
+      gdpr_articles/article_51.txt. This process captures the Member State duty to provide one
+      or more independent public authorities, the Article 51(3) additional setup where more
+      than one supervisory authority exists, and the Article 51(4) notification duty to the
+      Commission for adopted legal provisions and later amendments.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_SetUpSupervisoryStructure_Art51"
+                     name="Set up supervisory authority structure">
+      <bpmn:outgoing>Flow_Start_To_ProvideAuthorities_Art51</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_ProvideIndependentAuthorities_Art51"
+               name="Provide one or more independent public authorities">
+      <bpmn:incoming>Flow_Start_To_ProvideAuthorities_Art51</bpmn:incoming>
+      <bpmn:outgoing>Flow_ProvideAuthorities_To_GatewayMultipleAuthorities_Art51</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_MultipleAuthorities_Art51"
+                           name="Is more than one supervisory authority established?">
+      <bpmn:incoming>Flow_ProvideAuthorities_To_GatewayMultipleAuthorities_Art51</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayMultipleAuthorities_To_SendNotifyCommission_Art51</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayMultipleAuthorities_To_TaskDesignateRepresentative_Art51</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_DesignateRepresentativeAuthority_Art51"
+               name="Designate Board representative authority">
+      <bpmn:incoming>Flow_GatewayMultipleAuthorities_To_TaskDesignateRepresentative_Art51</bpmn:incoming>
+      <bpmn:outgoing>Flow_DesignateRepresentative_To_TaskSetMechanism_Art51</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_SetComplianceMechanism_Art51"
+               name="Set consistency-mechanism compliance process">
+      <bpmn:incoming>Flow_DesignateRepresentative_To_TaskSetMechanism_Art51</bpmn:incoming>
+      <bpmn:outgoing>Flow_SetMechanism_To_SendNotifyCommission_Art51</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="SendTask_NotifyCommission_Art51"
+                   name="Notify Commission of legal provisions and amendments">
+      <bpmn:incoming>Flow_GatewayMultipleAuthorities_To_SendNotifyCommission_Art51</bpmn:incoming>
+      <bpmn:incoming>Flow_SetMechanism_To_SendNotifyCommission_Art51</bpmn:incoming>
+      <bpmn:outgoing>Flow_NotifyCommission_To_EndMemberStateCompleted_Art51</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_MemberStateCompleted_Art51"
+                   name="Article 51 Member State setup completed">
+      <bpmn:incoming>Flow_NotifyCommission_To_EndMemberStateCompleted_Art51</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_ProvideAuthorities_Art51"
+                       sourceRef="StartEvent_SetUpSupervisoryStructure_Art51"
+                       targetRef="Task_ProvideIndependentAuthorities_Art51" />
+    <bpmn:sequenceFlow id="Flow_ProvideAuthorities_To_GatewayMultipleAuthorities_Art51"
+                       sourceRef="Task_ProvideIndependentAuthorities_Art51"
+                       targetRef="Gateway_MultipleAuthorities_Art51" />
+    <bpmn:sequenceFlow id="Flow_GatewayMultipleAuthorities_To_SendNotifyCommission_Art51"
+                       name="No"
+                       sourceRef="Gateway_MultipleAuthorities_Art51"
+                       targetRef="SendTask_NotifyCommission_Art51" />
+    <bpmn:sequenceFlow id="Flow_GatewayMultipleAuthorities_To_TaskDesignateRepresentative_Art51"
+                       name="Yes"
+                       sourceRef="Gateway_MultipleAuthorities_Art51"
+                       targetRef="Task_DesignateRepresentativeAuthority_Art51" />
+    <bpmn:sequenceFlow id="Flow_DesignateRepresentative_To_TaskSetMechanism_Art51"
+                       sourceRef="Task_DesignateRepresentativeAuthority_Art51"
+                       targetRef="Task_SetComplianceMechanism_Art51" />
+    <bpmn:sequenceFlow id="Flow_SetMechanism_To_SendNotifyCommission_Art51"
+                       sourceRef="Task_SetComplianceMechanism_Art51"
+                       targetRef="SendTask_NotifyCommission_Art51" />
+    <bpmn:sequenceFlow id="Flow_NotifyCommission_To_EndMemberStateCompleted_Art51"
+                       sourceRef="SendTask_NotifyCommission_Art51"
+                       targetRef="EndEvent_MemberStateCompleted_Art51" />
+  </bpmn:process>
+
+  <bpmn:process id="Process_SupervisoryAuthorities_Art51"
+                name="Carry out Article 51 supervisory authority duties"
+                isExecutable="false">
+    <bpmn:documentation>
+      This process captures the Article 51(1) and (2) duties of the supervisory authority:
+      monitoring the application of the Regulation to protect fundamental rights and freedoms
+      in relation to processing and to facilitate the free flow of personal data within the
+      Union, and contributing to the consistent application of the Regulation through
+      cooperation with other supervisory authorities and the Commission in accordance with
+      Chapter VII.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_OperateSupervisoryAuthority_Art51"
+                     name="Operate supervisory authority">
+      <bpmn:outgoing>Flow_StartOperate_To_GatewaySplitDuties_Art51</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:parallelGateway id="Gateway_SplitSupervisoryDuties_Art51">
+      <bpmn:incoming>Flow_StartOperate_To_GatewaySplitDuties_Art51</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplitDuties_To_MonitorApplication_Art51</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitDuties_To_ProtectRights_Art51</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitDuties_To_FacilitateFreeFlow_Art51</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitDuties_To_ContributeConsistency_Art51</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_MonitorApplication_Art51"
+               name="Monitor GDPR application">
+      <bpmn:incoming>Flow_GatewaySplitDuties_To_MonitorApplication_Art51</bpmn:incoming>
+      <bpmn:outgoing>Flow_MonitorApplication_To_GatewayJoinDuties_Art51</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ProtectRightsFreedoms_Art51"
+               name="Protect fundamental rights and freedoms">
+      <bpmn:incoming>Flow_GatewaySplitDuties_To_ProtectRights_Art51</bpmn:incoming>
+      <bpmn:outgoing>Flow_ProtectRights_To_GatewayJoinDuties_Art51</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_FacilitateFreeFlow_Art51"
+               name="Facilitate free flow of personal data">
+      <bpmn:incoming>Flow_GatewaySplitDuties_To_FacilitateFreeFlow_Art51</bpmn:incoming>
+      <bpmn:outgoing>Flow_FacilitateFreeFlow_To_GatewayJoinDuties_Art51</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ContributeConsistency_Art51"
+               name="Cooperate under Chapter VII for consistent application">
+      <bpmn:incoming>Flow_GatewaySplitDuties_To_ContributeConsistency_Art51</bpmn:incoming>
+      <bpmn:outgoing>Flow_ContributeConsistency_To_GatewayJoinDuties_Art51</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_JoinSupervisoryDuties_Art51">
+      <bpmn:incoming>Flow_MonitorApplication_To_GatewayJoinDuties_Art51</bpmn:incoming>
+      <bpmn:incoming>Flow_ProtectRights_To_GatewayJoinDuties_Art51</bpmn:incoming>
+      <bpmn:incoming>Flow_FacilitateFreeFlow_To_GatewayJoinDuties_Art51</bpmn:incoming>
+      <bpmn:incoming>Flow_ContributeConsistency_To_GatewayJoinDuties_Art51</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinDuties_To_EndSupervisoryCompleted_Art51</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:endEvent id="EndEvent_SupervisoryCompleted_Art51"
+                   name="Article 51 supervisory duties applied">
+      <bpmn:incoming>Flow_GatewayJoinDuties_To_EndSupervisoryCompleted_Art51</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartOperate_To_GatewaySplitDuties_Art51"
+                       sourceRef="StartEvent_OperateSupervisoryAuthority_Art51"
+                       targetRef="Gateway_SplitSupervisoryDuties_Art51" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitDuties_To_MonitorApplication_Art51"
+                       sourceRef="Gateway_SplitSupervisoryDuties_Art51"
+                       targetRef="Task_MonitorApplication_Art51" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitDuties_To_ProtectRights_Art51"
+                       sourceRef="Gateway_SplitSupervisoryDuties_Art51"
+                       targetRef="Task_ProtectRightsFreedoms_Art51" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitDuties_To_FacilitateFreeFlow_Art51"
+                       sourceRef="Gateway_SplitSupervisoryDuties_Art51"
+                       targetRef="Task_FacilitateFreeFlow_Art51" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitDuties_To_ContributeConsistency_Art51"
+                       sourceRef="Gateway_SplitSupervisoryDuties_Art51"
+                       targetRef="Task_ContributeConsistency_Art51" />
+    <bpmn:sequenceFlow id="Flow_MonitorApplication_To_GatewayJoinDuties_Art51"
+                       sourceRef="Task_MonitorApplication_Art51"
+                       targetRef="Gateway_JoinSupervisoryDuties_Art51" />
+    <bpmn:sequenceFlow id="Flow_ProtectRights_To_GatewayJoinDuties_Art51"
+                       sourceRef="Task_ProtectRightsFreedoms_Art51"
+                       targetRef="Gateway_JoinSupervisoryDuties_Art51" />
+    <bpmn:sequenceFlow id="Flow_FacilitateFreeFlow_To_GatewayJoinDuties_Art51"
+                       sourceRef="Task_FacilitateFreeFlow_Art51"
+                       targetRef="Gateway_JoinSupervisoryDuties_Art51" />
+    <bpmn:sequenceFlow id="Flow_ContributeConsistency_To_GatewayJoinDuties_Art51"
+                       sourceRef="Task_ContributeConsistency_Art51"
+                       targetRef="Gateway_JoinSupervisoryDuties_Art51" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoinDuties_To_EndSupervisoryCompleted_Art51"
+                       sourceRef="Gateway_JoinSupervisoryDuties_Art51"
+                       targetRef="EndEvent_SupervisoryCompleted_Art51" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art51_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art51_Reviewed"
+                      bpmnElement="Collaboration_Art51_Reviewed">
+      <bpmndi:BPMNShape id="Participant_MemberState_Art51_di"
+                        bpmnElement="Participant_MemberState_Art51"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="2380" height="260" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_SupervisoryAuthorities_Art51_di"
+                        bpmnElement="Participant_SupervisoryAuthorities_Art51"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="340" width="2380" height="360" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Commission_Art51_di"
+                        bpmnElement="Participant_Commission_Art51"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="740" width="2380" height="120" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_SetUpSupervisoryStructure_Art51_di"
+                        bpmnElement="StartEvent_SetUpSupervisoryStructure_Art51">
+        <dc:Bounds x="120" y="157" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ProvideIndependentAuthorities_Art51_di"
+                        bpmnElement="Task_ProvideIndependentAuthorities_Art51">
+        <dc:Bounds x="230" y="135" width="320" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_MultipleAuthorities_Art51_di"
+                        bpmnElement="Gateway_MultipleAuthorities_Art51"
+                        isMarkerVisible="true">
+        <dc:Bounds x="670" y="150" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DesignateRepresentativeAuthority_Art51_di"
+                        bpmnElement="Task_DesignateRepresentativeAuthority_Art51">
+        <dc:Bounds x="840" y="70" width="250" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SetComplianceMechanism_Art51_di"
+                        bpmnElement="Task_SetComplianceMechanism_Art51">
+        <dc:Bounds x="1240" y="70" width="270" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_NotifyCommission_Art51_di"
+                        bpmnElement="SendTask_NotifyCommission_Art51">
+        <dc:Bounds x="1760" y="135" width="330" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_MemberStateCompleted_Art51_di"
+                        bpmnElement="EndEvent_MemberStateCompleted_Art51">
+        <dc:Bounds x="2240" y="157" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_OperateSupervisoryAuthority_Art51_di"
+                        bpmnElement="StartEvent_OperateSupervisoryAuthority_Art51">
+        <dc:Bounds x="120" y="502" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SplitSupervisoryDuties_Art51_di"
+                        bpmnElement="Gateway_SplitSupervisoryDuties_Art51"
+                        isMarkerVisible="true">
+        <dc:Bounds x="250" y="495" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_MonitorApplication_Art51_di"
+                        bpmnElement="Task_MonitorApplication_Art51">
+        <dc:Bounds x="430" y="360" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ProtectRightsFreedoms_Art51_di"
+                        bpmnElement="Task_ProtectRightsFreedoms_Art51">
+        <dc:Bounds x="430" y="460" width="250" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_FacilitateFreeFlow_Art51_di"
+                        bpmnElement="Task_FacilitateFreeFlow_Art51">
+        <dc:Bounds x="430" y="560" width="260" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ContributeConsistency_Art51_di"
+                        bpmnElement="Task_ContributeConsistency_Art51">
+        <dc:Bounds x="860" y="460" width="340" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinSupervisoryDuties_Art51_di"
+                        bpmnElement="Gateway_JoinSupervisoryDuties_Art51"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1420" y="495" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_SupervisoryCompleted_Art51_di"
+                        bpmnElement="EndEvent_SupervisoryCompleted_Art51">
+        <dc:Bounds x="1640" y="502" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_ProvideAuthorities_Art51_di"
+                       bpmnElement="Flow_Start_To_ProvideAuthorities_Art51">
+        <di:waypoint x="156" y="175" />
+        <di:waypoint x="230" y="175" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ProvideAuthorities_To_GatewayMultipleAuthorities_Art51_di"
+                       bpmnElement="Flow_ProvideAuthorities_To_GatewayMultipleAuthorities_Art51">
+        <di:waypoint x="550" y="175" />
+        <di:waypoint x="670" y="175" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayMultipleAuthorities_To_SendNotifyCommission_Art51_di"
+                       bpmnElement="Flow_GatewayMultipleAuthorities_To_SendNotifyCommission_Art51">
+        <di:waypoint x="720" y="175" />
+        <di:waypoint x="1760" y="175" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayMultipleAuthorities_To_TaskDesignateRepresentative_Art51_di"
+                       bpmnElement="Flow_GatewayMultipleAuthorities_To_TaskDesignateRepresentative_Art51">
+        <di:waypoint x="695" y="150" />
+        <di:waypoint x="695" y="110" />
+        <di:waypoint x="840" y="110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_DesignateRepresentative_To_TaskSetMechanism_Art51_di"
+                       bpmnElement="Flow_DesignateRepresentative_To_TaskSetMechanism_Art51">
+        <di:waypoint x="1090" y="110" />
+        <di:waypoint x="1240" y="110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SetMechanism_To_SendNotifyCommission_Art51_di"
+                       bpmnElement="Flow_SetMechanism_To_SendNotifyCommission_Art51">
+        <di:waypoint x="1510" y="110" />
+        <di:waypoint x="1925" y="110" />
+        <di:waypoint x="1925" y="135" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_NotifyCommission_To_EndMemberStateCompleted_Art51_di"
+                       bpmnElement="Flow_NotifyCommission_To_EndMemberStateCompleted_Art51">
+        <di:waypoint x="2090" y="175" />
+        <di:waypoint x="2240" y="175" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_StartOperate_To_GatewaySplitDuties_Art51_di"
+                       bpmnElement="Flow_StartOperate_To_GatewaySplitDuties_Art51">
+        <di:waypoint x="156" y="520" />
+        <di:waypoint x="250" y="520" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitDuties_To_MonitorApplication_Art51_di"
+                       bpmnElement="Flow_GatewaySplitDuties_To_MonitorApplication_Art51">
+        <di:waypoint x="275" y="495" />
+        <di:waypoint x="275" y="400" />
+        <di:waypoint x="430" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitDuties_To_ProtectRights_Art51_di"
+                       bpmnElement="Flow_GatewaySplitDuties_To_ProtectRights_Art51">
+        <di:waypoint x="300" y="500" />
+        <di:waypoint x="430" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitDuties_To_FacilitateFreeFlow_Art51_di"
+                       bpmnElement="Flow_GatewaySplitDuties_To_FacilitateFreeFlow_Art51">
+        <di:waypoint x="275" y="545" />
+        <di:waypoint x="275" y="600" />
+        <di:waypoint x="430" y="600" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitDuties_To_ContributeConsistency_Art51_di"
+                       bpmnElement="Flow_GatewaySplitDuties_To_ContributeConsistency_Art51">
+        <di:waypoint x="300" y="520" />
+        <di:waypoint x="860" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_MonitorApplication_To_GatewayJoinDuties_Art51_di"
+                       bpmnElement="Flow_MonitorApplication_To_GatewayJoinDuties_Art51">
+        <di:waypoint x="640" y="400" />
+        <di:waypoint x="1445" y="400" />
+        <di:waypoint x="1445" y="495" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ProtectRights_To_GatewayJoinDuties_Art51_di"
+                       bpmnElement="Flow_ProtectRights_To_GatewayJoinDuties_Art51">
+        <di:waypoint x="680" y="500" />
+        <di:waypoint x="1420" y="520" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_FacilitateFreeFlow_To_GatewayJoinDuties_Art51_di"
+                       bpmnElement="Flow_FacilitateFreeFlow_To_GatewayJoinDuties_Art51">
+        <di:waypoint x="690" y="600" />
+        <di:waypoint x="1445" y="600" />
+        <di:waypoint x="1445" y="545" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ContributeConsistency_To_GatewayJoinDuties_Art51_di"
+                       bpmnElement="Flow_ContributeConsistency_To_GatewayJoinDuties_Art51">
+        <di:waypoint x="1200" y="500" />
+        <di:waypoint x="1420" y="520" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinDuties_To_EndSupervisoryCompleted_Art51_di"
+                       bpmnElement="Flow_GatewayJoinDuties_To_EndSupervisoryCompleted_Art51">
+        <di:waypoint x="1470" y="520" />
+        <di:waypoint x="1640" y="520" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_NotifyCommission_Art51_di"
+                       bpmnElement="MessageFlow_NotifyCommission_Art51">
+        <di:waypoint x="1925" y="215" />
+        <di:waypoint x="1925" y="740" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

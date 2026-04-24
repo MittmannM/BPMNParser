@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art68_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art68_Reviewed">
+    <bpmn:participant id="Participant_Board_Art68"
+                      name="Board"
+                      processRef="Process_Board_Art68" />
+    <bpmn:participant id="Participant_MemberStates_Art68"
+                      name="Member States" />
+    <bpmn:participant id="Participant_Commission_Art68"
+                      name="Commission" />
+
+    <bpmn:messageFlow id="MessageFlow_AppointJointRepresentative_Art68"
+                      sourceRef="Task_AppointJointRepresentative_Art68"
+                      targetRef="Participant_MemberStates_Art68" />
+    <bpmn:messageFlow id="MessageFlow_CommunicateBoardActivities_Art68"
+                      sourceRef="Task_CommunicateBoardActivities_Art68"
+                      targetRef="Participant_Commission_Art68" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_Board_Art68"
+                name="Constitute and represent the Board"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 68 based on the real English legal text from
+      gdpr_articles/article_68.txt. This compact process captures the establishment of the Board
+      as a body of the Union with legal personality, representation by its Chair, composition by
+      one supervisory-authority head per Member State plus the European Data Protection
+      Supervisor or their representatives, joint-representative handling where a Member State has
+      more than one supervisory authority, Commission participation without voting rights, and
+      the Article 65-specific voting-rights gate for the European Data Protection Supervisor.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_ConstituteBoard_Art68"
+                     name="Constitute Board">
+      <bpmn:outgoing>Flow_StartConstituteBoard_To_EstablishBoardBody_Art68</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_EstablishBoardBody_Art68"
+               name="Establish Board as Union body">
+      <bpmn:incoming>Flow_StartConstituteBoard_To_EstablishBoardBody_Art68</bpmn:incoming>
+      <bpmn:outgoing>Flow_EstablishBoardBody_To_AssignChairRepresentation_Art68</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_AssignChairRepresentation_Art68"
+               name="Assign Chair representation">
+      <bpmn:incoming>Flow_EstablishBoardBody_To_AssignChairRepresentation_Art68</bpmn:incoming>
+      <bpmn:outgoing>Flow_AssignChairRepresentation_To_ComposeBoard_Art68</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ComposeBoard_Art68"
+               name="Compose Board membership">
+      <bpmn:incoming>Flow_AssignChairRepresentation_To_ComposeBoard_Art68</bpmn:incoming>
+      <bpmn:outgoing>Flow_ComposeBoard_To_GatewaySeveralAuthorities_Art68</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_AreThereSeveralAuthoritiesInMemberState_Art68"
+                           name="Does a Member State have several supervisory authorities?">
+      <bpmn:incoming>Flow_ComposeBoard_To_GatewaySeveralAuthorities_Art68</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySeveralAuthorities_To_AppointJointRepresentative_Art68</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySeveralAuthorities_To_GatewayCommissionParticipation_Art68</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="Task_AppointJointRepresentative_Art68"
+                   name="Appoint joint representative">
+      <bpmn:incoming>Flow_GatewaySeveralAuthorities_To_AppointJointRepresentative_Art68</bpmn:incoming>
+      <bpmn:outgoing>Flow_AppointJointRepresentative_To_GatewayCommissionParticipation_Art68</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:exclusiveGateway id="Gateway_WillCommissionParticipate_Art68"
+                           name="Will the Commission participate?">
+      <bpmn:incoming>Flow_GatewaySeveralAuthorities_To_GatewayCommissionParticipation_Art68</bpmn:incoming>
+      <bpmn:incoming>Flow_AppointJointRepresentative_To_GatewayCommissionParticipation_Art68</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayCommissionParticipation_To_EnableCommissionParticipation_Art68</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayCommissionParticipation_To_GatewayArticle65Case_Art68</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_EnableCommissionParticipation_Art68"
+               name="Enable Commission participation without vote">
+      <bpmn:incoming>Flow_GatewayCommissionParticipation_To_EnableCommissionParticipation_Art68</bpmn:incoming>
+      <bpmn:outgoing>Flow_EnableCommissionParticipation_To_CommunicateBoardActivities_Art68</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="Task_CommunicateBoardActivities_Art68"
+                   name="Communicate Board activities">
+      <bpmn:incoming>Flow_EnableCommissionParticipation_To_CommunicateBoardActivities_Art68</bpmn:incoming>
+      <bpmn:outgoing>Flow_CommunicateBoardActivities_To_GatewayArticle65Case_Art68</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:exclusiveGateway id="Gateway_IsThisAnArticle65Case_Art68"
+                           name="Is this an Article 65 case?">
+      <bpmn:incoming>Flow_GatewayCommissionParticipation_To_GatewayArticle65Case_Art68</bpmn:incoming>
+      <bpmn:incoming>Flow_CommunicateBoardActivities_To_GatewayArticle65Case_Art68</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayArticle65Case_To_AssessEDPSVotingRights_Art68</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayArticle65Case_To_EndBoardConstituted_Art68</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_AssessEDPSVotingRights_Art68"
+               name="Assess EDPS voting rights">
+      <bpmn:incoming>Flow_GatewayArticle65Case_To_AssessEDPSVotingRights_Art68</bpmn:incoming>
+      <bpmn:outgoing>Flow_AssessEDPSVotingRights_To_EndBoardConstituted_Art68</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_BoardConstituted_Art68"
+                   name="Board constituted">
+      <bpmn:incoming>Flow_GatewayArticle65Case_To_EndBoardConstituted_Art68</bpmn:incoming>
+      <bpmn:incoming>Flow_AssessEDPSVotingRights_To_EndBoardConstituted_Art68</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartConstituteBoard_To_EstablishBoardBody_Art68"
+                       sourceRef="StartEvent_ConstituteBoard_Art68"
+                       targetRef="Task_EstablishBoardBody_Art68" />
+    <bpmn:sequenceFlow id="Flow_EstablishBoardBody_To_AssignChairRepresentation_Art68"
+                       sourceRef="Task_EstablishBoardBody_Art68"
+                       targetRef="Task_AssignChairRepresentation_Art68" />
+    <bpmn:sequenceFlow id="Flow_AssignChairRepresentation_To_ComposeBoard_Art68"
+                       sourceRef="Task_AssignChairRepresentation_Art68"
+                       targetRef="Task_ComposeBoard_Art68" />
+    <bpmn:sequenceFlow id="Flow_ComposeBoard_To_GatewaySeveralAuthorities_Art68"
+                       sourceRef="Task_ComposeBoard_Art68"
+                       targetRef="Gateway_AreThereSeveralAuthoritiesInMemberState_Art68" />
+    <bpmn:sequenceFlow id="Flow_GatewaySeveralAuthorities_To_AppointJointRepresentative_Art68"
+                       name="Yes"
+                       sourceRef="Gateway_AreThereSeveralAuthoritiesInMemberState_Art68"
+                       targetRef="Task_AppointJointRepresentative_Art68" />
+    <bpmn:sequenceFlow id="Flow_GatewaySeveralAuthorities_To_GatewayCommissionParticipation_Art68"
+                       name="No"
+                       sourceRef="Gateway_AreThereSeveralAuthoritiesInMemberState_Art68"
+                       targetRef="Gateway_WillCommissionParticipate_Art68" />
+    <bpmn:sequenceFlow id="Flow_AppointJointRepresentative_To_GatewayCommissionParticipation_Art68"
+                       sourceRef="Task_AppointJointRepresentative_Art68"
+                       targetRef="Gateway_WillCommissionParticipate_Art68" />
+    <bpmn:sequenceFlow id="Flow_GatewayCommissionParticipation_To_EnableCommissionParticipation_Art68"
+                       name="Yes"
+                       sourceRef="Gateway_WillCommissionParticipate_Art68"
+                       targetRef="Task_EnableCommissionParticipation_Art68" />
+    <bpmn:sequenceFlow id="Flow_GatewayCommissionParticipation_To_GatewayArticle65Case_Art68"
+                       name="No"
+                       sourceRef="Gateway_WillCommissionParticipate_Art68"
+                       targetRef="Gateway_IsThisAnArticle65Case_Art68" />
+    <bpmn:sequenceFlow id="Flow_EnableCommissionParticipation_To_CommunicateBoardActivities_Art68"
+                       sourceRef="Task_EnableCommissionParticipation_Art68"
+                       targetRef="Task_CommunicateBoardActivities_Art68" />
+    <bpmn:sequenceFlow id="Flow_CommunicateBoardActivities_To_GatewayArticle65Case_Art68"
+                       sourceRef="Task_CommunicateBoardActivities_Art68"
+                       targetRef="Gateway_IsThisAnArticle65Case_Art68" />
+    <bpmn:sequenceFlow id="Flow_GatewayArticle65Case_To_AssessEDPSVotingRights_Art68"
+                       name="Yes"
+                       sourceRef="Gateway_IsThisAnArticle65Case_Art68"
+                       targetRef="Task_AssessEDPSVotingRights_Art68" />
+    <bpmn:sequenceFlow id="Flow_GatewayArticle65Case_To_EndBoardConstituted_Art68"
+                       name="No"
+                       sourceRef="Gateway_IsThisAnArticle65Case_Art68"
+                       targetRef="EndEvent_BoardConstituted_Art68" />
+    <bpmn:sequenceFlow id="Flow_AssessEDPSVotingRights_To_EndBoardConstituted_Art68"
+                       sourceRef="Task_AssessEDPSVotingRights_Art68"
+                       targetRef="EndEvent_BoardConstituted_Art68" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art68_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art68_Reviewed"
+                      bpmnElement="Collaboration_Art68_Reviewed">
+      <bpmndi:BPMNShape id="Participant_Board_Art68_di"
+                        bpmnElement="Participant_Board_Art68"
+                        isHorizontal="true">
+        <dc:Bounds x="20" y="20" width="2850" height="260" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_MemberStates_Art68_di"
+                        bpmnElement="Participant_MemberStates_Art68"
+                        isHorizontal="true">
+        <dc:Bounds x="20" y="310" width="2850" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Commission_Art68_di"
+                        bpmnElement="Participant_Commission_Art68"
+                        isHorizontal="true">
+        <dc:Bounds x="20" y="430" width="2850" height="100" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_ConstituteBoard_Art68_di"
+                        bpmnElement="StartEvent_ConstituteBoard_Art68">
+        <dc:Bounds x="120" y="132" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_EstablishBoardBody_Art68_di"
+                        bpmnElement="Task_EstablishBoardBody_Art68">
+        <dc:Bounds x="230" y="110" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssignChairRepresentation_Art68_di"
+                        bpmnElement="Task_AssignChairRepresentation_Art68">
+        <dc:Bounds x="500" y="110" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ComposeBoard_Art68_di"
+                        bpmnElement="Task_ComposeBoard_Art68">
+        <dc:Bounds x="750" y="110" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AreThereSeveralAuthoritiesInMemberState_Art68_di"
+                        bpmnElement="Gateway_AreThereSeveralAuthoritiesInMemberState_Art68"
+                        isMarkerVisible="true">
+        <dc:Bounds x="990" y="125" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AppointJointRepresentative_Art68_di"
+                        bpmnElement="Task_AppointJointRepresentative_Art68">
+        <dc:Bounds x="1140" y="50" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_WillCommissionParticipate_Art68_di"
+                        bpmnElement="Gateway_WillCommissionParticipate_Art68"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1410" y="125" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_EnableCommissionParticipation_Art68_di"
+                        bpmnElement="Task_EnableCommissionParticipation_Art68">
+        <dc:Bounds x="1560" y="50" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CommunicateBoardActivities_Art68_di"
+                        bpmnElement="Task_CommunicateBoardActivities_Art68">
+        <dc:Bounds x="1840" y="50" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_IsThisAnArticle65Case_Art68_di"
+                        bpmnElement="Gateway_IsThisAnArticle65Case_Art68"
+                        isMarkerVisible="true">
+        <dc:Bounds x="2140" y="125" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessEDPSVotingRights_Art68_di"
+                        bpmnElement="Task_AssessEDPSVotingRights_Art68">
+        <dc:Bounds x="2290" y="50" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_BoardConstituted_Art68_di"
+                        bpmnElement="EndEvent_BoardConstituted_Art68">
+        <dc:Bounds x="2570" y="132" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_StartConstituteBoard_To_EstablishBoardBody_Art68_di"
+                       bpmnElement="Flow_StartConstituteBoard_To_EstablishBoardBody_Art68">
+        <di:waypoint x="156" y="150" />
+        <di:waypoint x="230" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_EstablishBoardBody_To_AssignChairRepresentation_Art68_di"
+                       bpmnElement="Flow_EstablishBoardBody_To_AssignChairRepresentation_Art68">
+        <di:waypoint x="430" y="150" />
+        <di:waypoint x="500" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AssignChairRepresentation_To_ComposeBoard_Art68_di"
+                       bpmnElement="Flow_AssignChairRepresentation_To_ComposeBoard_Art68">
+        <di:waypoint x="680" y="150" />
+        <di:waypoint x="750" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ComposeBoard_To_GatewaySeveralAuthorities_Art68_di"
+                       bpmnElement="Flow_ComposeBoard_To_GatewaySeveralAuthorities_Art68">
+        <di:waypoint x="930" y="150" />
+        <di:waypoint x="990" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySeveralAuthorities_To_AppointJointRepresentative_Art68_di"
+                       bpmnElement="Flow_GatewaySeveralAuthorities_To_AppointJointRepresentative_Art68">
+        <di:waypoint x="1015" y="125" />
+        <di:waypoint x="1015" y="90" />
+        <di:waypoint x="1140" y="90" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1024" y="91" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySeveralAuthorities_To_GatewayCommissionParticipation_Art68_di"
+                       bpmnElement="Flow_GatewaySeveralAuthorities_To_GatewayCommissionParticipation_Art68">
+        <di:waypoint x="1040" y="150" />
+        <di:waypoint x="1410" y="150" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1210" y="132" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AppointJointRepresentative_To_GatewayCommissionParticipation_Art68_di"
+                       bpmnElement="Flow_AppointJointRepresentative_To_GatewayCommissionParticipation_Art68">
+        <di:waypoint x="1320" y="90" />
+        <di:waypoint x="1435" y="90" />
+        <di:waypoint x="1435" y="125" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayCommissionParticipation_To_EnableCommissionParticipation_Art68_di"
+                       bpmnElement="Flow_GatewayCommissionParticipation_To_EnableCommissionParticipation_Art68">
+        <di:waypoint x="1435" y="125" />
+        <di:waypoint x="1435" y="90" />
+        <di:waypoint x="1560" y="90" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1444" y="91" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayCommissionParticipation_To_GatewayArticle65Case_Art68_di"
+                       bpmnElement="Flow_GatewayCommissionParticipation_To_GatewayArticle65Case_Art68">
+        <di:waypoint x="1460" y="150" />
+        <di:waypoint x="2140" y="150" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1795" y="132" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_EnableCommissionParticipation_To_CommunicateBoardActivities_Art68_di"
+                       bpmnElement="Flow_EnableCommissionParticipation_To_CommunicateBoardActivities_Art68">
+        <di:waypoint x="1770" y="90" />
+        <di:waypoint x="1840" y="90" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_CommunicateBoardActivities_To_GatewayArticle65Case_Art68_di"
+                       bpmnElement="Flow_CommunicateBoardActivities_To_GatewayArticle65Case_Art68">
+        <di:waypoint x="2030" y="90" />
+        <di:waypoint x="2165" y="90" />
+        <di:waypoint x="2165" y="125" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayArticle65Case_To_AssessEDPSVotingRights_Art68_di"
+                       bpmnElement="Flow_GatewayArticle65Case_To_AssessEDPSVotingRights_Art68">
+        <di:waypoint x="2190" y="150" />
+        <di:waypoint x="2290" y="90" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2210" y="122" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayArticle65Case_To_EndBoardConstituted_Art68_di"
+                       bpmnElement="Flow_GatewayArticle65Case_To_EndBoardConstituted_Art68">
+        <di:waypoint x="2190" y="150" />
+        <di:waypoint x="2570" y="150" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2370" y="132" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AssessEDPSVotingRights_To_EndBoardConstituted_Art68_di"
+                       bpmnElement="Flow_AssessEDPSVotingRights_To_EndBoardConstituted_Art68">
+        <di:waypoint x="2470" y="90" />
+        <di:waypoint x="2588" y="90" />
+        <di:waypoint x="2588" y="132" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_AppointJointRepresentative_Art68_di"
+                       bpmnElement="MessageFlow_AppointJointRepresentative_Art68">
+        <di:waypoint x="1230" y="130" />
+        <di:waypoint x="1230" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_CommunicateBoardActivities_Art68_di"
+                       bpmnElement="MessageFlow_CommunicateBoardActivities_Art68">
+        <di:waypoint x="1935" y="130" />
+        <di:waypoint x="1935" y="430" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

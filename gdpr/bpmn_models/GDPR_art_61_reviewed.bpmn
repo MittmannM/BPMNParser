@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art61_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art61_Reviewed">
+    <bpmn:participant id="Participant_RequestingAuthority_Art61"
+                      name="Requesting Supervisory Authority"
+                      processRef="Process_RequestingAuthority_Art61" />
+    <bpmn:participant id="Participant_RequestedAuthority_Art61"
+                      name="Requested Supervisory Authority"
+                      processRef="Process_RequestedAuthority_Art61" />
+    <bpmn:participant id="Participant_Board_Art61"
+                      name="Board" />
+
+    <bpmn:messageFlow id="MessageFlow_SendMutualAssistanceRequest_Art61"
+                      sourceRef="Task_SendMutualAssistanceRequest_Art61"
+                      targetRef="StartEvent_ReceiveMutualAssistanceRequest_Art61" />
+    <bpmn:messageFlow id="MessageFlow_SendResultsOrProgress_Art61"
+                      sourceRef="Task_SendResultsOrProgress_Art61"
+                      targetRef="Task_ReceiveResultsOrProgress_Art61" />
+    <bpmn:messageFlow id="MessageFlow_SendRefusalWithReasons_Art61"
+                      sourceRef="Task_SendRefusalWithReasons_Art61"
+                      targetRef="Task_ReceiveRefusalWithReasons_Art61" />
+    <bpmn:messageFlow id="MessageFlow_RequestUrgentBoardDecision_Art61"
+                      sourceRef="Task_RequestUrgentBoardDecision_Art61"
+                      targetRef="Participant_Board_Art61" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_RequestingAuthority_Art61"
+                name="Request mutual assistance under Article 61"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 61 based on the real English legal text from
+      gdpr_articles/article_61.txt. This process captures the requesting supervisory
+      authority's preparation of a mutual-assistance request with the necessary information and
+      purpose and reasons, use of electronic means in a standardized format as the default
+      operational mode, receipt of results or progress or a reasoned refusal, use of exchanged
+      information only for the requested purpose, and the one-month non-response escalation to a
+      provisional measure under Article 55(1) and an urgent binding Board decision under Article
+      66(2).
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_NeedMutualAssistance_Art61"
+                     name="Need mutual assistance">
+      <bpmn:outgoing>Flow_StartNeedAssistance_To_PrepareRequest_Art61</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_PrepareMutualAssistanceRequest_Art61"
+               name="Prepare request with purpose and reasons">
+      <bpmn:incoming>Flow_StartNeedAssistance_To_PrepareRequest_Art61</bpmn:incoming>
+      <bpmn:outgoing>Flow_PrepareRequest_To_SendRequest_Art61</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="Task_SendMutualAssistanceRequest_Art61"
+                   name="Send request in standardized electronic format">
+      <bpmn:incoming>Flow_PrepareRequest_To_SendRequest_Art61</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendRequest_To_GatewayResponseWindow_Art61</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:eventBasedGateway id="Gateway_ResponseWindow_Art61"
+                            name="What is received within one month?">
+      <bpmn:incoming>Flow_SendRequest_To_GatewayResponseWindow_Art61</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayResponseWindow_To_ReceiveResultsOrProgress_Art61</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayResponseWindow_To_ReceiveRefusalWithReasons_Art61</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayResponseWindow_To_OneMonthElapsed_Art61</bpmn:outgoing>
+    </bpmn:eventBasedGateway>
+
+    <bpmn:receiveTask id="Task_ReceiveResultsOrProgress_Art61"
+                      name="Receive results or progress">
+      <bpmn:incoming>Flow_GatewayResponseWindow_To_ReceiveResultsOrProgress_Art61</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveResultsOrProgress_To_UseInformationForPurpose_Art61</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:task id="Task_UseInformationForRequestedPurpose_Art61"
+               name="Use information only for requested purpose">
+      <bpmn:incoming>Flow_ReceiveResultsOrProgress_To_UseInformationForPurpose_Art61</bpmn:incoming>
+      <bpmn:outgoing>Flow_UseInformationForPurpose_To_EndAssistanceReceived_Art61</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:receiveTask id="Task_ReceiveRefusalWithReasons_Art61"
+                      name="Receive refusal with reasons">
+      <bpmn:incoming>Flow_GatewayResponseWindow_To_ReceiveRefusalWithReasons_Art61</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveRefusalWithReasons_To_EndRefusalReceived_Art61</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:intermediateCatchEvent id="IntermediateCatchEvent_OneMonthElapsed_Art61"
+                                 name="One month elapsed without information">
+      <bpmn:incoming>Flow_GatewayResponseWindow_To_OneMonthElapsed_Art61</bpmn:incoming>
+      <bpmn:outgoing>Flow_OneMonthElapsed_To_AdoptProvisionalMeasure_Art61</bpmn:outgoing>
+      <bpmn:timerEventDefinition />
+    </bpmn:intermediateCatchEvent>
+
+    <bpmn:task id="Task_AdoptProvisionalMeasure_Art61"
+               name="Adopt provisional measure under Article 55(1)">
+      <bpmn:incoming>Flow_OneMonthElapsed_To_AdoptProvisionalMeasure_Art61</bpmn:incoming>
+      <bpmn:outgoing>Flow_AdoptProvisionalMeasure_To_RequestUrgentBoardDecision_Art61</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="Task_RequestUrgentBoardDecision_Art61"
+                   name="Request urgent Board decision under Article 66(2)">
+      <bpmn:incoming>Flow_AdoptProvisionalMeasure_To_RequestUrgentBoardDecision_Art61</bpmn:incoming>
+      <bpmn:outgoing>Flow_RequestUrgentBoardDecision_To_EndUrgencyTriggered_Art61</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_MutualAssistanceReceived_Art61"
+                   name="Mutual assistance received">
+      <bpmn:incoming>Flow_UseInformationForPurpose_To_EndAssistanceReceived_Art61</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_RefusalReceived_Art61"
+                   name="Reasoned refusal received">
+      <bpmn:incoming>Flow_ReceiveRefusalWithReasons_To_EndRefusalReceived_Art61</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_UrgencyTriggered_Art61"
+                   name="Urgency route triggered">
+      <bpmn:incoming>Flow_RequestUrgentBoardDecision_To_EndUrgencyTriggered_Art61</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartNeedAssistance_To_PrepareRequest_Art61"
+                       sourceRef="StartEvent_NeedMutualAssistance_Art61"
+                       targetRef="Task_PrepareMutualAssistanceRequest_Art61" />
+    <bpmn:sequenceFlow id="Flow_PrepareRequest_To_SendRequest_Art61"
+                       sourceRef="Task_PrepareMutualAssistanceRequest_Art61"
+                       targetRef="Task_SendMutualAssistanceRequest_Art61" />
+    <bpmn:sequenceFlow id="Flow_SendRequest_To_GatewayResponseWindow_Art61"
+                       sourceRef="Task_SendMutualAssistanceRequest_Art61"
+                       targetRef="Gateway_ResponseWindow_Art61" />
+    <bpmn:sequenceFlow id="Flow_GatewayResponseWindow_To_ReceiveResultsOrProgress_Art61"
+                       sourceRef="Gateway_ResponseWindow_Art61"
+                       targetRef="Task_ReceiveResultsOrProgress_Art61" />
+    <bpmn:sequenceFlow id="Flow_GatewayResponseWindow_To_ReceiveRefusalWithReasons_Art61"
+                       sourceRef="Gateway_ResponseWindow_Art61"
+                       targetRef="Task_ReceiveRefusalWithReasons_Art61" />
+    <bpmn:sequenceFlow id="Flow_GatewayResponseWindow_To_OneMonthElapsed_Art61"
+                       sourceRef="Gateway_ResponseWindow_Art61"
+                       targetRef="IntermediateCatchEvent_OneMonthElapsed_Art61" />
+    <bpmn:sequenceFlow id="Flow_ReceiveResultsOrProgress_To_UseInformationForPurpose_Art61"
+                       sourceRef="Task_ReceiveResultsOrProgress_Art61"
+                       targetRef="Task_UseInformationForRequestedPurpose_Art61" />
+    <bpmn:sequenceFlow id="Flow_UseInformationForPurpose_To_EndAssistanceReceived_Art61"
+                       sourceRef="Task_UseInformationForRequestedPurpose_Art61"
+                       targetRef="EndEvent_MutualAssistanceReceived_Art61" />
+    <bpmn:sequenceFlow id="Flow_ReceiveRefusalWithReasons_To_EndRefusalReceived_Art61"
+                       sourceRef="Task_ReceiveRefusalWithReasons_Art61"
+                       targetRef="EndEvent_RefusalReceived_Art61" />
+    <bpmn:sequenceFlow id="Flow_OneMonthElapsed_To_AdoptProvisionalMeasure_Art61"
+                       sourceRef="IntermediateCatchEvent_OneMonthElapsed_Art61"
+                       targetRef="Task_AdoptProvisionalMeasure_Art61" />
+    <bpmn:sequenceFlow id="Flow_AdoptProvisionalMeasure_To_RequestUrgentBoardDecision_Art61"
+                       sourceRef="Task_AdoptProvisionalMeasure_Art61"
+                       targetRef="Task_RequestUrgentBoardDecision_Art61" />
+    <bpmn:sequenceFlow id="Flow_RequestUrgentBoardDecision_To_EndUrgencyTriggered_Art61"
+                       sourceRef="Task_RequestUrgentBoardDecision_Art61"
+                       targetRef="EndEvent_UrgencyTriggered_Art61" />
+  </bpmn:process>
+
+  <bpmn:process id="Process_RequestedAuthority_Art61"
+                name="Respond to Article 61 mutual assistance request"
+                isExecutable="false">
+    <bpmn:documentation>
+      This process captures the requested supervisory authority's assessment of competence and
+      legality, the only two refusal grounds under Article 61(4), the taking of appropriate
+      response measures without undue delay and no later than one month, the sending of results
+      or progress in standardized electronic form, and the no-fee default with possible
+      exceptional indemnification as background context.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_ReceiveMutualAssistanceRequest_Art61"
+                     name="Receive mutual-assistance request">
+      <bpmn:outgoing>Flow_StartReceiveRequest_To_AssessRequest_Art61</bpmn:outgoing>
+      <bpmn:messageEventDefinition />
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_AssessCompetenceAndLegality_Art61"
+               name="Assess competence and legality">
+      <bpmn:incoming>Flow_StartReceiveRequest_To_AssessRequest_Art61</bpmn:incoming>
+      <bpmn:outgoing>Flow_AssessRequest_To_GatewayRefusalAllowed_Art61</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_RefusalAllowed_Art61"
+                           name="Is refusal allowed under Article 61(4)?">
+      <bpmn:incoming>Flow_AssessRequest_To_GatewayRefusalAllowed_Art61</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayRefusalAllowed_To_SendRefusalWithReasons_Art61</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayRefusalAllowed_To_TakeResponseMeasures_Art61</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="Task_SendRefusalWithReasons_Art61"
+                   name="Send refusal with reasons">
+      <bpmn:incoming>Flow_GatewayRefusalAllowed_To_SendRefusalWithReasons_Art61</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendRefusalWithReasons_To_EndRequestRefused_Art61</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:task id="Task_TakeAppropriateResponseMeasures_Art61"
+               name="Take response measures without undue delay">
+      <bpmn:incoming>Flow_GatewayRefusalAllowed_To_TakeResponseMeasures_Art61</bpmn:incoming>
+      <bpmn:outgoing>Flow_TakeResponseMeasures_To_SendResultsOrProgress_Art61</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="Task_SendResultsOrProgress_Art61"
+                   name="Send results or progress in standardized format">
+      <bpmn:incoming>Flow_TakeResponseMeasures_To_SendResultsOrProgress_Art61</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendResultsOrProgress_To_EndResponseSent_Art61</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_RequestRefused_Art61"
+                   name="Request refused with reasons">
+      <bpmn:incoming>Flow_SendRefusalWithReasons_To_EndRequestRefused_Art61</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_ResponseSent_Art61"
+                   name="Results or progress sent">
+      <bpmn:incoming>Flow_SendResultsOrProgress_To_EndResponseSent_Art61</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartReceiveRequest_To_AssessRequest_Art61"
+                       sourceRef="StartEvent_ReceiveMutualAssistanceRequest_Art61"
+                       targetRef="Task_AssessCompetenceAndLegality_Art61" />
+    <bpmn:sequenceFlow id="Flow_AssessRequest_To_GatewayRefusalAllowed_Art61"
+                       sourceRef="Task_AssessCompetenceAndLegality_Art61"
+                       targetRef="Gateway_RefusalAllowed_Art61" />
+    <bpmn:sequenceFlow id="Flow_GatewayRefusalAllowed_To_SendRefusalWithReasons_Art61"
+                       name="Yes"
+                       sourceRef="Gateway_RefusalAllowed_Art61"
+                       targetRef="Task_SendRefusalWithReasons_Art61" />
+    <bpmn:sequenceFlow id="Flow_GatewayRefusalAllowed_To_TakeResponseMeasures_Art61"
+                       name="No"
+                       sourceRef="Gateway_RefusalAllowed_Art61"
+                       targetRef="Task_TakeAppropriateResponseMeasures_Art61" />
+    <bpmn:sequenceFlow id="Flow_SendRefusalWithReasons_To_EndRequestRefused_Art61"
+                       sourceRef="Task_SendRefusalWithReasons_Art61"
+                       targetRef="EndEvent_RequestRefused_Art61" />
+    <bpmn:sequenceFlow id="Flow_TakeResponseMeasures_To_SendResultsOrProgress_Art61"
+                       sourceRef="Task_TakeAppropriateResponseMeasures_Art61"
+                       targetRef="Task_SendResultsOrProgress_Art61" />
+    <bpmn:sequenceFlow id="Flow_SendResultsOrProgress_To_EndResponseSent_Art61"
+                       sourceRef="Task_SendResultsOrProgress_Art61"
+                       targetRef="EndEvent_ResponseSent_Art61" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art61_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art61_Reviewed"
+                      bpmnElement="Collaboration_Art61_Reviewed">
+      <bpmndi:BPMNShape id="Participant_RequestingAuthority_Art61_di"
+                        bpmnElement="Participant_RequestingAuthority_Art61"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="2620" height="420" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_RequestedAuthority_Art61_di"
+                        bpmnElement="Participant_RequestedAuthority_Art61"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="500" width="2620" height="260" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Board_Art61_di"
+                        bpmnElement="Participant_Board_Art61"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="800" width="2620" height="100" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_NeedMutualAssistance_Art61_di"
+                        bpmnElement="StartEvent_NeedMutualAssistance_Art61">
+        <dc:Bounds x="120" y="212" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareMutualAssistanceRequest_Art61_di"
+                        bpmnElement="Task_PrepareMutualAssistanceRequest_Art61">
+        <dc:Bounds x="230" y="190" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SendMutualAssistanceRequest_Art61_di"
+                        bpmnElement="Task_SendMutualAssistanceRequest_Art61">
+        <dc:Bounds x="540" y="190" width="240" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ResponseWindow_Art61_di"
+                        bpmnElement="Gateway_ResponseWindow_Art61">
+        <dc:Bounds x="900" y="205" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReceiveResultsOrProgress_Art61_di"
+                        bpmnElement="Task_ReceiveResultsOrProgress_Art61">
+        <dc:Bounds x="1070" y="80" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_UseInformationForRequestedPurpose_Art61_di"
+                        bpmnElement="Task_UseInformationForRequestedPurpose_Art61">
+        <dc:Bounds x="1380" y="80" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReceiveRefusalWithReasons_Art61_di"
+                        bpmnElement="Task_ReceiveRefusalWithReasons_Art61">
+        <dc:Bounds x="1070" y="200" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="IntermediateCatchEvent_OneMonthElapsed_Art61_di"
+                        bpmnElement="IntermediateCatchEvent_OneMonthElapsed_Art61">
+        <dc:Bounds x="1147" y="342" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AdoptProvisionalMeasure_Art61_di"
+                        bpmnElement="Task_AdoptProvisionalMeasure_Art61">
+        <dc:Bounds x="1290" y="320" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RequestUrgentBoardDecision_Art61_di"
+                        bpmnElement="Task_RequestUrgentBoardDecision_Art61">
+        <dc:Bounds x="1640" y="320" width="230" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_MutualAssistanceReceived_Art61_di"
+                        bpmnElement="EndEvent_MutualAssistanceReceived_Art61">
+        <dc:Bounds x="1700" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_RefusalReceived_Art61_di"
+                        bpmnElement="EndEvent_RefusalReceived_Art61">
+        <dc:Bounds x="1380" y="222" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_UrgencyTriggered_Art61_di"
+                        bpmnElement="EndEvent_UrgencyTriggered_Art61">
+        <dc:Bounds x="1990" y="342" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_ReceiveMutualAssistanceRequest_Art61_di"
+                        bpmnElement="StartEvent_ReceiveMutualAssistanceRequest_Art61">
+        <dc:Bounds x="120" y="612" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessCompetenceAndLegality_Art61_di"
+                        bpmnElement="Task_AssessCompetenceAndLegality_Art61">
+        <dc:Bounds x="230" y="590" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_RefusalAllowed_Art61_di"
+                        bpmnElement="Gateway_RefusalAllowed_Art61"
+                        isMarkerVisible="true">
+        <dc:Bounds x="520" y="605" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SendRefusalWithReasons_Art61_di"
+                        bpmnElement="Task_SendRefusalWithReasons_Art61">
+        <dc:Bounds x="690" y="520" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_TakeAppropriateResponseMeasures_Art61_di"
+                        bpmnElement="Task_TakeAppropriateResponseMeasures_Art61">
+        <dc:Bounds x="690" y="630" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SendResultsOrProgress_Art61_di"
+                        bpmnElement="Task_SendResultsOrProgress_Art61">
+        <dc:Bounds x="1030" y="630" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_RequestRefused_Art61_di"
+                        bpmnElement="EndEvent_RequestRefused_Art61">
+        <dc:Bounds x="960" y="542" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ResponseSent_Art61_di"
+                        bpmnElement="EndEvent_ResponseSent_Art61">
+        <dc:Bounds x="1330" y="652" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_StartNeedAssistance_To_PrepareRequest_Art61_di"
+                       bpmnElement="Flow_StartNeedAssistance_To_PrepareRequest_Art61">
+        <di:waypoint x="156" y="230" />
+        <di:waypoint x="230" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_PrepareRequest_To_SendRequest_Art61_di"
+                       bpmnElement="Flow_PrepareRequest_To_SendRequest_Art61">
+        <di:waypoint x="450" y="230" />
+        <di:waypoint x="540" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendRequest_To_GatewayResponseWindow_Art61_di"
+                       bpmnElement="Flow_SendRequest_To_GatewayResponseWindow_Art61">
+        <di:waypoint x="780" y="230" />
+        <di:waypoint x="900" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayResponseWindow_To_ReceiveResultsOrProgress_Art61_di"
+                       bpmnElement="Flow_GatewayResponseWindow_To_ReceiveResultsOrProgress_Art61">
+        <di:waypoint x="925" y="205" />
+        <di:waypoint x="925" y="120" />
+        <di:waypoint x="1070" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayResponseWindow_To_ReceiveRefusalWithReasons_Art61_di"
+                       bpmnElement="Flow_GatewayResponseWindow_To_ReceiveRefusalWithReasons_Art61">
+        <di:waypoint x="950" y="230" />
+        <di:waypoint x="1070" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayResponseWindow_To_OneMonthElapsed_Art61_di"
+                       bpmnElement="Flow_GatewayResponseWindow_To_OneMonthElapsed_Art61">
+        <di:waypoint x="925" y="255" />
+        <di:waypoint x="925" y="360" />
+        <di:waypoint x="1147" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveResultsOrProgress_To_UseInformationForPurpose_Art61_di"
+                       bpmnElement="Flow_ReceiveResultsOrProgress_To_UseInformationForPurpose_Art61">
+        <di:waypoint x="1260" y="120" />
+        <di:waypoint x="1380" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_UseInformationForPurpose_To_EndAssistanceReceived_Art61_di"
+                       bpmnElement="Flow_UseInformationForPurpose_To_EndAssistanceReceived_Art61">
+        <di:waypoint x="1590" y="120" />
+        <di:waypoint x="1700" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveRefusalWithReasons_To_EndRefusalReceived_Art61_di"
+                       bpmnElement="Flow_ReceiveRefusalWithReasons_To_EndRefusalReceived_Art61">
+        <di:waypoint x="1260" y="240" />
+        <di:waypoint x="1380" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_OneMonthElapsed_To_AdoptProvisionalMeasure_Art61_di"
+                       bpmnElement="Flow_OneMonthElapsed_To_AdoptProvisionalMeasure_Art61">
+        <di:waypoint x="1183" y="360" />
+        <di:waypoint x="1290" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AdoptProvisionalMeasure_To_RequestUrgentBoardDecision_Art61_di"
+                       bpmnElement="Flow_AdoptProvisionalMeasure_To_RequestUrgentBoardDecision_Art61">
+        <di:waypoint x="1510" y="360" />
+        <di:waypoint x="1640" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_RequestUrgentBoardDecision_To_EndUrgencyTriggered_Art61_di"
+                       bpmnElement="Flow_RequestUrgentBoardDecision_To_EndUrgencyTriggered_Art61">
+        <di:waypoint x="1870" y="360" />
+        <di:waypoint x="1990" y="360" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_StartReceiveRequest_To_AssessRequest_Art61_di"
+                       bpmnElement="Flow_StartReceiveRequest_To_AssessRequest_Art61">
+        <di:waypoint x="156" y="630" />
+        <di:waypoint x="230" y="630" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AssessRequest_To_GatewayRefusalAllowed_Art61_di"
+                       bpmnElement="Flow_AssessRequest_To_GatewayRefusalAllowed_Art61">
+        <di:waypoint x="420" y="630" />
+        <di:waypoint x="520" y="630" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRefusalAllowed_To_SendRefusalWithReasons_Art61_di"
+                       bpmnElement="Flow_GatewayRefusalAllowed_To_SendRefusalWithReasons_Art61">
+        <di:waypoint x="545" y="605" />
+        <di:waypoint x="545" y="560" />
+        <di:waypoint x="690" y="560" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="553" y="570" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRefusalAllowed_To_TakeResponseMeasures_Art61_di"
+                       bpmnElement="Flow_GatewayRefusalAllowed_To_TakeResponseMeasures_Art61">
+        <di:waypoint x="570" y="630" />
+        <di:waypoint x="690" y="670" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="610" y="642" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendRefusalWithReasons_To_EndRequestRefused_Art61_di"
+                       bpmnElement="Flow_SendRefusalWithReasons_To_EndRequestRefused_Art61">
+        <di:waypoint x="870" y="560" />
+        <di:waypoint x="960" y="560" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TakeResponseMeasures_To_SendResultsOrProgress_Art61_di"
+                       bpmnElement="Flow_TakeResponseMeasures_To_SendResultsOrProgress_Art61">
+        <di:waypoint x="900" y="670" />
+        <di:waypoint x="1030" y="670" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SendResultsOrProgress_To_EndResponseSent_Art61_di"
+                       bpmnElement="Flow_SendResultsOrProgress_To_EndResponseSent_Art61">
+        <di:waypoint x="1230" y="670" />
+        <di:waypoint x="1330" y="670" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_SendMutualAssistanceRequest_Art61_di"
+                       bpmnElement="MessageFlow_SendMutualAssistanceRequest_Art61">
+        <di:waypoint x="660" y="270" />
+        <di:waypoint x="660" y="612" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SendResultsOrProgress_Art61_di"
+                       bpmnElement="MessageFlow_SendResultsOrProgress_Art61">
+        <di:waypoint x="1130" y="630" />
+        <di:waypoint x="1130" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SendRefusalWithReasons_Art61_di"
+                       bpmnElement="MessageFlow_SendRefusalWithReasons_Art61">
+        <di:waypoint x="780" y="520" />
+        <di:waypoint x="780" y="280" />
+        <di:waypoint x="1165" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_RequestUrgentBoardDecision_Art61_di"
+                       bpmnElement="MessageFlow_RequestUrgentBoardDecision_Art61">
+        <di:waypoint x="1755" y="400" />
+        <di:waypoint x="1755" y="800" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

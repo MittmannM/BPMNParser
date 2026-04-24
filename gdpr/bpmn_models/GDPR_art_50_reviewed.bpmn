@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art50_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:process id="Process_InternationalCooperation_Art50"
+                name="Take Article 50 international cooperation steps"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 50 based on the real English legal text from
+      gdpr_articles/article_50.txt. The model captures the obligation of the Commission and
+      supervisory authorities to take appropriate steps in relation to third countries and
+      international organisations, including developing cooperation mechanisms, providing
+      mutual assistance subject to safeguards, engaging relevant stakeholders, and promoting
+      the exchange and documentation of legislation and practice, including on jurisdictional
+      conflicts with third countries.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_NeedInternationalCooperation_Art50"
+                     name="Need international cooperation action">
+      <bpmn:outgoing>Flow_Start_To_ScopeInternationalCooperation_Art50</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_ScopeInternationalCooperation_Art50"
+               name="Scope cooperation with third countries and international organisations">
+      <bpmn:incoming>Flow_Start_To_ScopeInternationalCooperation_Art50</bpmn:incoming>
+      <bpmn:outgoing>Flow_ScopeInternationalCooperation_To_GatewaySplitSteps_Art50</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_SplitCooperationSteps_Art50">
+      <bpmn:incoming>Flow_ScopeInternationalCooperation_To_GatewaySplitSteps_Art50</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplitSteps_To_DevelopMechanisms_Art50</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitSteps_To_ProvideMutualAssistance_Art50</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitSteps_To_EngageStakeholders_Art50</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitSteps_To_PromoteExchange_Art50</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_DevelopCooperationMechanisms_Art50"
+               name="Develop international cooperation mechanisms">
+      <bpmn:incoming>Flow_GatewaySplitSteps_To_DevelopMechanisms_Art50</bpmn:incoming>
+      <bpmn:outgoing>Flow_DevelopMechanisms_To_GatewayJoinSteps_Art50</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ProvideMutualAssistance_Art50"
+               name="Provide international mutual assistance">
+      <bpmn:incoming>Flow_GatewaySplitSteps_To_ProvideMutualAssistance_Art50</bpmn:incoming>
+      <bpmn:outgoing>Flow_ProvideMutualAssistance_To_ApplySafeguards_Art50</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ApplySafeguards_Art50"
+               name="Apply safeguards for personal data and fundamental rights">
+      <bpmn:incoming>Flow_ProvideMutualAssistance_To_ApplySafeguards_Art50</bpmn:incoming>
+      <bpmn:outgoing>Flow_ApplySafeguards_To_GatewayJoinSteps_Art50</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_EngageStakeholders_Art50"
+               name="Engage relevant stakeholders">
+      <bpmn:incoming>Flow_GatewaySplitSteps_To_EngageStakeholders_Art50</bpmn:incoming>
+      <bpmn:outgoing>Flow_EngageStakeholders_To_GatewayJoinSteps_Art50</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_PromoteExchangeDocumentation_Art50"
+               name="Promote exchange and documentation of law and practice">
+      <bpmn:incoming>Flow_GatewaySplitSteps_To_PromoteExchange_Art50</bpmn:incoming>
+      <bpmn:outgoing>Flow_PromoteExchange_To_GatewayJoinSteps_Art50</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_JoinCooperationSteps_Art50">
+      <bpmn:incoming>Flow_DevelopMechanisms_To_GatewayJoinSteps_Art50</bpmn:incoming>
+      <bpmn:incoming>Flow_ApplySafeguards_To_GatewayJoinSteps_Art50</bpmn:incoming>
+      <bpmn:incoming>Flow_EngageStakeholders_To_GatewayJoinSteps_Art50</bpmn:incoming>
+      <bpmn:incoming>Flow_PromoteExchange_To_GatewayJoinSteps_Art50</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinSteps_To_EndCooperationAdvanced_Art50</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:endEvent id="EndEvent_InternationalCooperationAdvanced_Art50"
+                   name="Article 50 cooperation steps completed">
+      <bpmn:incoming>Flow_GatewayJoinSteps_To_EndCooperationAdvanced_Art50</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_ScopeInternationalCooperation_Art50"
+                       sourceRef="StartEvent_NeedInternationalCooperation_Art50"
+                       targetRef="Task_ScopeInternationalCooperation_Art50" />
+    <bpmn:sequenceFlow id="Flow_ScopeInternationalCooperation_To_GatewaySplitSteps_Art50"
+                       sourceRef="Task_ScopeInternationalCooperation_Art50"
+                       targetRef="Gateway_SplitCooperationSteps_Art50" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitSteps_To_DevelopMechanisms_Art50"
+                       sourceRef="Gateway_SplitCooperationSteps_Art50"
+                       targetRef="Task_DevelopCooperationMechanisms_Art50" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitSteps_To_ProvideMutualAssistance_Art50"
+                       sourceRef="Gateway_SplitCooperationSteps_Art50"
+                       targetRef="Task_ProvideMutualAssistance_Art50" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitSteps_To_EngageStakeholders_Art50"
+                       sourceRef="Gateway_SplitCooperationSteps_Art50"
+                       targetRef="Task_EngageStakeholders_Art50" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitSteps_To_PromoteExchange_Art50"
+                       sourceRef="Gateway_SplitCooperationSteps_Art50"
+                       targetRef="Task_PromoteExchangeDocumentation_Art50" />
+    <bpmn:sequenceFlow id="Flow_DevelopMechanisms_To_GatewayJoinSteps_Art50"
+                       sourceRef="Task_DevelopCooperationMechanisms_Art50"
+                       targetRef="Gateway_JoinCooperationSteps_Art50" />
+    <bpmn:sequenceFlow id="Flow_ProvideMutualAssistance_To_ApplySafeguards_Art50"
+                       sourceRef="Task_ProvideMutualAssistance_Art50"
+                       targetRef="Task_ApplySafeguards_Art50" />
+    <bpmn:sequenceFlow id="Flow_ApplySafeguards_To_GatewayJoinSteps_Art50"
+                       sourceRef="Task_ApplySafeguards_Art50"
+                       targetRef="Gateway_JoinCooperationSteps_Art50" />
+    <bpmn:sequenceFlow id="Flow_EngageStakeholders_To_GatewayJoinSteps_Art50"
+                       sourceRef="Task_EngageStakeholders_Art50"
+                       targetRef="Gateway_JoinCooperationSteps_Art50" />
+    <bpmn:sequenceFlow id="Flow_PromoteExchange_To_GatewayJoinSteps_Art50"
+                       sourceRef="Task_PromoteExchangeDocumentation_Art50"
+                       targetRef="Gateway_JoinCooperationSteps_Art50" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoinSteps_To_EndCooperationAdvanced_Art50"
+                       sourceRef="Gateway_JoinCooperationSteps_Art50"
+                       targetRef="EndEvent_InternationalCooperationAdvanced_Art50" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art50_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art50_Reviewed"
+                      bpmnElement="Process_InternationalCooperation_Art50">
+      <bpmndi:BPMNShape id="StartEvent_NeedInternationalCooperation_Art50_di"
+                        bpmnElement="StartEvent_NeedInternationalCooperation_Art50">
+        <dc:Bounds x="120" y="382" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ScopeInternationalCooperation_Art50_di"
+                        bpmnElement="Task_ScopeInternationalCooperation_Art50">
+        <dc:Bounds x="240" y="360" width="350" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SplitCooperationSteps_Art50_di"
+                        bpmnElement="Gateway_SplitCooperationSteps_Art50"
+                        isMarkerVisible="true">
+        <dc:Bounds x="680" y="375" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DevelopCooperationMechanisms_Art50_di"
+                        bpmnElement="Task_DevelopCooperationMechanisms_Art50">
+        <dc:Bounds x="900" y="60" width="300" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ProvideMutualAssistance_Art50_di"
+                        bpmnElement="Task_ProvideMutualAssistance_Art50">
+        <dc:Bounds x="900" y="240" width="250" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ApplySafeguards_Art50_di"
+                        bpmnElement="Task_ApplySafeguards_Art50">
+        <dc:Bounds x="1330" y="240" width="330" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_EngageStakeholders_Art50_di"
+                        bpmnElement="Task_EngageStakeholders_Art50">
+        <dc:Bounds x="900" y="420" width="240" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PromoteExchangeDocumentation_Art50_di"
+                        bpmnElement="Task_PromoteExchangeDocumentation_Art50">
+        <dc:Bounds x="900" y="600" width="360" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinCooperationSteps_Art50_di"
+                        bpmnElement="Gateway_JoinCooperationSteps_Art50"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1840" y="375" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_InternationalCooperationAdvanced_Art50_di"
+                        bpmnElement="EndEvent_InternationalCooperationAdvanced_Art50">
+        <dc:Bounds x="2050" y="382" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_ScopeInternationalCooperation_Art50_di"
+                       bpmnElement="Flow_Start_To_ScopeInternationalCooperation_Art50">
+        <di:waypoint x="156" y="400" />
+        <di:waypoint x="240" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ScopeInternationalCooperation_To_GatewaySplitSteps_Art50_di"
+                       bpmnElement="Flow_ScopeInternationalCooperation_To_GatewaySplitSteps_Art50">
+        <di:waypoint x="590" y="400" />
+        <di:waypoint x="680" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitSteps_To_DevelopMechanisms_Art50_di"
+                       bpmnElement="Flow_GatewaySplitSteps_To_DevelopMechanisms_Art50">
+        <di:waypoint x="705" y="375" />
+        <di:waypoint x="705" y="100" />
+        <di:waypoint x="900" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitSteps_To_ProvideMutualAssistance_Art50_di"
+                       bpmnElement="Flow_GatewaySplitSteps_To_ProvideMutualAssistance_Art50">
+        <di:waypoint x="730" y="400" />
+        <di:waypoint x="900" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitSteps_To_EngageStakeholders_Art50_di"
+                       bpmnElement="Flow_GatewaySplitSteps_To_EngageStakeholders_Art50">
+        <di:waypoint x="730" y="400" />
+        <di:waypoint x="900" y="460" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitSteps_To_PromoteExchange_Art50_di"
+                       bpmnElement="Flow_GatewaySplitSteps_To_PromoteExchange_Art50">
+        <di:waypoint x="705" y="425" />
+        <di:waypoint x="705" y="640" />
+        <di:waypoint x="900" y="640" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_DevelopMechanisms_To_GatewayJoinSteps_Art50_di"
+                       bpmnElement="Flow_DevelopMechanisms_To_GatewayJoinSteps_Art50">
+        <di:waypoint x="1200" y="100" />
+        <di:waypoint x="1865" y="100" />
+        <di:waypoint x="1865" y="375" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ProvideMutualAssistance_To_ApplySafeguards_Art50_di"
+                       bpmnElement="Flow_ProvideMutualAssistance_To_ApplySafeguards_Art50">
+        <di:waypoint x="1150" y="280" />
+        <di:waypoint x="1330" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ApplySafeguards_To_GatewayJoinSteps_Art50_di"
+                       bpmnElement="Flow_ApplySafeguards_To_GatewayJoinSteps_Art50">
+        <di:waypoint x="1660" y="280" />
+        <di:waypoint x="1865" y="280" />
+        <di:waypoint x="1865" y="375" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_EngageStakeholders_To_GatewayJoinSteps_Art50_di"
+                       bpmnElement="Flow_EngageStakeholders_To_GatewayJoinSteps_Art50">
+        <di:waypoint x="1140" y="460" />
+        <di:waypoint x="1865" y="460" />
+        <di:waypoint x="1865" y="425" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_PromoteExchange_To_GatewayJoinSteps_Art50_di"
+                       bpmnElement="Flow_PromoteExchange_To_GatewayJoinSteps_Art50">
+        <di:waypoint x="1260" y="640" />
+        <di:waypoint x="1865" y="640" />
+        <di:waypoint x="1865" y="425" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinSteps_To_EndCooperationAdvanced_Art50_di"
+                       bpmnElement="Flow_GatewayJoinSteps_To_EndCooperationAdvanced_Art50">
+        <di:waypoint x="1890" y="400" />
+        <di:waypoint x="2050" y="400" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

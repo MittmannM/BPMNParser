@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art53_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:process id="Process_MemberLifecycle_Art53"
+                name="Manage Article 53 supervisory authority membership"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 53 based on the real English legal text from
+      gdpr_articles/article_53.txt. The model captures the transparent appointment procedure,
+      the four legally permitted appointing routes, the qualifications and experience and skills
+      requirement, the normal end-of-duty routes through expiry of term or resignation or
+      compulsory retirement under Member State law, and the narrow dismissal route limited to
+      serious misconduct or loss of the conditions required for performance of the duties.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_StartAppointment_Art53"
+                     name="Start member appointment">
+      <bpmn:outgoing>Flow_Start_To_DefineProcedure_Art53</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_DefineTransparentProcedure_Art53"
+               name="Define transparent appointment procedure">
+      <bpmn:incoming>Flow_Start_To_DefineProcedure_Art53</bpmn:incoming>
+      <bpmn:outgoing>Flow_DefineProcedure_To_GatewayAppointingBody_Art53</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_AppointingBody_Art53"
+                           name="Which appointing body is provided by Member State law?">
+      <bpmn:incoming>Flow_DefineProcedure_To_GatewayAppointingBody_Art53</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAppointingBody_To_ParliamentRoute_Art53</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAppointingBody_To_GovernmentRoute_Art53</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAppointingBody_To_HeadOfStateRoute_Art53</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAppointingBody_To_IndependentBodyRoute_Art53</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_UseParliamentProcedure_Art53"
+               name="Use parliament appointment route">
+      <bpmn:incoming>Flow_GatewayAppointingBody_To_ParliamentRoute_Art53</bpmn:incoming>
+      <bpmn:outgoing>Flow_ParliamentRoute_To_GatewayAppointmentJoin_Art53</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_UseGovernmentProcedure_Art53"
+               name="Use government appointment route">
+      <bpmn:incoming>Flow_GatewayAppointingBody_To_GovernmentRoute_Art53</bpmn:incoming>
+      <bpmn:outgoing>Flow_GovernmentRoute_To_GatewayAppointmentJoin_Art53</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_UseHeadOfStateProcedure_Art53"
+               name="Use head-of-state appointment route">
+      <bpmn:incoming>Flow_GatewayAppointingBody_To_HeadOfStateRoute_Art53</bpmn:incoming>
+      <bpmn:outgoing>Flow_HeadOfStateRoute_To_GatewayAppointmentJoin_Art53</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_UseIndependentBodyProcedure_Art53"
+               name="Use independent-body appointment route">
+      <bpmn:incoming>Flow_GatewayAppointingBody_To_IndependentBodyRoute_Art53</bpmn:incoming>
+      <bpmn:outgoing>Flow_IndependentBodyRoute_To_GatewayAppointmentJoin_Art53</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_AppointmentJoin_Art53">
+      <bpmn:incoming>Flow_ParliamentRoute_To_GatewayAppointmentJoin_Art53</bpmn:incoming>
+      <bpmn:incoming>Flow_GovernmentRoute_To_GatewayAppointmentJoin_Art53</bpmn:incoming>
+      <bpmn:incoming>Flow_HeadOfStateRoute_To_GatewayAppointmentJoin_Art53</bpmn:incoming>
+      <bpmn:incoming>Flow_IndependentBodyRoute_To_GatewayAppointmentJoin_Art53</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAppointmentJoin_To_AssessQualifications_Art53</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_AssessQualifications_Art53"
+               name="Assess qualifications, experience, and skills">
+      <bpmn:incoming>Flow_GatewayAppointmentJoin_To_AssessQualifications_Art53</bpmn:incoming>
+      <bpmn:outgoing>Flow_AssessQualifications_To_AppointMember_Art53</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_AppointMember_Art53"
+               name="Appoint supervisory authority member">
+      <bpmn:incoming>Flow_AssessQualifications_To_AppointMember_Art53</bpmn:incoming>
+      <bpmn:outgoing>Flow_AppointMember_To_ServeOffice_Art53</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ServeInOffice_Art53"
+               name="Serve in office">
+      <bpmn:incoming>Flow_AppointMember_To_ServeOffice_Art53</bpmn:incoming>
+      <bpmn:incoming>Flow_NoDismissalGrounds_To_ServeOffice_Art53</bpmn:incoming>
+      <bpmn:outgoing>Flow_ServeOffice_To_GatewayServiceOutcome_Art53</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_ServiceOutcome_Art53"
+                           name="How does the member's service end?">
+      <bpmn:incoming>Flow_ServeOffice_To_GatewayServiceOutcome_Art53</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayServiceOutcome_To_EndExpiry_Art53</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayServiceOutcome_To_EndResignation_Art53</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayServiceOutcome_To_EndRetirement_Art53</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayServiceOutcome_To_GatewayDismissalGrounds_Art53</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_DismissalGrounds_Art53"
+                           name="Is there serious misconduct or loss of required conditions?">
+      <bpmn:incoming>Flow_GatewayServiceOutcome_To_GatewayDismissalGrounds_Art53</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayDismissalGrounds_To_DismissMember_Art53</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayDismissalGrounds_To_ServeOffice_Art53</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_DismissMember_Art53"
+               name="Dismiss member">
+      <bpmn:incoming>Flow_GatewayDismissalGrounds_To_DismissMember_Art53</bpmn:incoming>
+      <bpmn:outgoing>Flow_DismissMember_To_EndDismissal_Art53</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_TermExpired_Art53"
+                   name="Duties ended by expiry of term">
+      <bpmn:incoming>Flow_GatewayServiceOutcome_To_EndExpiry_Art53</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_Resignation_Art53"
+                   name="Duties ended by resignation">
+      <bpmn:incoming>Flow_GatewayServiceOutcome_To_EndResignation_Art53</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_CompulsoryRetirement_Art53"
+                   name="Duties ended by compulsory retirement">
+      <bpmn:incoming>Flow_GatewayServiceOutcome_To_EndRetirement_Art53</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_Dismissal_Art53"
+                   name="Member dismissed">
+      <bpmn:incoming>Flow_DismissMember_To_EndDismissal_Art53</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_DefineProcedure_Art53"
+                       sourceRef="StartEvent_StartAppointment_Art53"
+                       targetRef="Task_DefineTransparentProcedure_Art53" />
+    <bpmn:sequenceFlow id="Flow_DefineProcedure_To_GatewayAppointingBody_Art53"
+                       sourceRef="Task_DefineTransparentProcedure_Art53"
+                       targetRef="Gateway_AppointingBody_Art53" />
+    <bpmn:sequenceFlow id="Flow_GatewayAppointingBody_To_ParliamentRoute_Art53"
+                       name="Parliament"
+                       sourceRef="Gateway_AppointingBody_Art53"
+                       targetRef="Task_UseParliamentProcedure_Art53" />
+    <bpmn:sequenceFlow id="Flow_GatewayAppointingBody_To_GovernmentRoute_Art53"
+                       name="Government"
+                       sourceRef="Gateway_AppointingBody_Art53"
+                       targetRef="Task_UseGovernmentProcedure_Art53" />
+    <bpmn:sequenceFlow id="Flow_GatewayAppointingBody_To_HeadOfStateRoute_Art53"
+                       name="Head of State"
+                       sourceRef="Gateway_AppointingBody_Art53"
+                       targetRef="Task_UseHeadOfStateProcedure_Art53" />
+    <bpmn:sequenceFlow id="Flow_GatewayAppointingBody_To_IndependentBodyRoute_Art53"
+                       name="Independent body"
+                       sourceRef="Gateway_AppointingBody_Art53"
+                       targetRef="Task_UseIndependentBodyProcedure_Art53" />
+    <bpmn:sequenceFlow id="Flow_ParliamentRoute_To_GatewayAppointmentJoin_Art53"
+                       sourceRef="Task_UseParliamentProcedure_Art53"
+                       targetRef="Gateway_AppointmentJoin_Art53" />
+    <bpmn:sequenceFlow id="Flow_GovernmentRoute_To_GatewayAppointmentJoin_Art53"
+                       sourceRef="Task_UseGovernmentProcedure_Art53"
+                       targetRef="Gateway_AppointmentJoin_Art53" />
+    <bpmn:sequenceFlow id="Flow_HeadOfStateRoute_To_GatewayAppointmentJoin_Art53"
+                       sourceRef="Task_UseHeadOfStateProcedure_Art53"
+                       targetRef="Gateway_AppointmentJoin_Art53" />
+    <bpmn:sequenceFlow id="Flow_IndependentBodyRoute_To_GatewayAppointmentJoin_Art53"
+                       sourceRef="Task_UseIndependentBodyProcedure_Art53"
+                       targetRef="Gateway_AppointmentJoin_Art53" />
+    <bpmn:sequenceFlow id="Flow_GatewayAppointmentJoin_To_AssessQualifications_Art53"
+                       sourceRef="Gateway_AppointmentJoin_Art53"
+                       targetRef="Task_AssessQualifications_Art53" />
+    <bpmn:sequenceFlow id="Flow_AssessQualifications_To_AppointMember_Art53"
+                       sourceRef="Task_AssessQualifications_Art53"
+                       targetRef="Task_AppointMember_Art53" />
+    <bpmn:sequenceFlow id="Flow_AppointMember_To_ServeOffice_Art53"
+                       sourceRef="Task_AppointMember_Art53"
+                       targetRef="Task_ServeInOffice_Art53" />
+    <bpmn:sequenceFlow id="Flow_ServeOffice_To_GatewayServiceOutcome_Art53"
+                       sourceRef="Task_ServeInOffice_Art53"
+                       targetRef="Gateway_ServiceOutcome_Art53" />
+    <bpmn:sequenceFlow id="Flow_GatewayServiceOutcome_To_EndExpiry_Art53"
+                       name="Expiry of term"
+                       sourceRef="Gateway_ServiceOutcome_Art53"
+                       targetRef="EndEvent_TermExpired_Art53" />
+    <bpmn:sequenceFlow id="Flow_GatewayServiceOutcome_To_EndResignation_Art53"
+                       name="Resignation"
+                       sourceRef="Gateway_ServiceOutcome_Art53"
+                       targetRef="EndEvent_Resignation_Art53" />
+    <bpmn:sequenceFlow id="Flow_GatewayServiceOutcome_To_EndRetirement_Art53"
+                       name="Compulsory retirement"
+                       sourceRef="Gateway_ServiceOutcome_Art53"
+                       targetRef="EndEvent_CompulsoryRetirement_Art53" />
+    <bpmn:sequenceFlow id="Flow_GatewayServiceOutcome_To_GatewayDismissalGrounds_Art53"
+                       name="Dismissal considered"
+                       sourceRef="Gateway_ServiceOutcome_Art53"
+                       targetRef="Gateway_DismissalGrounds_Art53" />
+    <bpmn:sequenceFlow id="Flow_GatewayDismissalGrounds_To_DismissMember_Art53"
+                       name="Yes"
+                       sourceRef="Gateway_DismissalGrounds_Art53"
+                       targetRef="Task_DismissMember_Art53" />
+    <bpmn:sequenceFlow id="Flow_GatewayDismissalGrounds_To_ServeOffice_Art53"
+                       name="No"
+                       sourceRef="Gateway_DismissalGrounds_Art53"
+                       targetRef="Task_ServeInOffice_Art53" />
+    <bpmn:sequenceFlow id="Flow_DismissMember_To_EndDismissal_Art53"
+                       sourceRef="Task_DismissMember_Art53"
+                       targetRef="EndEvent_Dismissal_Art53" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art53_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art53_Reviewed"
+                      bpmnElement="Process_MemberLifecycle_Art53">
+      <bpmndi:BPMNShape id="StartEvent_StartAppointment_Art53_di"
+                        bpmnElement="StartEvent_StartAppointment_Art53">
+        <dc:Bounds x="120" y="382" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DefineTransparentProcedure_Art53_di"
+                        bpmnElement="Task_DefineTransparentProcedure_Art53">
+        <dc:Bounds x="230" y="360" width="260" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AppointingBody_Art53_di"
+                        bpmnElement="Gateway_AppointingBody_Art53"
+                        isMarkerVisible="true">
+        <dc:Bounds x="590" y="375" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_UseParliamentProcedure_Art53_di"
+                        bpmnElement="Task_UseParliamentProcedure_Art53">
+        <dc:Bounds x="800" y="40" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_UseGovernmentProcedure_Art53_di"
+                        bpmnElement="Task_UseGovernmentProcedure_Art53">
+        <dc:Bounds x="800" y="150" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_UseHeadOfStateProcedure_Art53_di"
+                        bpmnElement="Task_UseHeadOfStateProcedure_Art53">
+        <dc:Bounds x="800" y="260" width="240" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_UseIndependentBodyProcedure_Art53_di"
+                        bpmnElement="Task_UseIndependentBodyProcedure_Art53">
+        <dc:Bounds x="800" y="370" width="250" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AppointmentJoin_Art53_di"
+                        bpmnElement="Gateway_AppointmentJoin_Art53"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1210" y="375" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessQualifications_Art53_di"
+                        bpmnElement="Task_AssessQualifications_Art53">
+        <dc:Bounds x="1380" y="360" width="270" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AppointMember_Art53_di"
+                        bpmnElement="Task_AppointMember_Art53">
+        <dc:Bounds x="1760" y="360" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ServeInOffice_Art53_di"
+                        bpmnElement="Task_ServeInOffice_Art53">
+        <dc:Bounds x="2090" y="360" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ServiceOutcome_Art53_di"
+                        bpmnElement="Gateway_ServiceOutcome_Art53"
+                        isMarkerVisible="true">
+        <dc:Bounds x="2390" y="375" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_TermExpired_Art53_di"
+                        bpmnElement="EndEvent_TermExpired_Art53">
+        <dc:Bounds x="2600" y="82" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Resignation_Art53_di"
+                        bpmnElement="EndEvent_Resignation_Art53">
+        <dc:Bounds x="2600" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_CompulsoryRetirement_Art53_di"
+                        bpmnElement="EndEvent_CompulsoryRetirement_Art53">
+        <dc:Bounds x="2600" y="302" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_DismissalGrounds_Art53_di"
+                        bpmnElement="Gateway_DismissalGrounds_Art53"
+                        isMarkerVisible="true">
+        <dc:Bounds x="2600" y="480" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DismissMember_Art53_di"
+                        bpmnElement="Task_DismissMember_Art53">
+        <dc:Bounds x="2780" y="370" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Dismissal_Art53_di"
+                        bpmnElement="EndEvent_Dismissal_Art53">
+        <dc:Bounds x="3090" y="392" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_DefineProcedure_Art53_di"
+                       bpmnElement="Flow_Start_To_DefineProcedure_Art53">
+        <di:waypoint x="156" y="400" />
+        <di:waypoint x="230" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_DefineProcedure_To_GatewayAppointingBody_Art53_di"
+                       bpmnElement="Flow_DefineProcedure_To_GatewayAppointingBody_Art53">
+        <di:waypoint x="490" y="400" />
+        <di:waypoint x="590" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAppointingBody_To_ParliamentRoute_Art53_di"
+                       bpmnElement="Flow_GatewayAppointingBody_To_ParliamentRoute_Art53">
+        <di:waypoint x="615" y="375" />
+        <di:waypoint x="615" y="80" />
+        <di:waypoint x="800" y="80" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAppointingBody_To_GovernmentRoute_Art53_di"
+                       bpmnElement="Flow_GatewayAppointingBody_To_GovernmentRoute_Art53">
+        <di:waypoint x="615" y="375" />
+        <di:waypoint x="615" y="190" />
+        <di:waypoint x="800" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAppointingBody_To_HeadOfStateRoute_Art53_di"
+                       bpmnElement="Flow_GatewayAppointingBody_To_HeadOfStateRoute_Art53">
+        <di:waypoint x="615" y="375" />
+        <di:waypoint x="615" y="300" />
+        <di:waypoint x="800" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAppointingBody_To_IndependentBodyRoute_Art53_di"
+                       bpmnElement="Flow_GatewayAppointingBody_To_IndependentBodyRoute_Art53">
+        <di:waypoint x="640" y="400" />
+        <di:waypoint x="800" y="410" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ParliamentRoute_To_GatewayAppointmentJoin_Art53_di"
+                       bpmnElement="Flow_ParliamentRoute_To_GatewayAppointmentJoin_Art53">
+        <di:waypoint x="1020" y="80" />
+        <di:waypoint x="1235" y="80" />
+        <di:waypoint x="1235" y="375" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GovernmentRoute_To_GatewayAppointmentJoin_Art53_di"
+                       bpmnElement="Flow_GovernmentRoute_To_GatewayAppointmentJoin_Art53">
+        <di:waypoint x="1020" y="190" />
+        <di:waypoint x="1235" y="190" />
+        <di:waypoint x="1235" y="375" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_HeadOfStateRoute_To_GatewayAppointmentJoin_Art53_di"
+                       bpmnElement="Flow_HeadOfStateRoute_To_GatewayAppointmentJoin_Art53">
+        <di:waypoint x="1040" y="300" />
+        <di:waypoint x="1235" y="300" />
+        <di:waypoint x="1235" y="375" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_IndependentBodyRoute_To_GatewayAppointmentJoin_Art53_di"
+                       bpmnElement="Flow_IndependentBodyRoute_To_GatewayAppointmentJoin_Art53">
+        <di:waypoint x="1050" y="410" />
+        <di:waypoint x="1210" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAppointmentJoin_To_AssessQualifications_Art53_di"
+                       bpmnElement="Flow_GatewayAppointmentJoin_To_AssessQualifications_Art53">
+        <di:waypoint x="1260" y="400" />
+        <di:waypoint x="1380" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AssessQualifications_To_AppointMember_Art53_di"
+                       bpmnElement="Flow_AssessQualifications_To_AppointMember_Art53">
+        <di:waypoint x="1650" y="400" />
+        <di:waypoint x="1760" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AppointMember_To_ServeOffice_Art53_di"
+                       bpmnElement="Flow_AppointMember_To_ServeOffice_Art53">
+        <di:waypoint x="1980" y="400" />
+        <di:waypoint x="2090" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ServeOffice_To_GatewayServiceOutcome_Art53_di"
+                       bpmnElement="Flow_ServeOffice_To_GatewayServiceOutcome_Art53">
+        <di:waypoint x="2270" y="400" />
+        <di:waypoint x="2390" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayServiceOutcome_To_EndExpiry_Art53_di"
+                       bpmnElement="Flow_GatewayServiceOutcome_To_EndExpiry_Art53">
+        <di:waypoint x="2415" y="375" />
+        <di:waypoint x="2415" y="100" />
+        <di:waypoint x="2600" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayServiceOutcome_To_EndResignation_Art53_di"
+                       bpmnElement="Flow_GatewayServiceOutcome_To_EndResignation_Art53">
+        <di:waypoint x="2415" y="375" />
+        <di:waypoint x="2415" y="210" />
+        <di:waypoint x="2600" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayServiceOutcome_To_EndRetirement_Art53_di"
+                       bpmnElement="Flow_GatewayServiceOutcome_To_EndRetirement_Art53">
+        <di:waypoint x="2415" y="375" />
+        <di:waypoint x="2415" y="320" />
+        <di:waypoint x="2600" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayServiceOutcome_To_GatewayDismissalGrounds_Art53_di"
+                       bpmnElement="Flow_GatewayServiceOutcome_To_GatewayDismissalGrounds_Art53">
+        <di:waypoint x="2415" y="425" />
+        <di:waypoint x="2415" y="505" />
+        <di:waypoint x="2600" y="505" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayDismissalGrounds_To_DismissMember_Art53_di"
+                       bpmnElement="Flow_GatewayDismissalGrounds_To_DismissMember_Art53">
+        <di:waypoint x="2625" y="480" />
+        <di:waypoint x="2625" y="410" />
+        <di:waypoint x="2780" y="410" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayDismissalGrounds_To_ServeOffice_Art53_di"
+                       bpmnElement="Flow_GatewayDismissalGrounds_To_ServeOffice_Art53">
+        <di:waypoint x="2600" y="505" />
+        <di:waypoint x="2180" y="505" />
+        <di:waypoint x="2180" y="440" />
+        <di:waypoint x="2180" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_DismissMember_To_EndDismissal_Art53_di"
+                       bpmnElement="Flow_DismissMember_To_EndDismissal_Art53">
+        <di:waypoint x="2960" y="410" />
+        <di:waypoint x="3090" y="410" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

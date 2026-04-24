@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art54_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art54_Reviewed">
+    <bpmn:participant id="Participant_MemberState_Art54"
+                      name="Member State"
+                      processRef="Process_MemberState_Art54" />
+    <bpmn:participant id="Participant_SupervisoryAuthority_Art54"
+                      name="Supervisory Authority"
+                      processRef="Process_SupervisoryAuthority_Art54" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_MemberState_Art54"
+                name="Provide Article 54 legal framework"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 54 based on the real English legal text from
+      gdpr_articles/article_54.txt. This process captures the Member State duty to provide by
+      law the establishment framework, appointment conditions and procedures, term duration,
+      reappointment eligibility, incompatibility rules, and employment-cessation rules for the
+      supervisory authority and its members and staff.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_SetLegalFramework_Art54"
+                     name="Set supervisory-authority legal framework">
+      <bpmn:outgoing>Flow_Start_To_GatewaySplitLegalFramework_Art54</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:parallelGateway id="Gateway_SplitLegalFramework_Art54">
+      <bpmn:incoming>Flow_Start_To_GatewaySplitLegalFramework_Art54</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplit_To_ProvideEstablishmentRules_Art54</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplit_To_ProvideAppointmentConditions_Art54</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplit_To_ProvideAppointmentProcedures_Art54</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplit_To_ProvideTermRules_Art54</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplit_To_ProvideReappointmentRules_Art54</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplit_To_ProvideIncompatibilityRules_Art54</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_ProvideEstablishmentRules_Art54"
+               name="Provide establishment rules">
+      <bpmn:incoming>Flow_GatewaySplit_To_ProvideEstablishmentRules_Art54</bpmn:incoming>
+      <bpmn:outgoing>Flow_ProvideEstablishmentRules_To_GatewayJoinLegalFramework_Art54</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ProvideAppointmentConditions_Art54"
+               name="Provide qualifications and eligibility rules">
+      <bpmn:incoming>Flow_GatewaySplit_To_ProvideAppointmentConditions_Art54</bpmn:incoming>
+      <bpmn:outgoing>Flow_ProvideAppointmentConditions_To_GatewayJoinLegalFramework_Art54</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ProvideAppointmentProcedures_Art54"
+               name="Provide appointment rules and procedures">
+      <bpmn:incoming>Flow_GatewaySplit_To_ProvideAppointmentProcedures_Art54</bpmn:incoming>
+      <bpmn:outgoing>Flow_ProvideAppointmentProcedures_To_GatewayJoinLegalFramework_Art54</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ProvideTermRules_Art54"
+               name="Provide term-duration rules">
+      <bpmn:incoming>Flow_GatewaySplit_To_ProvideTermRules_Art54</bpmn:incoming>
+      <bpmn:outgoing>Flow_ProvideTermRules_To_GatewayMinimumTerm_Art54</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_MinimumTerm_Art54"
+                           name="Is the term at least four years or a permitted shorter first term?">
+      <bpmn:incoming>Flow_ProvideTermRules_To_GatewayMinimumTerm_Art54</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayMinimumTerm_To_GatewayJoinLegalFramework_Art54</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayMinimumTerm_To_TaskAllowStaggeredFirstTerm_Art54</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_AllowStaggeredFirstTerm_Art54"
+               name="Allow shorter first term only for staggered independence protection">
+      <bpmn:incoming>Flow_GatewayMinimumTerm_To_TaskAllowStaggeredFirstTerm_Art54</bpmn:incoming>
+      <bpmn:outgoing>Flow_AllowStaggeredFirstTerm_To_GatewayMergeTermRules_Art54</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_MergeTermRules_Art54">
+      <bpmn:incoming>Flow_GatewayMinimumTerm_To_GatewayMergeTermRules_Art54</bpmn:incoming>
+      <bpmn:incoming>Flow_AllowStaggeredFirstTerm_To_GatewayMergeTermRules_Art54</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayMergeTermRules_To_GatewayJoinLegalFramework_Art54</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ProvideReappointmentRules_Art54"
+               name="Provide reappointment eligibility rules">
+      <bpmn:incoming>Flow_GatewaySplit_To_ProvideReappointmentRules_Art54</bpmn:incoming>
+      <bpmn:outgoing>Flow_ProvideReappointmentRules_To_GatewayJoinLegalFramework_Art54</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ProvideIncompatibilityRules_Art54"
+               name="Provide incompatibility and cessation-of-employment rules">
+      <bpmn:incoming>Flow_GatewaySplit_To_ProvideIncompatibilityRules_Art54</bpmn:incoming>
+      <bpmn:outgoing>Flow_ProvideIncompatibilityRules_To_GatewayJoinLegalFramework_Art54</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_JoinLegalFramework_Art54">
+      <bpmn:incoming>Flow_ProvideEstablishmentRules_To_GatewayJoinLegalFramework_Art54</bpmn:incoming>
+      <bpmn:incoming>Flow_ProvideAppointmentConditions_To_GatewayJoinLegalFramework_Art54</bpmn:incoming>
+      <bpmn:incoming>Flow_ProvideAppointmentProcedures_To_GatewayJoinLegalFramework_Art54</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayMergeTermRules_To_GatewayJoinLegalFramework_Art54</bpmn:incoming>
+      <bpmn:incoming>Flow_ProvideReappointmentRules_To_GatewayJoinLegalFramework_Art54</bpmn:incoming>
+      <bpmn:incoming>Flow_ProvideIncompatibilityRules_To_GatewayJoinLegalFramework_Art54</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinLegalFramework_To_EndFrameworkSet_Art54</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:endEvent id="EndEvent_LegalFrameworkSet_Art54"
+                   name="Article 54 legal framework set">
+      <bpmn:incoming>Flow_GatewayJoinLegalFramework_To_EndFrameworkSet_Art54</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_GatewaySplitLegalFramework_Art54"
+                       sourceRef="StartEvent_SetLegalFramework_Art54"
+                       targetRef="Gateway_SplitLegalFramework_Art54" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplit_To_ProvideEstablishmentRules_Art54"
+                       sourceRef="Gateway_SplitLegalFramework_Art54"
+                       targetRef="Task_ProvideEstablishmentRules_Art54" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplit_To_ProvideAppointmentConditions_Art54"
+                       sourceRef="Gateway_SplitLegalFramework_Art54"
+                       targetRef="Task_ProvideAppointmentConditions_Art54" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplit_To_ProvideAppointmentProcedures_Art54"
+                       sourceRef="Gateway_SplitLegalFramework_Art54"
+                       targetRef="Task_ProvideAppointmentProcedures_Art54" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplit_To_ProvideTermRules_Art54"
+                       sourceRef="Gateway_SplitLegalFramework_Art54"
+                       targetRef="Task_ProvideTermRules_Art54" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplit_To_ProvideReappointmentRules_Art54"
+                       sourceRef="Gateway_SplitLegalFramework_Art54"
+                       targetRef="Task_ProvideReappointmentRules_Art54" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplit_To_ProvideIncompatibilityRules_Art54"
+                       sourceRef="Gateway_SplitLegalFramework_Art54"
+                       targetRef="Task_ProvideIncompatibilityRules_Art54" />
+    <bpmn:sequenceFlow id="Flow_ProvideEstablishmentRules_To_GatewayJoinLegalFramework_Art54"
+                       sourceRef="Task_ProvideEstablishmentRules_Art54"
+                       targetRef="Gateway_JoinLegalFramework_Art54" />
+    <bpmn:sequenceFlow id="Flow_ProvideAppointmentConditions_To_GatewayJoinLegalFramework_Art54"
+                       sourceRef="Task_ProvideAppointmentConditions_Art54"
+                       targetRef="Gateway_JoinLegalFramework_Art54" />
+    <bpmn:sequenceFlow id="Flow_ProvideAppointmentProcedures_To_GatewayJoinLegalFramework_Art54"
+                       sourceRef="Task_ProvideAppointmentProcedures_Art54"
+                       targetRef="Gateway_JoinLegalFramework_Art54" />
+    <bpmn:sequenceFlow id="Flow_ProvideTermRules_To_GatewayMinimumTerm_Art54"
+                       sourceRef="Task_ProvideTermRules_Art54"
+                       targetRef="Gateway_MinimumTerm_Art54" />
+    <bpmn:sequenceFlow id="Flow_GatewayMinimumTerm_To_GatewayMergeTermRules_Art54"
+                       name="Yes"
+                       sourceRef="Gateway_MinimumTerm_Art54"
+                       targetRef="Gateway_MergeTermRules_Art54" />
+    <bpmn:sequenceFlow id="Flow_GatewayMinimumTerm_To_TaskAllowStaggeredFirstTerm_Art54"
+                       name="No"
+                       sourceRef="Gateway_MinimumTerm_Art54"
+                       targetRef="Task_AllowStaggeredFirstTerm_Art54" />
+    <bpmn:sequenceFlow id="Flow_AllowStaggeredFirstTerm_To_GatewayMergeTermRules_Art54"
+                       sourceRef="Task_AllowStaggeredFirstTerm_Art54"
+                       targetRef="Gateway_MergeTermRules_Art54" />
+    <bpmn:sequenceFlow id="Flow_GatewayMergeTermRules_To_GatewayJoinLegalFramework_Art54"
+                       sourceRef="Gateway_MergeTermRules_Art54"
+                       targetRef="Gateway_JoinLegalFramework_Art54" />
+    <bpmn:sequenceFlow id="Flow_ProvideReappointmentRules_To_GatewayJoinLegalFramework_Art54"
+                       sourceRef="Task_ProvideReappointmentRules_Art54"
+                       targetRef="Gateway_JoinLegalFramework_Art54" />
+    <bpmn:sequenceFlow id="Flow_ProvideIncompatibilityRules_To_GatewayJoinLegalFramework_Art54"
+                       sourceRef="Task_ProvideIncompatibilityRules_Art54"
+                       targetRef="Gateway_JoinLegalFramework_Art54" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoinLegalFramework_To_EndFrameworkSet_Art54"
+                       sourceRef="Gateway_JoinLegalFramework_Art54"
+                       targetRef="EndEvent_LegalFrameworkSet_Art54" />
+  </bpmn:process>
+
+  <bpmn:process id="Process_SupervisoryAuthority_Art54"
+                name="Maintain Article 54 secrecy duties"
+                isExecutable="false">
+    <bpmn:documentation>
+      This process captures the Article 54(2) professional-secrecy duty of members and staff
+      during and after their term of office, including the specific application to reporting by
+      natural persons of infringements of the Regulation.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_HandleConfidentialInformation_Art54"
+                     name="Handle confidential information">
+      <bpmn:outgoing>Flow_StartConfidentiality_To_ObserveProfessionalSecrecy_Art54</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_ObserveProfessionalSecrecy_Art54"
+               name="Observe professional secrecy">
+      <bpmn:incoming>Flow_StartConfidentiality_To_ObserveProfessionalSecrecy_Art54</bpmn:incoming>
+      <bpmn:outgoing>Flow_ObserveProfessionalSecrecy_To_GatewayNaturalPersonReport_Art54</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_NaturalPersonReport_Art54"
+                           name="Does the information concern reporting by natural persons of infringements?">
+      <bpmn:incoming>Flow_ObserveProfessionalSecrecy_To_GatewayNaturalPersonReport_Art54</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayNaturalPersonReport_To_EndSecrecyMaintained_Art54</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayNaturalPersonReport_To_ProtectInfringementReport_Art54</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ProtectInfringementReport_Art54"
+               name="Protect infringement-report confidentiality">
+      <bpmn:incoming>Flow_GatewayNaturalPersonReport_To_ProtectInfringementReport_Art54</bpmn:incoming>
+      <bpmn:outgoing>Flow_ProtectInfringementReport_To_EndSecrecyMaintained_Art54</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_SecrecyMaintained_Art54"
+                   name="Article 54 secrecy duties maintained">
+      <bpmn:incoming>Flow_GatewayNaturalPersonReport_To_EndSecrecyMaintained_Art54</bpmn:incoming>
+      <bpmn:incoming>Flow_ProtectInfringementReport_To_EndSecrecyMaintained_Art54</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartConfidentiality_To_ObserveProfessionalSecrecy_Art54"
+                       sourceRef="StartEvent_HandleConfidentialInformation_Art54"
+                       targetRef="Task_ObserveProfessionalSecrecy_Art54" />
+    <bpmn:sequenceFlow id="Flow_ObserveProfessionalSecrecy_To_GatewayNaturalPersonReport_Art54"
+                       sourceRef="Task_ObserveProfessionalSecrecy_Art54"
+                       targetRef="Gateway_NaturalPersonReport_Art54" />
+    <bpmn:sequenceFlow id="Flow_GatewayNaturalPersonReport_To_EndSecrecyMaintained_Art54"
+                       name="No"
+                       sourceRef="Gateway_NaturalPersonReport_Art54"
+                       targetRef="EndEvent_SecrecyMaintained_Art54" />
+    <bpmn:sequenceFlow id="Flow_GatewayNaturalPersonReport_To_ProtectInfringementReport_Art54"
+                       name="Yes"
+                       sourceRef="Gateway_NaturalPersonReport_Art54"
+                       targetRef="Task_ProtectInfringementReport_Art54" />
+    <bpmn:sequenceFlow id="Flow_ProtectInfringementReport_To_EndSecrecyMaintained_Art54"
+                       sourceRef="Task_ProtectInfringementReport_Art54"
+                       targetRef="EndEvent_SecrecyMaintained_Art54" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art54_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art54_Reviewed"
+                      bpmnElement="Collaboration_Art54_Reviewed">
+      <bpmndi:BPMNShape id="Participant_MemberState_Art54_di"
+                        bpmnElement="Participant_MemberState_Art54"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="2620" height="380" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_SupervisoryAuthority_Art54_di"
+                        bpmnElement="Participant_SupervisoryAuthority_Art54"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="460" width="2620" height="220" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_SetLegalFramework_Art54_di"
+                        bpmnElement="StartEvent_SetLegalFramework_Art54">
+        <dc:Bounds x="120" y="207" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SplitLegalFramework_Art54_di"
+                        bpmnElement="Gateway_SplitLegalFramework_Art54"
+                        isMarkerVisible="true">
+        <dc:Bounds x="250" y="200" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ProvideEstablishmentRules_Art54_di"
+                        bpmnElement="Task_ProvideEstablishmentRules_Art54">
+        <dc:Bounds x="430" y="40" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ProvideAppointmentConditions_Art54_di"
+                        bpmnElement="Task_ProvideAppointmentConditions_Art54">
+        <dc:Bounds x="430" y="130" width="290" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ProvideAppointmentProcedures_Art54_di"
+                        bpmnElement="Task_ProvideAppointmentProcedures_Art54">
+        <dc:Bounds x="430" y="220" width="280" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ProvideTermRules_Art54_di"
+                        bpmnElement="Task_ProvideTermRules_Art54">
+        <dc:Bounds x="430" y="310" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_MinimumTerm_Art54_di"
+                        bpmnElement="Gateway_MinimumTerm_Art54"
+                        isMarkerVisible="true">
+        <dc:Bounds x="820" y="325" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AllowStaggeredFirstTerm_Art54_di"
+                        bpmnElement="Task_AllowStaggeredFirstTerm_Art54">
+        <dc:Bounds x="1010" y="310" width="340" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_MergeTermRules_Art54_di"
+                        bpmnElement="Gateway_MergeTermRules_Art54"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1450" y="325" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ProvideReappointmentRules_Art54_di"
+                        bpmnElement="Task_ProvideReappointmentRules_Art54">
+        <dc:Bounds x="1010" y="130" width="250" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ProvideIncompatibilityRules_Art54_di"
+                        bpmnElement="Task_ProvideIncompatibilityRules_Art54">
+        <dc:Bounds x="1010" y="40" width="330" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinLegalFramework_Art54_di"
+                        bpmnElement="Gateway_JoinLegalFramework_Art54"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1580" y="200" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_LegalFrameworkSet_Art54_di"
+                        bpmnElement="EndEvent_LegalFrameworkSet_Art54">
+        <dc:Bounds x="1800" y="207" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_HandleConfidentialInformation_Art54_di"
+                        bpmnElement="StartEvent_HandleConfidentialInformation_Art54">
+        <dc:Bounds x="120" y="552" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ObserveProfessionalSecrecy_Art54_di"
+                        bpmnElement="Task_ObserveProfessionalSecrecy_Art54">
+        <dc:Bounds x="240" y="530" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_NaturalPersonReport_Art54_di"
+                        bpmnElement="Gateway_NaturalPersonReport_Art54"
+                        isMarkerVisible="true">
+        <dc:Bounds x="570" y="545" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ProtectInfringementReport_Art54_di"
+                        bpmnElement="Task_ProtectInfringementReport_Art54">
+        <dc:Bounds x="760" y="530" width="250" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_SecrecyMaintained_Art54_di"
+                        bpmnElement="EndEvent_SecrecyMaintained_Art54">
+        <dc:Bounds x="1170" y="552" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_GatewaySplitLegalFramework_Art54_di"
+                       bpmnElement="Flow_Start_To_GatewaySplitLegalFramework_Art54">
+        <di:waypoint x="156" y="225" />
+        <di:waypoint x="250" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplit_To_ProvideEstablishmentRules_Art54_di"
+                       bpmnElement="Flow_GatewaySplit_To_ProvideEstablishmentRules_Art54">
+        <di:waypoint x="275" y="200" />
+        <di:waypoint x="275" y="80" />
+        <di:waypoint x="430" y="80" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplit_To_ProvideAppointmentConditions_Art54_di"
+                       bpmnElement="Flow_GatewaySplit_To_ProvideAppointmentConditions_Art54">
+        <di:waypoint x="300" y="215" />
+        <di:waypoint x="430" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplit_To_ProvideAppointmentProcedures_Art54_di"
+                       bpmnElement="Flow_GatewaySplit_To_ProvideAppointmentProcedures_Art54">
+        <di:waypoint x="300" y="225" />
+        <di:waypoint x="430" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplit_To_ProvideTermRules_Art54_di"
+                       bpmnElement="Flow_GatewaySplit_To_ProvideTermRules_Art54">
+        <di:waypoint x="275" y="250" />
+        <di:waypoint x="275" y="350" />
+        <di:waypoint x="430" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplit_To_ProvideReappointmentRules_Art54_di"
+                       bpmnElement="Flow_GatewaySplit_To_ProvideReappointmentRules_Art54">
+        <di:waypoint x="300" y="225" />
+        <di:waypoint x="1010" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplit_To_ProvideIncompatibilityRules_Art54_di"
+                       bpmnElement="Flow_GatewaySplit_To_ProvideIncompatibilityRules_Art54">
+        <di:waypoint x="275" y="200" />
+        <di:waypoint x="275" y="80" />
+        <di:waypoint x="1010" y="80" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ProvideEstablishmentRules_To_GatewayJoinLegalFramework_Art54_di"
+                       bpmnElement="Flow_ProvideEstablishmentRules_To_GatewayJoinLegalFramework_Art54">
+        <di:waypoint x="650" y="80" />
+        <di:waypoint x="1605" y="80" />
+        <di:waypoint x="1605" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ProvideAppointmentConditions_To_GatewayJoinLegalFramework_Art54_di"
+                       bpmnElement="Flow_ProvideAppointmentConditions_To_GatewayJoinLegalFramework_Art54">
+        <di:waypoint x="720" y="170" />
+        <di:waypoint x="1605" y="170" />
+        <di:waypoint x="1605" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ProvideAppointmentProcedures_To_GatewayJoinLegalFramework_Art54_di"
+                       bpmnElement="Flow_ProvideAppointmentProcedures_To_GatewayJoinLegalFramework_Art54">
+        <di:waypoint x="710" y="260" />
+        <di:waypoint x="1605" y="260" />
+        <di:waypoint x="1605" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ProvideTermRules_To_GatewayMinimumTerm_Art54_di"
+                       bpmnElement="Flow_ProvideTermRules_To_GatewayMinimumTerm_Art54">
+        <di:waypoint x="650" y="350" />
+        <di:waypoint x="820" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayMinimumTerm_To_GatewayMergeTermRules_Art54_di"
+                       bpmnElement="Flow_GatewayMinimumTerm_To_GatewayMergeTermRules_Art54">
+        <di:waypoint x="845" y="325" />
+        <di:waypoint x="845" y="225" />
+        <di:waypoint x="1475" y="225" />
+        <di:waypoint x="1475" y="325" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayMinimumTerm_To_TaskAllowStaggeredFirstTerm_Art54_di"
+                       bpmnElement="Flow_GatewayMinimumTerm_To_TaskAllowStaggeredFirstTerm_Art54">
+        <di:waypoint x="870" y="350" />
+        <di:waypoint x="1010" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AllowStaggeredFirstTerm_To_GatewayMergeTermRules_Art54_di"
+                       bpmnElement="Flow_AllowStaggeredFirstTerm_To_GatewayMergeTermRules_Art54">
+        <di:waypoint x="1350" y="350" />
+        <di:waypoint x="1450" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayMergeTermRules_To_GatewayJoinLegalFramework_Art54_di"
+                       bpmnElement="Flow_GatewayMergeTermRules_To_GatewayJoinLegalFramework_Art54">
+        <di:waypoint x="1500" y="350" />
+        <di:waypoint x="1605" y="350" />
+        <di:waypoint x="1605" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ProvideReappointmentRules_To_GatewayJoinLegalFramework_Art54_di"
+                       bpmnElement="Flow_ProvideReappointmentRules_To_GatewayJoinLegalFramework_Art54">
+        <di:waypoint x="1260" y="170" />
+        <di:waypoint x="1605" y="170" />
+        <di:waypoint x="1605" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ProvideIncompatibilityRules_To_GatewayJoinLegalFramework_Art54_di"
+                       bpmnElement="Flow_ProvideIncompatibilityRules_To_GatewayJoinLegalFramework_Art54">
+        <di:waypoint x="1340" y="80" />
+        <di:waypoint x="1605" y="80" />
+        <di:waypoint x="1605" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinLegalFramework_To_EndFrameworkSet_Art54_di"
+                       bpmnElement="Flow_GatewayJoinLegalFramework_To_EndFrameworkSet_Art54">
+        <di:waypoint x="1630" y="225" />
+        <di:waypoint x="1800" y="225" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_StartConfidentiality_To_ObserveProfessionalSecrecy_Art54_di"
+                       bpmnElement="Flow_StartConfidentiality_To_ObserveProfessionalSecrecy_Art54">
+        <di:waypoint x="156" y="570" />
+        <di:waypoint x="240" y="570" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ObserveProfessionalSecrecy_To_GatewayNaturalPersonReport_Art54_di"
+                       bpmnElement="Flow_ObserveProfessionalSecrecy_To_GatewayNaturalPersonReport_Art54">
+        <di:waypoint x="460" y="570" />
+        <di:waypoint x="570" y="570" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayNaturalPersonReport_To_EndSecrecyMaintained_Art54_di"
+                       bpmnElement="Flow_GatewayNaturalPersonReport_To_EndSecrecyMaintained_Art54">
+        <di:waypoint x="620" y="570" />
+        <di:waypoint x="1170" y="570" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayNaturalPersonReport_To_ProtectInfringementReport_Art54_di"
+                       bpmnElement="Flow_GatewayNaturalPersonReport_To_ProtectInfringementReport_Art54">
+        <di:waypoint x="595" y="545" />
+        <di:waypoint x="595" y="420" />
+        <di:waypoint x="885" y="420" />
+        <di:waypoint x="885" y="530" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ProtectInfringementReport_To_EndSecrecyMaintained_Art54_di"
+                       bpmnElement="Flow_ProtectInfringementReport_To_EndSecrecyMaintained_Art54">
+        <di:waypoint x="1010" y="570" />
+        <di:waypoint x="1170" y="570" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

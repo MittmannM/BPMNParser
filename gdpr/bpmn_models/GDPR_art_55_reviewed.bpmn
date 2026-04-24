@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art55_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:process id="Process_CompetenceAssessment_Art55"
+                name="Determine Article 55 supervisory authority competence"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 55 based on the real English legal text from
+      gdpr_articles/article_55.txt. The model captures the general territorial competence of
+      each supervisory authority within its own Member State, the special competence rule for
+      processing carried out by public authorities or private bodies acting on the basis of
+      Article 6(1)(c) or (e) with the explicit non-application of Article 56, and the exclusion
+      of competence over processing operations of courts acting in their judicial capacity.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_AssessCompetence_Art55"
+                     name="Assess supervisory authority competence">
+      <bpmn:outgoing>Flow_Start_To_IdentifyContext_Art55</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_IdentifyProcessingContext_Art55"
+               name="Identify processing context">
+      <bpmn:incoming>Flow_Start_To_IdentifyContext_Art55</bpmn:incoming>
+      <bpmn:outgoing>Flow_IdentifyContext_To_GatewayTerritory_Art55</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_Territory_Art55"
+                           name="Does the processing fall within the authority's Member State territory?">
+      <bpmn:incoming>Flow_IdentifyContext_To_GatewayTerritory_Art55</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayTerritory_To_GatewayJudicialCapacity_Art55</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayTerritory_To_EndOutsideTerritory_Art55</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_JudicialCapacity_Art55"
+                           name="Are courts acting in their judicial capacity involved?">
+      <bpmn:incoming>Flow_GatewayTerritory_To_GatewayJudicialCapacity_Art55</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJudicialCapacity_To_EndNoCourtCompetence_Art55</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayJudicialCapacity_To_GatewayArticleSixBasis_Art55</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_ArticleSixBasis_Art55"
+                           name="Is the processing carried out under Article 6(1)(c) or (e) by a public authority or private body?">
+      <bpmn:incoming>Flow_GatewayJudicialCapacity_To_GatewayArticleSixBasis_Art55</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayArticleSixBasis_To_ExerciseSpecialCompetence_Art55</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayArticleSixBasis_To_ExerciseTerritorialCompetence_Art55</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ExerciseSpecialCompetence_Art55"
+               name="Exercise Member State competence">
+      <bpmn:incoming>Flow_GatewayArticleSixBasis_To_ExerciseSpecialCompetence_Art55</bpmn:incoming>
+      <bpmn:outgoing>Flow_ExerciseSpecialCompetence_To_DisapplyArticle56_Art55</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_DisapplyArticle56_Art55"
+               name="Disapply Article 56">
+      <bpmn:incoming>Flow_ExerciseSpecialCompetence_To_DisapplyArticle56_Art55</bpmn:incoming>
+      <bpmn:outgoing>Flow_DisapplyArticle56_To_EndSpecialCompetence_Art55</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ExerciseTerritorialCompetence_Art55"
+               name="Exercise territorial competence">
+      <bpmn:incoming>Flow_GatewayArticleSixBasis_To_ExerciseTerritorialCompetence_Art55</bpmn:incoming>
+      <bpmn:outgoing>Flow_ExerciseTerritorialCompetence_To_EndTerritorialCompetence_Art55</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_OutsideTerritory_Art55"
+                   name="Outside territorial competence">
+      <bpmn:incoming>Flow_GatewayTerritory_To_EndOutsideTerritory_Art55</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_NoCourtCompetence_Art55"
+                   name="No competence over courts acting judicially">
+      <bpmn:incoming>Flow_GatewayJudicialCapacity_To_EndNoCourtCompetence_Art55</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_SpecialCompetence_Art55"
+                   name="Special competence established">
+      <bpmn:incoming>Flow_DisapplyArticle56_To_EndSpecialCompetence_Art55</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_TerritorialCompetence_Art55"
+                   name="Territorial competence established">
+      <bpmn:incoming>Flow_ExerciseTerritorialCompetence_To_EndTerritorialCompetence_Art55</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_IdentifyContext_Art55"
+                       sourceRef="StartEvent_AssessCompetence_Art55"
+                       targetRef="Task_IdentifyProcessingContext_Art55" />
+    <bpmn:sequenceFlow id="Flow_IdentifyContext_To_GatewayTerritory_Art55"
+                       sourceRef="Task_IdentifyProcessingContext_Art55"
+                       targetRef="Gateway_Territory_Art55" />
+    <bpmn:sequenceFlow id="Flow_GatewayTerritory_To_GatewayJudicialCapacity_Art55"
+                       name="Yes"
+                       sourceRef="Gateway_Territory_Art55"
+                       targetRef="Gateway_JudicialCapacity_Art55" />
+    <bpmn:sequenceFlow id="Flow_GatewayTerritory_To_EndOutsideTerritory_Art55"
+                       name="No"
+                       sourceRef="Gateway_Territory_Art55"
+                       targetRef="EndEvent_OutsideTerritory_Art55" />
+    <bpmn:sequenceFlow id="Flow_GatewayJudicialCapacity_To_EndNoCourtCompetence_Art55"
+                       name="Yes"
+                       sourceRef="Gateway_JudicialCapacity_Art55"
+                       targetRef="EndEvent_NoCourtCompetence_Art55" />
+    <bpmn:sequenceFlow id="Flow_GatewayJudicialCapacity_To_GatewayArticleSixBasis_Art55"
+                       name="No"
+                       sourceRef="Gateway_JudicialCapacity_Art55"
+                       targetRef="Gateway_ArticleSixBasis_Art55" />
+    <bpmn:sequenceFlow id="Flow_GatewayArticleSixBasis_To_ExerciseSpecialCompetence_Art55"
+                       name="Yes"
+                       sourceRef="Gateway_ArticleSixBasis_Art55"
+                       targetRef="Task_ExerciseSpecialCompetence_Art55" />
+    <bpmn:sequenceFlow id="Flow_GatewayArticleSixBasis_To_ExerciseTerritorialCompetence_Art55"
+                       name="No"
+                       sourceRef="Gateway_ArticleSixBasis_Art55"
+                       targetRef="Task_ExerciseTerritorialCompetence_Art55" />
+    <bpmn:sequenceFlow id="Flow_ExerciseSpecialCompetence_To_DisapplyArticle56_Art55"
+                       sourceRef="Task_ExerciseSpecialCompetence_Art55"
+                       targetRef="Task_DisapplyArticle56_Art55" />
+    <bpmn:sequenceFlow id="Flow_DisapplyArticle56_To_EndSpecialCompetence_Art55"
+                       sourceRef="Task_DisapplyArticle56_Art55"
+                       targetRef="EndEvent_SpecialCompetence_Art55" />
+    <bpmn:sequenceFlow id="Flow_ExerciseTerritorialCompetence_To_EndTerritorialCompetence_Art55"
+                       sourceRef="Task_ExerciseTerritorialCompetence_Art55"
+                       targetRef="EndEvent_TerritorialCompetence_Art55" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art55_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art55_Reviewed"
+                      bpmnElement="Process_CompetenceAssessment_Art55">
+      <bpmndi:BPMNShape id="StartEvent_AssessCompetence_Art55_di"
+                        bpmnElement="StartEvent_AssessCompetence_Art55">
+        <dc:Bounds x="120" y="232" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_IdentifyProcessingContext_Art55_di"
+                        bpmnElement="Task_IdentifyProcessingContext_Art55">
+        <dc:Bounds x="220" y="210" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Territory_Art55_di"
+                        bpmnElement="Gateway_Territory_Art55"
+                        isMarkerVisible="true">
+        <dc:Bounds x="490" y="225" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JudicialCapacity_Art55_di"
+                        bpmnElement="Gateway_JudicialCapacity_Art55"
+                        isMarkerVisible="true">
+        <dc:Bounds x="670" y="225" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ArticleSixBasis_Art55_di"
+                        bpmnElement="Gateway_ArticleSixBasis_Art55"
+                        isMarkerVisible="true">
+        <dc:Bounds x="860" y="225" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ExerciseSpecialCompetence_Art55_di"
+                        bpmnElement="Task_ExerciseSpecialCompetence_Art55">
+        <dc:Bounds x="1020" y="100" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DisapplyArticle56_Art55_di"
+                        bpmnElement="Task_DisapplyArticle56_Art55">
+        <dc:Bounds x="1360" y="100" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ExerciseTerritorialCompetence_Art55_di"
+                        bpmnElement="Task_ExerciseTerritorialCompetence_Art55">
+        <dc:Bounds x="1020" y="340" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_OutsideTerritory_Art55_di"
+                        bpmnElement="EndEvent_OutsideTerritory_Art55">
+        <dc:Bounds x="670" y="442" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NoCourtCompetence_Art55_di"
+                        bpmnElement="EndEvent_NoCourtCompetence_Art55">
+        <dc:Bounds x="860" y="442" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_SpecialCompetence_Art55_di"
+                        bpmnElement="EndEvent_SpecialCompetence_Art55">
+        <dc:Bounds x="1630" y="122" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_TerritorialCompetence_Art55_di"
+                        bpmnElement="EndEvent_TerritorialCompetence_Art55">
+        <dc:Bounds x="1330" y="362" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_IdentifyContext_Art55_di"
+                       bpmnElement="Flow_Start_To_IdentifyContext_Art55">
+        <di:waypoint x="156" y="250" />
+        <di:waypoint x="220" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_IdentifyContext_To_GatewayTerritory_Art55_di"
+                       bpmnElement="Flow_IdentifyContext_To_GatewayTerritory_Art55">
+        <di:waypoint x="420" y="250" />
+        <di:waypoint x="490" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayTerritory_To_GatewayJudicialCapacity_Art55_di"
+                       bpmnElement="Flow_GatewayTerritory_To_GatewayJudicialCapacity_Art55">
+        <di:waypoint x="540" y="250" />
+        <di:waypoint x="670" y="250" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="590" y="232" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayTerritory_To_EndOutsideTerritory_Art55_di"
+                       bpmnElement="Flow_GatewayTerritory_To_EndOutsideTerritory_Art55">
+        <di:waypoint x="515" y="275" />
+        <di:waypoint x="515" y="460" />
+        <di:waypoint x="670" y="460" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="523" y="360" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJudicialCapacity_To_EndNoCourtCompetence_Art55_di"
+                       bpmnElement="Flow_GatewayJudicialCapacity_To_EndNoCourtCompetence_Art55">
+        <di:waypoint x="695" y="275" />
+        <di:waypoint x="695" y="460" />
+        <di:waypoint x="860" y="460" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="703" y="360" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJudicialCapacity_To_GatewayArticleSixBasis_Art55_di"
+                       bpmnElement="Flow_GatewayJudicialCapacity_To_GatewayArticleSixBasis_Art55">
+        <di:waypoint x="720" y="250" />
+        <di:waypoint x="860" y="250" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="775" y="232" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayArticleSixBasis_To_ExerciseSpecialCompetence_Art55_di"
+                       bpmnElement="Flow_GatewayArticleSixBasis_To_ExerciseSpecialCompetence_Art55">
+        <di:waypoint x="885" y="225" />
+        <di:waypoint x="885" y="140" />
+        <di:waypoint x="1020" y="140" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="893" y="174" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayArticleSixBasis_To_ExerciseTerritorialCompetence_Art55_di"
+                       bpmnElement="Flow_GatewayArticleSixBasis_To_ExerciseTerritorialCompetence_Art55">
+        <di:waypoint x="885" y="275" />
+        <di:waypoint x="885" y="380" />
+        <di:waypoint x="1020" y="380" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="893" y="326" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ExerciseSpecialCompetence_To_DisapplyArticle56_Art55_di"
+                       bpmnElement="Flow_ExerciseSpecialCompetence_To_DisapplyArticle56_Art55">
+        <di:waypoint x="1240" y="140" />
+        <di:waypoint x="1360" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_DisapplyArticle56_To_EndSpecialCompetence_Art55_di"
+                       bpmnElement="Flow_DisapplyArticle56_To_EndSpecialCompetence_Art55">
+        <di:waypoint x="1530" y="140" />
+        <di:waypoint x="1630" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ExerciseTerritorialCompetence_To_EndTerritorialCompetence_Art55_di"
+                       bpmnElement="Flow_ExerciseTerritorialCompetence_To_EndTerritorialCompetence_Art55">
+        <di:waypoint x="1230" y="380" />
+        <di:waypoint x="1330" y="380" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

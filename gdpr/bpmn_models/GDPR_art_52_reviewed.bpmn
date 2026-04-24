@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art52_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art52_Reviewed">
+    <bpmn:participant id="Participant_MemberState_Art52"
+                      name="Member State"
+                      processRef="Process_MemberState_Art52" />
+    <bpmn:participant id="Participant_SupervisoryAuthority_Art52"
+                      name="Supervisory Authority"
+                      processRef="Process_SupervisoryAuthority_Art52" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_MemberState_Art52"
+                name="Ensure Article 52 independence guarantees"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 52 based on the real English legal text from
+      gdpr_articles/article_52.txt. This process captures the Member State duties to provide
+      the resources, premises, infrastructure, staffing structure, and budgetary framework
+      necessary for effective supervisory-authority performance while preserving independence.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_SetIndependenceGuarantees_Art52"
+                     name="Set independence guarantees">
+      <bpmn:outgoing>Flow_Start_To_GatewaySplitGuarantees_Art52</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:parallelGateway id="Gateway_SplitGuarantees_Art52">
+      <bpmn:incoming>Flow_Start_To_GatewaySplitGuarantees_Art52</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplitGuarantees_To_ProvideResources_Art52</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitGuarantees_To_EnsureOwnStaff_Art52</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitGuarantees_To_SetFinancialControl_Art52</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_ProvideResourcesPremisesInfrastructure_Art52"
+               name="Provide resources, premises, and infrastructure">
+      <bpmn:incoming>Flow_GatewaySplitGuarantees_To_ProvideResources_Art52</bpmn:incoming>
+      <bpmn:outgoing>Flow_ProvideResources_To_GatewayJoinGuarantees_Art52</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_EnsureOwnStaff_Art52"
+               name="Ensure own staff under exclusive direction">
+      <bpmn:incoming>Flow_GatewaySplitGuarantees_To_EnsureOwnStaff_Art52</bpmn:incoming>
+      <bpmn:outgoing>Flow_EnsureOwnStaff_To_GatewayJoinGuarantees_Art52</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_SetFinancialControlBudget_Art52"
+               name="Set independent financial control and annual budget">
+      <bpmn:incoming>Flow_GatewaySplitGuarantees_To_SetFinancialControl_Art52</bpmn:incoming>
+      <bpmn:outgoing>Flow_SetFinancialControl_To_GatewayJoinGuarantees_Art52</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_JoinGuarantees_Art52">
+      <bpmn:incoming>Flow_ProvideResources_To_GatewayJoinGuarantees_Art52</bpmn:incoming>
+      <bpmn:incoming>Flow_EnsureOwnStaff_To_GatewayJoinGuarantees_Art52</bpmn:incoming>
+      <bpmn:incoming>Flow_SetFinancialControl_To_GatewayJoinGuarantees_Art52</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinGuarantees_To_EndGuaranteesSet_Art52</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:endEvent id="EndEvent_GuaranteesSet_Art52"
+                   name="Article 52 Member State guarantees set">
+      <bpmn:incoming>Flow_GatewayJoinGuarantees_To_EndGuaranteesSet_Art52</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_GatewaySplitGuarantees_Art52"
+                       sourceRef="StartEvent_SetIndependenceGuarantees_Art52"
+                       targetRef="Gateway_SplitGuarantees_Art52" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitGuarantees_To_ProvideResources_Art52"
+                       sourceRef="Gateway_SplitGuarantees_Art52"
+                       targetRef="Task_ProvideResourcesPremisesInfrastructure_Art52" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitGuarantees_To_EnsureOwnStaff_Art52"
+                       sourceRef="Gateway_SplitGuarantees_Art52"
+                       targetRef="Task_EnsureOwnStaff_Art52" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitGuarantees_To_SetFinancialControl_Art52"
+                       sourceRef="Gateway_SplitGuarantees_Art52"
+                       targetRef="Task_SetFinancialControlBudget_Art52" />
+    <bpmn:sequenceFlow id="Flow_ProvideResources_To_GatewayJoinGuarantees_Art52"
+                       sourceRef="Task_ProvideResourcesPremisesInfrastructure_Art52"
+                       targetRef="Gateway_JoinGuarantees_Art52" />
+    <bpmn:sequenceFlow id="Flow_EnsureOwnStaff_To_GatewayJoinGuarantees_Art52"
+                       sourceRef="Task_EnsureOwnStaff_Art52"
+                       targetRef="Gateway_JoinGuarantees_Art52" />
+    <bpmn:sequenceFlow id="Flow_SetFinancialControl_To_GatewayJoinGuarantees_Art52"
+                       sourceRef="Task_SetFinancialControlBudget_Art52"
+                       targetRef="Gateway_JoinGuarantees_Art52" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoinGuarantees_To_EndGuaranteesSet_Art52"
+                       sourceRef="Gateway_JoinGuarantees_Art52"
+                       targetRef="EndEvent_GuaranteesSet_Art52" />
+  </bpmn:process>
+
+  <bpmn:process id="Process_SupervisoryAuthority_Art52"
+                name="Maintain Article 52 independence"
+                isExecutable="false">
+    <bpmn:documentation>
+      This process captures the supervisory-authority-side duties in Article 52:
+      acting with complete independence, remaining free from direct or indirect external
+      influence, not seeking or taking instructions, refraining from incompatible actions,
+      and not engaging in incompatible occupations during the term of office.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_PerformSupervisoryTasks_Art52"
+                     name="Perform supervisory tasks and powers">
+      <bpmn:outgoing>Flow_StartPerform_To_ActIndependently_Art52</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_ActWithCompleteIndependence_Art52"
+               name="Act with complete independence">
+      <bpmn:incoming>Flow_StartPerform_To_ActIndependently_Art52</bpmn:incoming>
+      <bpmn:outgoing>Flow_ActIndependently_To_RemainFreeInfluence_Art52</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_RemainFreeFromExternalInfluence_Art52"
+               name="Remain free from external influence">
+      <bpmn:incoming>Flow_ActIndependently_To_RemainFreeInfluence_Art52</bpmn:incoming>
+      <bpmn:outgoing>Flow_RemainFreeInfluence_To_NotTakeInstructions_Art52</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_NotSeekOrTakeInstructions_Art52"
+               name="Neither seek nor take instructions">
+      <bpmn:incoming>Flow_RemainFreeInfluence_To_NotTakeInstructions_Art52</bpmn:incoming>
+      <bpmn:outgoing>Flow_NotTakeInstructions_To_RefrainIncompatibleActions_Art52</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_RefrainIncompatibleActions_Art52"
+               name="Refrain from incompatible actions">
+      <bpmn:incoming>Flow_NotTakeInstructions_To_RefrainIncompatibleActions_Art52</bpmn:incoming>
+      <bpmn:outgoing>Flow_RefrainActions_To_NotEngageOccupation_Art52</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_NotEngageIncompatibleOccupation_Art52"
+               name="Avoid incompatible occupations during office">
+      <bpmn:incoming>Flow_RefrainActions_To_NotEngageOccupation_Art52</bpmn:incoming>
+      <bpmn:outgoing>Flow_NotEngageOccupation_To_EndIndependenceMaintained_Art52</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_IndependenceMaintained_Art52"
+                   name="Article 52 independence maintained">
+      <bpmn:incoming>Flow_NotEngageOccupation_To_EndIndependenceMaintained_Art52</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartPerform_To_ActIndependently_Art52"
+                       sourceRef="StartEvent_PerformSupervisoryTasks_Art52"
+                       targetRef="Task_ActWithCompleteIndependence_Art52" />
+    <bpmn:sequenceFlow id="Flow_ActIndependently_To_RemainFreeInfluence_Art52"
+                       sourceRef="Task_ActWithCompleteIndependence_Art52"
+                       targetRef="Task_RemainFreeFromExternalInfluence_Art52" />
+    <bpmn:sequenceFlow id="Flow_RemainFreeInfluence_To_NotTakeInstructions_Art52"
+                       sourceRef="Task_RemainFreeFromExternalInfluence_Art52"
+                       targetRef="Task_NotSeekOrTakeInstructions_Art52" />
+    <bpmn:sequenceFlow id="Flow_NotTakeInstructions_To_RefrainIncompatibleActions_Art52"
+                       sourceRef="Task_NotSeekOrTakeInstructions_Art52"
+                       targetRef="Task_RefrainIncompatibleActions_Art52" />
+    <bpmn:sequenceFlow id="Flow_RefrainActions_To_NotEngageOccupation_Art52"
+                       sourceRef="Task_RefrainIncompatibleActions_Art52"
+                       targetRef="Task_NotEngageIncompatibleOccupation_Art52" />
+    <bpmn:sequenceFlow id="Flow_NotEngageOccupation_To_EndIndependenceMaintained_Art52"
+                       sourceRef="Task_NotEngageIncompatibleOccupation_Art52"
+                       targetRef="EndEvent_IndependenceMaintained_Art52" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art52_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art52_Reviewed"
+                      bpmnElement="Collaboration_Art52_Reviewed">
+      <bpmndi:BPMNShape id="Participant_MemberState_Art52_di"
+                        bpmnElement="Participant_MemberState_Art52"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="2260" height="280" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_SupervisoryAuthority_Art52_di"
+                        bpmnElement="Participant_SupervisoryAuthority_Art52"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="360" width="2260" height="260" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_SetIndependenceGuarantees_Art52_di"
+                        bpmnElement="StartEvent_SetIndependenceGuarantees_Art52">
+        <dc:Bounds x="120" y="157" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SplitGuarantees_Art52_di"
+                        bpmnElement="Gateway_SplitGuarantees_Art52"
+                        isMarkerVisible="true">
+        <dc:Bounds x="260" y="150" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ProvideResourcesPremisesInfrastructure_Art52_di"
+                        bpmnElement="Task_ProvideResourcesPremisesInfrastructure_Art52">
+        <dc:Bounds x="430" y="60" width="320" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_EnsureOwnStaff_Art52_di"
+                        bpmnElement="Task_EnsureOwnStaff_Art52">
+        <dc:Bounds x="430" y="150" width="260" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SetFinancialControlBudget_Art52_di"
+                        bpmnElement="Task_SetFinancialControlBudget_Art52">
+        <dc:Bounds x="430" y="240" width="350" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinGuarantees_Art52_di"
+                        bpmnElement="Gateway_JoinGuarantees_Art52"
+                        isMarkerVisible="true">
+        <dc:Bounds x="980" y="150" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_GuaranteesSet_Art52_di"
+                        bpmnElement="EndEvent_GuaranteesSet_Art52">
+        <dc:Bounds x="1170" y="157" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_PerformSupervisoryTasks_Art52_di"
+                        bpmnElement="StartEvent_PerformSupervisoryTasks_Art52">
+        <dc:Bounds x="120" y="472" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ActWithCompleteIndependence_Art52_di"
+                        bpmnElement="Task_ActWithCompleteIndependence_Art52">
+        <dc:Bounds x="230" y="450" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RemainFreeFromExternalInfluence_Art52_di"
+                        bpmnElement="Task_RemainFreeFromExternalInfluence_Art52">
+        <dc:Bounds x="560" y="450" width="260" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_NotSeekOrTakeInstructions_Art52_di"
+                        bpmnElement="Task_NotSeekOrTakeInstructions_Art52">
+        <dc:Bounds x="930" y="450" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RefrainIncompatibleActions_Art52_di"
+                        bpmnElement="Task_RefrainIncompatibleActions_Art52">
+        <dc:Bounds x="1260" y="450" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_NotEngageIncompatibleOccupation_Art52_di"
+                        bpmnElement="Task_NotEngageIncompatibleOccupation_Art52">
+        <dc:Bounds x="1590" y="450" width="270" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_IndependenceMaintained_Art52_di"
+                        bpmnElement="EndEvent_IndependenceMaintained_Art52">
+        <dc:Bounds x="2000" y="472" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_GatewaySplitGuarantees_Art52_di"
+                       bpmnElement="Flow_Start_To_GatewaySplitGuarantees_Art52">
+        <di:waypoint x="156" y="175" />
+        <di:waypoint x="260" y="175" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitGuarantees_To_ProvideResources_Art52_di"
+                       bpmnElement="Flow_GatewaySplitGuarantees_To_ProvideResources_Art52">
+        <di:waypoint x="285" y="150" />
+        <di:waypoint x="285" y="100" />
+        <di:waypoint x="430" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitGuarantees_To_EnsureOwnStaff_Art52_di"
+                       bpmnElement="Flow_GatewaySplitGuarantees_To_EnsureOwnStaff_Art52">
+        <di:waypoint x="310" y="175" />
+        <di:waypoint x="430" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitGuarantees_To_SetFinancialControl_Art52_di"
+                       bpmnElement="Flow_GatewaySplitGuarantees_To_SetFinancialControl_Art52">
+        <di:waypoint x="285" y="200" />
+        <di:waypoint x="285" y="280" />
+        <di:waypoint x="430" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ProvideResources_To_GatewayJoinGuarantees_Art52_di"
+                       bpmnElement="Flow_ProvideResources_To_GatewayJoinGuarantees_Art52">
+        <di:waypoint x="750" y="100" />
+        <di:waypoint x="1005" y="100" />
+        <di:waypoint x="1005" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_EnsureOwnStaff_To_GatewayJoinGuarantees_Art52_di"
+                       bpmnElement="Flow_EnsureOwnStaff_To_GatewayJoinGuarantees_Art52">
+        <di:waypoint x="690" y="190" />
+        <di:waypoint x="980" y="175" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SetFinancialControl_To_GatewayJoinGuarantees_Art52_di"
+                       bpmnElement="Flow_SetFinancialControl_To_GatewayJoinGuarantees_Art52">
+        <di:waypoint x="780" y="280" />
+        <di:waypoint x="1005" y="280" />
+        <di:waypoint x="1005" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinGuarantees_To_EndGuaranteesSet_Art52_di"
+                       bpmnElement="Flow_GatewayJoinGuarantees_To_EndGuaranteesSet_Art52">
+        <di:waypoint x="1030" y="175" />
+        <di:waypoint x="1170" y="175" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_StartPerform_To_ActIndependently_Art52_di"
+                       bpmnElement="Flow_StartPerform_To_ActIndependently_Art52">
+        <di:waypoint x="156" y="490" />
+        <di:waypoint x="230" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ActIndependently_To_RemainFreeInfluence_Art52_di"
+                       bpmnElement="Flow_ActIndependently_To_RemainFreeInfluence_Art52">
+        <di:waypoint x="450" y="490" />
+        <di:waypoint x="560" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_RemainFreeInfluence_To_NotTakeInstructions_Art52_di"
+                       bpmnElement="Flow_RemainFreeInfluence_To_NotTakeInstructions_Art52">
+        <di:waypoint x="820" y="490" />
+        <di:waypoint x="930" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_NotTakeInstructions_To_RefrainIncompatibleActions_Art52_di"
+                       bpmnElement="Flow_NotTakeInstructions_To_RefrainIncompatibleActions_Art52">
+        <di:waypoint x="1150" y="490" />
+        <di:waypoint x="1260" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_RefrainActions_To_NotEngageOccupation_Art52_di"
+                       bpmnElement="Flow_RefrainActions_To_NotEngageOccupation_Art52">
+        <di:waypoint x="1480" y="490" />
+        <di:waypoint x="1590" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_NotEngageOccupation_To_EndIndependenceMaintained_Art52_di"
+                       bpmnElement="Flow_NotEngageOccupation_To_EndIndependenceMaintained_Art52">
+        <di:waypoint x="1860" y="490" />
+        <di:waypoint x="2000" y="490" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
