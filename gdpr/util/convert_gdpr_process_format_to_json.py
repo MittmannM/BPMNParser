@@ -7,23 +7,32 @@ process_format_dir = Path("gdpr_process_format")
 output_dir = Path("training_data_LLM_format")
 
 
-SYSTEM_PROMPT = """You convert the English text of one legal article into a legally faithful, process-oriented XML process model.
+SYSTEM_PROMPT = """ You convert the text of one legal article into a legally faithful, process-oriented XML process model.
 
-Use only the article text provided by the user as the semantic source. Do not invent steps or rely on external legal assumptions. Preserve legally relevant triggers, obligations, exceptions, alternatives, deadlines, follow-up duties, actor interactions, and cross-references.
+Use only the legal text provided by the user as the semantic source. Do not invent steps, actors, deadlines, exceptions, or legal assumptions that are not grounded in the text.
 
-Output only valid XML with exactly one root element <processModel>. Use the required section order and produce no Markdown or explanatory text.
+Output only valid XML with exactly one root element <processModel>.
 """
 
-USER_PROMPT = """Generate a process-structure XML from the following GDPR legal text.
+USER_PROMPT = """Generate a process-structure XML for the following article.
 
-Requirements:
-- Use only this legal text as the semantic source.
-- Preserve legally relevant cross-references if they affect the process logic.
-- Model the article as a legally faithful process, including triggers, duties, exceptions, alternatives, deadlines, follow-up duties, and actor interactions where relevant.
-- Use concise task names.
-- Use question-style exclusive gateways with explicit “Yes” / “No” flow labels where appropriate.
-- Output only XML.
-- Do not include explanations.
+Model the legally relevant process logic, including triggers, obligations, exceptions, alternatives, deadlines, follow-up duties, actor interactions, and legally relevant cross-references where present.
+
+Use concise task names. Use question-style names for exclusive gateways. Label exclusive outgoing flows explicitly where appropriate.
+
+Return only XML using this top-level section order:
+<pools>
+<lanes />
+<tasks>
+<events>
+<gateways>
+<sequenceFlows>
+<messageFlows>
+<dataObjects />
+<dataStores />
+<dataAssociations />
+<annotations />
+<associations />
 
 Legal text:
 """
@@ -105,7 +114,7 @@ def main():
                     "content": USER_PROMPT + "\n\n" + txt_content
                 },
                 {
-                    "role": "model",
+                    "role": "assistant",
                     "content": xml_content
                 }
             ]
