@@ -9,38 +9,21 @@ from pathlib import Path
 from transformers import AutoTokenizer
 
 
-SYSTEM_PROMPT = """You convert the text of one legal article into a legally faithful, process-oriented XML process model.
-
-Use only the legal text provided by the user as the semantic source. Do not invent steps, actors, deadlines, exceptions, or legal assumptions that are not grounded in the text.
-
-Output only valid XML with exactly one root element <processModel>."""
-
-
-USER_PROMPT = """Generate a process-structure XML for the following legal article.
-
-Model the legally relevant process logic, including triggers, obligations, exceptions, alternatives, deadlines, follow-up duties, actor interactions, and legally relevant cross-references where present.
-
-Use concise task names. Use question-style names for exclusive gateways. Label exclusive outgoing flows explicitly where appropriate.
-
-Return only XML using this top-level section order:
-<pools>
-<lanes />
-<tasks>
-<events>
-<gateways>
-<sequenceFlows>
-<messageFlows>
-<dataObjects />
-<dataStores />
-<dataAssociations />
-<annotations />
-<associations />
-
-Legal text:
-"""
+SYSTEM_PROMPT = """Convert one legal article into a faithful XML process model.
+Use only the provided legal text.
+Do not invent legal logic.
+Output only valid XML with root <processModel>."""
 
 
-DEFAULT_TOKENIZER_ID = "google/gemma-4-E4B-it"
+USER_PROMPT = """Generate process-structure XML from this legal text.
+Model only process-relevant legal logic.
+Use short task names, question-style exclusive gateways, and labeled exclusive branches.
+Use this exact top-level order:
+<pools><lanes /><tasks><events><gateways><sequenceFlows><messageFlows><dataObjects /><dataStores /><dataAssociations /><annotations /><associations />
+Text:"""
+
+
+DEFAULT_TOKENIZER_ID = "google/gemma-4-e2b-it"
 
 
 def parse_args() -> argparse.Namespace:
@@ -49,7 +32,7 @@ def parse_args() -> argparse.Namespace:
 
     parser = argparse.ArgumentParser(
         description=(
-            "Konvertiert GDPR-Artikel und XML-Prozessmodelle in ein fuer Gemma 4 "
+            "Konvertiert GDPR-Artikel und XML-Prozessmodelle in ein fuer Gemma 4 2B "
             "sauber vorgerendertes Prompt-Completion-JSONL."
         )
     )
@@ -75,7 +58,7 @@ def parse_args() -> argparse.Namespace:
         "--tokenizer-id",
         type=str,
         default=DEFAULT_TOKENIZER_ID,
-        help="Gemma-Tokenizer fuer die offizielle Chat-Template-Formatierung.",
+        help="Gemma-4-2B-Tokenizer fuer die offizielle Chat-Template-Formatierung.",
     )
     parser.add_argument(
         "--local-files-only",
