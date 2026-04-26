@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Board_Art62" name="Board" poolType="passive" />
+    <pool id="Participant_HostMemberState_Art62" name="Host Member State" poolType="passive" />
+    <pool id="Participant_HostSupervisoryAuthority_Art62" name="Host Supervisory Authority" poolType="active" processRef="Process_HostSupervisoryAuthority_Art62" />
+    <pool id="Participant_ParticipatingSupervisoryAuthority_Art62" name="Participating Supervisory Authority" poolType="active" processRef="Process_ParticipatingSupervisoryAuthority_Art62" />
+    <pool id="Participant_SecondingMemberState_Art62" name="Seconding Member State" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_AdoptProvisionalMeasure_Art62" name="Adopt provisional measure under Article 55" type="task" poolRef="Participant_ParticipatingSupervisoryAuthority_Art62" />
+    <task id="Task_AuthorizeSecondedStaff_Art62" name="Authorize seconded members or staff" type="task" poolRef="Participant_ParticipatingSupervisoryAuthority_Art62" />
+    <task id="Task_CompensateDamageUnderHostLaw_Art62" name="Compensate damage under host law" type="task" poolRef="Participant_HostSupervisoryAuthority_Art62" />
+    <task id="Task_ConductJointOperation_Art62" name="Conduct joint operation under host law" type="task" poolRef="Participant_HostSupervisoryAuthority_Art62" />
+    <task id="Task_ConferOrAllowPowers_Art62" name="Confer or allow investigative powers" type="sendTask" poolRef="Participant_HostSupervisoryAuthority_Art62" />
+    <task id="Task_IdentifyParticipatingAuthorities_Art62" name="Identify participating authorities" type="task" poolRef="Participant_HostSupervisoryAuthority_Art62" />
+    <task id="Task_NotifyHostMemberStateOfDamage_Art62" name="Notify host Member State of damage" type="sendTask" poolRef="Participant_HostSupervisoryAuthority_Art62" />
+    <task id="Task_OperateUnderHostGuidance_Art62" name="Operate under host guidance and host law" type="task" poolRef="Participant_ParticipatingSupervisoryAuthority_Art62" />
+    <task id="Task_ReceiveParticipationResponse_Art62" name="Receive participation response" type="receiveTask" poolRef="Participant_ParticipatingSupervisoryAuthority_Art62" />
+    <task id="Task_RefrainFromOtherReimbursementClaims_Art62" name="Refrain from other reimbursement claims" type="task" poolRef="Participant_HostSupervisoryAuthority_Art62" />
+    <task id="Task_RequestParticipation_Art62" name="Request participation" type="sendTask" poolRef="Participant_ParticipatingSupervisoryAuthority_Art62" />
+    <task id="Task_RequestReimbursementFromSecondingState_Art62" name="Request full reimbursement" type="sendTask" poolRef="Participant_HostSupervisoryAuthority_Art62" />
+    <task id="Task_RequestUrgentBoardDecision_Art62" name="Request urgent Board decision under Article 66(2)" type="sendTask" poolRef="Participant_ParticipatingSupervisoryAuthority_Art62" />
+    <task id="Task_SendParticipationInvite_Art62" name="Invite authorities to participate" type="sendTask" poolRef="Participant_HostSupervisoryAuthority_Art62" />
+    <task id="Task_SendParticipationResponse_Art62" name="Respond to participation request without delay" type="sendTask" poolRef="Participant_HostSupervisoryAuthority_Art62" />
+  </tasks>
+  <events>
+    <event id="EndEvent_DamageHandled_Art62" name="Damage handled" type="endEvent" poolRef="Participant_HostSupervisoryAuthority_Art62" />
+    <event id="EndEvent_JointOperationCompleted_Art62" name="Joint operation completed" type="endEvent" poolRef="Participant_HostSupervisoryAuthority_Art62" />
+    <event id="EndEvent_ParticipationCompleted_Art62" name="Participation completed" type="endEvent" poolRef="Participant_ParticipatingSupervisoryAuthority_Art62" />
+    <event id="EndEvent_ParticipationResponseSent_Art62" name="Participation response sent" type="endEvent" poolRef="Participant_HostSupervisoryAuthority_Art62" />
+    <event id="EndEvent_UrgencyRouteTriggered_Art62" name="Urgency route triggered" type="endEvent" poolRef="Participant_ParticipatingSupervisoryAuthority_Art62" />
+    <event id="IntermediateCatchEvent_OneMonthElapsed_Art62" name="One month elapsed" type="intermediateCatchEvent" poolRef="Participant_ParticipatingSupervisoryAuthority_Art62" eventDefinition="timer" />
+    <event id="StartEvent_NeedToParticipate_Art62" name="Need to participate" type="startEvent" poolRef="Participant_ParticipatingSupervisoryAuthority_Art62" />
+    <event id="StartEvent_PlanJointOperation_Art62" name="Plan joint operation" type="startEvent" poolRef="Participant_HostSupervisoryAuthority_Art62" />
+    <event id="StartEvent_ReceiveParticipationInvite_Art62" name="Receive participation invite" type="startEvent" poolRef="Participant_ParticipatingSupervisoryAuthority_Art62" eventDefinition="message" />
+    <event id="StartEvent_ReceiveParticipationRequest_Art62" name="Receive participation request" type="startEvent" poolRef="Participant_HostSupervisoryAuthority_Art62" eventDefinition="message" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_WasDamageCaused_Art62" name="Was damage caused during operations?" type="exclusiveGateway" poolRef="Participant_HostSupervisoryAuthority_Art62" />
+    <gateway id="Gateway_WhatReceivedWithinOneMonth_Art62" name="What is received within one month?" type="eventBasedGateway" poolRef="Participant_ParticipatingSupervisoryAuthority_Art62" />
+    <gateway id="Gateway_WillHostConferPowers_Art62" name="Will host confer or allow investigative powers?" type="exclusiveGateway" poolRef="Participant_HostSupervisoryAuthority_Art62" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AdoptProvisionalMeasure_To_RequestUrgentBoardDecision_Art62" sourceRef="Task_AdoptProvisionalMeasure_Art62" targetRef="Task_RequestUrgentBoardDecision_Art62" />
+    <sequenceFlow id="Flow_AuthorizeSecondedStaff_To_OperateUnderHostGuidance_Art62" sourceRef="Task_AuthorizeSecondedStaff_Art62" targetRef="Task_OperateUnderHostGuidance_Art62" />
+    <sequenceFlow id="Flow_CompensateDamage_To_RequestReimbursement_Art62" sourceRef="Task_CompensateDamageUnderHostLaw_Art62" targetRef="Task_RequestReimbursementFromSecondingState_Art62" />
+    <sequenceFlow id="Flow_ConductJointOperation_To_GatewayDamage_Art62" sourceRef="Task_ConductJointOperation_Art62" targetRef="Gateway_WasDamageCaused_Art62" />
+    <sequenceFlow id="Flow_ConferOrAllowPowers_To_ConductJointOperation_Art62" sourceRef="Task_ConferOrAllowPowers_Art62" targetRef="Task_ConductJointOperation_Art62" />
+    <sequenceFlow id="Flow_GatewayDamage_To_EndJointOperationCompleted_Art62" name="No" sourceRef="Gateway_WasDamageCaused_Art62" targetRef="EndEvent_JointOperationCompleted_Art62" />
+    <sequenceFlow id="Flow_GatewayDamage_To_NotifyHostState_Art62" name="Yes" sourceRef="Gateway_WasDamageCaused_Art62" targetRef="Task_NotifyHostMemberStateOfDamage_Art62" />
+    <sequenceFlow id="Flow_GatewayHostPowers_To_ConductJointOperation_Art62" name="No" sourceRef="Gateway_WillHostConferPowers_Art62" targetRef="Task_ConductJointOperation_Art62" />
+    <sequenceFlow id="Flow_GatewayHostPowers_To_ConferOrAllowPowers_Art62" name="Yes" sourceRef="Gateway_WillHostConferPowers_Art62" targetRef="Task_ConferOrAllowPowers_Art62" />
+    <sequenceFlow id="Flow_GatewayOneMonth_To_OneMonthElapsed_Art62" name="One month" sourceRef="Gateway_WhatReceivedWithinOneMonth_Art62" targetRef="IntermediateCatchEvent_OneMonthElapsed_Art62" />
+    <sequenceFlow id="Flow_GatewayOneMonth_To_ReceiveParticipationResponse_Art62" name="Response" sourceRef="Gateway_WhatReceivedWithinOneMonth_Art62" targetRef="Task_ReceiveParticipationResponse_Art62" />
+    <sequenceFlow id="Flow_IdentifyAuthorities_To_SendInvite_Art62" sourceRef="Task_IdentifyParticipatingAuthorities_Art62" targetRef="Task_SendParticipationInvite_Art62" />
+    <sequenceFlow id="Flow_NotifyHostState_To_CompensateDamage_Art62" sourceRef="Task_NotifyHostMemberStateOfDamage_Art62" targetRef="Task_CompensateDamageUnderHostLaw_Art62" />
+    <sequenceFlow id="Flow_OneMonthElapsed_To_AdoptProvisionalMeasure_Art62" sourceRef="IntermediateCatchEvent_OneMonthElapsed_Art62" targetRef="Task_AdoptProvisionalMeasure_Art62" />
+    <sequenceFlow id="Flow_OperateUnderHostGuidance_To_EndParticipationCompleted_Art62" sourceRef="Task_OperateUnderHostGuidance_Art62" targetRef="EndEvent_ParticipationCompleted_Art62" />
+    <sequenceFlow id="Flow_ReceiveParticipationResponse_To_AuthorizeSecondedStaff_Art62" sourceRef="Task_ReceiveParticipationResponse_Art62" targetRef="Task_AuthorizeSecondedStaff_Art62" />
+    <sequenceFlow id="Flow_RefrainFromOtherClaims_To_EndDamageHandled_Art62" sourceRef="Task_RefrainFromOtherReimbursementClaims_Art62" targetRef="EndEvent_DamageHandled_Art62" />
+    <sequenceFlow id="Flow_RequestParticipation_To_GatewayOneMonth_Art62" sourceRef="Task_RequestParticipation_Art62" targetRef="Gateway_WhatReceivedWithinOneMonth_Art62" />
+    <sequenceFlow id="Flow_RequestReimbursement_To_RefrainFromOtherClaims_Art62" sourceRef="Task_RequestReimbursementFromSecondingState_Art62" targetRef="Task_RefrainFromOtherReimbursementClaims_Art62" />
+    <sequenceFlow id="Flow_RequestUrgentBoardDecision_To_EndUrgencyTriggered_Art62" sourceRef="Task_RequestUrgentBoardDecision_Art62" targetRef="EndEvent_UrgencyRouteTriggered_Art62" />
+    <sequenceFlow id="Flow_SendInvite_To_GatewayHostPowers_Art62" sourceRef="Task_SendParticipationInvite_Art62" targetRef="Gateway_WillHostConferPowers_Art62" />
+    <sequenceFlow id="Flow_SendParticipationResponse_To_EndParticipationResponseSent_Art62" sourceRef="Task_SendParticipationResponse_Art62" targetRef="EndEvent_ParticipationResponseSent_Art62" />
+    <sequenceFlow id="Flow_StartNeedToParticipate_To_RequestParticipation_Art62" sourceRef="StartEvent_NeedToParticipate_Art62" targetRef="Task_RequestParticipation_Art62" />
+    <sequenceFlow id="Flow_StartPlanJointOperation_To_IdentifyAuthorities_Art62" sourceRef="StartEvent_PlanJointOperation_Art62" targetRef="Task_IdentifyParticipatingAuthorities_Art62" />
+    <sequenceFlow id="Flow_StartReceiveParticipationInvite_To_AuthorizeSecondedStaff_Art62" sourceRef="StartEvent_ReceiveParticipationInvite_Art62" targetRef="Task_AuthorizeSecondedStaff_Art62" />
+    <sequenceFlow id="Flow_StartReceiveParticipationRequest_To_SendParticipationResponse_Art62" sourceRef="StartEvent_ReceiveParticipationRequest_Art62" targetRef="Task_SendParticipationResponse_Art62" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_ConferOrAllowPowers_Art62" sourceRef="Task_ConferOrAllowPowers_Art62" targetRef="Task_OperateUnderHostGuidance_Art62" />
+    <messageFlow id="MessageFlow_NotifyHostMemberState_Art62" sourceRef="Task_NotifyHostMemberStateOfDamage_Art62" targetRef="Participant_HostMemberState_Art62" />
+    <messageFlow id="MessageFlow_RequestParticipation_Art62" sourceRef="Task_RequestParticipation_Art62" targetRef="StartEvent_ReceiveParticipationRequest_Art62" />
+    <messageFlow id="MessageFlow_RequestReimbursement_Art62" sourceRef="Task_RequestReimbursementFromSecondingState_Art62" targetRef="Participant_SecondingMemberState_Art62" />
+    <messageFlow id="MessageFlow_RequestUrgentBoardDecision_Art62" sourceRef="Task_RequestUrgentBoardDecision_Art62" targetRef="Participant_Board_Art62" />
+    <messageFlow id="MessageFlow_SendParticipationInvite_Art62" sourceRef="Task_SendParticipationInvite_Art62" targetRef="StartEvent_ReceiveParticipationInvite_Art62" />
+    <messageFlow id="MessageFlow_SendParticipationResponse_Art62" sourceRef="Task_SendParticipationResponse_Art62" targetRef="Task_ReceiveParticipationResponse_Art62" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

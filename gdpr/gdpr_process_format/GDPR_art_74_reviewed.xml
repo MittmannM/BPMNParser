@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools />
+  <lanes />
+  <tasks>
+    <task id="Task_AllocateTasksInRulesOfProcedure_Art74" name="Allocate tasks in rules of procedure" type="task" poolRef="Process_Board_Art74" />
+    <task id="Task_ConveneMeetingsAndPrepareAgenda_Art74" name="Convene meetings and prepare agenda" type="task" poolRef="Process_Board_Art74" />
+    <task id="Task_EnsureTimelyBoardPerformance_Art74" name="Ensure timely Board performance" type="task" poolRef="Process_Board_Art74" />
+    <task id="Task_NotifyArticle65Decisions_Art74" name="Notify Article 65 decisions" type="sendTask" poolRef="Process_Board_Art74" />
+  </tasks>
+  <events>
+    <event id="EndEvent_ChairTasksCompleted_Art74" name="Chair tasks completed" type="endEvent" poolRef="Process_Board_Art74" />
+    <event id="StartEvent_HandleChairTasks_Art74" name="Handle chair tasks" type="startEvent" poolRef="Process_Board_Art74" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_JoinChairTasks_Art74" type="parallelGateway" poolRef="Process_Board_Art74" />
+    <gateway id="Gateway_SplitChairTasks_Art74" type="parallelGateway" poolRef="Process_Board_Art74" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AllocateTasks_To_GatewayJoin_Art74" sourceRef="Task_AllocateTasksInRulesOfProcedure_Art74" targetRef="Gateway_JoinChairTasks_Art74" />
+    <sequenceFlow id="Flow_ConveneMeetings_To_GatewayJoin_Art74" sourceRef="Task_ConveneMeetingsAndPrepareAgenda_Art74" targetRef="Gateway_JoinChairTasks_Art74" />
+    <sequenceFlow id="Flow_EnsureTimelyPerformance_To_GatewayJoin_Art74" sourceRef="Task_EnsureTimelyBoardPerformance_Art74" targetRef="Gateway_JoinChairTasks_Art74" />
+    <sequenceFlow id="Flow_GatewayJoin_To_EndChairTasks_Art74" sourceRef="Gateway_JoinChairTasks_Art74" targetRef="EndEvent_ChairTasksCompleted_Art74" />
+    <sequenceFlow id="Flow_GatewaySplit_To_AllocateTasks_Art74" sourceRef="Gateway_SplitChairTasks_Art74" targetRef="Task_AllocateTasksInRulesOfProcedure_Art74" />
+    <sequenceFlow id="Flow_GatewaySplit_To_ConveneMeetings_Art74" sourceRef="Gateway_SplitChairTasks_Art74" targetRef="Task_ConveneMeetingsAndPrepareAgenda_Art74" />
+    <sequenceFlow id="Flow_GatewaySplit_To_EnsureTimelyPerformance_Art74" sourceRef="Gateway_SplitChairTasks_Art74" targetRef="Task_EnsureTimelyBoardPerformance_Art74" />
+    <sequenceFlow id="Flow_GatewaySplit_To_NotifyArticle65Decisions_Art74" sourceRef="Gateway_SplitChairTasks_Art74" targetRef="Task_NotifyArticle65Decisions_Art74" />
+    <sequenceFlow id="Flow_NotifyArticle65Decisions_To_GatewayJoin_Art74" sourceRef="Task_NotifyArticle65Decisions_Art74" targetRef="Gateway_JoinChairTasks_Art74" />
+    <sequenceFlow id="Flow_StartChairTasks_To_GatewaySplit_Art74" sourceRef="StartEvent_HandleChairTasks_Art74" targetRef="Gateway_SplitChairTasks_Art74" />
+  </sequenceFlows>
+  <messageFlows />
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

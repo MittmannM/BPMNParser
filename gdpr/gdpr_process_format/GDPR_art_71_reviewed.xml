@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Board_Art71" name="Board" poolType="active" processRef="Process_Board_Art71" />
+    <pool id="Participant_Commission_Art71" name="Commission" poolType="passive" />
+    <pool id="Participant_Council_Art71" name="Council" poolType="passive" />
+    <pool id="Participant_EuropeanParliament_Art71" name="European Parliament" poolType="passive" />
+    <pool id="Participant_Public_Art71" name="Public" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_DrawUpAnnualReport_Art71" name="Draw up annual report" type="task" poolRef="Participant_Board_Art71" />
+    <task id="Task_MakeAnnualReportPublic_Art71" name="Make annual report public" type="sendTask" poolRef="Participant_Board_Art71" />
+    <task id="Task_ReviewBindingDecisions_Art71" name="Review binding decisions" type="task" poolRef="Participant_Board_Art71" />
+    <task id="Task_ReviewPracticalApplication_Art71" name="Review practical application" type="task" poolRef="Participant_Board_Art71" />
+    <task id="Task_TransmitAnnualReport_Art71" name="Transmit annual report" type="sendTask" poolRef="Participant_Board_Art71" />
+  </tasks>
+  <events>
+    <event id="EndEvent_AnnualBoardReportDistributed_Art71" name="Annual Board report distributed" type="endEvent" poolRef="Participant_Board_Art71" />
+    <event id="StartEvent_StartAnnualBoardReportCycle_Art71" name="Start annual Board report cycle" type="startEvent" poolRef="Participant_Board_Art71" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_JoinDistribution_Art71" type="parallelGateway" poolRef="Participant_Board_Art71" />
+    <gateway id="Gateway_SplitDistribution_Art71" type="parallelGateway" poolRef="Participant_Board_Art71" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_DrawUpAnnualReport_To_ReviewPracticalApplication_Art71" sourceRef="Task_DrawUpAnnualReport_Art71" targetRef="Task_ReviewPracticalApplication_Art71" />
+    <sequenceFlow id="Flow_GatewayJoinDistribution_To_EndAnnualBoardReportDistributed_Art71" sourceRef="Gateway_JoinDistribution_Art71" targetRef="EndEvent_AnnualBoardReportDistributed_Art71" />
+    <sequenceFlow id="Flow_GatewaySplitDistribution_To_MakeAnnualReportPublic_Art71" sourceRef="Gateway_SplitDistribution_Art71" targetRef="Task_MakeAnnualReportPublic_Art71" />
+    <sequenceFlow id="Flow_GatewaySplitDistribution_To_TransmitAnnualReport_Art71" sourceRef="Gateway_SplitDistribution_Art71" targetRef="Task_TransmitAnnualReport_Art71" />
+    <sequenceFlow id="Flow_MakeAnnualReportPublic_To_GatewayJoinDistribution_Art71" sourceRef="Task_MakeAnnualReportPublic_Art71" targetRef="Gateway_JoinDistribution_Art71" />
+    <sequenceFlow id="Flow_ReviewBindingDecisions_To_GatewaySplitDistribution_Art71" sourceRef="Task_ReviewBindingDecisions_Art71" targetRef="Gateway_SplitDistribution_Art71" />
+    <sequenceFlow id="Flow_ReviewPracticalApplication_To_ReviewBindingDecisions_Art71" sourceRef="Task_ReviewPracticalApplication_Art71" targetRef="Task_ReviewBindingDecisions_Art71" />
+    <sequenceFlow id="Flow_StartAnnualBoardReportCycle_To_DrawUpAnnualReport_Art71" sourceRef="StartEvent_StartAnnualBoardReportCycle_Art71" targetRef="Task_DrawUpAnnualReport_Art71" />
+    <sequenceFlow id="Flow_TransmitAnnualReport_To_GatewayJoinDistribution_Art71" sourceRef="Task_TransmitAnnualReport_Art71" targetRef="Gateway_JoinDistribution_Art71" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_MakeAnnualReportPublic_Art71" sourceRef="Task_MakeAnnualReportPublic_Art71" targetRef="Participant_Public_Art71" />
+    <messageFlow id="MessageFlow_TransmitAnnualReportToCommission_Art71" sourceRef="Task_TransmitAnnualReport_Art71" targetRef="Participant_Commission_Art71" />
+    <messageFlow id="MessageFlow_TransmitAnnualReportToCouncil_Art71" sourceRef="Task_TransmitAnnualReport_Art71" targetRef="Participant_Council_Art71" />
+    <messageFlow id="MessageFlow_TransmitAnnualReportToEuropeanParliament_Art71" sourceRef="Task_TransmitAnnualReport_Art71" targetRef="Participant_EuropeanParliament_Art71" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

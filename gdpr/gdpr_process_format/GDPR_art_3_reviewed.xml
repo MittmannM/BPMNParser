@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools />
+  <lanes />
+  <tasks>
+    <task id="Task_ApplyRegardlessLocation_Art3" name="Apply GDPR regardless of processing location" type="task" poolRef="Process_AssessScope_Art3" />
+    <task id="Task_AssessNonUnionRoute_Art3" name="Assess non-Union applicability route" type="task" poolRef="Process_AssessScope_Art3" />
+    <task id="Task_AssessPublicInternationalLaw_Art3" name="Assess Member State law applicability by public international law" type="task" poolRef="Process_AssessScope_Art3" />
+    <task id="Task_AssessUnionEstablishment_Art3" name="Assess Union establishment context" type="task" poolRef="Process_AssessScope_Art3" />
+  </tasks>
+  <events>
+    <event id="EndEvent_GDPRApplies_Art3" name="GDPR applies under Article 3" type="endEvent" poolRef="Process_AssessScope_Art3" />
+    <event id="EndEvent_GDPRDoesNotApply_Art3" name="Article 3 territorial scope not established" type="endEvent" poolRef="Process_AssessScope_Art3" />
+    <event id="StartEvent_AssessTerritorialScope_Art3" name="Assess territorial scope" type="startEvent" poolRef="Process_AssessScope_Art3" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_DataSubjectsInUnion_Art3" name="Are the affected data subjects in the Union?" type="exclusiveGateway" poolRef="Process_AssessScope_Art3" />
+    <gateway id="Gateway_GoodsServices_Art3" name="Is the processing related to offering goods or services to data subjects in the Union?" type="exclusiveGateway" poolRef="Process_AssessScope_Art3" />
+    <gateway id="Gateway_Monitoring_Art3" name="Is the processing related to monitoring behaviour within the Union?" type="exclusiveGateway" poolRef="Process_AssessScope_Art3" />
+    <gateway id="Gateway_PublicInternationalLaw_Art3" name="Does Member State law apply by virtue of public international law?" type="exclusiveGateway" poolRef="Process_AssessScope_Art3" />
+    <gateway id="Gateway_UnionEstablishment_Art3" name="Is processing carried out in the context of activities of an establishment in the Union?" type="exclusiveGateway" poolRef="Process_AssessScope_Art3" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_ApplyRegardlessLocation_To_EndApplies_Art3" sourceRef="Task_ApplyRegardlessLocation_Art3" targetRef="EndEvent_GDPRApplies_Art3" />
+    <sequenceFlow id="Flow_AssessNonUnionRoute_To_GatewayDataSubjectsInUnion_Art3" sourceRef="Task_AssessNonUnionRoute_Art3" targetRef="Gateway_DataSubjectsInUnion_Art3" />
+    <sequenceFlow id="Flow_AssessPublicInternationalLaw_To_GatewayPublicInternationalLaw_Art3" sourceRef="Task_AssessPublicInternationalLaw_Art3" targetRef="Gateway_PublicInternationalLaw_Art3" />
+    <sequenceFlow id="Flow_AssessUnionEstablishment_To_GatewayUnionEstablishment_Art3" sourceRef="Task_AssessUnionEstablishment_Art3" targetRef="Gateway_UnionEstablishment_Art3" />
+    <sequenceFlow id="Flow_GatewayDataSubjectsInUnion_To_AssessPublicInternationalLaw_Art3" name="No" sourceRef="Gateway_DataSubjectsInUnion_Art3" targetRef="Task_AssessPublicInternationalLaw_Art3" />
+    <sequenceFlow id="Flow_GatewayDataSubjectsInUnion_To_GatewayGoodsServices_Art3" name="Yes" sourceRef="Gateway_DataSubjectsInUnion_Art3" targetRef="Gateway_GoodsServices_Art3" />
+    <sequenceFlow id="Flow_GatewayGoodsServices_To_EndApplies_Art3" name="Yes" sourceRef="Gateway_GoodsServices_Art3" targetRef="EndEvent_GDPRApplies_Art3" />
+    <sequenceFlow id="Flow_GatewayGoodsServices_To_GatewayMonitoring_Art3" name="No" sourceRef="Gateway_GoodsServices_Art3" targetRef="Gateway_Monitoring_Art3" />
+    <sequenceFlow id="Flow_GatewayMonitoring_To_AssessPublicInternationalLaw_Art3" name="No" sourceRef="Gateway_Monitoring_Art3" targetRef="Task_AssessPublicInternationalLaw_Art3" />
+    <sequenceFlow id="Flow_GatewayMonitoring_To_EndApplies_Art3" name="Yes" sourceRef="Gateway_Monitoring_Art3" targetRef="EndEvent_GDPRApplies_Art3" />
+    <sequenceFlow id="Flow_GatewayPublicInternationalLaw_To_EndApplies_Art3" name="Yes" sourceRef="Gateway_PublicInternationalLaw_Art3" targetRef="EndEvent_GDPRApplies_Art3" />
+    <sequenceFlow id="Flow_GatewayPublicInternationalLaw_To_EndNotApplies_Art3" name="No" sourceRef="Gateway_PublicInternationalLaw_Art3" targetRef="EndEvent_GDPRDoesNotApply_Art3" />
+    <sequenceFlow id="Flow_GatewayUnionEstablishment_To_AssessNonUnionRoute_Art3" name="No" sourceRef="Gateway_UnionEstablishment_Art3" targetRef="Task_AssessNonUnionRoute_Art3" />
+    <sequenceFlow id="Flow_GatewayUnionEstablishment_To_TaskApplyRegardlessLocation_Art3" name="Yes" sourceRef="Gateway_UnionEstablishment_Art3" targetRef="Task_ApplyRegardlessLocation_Art3" />
+    <sequenceFlow id="Flow_Start_To_AssessUnionEstablishment_Art3" sourceRef="StartEvent_AssessTerritorialScope_Art3" targetRef="Task_AssessUnionEstablishment_Art3" />
+  </sequenceFlows>
+  <messageFlows />
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

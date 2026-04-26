@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Board_Art67" name="Board" poolType="passive" />
+    <pool id="Participant_Commission_Art67" name="Commission" poolType="active" processRef="Process_Commission_Art67" />
+    <pool id="Participant_SupervisoryAuthorities_Art67" name="Supervisory Authorities" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_AdoptImplementingActs_Art67" name="Adopt implementing acts of general scope" type="task" poolRef="Participant_Commission_Art67" />
+    <task id="Task_SpecifyElectronicExchangeArrangements_Art67" name="Specify electronic exchange arrangements" type="task" poolRef="Participant_Commission_Art67" />
+    <task id="Task_SpecifyStandardizedFormat_Art67" name="Specify Article 64 standardized format" type="task" poolRef="Participant_Commission_Art67" />
+    <task id="Task_UseExaminationProcedure_Art67" name="Use Article 93(2) examination procedure" type="task" poolRef="Participant_Commission_Art67" />
+  </tasks>
+  <events>
+    <event id="EndEvent_ImplementingActsAdopted_Art67" name="Implementing acts adopted" type="endEvent" poolRef="Participant_Commission_Art67" />
+    <event id="StartEvent_NeedElectronicExchangeArrangements_Art67" name="Need electronic exchange arrangements" type="startEvent" poolRef="Participant_Commission_Art67" />
+  </events>
+  <gateways />
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AdoptImplementingActs_To_EndImplementingActsAdopted_Art67" sourceRef="Task_AdoptImplementingActs_Art67" targetRef="EndEvent_ImplementingActsAdopted_Art67" />
+    <sequenceFlow id="Flow_SpecifyElectronicExchangeArrangements_To_SpecifyStandardizedFormat_Art67" sourceRef="Task_SpecifyElectronicExchangeArrangements_Art67" targetRef="Task_SpecifyStandardizedFormat_Art67" />
+    <sequenceFlow id="Flow_SpecifyStandardizedFormat_To_UseExaminationProcedure_Art67" sourceRef="Task_SpecifyStandardizedFormat_Art67" targetRef="Task_UseExaminationProcedure_Art67" />
+    <sequenceFlow id="Flow_StartNeedExchangeArrangements_To_SpecifyElectronicExchangeArrangements_Art67" sourceRef="StartEvent_NeedElectronicExchangeArrangements_Art67" targetRef="Task_SpecifyElectronicExchangeArrangements_Art67" />
+    <sequenceFlow id="Flow_UseExaminationProcedure_To_AdoptImplementingActs_Art67" sourceRef="Task_UseExaminationProcedure_Art67" targetRef="Task_AdoptImplementingActs_Art67" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_SpecifyElectronicExchangeArrangements_Art67" sourceRef="Task_SpecifyElectronicExchangeArrangements_Art67" targetRef="Participant_SupervisoryAuthorities_Art67" />
+    <messageFlow id="MessageFlow_SpecifyExchangeArrangementsForBoard_Art67" sourceRef="Task_SpecifyElectronicExchangeArrangements_Art67" targetRef="Participant_Board_Art67" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

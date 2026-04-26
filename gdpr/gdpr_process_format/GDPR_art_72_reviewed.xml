@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools />
+  <lanes />
+  <tasks>
+    <task id="Task_AdoptBySimpleMajority_Art72" name="Adopt decision by simple majority" type="task" poolRef="Process_Board_Art72" />
+    <task id="Task_AdoptRulesOfProcedure_Art72" name="Adopt rules of procedure by two-thirds" type="task" poolRef="Process_Board_Art72" />
+    <task id="Task_ApplySpecificMajorityRule_Art72" name="Apply specific majority rule" type="task" poolRef="Process_Board_Art72" />
+    <task id="Task_OrganiseOperationalArrangements_Art72" name="Organise operational arrangements" type="task" poolRef="Process_Board_Art72" />
+  </tasks>
+  <events>
+    <event id="EndEvent_BoardDecisionTaken_Art72" name="Board matter decided" type="endEvent" poolRef="Process_Board_Art72" />
+    <event id="StartEvent_HandleBoardMatter_Art72" name="Handle Board matter" type="startEvent" poolRef="Process_Board_Art72" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_DoesTheRegulationProvideOtherwise_Art72" name="Does the Regulation provide another majority rule?" type="exclusiveGateway" poolRef="Process_Board_Art72" />
+    <gateway id="Gateway_WhatBoardMatterIsHandled_Art72" name="What Board matter is handled?" type="exclusiveGateway" poolRef="Process_Board_Art72" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AdoptBySimpleMajority_To_EndDecisionTaken_Art72" sourceRef="Task_AdoptBySimpleMajority_Art72" targetRef="EndEvent_BoardDecisionTaken_Art72" />
+    <sequenceFlow id="Flow_AdoptRulesOfProcedure_To_OrganiseOperationalArrangements_Art72" sourceRef="Task_AdoptRulesOfProcedure_Art72" targetRef="Task_OrganiseOperationalArrangements_Art72" />
+    <sequenceFlow id="Flow_ApplySpecificMajorityRule_To_EndDecisionTaken_Art72" sourceRef="Task_ApplySpecificMajorityRule_Art72" targetRef="EndEvent_BoardDecisionTaken_Art72" />
+    <sequenceFlow id="Flow_GatewayMatterType_To_AdoptRulesOfProcedure_Art72" name="Rules or arrangements" sourceRef="Gateway_WhatBoardMatterIsHandled_Art72" targetRef="Task_AdoptRulesOfProcedure_Art72" />
+    <sequenceFlow id="Flow_GatewayMatterType_To_GatewaySpecificRule_Art72" name="General decision" sourceRef="Gateway_WhatBoardMatterIsHandled_Art72" targetRef="Gateway_DoesTheRegulationProvideOtherwise_Art72" />
+    <sequenceFlow id="Flow_GatewaySpecificRule_To_AdoptBySimpleMajority_Art72" name="No" sourceRef="Gateway_DoesTheRegulationProvideOtherwise_Art72" targetRef="Task_AdoptBySimpleMajority_Art72" />
+    <sequenceFlow id="Flow_GatewaySpecificRule_To_ApplySpecificMajorityRule_Art72" name="Yes" sourceRef="Gateway_DoesTheRegulationProvideOtherwise_Art72" targetRef="Task_ApplySpecificMajorityRule_Art72" />
+    <sequenceFlow id="Flow_OrganiseOperationalArrangements_To_EndDecisionTaken_Art72" sourceRef="Task_OrganiseOperationalArrangements_Art72" targetRef="EndEvent_BoardDecisionTaken_Art72" />
+    <sequenceFlow id="Flow_StartHandleBoardMatter_To_GatewayMatterType_Art72" sourceRef="StartEvent_HandleBoardMatter_Art72" targetRef="Gateway_WhatBoardMatterIsHandled_Art72" />
+  </sequenceFlows>
+  <messageFlows />
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

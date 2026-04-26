@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art93_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art93_Reviewed">
+    <bpmn:participant id="Participant_Commission_Art93"
+                      name="Commission"
+                      processRef="Process_Commission_Art93" />
+    <bpmn:participant id="Participant_Committee_Art93"
+                      name="Committee"
+                      processRef="Process_Committee_Art93" />
+
+    <bpmn:messageFlow id="MessageFlow_AssistCommission_Art93"
+                      sourceRef="Task_AssistCommission_Art93"
+                      targetRef="StartEvent_ReceiveCommitteeWork_Art93" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_Commission_Art93"
+                name="Run Article 93 committee procedure"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 93 based on the real English legal text from
+      gdpr_articles/article_93.txt. This collaboration captures the committee assistance to the
+      Commission and the two reference paths to Article 5 and to Article 8 in conjunction with
+      Article 5 of Regulation (EU) No 182/2011.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_HandleCommitteeProcedure_Art93"
+                     name="Handle committee procedure">
+      <bpmn:outgoing>Flow_Start_To_RequestCommitteeAssistance_Art93</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:sendTask id="Task_RequestCommitteeAssistance_Art93"
+                   name="Request committee assistance">
+      <bpmn:incoming>Flow_Start_To_RequestCommitteeAssistance_Art93</bpmn:incoming>
+      <bpmn:outgoing>Flow_RequestCommitteeAssistance_To_GatewayReference_Art93</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:exclusiveGateway id="Gateway_WhichParagraphIsReferenced_Art93"
+                           name="Which paragraph is referenced?">
+      <bpmn:incoming>Flow_RequestCommitteeAssistance_To_GatewayReference_Art93</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayReference_To_ApplyArticle5_Art93</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayReference_To_ApplyArticle8And5_Art93</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ApplyArticle5Procedure_Art93"
+               name="Apply Article 5 procedure">
+      <bpmn:incoming>Flow_GatewayReference_To_ApplyArticle5_Art93</bpmn:incoming>
+      <bpmn:outgoing>Flow_ApplyArticle5_To_EndProcedureApplied_Art93</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ApplyArticle8WithArticle5Procedure_Art93"
+               name="Apply Article 8 with Article 5">
+      <bpmn:incoming>Flow_GatewayReference_To_ApplyArticle8And5_Art93</bpmn:incoming>
+      <bpmn:outgoing>Flow_ApplyArticle8And5_To_EndProcedureApplied_Art93</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_ProcedureApplied_Art93"
+                   name="Procedure applied">
+      <bpmn:incoming>Flow_ApplyArticle5_To_EndProcedureApplied_Art93</bpmn:incoming>
+      <bpmn:incoming>Flow_ApplyArticle8And5_To_EndProcedureApplied_Art93</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_RequestCommitteeAssistance_Art93"
+                       sourceRef="StartEvent_HandleCommitteeProcedure_Art93"
+                       targetRef="Task_RequestCommitteeAssistance_Art93" />
+    <bpmn:sequenceFlow id="Flow_RequestCommitteeAssistance_To_GatewayReference_Art93"
+                       sourceRef="Task_RequestCommitteeAssistance_Art93"
+                       targetRef="Gateway_WhichParagraphIsReferenced_Art93" />
+    <bpmn:sequenceFlow id="Flow_GatewayReference_To_ApplyArticle5_Art93"
+                       name="Paragraph 2"
+                       sourceRef="Gateway_WhichParagraphIsReferenced_Art93"
+                       targetRef="Task_ApplyArticle5Procedure_Art93" />
+    <bpmn:sequenceFlow id="Flow_GatewayReference_To_ApplyArticle8And5_Art93"
+                       name="Paragraph 3"
+                       sourceRef="Gateway_WhichParagraphIsReferenced_Art93"
+                       targetRef="Task_ApplyArticle8WithArticle5Procedure_Art93" />
+    <bpmn:sequenceFlow id="Flow_ApplyArticle5_To_EndProcedureApplied_Art93"
+                       sourceRef="Task_ApplyArticle5Procedure_Art93"
+                       targetRef="EndEvent_ProcedureApplied_Art93" />
+    <bpmn:sequenceFlow id="Flow_ApplyArticle8And5_To_EndProcedureApplied_Art93"
+                       sourceRef="Task_ApplyArticle8WithArticle5Procedure_Art93"
+                       targetRef="EndEvent_ProcedureApplied_Art93" />
+  </bpmn:process>
+
+  <bpmn:process id="Process_Committee_Art93"
+                name="Assist the Commission"
+                isExecutable="false">
+    <bpmn:startEvent id="StartEvent_ReceiveCommitteeWork_Art93"
+                     name="Receive committee work">
+      <bpmn:messageEventDefinition />
+      <bpmn:outgoing>Flow_StartCommittee_To_AssistCommission_Art93</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_AssistCommission_Art93"
+               name="Assist Commission">
+      <bpmn:incoming>Flow_StartCommittee_To_AssistCommission_Art93</bpmn:incoming>
+      <bpmn:outgoing>Flow_AssistCommission_To_EndCommitteeAssistance_Art93</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_CommitteeAssistanceProvided_Art93"
+                   name="Committee assistance provided">
+      <bpmn:incoming>Flow_AssistCommission_To_EndCommitteeAssistance_Art93</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartCommittee_To_AssistCommission_Art93"
+                       sourceRef="StartEvent_ReceiveCommitteeWork_Art93"
+                       targetRef="Task_AssistCommission_Art93" />
+    <bpmn:sequenceFlow id="Flow_AssistCommission_To_EndCommitteeAssistance_Art93"
+                       sourceRef="Task_AssistCommission_Art93"
+                       targetRef="EndEvent_CommitteeAssistanceProvided_Art93" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art93_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art93_Reviewed"
+                      bpmnElement="Collaboration_Art93_Reviewed">
+      <bpmndi:BPMNShape id="Participant_Commission_Art93_di"
+                        bpmnElement="Participant_Commission_Art93"
+                        isHorizontal="true">
+        <dc:Bounds x="80" y="80" width="1240" height="220" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Committee_Art93_di"
+                        bpmnElement="Participant_Committee_Art93"
+                        isHorizontal="true">
+        <dc:Bounds x="80" y="340" width="1240" height="140" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_HandleCommitteeProcedure_Art93_di"
+                        bpmnElement="StartEvent_HandleCommitteeProcedure_Art93">
+        <dc:Bounds x="120" y="172" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RequestCommitteeAssistance_Art93_di"
+                        bpmnElement="Task_RequestCommitteeAssistance_Art93">
+        <dc:Bounds x="210" y="150" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_WhichParagraphIsReferenced_Art93_di"
+                        bpmnElement="Gateway_WhichParagraphIsReferenced_Art93"
+                        isMarkerVisible="true">
+        <dc:Bounds x="480" y="165" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ApplyArticle5Procedure_Art93_di"
+                        bpmnElement="Task_ApplyArticle5Procedure_Art93">
+        <dc:Bounds x="650" y="90" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ApplyArticle8WithArticle5Procedure_Art93_di"
+                        bpmnElement="Task_ApplyArticle8WithArticle5Procedure_Art93">
+        <dc:Bounds x="650" y="200" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ProcedureApplied_Art93_di"
+                        bpmnElement="EndEvent_ProcedureApplied_Art93">
+        <dc:Bounds x="932" y="172" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_ReceiveCommitteeWork_Art93_di"
+                        bpmnElement="StartEvent_ReceiveCommitteeWork_Art93">
+        <dc:Bounds x="280" y="392" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssistCommission_Art93_di"
+                        bpmnElement="Task_AssistCommission_Art93">
+        <dc:Bounds x="380" y="370" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_CommitteeAssistanceProvided_Art93_di"
+                        bpmnElement="EndEvent_CommitteeAssistanceProvided_Art93">
+        <dc:Bounds x="612" y="392" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_RequestCommitteeAssistance_Art93_di"
+                       bpmnElement="Flow_Start_To_RequestCommitteeAssistance_Art93">
+        <di:waypoint x="156" y="190" />
+        <di:waypoint x="210" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_RequestCommitteeAssistance_To_GatewayReference_Art93_di"
+                       bpmnElement="Flow_RequestCommitteeAssistance_To_GatewayReference_Art93">
+        <di:waypoint x="390" y="190" />
+        <di:waypoint x="480" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayReference_To_ApplyArticle5_Art93_di"
+                       bpmnElement="Flow_GatewayReference_To_ApplyArticle5_Art93">
+        <di:waypoint x="505" y="165" />
+        <di:waypoint x="505" y="130" />
+        <di:waypoint x="650" y="130" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="540" y="146" width="63" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayReference_To_ApplyArticle8And5_Art93_di"
+                       bpmnElement="Flow_GatewayReference_To_ApplyArticle8And5_Art93">
+        <di:waypoint x="530" y="190" />
+        <di:waypoint x="650" y="240" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="558" y="205" width="63" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ApplyArticle5_To_EndProcedureApplied_Art93_di"
+                       bpmnElement="Flow_ApplyArticle5_To_EndProcedureApplied_Art93">
+        <di:waypoint x="820" y="130" />
+        <di:waypoint x="950" y="130" />
+        <di:waypoint x="950" y="172" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ApplyArticle8And5_To_EndProcedureApplied_Art93_di"
+                       bpmnElement="Flow_ApplyArticle8And5_To_EndProcedureApplied_Art93">
+        <di:waypoint x="850" y="240" />
+        <di:waypoint x="950" y="240" />
+        <di:waypoint x="950" y="208" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_StartCommittee_To_AssistCommission_Art93_di"
+                       bpmnElement="Flow_StartCommittee_To_AssistCommission_Art93">
+        <di:waypoint x="316" y="410" />
+        <di:waypoint x="380" y="410" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AssistCommission_To_EndCommitteeAssistance_Art93_di"
+                       bpmnElement="Flow_AssistCommission_To_EndCommitteeAssistance_Art93">
+        <di:waypoint x="540" y="410" />
+        <di:waypoint x="612" y="410" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_AssistCommission_Art93_di"
+                       bpmnElement="MessageFlow_AssistCommission_Art93">
+        <di:waypoint x="300" y="230" />
+        <di:waypoint x="300" y="392" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

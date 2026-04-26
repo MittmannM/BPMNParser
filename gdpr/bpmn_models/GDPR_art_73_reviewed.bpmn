@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art73_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:process id="Process_Board_Art73"
+                name="Elect Board chair and deputy chairs"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 73 based on the real English legal text from
+      gdpr_articles/article_73.txt. This compact process captures the election of the Board chair
+      and the two deputy chairs by simple majority, the five-year term of office, and the rule
+      that the term may be renewed only once.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_HandleLeadershipElection_Art73"
+                     name="Handle leadership election">
+      <bpmn:outgoing>Flow_StartElection_To_ElectLeadership_Art73</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_ElectChairAndDeputies_Art73"
+               name="Elect chair and two deputy chairs">
+      <bpmn:incoming>Flow_StartElection_To_ElectLeadership_Art73</bpmn:incoming>
+      <bpmn:outgoing>Flow_ElectLeadership_To_SetTerm_Art73</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_SetFiveYearTerm_Art73"
+               name="Set five-year term">
+      <bpmn:incoming>Flow_ElectLeadership_To_SetTerm_Art73</bpmn:incoming>
+      <bpmn:outgoing>Flow_SetTerm_To_GatewayRenewal_Art73</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_IsReelectionSought_Art73"
+                           name="Is re-election sought at term end?">
+      <bpmn:incoming>Flow_SetTerm_To_GatewayRenewal_Art73</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayRenewal_To_GatewayAlreadyRenewed_Art73</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayRenewal_To_EndFirstTerm_Art73</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_HasTermAlreadyBeenRenewed_Art73"
+                           name="Has the term already been renewed once?">
+      <bpmn:incoming>Flow_GatewayRenewal_To_GatewayAlreadyRenewed_Art73</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAlreadyRenewed_To_RenewOnce_Art73</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAlreadyRenewed_To_EndMaximumTerm_Art73</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_RenewTermOnce_Art73"
+               name="Renew term once">
+      <bpmn:incoming>Flow_GatewayAlreadyRenewed_To_RenewOnce_Art73</bpmn:incoming>
+      <bpmn:outgoing>Flow_RenewOnce_To_EndLeadershipTerm_Art73</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_EndAfterFirstTerm_Art73"
+               name="End office after first term">
+      <bpmn:incoming>Flow_GatewayRenewal_To_EndFirstTerm_Art73</bpmn:incoming>
+      <bpmn:outgoing>Flow_EndFirstTerm_To_EndLeadershipTerm_Art73</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_EndAfterMaximumTerm_Art73"
+               name="End office after maximum renewal">
+      <bpmn:incoming>Flow_GatewayAlreadyRenewed_To_EndMaximumTerm_Art73</bpmn:incoming>
+      <bpmn:outgoing>Flow_EndMaximumTerm_To_EndLeadershipTerm_Art73</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_LeadershipTermConcluded_Art73"
+                   name="Leadership term concluded">
+      <bpmn:incoming>Flow_RenewOnce_To_EndLeadershipTerm_Art73</bpmn:incoming>
+      <bpmn:incoming>Flow_EndFirstTerm_To_EndLeadershipTerm_Art73</bpmn:incoming>
+      <bpmn:incoming>Flow_EndMaximumTerm_To_EndLeadershipTerm_Art73</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartElection_To_ElectLeadership_Art73"
+                       sourceRef="StartEvent_HandleLeadershipElection_Art73"
+                       targetRef="Task_ElectChairAndDeputies_Art73" />
+    <bpmn:sequenceFlow id="Flow_ElectLeadership_To_SetTerm_Art73"
+                       sourceRef="Task_ElectChairAndDeputies_Art73"
+                       targetRef="Task_SetFiveYearTerm_Art73" />
+    <bpmn:sequenceFlow id="Flow_SetTerm_To_GatewayRenewal_Art73"
+                       sourceRef="Task_SetFiveYearTerm_Art73"
+                       targetRef="Gateway_IsReelectionSought_Art73" />
+    <bpmn:sequenceFlow id="Flow_GatewayRenewal_To_GatewayAlreadyRenewed_Art73"
+                       name="Yes"
+                       sourceRef="Gateway_IsReelectionSought_Art73"
+                       targetRef="Gateway_HasTermAlreadyBeenRenewed_Art73" />
+    <bpmn:sequenceFlow id="Flow_GatewayRenewal_To_EndFirstTerm_Art73"
+                       name="No"
+                       sourceRef="Gateway_IsReelectionSought_Art73"
+                       targetRef="Task_EndAfterFirstTerm_Art73" />
+    <bpmn:sequenceFlow id="Flow_GatewayAlreadyRenewed_To_RenewOnce_Art73"
+                       name="No"
+                       sourceRef="Gateway_HasTermAlreadyBeenRenewed_Art73"
+                       targetRef="Task_RenewTermOnce_Art73" />
+    <bpmn:sequenceFlow id="Flow_GatewayAlreadyRenewed_To_EndMaximumTerm_Art73"
+                       name="Yes"
+                       sourceRef="Gateway_HasTermAlreadyBeenRenewed_Art73"
+                       targetRef="Task_EndAfterMaximumTerm_Art73" />
+    <bpmn:sequenceFlow id="Flow_RenewOnce_To_EndLeadershipTerm_Art73"
+                       sourceRef="Task_RenewTermOnce_Art73"
+                       targetRef="EndEvent_LeadershipTermConcluded_Art73" />
+    <bpmn:sequenceFlow id="Flow_EndFirstTerm_To_EndLeadershipTerm_Art73"
+                       sourceRef="Task_EndAfterFirstTerm_Art73"
+                       targetRef="EndEvent_LeadershipTermConcluded_Art73" />
+    <bpmn:sequenceFlow id="Flow_EndMaximumTerm_To_EndLeadershipTerm_Art73"
+                       sourceRef="Task_EndAfterMaximumTerm_Art73"
+                       targetRef="EndEvent_LeadershipTermConcluded_Art73" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art73_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art73_Reviewed"
+                      bpmnElement="Process_Board_Art73">
+      <bpmndi:BPMNShape id="StartEvent_HandleLeadershipElection_Art73_di"
+                        bpmnElement="StartEvent_HandleLeadershipElection_Art73">
+        <dc:Bounds x="100" y="212" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ElectChairAndDeputies_Art73_di"
+                        bpmnElement="Task_ElectChairAndDeputies_Art73">
+        <dc:Bounds x="200" y="190" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SetFiveYearTerm_Art73_di"
+                        bpmnElement="Task_SetFiveYearTerm_Art73">
+        <dc:Bounds x="460" y="190" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_IsReelectionSought_Art73_di"
+                        bpmnElement="Gateway_IsReelectionSought_Art73"
+                        isMarkerVisible="true">
+        <dc:Bounds x="700" y="205" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_HasTermAlreadyBeenRenewed_Art73_di"
+                        bpmnElement="Gateway_HasTermAlreadyBeenRenewed_Art73"
+                        isMarkerVisible="true">
+        <dc:Bounds x="870" y="85" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RenewTermOnce_Art73_di"
+                        bpmnElement="Task_RenewTermOnce_Art73">
+        <dc:Bounds x="1030" y="40" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_EndAfterMaximumTerm_Art73_di"
+                        bpmnElement="Task_EndAfterMaximumTerm_Art73">
+        <dc:Bounds x="1030" y="150" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_EndAfterFirstTerm_Art73_di"
+                        bpmnElement="Task_EndAfterFirstTerm_Art73">
+        <dc:Bounds x="860" y="300" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_LeadershipTermConcluded_Art73_di"
+                        bpmnElement="EndEvent_LeadershipTermConcluded_Art73">
+        <dc:Bounds x="1320" y="212" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_StartElection_To_ElectLeadership_Art73_di"
+                       bpmnElement="Flow_StartElection_To_ElectLeadership_Art73">
+        <di:waypoint x="136" y="230" />
+        <di:waypoint x="200" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ElectLeadership_To_SetTerm_Art73_di"
+                       bpmnElement="Flow_ElectLeadership_To_SetTerm_Art73">
+        <di:waypoint x="390" y="230" />
+        <di:waypoint x="460" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SetTerm_To_GatewayRenewal_Art73_di"
+                       bpmnElement="Flow_SetTerm_To_GatewayRenewal_Art73">
+        <di:waypoint x="620" y="230" />
+        <di:waypoint x="700" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRenewal_To_GatewayAlreadyRenewed_Art73_di"
+                       bpmnElement="Flow_GatewayRenewal_To_GatewayAlreadyRenewed_Art73">
+        <di:waypoint x="725" y="205" />
+        <di:waypoint x="725" y="110" />
+        <di:waypoint x="870" y="110" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="752" y="128" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRenewal_To_EndFirstTerm_Art73_di"
+                       bpmnElement="Flow_GatewayRenewal_To_EndFirstTerm_Art73">
+        <di:waypoint x="725" y="255" />
+        <di:waypoint x="725" y="340" />
+        <di:waypoint x="860" y="340" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="752" y="298" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAlreadyRenewed_To_RenewOnce_Art73_di"
+                       bpmnElement="Flow_GatewayAlreadyRenewed_To_RenewOnce_Art73">
+        <di:waypoint x="920" y="110" />
+        <di:waypoint x="1030" y="80" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="948" y="83" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAlreadyRenewed_To_EndMaximumTerm_Art73_di"
+                       bpmnElement="Flow_GatewayAlreadyRenewed_To_EndMaximumTerm_Art73">
+        <di:waypoint x="895" y="135" />
+        <di:waypoint x="895" y="190" />
+        <di:waypoint x="1030" y="190" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="920" y="151" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_RenewOnce_To_EndLeadershipTerm_Art73_di"
+                       bpmnElement="Flow_RenewOnce_To_EndLeadershipTerm_Art73">
+        <di:waypoint x="1180" y="80" />
+        <di:waypoint x="1338" y="80" />
+        <di:waypoint x="1338" y="212" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_EndFirstTerm_To_EndLeadershipTerm_Art73_di"
+                       bpmnElement="Flow_EndFirstTerm_To_EndLeadershipTerm_Art73">
+        <di:waypoint x="1040" y="340" />
+        <di:waypoint x="1338" y="340" />
+        <di:waypoint x="1338" y="248" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_EndMaximumTerm_To_EndLeadershipTerm_Art73_di"
+                       bpmnElement="Flow_EndMaximumTerm_To_EndLeadershipTerm_Art73">
+        <di:waypoint x="1220" y="190" />
+        <di:waypoint x="1320" y="230" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

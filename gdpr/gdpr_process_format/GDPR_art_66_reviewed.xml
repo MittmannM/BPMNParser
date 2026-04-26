@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Board_Art66" name="Board" poolType="active" processRef="Process_Board_Art66" />
+    <pool id="Participant_Commission_Art66" name="Commission" poolType="passive" />
+    <pool id="Participant_OtherConcernedAuthorities_Art66" name="Other Concerned Supervisory Authorities" poolType="passive" />
+    <pool id="Participant_SupervisoryAuthority_Art66" name="Supervisory Authority" poolType="active" processRef="Process_SupervisoryAuthority_Art66" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_AdoptProvisionalMeasures_Art66" name="Adopt provisional measures" type="task" poolRef="Participant_SupervisoryAuthority_Art66" />
+    <task id="Task_AdoptUrgentBindingDecision_Art66" name="Adopt urgent binding decision within two weeks" type="task" poolRef="Participant_Board_Art66" />
+    <task id="Task_AdoptUrgentBoardOutcome_Art66" name="Send urgent Board outcome" type="sendTask" poolRef="Participant_Board_Art66" />
+    <task id="Task_AdoptUrgentOpinion_Art66" name="Adopt urgent opinion within two weeks" type="task" poolRef="Participant_Board_Art66" />
+    <task id="Task_AssessUrgentRequest_Art66" name="Assess urgent request" type="task" poolRef="Participant_Board_Art66" />
+    <task id="Task_CommunicateMeasuresAndReasons_Art66" name="Communicate measures and reasons" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art66" />
+    <task id="Task_ReceiveUrgentBoardOutcome_Art66" name="Receive urgent Board outcome" type="receiveTask" poolRef="Participant_SupervisoryAuthority_Art66" />
+    <task id="Task_RequestUrgentActionForOtherAuthorityFailure_Art66" name="Assess other authority failure" type="task" poolRef="Participant_SupervisoryAuthority_Art66" />
+    <task id="Task_RequestUrgentBoardAction_Art66" name="Request urgent opinion or binding decision" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art66" />
+  </tasks>
+  <events>
+    <event id="EndEvent_ProvisionalMeasuresActive_Art66" name="Provisional measures active" type="endEvent" poolRef="Participant_SupervisoryAuthority_Art66" />
+    <event id="EndEvent_UrgentOutcomeReceived_Art66" name="Urgent Board outcome received" type="endEvent" poolRef="Participant_SupervisoryAuthority_Art66" />
+    <event id="EndEvent_UrgentOutcomeSent_Art66" name="Urgent outcome sent" type="endEvent" poolRef="Participant_Board_Art66" />
+    <event id="StartEvent_ReceiveUrgentRequest_Art66" name="Receive urgent request" type="startEvent" poolRef="Participant_Board_Art66" eventDefinition="message" />
+    <event id="StartEvent_UrgentNeedToAct_Art66" name="Urgent need to act" type="startEvent" poolRef="Participant_SupervisoryAuthority_Art66" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_AreFinalMeasuresUrgentlyNeeded_Art66" name="Are final measures urgently needed?" type="exclusiveGateway" poolRef="Participant_SupervisoryAuthority_Art66" />
+    <gateway id="Gateway_MergeUrgentOutcome_Art66" type="exclusiveGateway" poolRef="Participant_Board_Art66" />
+    <gateway id="Gateway_WhichUrgencyRouteApplies_Art66" name="Which urgency route applies?" type="exclusiveGateway" poolRef="Participant_SupervisoryAuthority_Art66" />
+    <gateway id="Gateway_WhichUrgentOutcomeWillBoardAdopt_Art66" name="Which urgent outcome will the Board adopt?" type="exclusiveGateway" poolRef="Participant_Board_Art66" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AdoptProvisionalMeasures_To_CommunicateMeasuresAndReasons_Art66" sourceRef="Task_AdoptProvisionalMeasures_Art66" targetRef="Task_CommunicateMeasuresAndReasons_Art66" />
+    <sequenceFlow id="Flow_AdoptUrgentBindingDecision_To_GatewayMergeUrgentOutcome_Art66" sourceRef="Task_AdoptUrgentBindingDecision_Art66" targetRef="Gateway_MergeUrgentOutcome_Art66" />
+    <sequenceFlow id="Flow_AdoptUrgentBoardOutcome_To_EndUrgentOutcomeSent_Art66" sourceRef="Task_AdoptUrgentBoardOutcome_Art66" targetRef="EndEvent_UrgentOutcomeSent_Art66" />
+    <sequenceFlow id="Flow_AdoptUrgentOpinion_To_GatewayMergeUrgentOutcome_Art66" sourceRef="Task_AdoptUrgentOpinion_Art66" targetRef="Gateway_MergeUrgentOutcome_Art66" />
+    <sequenceFlow id="Flow_AssessUrgentRequest_To_GatewayUrgentOutcomeType_Art66" sourceRef="Task_AssessUrgentRequest_Art66" targetRef="Gateway_WhichUrgentOutcomeWillBoardAdopt_Art66" />
+    <sequenceFlow id="Flow_CommunicateMeasuresAndReasons_To_GatewayNeedFinalMeasures_Art66" sourceRef="Task_CommunicateMeasuresAndReasons_Art66" targetRef="Gateway_AreFinalMeasuresUrgentlyNeeded_Art66" />
+    <sequenceFlow id="Flow_GatewayMergeUrgentOutcome_To_AdoptUrgentBoardOutcome_Art66" sourceRef="Gateway_MergeUrgentOutcome_Art66" targetRef="Task_AdoptUrgentBoardOutcome_Art66" />
+    <sequenceFlow id="Flow_GatewayNeedFinalMeasures_To_EndProvisionalMeasuresActive_Art66" name="No" sourceRef="Gateway_AreFinalMeasuresUrgentlyNeeded_Art66" targetRef="EndEvent_ProvisionalMeasuresActive_Art66" />
+    <sequenceFlow id="Flow_GatewayNeedFinalMeasures_To_RequestUrgentBoardAction_Art66" name="Yes" sourceRef="Gateway_AreFinalMeasuresUrgentlyNeeded_Art66" targetRef="Task_RequestUrgentBoardAction_Art66" />
+    <sequenceFlow id="Flow_GatewayUrgencyRoute_To_AdoptProvisionalMeasures_Art66" name="Own provisional measures" sourceRef="Gateway_WhichUrgencyRouteApplies_Art66" targetRef="Task_AdoptProvisionalMeasures_Art66" />
+    <sequenceFlow id="Flow_GatewayUrgencyRoute_To_RequestUrgentActionForOtherAuthorityFailure_Art66" name="Other authority failed" sourceRef="Gateway_WhichUrgencyRouteApplies_Art66" targetRef="Task_RequestUrgentActionForOtherAuthorityFailure_Art66" />
+    <sequenceFlow id="Flow_GatewayUrgentOutcomeType_To_AdoptUrgentBindingDecision_Art66" name="Urgent binding decision" sourceRef="Gateway_WhichUrgentOutcomeWillBoardAdopt_Art66" targetRef="Task_AdoptUrgentBindingDecision_Art66" />
+    <sequenceFlow id="Flow_GatewayUrgentOutcomeType_To_AdoptUrgentOpinion_Art66" name="Urgent opinion" sourceRef="Gateway_WhichUrgentOutcomeWillBoardAdopt_Art66" targetRef="Task_AdoptUrgentOpinion_Art66" />
+    <sequenceFlow id="Flow_ReceiveUrgentBoardOutcome_To_EndUrgentOutcomeReceived_Art66" sourceRef="Task_ReceiveUrgentBoardOutcome_Art66" targetRef="EndEvent_UrgentOutcomeReceived_Art66" />
+    <sequenceFlow id="Flow_RequestUrgentActionForOtherAuthorityFailure_To_RequestUrgentBoardAction_Art66" sourceRef="Task_RequestUrgentActionForOtherAuthorityFailure_Art66" targetRef="Task_RequestUrgentBoardAction_Art66" />
+    <sequenceFlow id="Flow_RequestUrgentBoardAction_To_ReceiveUrgentBoardOutcome_Art66" sourceRef="Task_RequestUrgentBoardAction_Art66" targetRef="Task_ReceiveUrgentBoardOutcome_Art66" />
+    <sequenceFlow id="Flow_StartReceiveUrgentRequest_To_AssessUrgentRequest_Art66" sourceRef="StartEvent_ReceiveUrgentRequest_Art66" targetRef="Task_AssessUrgentRequest_Art66" />
+    <sequenceFlow id="Flow_StartUrgentNeed_To_GatewayUrgencyRoute_Art66" sourceRef="StartEvent_UrgentNeedToAct_Art66" targetRef="Gateway_WhichUrgencyRouteApplies_Art66" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_CommunicateMeasuresToAuthorities_Art66" sourceRef="Task_CommunicateMeasuresAndReasons_Art66" targetRef="Participant_OtherConcernedAuthorities_Art66" />
+    <messageFlow id="MessageFlow_CommunicateMeasuresToBoard_Art66" sourceRef="Task_CommunicateMeasuresAndReasons_Art66" targetRef="Participant_Board_Art66" />
+    <messageFlow id="MessageFlow_CommunicateMeasuresToCommission_Art66" sourceRef="Task_CommunicateMeasuresAndReasons_Art66" targetRef="Participant_Commission_Art66" />
+    <messageFlow id="MessageFlow_RequestUrgentBoardAction_Art66" sourceRef="Task_RequestUrgentBoardAction_Art66" targetRef="StartEvent_ReceiveUrgentRequest_Art66" />
+    <messageFlow id="MessageFlow_SendUrgentBoardOutcome_Art66" sourceRef="Task_AdoptUrgentBoardOutcome_Art66" targetRef="Task_ReceiveUrgentBoardOutcome_Art66" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

@@ -1,0 +1,167 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Board_Art60" name="Board" poolType="passive" />
+    <pool id="Participant_Complainant_Art60" name="Complainant" poolType="passive" />
+    <pool id="Participant_ConcernedOrComplaintAuthority_Art60" name="Concerned or Complaint Supervisory Authority" poolType="active" processRef="Process_ConcernedOrComplaintAuthority_Art60" />
+    <pool id="Participant_ControllerOrProcessor_Art60" name="Controller or Processor" poolType="passive" />
+    <pool id="Participant_LeadSupervisoryAuthority_Art60" name="Lead Supervisory Authority" poolType="active" processRef="Process_LeadSupervisoryAuthority_Art60" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_AdoptActionPartDecision_Art60" name="Adopt action-part decision" type="task" poolRef="Participant_LeadSupervisoryAuthority_Art60" />
+    <task id="Task_AdoptDecision_Art60" name="Adopt decision" type="task" poolRef="Participant_LeadSupervisoryAuthority_Art60" />
+    <task id="Task_AdoptDismissalDecision_Art60" name="Adopt dismissal or rejection decision" type="task" poolRef="Participant_ConcernedOrComplaintAuthority_Art60" />
+    <task id="Task_AdoptSplitDismissalDecision_Art60" name="Adopt dismissal or rejection part decision" type="task" poolRef="Participant_ConcernedOrComplaintAuthority_Art60" />
+    <task id="Task_AssessDraftWithinFourWeeks_Art60" name="Assess draft within four weeks" type="task" poolRef="Participant_ConcernedOrComplaintAuthority_Art60" />
+    <task id="Task_AssessRevisedDraftWithinTwoWeeks_Art60" name="Assess revised draft within two weeks" type="task" poolRef="Participant_ConcernedOrComplaintAuthority_Art60" />
+    <task id="Task_ExchangeRelevantInformation_Art60" name="Exchange relevant information" type="task" poolRef="Participant_LeadSupervisoryAuthority_Art60" />
+    <task id="Task_InformComplainantOfActionPart_Art60" name="Inform complainant of action part" type="sendTask" poolRef="Participant_LeadSupervisoryAuthority_Art60" />
+    <task id="Task_InformComplainantOfDecision_Art60" name="Inform complainant of decision" type="sendTask" poolRef="Participant_ConcernedOrComplaintAuthority_Art60" />
+    <task id="Task_InformConcernedAuthoritiesAndBoard_Art60" name="Inform concerned authorities and Board of decision" type="sendTask" poolRef="Participant_LeadSupervisoryAuthority_Art60" />
+    <task id="Task_InformConcernedAuthoritiesOfActionPartCompliance_Art60" name="Inform concerned authorities of action-part compliance" type="sendTask" poolRef="Participant_LeadSupervisoryAuthority_Art60" />
+    <task id="Task_InformConcernedAuthoritiesOfComplianceMeasures_Art60" name="Inform concerned authorities of compliance measures" type="sendTask" poolRef="Participant_LeadSupervisoryAuthority_Art60" />
+    <task id="Task_InformControllerOfDismissal_Art60" name="Inform controller or processor of dismissal" type="sendTask" poolRef="Participant_ConcernedOrComplaintAuthority_Art60" />
+    <task id="Task_InformControllerOfSplitDismissal_Art60" name="Inform controller or processor of dismissal part" type="sendTask" poolRef="Participant_ConcernedOrComplaintAuthority_Art60" />
+    <task id="Task_NotifyComplainantOfDismissal_Art60" name="Notify complainant of dismissal" type="sendTask" poolRef="Participant_ConcernedOrComplaintAuthority_Art60" />
+    <task id="Task_NotifyComplainantOfSplitDismissal_Art60" name="Notify complainant of dismissal part" type="sendTask" poolRef="Participant_ConcernedOrComplaintAuthority_Art60" />
+    <task id="Task_NotifyControllerOfActionPartDecision_Art60" name="Notify controller or processor of action part" type="sendTask" poolRef="Participant_LeadSupervisoryAuthority_Art60" />
+    <task id="Task_NotifyControllerOfDecision_Art60" name="Notify controller or processor of decision" type="sendTask" poolRef="Participant_LeadSupervisoryAuthority_Art60" />
+    <task id="Task_ReceiveActionPartComplianceNotification_Art60" name="Receive action-part compliance notification" type="receiveTask" poolRef="Participant_LeadSupervisoryAuthority_Art60" />
+    <task id="Task_ReceiveComplianceNotification_Art60" name="Receive compliance notification" type="receiveTask" poolRef="Participant_LeadSupervisoryAuthority_Art60" />
+    <task id="Task_RequestMutualAssistanceOrJointOperations_Art60" name="Request mutual assistance or joint operations" type="sendTask" poolRef="Participant_LeadSupervisoryAuthority_Art60" />
+    <task id="Task_SendDismissalOutcome_Art60" name="Send dismissal or rejection outcome" type="sendTask" poolRef="Participant_LeadSupervisoryAuthority_Art60" />
+    <task id="Task_SendDraftDecision_Art60" name="Send draft decision for opinion" type="sendTask" poolRef="Participant_LeadSupervisoryAuthority_Art60" />
+    <task id="Task_SendRelevantInformation_Art60" name="Send relevant information" type="sendTask" poolRef="Participant_LeadSupervisoryAuthority_Art60" />
+    <task id="Task_SendRelevantReasonedObjection_Art60" name="Send relevant and reasoned objection" type="sendTask" poolRef="Participant_ConcernedOrComplaintAuthority_Art60" />
+    <task id="Task_SendRevisedDraftDecision_Art60" name="Send revised draft decision" type="sendTask" poolRef="Participant_LeadSupervisoryAuthority_Art60" />
+    <task id="Task_SendRevisedDraftObjection_Art60" name="Send revised-draft objection" type="sendTask" poolRef="Participant_ConcernedOrComplaintAuthority_Art60" />
+    <task id="Task_SendSplitDismissalOutcome_Art60" name="Send split dismissal or rejection outcome" type="sendTask" poolRef="Participant_LeadSupervisoryAuthority_Art60" />
+    <task id="Task_SubmitMatterToConsistencyMechanism_Art60" name="Submit matter to Article 63 consistency mechanism" type="sendTask" poolRef="Participant_LeadSupervisoryAuthority_Art60" />
+    <task id="Task_TriggerArticle66UrgencyProcedure_Art60" name="Trigger Article 66 urgency procedure" type="sendTask" poolRef="Participant_ConcernedOrComplaintAuthority_Art60" />
+  </tasks>
+  <events>
+    <event id="EndEvent_ComplainantInformed_Art60" name="Complainant informed of decision" type="endEvent" poolRef="Participant_ConcernedOrComplaintAuthority_Art60" />
+    <event id="EndEvent_ConsistencyMechanismTriggered_Art60" name="Consistency mechanism triggered" type="endEvent" poolRef="Participant_LeadSupervisoryAuthority_Art60" />
+    <event id="EndEvent_DecisionImplemented_Art60" name="Decision implemented" type="endEvent" poolRef="Participant_LeadSupervisoryAuthority_Art60" />
+    <event id="EndEvent_DismissalHandled_Art60" name="Dismissal handled" type="endEvent" poolRef="Participant_ConcernedOrComplaintAuthority_Art60" />
+    <event id="EndEvent_DismissalOutcomeSent_Art60" name="Dismissal outcome sent" type="endEvent" poolRef="Participant_LeadSupervisoryAuthority_Art60" />
+    <event id="EndEvent_DraftObjectionSent_Art60" name="Draft objection sent" type="endEvent" poolRef="Participant_ConcernedOrComplaintAuthority_Art60" />
+    <event id="EndEvent_NoDraftObjection_Art60" name="No draft objection sent" type="endEvent" poolRef="Participant_ConcernedOrComplaintAuthority_Art60" />
+    <event id="EndEvent_NoRevisedObjection_Art60" name="No revised-draft objection sent" type="endEvent" poolRef="Participant_ConcernedOrComplaintAuthority_Art60" />
+    <event id="EndEvent_RevisedObjectionSent_Art60" name="Revised-draft objection sent" type="endEvent" poolRef="Participant_ConcernedOrComplaintAuthority_Art60" />
+    <event id="EndEvent_SplitDecisionImplemented_Art60" name="Split decision implemented" type="endEvent" poolRef="Participant_LeadSupervisoryAuthority_Art60" />
+    <event id="EndEvent_SplitDismissalHandled_Art60" name="Split dismissal handled" type="endEvent" poolRef="Participant_ConcernedOrComplaintAuthority_Art60" />
+    <event id="EndEvent_UrgencyTriggered_Art60" name="Urgency procedure triggered" type="endEvent" poolRef="Participant_ConcernedOrComplaintAuthority_Art60" />
+    <event id="IntermediateCatchEvent_FourWeeksElapsed_Art60" name="Four weeks elapsed without objection" type="intermediateCatchEvent" poolRef="Participant_LeadSupervisoryAuthority_Art60" eventDefinition="timer" />
+    <event id="IntermediateCatchEvent_ReceiveObjection_Art60" name="Receive relevant and reasoned objection" type="intermediateCatchEvent" poolRef="Participant_LeadSupervisoryAuthority_Art60" eventDefinition="message" />
+    <event id="IntermediateCatchEvent_ReceiveRevisedObjection_Art60" name="Receive revised-draft objection" type="intermediateCatchEvent" poolRef="Participant_LeadSupervisoryAuthority_Art60" eventDefinition="message" />
+    <event id="IntermediateCatchEvent_TwoWeeksElapsed_Art60" name="Two weeks elapsed without objection" type="intermediateCatchEvent" poolRef="Participant_LeadSupervisoryAuthority_Art60" eventDefinition="timer" />
+    <event id="StartEvent_HandleCrossBorderMatter_Art60" name="Handle cross-border matter" type="startEvent" poolRef="Participant_LeadSupervisoryAuthority_Art60" />
+    <event id="StartEvent_IdentifyUrgentNeed_Art60" name="Identify urgent need to protect data subjects" type="startEvent" poolRef="Participant_ConcernedOrComplaintAuthority_Art60" />
+    <event id="StartEvent_ReceiveDismissalOutcome_Art60" name="Receive dismissal or rejection outcome" type="startEvent" poolRef="Participant_ConcernedOrComplaintAuthority_Art60" eventDefinition="message" />
+    <event id="StartEvent_ReceiveDraftDecision_Art60" name="Receive draft decision" type="startEvent" poolRef="Participant_ConcernedOrComplaintAuthority_Art60" eventDefinition="message" />
+    <event id="StartEvent_ReceiveFinalLeadDecision_Art60" name="Receive final lead decision" type="startEvent" poolRef="Participant_ConcernedOrComplaintAuthority_Art60" eventDefinition="message" />
+    <event id="StartEvent_ReceiveRevisedDraftDecision_Art60" name="Receive revised draft decision" type="startEvent" poolRef="Participant_ConcernedOrComplaintAuthority_Art60" eventDefinition="message" />
+    <event id="StartEvent_ReceiveSplitDismissalOutcome_Art60" name="Receive split dismissal or rejection outcome" type="startEvent" poolRef="Participant_ConcernedOrComplaintAuthority_Art60" eventDefinition="message" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_FollowObjection_Art60" name="Will the lead authority follow the objection?" type="exclusiveGateway" poolRef="Participant_LeadSupervisoryAuthority_Art60" />
+    <gateway id="Gateway_MatterResolved_Art60" name="How is the matter resolved?" type="exclusiveGateway" poolRef="Participant_LeadSupervisoryAuthority_Art60" />
+    <gateway id="Gateway_NeedAssistance_Art60" name="Are mutual assistance or joint operations needed?" type="exclusiveGateway" poolRef="Participant_LeadSupervisoryAuthority_Art60" />
+    <gateway id="Gateway_ObjectDraft_Art60" name="Is a relevant and reasoned objection warranted?" type="exclusiveGateway" poolRef="Participant_ConcernedOrComplaintAuthority_Art60" />
+    <gateway id="Gateway_ObjectRevisedDraft_Art60" name="Is an objection to the revised draft warranted?" type="exclusiveGateway" poolRef="Participant_ConcernedOrComplaintAuthority_Art60" />
+    <gateway id="Gateway_ObjectionWindow_Art60" name="What is received within four weeks?" type="eventBasedGateway" poolRef="Participant_LeadSupervisoryAuthority_Art60" />
+    <gateway id="Gateway_RevisedObjectionWindow_Art60" name="What is received within two weeks?" type="eventBasedGateway" poolRef="Participant_LeadSupervisoryAuthority_Art60" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AdoptActionPartDecision_To_NotifyControllerActionPart_Art60" sourceRef="Task_AdoptActionPartDecision_Art60" targetRef="Task_NotifyControllerOfActionPartDecision_Art60" />
+    <sequenceFlow id="Flow_AdoptDecision_To_NotifyController_Art60" sourceRef="Task_AdoptDecision_Art60" targetRef="Task_NotifyControllerOfDecision_Art60" />
+    <sequenceFlow id="Flow_AdoptDismissalDecision_To_NotifyComplainantDismissal_Art60" sourceRef="Task_AdoptDismissalDecision_Art60" targetRef="Task_NotifyComplainantOfDismissal_Art60" />
+    <sequenceFlow id="Flow_AdoptSplitDismissalDecision_To_NotifyComplainantSplitDismissal_Art60" sourceRef="Task_AdoptSplitDismissalDecision_Art60" targetRef="Task_NotifyComplainantOfSplitDismissal_Art60" />
+    <sequenceFlow id="Flow_AssessDraft_To_GatewayObjectDraft_Art60" sourceRef="Task_AssessDraftWithinFourWeeks_Art60" targetRef="Gateway_ObjectDraft_Art60" />
+    <sequenceFlow id="Flow_AssessRevisedDraft_To_GatewayObjectRevisedDraft_Art60" sourceRef="Task_AssessRevisedDraftWithinTwoWeeks_Art60" targetRef="Gateway_ObjectRevisedDraft_Art60" />
+    <sequenceFlow id="Flow_ExchangeRelevantInformation_To_GatewayNeedAssistance_Art60" sourceRef="Task_ExchangeRelevantInformation_Art60" targetRef="Gateway_NeedAssistance_Art60" />
+    <sequenceFlow id="Flow_FourWeeksElapsed_To_GatewayMatterResolved_Art60" sourceRef="IntermediateCatchEvent_FourWeeksElapsed_Art60" targetRef="Gateway_MatterResolved_Art60" />
+    <sequenceFlow id="Flow_GatewayFollowObjection_To_SendRevisedDraftDecision_Art60" name="Yes" sourceRef="Gateway_FollowObjection_Art60" targetRef="Task_SendRevisedDraftDecision_Art60" />
+    <sequenceFlow id="Flow_GatewayFollowObjection_To_SubmitConsistencyMechanism_Art60" name="No" sourceRef="Gateway_FollowObjection_Art60" targetRef="Task_SubmitMatterToConsistencyMechanism_Art60" />
+    <sequenceFlow id="Flow_GatewayMatterResolved_To_AdoptActionPartDecision_Art60" name="Action and dismissal split" sourceRef="Gateway_MatterResolved_Art60" targetRef="Task_AdoptActionPartDecision_Art60" />
+    <sequenceFlow id="Flow_GatewayMatterResolved_To_AdoptDecision_Art60" name="Action decision" sourceRef="Gateway_MatterResolved_Art60" targetRef="Task_AdoptDecision_Art60" />
+    <sequenceFlow id="Flow_GatewayMatterResolved_To_SendDismissalOutcome_Art60" name="Complaint fully dismissed or rejected" sourceRef="Gateway_MatterResolved_Art60" targetRef="Task_SendDismissalOutcome_Art60" />
+    <sequenceFlow id="Flow_GatewayNeedAssistance_To_RequestAssistance_Art60" name="Yes" sourceRef="Gateway_NeedAssistance_Art60" targetRef="Task_RequestMutualAssistanceOrJointOperations_Art60" />
+    <sequenceFlow id="Flow_GatewayNeedAssistance_To_SendRelevantInformation_Art60" name="No" sourceRef="Gateway_NeedAssistance_Art60" targetRef="Task_SendRelevantInformation_Art60" />
+    <sequenceFlow id="Flow_GatewayObjectDraft_To_EndNoDraftObjection_Art60" name="No" sourceRef="Gateway_ObjectDraft_Art60" targetRef="EndEvent_NoDraftObjection_Art60" />
+    <sequenceFlow id="Flow_GatewayObjectDraft_To_SendObjection_Art60" name="Yes" sourceRef="Gateway_ObjectDraft_Art60" targetRef="Task_SendRelevantReasonedObjection_Art60" />
+    <sequenceFlow id="Flow_GatewayObjectRevisedDraft_To_EndNoRevisedObjection_Art60" name="No" sourceRef="Gateway_ObjectRevisedDraft_Art60" targetRef="EndEvent_NoRevisedObjection_Art60" />
+    <sequenceFlow id="Flow_GatewayObjectRevisedDraft_To_SendRevisedObjection_Art60" name="Yes" sourceRef="Gateway_ObjectRevisedDraft_Art60" targetRef="Task_SendRevisedDraftObjection_Art60" />
+    <sequenceFlow id="Flow_GatewayObjectionWindow_To_FourWeeksElapsed_Art60" sourceRef="Gateway_ObjectionWindow_Art60" targetRef="IntermediateCatchEvent_FourWeeksElapsed_Art60" />
+    <sequenceFlow id="Flow_GatewayObjectionWindow_To_ReceiveObjection_Art60" sourceRef="Gateway_ObjectionWindow_Art60" targetRef="IntermediateCatchEvent_ReceiveObjection_Art60" />
+    <sequenceFlow id="Flow_GatewayRevisedObjectionWindow_To_ReceiveRevisedObjection_Art60" sourceRef="Gateway_RevisedObjectionWindow_Art60" targetRef="IntermediateCatchEvent_ReceiveRevisedObjection_Art60" />
+    <sequenceFlow id="Flow_GatewayRevisedObjectionWindow_To_TwoWeeksElapsed_Art60" sourceRef="Gateway_RevisedObjectionWindow_Art60" targetRef="IntermediateCatchEvent_TwoWeeksElapsed_Art60" />
+    <sequenceFlow id="Flow_InformActionPartCompliance_To_EndSplitDecisionImplemented_Art60" sourceRef="Task_InformConcernedAuthoritiesOfActionPartCompliance_Art60" targetRef="EndEvent_SplitDecisionImplemented_Art60" />
+    <sequenceFlow id="Flow_InformAuthoritiesBoard_To_ReceiveComplianceNotification_Art60" sourceRef="Task_InformConcernedAuthoritiesAndBoard_Art60" targetRef="Task_ReceiveComplianceNotification_Art60" />
+    <sequenceFlow id="Flow_InformComplainantActionPart_To_SendSplitOutcome_Art60" sourceRef="Task_InformComplainantOfActionPart_Art60" targetRef="Task_SendSplitDismissalOutcome_Art60" />
+    <sequenceFlow id="Flow_InformComplainantDecision_To_EndComplainantInformed_Art60" sourceRef="Task_InformComplainantOfDecision_Art60" targetRef="EndEvent_ComplainantInformed_Art60" />
+    <sequenceFlow id="Flow_InformComplianceMeasures_To_EndDecisionImplemented_Art60" sourceRef="Task_InformConcernedAuthoritiesOfComplianceMeasures_Art60" targetRef="EndEvent_DecisionImplemented_Art60" />
+    <sequenceFlow id="Flow_InformControllerDismissal_To_EndDismissalHandled_Art60" sourceRef="Task_InformControllerOfDismissal_Art60" targetRef="EndEvent_DismissalHandled_Art60" />
+    <sequenceFlow id="Flow_InformControllerSplitDismissal_To_EndSplitDismissalHandled_Art60" sourceRef="Task_InformControllerOfSplitDismissal_Art60" targetRef="EndEvent_SplitDismissalHandled_Art60" />
+    <sequenceFlow id="Flow_NotifyComplainantDismissal_To_InformControllerDismissal_Art60" sourceRef="Task_NotifyComplainantOfDismissal_Art60" targetRef="Task_InformControllerOfDismissal_Art60" />
+    <sequenceFlow id="Flow_NotifyComplainantSplitDismissal_To_InformControllerSplitDismissal_Art60" sourceRef="Task_NotifyComplainantOfSplitDismissal_Art60" targetRef="Task_InformControllerOfSplitDismissal_Art60" />
+    <sequenceFlow id="Flow_NotifyControllerActionPart_To_InformComplainantActionPart_Art60" sourceRef="Task_NotifyControllerOfActionPartDecision_Art60" targetRef="Task_InformComplainantOfActionPart_Art60" />
+    <sequenceFlow id="Flow_NotifyController_To_InformAuthoritiesBoard_Art60" sourceRef="Task_NotifyControllerOfDecision_Art60" targetRef="Task_InformConcernedAuthoritiesAndBoard_Art60" />
+    <sequenceFlow id="Flow_ReceiveActionPartComplianceNotification_To_InformActionPartCompliance_Art60" sourceRef="Task_ReceiveActionPartComplianceNotification_Art60" targetRef="Task_InformConcernedAuthoritiesOfActionPartCompliance_Art60" />
+    <sequenceFlow id="Flow_ReceiveComplianceNotification_To_InformComplianceMeasures_Art60" sourceRef="Task_ReceiveComplianceNotification_Art60" targetRef="Task_InformConcernedAuthoritiesOfComplianceMeasures_Art60" />
+    <sequenceFlow id="Flow_ReceiveObjection_To_GatewayFollowObjection_Art60" sourceRef="IntermediateCatchEvent_ReceiveObjection_Art60" targetRef="Gateway_FollowObjection_Art60" />
+    <sequenceFlow id="Flow_ReceiveRevisedObjection_To_SubmitConsistencyMechanism_Art60" sourceRef="IntermediateCatchEvent_ReceiveRevisedObjection_Art60" targetRef="Task_SubmitMatterToConsistencyMechanism_Art60" />
+    <sequenceFlow id="Flow_RequestAssistance_To_SendRelevantInformation_Art60" sourceRef="Task_RequestMutualAssistanceOrJointOperations_Art60" targetRef="Task_SendRelevantInformation_Art60" />
+    <sequenceFlow id="Flow_SendDismissalOutcome_To_EndDismissalOutcomeSent_Art60" sourceRef="Task_SendDismissalOutcome_Art60" targetRef="EndEvent_DismissalOutcomeSent_Art60" />
+    <sequenceFlow id="Flow_SendDraftDecision_To_GatewayObjectionWindow_Art60" sourceRef="Task_SendDraftDecision_Art60" targetRef="Gateway_ObjectionWindow_Art60" />
+    <sequenceFlow id="Flow_SendObjection_To_EndDraftObjectionSent_Art60" sourceRef="Task_SendRelevantReasonedObjection_Art60" targetRef="EndEvent_DraftObjectionSent_Art60" />
+    <sequenceFlow id="Flow_SendRelevantInformation_To_SendDraftDecision_Art60" sourceRef="Task_SendRelevantInformation_Art60" targetRef="Task_SendDraftDecision_Art60" />
+    <sequenceFlow id="Flow_SendRevisedDraftDecision_To_GatewayRevisedObjectionWindow_Art60" sourceRef="Task_SendRevisedDraftDecision_Art60" targetRef="Gateway_RevisedObjectionWindow_Art60" />
+    <sequenceFlow id="Flow_SendRevisedObjection_To_EndRevisedObjectionSent_Art60" sourceRef="Task_SendRevisedDraftObjection_Art60" targetRef="EndEvent_RevisedObjectionSent_Art60" />
+    <sequenceFlow id="Flow_SendSplitOutcome_To_ReceiveActionPartComplianceNotification_Art60" sourceRef="Task_SendSplitDismissalOutcome_Art60" targetRef="Task_ReceiveActionPartComplianceNotification_Art60" />
+    <sequenceFlow id="Flow_StartLead_To_ExchangeRelevantInformation_Art60" sourceRef="StartEvent_HandleCrossBorderMatter_Art60" targetRef="Task_ExchangeRelevantInformation_Art60" />
+    <sequenceFlow id="Flow_StartReceiveDismissalOutcome_To_AdoptDismissalDecision_Art60" sourceRef="StartEvent_ReceiveDismissalOutcome_Art60" targetRef="Task_AdoptDismissalDecision_Art60" />
+    <sequenceFlow id="Flow_StartReceiveDraft_To_AssessDraft_Art60" sourceRef="StartEvent_ReceiveDraftDecision_Art60" targetRef="Task_AssessDraftWithinFourWeeks_Art60" />
+    <sequenceFlow id="Flow_StartReceiveFinalDecision_To_InformComplainantDecision_Art60" sourceRef="StartEvent_ReceiveFinalLeadDecision_Art60" targetRef="Task_InformComplainantOfDecision_Art60" />
+    <sequenceFlow id="Flow_StartReceiveRevisedDraft_To_AssessRevisedDraft_Art60" sourceRef="StartEvent_ReceiveRevisedDraftDecision_Art60" targetRef="Task_AssessRevisedDraftWithinTwoWeeks_Art60" />
+    <sequenceFlow id="Flow_StartReceiveSplitOutcome_To_AdoptSplitDismissalDecision_Art60" sourceRef="StartEvent_ReceiveSplitDismissalOutcome_Art60" targetRef="Task_AdoptSplitDismissalDecision_Art60" />
+    <sequenceFlow id="Flow_StartUrgentNeed_To_TriggerUrgencyProcedure_Art60" sourceRef="StartEvent_IdentifyUrgentNeed_Art60" targetRef="Task_TriggerArticle66UrgencyProcedure_Art60" />
+    <sequenceFlow id="Flow_SubmitConsistencyMechanism_To_EndConsistencyTriggered_Art60" sourceRef="Task_SubmitMatterToConsistencyMechanism_Art60" targetRef="EndEvent_ConsistencyMechanismTriggered_Art60" />
+    <sequenceFlow id="Flow_TriggerUrgencyProcedure_To_EndUrgencyTriggered_Art60" sourceRef="Task_TriggerArticle66UrgencyProcedure_Art60" targetRef="EndEvent_UrgencyTriggered_Art60" />
+    <sequenceFlow id="Flow_TwoWeeksElapsed_To_GatewayMatterResolved_Art60" sourceRef="IntermediateCatchEvent_TwoWeeksElapsed_Art60" targetRef="Gateway_MatterResolved_Art60" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_ComplianceNotificationActionPart_Art60" sourceRef="Participant_ControllerOrProcessor_Art60" targetRef="Task_ReceiveActionPartComplianceNotification_Art60" />
+    <messageFlow id="MessageFlow_ComplianceNotification_Art60" sourceRef="Participant_ControllerOrProcessor_Art60" targetRef="Task_ReceiveComplianceNotification_Art60" />
+    <messageFlow id="MessageFlow_InformActionPartComplianceMeasures_Art60" sourceRef="Task_InformConcernedAuthoritiesOfActionPartCompliance_Art60" targetRef="Participant_ConcernedOrComplaintAuthority_Art60" />
+    <messageFlow id="MessageFlow_InformBoardDecision_Art60" sourceRef="Task_InformConcernedAuthoritiesAndBoard_Art60" targetRef="Participant_Board_Art60" />
+    <messageFlow id="MessageFlow_InformComplainantActionPart_Art60" sourceRef="Task_InformComplainantOfActionPart_Art60" targetRef="Participant_Complainant_Art60" />
+    <messageFlow id="MessageFlow_InformComplainantDecision_Art60" sourceRef="Task_InformComplainantOfDecision_Art60" targetRef="Participant_Complainant_Art60" />
+    <messageFlow id="MessageFlow_InformComplianceMeasures_Art60" sourceRef="Task_InformConcernedAuthoritiesOfComplianceMeasures_Art60" targetRef="Participant_ConcernedOrComplaintAuthority_Art60" />
+    <messageFlow id="MessageFlow_InformControllerDismissal_Art60" sourceRef="Task_InformControllerOfDismissal_Art60" targetRef="Participant_ControllerOrProcessor_Art60" />
+    <messageFlow id="MessageFlow_InformControllerSplitDismissal_Art60" sourceRef="Task_InformControllerOfSplitDismissal_Art60" targetRef="Participant_ControllerOrProcessor_Art60" />
+    <messageFlow id="MessageFlow_InformDecision_Art60" sourceRef="Task_InformConcernedAuthoritiesAndBoard_Art60" targetRef="Participant_ConcernedOrComplaintAuthority_Art60" />
+    <messageFlow id="MessageFlow_NotifyComplainantDismissal_Art60" sourceRef="Task_NotifyComplainantOfDismissal_Art60" targetRef="Participant_Complainant_Art60" />
+    <messageFlow id="MessageFlow_NotifyComplainantSplitDismissal_Art60" sourceRef="Task_NotifyComplainantOfSplitDismissal_Art60" targetRef="Participant_Complainant_Art60" />
+    <messageFlow id="MessageFlow_NotifyControllerActionPart_Art60" sourceRef="Task_NotifyControllerOfActionPartDecision_Art60" targetRef="Participant_ControllerOrProcessor_Art60" />
+    <messageFlow id="MessageFlow_NotifyControllerDecision_Art60" sourceRef="Task_NotifyControllerOfDecision_Art60" targetRef="Participant_ControllerOrProcessor_Art60" />
+    <messageFlow id="MessageFlow_RequestMutualAssistance_Art60" sourceRef="Task_RequestMutualAssistanceOrJointOperations_Art60" targetRef="Participant_ConcernedOrComplaintAuthority_Art60" />
+    <messageFlow id="MessageFlow_SendDismissalOutcome_Art60" sourceRef="Task_SendDismissalOutcome_Art60" targetRef="StartEvent_ReceiveDismissalOutcome_Art60" />
+    <messageFlow id="MessageFlow_SendDraftDecision_Art60" sourceRef="Task_SendDraftDecision_Art60" targetRef="StartEvent_ReceiveDraftDecision_Art60" />
+    <messageFlow id="MessageFlow_SendFinalLeadDecision_Art60" sourceRef="Task_InformConcernedAuthoritiesAndBoard_Art60" targetRef="StartEvent_ReceiveFinalLeadDecision_Art60" />
+    <messageFlow id="MessageFlow_SendObjection_Art60" sourceRef="Task_SendRelevantReasonedObjection_Art60" targetRef="IntermediateCatchEvent_ReceiveObjection_Art60" />
+    <messageFlow id="MessageFlow_SendRelevantInformation_Art60" sourceRef="Task_SendRelevantInformation_Art60" targetRef="Participant_ConcernedOrComplaintAuthority_Art60" />
+    <messageFlow id="MessageFlow_SendRevisedDraftDecision_Art60" sourceRef="Task_SendRevisedDraftDecision_Art60" targetRef="StartEvent_ReceiveRevisedDraftDecision_Art60" />
+    <messageFlow id="MessageFlow_SendRevisedObjection_Art60" sourceRef="Task_SendRevisedDraftObjection_Art60" targetRef="IntermediateCatchEvent_ReceiveRevisedObjection_Art60" />
+    <messageFlow id="MessageFlow_SendSplitOutcome_Art60" sourceRef="Task_SendSplitDismissalOutcome_Art60" targetRef="StartEvent_ReceiveSplitDismissalOutcome_Art60" />
+    <messageFlow id="MessageFlow_SubmitConsistencyMechanism_Art60" sourceRef="Task_SubmitMatterToConsistencyMechanism_Art60" targetRef="Participant_Board_Art60" />
+    <messageFlow id="MessageFlow_TriggerUrgencyProcedure_Art60" sourceRef="Task_TriggerArticle66UrgencyProcedure_Art60" targetRef="Participant_Board_Art60" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

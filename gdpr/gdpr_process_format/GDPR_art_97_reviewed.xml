@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Commission_Art97" name="Commission" poolType="active" processRef="Process_Commission_Art97" />
+    <pool id="Participant_Council_Art97" name="Council" poolType="passive" />
+    <pool id="Participant_EuropeanParliament_Art97" name="European Parliament" poolType="passive" />
+    <pool id="Participant_MemberStatesAndSupervisoryAuthorities_Art97" name="Member States and Supervisory Authorities" poolType="passive" />
+    <pool id="Participant_Public_Art97" name="Public" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_MakeReportPublic_Art97" name="Make report public" type="sendTask" poolRef="Participant_Commission_Art97" />
+    <task id="Task_RequestInformation_Art97" name="Request information if needed" type="task" poolRef="Participant_Commission_Art97" />
+    <task id="Task_ReviewChapterVII_Art97" name="Review Chapter VII" type="task" poolRef="Participant_Commission_Art97" />
+    <task id="Task_ReviewChapterV_Art97" name="Review Chapter V" type="task" poolRef="Participant_Commission_Art97" />
+    <task id="Task_SubmitAmendmentProposals_Art97" name="Submit amendment proposals" type="task" poolRef="Participant_Commission_Art97" />
+    <task id="Task_SubmitReportToParliamentAndCouncil_Art97" name="Submit report to Parliament and Council" type="sendTask" poolRef="Participant_Commission_Art97" />
+    <task id="Task_TakeIntoAccountPositionsAndFindings_Art97" name="Take into account positions and findings" type="task" poolRef="Participant_Commission_Art97" />
+  </tasks>
+  <events>
+    <event id="EndEvent_ReviewCycleCompleted_Art97" name="Review cycle completed" type="endEvent" poolRef="Participant_Commission_Art97" />
+    <event id="StartEvent_StartReviewCycle_Art97" name="Start four-year review cycle" type="startEvent" poolRef="Participant_Commission_Art97" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_IsAmendmentProposalNecessary_Art97" name="Is an amendment proposal necessary?" type="exclusiveGateway" poolRef="Participant_Commission_Art97" />
+    <gateway id="Gateway_JoinPublicationAndAmendment_Art97" type="parallelGateway" poolRef="Participant_Commission_Art97" />
+    <gateway id="Gateway_JoinReviewWork_Art97" type="parallelGateway" poolRef="Participant_Commission_Art97" />
+    <gateway id="Gateway_MergeAmendmentNeed_Art97" type="exclusiveGateway" poolRef="Participant_Commission_Art97" />
+    <gateway id="Gateway_SplitPublicationAndAmendment_Art97" type="parallelGateway" poolRef="Participant_Commission_Art97" />
+    <gateway id="Gateway_SplitReviewWork_Art97" type="parallelGateway" poolRef="Participant_Commission_Art97" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_GatewayAmendmentNeed_To_GatewayMergeAmendmentNeed_Art97" name="No" sourceRef="Gateway_IsAmendmentProposalNecessary_Art97" targetRef="Gateway_MergeAmendmentNeed_Art97" />
+    <sequenceFlow id="Flow_GatewayAmendmentNeed_To_SubmitAmendmentProposals_Art97" name="Yes" sourceRef="Gateway_IsAmendmentProposalNecessary_Art97" targetRef="Task_SubmitAmendmentProposals_Art97" />
+    <sequenceFlow id="Flow_GatewayJoinPublicationAndAmendment_To_EndReviewCycleCompleted_Art97" sourceRef="Gateway_JoinPublicationAndAmendment_Art97" targetRef="EndEvent_ReviewCycleCompleted_Art97" />
+    <sequenceFlow id="Flow_GatewayJoin_To_TakeIntoAccountPositions_Art97" sourceRef="Gateway_JoinReviewWork_Art97" targetRef="Task_TakeIntoAccountPositionsAndFindings_Art97" />
+    <sequenceFlow id="Flow_GatewayMergeAmendmentNeed_To_GatewayJoinPublicationAndAmendment_Art97" sourceRef="Gateway_MergeAmendmentNeed_Art97" targetRef="Gateway_JoinPublicationAndAmendment_Art97" />
+    <sequenceFlow id="Flow_GatewaySplitPublication_To_GatewayAmendmentNeed_Art97" sourceRef="Gateway_SplitPublicationAndAmendment_Art97" targetRef="Gateway_IsAmendmentProposalNecessary_Art97" />
+    <sequenceFlow id="Flow_GatewaySplitPublication_To_MakeReportPublic_Art97" sourceRef="Gateway_SplitPublicationAndAmendment_Art97" targetRef="Task_MakeReportPublic_Art97" />
+    <sequenceFlow id="Flow_GatewaySplit_To_ReviewChapterVII_Art97" sourceRef="Gateway_SplitReviewWork_Art97" targetRef="Task_ReviewChapterVII_Art97" />
+    <sequenceFlow id="Flow_GatewaySplit_To_ReviewChapterV_Art97" sourceRef="Gateway_SplitReviewWork_Art97" targetRef="Task_ReviewChapterV_Art97" />
+    <sequenceFlow id="Flow_MakeReportPublic_To_GatewayJoinPublicationAndAmendment_Art97" sourceRef="Task_MakeReportPublic_Art97" targetRef="Gateway_JoinPublicationAndAmendment_Art97" />
+    <sequenceFlow id="Flow_RequestInformation_To_SplitReviewWork_Art97" sourceRef="Task_RequestInformation_Art97" targetRef="Gateway_SplitReviewWork_Art97" />
+    <sequenceFlow id="Flow_ReviewChapterVII_To_GatewayJoinReviewWork_Art97" sourceRef="Task_ReviewChapterVII_Art97" targetRef="Gateway_JoinReviewWork_Art97" />
+    <sequenceFlow id="Flow_ReviewChapterV_To_GatewayJoinReviewWork_Art97" sourceRef="Task_ReviewChapterV_Art97" targetRef="Gateway_JoinReviewWork_Art97" />
+    <sequenceFlow id="Flow_StartReviewCycle_To_RequestInformation_Art97" sourceRef="StartEvent_StartReviewCycle_Art97" targetRef="Task_RequestInformation_Art97" />
+    <sequenceFlow id="Flow_SubmitAmendmentProposals_To_GatewayMergeAmendmentNeed_Art97" sourceRef="Task_SubmitAmendmentProposals_Art97" targetRef="Gateway_MergeAmendmentNeed_Art97" />
+    <sequenceFlow id="Flow_SubmitReport_To_SplitPublicationAndAmendment_Art97" sourceRef="Task_SubmitReportToParliamentAndCouncil_Art97" targetRef="Gateway_SplitPublicationAndAmendment_Art97" />
+    <sequenceFlow id="Flow_TakeIntoAccountPositions_To_SubmitReport_Art97" sourceRef="Task_TakeIntoAccountPositionsAndFindings_Art97" targetRef="Task_SubmitReportToParliamentAndCouncil_Art97" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_MakeReportPublic_Art97" sourceRef="Task_MakeReportPublic_Art97" targetRef="Participant_Public_Art97" />
+    <messageFlow id="MessageFlow_RequestInformation_Art97" sourceRef="Task_RequestInformation_Art97" targetRef="Participant_MemberStatesAndSupervisoryAuthorities_Art97" />
+    <messageFlow id="MessageFlow_SubmitReportToCouncil_Art97" sourceRef="Task_SubmitReportToParliamentAndCouncil_Art97" targetRef="Participant_Council_Art97" />
+    <messageFlow id="MessageFlow_SubmitReportToParliament_Art97" sourceRef="Task_SubmitReportToParliamentAndCouncil_Art97" targetRef="Participant_EuropeanParliament_Art97" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

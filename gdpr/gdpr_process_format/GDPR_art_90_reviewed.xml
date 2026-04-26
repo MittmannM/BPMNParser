@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Commission_Art90" name="Commission" poolType="passive" />
+    <pool id="Participant_MemberState_Art90" name="Member State" poolType="active" processRef="Process_MemberState_Art90" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_AdoptSpecificRules_Art90" name="Adopt specific rules" type="task" poolRef="Participant_MemberState_Art90" />
+    <task id="Task_LimitRulesToCoveredData_Art90" name="Limit rules to covered personal data" type="task" poolRef="Participant_MemberState_Art90" />
+    <task id="Task_NotifyCommissionOfArticle90Rules_Art90" name="Notify Commission of Article 90 rules" type="sendTask" poolRef="Participant_MemberState_Art90" />
+  </tasks>
+  <events>
+    <event id="EndEvent_NoSpecificRules_Art90" name="No specific rules adopted" type="endEvent" poolRef="Participant_MemberState_Art90" />
+    <event id="EndEvent_RulesNotified_Art90" name="Article 90 rules notified" type="endEvent" poolRef="Participant_MemberState_Art90" />
+    <event id="StartEvent_AssessSpecificSecrecyRules_Art90" name="Assess specific secrecy rules" type="startEvent" poolRef="Participant_MemberState_Art90" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_AdoptSpecificRules_Art90" name="Will the Member State adopt specific rules?" type="exclusiveGateway" poolRef="Participant_MemberState_Art90" />
+    <gateway id="Gateway_AreArticle58PowersConcerned_Art90" name="Do the rules concern Article 58(1)(e) and (f) powers?" type="exclusiveGateway" poolRef="Participant_MemberState_Art90" />
+    <gateway id="Gateway_AreRulesNecessaryAndProportionate_Art90" name="Are the rules necessary and proportionate to reconcile the rights and secrecy obligations?" type="exclusiveGateway" poolRef="Participant_MemberState_Art90" />
+    <gateway id="Gateway_IsProfessionalSecrecyContextPresent_Art90" name="Is the controller or processor subject to professional secrecy or equivalent secrecy?" type="exclusiveGateway" poolRef="Participant_MemberState_Art90" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AdoptSpecificRules_To_LimitRulesToCoveredData_Art90" sourceRef="Task_AdoptSpecificRules_Art90" targetRef="Task_LimitRulesToCoveredData_Art90" />
+    <sequenceFlow id="Flow_GatewayAdoptSpecificRules_To_EndNoSpecificRules_Art90" name="No" sourceRef="Gateway_AdoptSpecificRules_Art90" targetRef="EndEvent_NoSpecificRules_Art90" />
+    <sequenceFlow id="Flow_GatewayAdoptSpecificRules_To_GatewayAuthorityPowers_Art90" name="Yes" sourceRef="Gateway_AdoptSpecificRules_Art90" targetRef="Gateway_AreArticle58PowersConcerned_Art90" />
+    <sequenceFlow id="Flow_GatewayAuthorityPowers_To_EndNoSpecificRules_Art90" name="No" sourceRef="Gateway_AreArticle58PowersConcerned_Art90" targetRef="EndEvent_NoSpecificRules_Art90" />
+    <sequenceFlow id="Flow_GatewayAuthorityPowers_To_GatewaySecrecyObligation_Art90" name="Yes" sourceRef="Gateway_AreArticle58PowersConcerned_Art90" targetRef="Gateway_IsProfessionalSecrecyContextPresent_Art90" />
+    <sequenceFlow id="Flow_GatewayNecessityAndProportionality_To_AdoptSpecificRules_Art90" name="Yes" sourceRef="Gateway_AreRulesNecessaryAndProportionate_Art90" targetRef="Task_AdoptSpecificRules_Art90" />
+    <sequenceFlow id="Flow_GatewayNecessityAndProportionality_To_EndNoSpecificRules_Art90" name="No" sourceRef="Gateway_AreRulesNecessaryAndProportionate_Art90" targetRef="EndEvent_NoSpecificRules_Art90" />
+    <sequenceFlow id="Flow_GatewaySecrecyObligation_To_EndNoSpecificRules_Art90" name="No" sourceRef="Gateway_IsProfessionalSecrecyContextPresent_Art90" targetRef="EndEvent_NoSpecificRules_Art90" />
+    <sequenceFlow id="Flow_GatewaySecrecyObligation_To_GatewayNecessityAndProportionality_Art90" name="Yes" sourceRef="Gateway_IsProfessionalSecrecyContextPresent_Art90" targetRef="Gateway_AreRulesNecessaryAndProportionate_Art90" />
+    <sequenceFlow id="Flow_LimitRulesToCoveredData_To_NotifyCommission_Art90" sourceRef="Task_LimitRulesToCoveredData_Art90" targetRef="Task_NotifyCommissionOfArticle90Rules_Art90" />
+    <sequenceFlow id="Flow_NotifyCommission_To_EndRulesNotified_Art90" sourceRef="Task_NotifyCommissionOfArticle90Rules_Art90" targetRef="EndEvent_RulesNotified_Art90" />
+    <sequenceFlow id="Flow_Start_To_GatewayAdoptSpecificRules_Art90" sourceRef="StartEvent_AssessSpecificSecrecyRules_Art90" targetRef="Gateway_AdoptSpecificRules_Art90" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_NotifyCommissionOfArticle90Rules_Art90" sourceRef="Task_NotifyCommissionOfArticle90Rules_Art90" targetRef="Participant_Commission_Art90" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

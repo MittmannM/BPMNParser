@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_CompetentCourt_Art81" name="Competent Court" poolType="active" processRef="Process_CompetentCourt_Art81" />
+    <pool id="Participant_OtherMemberStateCourt_Art81" name="Court in Another Member State" poolType="active" processRef="Process_OtherCourt_Art81" />
+    <pool id="Participant_Party_Art81" name="Party" poolType="active" processRef="Process_Party_Art81" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_ApplyToDeclineJurisdiction_Art81" name="Apply to decline jurisdiction" type="sendTask" poolRef="Participant_Party_Art81" />
+    <task id="Task_ConfirmProceedingsExist_Art81" name="Confirm proceedings status" type="sendTask" poolRef="Participant_OtherMemberStateCourt_Art81" />
+    <task id="Task_ContactOtherCourt_Art81" name="Contact other court" type="sendTask" poolRef="Participant_CompetentCourt_Art81" />
+    <task id="Task_DeclineJurisdiction_Art81" name="Decline jurisdiction" type="task" poolRef="Participant_CompetentCourt_Art81" />
+    <task id="Task_ReceivePartyApplication_Art81" name="Receive party application" type="receiveTask" poolRef="Participant_CompetentCourt_Art81" />
+    <task id="Task_ReceiveProceedingsConfirmation_Art81" name="Receive proceedings confirmation" type="receiveTask" poolRef="Participant_CompetentCourt_Art81" />
+    <task id="Task_SuspendProceedings_Art81" name="Suspend proceedings" type="task" poolRef="Participant_CompetentCourt_Art81" />
+  </tasks>
+  <events>
+    <event id="EndEvent_ContinueAsFirstSeized_Art81" name="Continue as court first seized" type="endEvent" poolRef="Participant_CompetentCourt_Art81" />
+    <event id="EndEvent_ContinueProceedings_Art81" name="Continue proceedings" type="endEvent" poolRef="Participant_CompetentCourt_Art81" />
+    <event id="EndEvent_JurisdictionDeclined_Art81" name="Jurisdiction declined" type="endEvent" poolRef="Participant_CompetentCourt_Art81" />
+    <event id="EndEvent_NoArticle81Action_Art81" name="No Article 81 action" type="endEvent" poolRef="Participant_CompetentCourt_Art81" />
+    <event id="EndEvent_NoParallelProceedings_Art81" name="No parallel proceedings confirmed" type="endEvent" poolRef="Participant_CompetentCourt_Art81" />
+    <event id="EndEvent_NoPartyApplication_Art81" name="No application submitted" type="endEvent" poolRef="Participant_Party_Art81" />
+    <event id="EndEvent_OtherCourtResponded_Art81" name="Court response sent" type="endEvent" poolRef="Participant_OtherMemberStateCourt_Art81" />
+    <event id="EndEvent_PartyApplied_Art81" name="Application submitted" type="endEvent" poolRef="Participant_Party_Art81" />
+    <event id="EndEvent_ProceedingsSuspended_Art81" name="Proceedings suspended" type="endEvent" poolRef="Participant_CompetentCourt_Art81" />
+    <event id="StartEvent_DecideOnApplication_Art81" name="Consider decline application" type="startEvent" poolRef="Participant_Party_Art81" />
+    <event id="StartEvent_IdentifyPossibleParallelProceedings_Art81" name="Identify possible parallel proceedings" type="startEvent" poolRef="Participant_CompetentCourt_Art81" />
+    <event id="StartEvent_ReceiveCourtContact_Art81" name="Receive court contact" type="startEvent" poolRef="Participant_OtherMemberStateCourt_Art81" eventDefinition="message" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_ApplyToDeclineJurisdiction_Art81" name="Apply to decline jurisdiction?" type="exclusiveGateway" poolRef="Participant_Party_Art81" />
+    <gateway id="Gateway_AreProceedingsAtFirstInstance_Art81" name="Are the proceedings pending at first instance?" type="exclusiveGateway" poolRef="Participant_CompetentCourt_Art81" />
+    <gateway id="Gateway_AreProceedingsPending_Art81" name="Are proceedings pending in the other Member State?" type="exclusiveGateway" poolRef="Participant_CompetentCourt_Art81" />
+    <gateway id="Gateway_DoesFirstSeizedCourtMeetDeclineConditions_Art81" name="Does the court first seized have jurisdiction and does its law permit consolidation?" type="exclusiveGateway" poolRef="Participant_CompetentCourt_Art81" />
+    <gateway id="Gateway_HasInformationOnOtherProceedings_Art81" name="Does the court have information on proceedings in another Member State?" type="exclusiveGateway" poolRef="Participant_CompetentCourt_Art81" />
+    <gateway id="Gateway_IsSameMatterAndSameControllerOrProcessor_Art81" name="Is it the same subject matter and the same controller or processor?" type="exclusiveGateway" poolRef="Participant_CompetentCourt_Art81" />
+    <gateway id="Gateway_IsThisCourtFirstSeized_Art81" name="Is this the court first seized?" type="exclusiveGateway" poolRef="Participant_CompetentCourt_Art81" />
+    <gateway id="Gateway_SuspendProceedings_Art81" name="Suspend proceedings?" type="exclusiveGateway" poolRef="Participant_CompetentCourt_Art81" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_ApplyToDeclineJurisdiction_To_EndPartyApplied_Art81" sourceRef="Task_ApplyToDeclineJurisdiction_Art81" targetRef="EndEvent_PartyApplied_Art81" />
+    <sequenceFlow id="Flow_ConfirmProceedingsExist_To_EndOtherCourt_Art81" sourceRef="Task_ConfirmProceedingsExist_Art81" targetRef="EndEvent_OtherCourtResponded_Art81" />
+    <sequenceFlow id="Flow_ContactOtherCourt_To_ReceiveConfirmation_Art81" sourceRef="Task_ContactOtherCourt_Art81" targetRef="Task_ReceiveProceedingsConfirmation_Art81" />
+    <sequenceFlow id="Flow_DeclineJurisdiction_To_EndJurisdictionDeclined_Art81" sourceRef="Task_DeclineJurisdiction_Art81" targetRef="EndEvent_JurisdictionDeclined_Art81" />
+    <sequenceFlow id="Flow_GatewayApply_To_ApplyToDeclineJurisdiction_Art81" name="Yes" sourceRef="Gateway_ApplyToDeclineJurisdiction_Art81" targetRef="Task_ApplyToDeclineJurisdiction_Art81" />
+    <sequenceFlow id="Flow_GatewayApply_To_EndNoPartyApplication_Art81" name="No" sourceRef="Gateway_ApplyToDeclineJurisdiction_Art81" targetRef="EndEvent_NoPartyApplication_Art81" />
+    <sequenceFlow id="Flow_GatewayFirstInstance_To_EndContinueProceedings_Art81" name="No" sourceRef="Gateway_AreProceedingsAtFirstInstance_Art81" targetRef="EndEvent_ContinueProceedings_Art81" />
+    <sequenceFlow id="Flow_GatewayFirstInstance_To_ReceivePartyApplication_Art81" name="Yes" sourceRef="Gateway_AreProceedingsAtFirstInstance_Art81" targetRef="Task_ReceivePartyApplication_Art81" />
+    <sequenceFlow id="Flow_GatewayFirstSeized_To_EndContinueAsFirstSeized_Art81" name="Yes" sourceRef="Gateway_IsThisCourtFirstSeized_Art81" targetRef="EndEvent_ContinueAsFirstSeized_Art81" />
+    <sequenceFlow id="Flow_GatewayFirstSeized_To_GatewaySuspend_Art81" name="No" sourceRef="Gateway_IsThisCourtFirstSeized_Art81" targetRef="Gateway_SuspendProceedings_Art81" />
+    <sequenceFlow id="Flow_GatewayInformation_To_EndNoArticle81Action_Art81" name="No" sourceRef="Gateway_HasInformationOnOtherProceedings_Art81" targetRef="EndEvent_NoArticle81Action_Art81" />
+    <sequenceFlow id="Flow_GatewayInformation_To_GatewaySameMatter_Art81" name="Yes" sourceRef="Gateway_HasInformationOnOtherProceedings_Art81" targetRef="Gateway_IsSameMatterAndSameControllerOrProcessor_Art81" />
+    <sequenceFlow id="Flow_GatewayJurisdiction_To_DeclineJurisdiction_Art81" name="Yes" sourceRef="Gateway_DoesFirstSeizedCourtMeetDeclineConditions_Art81" targetRef="Task_DeclineJurisdiction_Art81" />
+    <sequenceFlow id="Flow_GatewayJurisdiction_To_EndContinueProceedings_Art81" name="No" sourceRef="Gateway_DoesFirstSeizedCourtMeetDeclineConditions_Art81" targetRef="EndEvent_ContinueProceedings_Art81" />
+    <sequenceFlow id="Flow_GatewayPending_To_EndNoParallelProceedings_Art81" name="No" sourceRef="Gateway_AreProceedingsPending_Art81" targetRef="EndEvent_NoParallelProceedings_Art81" />
+    <sequenceFlow id="Flow_GatewayPending_To_GatewayFirstSeized_Art81" name="Yes" sourceRef="Gateway_AreProceedingsPending_Art81" targetRef="Gateway_IsThisCourtFirstSeized_Art81" />
+    <sequenceFlow id="Flow_GatewaySameMatter_To_ContactOtherCourt_Art81" name="Yes" sourceRef="Gateway_IsSameMatterAndSameControllerOrProcessor_Art81" targetRef="Task_ContactOtherCourt_Art81" />
+    <sequenceFlow id="Flow_GatewaySameMatter_To_EndNoArticle81Action_Art81" name="No" sourceRef="Gateway_IsSameMatterAndSameControllerOrProcessor_Art81" targetRef="EndEvent_NoArticle81Action_Art81" />
+    <sequenceFlow id="Flow_GatewaySuspend_To_GatewayFirstInstance_Art81" name="No" sourceRef="Gateway_SuspendProceedings_Art81" targetRef="Gateway_AreProceedingsAtFirstInstance_Art81" />
+    <sequenceFlow id="Flow_GatewaySuspend_To_SuspendProceedings_Art81" name="Yes" sourceRef="Gateway_SuspendProceedings_Art81" targetRef="Task_SuspendProceedings_Art81" />
+    <sequenceFlow id="Flow_ReceiveConfirmation_To_GatewayPending_Art81" sourceRef="Task_ReceiveProceedingsConfirmation_Art81" targetRef="Gateway_AreProceedingsPending_Art81" />
+    <sequenceFlow id="Flow_ReceivePartyApplication_To_GatewayJurisdiction_Art81" sourceRef="Task_ReceivePartyApplication_Art81" targetRef="Gateway_DoesFirstSeizedCourtMeetDeclineConditions_Art81" />
+    <sequenceFlow id="Flow_StartIdentify_To_GatewayInformation_Art81" sourceRef="StartEvent_IdentifyPossibleParallelProceedings_Art81" targetRef="Gateway_HasInformationOnOtherProceedings_Art81" />
+    <sequenceFlow id="Flow_StartParty_To_GatewayApply_Art81" sourceRef="StartEvent_DecideOnApplication_Art81" targetRef="Gateway_ApplyToDeclineJurisdiction_Art81" />
+    <sequenceFlow id="Flow_StartReceiveCourtContact_To_ConfirmProceedingsExist_Art81" sourceRef="StartEvent_ReceiveCourtContact_Art81" targetRef="Task_ConfirmProceedingsExist_Art81" />
+    <sequenceFlow id="Flow_SuspendProceedings_To_EndProceedingsSuspended_Art81" sourceRef="Task_SuspendProceedings_Art81" targetRef="EndEvent_ProceedingsSuspended_Art81" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_ApplyToDeclineJurisdiction_Art81" sourceRef="Task_ApplyToDeclineJurisdiction_Art81" targetRef="Task_ReceivePartyApplication_Art81" />
+    <messageFlow id="MessageFlow_ConfirmProceedings_Art81" sourceRef="Task_ConfirmProceedingsExist_Art81" targetRef="Task_ReceiveProceedingsConfirmation_Art81" />
+    <messageFlow id="MessageFlow_ContactCourt_Art81" sourceRef="Task_ContactOtherCourt_Art81" targetRef="StartEvent_ReceiveCourtContact_Art81" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

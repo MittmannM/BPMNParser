@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Commission_Art51" name="Commission" poolType="passive" />
+    <pool id="Participant_MemberState_Art51" name="Member State" poolType="active" processRef="Process_MemberState_Art51" />
+    <pool id="Participant_SupervisoryAuthorities_Art51" name="Supervisory Authority or Authorities" poolType="active" processRef="Process_SupervisoryAuthorities_Art51" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="SendTask_NotifyCommission_Art51" name="Notify Commission of legal provisions and amendments" type="sendTask" poolRef="Participant_MemberState_Art51" />
+    <task id="Task_ContributeConsistency_Art51" name="Cooperate under Chapter VII for consistent application" type="task" poolRef="Participant_SupervisoryAuthorities_Art51" />
+    <task id="Task_DesignateRepresentativeAuthority_Art51" name="Designate Board representative authority" type="task" poolRef="Participant_MemberState_Art51" />
+    <task id="Task_FacilitateFreeFlow_Art51" name="Facilitate free flow of personal data" type="task" poolRef="Participant_SupervisoryAuthorities_Art51" />
+    <task id="Task_MonitorApplication_Art51" name="Monitor GDPR application" type="task" poolRef="Participant_SupervisoryAuthorities_Art51" />
+    <task id="Task_ProtectRightsFreedoms_Art51" name="Protect fundamental rights and freedoms" type="task" poolRef="Participant_SupervisoryAuthorities_Art51" />
+    <task id="Task_ProvideIndependentAuthorities_Art51" name="Provide one or more independent public authorities" type="task" poolRef="Participant_MemberState_Art51" />
+    <task id="Task_SetComplianceMechanism_Art51" name="Set consistency-mechanism compliance process" type="task" poolRef="Participant_MemberState_Art51" />
+  </tasks>
+  <events>
+    <event id="EndEvent_MemberStateCompleted_Art51" name="Article 51 Member State setup completed" type="endEvent" poolRef="Participant_MemberState_Art51" />
+    <event id="EndEvent_SupervisoryCompleted_Art51" name="Article 51 supervisory duties applied" type="endEvent" poolRef="Participant_SupervisoryAuthorities_Art51" />
+    <event id="StartEvent_OperateSupervisoryAuthority_Art51" name="Operate supervisory authority" type="startEvent" poolRef="Participant_SupervisoryAuthorities_Art51" />
+    <event id="StartEvent_SetUpSupervisoryStructure_Art51" name="Set up supervisory authority structure" type="startEvent" poolRef="Participant_MemberState_Art51" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_JoinSupervisoryDuties_Art51" type="parallelGateway" poolRef="Participant_SupervisoryAuthorities_Art51" />
+    <gateway id="Gateway_MultipleAuthorities_Art51" name="Is more than one supervisory authority established?" type="exclusiveGateway" poolRef="Participant_MemberState_Art51" />
+    <gateway id="Gateway_SplitSupervisoryDuties_Art51" type="parallelGateway" poolRef="Participant_SupervisoryAuthorities_Art51" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_ContributeConsistency_To_GatewayJoinDuties_Art51" sourceRef="Task_ContributeConsistency_Art51" targetRef="Gateway_JoinSupervisoryDuties_Art51" />
+    <sequenceFlow id="Flow_DesignateRepresentative_To_TaskSetMechanism_Art51" sourceRef="Task_DesignateRepresentativeAuthority_Art51" targetRef="Task_SetComplianceMechanism_Art51" />
+    <sequenceFlow id="Flow_FacilitateFreeFlow_To_GatewayJoinDuties_Art51" sourceRef="Task_FacilitateFreeFlow_Art51" targetRef="Gateway_JoinSupervisoryDuties_Art51" />
+    <sequenceFlow id="Flow_GatewayJoinDuties_To_EndSupervisoryCompleted_Art51" sourceRef="Gateway_JoinSupervisoryDuties_Art51" targetRef="EndEvent_SupervisoryCompleted_Art51" />
+    <sequenceFlow id="Flow_GatewayMultipleAuthorities_To_SendNotifyCommission_Art51" name="No" sourceRef="Gateway_MultipleAuthorities_Art51" targetRef="SendTask_NotifyCommission_Art51" />
+    <sequenceFlow id="Flow_GatewayMultipleAuthorities_To_TaskDesignateRepresentative_Art51" name="Yes" sourceRef="Gateway_MultipleAuthorities_Art51" targetRef="Task_DesignateRepresentativeAuthority_Art51" />
+    <sequenceFlow id="Flow_GatewaySplitDuties_To_ContributeConsistency_Art51" sourceRef="Gateway_SplitSupervisoryDuties_Art51" targetRef="Task_ContributeConsistency_Art51" />
+    <sequenceFlow id="Flow_GatewaySplitDuties_To_FacilitateFreeFlow_Art51" sourceRef="Gateway_SplitSupervisoryDuties_Art51" targetRef="Task_FacilitateFreeFlow_Art51" />
+    <sequenceFlow id="Flow_GatewaySplitDuties_To_MonitorApplication_Art51" sourceRef="Gateway_SplitSupervisoryDuties_Art51" targetRef="Task_MonitorApplication_Art51" />
+    <sequenceFlow id="Flow_GatewaySplitDuties_To_ProtectRights_Art51" sourceRef="Gateway_SplitSupervisoryDuties_Art51" targetRef="Task_ProtectRightsFreedoms_Art51" />
+    <sequenceFlow id="Flow_MonitorApplication_To_GatewayJoinDuties_Art51" sourceRef="Task_MonitorApplication_Art51" targetRef="Gateway_JoinSupervisoryDuties_Art51" />
+    <sequenceFlow id="Flow_NotifyCommission_To_EndMemberStateCompleted_Art51" sourceRef="SendTask_NotifyCommission_Art51" targetRef="EndEvent_MemberStateCompleted_Art51" />
+    <sequenceFlow id="Flow_ProtectRights_To_GatewayJoinDuties_Art51" sourceRef="Task_ProtectRightsFreedoms_Art51" targetRef="Gateway_JoinSupervisoryDuties_Art51" />
+    <sequenceFlow id="Flow_ProvideAuthorities_To_GatewayMultipleAuthorities_Art51" sourceRef="Task_ProvideIndependentAuthorities_Art51" targetRef="Gateway_MultipleAuthorities_Art51" />
+    <sequenceFlow id="Flow_SetMechanism_To_SendNotifyCommission_Art51" sourceRef="Task_SetComplianceMechanism_Art51" targetRef="SendTask_NotifyCommission_Art51" />
+    <sequenceFlow id="Flow_StartOperate_To_GatewaySplitDuties_Art51" sourceRef="StartEvent_OperateSupervisoryAuthority_Art51" targetRef="Gateway_SplitSupervisoryDuties_Art51" />
+    <sequenceFlow id="Flow_Start_To_ProvideAuthorities_Art51" sourceRef="StartEvent_SetUpSupervisoryStructure_Art51" targetRef="Task_ProvideIndependentAuthorities_Art51" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_NotifyCommission_Art51" sourceRef="SendTask_NotifyCommission_Art51" targetRef="Participant_Commission_Art51" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

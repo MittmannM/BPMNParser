@@ -1,0 +1,624 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art83_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art83_Reviewed">
+    <bpmn:participant id="Participant_SupervisoryAuthority_Art83"
+                      name="Supervisory Authority"
+                      processRef="Process_SupervisoryAuthority_Art83" />
+    <bpmn:participant id="Participant_ControllerOrProcessor_Art83"
+                      name="Controller or Processor" />
+    <bpmn:participant id="Participant_CompetentNationalCourt_Art83"
+                      name="Competent National Court" />
+    <bpmn:participant id="Participant_Commission_Art83"
+                      name="Commission" />
+
+    <bpmn:messageFlow id="MessageFlow_ImposeAdministrativeFine_Art83"
+                      sourceRef="Task_ImposeAdministrativeFine_Art83"
+                      targetRef="Participant_ControllerOrProcessor_Art83" />
+    <bpmn:messageFlow id="MessageFlow_InitiateFineBeforeCourt_Art83"
+                      sourceRef="Task_InitiateFineBeforeCourt_Art83"
+                      targetRef="Participant_CompetentNationalCourt_Art83" />
+    <bpmn:messageFlow id="MessageFlow_NotifyCommission_Art83"
+                      sourceRef="Task_NotifyCommissionOfNationalProvisions_Art83"
+                      targetRef="Participant_Commission_Art83" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_SupervisoryAuthority_Art83"
+                name="Assess and impose Article 83 administrative fines"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 83 based on the real English legal text from
+      gdpr_articles/article_83.txt. This process captures the effective-proportionate-dissuasive
+      standard, the relationship to Article 58(2) measures, the Article 83(2)(a)-(k) assessment
+      factors, the cap for several infringements in the same or linked processing operations, the
+      three fine-ceiling groups in Article 83(4)-(6), the Member State rule path for public
+      authorities and bodies, the procedural-safeguards requirement, and the Article 83(9)
+      national-court and Commission-notification path where the legal system does not provide for
+      administrative fines.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_AssessInfringementCase_Art83"
+                     name="Assess infringement case">
+      <bpmn:outgoing>Flow_Start_To_ApplySafeguards_Art83</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_ApplyProceduralSafeguards_Art83"
+               name="Apply procedural safeguards">
+      <bpmn:incoming>Flow_Start_To_ApplySafeguards_Art83</bpmn:incoming>
+      <bpmn:outgoing>Flow_ApplySafeguards_To_DetermineRelationToMeasures_Art83</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_DetermineRelationToArticle58Measures_Art83"
+               name="Determine relation to Article 58(2) measures">
+      <bpmn:incoming>Flow_ApplySafeguards_To_DetermineRelationToMeasures_Art83</bpmn:incoming>
+      <bpmn:outgoing>Flow_DetermineRelationToMeasures_To_AssessFineFactors_Art83</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_AssessFineFactors_Art83"
+               name="Assess Article 83(2) factors">
+      <bpmn:incoming>Flow_DetermineRelationToMeasures_To_AssessFineFactors_Art83</bpmn:incoming>
+      <bpmn:outgoing>Flow_AssessFineFactors_To_GatewaySeveralInfringements_Art83</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_AreSeveralInfringementsInvolved_Art83"
+                           name="Do the same or linked processing operations involve several infringements?">
+      <bpmn:incoming>Flow_AssessFineFactors_To_GatewaySeveralInfringements_Art83</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySeveralInfringements_To_CapAtGravestInfringement_Art83</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySeveralInfringements_To_GatewayMergeSeveralInfringements_Art83</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_CapAtGravestInfringement_Art83"
+               name="Cap total fine at gravest infringement">
+      <bpmn:incoming>Flow_GatewaySeveralInfringements_To_CapAtGravestInfringement_Art83</bpmn:incoming>
+      <bpmn:outgoing>Flow_CapAtGravestInfringement_To_GatewayMergeSeveralInfringements_Art83</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_MergeSeveralInfringementsPath_Art83">
+      <bpmn:incoming>Flow_GatewaySeveralInfringements_To_GatewayMergeSeveralInfringements_Art83</bpmn:incoming>
+      <bpmn:incoming>Flow_CapAtGravestInfringement_To_GatewayMergeSeveralInfringements_Art83</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayMergeSeveralInfringements_To_GatewayPublicAuthority_Art83</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_IsPublicAuthorityOrBody_Art83"
+                           name="Is the addressee a public authority or body established in the Member State?">
+      <bpmn:incoming>Flow_GatewayMergeSeveralInfringements_To_GatewayPublicAuthority_Art83</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayPublicAuthority_To_GatewayNationalFineRules_Art83</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayPublicAuthority_To_GatewayFineCeiling_Art83</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_DoMemberStateRulesAllowFines_Art83"
+                           name="Do Member State rules allow fines for this public authority or body?">
+      <bpmn:incoming>Flow_GatewayPublicAuthority_To_GatewayNationalFineRules_Art83</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayNationalFineRules_To_ApplyMemberStateFineRules_Art83</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayNationalFineRules_To_EndNoFineForPublicAuthority_Art83</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ApplyMemberStateFineRules_Art83"
+               name="Apply Member State fine rules">
+      <bpmn:incoming>Flow_GatewayNationalFineRules_To_ApplyMemberStateFineRules_Art83</bpmn:incoming>
+      <bpmn:outgoing>Flow_ApplyMemberStateFineRules_To_GatewayFineCeiling_Art83</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_NoFineForPublicAuthority_Art83"
+                   name="No administrative fine under Member State rules">
+      <bpmn:incoming>Flow_GatewayNationalFineRules_To_EndNoFineForPublicAuthority_Art83</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_WhichFineCeilingApplies_Art83"
+                           name="Which fine ceiling applies?">
+      <bpmn:incoming>Flow_GatewayPublicAuthority_To_GatewayFineCeiling_Art83</bpmn:incoming>
+      <bpmn:incoming>Flow_ApplyMemberStateFineRules_To_GatewayFineCeiling_Art83</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayFineCeiling_To_ApplyArticle834Ceiling_Art83</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayFineCeiling_To_ApplyArticle835Ceiling_Art83</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayFineCeiling_To_ApplyArticle836Ceiling_Art83</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ApplyArticle834Ceiling_Art83"
+               name="Apply Article 83(4) ceiling">
+      <bpmn:incoming>Flow_GatewayFineCeiling_To_ApplyArticle834Ceiling_Art83</bpmn:incoming>
+      <bpmn:outgoing>Flow_ApplyArticle834Ceiling_To_GatewayMergeFineCeiling_Art83</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ApplyArticle835Ceiling_Art83"
+               name="Apply Article 83(5) ceiling">
+      <bpmn:incoming>Flow_GatewayFineCeiling_To_ApplyArticle835Ceiling_Art83</bpmn:incoming>
+      <bpmn:outgoing>Flow_ApplyArticle835Ceiling_To_GatewayMergeFineCeiling_Art83</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ApplyArticle836Ceiling_Art83"
+               name="Apply Article 83(6) ceiling">
+      <bpmn:incoming>Flow_GatewayFineCeiling_To_ApplyArticle836Ceiling_Art83</bpmn:incoming>
+      <bpmn:outgoing>Flow_ApplyArticle836Ceiling_To_GatewayMergeFineCeiling_Art83</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_MergeFineCeilingPath_Art83">
+      <bpmn:incoming>Flow_ApplyArticle834Ceiling_To_GatewayMergeFineCeiling_Art83</bpmn:incoming>
+      <bpmn:incoming>Flow_ApplyArticle835Ceiling_To_GatewayMergeFineCeiling_Art83</bpmn:incoming>
+      <bpmn:incoming>Flow_ApplyArticle836Ceiling_To_GatewayMergeFineCeiling_Art83</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayMergeFineCeiling_To_GatewayAdministrativeFineSystem_Art83</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_DoesLegalSystemProvideAdministrativeFines_Art83"
+                           name="Does the legal system provide for administrative fines?">
+      <bpmn:incoming>Flow_GatewayMergeFineCeiling_To_GatewayAdministrativeFineSystem_Art83</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAdministrativeFineSystem_To_ImposeAdministrativeFine_Art83</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAdministrativeFineSystem_To_GatewaySplitNationalCourtPath_Art83</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="Task_ImposeAdministrativeFine_Art83"
+                   name="Impose administrative fine">
+      <bpmn:incoming>Flow_GatewayAdministrativeFineSystem_To_ImposeAdministrativeFine_Art83</bpmn:incoming>
+      <bpmn:outgoing>Flow_ImposeAdministrativeFine_To_EndFineImposed_Art83</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_FineImposed_Art83"
+                   name="Administrative fine imposed">
+      <bpmn:incoming>Flow_ImposeAdministrativeFine_To_EndFineImposed_Art83</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:parallelGateway id="Gateway_SplitNationalCourtPath_Art83">
+      <bpmn:incoming>Flow_GatewayAdministrativeFineSystem_To_GatewaySplitNationalCourtPath_Art83</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplitNationalCourtPath_To_InitiateFineBeforeCourt_Art83</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitNationalCourtPath_To_NotifyCommission_Art83</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:sendTask id="Task_InitiateFineBeforeCourt_Art83"
+                   name="Initiate fine before national court">
+      <bpmn:incoming>Flow_GatewaySplitNationalCourtPath_To_InitiateFineBeforeCourt_Art83</bpmn:incoming>
+      <bpmn:outgoing>Flow_InitiateFineBeforeCourt_To_GatewayJoinNationalCourtPath_Art83</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:sendTask id="Task_NotifyCommissionOfNationalProvisions_Art83"
+                   name="Notify Commission of national provisions">
+      <bpmn:incoming>Flow_GatewaySplitNationalCourtPath_To_NotifyCommission_Art83</bpmn:incoming>
+      <bpmn:outgoing>Flow_NotifyCommission_To_GatewayJoinNationalCourtPath_Art83</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:parallelGateway id="Gateway_JoinNationalCourtPath_Art83">
+      <bpmn:incoming>Flow_InitiateFineBeforeCourt_To_GatewayJoinNationalCourtPath_Art83</bpmn:incoming>
+      <bpmn:incoming>Flow_NotifyCommission_To_GatewayJoinNationalCourtPath_Art83</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinNationalCourtPath_To_EndCourtPathInitiated_Art83</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:endEvent id="EndEvent_CourtPathInitiated_Art83"
+                   name="National court fine path initiated">
+      <bpmn:incoming>Flow_GatewayJoinNationalCourtPath_To_EndCourtPathInitiated_Art83</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_ApplySafeguards_Art83"
+                       sourceRef="StartEvent_AssessInfringementCase_Art83"
+                       targetRef="Task_ApplyProceduralSafeguards_Art83" />
+    <bpmn:sequenceFlow id="Flow_ApplySafeguards_To_DetermineRelationToMeasures_Art83"
+                       sourceRef="Task_ApplyProceduralSafeguards_Art83"
+                       targetRef="Task_DetermineRelationToArticle58Measures_Art83" />
+    <bpmn:sequenceFlow id="Flow_DetermineRelationToMeasures_To_AssessFineFactors_Art83"
+                       sourceRef="Task_DetermineRelationToArticle58Measures_Art83"
+                       targetRef="Task_AssessFineFactors_Art83" />
+    <bpmn:sequenceFlow id="Flow_AssessFineFactors_To_GatewaySeveralInfringements_Art83"
+                       sourceRef="Task_AssessFineFactors_Art83"
+                       targetRef="Gateway_AreSeveralInfringementsInvolved_Art83" />
+    <bpmn:sequenceFlow id="Flow_GatewaySeveralInfringements_To_CapAtGravestInfringement_Art83"
+                       name="Yes"
+                       sourceRef="Gateway_AreSeveralInfringementsInvolved_Art83"
+                       targetRef="Task_CapAtGravestInfringement_Art83" />
+    <bpmn:sequenceFlow id="Flow_GatewaySeveralInfringements_To_GatewayMergeSeveralInfringements_Art83"
+                       name="No"
+                       sourceRef="Gateway_AreSeveralInfringementsInvolved_Art83"
+                       targetRef="Gateway_MergeSeveralInfringementsPath_Art83" />
+    <bpmn:sequenceFlow id="Flow_CapAtGravestInfringement_To_GatewayMergeSeveralInfringements_Art83"
+                       sourceRef="Task_CapAtGravestInfringement_Art83"
+                       targetRef="Gateway_MergeSeveralInfringementsPath_Art83" />
+    <bpmn:sequenceFlow id="Flow_GatewayMergeSeveralInfringements_To_GatewayPublicAuthority_Art83"
+                       sourceRef="Gateway_MergeSeveralInfringementsPath_Art83"
+                       targetRef="Gateway_IsPublicAuthorityOrBody_Art83" />
+    <bpmn:sequenceFlow id="Flow_GatewayPublicAuthority_To_GatewayNationalFineRules_Art83"
+                       name="Yes"
+                       sourceRef="Gateway_IsPublicAuthorityOrBody_Art83"
+                       targetRef="Gateway_DoMemberStateRulesAllowFines_Art83" />
+    <bpmn:sequenceFlow id="Flow_GatewayPublicAuthority_To_GatewayFineCeiling_Art83"
+                       name="No"
+                       sourceRef="Gateway_IsPublicAuthorityOrBody_Art83"
+                       targetRef="Gateway_WhichFineCeilingApplies_Art83" />
+    <bpmn:sequenceFlow id="Flow_GatewayNationalFineRules_To_ApplyMemberStateFineRules_Art83"
+                       name="Yes"
+                       sourceRef="Gateway_DoMemberStateRulesAllowFines_Art83"
+                       targetRef="Task_ApplyMemberStateFineRules_Art83" />
+    <bpmn:sequenceFlow id="Flow_GatewayNationalFineRules_To_EndNoFineForPublicAuthority_Art83"
+                       name="No"
+                       sourceRef="Gateway_DoMemberStateRulesAllowFines_Art83"
+                       targetRef="EndEvent_NoFineForPublicAuthority_Art83" />
+    <bpmn:sequenceFlow id="Flow_ApplyMemberStateFineRules_To_GatewayFineCeiling_Art83"
+                       sourceRef="Task_ApplyMemberStateFineRules_Art83"
+                       targetRef="Gateway_WhichFineCeilingApplies_Art83" />
+    <bpmn:sequenceFlow id="Flow_GatewayFineCeiling_To_ApplyArticle834Ceiling_Art83"
+                       name="Article 83(4)"
+                       sourceRef="Gateway_WhichFineCeilingApplies_Art83"
+                       targetRef="Task_ApplyArticle834Ceiling_Art83" />
+    <bpmn:sequenceFlow id="Flow_GatewayFineCeiling_To_ApplyArticle835Ceiling_Art83"
+                       name="Article 83(5)"
+                       sourceRef="Gateway_WhichFineCeilingApplies_Art83"
+                       targetRef="Task_ApplyArticle835Ceiling_Art83" />
+    <bpmn:sequenceFlow id="Flow_GatewayFineCeiling_To_ApplyArticle836Ceiling_Art83"
+                       name="Article 83(6)"
+                       sourceRef="Gateway_WhichFineCeilingApplies_Art83"
+                       targetRef="Task_ApplyArticle836Ceiling_Art83" />
+    <bpmn:sequenceFlow id="Flow_ApplyArticle834Ceiling_To_GatewayMergeFineCeiling_Art83"
+                       sourceRef="Task_ApplyArticle834Ceiling_Art83"
+                       targetRef="Gateway_MergeFineCeilingPath_Art83" />
+    <bpmn:sequenceFlow id="Flow_ApplyArticle835Ceiling_To_GatewayMergeFineCeiling_Art83"
+                       sourceRef="Task_ApplyArticle835Ceiling_Art83"
+                       targetRef="Gateway_MergeFineCeilingPath_Art83" />
+    <bpmn:sequenceFlow id="Flow_ApplyArticle836Ceiling_To_GatewayMergeFineCeiling_Art83"
+                       sourceRef="Task_ApplyArticle836Ceiling_Art83"
+                       targetRef="Gateway_MergeFineCeilingPath_Art83" />
+    <bpmn:sequenceFlow id="Flow_GatewayMergeFineCeiling_To_GatewayAdministrativeFineSystem_Art83"
+                       sourceRef="Gateway_MergeFineCeilingPath_Art83"
+                       targetRef="Gateway_DoesLegalSystemProvideAdministrativeFines_Art83" />
+    <bpmn:sequenceFlow id="Flow_GatewayAdministrativeFineSystem_To_ImposeAdministrativeFine_Art83"
+                       name="Yes"
+                       sourceRef="Gateway_DoesLegalSystemProvideAdministrativeFines_Art83"
+                       targetRef="Task_ImposeAdministrativeFine_Art83" />
+    <bpmn:sequenceFlow id="Flow_GatewayAdministrativeFineSystem_To_GatewaySplitNationalCourtPath_Art83"
+                       name="No"
+                       sourceRef="Gateway_DoesLegalSystemProvideAdministrativeFines_Art83"
+                       targetRef="Gateway_SplitNationalCourtPath_Art83" />
+    <bpmn:sequenceFlow id="Flow_ImposeAdministrativeFine_To_EndFineImposed_Art83"
+                       sourceRef="Task_ImposeAdministrativeFine_Art83"
+                       targetRef="EndEvent_FineImposed_Art83" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitNationalCourtPath_To_InitiateFineBeforeCourt_Art83"
+                       sourceRef="Gateway_SplitNationalCourtPath_Art83"
+                       targetRef="Task_InitiateFineBeforeCourt_Art83" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitNationalCourtPath_To_NotifyCommission_Art83"
+                       sourceRef="Gateway_SplitNationalCourtPath_Art83"
+                       targetRef="Task_NotifyCommissionOfNationalProvisions_Art83" />
+    <bpmn:sequenceFlow id="Flow_InitiateFineBeforeCourt_To_GatewayJoinNationalCourtPath_Art83"
+                       sourceRef="Task_InitiateFineBeforeCourt_Art83"
+                       targetRef="Gateway_JoinNationalCourtPath_Art83" />
+    <bpmn:sequenceFlow id="Flow_NotifyCommission_To_GatewayJoinNationalCourtPath_Art83"
+                       sourceRef="Task_NotifyCommissionOfNationalProvisions_Art83"
+                       targetRef="Gateway_JoinNationalCourtPath_Art83" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoinNationalCourtPath_To_EndCourtPathInitiated_Art83"
+                       sourceRef="Gateway_JoinNationalCourtPath_Art83"
+                       targetRef="EndEvent_CourtPathInitiated_Art83" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art83_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art83_Reviewed"
+                      bpmnElement="Collaboration_Art83_Reviewed">
+      <bpmndi:BPMNShape id="Participant_SupervisoryAuthority_Art83_di"
+                        bpmnElement="Participant_SupervisoryAuthority_Art83"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="4300" height="560" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_ControllerOrProcessor_Art83_di"
+                        bpmnElement="Participant_ControllerOrProcessor_Art83"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="640" width="4300" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_CompetentNationalCourt_Art83_di"
+                        bpmnElement="Participant_CompetentNationalCourt_Art83"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="800" width="4300" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Commission_Art83_di"
+                        bpmnElement="Participant_Commission_Art83"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="960" width="4300" height="120" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_AssessInfringementCase_Art83_di"
+                        bpmnElement="StartEvent_AssessInfringementCase_Art83">
+        <dc:Bounds x="100" y="272" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ApplyProceduralSafeguards_Art83_di"
+                        bpmnElement="Task_ApplyProceduralSafeguards_Art83">
+        <dc:Bounds x="180" y="250" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DetermineRelationToArticle58Measures_Art83_di"
+                        bpmnElement="Task_DetermineRelationToArticle58Measures_Art83">
+        <dc:Bounds x="430" y="250" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessFineFactors_Art83_di"
+                        bpmnElement="Task_AssessFineFactors_Art83">
+        <dc:Bounds x="720" y="250" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AreSeveralInfringementsInvolved_Art83_di"
+                        bpmnElement="Gateway_AreSeveralInfringementsInvolved_Art83"
+                        isMarkerVisible="true">
+        <dc:Bounds x="980" y="265" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CapAtGravestInfringement_Art83_di"
+                        bpmnElement="Task_CapAtGravestInfringement_Art83">
+        <dc:Bounds x="1120" y="170" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_MergeSeveralInfringementsPath_Art83_di"
+                        bpmnElement="Gateway_MergeSeveralInfringementsPath_Art83"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1410" y="265" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_IsPublicAuthorityOrBody_Art83_di"
+                        bpmnElement="Gateway_IsPublicAuthorityOrBody_Art83"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1540" y="265" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_DoMemberStateRulesAllowFines_Art83_di"
+                        bpmnElement="Gateway_DoMemberStateRulesAllowFines_Art83"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1720" y="125" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ApplyMemberStateFineRules_Art83_di"
+                        bpmnElement="Task_ApplyMemberStateFineRules_Art83">
+        <dc:Bounds x="1870" y="80" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NoFineForPublicAuthority_Art83_di"
+                        bpmnElement="EndEvent_NoFineForPublicAuthority_Art83">
+        <dc:Bounds x="1892" y="212" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_WhichFineCeilingApplies_Art83_di"
+                        bpmnElement="Gateway_WhichFineCeilingApplies_Art83"
+                        isMarkerVisible="true">
+        <dc:Bounds x="2180" y="265" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ApplyArticle834Ceiling_Art83_di"
+                        bpmnElement="Task_ApplyArticle834Ceiling_Art83">
+        <dc:Bounds x="2360" y="80" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ApplyArticle835Ceiling_Art83_di"
+                        bpmnElement="Task_ApplyArticle835Ceiling_Art83">
+        <dc:Bounds x="2360" y="220" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ApplyArticle836Ceiling_Art83_di"
+                        bpmnElement="Task_ApplyArticle836Ceiling_Art83">
+        <dc:Bounds x="2360" y="360" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_MergeFineCeilingPath_Art83_di"
+                        bpmnElement="Gateway_MergeFineCeilingPath_Art83"
+                        isMarkerVisible="true">
+        <dc:Bounds x="2660" y="265" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_DoesLegalSystemProvideAdministrativeFines_Art83_di"
+                        bpmnElement="Gateway_DoesLegalSystemProvideAdministrativeFines_Art83"
+                        isMarkerVisible="true">
+        <dc:Bounds x="2800" y="265" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ImposeAdministrativeFine_Art83_di"
+                        bpmnElement="Task_ImposeAdministrativeFine_Art83">
+        <dc:Bounds x="2960" y="160" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_FineImposed_Art83_di"
+                        bpmnElement="EndEvent_FineImposed_Art83">
+        <dc:Bounds x="3222" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SplitNationalCourtPath_Art83_di"
+                        bpmnElement="Gateway_SplitNationalCourtPath_Art83"
+                        isMarkerVisible="true">
+        <dc:Bounds x="2985" y="385" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_InitiateFineBeforeCourt_Art83_di"
+                        bpmnElement="Task_InitiateFineBeforeCourt_Art83">
+        <dc:Bounds x="3180" y="320" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_NotifyCommissionOfNationalProvisions_Art83_di"
+                        bpmnElement="Task_NotifyCommissionOfNationalProvisions_Art83">
+        <dc:Bounds x="3180" y="430" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinNationalCourtPath_Art83_di"
+                        bpmnElement="Gateway_JoinNationalCourtPath_Art83"
+                        isMarkerVisible="true">
+        <dc:Bounds x="3560" y="385" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_CourtPathInitiated_Art83_di"
+                        bpmnElement="EndEvent_CourtPathInitiated_Art83">
+        <dc:Bounds x="3732" y="392" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_ApplySafeguards_Art83_di"
+                       bpmnElement="Flow_Start_To_ApplySafeguards_Art83">
+        <di:waypoint x="136" y="290" />
+        <di:waypoint x="180" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ApplySafeguards_To_DetermineRelationToMeasures_Art83_di"
+                       bpmnElement="Flow_ApplySafeguards_To_DetermineRelationToMeasures_Art83">
+        <di:waypoint x="360" y="290" />
+        <di:waypoint x="430" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_DetermineRelationToMeasures_To_AssessFineFactors_Art83_di"
+                       bpmnElement="Flow_DetermineRelationToMeasures_To_AssessFineFactors_Art83">
+        <di:waypoint x="650" y="290" />
+        <di:waypoint x="720" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AssessFineFactors_To_GatewaySeveralInfringements_Art83_di"
+                       bpmnElement="Flow_AssessFineFactors_To_GatewaySeveralInfringements_Art83">
+        <di:waypoint x="900" y="290" />
+        <di:waypoint x="980" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySeveralInfringements_To_CapAtGravestInfringement_Art83_di"
+                       bpmnElement="Flow_GatewaySeveralInfringements_To_CapAtGravestInfringement_Art83">
+        <di:waypoint x="1005" y="265" />
+        <di:waypoint x="1005" y="210" />
+        <di:waypoint x="1120" y="210" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1032" y="227" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySeveralInfringements_To_GatewayMergeSeveralInfringements_Art83_di"
+                       bpmnElement="Flow_GatewaySeveralInfringements_To_GatewayMergeSeveralInfringements_Art83">
+        <di:waypoint x="1030" y="290" />
+        <di:waypoint x="1410" y="290" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1204" y="272" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_CapAtGravestInfringement_To_GatewayMergeSeveralInfringements_Art83_di"
+                       bpmnElement="Flow_CapAtGravestInfringement_To_GatewayMergeSeveralInfringements_Art83">
+        <di:waypoint x="1330" y="210" />
+        <di:waypoint x="1435" y="210" />
+        <di:waypoint x="1435" y="265" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayMergeSeveralInfringements_To_GatewayPublicAuthority_Art83_di"
+                       bpmnElement="Flow_GatewayMergeSeveralInfringements_To_GatewayPublicAuthority_Art83">
+        <di:waypoint x="1460" y="290" />
+        <di:waypoint x="1540" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPublicAuthority_To_GatewayNationalFineRules_Art83_di"
+                       bpmnElement="Flow_GatewayPublicAuthority_To_GatewayNationalFineRules_Art83">
+        <di:waypoint x="1565" y="265" />
+        <di:waypoint x="1565" y="150" />
+        <di:waypoint x="1720" y="150" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1600" y="167" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPublicAuthority_To_GatewayFineCeiling_Art83_di"
+                       bpmnElement="Flow_GatewayPublicAuthority_To_GatewayFineCeiling_Art83">
+        <di:waypoint x="1590" y="290" />
+        <di:waypoint x="2180" y="290" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1874" y="272" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayNationalFineRules_To_ApplyMemberStateFineRules_Art83_di"
+                       bpmnElement="Flow_GatewayNationalFineRules_To_ApplyMemberStateFineRules_Art83">
+        <di:waypoint x="1770" y="150" />
+        <di:waypoint x="1870" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1800" y="121" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayNationalFineRules_To_EndNoFineForPublicAuthority_Art83_di"
+                       bpmnElement="Flow_GatewayNationalFineRules_To_EndNoFineForPublicAuthority_Art83">
+        <di:waypoint x="1745" y="175" />
+        <di:waypoint x="1745" y="230" />
+        <di:waypoint x="1892" y="230" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1770" y="197" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ApplyMemberStateFineRules_To_GatewayFineCeiling_Art83_di"
+                       bpmnElement="Flow_ApplyMemberStateFineRules_To_GatewayFineCeiling_Art83">
+        <di:waypoint x="2050" y="120" />
+        <di:waypoint x="2205" y="120" />
+        <di:waypoint x="2205" y="265" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayFineCeiling_To_ApplyArticle834Ceiling_Art83_di"
+                       bpmnElement="Flow_GatewayFineCeiling_To_ApplyArticle834Ceiling_Art83">
+        <di:waypoint x="2205" y="265" />
+        <di:waypoint x="2205" y="120" />
+        <di:waypoint x="2360" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2236" y="137" width="68" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayFineCeiling_To_ApplyArticle835Ceiling_Art83_di"
+                       bpmnElement="Flow_GatewayFineCeiling_To_ApplyArticle835Ceiling_Art83">
+        <di:waypoint x="2230" y="290" />
+        <di:waypoint x="2360" y="260" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2258" y="257" width="68" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayFineCeiling_To_ApplyArticle836Ceiling_Art83_di"
+                       bpmnElement="Flow_GatewayFineCeiling_To_ApplyArticle836Ceiling_Art83">
+        <di:waypoint x="2205" y="315" />
+        <di:waypoint x="2205" y="400" />
+        <di:waypoint x="2360" y="400" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2236" y="361" width="68" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ApplyArticle834Ceiling_To_GatewayMergeFineCeiling_Art83_di"
+                       bpmnElement="Flow_ApplyArticle834Ceiling_To_GatewayMergeFineCeiling_Art83">
+        <di:waypoint x="2530" y="120" />
+        <di:waypoint x="2685" y="120" />
+        <di:waypoint x="2685" y="265" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ApplyArticle835Ceiling_To_GatewayMergeFineCeiling_Art83_di"
+                       bpmnElement="Flow_ApplyArticle835Ceiling_To_GatewayMergeFineCeiling_Art83">
+        <di:waypoint x="2530" y="260" />
+        <di:waypoint x="2660" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ApplyArticle836Ceiling_To_GatewayMergeFineCeiling_Art83_di"
+                       bpmnElement="Flow_ApplyArticle836Ceiling_To_GatewayMergeFineCeiling_Art83">
+        <di:waypoint x="2530" y="400" />
+        <di:waypoint x="2685" y="400" />
+        <di:waypoint x="2685" y="315" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayMergeFineCeiling_To_GatewayAdministrativeFineSystem_Art83_di"
+                       bpmnElement="Flow_GatewayMergeFineCeiling_To_GatewayAdministrativeFineSystem_Art83">
+        <di:waypoint x="2710" y="290" />
+        <di:waypoint x="2800" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAdministrativeFineSystem_To_ImposeAdministrativeFine_Art83_di"
+                       bpmnElement="Flow_GatewayAdministrativeFineSystem_To_ImposeAdministrativeFine_Art83">
+        <di:waypoint x="2825" y="265" />
+        <di:waypoint x="2825" y="200" />
+        <di:waypoint x="2960" y="200" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2856" y="217" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAdministrativeFineSystem_To_GatewaySplitNationalCourtPath_Art83_di"
+                       bpmnElement="Flow_GatewayAdministrativeFineSystem_To_GatewaySplitNationalCourtPath_Art83">
+        <di:waypoint x="2825" y="315" />
+        <di:waypoint x="2825" y="410" />
+        <di:waypoint x="2985" y="410" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2856" y="369" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ImposeAdministrativeFine_To_EndFineImposed_Art83_di"
+                       bpmnElement="Flow_ImposeAdministrativeFine_To_EndFineImposed_Art83">
+        <di:waypoint x="3140" y="200" />
+        <di:waypoint x="3222" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitNationalCourtPath_To_InitiateFineBeforeCourt_Art83_di"
+                       bpmnElement="Flow_GatewaySplitNationalCourtPath_To_InitiateFineBeforeCourt_Art83">
+        <di:waypoint x="3035" y="410" />
+        <di:waypoint x="3180" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitNationalCourtPath_To_NotifyCommission_Art83_di"
+                       bpmnElement="Flow_GatewaySplitNationalCourtPath_To_NotifyCommission_Art83">
+        <di:waypoint x="3035" y="410" />
+        <di:waypoint x="3180" y="470" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_InitiateFineBeforeCourt_To_GatewayJoinNationalCourtPath_Art83_di"
+                       bpmnElement="Flow_InitiateFineBeforeCourt_To_GatewayJoinNationalCourtPath_Art83">
+        <di:waypoint x="3360" y="360" />
+        <di:waypoint x="3585" y="360" />
+        <di:waypoint x="3585" y="385" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_NotifyCommission_To_GatewayJoinNationalCourtPath_Art83_di"
+                       bpmnElement="Flow_NotifyCommission_To_GatewayJoinNationalCourtPath_Art83">
+        <di:waypoint x="3400" y="470" />
+        <di:waypoint x="3585" y="470" />
+        <di:waypoint x="3585" y="435" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinNationalCourtPath_To_EndCourtPathInitiated_Art83_di"
+                       bpmnElement="Flow_GatewayJoinNationalCourtPath_To_EndCourtPathInitiated_Art83">
+        <di:waypoint x="3610" y="410" />
+        <di:waypoint x="3732" y="410" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_ImposeAdministrativeFine_Art83_di"
+                       bpmnElement="MessageFlow_ImposeAdministrativeFine_Art83">
+        <di:waypoint x="3050" y="240" />
+        <di:waypoint x="3050" y="640" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_InitiateFineBeforeCourt_Art83_di"
+                       bpmnElement="MessageFlow_InitiateFineBeforeCourt_Art83">
+        <di:waypoint x="3270" y="400" />
+        <di:waypoint x="3270" y="800" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_NotifyCommission_Art83_di"
+                       bpmnElement="MessageFlow_NotifyCommission_Art83">
+        <di:waypoint x="3290" y="510" />
+        <di:waypoint x="3290" y="960" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

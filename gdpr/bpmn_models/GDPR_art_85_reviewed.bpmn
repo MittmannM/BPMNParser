@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art85_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art85_Reviewed">
+    <bpmn:participant id="Participant_MemberState_Art85"
+                      name="Member State"
+                      processRef="Process_MemberState_Art85" />
+    <bpmn:participant id="Participant_Commission_Art85"
+                      name="Commission" />
+
+    <bpmn:messageFlow id="MessageFlow_NotifyCommissionOfArticle85Provisions_Art85"
+                      sourceRef="Task_NotifyCommissionOfArticle85Provisions_Art85"
+                      targetRef="Participant_Commission_Art85" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_MemberState_Art85"
+                name="Reconcile data protection with freedom of expression and information"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 85 based on the real English legal text from
+      gdpr_articles/article_85.txt. This process captures the Member State duty to reconcile by
+      law the right to the protection of personal data with the right to freedom of expression
+      and information, the special exemption-or-derogation path for processing for journalistic
+      purposes or for academic, artistic or literary expression where necessary, and the duty to
+      notify the Commission of provisions adopted under paragraph 2 and any subsequent amendments.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_AssessReconciliationByLaw_Art85"
+                     name="Assess reconciliation by law">
+      <bpmn:outgoing>Flow_Start_To_ReconcileRightsByLaw_Art85</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_ReconcileRightsByLaw_Art85"
+               name="Reconcile rights by law">
+      <bpmn:incoming>Flow_Start_To_ReconcileRightsByLaw_Art85</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReconcileRightsByLaw_To_GatewaySpecialExpressionPurpose_Art85</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_IsProcessingForSpecialExpressionPurposes_Art85"
+                           name="Is the processing for journalistic or academic artistic or literary expression purposes?">
+      <bpmn:incoming>Flow_ReconcileRightsByLaw_To_GatewaySpecialExpressionPurpose_Art85</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySpecialExpressionPurpose_To_GatewayNecessity_Art85</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySpecialExpressionPurpose_To_EndReconciliationCompleted_Art85</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_AreExemptionsNecessary_Art85"
+                           name="Are exemptions or derogations necessary to reconcile the rights?">
+      <bpmn:incoming>Flow_GatewaySpecialExpressionPurpose_To_GatewayNecessity_Art85</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayNecessity_To_ProvideExemptionsAndDerogations_Art85</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayNecessity_To_EndReconciliationCompleted_Art85</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ProvideExemptionsAndDerogations_Art85"
+               name="Provide exemptions and derogations">
+      <bpmn:incoming>Flow_GatewayNecessity_To_ProvideExemptionsAndDerogations_Art85</bpmn:incoming>
+      <bpmn:outgoing>Flow_ProvideExemptionsAndDerogations_To_NotifyCommission_Art85</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="Task_NotifyCommissionOfArticle85Provisions_Art85"
+                   name="Notify Commission of Article 85 provisions">
+      <bpmn:incoming>Flow_ProvideExemptionsAndDerogations_To_NotifyCommission_Art85</bpmn:incoming>
+      <bpmn:outgoing>Flow_NotifyCommission_To_EndProvisionsNotified_Art85</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_ReconciliationCompleted_Art85"
+                   name="Reconciliation completed">
+      <bpmn:incoming>Flow_GatewaySpecialExpressionPurpose_To_EndReconciliationCompleted_Art85</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayNecessity_To_EndReconciliationCompleted_Art85</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_Article85ProvisionsNotified_Art85"
+                   name="Article 85 provisions notified">
+      <bpmn:incoming>Flow_NotifyCommission_To_EndProvisionsNotified_Art85</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_ReconcileRightsByLaw_Art85"
+                       sourceRef="StartEvent_AssessReconciliationByLaw_Art85"
+                       targetRef="Task_ReconcileRightsByLaw_Art85" />
+    <bpmn:sequenceFlow id="Flow_ReconcileRightsByLaw_To_GatewaySpecialExpressionPurpose_Art85"
+                       sourceRef="Task_ReconcileRightsByLaw_Art85"
+                       targetRef="Gateway_IsProcessingForSpecialExpressionPurposes_Art85" />
+    <bpmn:sequenceFlow id="Flow_GatewaySpecialExpressionPurpose_To_GatewayNecessity_Art85"
+                       name="Yes"
+                       sourceRef="Gateway_IsProcessingForSpecialExpressionPurposes_Art85"
+                       targetRef="Gateway_AreExemptionsNecessary_Art85" />
+    <bpmn:sequenceFlow id="Flow_GatewaySpecialExpressionPurpose_To_EndReconciliationCompleted_Art85"
+                       name="No"
+                       sourceRef="Gateway_IsProcessingForSpecialExpressionPurposes_Art85"
+                       targetRef="EndEvent_ReconciliationCompleted_Art85" />
+    <bpmn:sequenceFlow id="Flow_GatewayNecessity_To_ProvideExemptionsAndDerogations_Art85"
+                       name="Yes"
+                       sourceRef="Gateway_AreExemptionsNecessary_Art85"
+                       targetRef="Task_ProvideExemptionsAndDerogations_Art85" />
+    <bpmn:sequenceFlow id="Flow_GatewayNecessity_To_EndReconciliationCompleted_Art85"
+                       name="No"
+                       sourceRef="Gateway_AreExemptionsNecessary_Art85"
+                       targetRef="EndEvent_ReconciliationCompleted_Art85" />
+    <bpmn:sequenceFlow id="Flow_ProvideExemptionsAndDerogations_To_NotifyCommission_Art85"
+                       sourceRef="Task_ProvideExemptionsAndDerogations_Art85"
+                       targetRef="Task_NotifyCommissionOfArticle85Provisions_Art85" />
+    <bpmn:sequenceFlow id="Flow_NotifyCommission_To_EndProvisionsNotified_Art85"
+                       sourceRef="Task_NotifyCommissionOfArticle85Provisions_Art85"
+                       targetRef="EndEvent_Article85ProvisionsNotified_Art85" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art85_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art85_Reviewed"
+                      bpmnElement="Collaboration_Art85_Reviewed">
+      <bpmndi:BPMNShape id="Participant_MemberState_Art85_di"
+                        bpmnElement="Participant_MemberState_Art85"
+                        isHorizontal="true">
+        <dc:Bounds x="80" y="80" width="1760" height="260" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Commission_Art85_di"
+                        bpmnElement="Participant_Commission_Art85"
+                        isHorizontal="true">
+        <dc:Bounds x="80" y="400" width="1760" height="120" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_AssessReconciliationByLaw_Art85_di"
+                        bpmnElement="StartEvent_AssessReconciliationByLaw_Art85">
+        <dc:Bounds x="120" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReconcileRightsByLaw_Art85_di"
+                        bpmnElement="Task_ReconcileRightsByLaw_Art85">
+        <dc:Bounds x="210" y="170" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_IsProcessingForSpecialExpressionPurposes_Art85_di"
+                        bpmnElement="Gateway_IsProcessingForSpecialExpressionPurposes_Art85"
+                        isMarkerVisible="true">
+        <dc:Bounds x="470" y="185" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AreExemptionsNecessary_Art85_di"
+                        bpmnElement="Gateway_AreExemptionsNecessary_Art85"
+                        isMarkerVisible="true">
+        <dc:Bounds x="690" y="95" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ProvideExemptionsAndDerogations_Art85_di"
+                        bpmnElement="Task_ProvideExemptionsAndDerogations_Art85">
+        <dc:Bounds x="860" y="80" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_NotifyCommissionOfArticle85Provisions_Art85_di"
+                        bpmnElement="Task_NotifyCommissionOfArticle85Provisions_Art85">
+        <dc:Bounds x="1170" y="80" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ReconciliationCompleted_Art85_di"
+                        bpmnElement="EndEvent_ReconciliationCompleted_Art85">
+        <dc:Bounds x="820" y="262" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Article85ProvisionsNotified_Art85_di"
+                        bpmnElement="EndEvent_Article85ProvisionsNotified_Art85">
+        <dc:Bounds x="1480" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_ReconcileRightsByLaw_Art85_di"
+                       bpmnElement="Flow_Start_To_ReconcileRightsByLaw_Art85">
+        <di:waypoint x="156" y="210" />
+        <di:waypoint x="210" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReconcileRightsByLaw_To_GatewaySpecialExpressionPurpose_Art85_di"
+                       bpmnElement="Flow_ReconcileRightsByLaw_To_GatewaySpecialExpressionPurpose_Art85">
+        <di:waypoint x="380" y="210" />
+        <di:waypoint x="470" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySpecialExpressionPurpose_To_GatewayNecessity_Art85_di"
+                       bpmnElement="Flow_GatewaySpecialExpressionPurpose_To_GatewayNecessity_Art85">
+        <di:waypoint x="495" y="185" />
+        <di:waypoint x="495" y="120" />
+        <di:waypoint x="690" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="530" y="136" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySpecialExpressionPurpose_To_EndReconciliationCompleted_Art85_di"
+                       bpmnElement="Flow_GatewaySpecialExpressionPurpose_To_EndReconciliationCompleted_Art85">
+        <di:waypoint x="495" y="235" />
+        <di:waypoint x="495" y="280" />
+        <di:waypoint x="820" y="280" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="530" y="252" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayNecessity_To_ProvideExemptionsAndDerogations_Art85_di"
+                       bpmnElement="Flow_GatewayNecessity_To_ProvideExemptionsAndDerogations_Art85">
+        <di:waypoint x="740" y="120" />
+        <di:waypoint x="860" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="784" y="102" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayNecessity_To_EndReconciliationCompleted_Art85_di"
+                       bpmnElement="Flow_GatewayNecessity_To_EndReconciliationCompleted_Art85">
+        <di:waypoint x="715" y="145" />
+        <di:waypoint x="715" y="280" />
+        <di:waypoint x="820" y="280" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="726" y="202" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ProvideExemptionsAndDerogations_To_NotifyCommission_Art85_di"
+                       bpmnElement="Flow_ProvideExemptionsAndDerogations_To_NotifyCommission_Art85">
+        <di:waypoint x="1070" y="120" />
+        <di:waypoint x="1170" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_NotifyCommission_To_EndProvisionsNotified_Art85_di"
+                       bpmnElement="Flow_NotifyCommission_To_EndProvisionsNotified_Art85">
+        <di:waypoint x="1390" y="120" />
+        <di:waypoint x="1480" y="120" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_NotifyCommissionOfArticle85Provisions_Art85_di"
+                       bpmnElement="MessageFlow_NotifyCommissionOfArticle85Provisions_Art85">
+        <di:waypoint x="1280" y="160" />
+        <di:waypoint x="1280" y="400" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

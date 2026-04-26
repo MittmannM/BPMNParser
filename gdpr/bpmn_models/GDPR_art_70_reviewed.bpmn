@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art70_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art70_Reviewed">
+    <bpmn:participant id="Participant_Board_Art70"
+                      name="Board"
+                      processRef="Process_Board_Art70" />
+    <bpmn:participant id="Participant_Commission_Art70"
+                      name="Commission" />
+    <bpmn:participant id="Participant_CommitteeUnderArticle93_Art70"
+                      name="Committee under Article 93" />
+    <bpmn:participant id="Participant_SupervisoryAuthorities_Art70"
+                      name="Supervisory Authorities" />
+    <bpmn:participant id="Participant_InterestedParties_Art70"
+                      name="Interested Parties" />
+    <bpmn:participant id="Participant_Public_Art70"
+                      name="Public" />
+
+    <bpmn:messageFlow id="MessageFlow_CommissionAdviceRequest_Art70"
+                      sourceRef="Participant_Commission_Art70"
+                      targetRef="Task_ReceiveCommissionAdviceRequest_Art70" />
+    <bpmn:messageFlow id="MessageFlow_ProvideOutputsToCommission_Art70"
+                      sourceRef="Task_ForwardOutputs_Art70"
+                      targetRef="Participant_Commission_Art70" />
+    <bpmn:messageFlow id="MessageFlow_ProvideOutputsToCommittee_Art70"
+                      sourceRef="Task_ForwardOutputs_Art70"
+                      targetRef="Participant_CommitteeUnderArticle93_Art70" />
+    <bpmn:messageFlow id="MessageFlow_ProvideGuidanceToAuthorities_Art70"
+                      sourceRef="Task_DeliverConsistencyOutputs_Art70"
+                      targetRef="Participant_SupervisoryAuthorities_Art70" />
+    <bpmn:messageFlow id="MessageFlow_ConsultInterestedParties_Art70"
+                      sourceRef="Task_ConsultInterestedParties_Art70"
+                      targetRef="Participant_InterestedParties_Art70" />
+    <bpmn:messageFlow id="MessageFlow_MakeOutputsPublic_Art70"
+                      sourceRef="Task_MakeOutputsPublic_Art70"
+                      targetRef="Participant_Public_Art70" />
+    <bpmn:messageFlow id="MessageFlow_MakeConsultationResultsPublic_Art70"
+                      sourceRef="Task_MakeConsultationResultsPublic_Art70"
+                      targetRef="Participant_Public_Art70" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_Board_Art70"
+                name="Perform Article 70 tasks"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 70 based on the real English legal text from
+      gdpr_articles/article_70.txt. The model groups the Board's extensive task catalogue into
+      coherent workstreams while preserving the article's normative structure: consistent
+      application oversight, Commission advice, guidance and best-practice issuance, certification
+      and codes and registers work, cooperation and training and global exchange promotion,
+      delivery of Article 64 to 66 and Article 65 outputs, optional consultation of interested
+      parties, and forwarding/publication duties.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_NeedBoardAction_Art70"
+                     name="Need Board action">
+      <bpmn:outgoing>Flow_StartNeedBoardAction_To_GatewayCommissionAdviceRequest_Art70</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_IsCommissionAdviceRequested_Art70"
+                           name="Did the Commission request advice?">
+      <bpmn:incoming>Flow_StartNeedBoardAction_To_GatewayCommissionAdviceRequest_Art70</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayCommissionAdviceRequest_To_ReceiveCommissionAdviceRequest_Art70</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayCommissionAdviceRequest_To_GatewayMergeAdviceRequest_Art70</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:receiveTask id="Task_ReceiveCommissionAdviceRequest_Art70"
+                      name="Receive Commission advice request">
+      <bpmn:incoming>Flow_GatewayCommissionAdviceRequest_To_ReceiveCommissionAdviceRequest_Art70</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveCommissionAdviceRequest_To_HandleTimeLimit_Art70</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:task id="Task_HandleTimeLimit_Art70"
+               name="Handle indicated time limit">
+      <bpmn:incoming>Flow_ReceiveCommissionAdviceRequest_To_HandleTimeLimit_Art70</bpmn:incoming>
+      <bpmn:outgoing>Flow_HandleTimeLimit_To_GatewayMergeAdviceRequest_Art70</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_MergeAdviceRequest_Art70">
+      <bpmn:incoming>Flow_GatewayCommissionAdviceRequest_To_GatewayMergeAdviceRequest_Art70</bpmn:incoming>
+      <bpmn:incoming>Flow_HandleTimeLimit_To_GatewayMergeAdviceRequest_Art70</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayMergeAdviceRequest_To_GatewaySplitTaskGroups_Art70</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:parallelGateway id="Gateway_SplitTaskGroups_Art70">
+      <bpmn:incoming>Flow_GatewayMergeAdviceRequest_To_GatewaySplitTaskGroups_Art70</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplitTaskGroups_To_RunConsistencyWork_Art70</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitTaskGroups_To_RunGuidanceWork_Art70</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitTaskGroups_To_RunCodesAndCertificationWork_Art70</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitTaskGroups_To_RunCooperationWork_Art70</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_RunConsistencyWork_Art70"
+               name="Run consistency and enforcement work">
+      <bpmn:incoming>Flow_GatewaySplitTaskGroups_To_RunConsistencyWork_Art70</bpmn:incoming>
+      <bpmn:outgoing>Flow_RunConsistencyWork_To_GatewayJoinTaskGroups_Art70</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_RunGuidanceWork_Art70"
+               name="Issue guidance and opinions">
+      <bpmn:incoming>Flow_GatewaySplitTaskGroups_To_RunGuidanceWork_Art70</bpmn:incoming>
+      <bpmn:outgoing>Flow_RunGuidanceWork_To_GatewayJoinTaskGroups_Art70</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_RunCodesAndCertificationWork_Art70"
+               name="Run codes and certification work">
+      <bpmn:incoming>Flow_GatewaySplitTaskGroups_To_RunCodesAndCertificationWork_Art70</bpmn:incoming>
+      <bpmn:outgoing>Flow_RunCodesAndCertificationWork_To_GatewayJoinTaskGroups_Art70</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_RunCooperationWork_Art70"
+               name="Run cooperation and training work">
+      <bpmn:incoming>Flow_GatewaySplitTaskGroups_To_RunCooperationWork_Art70</bpmn:incoming>
+      <bpmn:outgoing>Flow_RunCooperationWork_To_GatewayJoinTaskGroups_Art70</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_JoinTaskGroups_Art70">
+      <bpmn:incoming>Flow_RunConsistencyWork_To_GatewayJoinTaskGroups_Art70</bpmn:incoming>
+      <bpmn:incoming>Flow_RunGuidanceWork_To_GatewayJoinTaskGroups_Art70</bpmn:incoming>
+      <bpmn:incoming>Flow_RunCodesAndCertificationWork_To_GatewayJoinTaskGroups_Art70</bpmn:incoming>
+      <bpmn:incoming>Flow_RunCooperationWork_To_GatewayJoinTaskGroups_Art70</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinTaskGroups_To_DeliverConsistencyOutputs_Art70</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_DeliverConsistencyOutputs_Art70"
+               name="Deliver opinions and decisions">
+      <bpmn:incoming>Flow_GatewayJoinTaskGroups_To_DeliverConsistencyOutputs_Art70</bpmn:incoming>
+      <bpmn:outgoing>Flow_DeliverConsistencyOutputs_To_GatewayConsultInterestedParties_Art70</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_ShouldBoardConsultInterestedParties_Art70"
+                           name="Should the Board consult interested parties?">
+      <bpmn:incoming>Flow_DeliverConsistencyOutputs_To_GatewayConsultInterestedParties_Art70</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayConsultInterestedParties_To_ConsultInterestedParties_Art70</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayConsultInterestedParties_To_ForwardOutputs_Art70</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ConsultInterestedParties_Art70"
+               name="Consult interested parties">
+      <bpmn:incoming>Flow_GatewayConsultInterestedParties_To_ConsultInterestedParties_Art70</bpmn:incoming>
+      <bpmn:outgoing>Flow_ConsultInterestedParties_To_MakeConsultationResultsPublic_Art70</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_MakeConsultationResultsPublic_Art70"
+               name="Make consultation results public">
+      <bpmn:incoming>Flow_ConsultInterestedParties_To_MakeConsultationResultsPublic_Art70</bpmn:incoming>
+      <bpmn:outgoing>Flow_MakeConsultationResultsPublic_To_ForwardOutputs_Art70</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ForwardOutputs_Art70"
+               name="Forward outputs to Commission and committee">
+      <bpmn:incoming>Flow_GatewayConsultInterestedParties_To_ForwardOutputs_Art70</bpmn:incoming>
+      <bpmn:incoming>Flow_MakeConsultationResultsPublic_To_ForwardOutputs_Art70</bpmn:incoming>
+      <bpmn:outgoing>Flow_ForwardOutputs_To_MakeOutputsPublic_Art70</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_MakeOutputsPublic_Art70"
+               name="Make outputs public">
+      <bpmn:incoming>Flow_ForwardOutputs_To_MakeOutputsPublic_Art70</bpmn:incoming>
+      <bpmn:outgoing>Flow_MakeOutputsPublic_To_EndBoardTasksCompleted_Art70</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_BoardTasksCompleted_Art70"
+                   name="Article 70 tasks completed">
+      <bpmn:incoming>Flow_MakeOutputsPublic_To_EndBoardTasksCompleted_Art70</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartNeedBoardAction_To_GatewayCommissionAdviceRequest_Art70"
+                       sourceRef="StartEvent_NeedBoardAction_Art70"
+                       targetRef="Gateway_IsCommissionAdviceRequested_Art70" />
+    <bpmn:sequenceFlow id="Flow_GatewayCommissionAdviceRequest_To_ReceiveCommissionAdviceRequest_Art70"
+                       name="Yes"
+                       sourceRef="Gateway_IsCommissionAdviceRequested_Art70"
+                       targetRef="Task_ReceiveCommissionAdviceRequest_Art70" />
+    <bpmn:sequenceFlow id="Flow_GatewayCommissionAdviceRequest_To_GatewayMergeAdviceRequest_Art70"
+                       name="No"
+                       sourceRef="Gateway_IsCommissionAdviceRequested_Art70"
+                       targetRef="Gateway_MergeAdviceRequest_Art70" />
+    <bpmn:sequenceFlow id="Flow_ReceiveCommissionAdviceRequest_To_HandleTimeLimit_Art70"
+                       sourceRef="Task_ReceiveCommissionAdviceRequest_Art70"
+                       targetRef="Task_HandleTimeLimit_Art70" />
+    <bpmn:sequenceFlow id="Flow_HandleTimeLimit_To_GatewayMergeAdviceRequest_Art70"
+                       sourceRef="Task_HandleTimeLimit_Art70"
+                       targetRef="Gateway_MergeAdviceRequest_Art70" />
+    <bpmn:sequenceFlow id="Flow_GatewayMergeAdviceRequest_To_GatewaySplitTaskGroups_Art70"
+                       sourceRef="Gateway_MergeAdviceRequest_Art70"
+                       targetRef="Gateway_SplitTaskGroups_Art70" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitTaskGroups_To_RunConsistencyWork_Art70"
+                       sourceRef="Gateway_SplitTaskGroups_Art70"
+                       targetRef="Task_RunConsistencyWork_Art70" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitTaskGroups_To_RunGuidanceWork_Art70"
+                       sourceRef="Gateway_SplitTaskGroups_Art70"
+                       targetRef="Task_RunGuidanceWork_Art70" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitTaskGroups_To_RunCodesAndCertificationWork_Art70"
+                       sourceRef="Gateway_SplitTaskGroups_Art70"
+                       targetRef="Task_RunCodesAndCertificationWork_Art70" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitTaskGroups_To_RunCooperationWork_Art70"
+                       sourceRef="Gateway_SplitTaskGroups_Art70"
+                       targetRef="Task_RunCooperationWork_Art70" />
+    <bpmn:sequenceFlow id="Flow_RunConsistencyWork_To_GatewayJoinTaskGroups_Art70"
+                       sourceRef="Task_RunConsistencyWork_Art70"
+                       targetRef="Gateway_JoinTaskGroups_Art70" />
+    <bpmn:sequenceFlow id="Flow_RunGuidanceWork_To_GatewayJoinTaskGroups_Art70"
+                       sourceRef="Task_RunGuidanceWork_Art70"
+                       targetRef="Gateway_JoinTaskGroups_Art70" />
+    <bpmn:sequenceFlow id="Flow_RunCodesAndCertificationWork_To_GatewayJoinTaskGroups_Art70"
+                       sourceRef="Task_RunCodesAndCertificationWork_Art70"
+                       targetRef="Gateway_JoinTaskGroups_Art70" />
+    <bpmn:sequenceFlow id="Flow_RunCooperationWork_To_GatewayJoinTaskGroups_Art70"
+                       sourceRef="Task_RunCooperationWork_Art70"
+                       targetRef="Gateway_JoinTaskGroups_Art70" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoinTaskGroups_To_DeliverConsistencyOutputs_Art70"
+                       sourceRef="Gateway_JoinTaskGroups_Art70"
+                       targetRef="Task_DeliverConsistencyOutputs_Art70" />
+    <bpmn:sequenceFlow id="Flow_DeliverConsistencyOutputs_To_GatewayConsultInterestedParties_Art70"
+                       sourceRef="Task_DeliverConsistencyOutputs_Art70"
+                       targetRef="Gateway_ShouldBoardConsultInterestedParties_Art70" />
+    <bpmn:sequenceFlow id="Flow_GatewayConsultInterestedParties_To_ConsultInterestedParties_Art70"
+                       name="Yes"
+                       sourceRef="Gateway_ShouldBoardConsultInterestedParties_Art70"
+                       targetRef="Task_ConsultInterestedParties_Art70" />
+    <bpmn:sequenceFlow id="Flow_GatewayConsultInterestedParties_To_ForwardOutputs_Art70"
+                       name="No"
+                       sourceRef="Gateway_ShouldBoardConsultInterestedParties_Art70"
+                       targetRef="Task_ForwardOutputs_Art70" />
+    <bpmn:sequenceFlow id="Flow_ConsultInterestedParties_To_MakeConsultationResultsPublic_Art70"
+                       sourceRef="Task_ConsultInterestedParties_Art70"
+                       targetRef="Task_MakeConsultationResultsPublic_Art70" />
+    <bpmn:sequenceFlow id="Flow_MakeConsultationResultsPublic_To_ForwardOutputs_Art70"
+                       sourceRef="Task_MakeConsultationResultsPublic_Art70"
+                       targetRef="Task_ForwardOutputs_Art70" />
+    <bpmn:sequenceFlow id="Flow_ForwardOutputs_To_MakeOutputsPublic_Art70"
+                       sourceRef="Task_ForwardOutputs_Art70"
+                       targetRef="Task_MakeOutputsPublic_Art70" />
+    <bpmn:sequenceFlow id="Flow_MakeOutputsPublic_To_EndBoardTasksCompleted_Art70"
+                       sourceRef="Task_MakeOutputsPublic_Art70"
+                       targetRef="EndEvent_BoardTasksCompleted_Art70" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art70_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art70_Reviewed"
+                      bpmnElement="Collaboration_Art70_Reviewed">
+      <bpmndi:BPMNShape id="Participant_Board_Art70_di"
+                        bpmnElement="Participant_Board_Art70"
+                        isHorizontal="true">
+        <dc:Bounds x="20" y="20" width="3300" height="420" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Commission_Art70_di"
+                        bpmnElement="Participant_Commission_Art70"
+                        isHorizontal="true">
+        <dc:Bounds x="20" y="460" width="3300" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_CommitteeUnderArticle93_Art70_di"
+                        bpmnElement="Participant_CommitteeUnderArticle93_Art70"
+                        isHorizontal="true">
+        <dc:Bounds x="20" y="580" width="3300" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_SupervisoryAuthorities_Art70_di"
+                        bpmnElement="Participant_SupervisoryAuthorities_Art70"
+                        isHorizontal="true">
+        <dc:Bounds x="20" y="700" width="3300" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_InterestedParties_Art70_di"
+                        bpmnElement="Participant_InterestedParties_Art70"
+                        isHorizontal="true">
+        <dc:Bounds x="20" y="820" width="3300" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Public_Art70_di"
+                        bpmnElement="Participant_Public_Art70"
+                        isHorizontal="true">
+        <dc:Bounds x="20" y="940" width="3300" height="100" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_NeedBoardAction_Art70_di"
+                        bpmnElement="StartEvent_NeedBoardAction_Art70">
+        <dc:Bounds x="100" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_IsCommissionAdviceRequested_Art70_di"
+                        bpmnElement="Gateway_IsCommissionAdviceRequested_Art70"
+                        isMarkerVisible="true">
+        <dc:Bounds x="210" y="185" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReceiveCommissionAdviceRequest_Art70_di"
+                        bpmnElement="Task_ReceiveCommissionAdviceRequest_Art70">
+        <dc:Bounds x="360" y="120" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_HandleTimeLimit_Art70_di"
+                        bpmnElement="Task_HandleTimeLimit_Art70">
+        <dc:Bounds x="650" y="120" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_MergeAdviceRequest_Art70_di"
+                        bpmnElement="Gateway_MergeAdviceRequest_Art70"
+                        isMarkerVisible="true">
+        <dc:Bounds x="920" y="185" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SplitTaskGroups_Art70_di"
+                        bpmnElement="Gateway_SplitTaskGroups_Art70"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1060" y="185" width="50" height="50" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Task_RunConsistencyWork_Art70_di"
+                        bpmnElement="Task_RunConsistencyWork_Art70">
+        <dc:Bounds x="1230" y="40" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RunGuidanceWork_Art70_di"
+                        bpmnElement="Task_RunGuidanceWork_Art70">
+        <dc:Bounds x="1230" y="140" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RunCodesAndCertificationWork_Art70_di"
+                        bpmnElement="Task_RunCodesAndCertificationWork_Art70">
+        <dc:Bounds x="1230" y="240" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RunCooperationWork_Art70_di"
+                        bpmnElement="Task_RunCooperationWork_Art70">
+        <dc:Bounds x="1230" y="340" width="200" height="80" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Gateway_JoinTaskGroups_Art70_di"
+                        bpmnElement="Gateway_JoinTaskGroups_Art70"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1610" y="185" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DeliverConsistencyOutputs_Art70_di"
+                        bpmnElement="Task_DeliverConsistencyOutputs_Art70">
+        <dc:Bounds x="1750" y="170" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ShouldBoardConsultInterestedParties_Art70_di"
+                        bpmnElement="Gateway_ShouldBoardConsultInterestedParties_Art70"
+                        isMarkerVisible="true">
+        <dc:Bounds x="2040" y="185" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ConsultInterestedParties_Art70_di"
+                        bpmnElement="Task_ConsultInterestedParties_Art70">
+        <dc:Bounds x="2190" y="120" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_MakeConsultationResultsPublic_Art70_di"
+                        bpmnElement="Task_MakeConsultationResultsPublic_Art70">
+        <dc:Bounds x="2440" y="120" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ForwardOutputs_Art70_di"
+                        bpmnElement="Task_ForwardOutputs_Art70">
+        <dc:Bounds x="2710" y="170" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_MakeOutputsPublic_Art70_di"
+                        bpmnElement="Task_MakeOutputsPublic_Art70">
+        <dc:Bounds x="2970" y="170" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_BoardTasksCompleted_Art70_di"
+                        bpmnElement="EndEvent_BoardTasksCompleted_Art70">
+        <dc:Bounds x="3190" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_StartNeedBoardAction_To_GatewayCommissionAdviceRequest_Art70_di"
+                       bpmnElement="Flow_StartNeedBoardAction_To_GatewayCommissionAdviceRequest_Art70">
+        <di:waypoint x="136" y="210" />
+        <di:waypoint x="210" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayCommissionAdviceRequest_To_ReceiveCommissionAdviceRequest_Art70_di"
+                       bpmnElement="Flow_GatewayCommissionAdviceRequest_To_ReceiveCommissionAdviceRequest_Art70">
+        <di:waypoint x="235" y="185" />
+        <di:waypoint x="235" y="160" />
+        <di:waypoint x="360" y="160" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="244" y="161" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayCommissionAdviceRequest_To_GatewayMergeAdviceRequest_Art70_di"
+                       bpmnElement="Flow_GatewayCommissionAdviceRequest_To_GatewayMergeAdviceRequest_Art70">
+        <di:waypoint x="260" y="210" />
+        <di:waypoint x="920" y="210" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="580" y="192" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveCommissionAdviceRequest_To_HandleTimeLimit_Art70_di"
+                       bpmnElement="Flow_ReceiveCommissionAdviceRequest_To_HandleTimeLimit_Art70">
+        <di:waypoint x="580" y="160" />
+        <di:waypoint x="650" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_HandleTimeLimit_To_GatewayMergeAdviceRequest_Art70_di"
+                       bpmnElement="Flow_HandleTimeLimit_To_GatewayMergeAdviceRequest_Art70">
+        <di:waypoint x="830" y="160" />
+        <di:waypoint x="945" y="160" />
+        <di:waypoint x="945" y="185" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayMergeAdviceRequest_To_GatewaySplitTaskGroups_Art70_di"
+                       bpmnElement="Flow_GatewayMergeAdviceRequest_To_GatewaySplitTaskGroups_Art70">
+        <di:waypoint x="970" y="210" />
+        <di:waypoint x="1060" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitTaskGroups_To_RunConsistencyWork_Art70_di"
+                       bpmnElement="Flow_GatewaySplitTaskGroups_To_RunConsistencyWork_Art70">
+        <di:waypoint x="1085" y="185" />
+        <di:waypoint x="1085" y="80" />
+        <di:waypoint x="1230" y="80" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitTaskGroups_To_RunGuidanceWork_Art70_di"
+                       bpmnElement="Flow_GatewaySplitTaskGroups_To_RunGuidanceWork_Art70">
+        <di:waypoint x="1110" y="200" />
+        <di:waypoint x="1230" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitTaskGroups_To_RunCodesAndCertificationWork_Art70_di"
+                       bpmnElement="Flow_GatewaySplitTaskGroups_To_RunCodesAndCertificationWork_Art70">
+        <di:waypoint x="1110" y="220" />
+        <di:waypoint x="1230" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitTaskGroups_To_RunCooperationWork_Art70_di"
+                       bpmnElement="Flow_GatewaySplitTaskGroups_To_RunCooperationWork_Art70">
+        <di:waypoint x="1085" y="235" />
+        <di:waypoint x="1085" y="380" />
+        <di:waypoint x="1230" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_RunConsistencyWork_To_GatewayJoinTaskGroups_Art70_di"
+                       bpmnElement="Flow_RunConsistencyWork_To_GatewayJoinTaskGroups_Art70">
+        <di:waypoint x="1430" y="80" />
+        <di:waypoint x="1635" y="80" />
+        <di:waypoint x="1635" y="185" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_RunGuidanceWork_To_GatewayJoinTaskGroups_Art70_di"
+                       bpmnElement="Flow_RunGuidanceWork_To_GatewayJoinTaskGroups_Art70">
+        <di:waypoint x="1410" y="180" />
+        <di:waypoint x="1610" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_RunCodesAndCertificationWork_To_GatewayJoinTaskGroups_Art70_di"
+                       bpmnElement="Flow_RunCodesAndCertificationWork_To_GatewayJoinTaskGroups_Art70">
+        <di:waypoint x="1450" y="280" />
+        <di:waypoint x="1635" y="280" />
+        <di:waypoint x="1635" y="235" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_RunCooperationWork_To_GatewayJoinTaskGroups_Art70_di"
+                       bpmnElement="Flow_RunCooperationWork_To_GatewayJoinTaskGroups_Art70">
+        <di:waypoint x="1430" y="380" />
+        <di:waypoint x="1635" y="380" />
+        <di:waypoint x="1635" y="235" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinTaskGroups_To_DeliverConsistencyOutputs_Art70_di"
+                       bpmnElement="Flow_GatewayJoinTaskGroups_To_DeliverConsistencyOutputs_Art70">
+        <di:waypoint x="1660" y="210" />
+        <di:waypoint x="1750" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_DeliverConsistencyOutputs_To_GatewayConsultInterestedParties_Art70_di"
+                       bpmnElement="Flow_DeliverConsistencyOutputs_To_GatewayConsultInterestedParties_Art70">
+        <di:waypoint x="1950" y="210" />
+        <di:waypoint x="2040" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayConsultInterestedParties_To_ConsultInterestedParties_Art70_di"
+                       bpmnElement="Flow_GatewayConsultInterestedParties_To_ConsultInterestedParties_Art70">
+        <di:waypoint x="2065" y="185" />
+        <di:waypoint x="2065" y="160" />
+        <di:waypoint x="2190" y="160" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2074" y="161" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayConsultInterestedParties_To_ForwardOutputs_Art70_di"
+                       bpmnElement="Flow_GatewayConsultInterestedParties_To_ForwardOutputs_Art70">
+        <di:waypoint x="2090" y="210" />
+        <di:waypoint x="2710" y="210" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2390" y="192" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ConsultInterestedParties_To_MakeConsultationResultsPublic_Art70_di"
+                       bpmnElement="Flow_ConsultInterestedParties_To_MakeConsultationResultsPublic_Art70">
+        <di:waypoint x="2370" y="160" />
+        <di:waypoint x="2440" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_MakeConsultationResultsPublic_To_ForwardOutputs_Art70_di"
+                       bpmnElement="Flow_MakeConsultationResultsPublic_To_ForwardOutputs_Art70">
+        <di:waypoint x="2660" y="160" />
+        <di:waypoint x="2815" y="160" />
+        <di:waypoint x="2815" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ForwardOutputs_To_MakeOutputsPublic_Art70_di"
+                       bpmnElement="Flow_ForwardOutputs_To_MakeOutputsPublic_Art70">
+        <di:waypoint x="2920" y="210" />
+        <di:waypoint x="2970" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_MakeOutputsPublic_To_EndBoardTasksCompleted_Art70_di"
+                       bpmnElement="Flow_MakeOutputsPublic_To_EndBoardTasksCompleted_Art70">
+        <di:waypoint x="3140" y="210" />
+        <di:waypoint x="3190" y="210" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_CommissionAdviceRequest_Art70_di"
+                       bpmnElement="MessageFlow_CommissionAdviceRequest_Art70">
+        <di:waypoint x="470" y="460" />
+        <di:waypoint x="470" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ProvideOutputsToCommission_Art70_di"
+                       bpmnElement="MessageFlow_ProvideOutputsToCommission_Art70">
+        <di:waypoint x="2810" y="250" />
+        <di:waypoint x="2810" y="460" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ProvideOutputsToCommittee_Art70_di"
+                       bpmnElement="MessageFlow_ProvideOutputsToCommittee_Art70">
+        <di:waypoint x="2860" y="250" />
+        <di:waypoint x="2860" y="580" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ProvideGuidanceToAuthorities_Art70_di"
+                       bpmnElement="MessageFlow_ProvideGuidanceToAuthorities_Art70">
+        <di:waypoint x="1850" y="250" />
+        <di:waypoint x="1850" y="700" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ConsultInterestedParties_Art70_di"
+                       bpmnElement="MessageFlow_ConsultInterestedParties_Art70">
+        <di:waypoint x="2280" y="200" />
+        <di:waypoint x="2280" y="820" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_MakeOutputsPublic_Art70_di"
+                       bpmnElement="MessageFlow_MakeOutputsPublic_Art70">
+        <di:waypoint x="3055" y="250" />
+        <di:waypoint x="3055" y="940" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_MakeConsultationResultsPublic_Art70_di"
+                       bpmnElement="MessageFlow_MakeConsultationResultsPublic_Art70">
+        <di:waypoint x="2550" y="200" />
+        <di:waypoint x="2550" y="940" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

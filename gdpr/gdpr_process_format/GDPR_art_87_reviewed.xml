@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools />
+  <lanes />
+  <tasks>
+    <task id="Task_ApplySpecificConditions_Art87" name="Apply specific conditions" type="task" poolRef="Process_ControllerOrProcessor_Art87" />
+    <task id="Task_UseIdentifierWithSafeguards_Art87" name="Use identifier under safeguards" type="task" poolRef="Process_ControllerOrProcessor_Art87" />
+  </tasks>
+  <events>
+    <event id="EndEvent_IdentifierProcessingCompleted_Art87" name="Identifier processing completed" type="endEvent" poolRef="Process_ControllerOrProcessor_Art87" />
+    <event id="StartEvent_NeedIdentifierProcessing_Art87" name="Need identifier processing" type="startEvent" poolRef="Process_ControllerOrProcessor_Art87" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_DoSpecificConditionsExist_Art87" name="Did the Member State determine specific conditions?" type="exclusiveGateway" poolRef="Process_ControllerOrProcessor_Art87" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_ApplySpecificConditions_To_UseIdentifierWithSafeguards_Art87" sourceRef="Task_ApplySpecificConditions_Art87" targetRef="Task_UseIdentifierWithSafeguards_Art87" />
+    <sequenceFlow id="Flow_GatewaySpecificConditions_To_ApplySpecificConditions_Art87" name="Yes" sourceRef="Gateway_DoSpecificConditionsExist_Art87" targetRef="Task_ApplySpecificConditions_Art87" />
+    <sequenceFlow id="Flow_GatewaySpecificConditions_To_UseIdentifierWithSafeguards_Art87" name="No" sourceRef="Gateway_DoSpecificConditionsExist_Art87" targetRef="Task_UseIdentifierWithSafeguards_Art87" />
+    <sequenceFlow id="Flow_Start_To_GatewaySpecificConditions_Art87" sourceRef="StartEvent_NeedIdentifierProcessing_Art87" targetRef="Gateway_DoSpecificConditionsExist_Art87" />
+    <sequenceFlow id="Flow_UseIdentifierWithSafeguards_To_EndProcessingCompleted_Art87" sourceRef="Task_UseIdentifierWithSafeguards_Art87" targetRef="EndEvent_IdentifierProcessingCompleted_Art87" />
+  </sequenceFlows>
+  <messageFlows />
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

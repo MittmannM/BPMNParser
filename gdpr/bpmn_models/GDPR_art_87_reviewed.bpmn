@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art87_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:process id="Process_ControllerOrProcessor_Art87"
+                name="Process national identifier under Article 87"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 87 based on the real English legal text from
+      gdpr_articles/article_87.txt. This compact process focuses on the article's operational
+      core: processing or use of a national identification number or another identifier of general
+      application, the optional existence of more specific Member State conditions, and the rule
+      that such identifiers may be used only under appropriate safeguards for the rights and
+      freedoms of the data subject.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_NeedIdentifierProcessing_Art87"
+                     name="Need identifier processing">
+      <bpmn:outgoing>Flow_Start_To_GatewaySpecificConditions_Art87</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_DoSpecificConditionsExist_Art87"
+                           name="Did the Member State determine specific conditions?">
+      <bpmn:incoming>Flow_Start_To_GatewaySpecificConditions_Art87</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySpecificConditions_To_ApplySpecificConditions_Art87</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySpecificConditions_To_UseIdentifierWithSafeguards_Art87</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ApplySpecificConditions_Art87"
+               name="Apply specific conditions">
+      <bpmn:incoming>Flow_GatewaySpecificConditions_To_ApplySpecificConditions_Art87</bpmn:incoming>
+      <bpmn:outgoing>Flow_ApplySpecificConditions_To_UseIdentifierWithSafeguards_Art87</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_UseIdentifierWithSafeguards_Art87"
+               name="Use identifier under safeguards">
+      <bpmn:incoming>Flow_GatewaySpecificConditions_To_UseIdentifierWithSafeguards_Art87</bpmn:incoming>
+      <bpmn:incoming>Flow_ApplySpecificConditions_To_UseIdentifierWithSafeguards_Art87</bpmn:incoming>
+      <bpmn:outgoing>Flow_UseIdentifierWithSafeguards_To_EndProcessingCompleted_Art87</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_IdentifierProcessingCompleted_Art87"
+                   name="Identifier processing completed">
+      <bpmn:incoming>Flow_UseIdentifierWithSafeguards_To_EndProcessingCompleted_Art87</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_GatewaySpecificConditions_Art87"
+                       sourceRef="StartEvent_NeedIdentifierProcessing_Art87"
+                       targetRef="Gateway_DoSpecificConditionsExist_Art87" />
+    <bpmn:sequenceFlow id="Flow_GatewaySpecificConditions_To_ApplySpecificConditions_Art87"
+                       name="Yes"
+                       sourceRef="Gateway_DoSpecificConditionsExist_Art87"
+                       targetRef="Task_ApplySpecificConditions_Art87" />
+    <bpmn:sequenceFlow id="Flow_GatewaySpecificConditions_To_UseIdentifierWithSafeguards_Art87"
+                       name="No"
+                       sourceRef="Gateway_DoSpecificConditionsExist_Art87"
+                       targetRef="Task_UseIdentifierWithSafeguards_Art87" />
+    <bpmn:sequenceFlow id="Flow_ApplySpecificConditions_To_UseIdentifierWithSafeguards_Art87"
+                       sourceRef="Task_ApplySpecificConditions_Art87"
+                       targetRef="Task_UseIdentifierWithSafeguards_Art87" />
+    <bpmn:sequenceFlow id="Flow_UseIdentifierWithSafeguards_To_EndProcessingCompleted_Art87"
+                       sourceRef="Task_UseIdentifierWithSafeguards_Art87"
+                       targetRef="EndEvent_IdentifierProcessingCompleted_Art87" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art87_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art87_Reviewed"
+                      bpmnElement="Process_ControllerOrProcessor_Art87">
+      <bpmndi:BPMNShape id="StartEvent_NeedIdentifierProcessing_Art87_di"
+                        bpmnElement="StartEvent_NeedIdentifierProcessing_Art87">
+        <dc:Bounds x="120" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_DoSpecificConditionsExist_Art87_di"
+                        bpmnElement="Gateway_DoSpecificConditionsExist_Art87"
+                        isMarkerVisible="true">
+        <dc:Bounds x="230" y="185" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ApplySpecificConditions_Art87_di"
+                        bpmnElement="Task_ApplySpecificConditions_Art87">
+        <dc:Bounds x="390" y="80" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_UseIdentifierWithSafeguards_Art87_di"
+                        bpmnElement="Task_UseIdentifierWithSafeguards_Art87">
+        <dc:Bounds x="680" y="130" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_IdentifierProcessingCompleted_Art87_di"
+                        bpmnElement="EndEvent_IdentifierProcessingCompleted_Art87">
+        <dc:Bounds x="952" y="152" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_GatewaySpecificConditions_Art87_di"
+                       bpmnElement="Flow_Start_To_GatewaySpecificConditions_Art87">
+        <di:waypoint x="156" y="210" />
+        <di:waypoint x="230" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySpecificConditions_To_ApplySpecificConditions_Art87_di"
+                       bpmnElement="Flow_GatewaySpecificConditions_To_ApplySpecificConditions_Art87">
+        <di:waypoint x="255" y="185" />
+        <di:waypoint x="255" y="120" />
+        <di:waypoint x="390" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="288" y="136" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySpecificConditions_To_UseIdentifierWithSafeguards_Art87_di"
+                       bpmnElement="Flow_GatewaySpecificConditions_To_UseIdentifierWithSafeguards_Art87">
+        <di:waypoint x="280" y="210" />
+        <di:waypoint x="680" y="170" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="468" y="172" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ApplySpecificConditions_To_UseIdentifierWithSafeguards_Art87_di"
+                       bpmnElement="Flow_ApplySpecificConditions_To_UseIdentifierWithSafeguards_Art87">
+        <di:waypoint x="560" y="120" />
+        <di:waypoint x="655" y="120" />
+        <di:waypoint x="655" y="170" />
+        <di:waypoint x="680" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_UseIdentifierWithSafeguards_To_EndProcessingCompleted_Art87_di"
+                       bpmnElement="Flow_UseIdentifierWithSafeguards_To_EndProcessingCompleted_Art87">
+        <di:waypoint x="870" y="170" />
+        <di:waypoint x="952" y="170" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

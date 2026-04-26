@@ -1,0 +1,150 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_CertificationBody_Art58" name="Certification Body" poolType="passive" />
+    <pool id="Participant_ControllerProcessorRepresentative_Art58" name="Controller, Processor, or Representative" poolType="passive" />
+    <pool id="Participant_DataSubject_Art58" name="Data Subject" poolType="passive" />
+    <pool id="Participant_JudicialAuthorities_Art58" name="Judicial Authorities" poolType="passive" />
+    <pool id="Participant_NationalInstitutionsAndPublic_Art58" name="National Institutions and Public" poolType="passive" />
+    <pool id="Participant_SupervisoryAuthority_Art58" name="Supervisory Authority" poolType="active" processRef="Process_SupervisoryAuthority_Art58" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_AccreditCertificationBodies_Art58" name="Accredit certification bodies" type="task" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <task id="Task_AdoptStandardDataProtectionClauses_Art58" name="Adopt standard data protection clauses" type="task" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <task id="Task_AdviseUnderArticle36_Art58" name="Advise under Article 36" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <task id="Task_ApplySafeguardsAndDueProcess_Art58" name="Apply safeguards, judicial remedy, and due process" type="task" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <task id="Task_ApproveBindingCorporateRules_Art58" name="Approve binding corporate rules" type="task" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <task id="Task_ApproveDraftCodesOfConduct_Art58" name="Approve draft codes of conduct" type="task" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <task id="Task_AuthoriseAdministrativeArrangements_Art58" name="Authorise Article 46(3)(b) administrative arrangements" type="task" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <task id="Task_AuthoriseArticle365Processing_Art58" name="Authorise Article 36(5) processing" type="task" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <task id="Task_AuthoriseContractualClauses_Art58" name="Authorise Article 46(3)(a) contractual clauses" type="task" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <task id="Task_BringInfringementsToJudicialAuthorities_Art58" name="Bring infringements to judicial authorities" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <task id="Task_ConductDataProtectionAudits_Art58" name="Conduct data protection audits" type="task" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <task id="Task_ExerciseAdditionalPowers_Art58" name="Exercise additional powers" type="task" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <task id="Task_ImposeAdministrativeFine_Art58" name="Impose administrative fine" type="task" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <task id="Task_IssueCertificationsAndApproveCriteria_Art58" name="Issue certifications and approve criteria" type="task" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <task id="Task_IssueOpinions_Art58" name="Issue opinions" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <task id="Task_IssueReprimand_Art58" name="Issue reprimand" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <task id="Task_IssueWarning_Art58" name="Issue warning" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <task id="Task_LimitOrBanProcessing_Art58" name="Limit or ban processing" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <task id="Task_NotifyAllegedInfringement_Art58" name="Notify alleged infringement" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <task id="Task_ObtainDataAndInformationAccess_Art58" name="Obtain data and information access" type="task" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <task id="Task_ObtainPremisesAndEquipmentAccess_Art58" name="Obtain premises and equipment access" type="task" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <task id="Task_OrderBreachCommunication_Art58" name="Order breach communication to data subject" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <task id="Task_OrderProcessingCompliance_Art58" name="Order processing compliance" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <task id="Task_OrderRectificationErasureRestriction_Art58" name="Order rectification, erasure, or restriction" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <task id="Task_OrderRequiredInformation_Art58" name="Order required information" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <task id="Task_OrderRightsCompliance_Art58" name="Order rights compliance" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <task id="Task_ReviewArticle42Certifications_Art58" name="Review Article 42(7) certifications" type="task" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <task id="Task_SuspendThirdCountryDataFlows_Art58" name="Suspend third-country data flows" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <task id="Task_WithdrawOrBlockCertification_Art58" name="Withdraw or block certification" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art58" />
+  </tasks>
+  <events>
+    <event id="EndEvent_Article58PowersMaintained_Art58" name="Article 58 powers maintained" type="endEvent" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <event id="StartEvent_MaintainArticle58Powers_Art58" name="Maintain Article 58 powers" type="startEvent" poolRef="Participant_SupervisoryAuthority_Art58" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_AdditionalPowersProvided_Art58" name="Are additional powers provided by Member State law?" type="exclusiveGateway" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <gateway id="Gateway_ImpairChapterVII_Art58" name="Would additional powers impair the effective operation of Chapter VII?" type="exclusiveGateway" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <gateway id="Gateway_JoinAdvisory_Art58" type="parallelGateway" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <gateway id="Gateway_JoinCorrective_Art58" type="parallelGateway" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <gateway id="Gateway_JoinInvestigative_Art58" type="parallelGateway" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <gateway id="Gateway_JoinPowerBlocks_Art58" type="parallelGateway" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <gateway id="Gateway_SplitAdvisory_Art58" type="parallelGateway" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <gateway id="Gateway_SplitCorrective_Art58" type="parallelGateway" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <gateway id="Gateway_SplitInvestigative_Art58" type="parallelGateway" poolRef="Participant_SupervisoryAuthority_Art58" />
+    <gateway id="Gateway_SplitPowerBlocks_Art58" type="parallelGateway" poolRef="Participant_SupervisoryAuthority_Art58" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AccreditCertificationBodies_To_GatewayJoinAdvisory_Art58" sourceRef="Task_AccreditCertificationBodies_Art58" targetRef="Gateway_JoinAdvisory_Art58" />
+    <sequenceFlow id="Flow_AdoptStandardClauses_To_GatewayJoinAdvisory_Art58" sourceRef="Task_AdoptStandardDataProtectionClauses_Art58" targetRef="Gateway_JoinAdvisory_Art58" />
+    <sequenceFlow id="Flow_AdviseUnderArticle36_To_GatewayJoinAdvisory_Art58" sourceRef="Task_AdviseUnderArticle36_Art58" targetRef="Gateway_JoinAdvisory_Art58" />
+    <sequenceFlow id="Flow_ApplySafeguards_To_GatewaySplitPowerBlocks_Art58" sourceRef="Task_ApplySafeguardsAndDueProcess_Art58" targetRef="Gateway_SplitPowerBlocks_Art58" />
+    <sequenceFlow id="Flow_ApproveBCRs_To_GatewayJoinAdvisory_Art58" sourceRef="Task_ApproveBindingCorporateRules_Art58" targetRef="Gateway_JoinAdvisory_Art58" />
+    <sequenceFlow id="Flow_ApproveDraftCodes_To_GatewayJoinAdvisory_Art58" sourceRef="Task_ApproveDraftCodesOfConduct_Art58" targetRef="Gateway_JoinAdvisory_Art58" />
+    <sequenceFlow id="Flow_AuthoriseAdministrativeArrangements_To_GatewayJoinAdvisory_Art58" sourceRef="Task_AuthoriseAdministrativeArrangements_Art58" targetRef="Gateway_JoinAdvisory_Art58" />
+    <sequenceFlow id="Flow_AuthoriseArticle365Processing_To_GatewayJoinAdvisory_Art58" sourceRef="Task_AuthoriseArticle365Processing_Art58" targetRef="Gateway_JoinAdvisory_Art58" />
+    <sequenceFlow id="Flow_AuthoriseContractualClauses_To_GatewayJoinAdvisory_Art58" sourceRef="Task_AuthoriseContractualClauses_Art58" targetRef="Gateway_JoinAdvisory_Art58" />
+    <sequenceFlow id="Flow_BringInfringements_To_GatewayImpairChapterVII_Art58" sourceRef="Task_BringInfringementsToJudicialAuthorities_Art58" targetRef="Gateway_ImpairChapterVII_Art58" />
+    <sequenceFlow id="Flow_ConductAudits_To_GatewayJoinInvestigative_Art58" sourceRef="Task_ConductDataProtectionAudits_Art58" targetRef="Gateway_JoinInvestigative_Art58" />
+    <sequenceFlow id="Flow_ExerciseAdditionalPowers_To_GatewayJoinPowerBlocks_Art58" sourceRef="Task_ExerciseAdditionalPowers_Art58" targetRef="Gateway_JoinPowerBlocks_Art58" />
+    <sequenceFlow id="Flow_GatewayAdditionalPowersProvided_To_BringInfringements_Art58" name="Yes" sourceRef="Gateway_AdditionalPowersProvided_Art58" targetRef="Task_BringInfringementsToJudicialAuthorities_Art58" />
+    <sequenceFlow id="Flow_GatewayAdditionalPowersProvided_To_GatewayJoinPowerBlocks_Art58" name="No" sourceRef="Gateway_AdditionalPowersProvided_Art58" targetRef="Gateway_JoinPowerBlocks_Art58" />
+    <sequenceFlow id="Flow_GatewayImpairChapterVII_To_ExerciseAdditionalPowers_Art58" name="No" sourceRef="Gateway_ImpairChapterVII_Art58" targetRef="Task_ExerciseAdditionalPowers_Art58" />
+    <sequenceFlow id="Flow_GatewayImpairChapterVII_To_GatewayJoinPowerBlocks_Art58" name="Yes" sourceRef="Gateway_ImpairChapterVII_Art58" targetRef="Gateway_JoinPowerBlocks_Art58" />
+    <sequenceFlow id="Flow_GatewayJoinAdvisory_To_GatewayJoinPowerBlocks_Art58" sourceRef="Gateway_JoinAdvisory_Art58" targetRef="Gateway_JoinPowerBlocks_Art58" />
+    <sequenceFlow id="Flow_GatewayJoinCorrective_To_GatewayJoinPowerBlocks_Art58" sourceRef="Gateway_JoinCorrective_Art58" targetRef="Gateway_JoinPowerBlocks_Art58" />
+    <sequenceFlow id="Flow_GatewayJoinInvestigative_To_GatewayJoinPowerBlocks_Art58" sourceRef="Gateway_JoinInvestigative_Art58" targetRef="Gateway_JoinPowerBlocks_Art58" />
+    <sequenceFlow id="Flow_GatewayJoinPowerBlocks_To_EndPowersMaintained_Art58" sourceRef="Gateway_JoinPowerBlocks_Art58" targetRef="EndEvent_Article58PowersMaintained_Art58" />
+    <sequenceFlow id="Flow_GatewaySplitAdvisory_To_AccreditCertificationBodies_Art58" sourceRef="Gateway_SplitAdvisory_Art58" targetRef="Task_AccreditCertificationBodies_Art58" />
+    <sequenceFlow id="Flow_GatewaySplitAdvisory_To_AdoptStandardClauses_Art58" sourceRef="Gateway_SplitAdvisory_Art58" targetRef="Task_AdoptStandardDataProtectionClauses_Art58" />
+    <sequenceFlow id="Flow_GatewaySplitAdvisory_To_AdviseUnderArticle36_Art58" sourceRef="Gateway_SplitAdvisory_Art58" targetRef="Task_AdviseUnderArticle36_Art58" />
+    <sequenceFlow id="Flow_GatewaySplitAdvisory_To_ApproveBCRs_Art58" sourceRef="Gateway_SplitAdvisory_Art58" targetRef="Task_ApproveBindingCorporateRules_Art58" />
+    <sequenceFlow id="Flow_GatewaySplitAdvisory_To_ApproveDraftCodes_Art58" sourceRef="Gateway_SplitAdvisory_Art58" targetRef="Task_ApproveDraftCodesOfConduct_Art58" />
+    <sequenceFlow id="Flow_GatewaySplitAdvisory_To_AuthoriseAdministrativeArrangements_Art58" sourceRef="Gateway_SplitAdvisory_Art58" targetRef="Task_AuthoriseAdministrativeArrangements_Art58" />
+    <sequenceFlow id="Flow_GatewaySplitAdvisory_To_AuthoriseArticle365Processing_Art58" sourceRef="Gateway_SplitAdvisory_Art58" targetRef="Task_AuthoriseArticle365Processing_Art58" />
+    <sequenceFlow id="Flow_GatewaySplitAdvisory_To_AuthoriseContractualClauses_Art58" sourceRef="Gateway_SplitAdvisory_Art58" targetRef="Task_AuthoriseContractualClauses_Art58" />
+    <sequenceFlow id="Flow_GatewaySplitAdvisory_To_IssueCertifications_Art58" sourceRef="Gateway_SplitAdvisory_Art58" targetRef="Task_IssueCertificationsAndApproveCriteria_Art58" />
+    <sequenceFlow id="Flow_GatewaySplitAdvisory_To_IssueOpinions_Art58" sourceRef="Gateway_SplitAdvisory_Art58" targetRef="Task_IssueOpinions_Art58" />
+    <sequenceFlow id="Flow_GatewaySplitCorrective_To_ImposeAdministrativeFine_Art58" sourceRef="Gateway_SplitCorrective_Art58" targetRef="Task_ImposeAdministrativeFine_Art58" />
+    <sequenceFlow id="Flow_GatewaySplitCorrective_To_IssueReprimand_Art58" sourceRef="Gateway_SplitCorrective_Art58" targetRef="Task_IssueReprimand_Art58" />
+    <sequenceFlow id="Flow_GatewaySplitCorrective_To_IssueWarning_Art58" sourceRef="Gateway_SplitCorrective_Art58" targetRef="Task_IssueWarning_Art58" />
+    <sequenceFlow id="Flow_GatewaySplitCorrective_To_LimitOrBanProcessing_Art58" sourceRef="Gateway_SplitCorrective_Art58" targetRef="Task_LimitOrBanProcessing_Art58" />
+    <sequenceFlow id="Flow_GatewaySplitCorrective_To_OrderBreachCommunication_Art58" sourceRef="Gateway_SplitCorrective_Art58" targetRef="Task_OrderBreachCommunication_Art58" />
+    <sequenceFlow id="Flow_GatewaySplitCorrective_To_OrderProcessingCompliance_Art58" sourceRef="Gateway_SplitCorrective_Art58" targetRef="Task_OrderProcessingCompliance_Art58" />
+    <sequenceFlow id="Flow_GatewaySplitCorrective_To_OrderRectificationErasureRestriction_Art58" sourceRef="Gateway_SplitCorrective_Art58" targetRef="Task_OrderRectificationErasureRestriction_Art58" />
+    <sequenceFlow id="Flow_GatewaySplitCorrective_To_OrderRightsCompliance_Art58" sourceRef="Gateway_SplitCorrective_Art58" targetRef="Task_OrderRightsCompliance_Art58" />
+    <sequenceFlow id="Flow_GatewaySplitCorrective_To_SuspendThirdCountryDataFlows_Art58" sourceRef="Gateway_SplitCorrective_Art58" targetRef="Task_SuspendThirdCountryDataFlows_Art58" />
+    <sequenceFlow id="Flow_GatewaySplitCorrective_To_WithdrawOrBlockCertification_Art58" sourceRef="Gateway_SplitCorrective_Art58" targetRef="Task_WithdrawOrBlockCertification_Art58" />
+    <sequenceFlow id="Flow_GatewaySplitInvestigative_To_ConductAudits_Art58" sourceRef="Gateway_SplitInvestigative_Art58" targetRef="Task_ConductDataProtectionAudits_Art58" />
+    <sequenceFlow id="Flow_GatewaySplitInvestigative_To_NotifyAllegedInfringement_Art58" sourceRef="Gateway_SplitInvestigative_Art58" targetRef="Task_NotifyAllegedInfringement_Art58" />
+    <sequenceFlow id="Flow_GatewaySplitInvestigative_To_ObtainDataAccess_Art58" sourceRef="Gateway_SplitInvestigative_Art58" targetRef="Task_ObtainDataAndInformationAccess_Art58" />
+    <sequenceFlow id="Flow_GatewaySplitInvestigative_To_ObtainPremisesAccess_Art58" sourceRef="Gateway_SplitInvestigative_Art58" targetRef="Task_ObtainPremisesAndEquipmentAccess_Art58" />
+    <sequenceFlow id="Flow_GatewaySplitInvestigative_To_OrderRequiredInformation_Art58" sourceRef="Gateway_SplitInvestigative_Art58" targetRef="Task_OrderRequiredInformation_Art58" />
+    <sequenceFlow id="Flow_GatewaySplitInvestigative_To_ReviewCertifications_Art58" sourceRef="Gateway_SplitInvestigative_Art58" targetRef="Task_ReviewArticle42Certifications_Art58" />
+    <sequenceFlow id="Flow_GatewaySplitPowerBlocks_To_GatewayAdditionalPowersProvided_Art58" sourceRef="Gateway_SplitPowerBlocks_Art58" targetRef="Gateway_AdditionalPowersProvided_Art58" />
+    <sequenceFlow id="Flow_GatewaySplitPowerBlocks_To_GatewaySplitAdvisory_Art58" sourceRef="Gateway_SplitPowerBlocks_Art58" targetRef="Gateway_SplitAdvisory_Art58" />
+    <sequenceFlow id="Flow_GatewaySplitPowerBlocks_To_GatewaySplitCorrective_Art58" sourceRef="Gateway_SplitPowerBlocks_Art58" targetRef="Gateway_SplitCorrective_Art58" />
+    <sequenceFlow id="Flow_GatewaySplitPowerBlocks_To_GatewaySplitInvestigative_Art58" sourceRef="Gateway_SplitPowerBlocks_Art58" targetRef="Gateway_SplitInvestigative_Art58" />
+    <sequenceFlow id="Flow_ImposeAdministrativeFine_To_GatewayJoinCorrective_Art58" sourceRef="Task_ImposeAdministrativeFine_Art58" targetRef="Gateway_JoinCorrective_Art58" />
+    <sequenceFlow id="Flow_IssueCertifications_To_GatewayJoinAdvisory_Art58" sourceRef="Task_IssueCertificationsAndApproveCriteria_Art58" targetRef="Gateway_JoinAdvisory_Art58" />
+    <sequenceFlow id="Flow_IssueOpinions_To_GatewayJoinAdvisory_Art58" sourceRef="Task_IssueOpinions_Art58" targetRef="Gateway_JoinAdvisory_Art58" />
+    <sequenceFlow id="Flow_IssueReprimand_To_GatewayJoinCorrective_Art58" sourceRef="Task_IssueReprimand_Art58" targetRef="Gateway_JoinCorrective_Art58" />
+    <sequenceFlow id="Flow_IssueWarning_To_GatewayJoinCorrective_Art58" sourceRef="Task_IssueWarning_Art58" targetRef="Gateway_JoinCorrective_Art58" />
+    <sequenceFlow id="Flow_LimitOrBanProcessing_To_GatewayJoinCorrective_Art58" sourceRef="Task_LimitOrBanProcessing_Art58" targetRef="Gateway_JoinCorrective_Art58" />
+    <sequenceFlow id="Flow_NotifyAllegedInfringement_To_GatewayJoinInvestigative_Art58" sourceRef="Task_NotifyAllegedInfringement_Art58" targetRef="Gateway_JoinInvestigative_Art58" />
+    <sequenceFlow id="Flow_ObtainDataAccess_To_GatewayJoinInvestigative_Art58" sourceRef="Task_ObtainDataAndInformationAccess_Art58" targetRef="Gateway_JoinInvestigative_Art58" />
+    <sequenceFlow id="Flow_ObtainPremisesAccess_To_GatewayJoinInvestigative_Art58" sourceRef="Task_ObtainPremisesAndEquipmentAccess_Art58" targetRef="Gateway_JoinInvestigative_Art58" />
+    <sequenceFlow id="Flow_OrderBreachCommunication_To_GatewayJoinCorrective_Art58" sourceRef="Task_OrderBreachCommunication_Art58" targetRef="Gateway_JoinCorrective_Art58" />
+    <sequenceFlow id="Flow_OrderProcessingCompliance_To_GatewayJoinCorrective_Art58" sourceRef="Task_OrderProcessingCompliance_Art58" targetRef="Gateway_JoinCorrective_Art58" />
+    <sequenceFlow id="Flow_OrderRectificationErasureRestriction_To_GatewayJoinCorrective_Art58" sourceRef="Task_OrderRectificationErasureRestriction_Art58" targetRef="Gateway_JoinCorrective_Art58" />
+    <sequenceFlow id="Flow_OrderRequiredInformation_To_GatewayJoinInvestigative_Art58" sourceRef="Task_OrderRequiredInformation_Art58" targetRef="Gateway_JoinInvestigative_Art58" />
+    <sequenceFlow id="Flow_OrderRightsCompliance_To_GatewayJoinCorrective_Art58" sourceRef="Task_OrderRightsCompliance_Art58" targetRef="Gateway_JoinCorrective_Art58" />
+    <sequenceFlow id="Flow_ReviewCertifications_To_GatewayJoinInvestigative_Art58" sourceRef="Task_ReviewArticle42Certifications_Art58" targetRef="Gateway_JoinInvestigative_Art58" />
+    <sequenceFlow id="Flow_Start_To_ApplySafeguards_Art58" sourceRef="StartEvent_MaintainArticle58Powers_Art58" targetRef="Task_ApplySafeguardsAndDueProcess_Art58" />
+    <sequenceFlow id="Flow_SuspendThirdCountryDataFlows_To_GatewayJoinCorrective_Art58" sourceRef="Task_SuspendThirdCountryDataFlows_Art58" targetRef="Gateway_JoinCorrective_Art58" />
+    <sequenceFlow id="Flow_WithdrawOrBlockCertification_To_GatewayJoinCorrective_Art58" sourceRef="Task_WithdrawOrBlockCertification_Art58" targetRef="Gateway_JoinCorrective_Art58" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_AdviseUnderArticle36_Art58" sourceRef="Task_AdviseUnderArticle36_Art58" targetRef="Participant_ControllerProcessorRepresentative_Art58" />
+    <messageFlow id="MessageFlow_BringInfringementsToJudicialAuthorities_Art58" sourceRef="Task_BringInfringementsToJudicialAuthorities_Art58" targetRef="Participant_JudicialAuthorities_Art58" />
+    <messageFlow id="MessageFlow_IssueOpinions_Art58" sourceRef="Task_IssueOpinions_Art58" targetRef="Participant_NationalInstitutionsAndPublic_Art58" />
+    <messageFlow id="MessageFlow_IssueReprimand_Art58" sourceRef="Task_IssueReprimand_Art58" targetRef="Participant_ControllerProcessorRepresentative_Art58" />
+    <messageFlow id="MessageFlow_IssueWarning_Art58" sourceRef="Task_IssueWarning_Art58" targetRef="Participant_ControllerProcessorRepresentative_Art58" />
+    <messageFlow id="MessageFlow_LimitOrBanProcessing_Art58" sourceRef="Task_LimitOrBanProcessing_Art58" targetRef="Participant_ControllerProcessorRepresentative_Art58" />
+    <messageFlow id="MessageFlow_NotifyAllegedInfringement_Art58" sourceRef="Task_NotifyAllegedInfringement_Art58" targetRef="Participant_ControllerProcessorRepresentative_Art58" />
+    <messageFlow id="MessageFlow_OrderBreachCommunication_Art58" sourceRef="Task_OrderBreachCommunication_Art58" targetRef="Participant_ControllerProcessorRepresentative_Art58" />
+    <messageFlow id="MessageFlow_OrderProcessingCompliance_Art58" sourceRef="Task_OrderProcessingCompliance_Art58" targetRef="Participant_ControllerProcessorRepresentative_Art58" />
+    <messageFlow id="MessageFlow_OrderRectificationErasureRestriction_Art58" sourceRef="Task_OrderRectificationErasureRestriction_Art58" targetRef="Participant_ControllerProcessorRepresentative_Art58" />
+    <messageFlow id="MessageFlow_OrderRequiredInformation_Art58" sourceRef="Task_OrderRequiredInformation_Art58" targetRef="Participant_ControllerProcessorRepresentative_Art58" />
+    <messageFlow id="MessageFlow_OrderRightsCompliance_Art58" sourceRef="Task_OrderRightsCompliance_Art58" targetRef="Participant_ControllerProcessorRepresentative_Art58" />
+    <messageFlow id="MessageFlow_SuspendThirdCountryDataFlows_Art58" sourceRef="Task_SuspendThirdCountryDataFlows_Art58" targetRef="Participant_ControllerProcessorRepresentative_Art58" />
+    <messageFlow id="MessageFlow_WithdrawOrBlockCertification_Art58" sourceRef="Task_WithdrawOrBlockCertification_Art58" targetRef="Participant_CertificationBody_Art58" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Commission_Art83" name="Commission" poolType="passive" />
+    <pool id="Participant_CompetentNationalCourt_Art83" name="Competent National Court" poolType="passive" />
+    <pool id="Participant_ControllerOrProcessor_Art83" name="Controller or Processor" poolType="passive" />
+    <pool id="Participant_SupervisoryAuthority_Art83" name="Supervisory Authority" poolType="active" processRef="Process_SupervisoryAuthority_Art83" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_ApplyArticle834Ceiling_Art83" name="Apply Article 83(4) ceiling" type="task" poolRef="Participant_SupervisoryAuthority_Art83" />
+    <task id="Task_ApplyArticle835Ceiling_Art83" name="Apply Article 83(5) ceiling" type="task" poolRef="Participant_SupervisoryAuthority_Art83" />
+    <task id="Task_ApplyArticle836Ceiling_Art83" name="Apply Article 83(6) ceiling" type="task" poolRef="Participant_SupervisoryAuthority_Art83" />
+    <task id="Task_ApplyMemberStateFineRules_Art83" name="Apply Member State fine rules" type="task" poolRef="Participant_SupervisoryAuthority_Art83" />
+    <task id="Task_ApplyProceduralSafeguards_Art83" name="Apply procedural safeguards" type="task" poolRef="Participant_SupervisoryAuthority_Art83" />
+    <task id="Task_AssessFineFactors_Art83" name="Assess Article 83(2) factors" type="task" poolRef="Participant_SupervisoryAuthority_Art83" />
+    <task id="Task_CapAtGravestInfringement_Art83" name="Cap total fine at gravest infringement" type="task" poolRef="Participant_SupervisoryAuthority_Art83" />
+    <task id="Task_DetermineRelationToArticle58Measures_Art83" name="Determine relation to Article 58(2) measures" type="task" poolRef="Participant_SupervisoryAuthority_Art83" />
+    <task id="Task_ImposeAdministrativeFine_Art83" name="Impose administrative fine" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art83" />
+    <task id="Task_InitiateFineBeforeCourt_Art83" name="Initiate fine before national court" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art83" />
+    <task id="Task_NotifyCommissionOfNationalProvisions_Art83" name="Notify Commission of national provisions" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art83" />
+  </tasks>
+  <events>
+    <event id="EndEvent_CourtPathInitiated_Art83" name="National court fine path initiated" type="endEvent" poolRef="Participant_SupervisoryAuthority_Art83" />
+    <event id="EndEvent_FineImposed_Art83" name="Administrative fine imposed" type="endEvent" poolRef="Participant_SupervisoryAuthority_Art83" />
+    <event id="EndEvent_NoFineForPublicAuthority_Art83" name="No administrative fine under Member State rules" type="endEvent" poolRef="Participant_SupervisoryAuthority_Art83" />
+    <event id="StartEvent_AssessInfringementCase_Art83" name="Assess infringement case" type="startEvent" poolRef="Participant_SupervisoryAuthority_Art83" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_AreSeveralInfringementsInvolved_Art83" name="Do the same or linked processing operations involve several infringements?" type="exclusiveGateway" poolRef="Participant_SupervisoryAuthority_Art83" />
+    <gateway id="Gateway_DoMemberStateRulesAllowFines_Art83" name="Do Member State rules allow fines for this public authority or body?" type="exclusiveGateway" poolRef="Participant_SupervisoryAuthority_Art83" />
+    <gateway id="Gateway_DoesLegalSystemProvideAdministrativeFines_Art83" name="Does the legal system provide for administrative fines?" type="exclusiveGateway" poolRef="Participant_SupervisoryAuthority_Art83" />
+    <gateway id="Gateway_IsPublicAuthorityOrBody_Art83" name="Is the addressee a public authority or body established in the Member State?" type="exclusiveGateway" poolRef="Participant_SupervisoryAuthority_Art83" />
+    <gateway id="Gateway_JoinNationalCourtPath_Art83" type="parallelGateway" poolRef="Participant_SupervisoryAuthority_Art83" />
+    <gateway id="Gateway_MergeFineCeilingPath_Art83" type="exclusiveGateway" poolRef="Participant_SupervisoryAuthority_Art83" />
+    <gateway id="Gateway_MergeSeveralInfringementsPath_Art83" type="exclusiveGateway" poolRef="Participant_SupervisoryAuthority_Art83" />
+    <gateway id="Gateway_SplitNationalCourtPath_Art83" type="parallelGateway" poolRef="Participant_SupervisoryAuthority_Art83" />
+    <gateway id="Gateway_WhichFineCeilingApplies_Art83" name="Which fine ceiling applies?" type="exclusiveGateway" poolRef="Participant_SupervisoryAuthority_Art83" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_ApplyArticle834Ceiling_To_GatewayMergeFineCeiling_Art83" sourceRef="Task_ApplyArticle834Ceiling_Art83" targetRef="Gateway_MergeFineCeilingPath_Art83" />
+    <sequenceFlow id="Flow_ApplyArticle835Ceiling_To_GatewayMergeFineCeiling_Art83" sourceRef="Task_ApplyArticle835Ceiling_Art83" targetRef="Gateway_MergeFineCeilingPath_Art83" />
+    <sequenceFlow id="Flow_ApplyArticle836Ceiling_To_GatewayMergeFineCeiling_Art83" sourceRef="Task_ApplyArticle836Ceiling_Art83" targetRef="Gateway_MergeFineCeilingPath_Art83" />
+    <sequenceFlow id="Flow_ApplyMemberStateFineRules_To_GatewayFineCeiling_Art83" sourceRef="Task_ApplyMemberStateFineRules_Art83" targetRef="Gateway_WhichFineCeilingApplies_Art83" />
+    <sequenceFlow id="Flow_ApplySafeguards_To_DetermineRelationToMeasures_Art83" sourceRef="Task_ApplyProceduralSafeguards_Art83" targetRef="Task_DetermineRelationToArticle58Measures_Art83" />
+    <sequenceFlow id="Flow_AssessFineFactors_To_GatewaySeveralInfringements_Art83" sourceRef="Task_AssessFineFactors_Art83" targetRef="Gateway_AreSeveralInfringementsInvolved_Art83" />
+    <sequenceFlow id="Flow_CapAtGravestInfringement_To_GatewayMergeSeveralInfringements_Art83" sourceRef="Task_CapAtGravestInfringement_Art83" targetRef="Gateway_MergeSeveralInfringementsPath_Art83" />
+    <sequenceFlow id="Flow_DetermineRelationToMeasures_To_AssessFineFactors_Art83" sourceRef="Task_DetermineRelationToArticle58Measures_Art83" targetRef="Task_AssessFineFactors_Art83" />
+    <sequenceFlow id="Flow_GatewayAdministrativeFineSystem_To_GatewaySplitNationalCourtPath_Art83" name="No" sourceRef="Gateway_DoesLegalSystemProvideAdministrativeFines_Art83" targetRef="Gateway_SplitNationalCourtPath_Art83" />
+    <sequenceFlow id="Flow_GatewayAdministrativeFineSystem_To_ImposeAdministrativeFine_Art83" name="Yes" sourceRef="Gateway_DoesLegalSystemProvideAdministrativeFines_Art83" targetRef="Task_ImposeAdministrativeFine_Art83" />
+    <sequenceFlow id="Flow_GatewayFineCeiling_To_ApplyArticle834Ceiling_Art83" name="Article 83(4)" sourceRef="Gateway_WhichFineCeilingApplies_Art83" targetRef="Task_ApplyArticle834Ceiling_Art83" />
+    <sequenceFlow id="Flow_GatewayFineCeiling_To_ApplyArticle835Ceiling_Art83" name="Article 83(5)" sourceRef="Gateway_WhichFineCeilingApplies_Art83" targetRef="Task_ApplyArticle835Ceiling_Art83" />
+    <sequenceFlow id="Flow_GatewayFineCeiling_To_ApplyArticle836Ceiling_Art83" name="Article 83(6)" sourceRef="Gateway_WhichFineCeilingApplies_Art83" targetRef="Task_ApplyArticle836Ceiling_Art83" />
+    <sequenceFlow id="Flow_GatewayJoinNationalCourtPath_To_EndCourtPathInitiated_Art83" sourceRef="Gateway_JoinNationalCourtPath_Art83" targetRef="EndEvent_CourtPathInitiated_Art83" />
+    <sequenceFlow id="Flow_GatewayMergeFineCeiling_To_GatewayAdministrativeFineSystem_Art83" sourceRef="Gateway_MergeFineCeilingPath_Art83" targetRef="Gateway_DoesLegalSystemProvideAdministrativeFines_Art83" />
+    <sequenceFlow id="Flow_GatewayMergeSeveralInfringements_To_GatewayPublicAuthority_Art83" sourceRef="Gateway_MergeSeveralInfringementsPath_Art83" targetRef="Gateway_IsPublicAuthorityOrBody_Art83" />
+    <sequenceFlow id="Flow_GatewayNationalFineRules_To_ApplyMemberStateFineRules_Art83" name="Yes" sourceRef="Gateway_DoMemberStateRulesAllowFines_Art83" targetRef="Task_ApplyMemberStateFineRules_Art83" />
+    <sequenceFlow id="Flow_GatewayNationalFineRules_To_EndNoFineForPublicAuthority_Art83" name="No" sourceRef="Gateway_DoMemberStateRulesAllowFines_Art83" targetRef="EndEvent_NoFineForPublicAuthority_Art83" />
+    <sequenceFlow id="Flow_GatewayPublicAuthority_To_GatewayFineCeiling_Art83" name="No" sourceRef="Gateway_IsPublicAuthorityOrBody_Art83" targetRef="Gateway_WhichFineCeilingApplies_Art83" />
+    <sequenceFlow id="Flow_GatewayPublicAuthority_To_GatewayNationalFineRules_Art83" name="Yes" sourceRef="Gateway_IsPublicAuthorityOrBody_Art83" targetRef="Gateway_DoMemberStateRulesAllowFines_Art83" />
+    <sequenceFlow id="Flow_GatewaySeveralInfringements_To_CapAtGravestInfringement_Art83" name="Yes" sourceRef="Gateway_AreSeveralInfringementsInvolved_Art83" targetRef="Task_CapAtGravestInfringement_Art83" />
+    <sequenceFlow id="Flow_GatewaySeveralInfringements_To_GatewayMergeSeveralInfringements_Art83" name="No" sourceRef="Gateway_AreSeveralInfringementsInvolved_Art83" targetRef="Gateway_MergeSeveralInfringementsPath_Art83" />
+    <sequenceFlow id="Flow_GatewaySplitNationalCourtPath_To_InitiateFineBeforeCourt_Art83" sourceRef="Gateway_SplitNationalCourtPath_Art83" targetRef="Task_InitiateFineBeforeCourt_Art83" />
+    <sequenceFlow id="Flow_GatewaySplitNationalCourtPath_To_NotifyCommission_Art83" sourceRef="Gateway_SplitNationalCourtPath_Art83" targetRef="Task_NotifyCommissionOfNationalProvisions_Art83" />
+    <sequenceFlow id="Flow_ImposeAdministrativeFine_To_EndFineImposed_Art83" sourceRef="Task_ImposeAdministrativeFine_Art83" targetRef="EndEvent_FineImposed_Art83" />
+    <sequenceFlow id="Flow_InitiateFineBeforeCourt_To_GatewayJoinNationalCourtPath_Art83" sourceRef="Task_InitiateFineBeforeCourt_Art83" targetRef="Gateway_JoinNationalCourtPath_Art83" />
+    <sequenceFlow id="Flow_NotifyCommission_To_GatewayJoinNationalCourtPath_Art83" sourceRef="Task_NotifyCommissionOfNationalProvisions_Art83" targetRef="Gateway_JoinNationalCourtPath_Art83" />
+    <sequenceFlow id="Flow_Start_To_ApplySafeguards_Art83" sourceRef="StartEvent_AssessInfringementCase_Art83" targetRef="Task_ApplyProceduralSafeguards_Art83" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_ImposeAdministrativeFine_Art83" sourceRef="Task_ImposeAdministrativeFine_Art83" targetRef="Participant_ControllerOrProcessor_Art83" />
+    <messageFlow id="MessageFlow_InitiateFineBeforeCourt_Art83" sourceRef="Task_InitiateFineBeforeCourt_Art83" targetRef="Participant_CompetentNationalCourt_Art83" />
+    <messageFlow id="MessageFlow_NotifyCommission_Art83" sourceRef="Task_NotifyCommissionOfNationalProvisions_Art83" targetRef="Participant_Commission_Art83" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

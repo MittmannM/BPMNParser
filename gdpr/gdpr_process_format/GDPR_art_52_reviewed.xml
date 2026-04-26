@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_MemberState_Art52" name="Member State" poolType="active" processRef="Process_MemberState_Art52" />
+    <pool id="Participant_SupervisoryAuthority_Art52" name="Supervisory Authority" poolType="active" processRef="Process_SupervisoryAuthority_Art52" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_ActWithCompleteIndependence_Art52" name="Act with complete independence" type="task" poolRef="Participant_SupervisoryAuthority_Art52" />
+    <task id="Task_EnsureOwnStaff_Art52" name="Ensure own staff under exclusive direction" type="task" poolRef="Participant_MemberState_Art52" />
+    <task id="Task_NotEngageIncompatibleOccupation_Art52" name="Avoid incompatible occupations during office" type="task" poolRef="Participant_SupervisoryAuthority_Art52" />
+    <task id="Task_NotSeekOrTakeInstructions_Art52" name="Neither seek nor take instructions" type="task" poolRef="Participant_SupervisoryAuthority_Art52" />
+    <task id="Task_ProvideResourcesPremisesInfrastructure_Art52" name="Provide resources, premises, and infrastructure" type="task" poolRef="Participant_MemberState_Art52" />
+    <task id="Task_RefrainIncompatibleActions_Art52" name="Refrain from incompatible actions" type="task" poolRef="Participant_SupervisoryAuthority_Art52" />
+    <task id="Task_RemainFreeFromExternalInfluence_Art52" name="Remain free from external influence" type="task" poolRef="Participant_SupervisoryAuthority_Art52" />
+    <task id="Task_SetFinancialControlBudget_Art52" name="Set independent financial control and annual budget" type="task" poolRef="Participant_MemberState_Art52" />
+  </tasks>
+  <events>
+    <event id="EndEvent_GuaranteesSet_Art52" name="Article 52 Member State guarantees set" type="endEvent" poolRef="Participant_MemberState_Art52" />
+    <event id="EndEvent_IndependenceMaintained_Art52" name="Article 52 independence maintained" type="endEvent" poolRef="Participant_SupervisoryAuthority_Art52" />
+    <event id="StartEvent_PerformSupervisoryTasks_Art52" name="Perform supervisory tasks and powers" type="startEvent" poolRef="Participant_SupervisoryAuthority_Art52" />
+    <event id="StartEvent_SetIndependenceGuarantees_Art52" name="Set independence guarantees" type="startEvent" poolRef="Participant_MemberState_Art52" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_JoinGuarantees_Art52" type="parallelGateway" poolRef="Participant_MemberState_Art52" />
+    <gateway id="Gateway_SplitGuarantees_Art52" type="parallelGateway" poolRef="Participant_MemberState_Art52" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_ActIndependently_To_RemainFreeInfluence_Art52" sourceRef="Task_ActWithCompleteIndependence_Art52" targetRef="Task_RemainFreeFromExternalInfluence_Art52" />
+    <sequenceFlow id="Flow_EnsureOwnStaff_To_GatewayJoinGuarantees_Art52" sourceRef="Task_EnsureOwnStaff_Art52" targetRef="Gateway_JoinGuarantees_Art52" />
+    <sequenceFlow id="Flow_GatewayJoinGuarantees_To_EndGuaranteesSet_Art52" sourceRef="Gateway_JoinGuarantees_Art52" targetRef="EndEvent_GuaranteesSet_Art52" />
+    <sequenceFlow id="Flow_GatewaySplitGuarantees_To_EnsureOwnStaff_Art52" sourceRef="Gateway_SplitGuarantees_Art52" targetRef="Task_EnsureOwnStaff_Art52" />
+    <sequenceFlow id="Flow_GatewaySplitGuarantees_To_ProvideResources_Art52" sourceRef="Gateway_SplitGuarantees_Art52" targetRef="Task_ProvideResourcesPremisesInfrastructure_Art52" />
+    <sequenceFlow id="Flow_GatewaySplitGuarantees_To_SetFinancialControl_Art52" sourceRef="Gateway_SplitGuarantees_Art52" targetRef="Task_SetFinancialControlBudget_Art52" />
+    <sequenceFlow id="Flow_NotEngageOccupation_To_EndIndependenceMaintained_Art52" sourceRef="Task_NotEngageIncompatibleOccupation_Art52" targetRef="EndEvent_IndependenceMaintained_Art52" />
+    <sequenceFlow id="Flow_NotTakeInstructions_To_RefrainIncompatibleActions_Art52" sourceRef="Task_NotSeekOrTakeInstructions_Art52" targetRef="Task_RefrainIncompatibleActions_Art52" />
+    <sequenceFlow id="Flow_ProvideResources_To_GatewayJoinGuarantees_Art52" sourceRef="Task_ProvideResourcesPremisesInfrastructure_Art52" targetRef="Gateway_JoinGuarantees_Art52" />
+    <sequenceFlow id="Flow_RefrainActions_To_NotEngageOccupation_Art52" sourceRef="Task_RefrainIncompatibleActions_Art52" targetRef="Task_NotEngageIncompatibleOccupation_Art52" />
+    <sequenceFlow id="Flow_RemainFreeInfluence_To_NotTakeInstructions_Art52" sourceRef="Task_RemainFreeFromExternalInfluence_Art52" targetRef="Task_NotSeekOrTakeInstructions_Art52" />
+    <sequenceFlow id="Flow_SetFinancialControl_To_GatewayJoinGuarantees_Art52" sourceRef="Task_SetFinancialControlBudget_Art52" targetRef="Gateway_JoinGuarantees_Art52" />
+    <sequenceFlow id="Flow_StartPerform_To_ActIndependently_Art52" sourceRef="StartEvent_PerformSupervisoryTasks_Art52" targetRef="Task_ActWithCompleteIndependence_Art52" />
+    <sequenceFlow id="Flow_Start_To_GatewaySplitGuarantees_Art52" sourceRef="StartEvent_SetIndependenceGuarantees_Art52" targetRef="Gateway_SplitGuarantees_Art52" />
+  </sequenceFlows>
+  <messageFlows />
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

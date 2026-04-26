@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Board_Art59" name="Board" poolType="passive" />
+    <pool id="Participant_Commission_Art59" name="Commission" poolType="passive" />
+    <pool id="Participant_NationalInstitutions_Art59" name="National Parliament, Government, and Other Designated Authorities" poolType="passive" />
+    <pool id="Participant_Public_Art59" name="Public" poolType="passive" />
+    <pool id="Participant_SupervisoryAuthority_Art59" name="Supervisory Authority" poolType="active" processRef="Process_SupervisoryAuthority_Art59" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_AddOptionalLists_Art59" name="Add infringement and measure lists" type="task" poolRef="Participant_SupervisoryAuthority_Art59" />
+    <task id="Task_DrawUpAnnualReport_Art59" name="Draw up annual report" type="task" poolRef="Participant_SupervisoryAuthority_Art59" />
+    <task id="Task_MakeAnnualReportPublic_Art59" name="Make annual report public" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art59" />
+    <task id="Task_SendAnnualReportToBoard_Art59" name="Send annual report to Board" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art59" />
+    <task id="Task_SendAnnualReportToCommission_Art59" name="Send annual report to Commission" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art59" />
+    <task id="Task_TransmitAnnualReport_Art59" name="Transmit annual report" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art59" />
+  </tasks>
+  <events>
+    <event id="EndEvent_AnnualReportDistributed_Art59" name="Annual report distributed" type="endEvent" poolRef="Participant_SupervisoryAuthority_Art59" />
+    <event id="StartEvent_StartAnnualReportCycle_Art59" name="Start annual reporting cycle" type="startEvent" poolRef="Participant_SupervisoryAuthority_Art59" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_IncludeOptionalLists_Art59" name="Will the report include notified infringement types and Article 58(2) measures?" type="exclusiveGateway" poolRef="Participant_SupervisoryAuthority_Art59" />
+    <gateway id="Gateway_JoinDistribution_Art59" type="parallelGateway" poolRef="Participant_SupervisoryAuthority_Art59" />
+    <gateway id="Gateway_MergeOptionalLists_Art59" type="exclusiveGateway" poolRef="Participant_SupervisoryAuthority_Art59" />
+    <gateway id="Gateway_SplitDistribution_Art59" type="parallelGateway" poolRef="Participant_SupervisoryAuthority_Art59" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AddOptionalLists_To_GatewayMergeOptionalLists_Art59" sourceRef="Task_AddOptionalLists_Art59" targetRef="Gateway_MergeOptionalLists_Art59" />
+    <sequenceFlow id="Flow_DrawUpAnnualReport_To_GatewayIncludeOptionalLists_Art59" sourceRef="Task_DrawUpAnnualReport_Art59" targetRef="Gateway_IncludeOptionalLists_Art59" />
+    <sequenceFlow id="Flow_GatewayIncludeOptionalLists_To_AddOptionalLists_Art59" name="Yes" sourceRef="Gateway_IncludeOptionalLists_Art59" targetRef="Task_AddOptionalLists_Art59" />
+    <sequenceFlow id="Flow_GatewayIncludeOptionalLists_To_GatewayMergeOptionalLists_Art59" name="No" sourceRef="Gateway_IncludeOptionalLists_Art59" targetRef="Gateway_MergeOptionalLists_Art59" />
+    <sequenceFlow id="Flow_GatewayJoinDistribution_To_EndAnnualReportDistributed_Art59" sourceRef="Gateway_JoinDistribution_Art59" targetRef="EndEvent_AnnualReportDistributed_Art59" />
+    <sequenceFlow id="Flow_GatewayMergeOptionalLists_To_GatewaySplitDistribution_Art59" sourceRef="Gateway_MergeOptionalLists_Art59" targetRef="Gateway_SplitDistribution_Art59" />
+    <sequenceFlow id="Flow_GatewaySplitDistribution_To_MakeAnnualReportPublic_Art59" sourceRef="Gateway_SplitDistribution_Art59" targetRef="Task_MakeAnnualReportPublic_Art59" />
+    <sequenceFlow id="Flow_GatewaySplitDistribution_To_SendAnnualReportToBoard_Art59" sourceRef="Gateway_SplitDistribution_Art59" targetRef="Task_SendAnnualReportToBoard_Art59" />
+    <sequenceFlow id="Flow_GatewaySplitDistribution_To_SendAnnualReportToCommission_Art59" sourceRef="Gateway_SplitDistribution_Art59" targetRef="Task_SendAnnualReportToCommission_Art59" />
+    <sequenceFlow id="Flow_GatewaySplitDistribution_To_TransmitAnnualReport_Art59" sourceRef="Gateway_SplitDistribution_Art59" targetRef="Task_TransmitAnnualReport_Art59" />
+    <sequenceFlow id="Flow_MakeAnnualReportPublic_To_GatewayJoinDistribution_Art59" sourceRef="Task_MakeAnnualReportPublic_Art59" targetRef="Gateway_JoinDistribution_Art59" />
+    <sequenceFlow id="Flow_SendAnnualReportToBoard_To_GatewayJoinDistribution_Art59" sourceRef="Task_SendAnnualReportToBoard_Art59" targetRef="Gateway_JoinDistribution_Art59" />
+    <sequenceFlow id="Flow_SendAnnualReportToCommission_To_GatewayJoinDistribution_Art59" sourceRef="Task_SendAnnualReportToCommission_Art59" targetRef="Gateway_JoinDistribution_Art59" />
+    <sequenceFlow id="Flow_Start_To_DrawUpAnnualReport_Art59" sourceRef="StartEvent_StartAnnualReportCycle_Art59" targetRef="Task_DrawUpAnnualReport_Art59" />
+    <sequenceFlow id="Flow_TransmitAnnualReport_To_GatewayJoinDistribution_Art59" sourceRef="Task_TransmitAnnualReport_Art59" targetRef="Gateway_JoinDistribution_Art59" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_MakeReportPublic_Art59" sourceRef="Task_MakeAnnualReportPublic_Art59" targetRef="Participant_Public_Art59" />
+    <messageFlow id="MessageFlow_SendAnnualReportToBoard_Art59" sourceRef="Task_SendAnnualReportToBoard_Art59" targetRef="Participant_Board_Art59" />
+    <messageFlow id="MessageFlow_SendAnnualReportToCommission_Art59" sourceRef="Task_SendAnnualReportToCommission_Art59" targetRef="Participant_Commission_Art59" />
+    <messageFlow id="MessageFlow_TransmitAnnualReport_Art59" sourceRef="Task_TransmitAnnualReport_Art59" targetRef="Participant_NationalInstitutions_Art59" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

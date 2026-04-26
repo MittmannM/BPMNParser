@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools />
+  <lanes />
+  <tasks>
+    <task id="Task_KeepAgreementInForce_Art96" name="Keep agreement in force" type="task" poolRef="Process_Art96" />
+  </tasks>
+  <events>
+    <event id="EndEvent_AgreementRemainsInForce_Art96" name="Agreement remains in force until changed" type="endEvent" poolRef="Process_Art96" />
+    <event id="EndEvent_NoContinuedForce_Art96" name="No continued force under Article 96" type="endEvent" poolRef="Process_Art96" />
+    <event id="StartEvent_AssessInternationalAgreement_Art96" name="Assess international agreement" type="startEvent" poolRef="Process_Art96" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_DidAgreementComplyWithPriorUnionLaw_Art96" name="Did the agreement comply with Union law applicable before that date?" type="exclusiveGateway" poolRef="Process_Art96" />
+    <gateway id="Gateway_WasAgreementConcludedBefore24May2016_Art96" name="Was the agreement concluded before 24 May 2016?" type="exclusiveGateway" poolRef="Process_Art96" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_GatewayCompliance_To_EndNoContinuedForce_Art96" name="No" sourceRef="Gateway_DidAgreementComplyWithPriorUnionLaw_Art96" targetRef="EndEvent_NoContinuedForce_Art96" />
+    <sequenceFlow id="Flow_GatewayCompliance_To_KeepAgreementInForce_Art96" name="Yes" sourceRef="Gateway_DidAgreementComplyWithPriorUnionLaw_Art96" targetRef="Task_KeepAgreementInForce_Art96" />
+    <sequenceFlow id="Flow_GatewayPre2016Agreement_To_EndNoContinuedForce_Art96" name="No" sourceRef="Gateway_WasAgreementConcludedBefore24May2016_Art96" targetRef="EndEvent_NoContinuedForce_Art96" />
+    <sequenceFlow id="Flow_GatewayPre2016Agreement_To_GatewayCompliance_Art96" name="Yes" sourceRef="Gateway_WasAgreementConcludedBefore24May2016_Art96" targetRef="Gateway_DidAgreementComplyWithPriorUnionLaw_Art96" />
+    <sequenceFlow id="Flow_KeepAgreementInForce_To_EndAgreementRemainsInForce_Art96" sourceRef="Task_KeepAgreementInForce_Art96" targetRef="EndEvent_AgreementRemainsInForce_Art96" />
+    <sequenceFlow id="Flow_Start_To_GatewayPre2016Agreement_Art96" sourceRef="StartEvent_AssessInternationalAgreement_Art96" targetRef="Gateway_WasAgreementConcludedBefore24May2016_Art96" />
+  </sequenceFlows>
+  <messageFlows />
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

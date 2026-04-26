@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import argparse
 from collections import defaultdict
 from pathlib import Path
 from typing import Iterable
@@ -60,6 +59,11 @@ SECTION_ORDER = [
     "annotations",
     "associations",
 ]
+
+PROJECT_ROOT = Path(__file__).resolve().parent
+INPUT_DIR = PROJECT_ROOT / "bpmn_models"
+OUTPUT_DIR = PROJECT_ROOT / "gdpr_process_format"
+INPUT_PATTERN = "*reviewed*.bpmn"
 
 
 def local_name(tag: str) -> str:
@@ -602,37 +606,11 @@ def convert_directory(input_dir: Path, output_dir: Path, pattern: str) -> int:
     return len(source_files)
 
 
-def parse_args() -> argparse.Namespace:
-    repo_root = Path(__file__).resolve().parent
-    parser = argparse.ArgumentParser(
-        description="Convert reviewed BPMN files into reduced semantic XML.",
-    )
-    parser.add_argument(
-        "--input-dir",
-        type=Path,
-        default=repo_root / "bpmn",
-        help="Directory that contains the BPMN source files.",
-    )
-    parser.add_argument(
-        "--output-dir",
-        type=Path,
-        default=repo_root / "gdpr_process_format",
-        help="Directory that will receive the reduced semantic XML files.",
-    )
-    parser.add_argument(
-        "--pattern",
-        default="*reviewed*.bpmn",
-        help="Glob pattern used to select BPMN files from the input directory.",
-    )
-    return parser.parse_args()
-
-
 def main() -> None:
-    args = parse_args()
-    converted = convert_directory(args.input_dir.resolve(), args.output_dir.resolve(), args.pattern)
+    converted = convert_directory(INPUT_DIR, OUTPUT_DIR, INPUT_PATTERN)
     print(
-        f"Converted {converted} BPMN files from {args.input_dir.resolve()} "
-        f"to {args.output_dir.resolve()}"
+        f"Converted {converted} BPMN files from {INPUT_DIR.resolve()} "
+        f"to {OUTPUT_DIR.resolve()}"
     )
 
 

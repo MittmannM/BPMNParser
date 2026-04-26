@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools />
+  <lanes />
+  <tasks>
+    <task id="Task_ElectChairAndDeputies_Art73" name="Elect chair and two deputy chairs" type="task" poolRef="Process_Board_Art73" />
+    <task id="Task_EndAfterFirstTerm_Art73" name="End office after first term" type="task" poolRef="Process_Board_Art73" />
+    <task id="Task_EndAfterMaximumTerm_Art73" name="End office after maximum renewal" type="task" poolRef="Process_Board_Art73" />
+    <task id="Task_RenewTermOnce_Art73" name="Renew term once" type="task" poolRef="Process_Board_Art73" />
+    <task id="Task_SetFiveYearTerm_Art73" name="Set five-year term" type="task" poolRef="Process_Board_Art73" />
+  </tasks>
+  <events>
+    <event id="EndEvent_LeadershipTermConcluded_Art73" name="Leadership term concluded" type="endEvent" poolRef="Process_Board_Art73" />
+    <event id="StartEvent_HandleLeadershipElection_Art73" name="Handle leadership election" type="startEvent" poolRef="Process_Board_Art73" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_HasTermAlreadyBeenRenewed_Art73" name="Has the term already been renewed once?" type="exclusiveGateway" poolRef="Process_Board_Art73" />
+    <gateway id="Gateway_IsReelectionSought_Art73" name="Is re-election sought at term end?" type="exclusiveGateway" poolRef="Process_Board_Art73" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_ElectLeadership_To_SetTerm_Art73" sourceRef="Task_ElectChairAndDeputies_Art73" targetRef="Task_SetFiveYearTerm_Art73" />
+    <sequenceFlow id="Flow_EndFirstTerm_To_EndLeadershipTerm_Art73" sourceRef="Task_EndAfterFirstTerm_Art73" targetRef="EndEvent_LeadershipTermConcluded_Art73" />
+    <sequenceFlow id="Flow_EndMaximumTerm_To_EndLeadershipTerm_Art73" sourceRef="Task_EndAfterMaximumTerm_Art73" targetRef="EndEvent_LeadershipTermConcluded_Art73" />
+    <sequenceFlow id="Flow_GatewayAlreadyRenewed_To_EndMaximumTerm_Art73" name="Yes" sourceRef="Gateway_HasTermAlreadyBeenRenewed_Art73" targetRef="Task_EndAfterMaximumTerm_Art73" />
+    <sequenceFlow id="Flow_GatewayAlreadyRenewed_To_RenewOnce_Art73" name="No" sourceRef="Gateway_HasTermAlreadyBeenRenewed_Art73" targetRef="Task_RenewTermOnce_Art73" />
+    <sequenceFlow id="Flow_GatewayRenewal_To_EndFirstTerm_Art73" name="No" sourceRef="Gateway_IsReelectionSought_Art73" targetRef="Task_EndAfterFirstTerm_Art73" />
+    <sequenceFlow id="Flow_GatewayRenewal_To_GatewayAlreadyRenewed_Art73" name="Yes" sourceRef="Gateway_IsReelectionSought_Art73" targetRef="Gateway_HasTermAlreadyBeenRenewed_Art73" />
+    <sequenceFlow id="Flow_RenewOnce_To_EndLeadershipTerm_Art73" sourceRef="Task_RenewTermOnce_Art73" targetRef="EndEvent_LeadershipTermConcluded_Art73" />
+    <sequenceFlow id="Flow_SetTerm_To_GatewayRenewal_Art73" sourceRef="Task_SetFiveYearTerm_Art73" targetRef="Gateway_IsReelectionSought_Art73" />
+    <sequenceFlow id="Flow_StartElection_To_ElectLeadership_Art73" sourceRef="StartEvent_HandleLeadershipElection_Art73" targetRef="Task_ElectChairAndDeputies_Art73" />
+  </sequenceFlows>
+  <messageFlows />
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

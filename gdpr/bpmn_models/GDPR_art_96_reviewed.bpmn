@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art96_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:process id="Process_Art96"
+                name="Determine continued force of prior international agreements"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 96 based on the real English legal text from
+      gdpr_articles/article_96.txt. This compact process captures the conditions under which
+      pre-24-May-2016 international agreements involving transfers of personal data remain in
+      force and the fact that they do so until amended, replaced or revoked.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_AssessInternationalAgreement_Art96"
+                     name="Assess international agreement">
+      <bpmn:outgoing>Flow_Start_To_GatewayPre2016Agreement_Art96</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_WasAgreementConcludedBefore24May2016_Art96"
+                           name="Was the agreement concluded before 24 May 2016?">
+      <bpmn:incoming>Flow_Start_To_GatewayPre2016Agreement_Art96</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayPre2016Agreement_To_GatewayCompliance_Art96</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayPre2016Agreement_To_EndNoContinuedForce_Art96</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_DidAgreementComplyWithPriorUnionLaw_Art96"
+                           name="Did the agreement comply with Union law applicable before that date?">
+      <bpmn:incoming>Flow_GatewayPre2016Agreement_To_GatewayCompliance_Art96</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayCompliance_To_KeepAgreementInForce_Art96</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayCompliance_To_EndNoContinuedForce_Art96</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_KeepAgreementInForce_Art96"
+               name="Keep agreement in force">
+      <bpmn:incoming>Flow_GatewayCompliance_To_KeepAgreementInForce_Art96</bpmn:incoming>
+      <bpmn:outgoing>Flow_KeepAgreementInForce_To_EndAgreementRemainsInForce_Art96</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_NoContinuedForce_Art96"
+                   name="No continued force under Article 96">
+      <bpmn:incoming>Flow_GatewayPre2016Agreement_To_EndNoContinuedForce_Art96</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayCompliance_To_EndNoContinuedForce_Art96</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_AgreementRemainsInForce_Art96"
+                   name="Agreement remains in force until changed">
+      <bpmn:incoming>Flow_KeepAgreementInForce_To_EndAgreementRemainsInForce_Art96</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_GatewayPre2016Agreement_Art96"
+                       sourceRef="StartEvent_AssessInternationalAgreement_Art96"
+                       targetRef="Gateway_WasAgreementConcludedBefore24May2016_Art96" />
+    <bpmn:sequenceFlow id="Flow_GatewayPre2016Agreement_To_GatewayCompliance_Art96"
+                       name="Yes"
+                       sourceRef="Gateway_WasAgreementConcludedBefore24May2016_Art96"
+                       targetRef="Gateway_DidAgreementComplyWithPriorUnionLaw_Art96" />
+    <bpmn:sequenceFlow id="Flow_GatewayPre2016Agreement_To_EndNoContinuedForce_Art96"
+                       name="No"
+                       sourceRef="Gateway_WasAgreementConcludedBefore24May2016_Art96"
+                       targetRef="EndEvent_NoContinuedForce_Art96" />
+    <bpmn:sequenceFlow id="Flow_GatewayCompliance_To_KeepAgreementInForce_Art96"
+                       name="Yes"
+                       sourceRef="Gateway_DidAgreementComplyWithPriorUnionLaw_Art96"
+                       targetRef="Task_KeepAgreementInForce_Art96" />
+    <bpmn:sequenceFlow id="Flow_GatewayCompliance_To_EndNoContinuedForce_Art96"
+                       name="No"
+                       sourceRef="Gateway_DidAgreementComplyWithPriorUnionLaw_Art96"
+                       targetRef="EndEvent_NoContinuedForce_Art96" />
+    <bpmn:sequenceFlow id="Flow_KeepAgreementInForce_To_EndAgreementRemainsInForce_Art96"
+                       sourceRef="Task_KeepAgreementInForce_Art96"
+                       targetRef="EndEvent_AgreementRemainsInForce_Art96" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art96_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art96_Reviewed"
+                      bpmnElement="Process_Art96">
+      <bpmndi:BPMNShape id="StartEvent_AssessInternationalAgreement_Art96_di"
+                        bpmnElement="StartEvent_AssessInternationalAgreement_Art96">
+        <dc:Bounds x="120" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_WasAgreementConcludedBefore24May2016_Art96_di"
+                        bpmnElement="Gateway_WasAgreementConcludedBefore24May2016_Art96"
+                        isMarkerVisible="true">
+        <dc:Bounds x="250" y="185" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_DidAgreementComplyWithPriorUnionLaw_Art96_di"
+                        bpmnElement="Gateway_DidAgreementComplyWithPriorUnionLaw_Art96"
+                        isMarkerVisible="true">
+        <dc:Bounds x="500" y="95" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_KeepAgreementInForce_Art96_di"
+                        bpmnElement="Task_KeepAgreementInForce_Art96">
+        <dc:Bounds x="680" y="80" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NoContinuedForce_Art96_di"
+                        bpmnElement="EndEvent_NoContinuedForce_Art96">
+        <dc:Bounds x="682" y="282" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_AgreementRemainsInForce_Art96_di"
+                        bpmnElement="EndEvent_AgreementRemainsInForce_Art96">
+        <dc:Bounds x="952" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_GatewayPre2016Agreement_Art96_di"
+                       bpmnElement="Flow_Start_To_GatewayPre2016Agreement_Art96">
+        <di:waypoint x="156" y="210" />
+        <di:waypoint x="250" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPre2016Agreement_To_GatewayCompliance_Art96_di"
+                       bpmnElement="Flow_GatewayPre2016Agreement_To_GatewayCompliance_Art96">
+        <di:waypoint x="275" y="185" />
+        <di:waypoint x="275" y="120" />
+        <di:waypoint x="500" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="334" y="136" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPre2016Agreement_To_EndNoContinuedForce_Art96_di"
+                       bpmnElement="Flow_GatewayPre2016Agreement_To_EndNoContinuedForce_Art96">
+        <di:waypoint x="275" y="235" />
+        <di:waypoint x="275" y="300" />
+        <di:waypoint x="682" y="300" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="474" y="282" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayCompliance_To_KeepAgreementInForce_Art96_di"
+                       bpmnElement="Flow_GatewayCompliance_To_KeepAgreementInForce_Art96">
+        <di:waypoint x="550" y="120" />
+        <di:waypoint x="680" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="598" y="102" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayCompliance_To_EndNoContinuedForce_Art96_di"
+                       bpmnElement="Flow_GatewayCompliance_To_EndNoContinuedForce_Art96">
+        <di:waypoint x="525" y="145" />
+        <di:waypoint x="525" y="300" />
+        <di:waypoint x="682" y="300" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="534" y="222" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_KeepAgreementInForce_To_EndAgreementRemainsInForce_Art96_di"
+                       bpmnElement="Flow_KeepAgreementInForce_To_EndAgreementRemainsInForce_Art96">
+        <di:waypoint x="860" y="120" />
+        <di:waypoint x="952" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

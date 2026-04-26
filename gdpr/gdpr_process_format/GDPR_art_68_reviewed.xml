@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Board_Art68" name="Board" poolType="active" processRef="Process_Board_Art68" />
+    <pool id="Participant_Commission_Art68" name="Commission" poolType="passive" />
+    <pool id="Participant_MemberStates_Art68" name="Member States" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_AppointJointRepresentative_Art68" name="Appoint joint representative" type="sendTask" poolRef="Participant_Board_Art68" />
+    <task id="Task_AssessEDPSVotingRights_Art68" name="Assess EDPS voting rights" type="task" poolRef="Participant_Board_Art68" />
+    <task id="Task_AssignChairRepresentation_Art68" name="Assign Chair representation" type="task" poolRef="Participant_Board_Art68" />
+    <task id="Task_CommunicateBoardActivities_Art68" name="Communicate Board activities" type="sendTask" poolRef="Participant_Board_Art68" />
+    <task id="Task_ComposeBoard_Art68" name="Compose Board membership" type="task" poolRef="Participant_Board_Art68" />
+    <task id="Task_EnableCommissionParticipation_Art68" name="Enable Commission participation without vote" type="task" poolRef="Participant_Board_Art68" />
+    <task id="Task_EstablishBoardBody_Art68" name="Establish Board as Union body" type="task" poolRef="Participant_Board_Art68" />
+  </tasks>
+  <events>
+    <event id="EndEvent_BoardConstituted_Art68" name="Board constituted" type="endEvent" poolRef="Participant_Board_Art68" />
+    <event id="StartEvent_ConstituteBoard_Art68" name="Constitute Board" type="startEvent" poolRef="Participant_Board_Art68" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_AreThereSeveralAuthoritiesInMemberState_Art68" name="Does a Member State have several supervisory authorities?" type="exclusiveGateway" poolRef="Participant_Board_Art68" />
+    <gateway id="Gateway_IsThisAnArticle65Case_Art68" name="Is this an Article 65 case?" type="exclusiveGateway" poolRef="Participant_Board_Art68" />
+    <gateway id="Gateway_WillCommissionParticipate_Art68" name="Will the Commission participate?" type="exclusiveGateway" poolRef="Participant_Board_Art68" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AppointJointRepresentative_To_GatewayCommissionParticipation_Art68" sourceRef="Task_AppointJointRepresentative_Art68" targetRef="Gateway_WillCommissionParticipate_Art68" />
+    <sequenceFlow id="Flow_AssessEDPSVotingRights_To_EndBoardConstituted_Art68" sourceRef="Task_AssessEDPSVotingRights_Art68" targetRef="EndEvent_BoardConstituted_Art68" />
+    <sequenceFlow id="Flow_AssignChairRepresentation_To_ComposeBoard_Art68" sourceRef="Task_AssignChairRepresentation_Art68" targetRef="Task_ComposeBoard_Art68" />
+    <sequenceFlow id="Flow_CommunicateBoardActivities_To_GatewayArticle65Case_Art68" sourceRef="Task_CommunicateBoardActivities_Art68" targetRef="Gateway_IsThisAnArticle65Case_Art68" />
+    <sequenceFlow id="Flow_ComposeBoard_To_GatewaySeveralAuthorities_Art68" sourceRef="Task_ComposeBoard_Art68" targetRef="Gateway_AreThereSeveralAuthoritiesInMemberState_Art68" />
+    <sequenceFlow id="Flow_EnableCommissionParticipation_To_CommunicateBoardActivities_Art68" sourceRef="Task_EnableCommissionParticipation_Art68" targetRef="Task_CommunicateBoardActivities_Art68" />
+    <sequenceFlow id="Flow_EstablishBoardBody_To_AssignChairRepresentation_Art68" sourceRef="Task_EstablishBoardBody_Art68" targetRef="Task_AssignChairRepresentation_Art68" />
+    <sequenceFlow id="Flow_GatewayArticle65Case_To_AssessEDPSVotingRights_Art68" name="Yes" sourceRef="Gateway_IsThisAnArticle65Case_Art68" targetRef="Task_AssessEDPSVotingRights_Art68" />
+    <sequenceFlow id="Flow_GatewayArticle65Case_To_EndBoardConstituted_Art68" name="No" sourceRef="Gateway_IsThisAnArticle65Case_Art68" targetRef="EndEvent_BoardConstituted_Art68" />
+    <sequenceFlow id="Flow_GatewayCommissionParticipation_To_EnableCommissionParticipation_Art68" name="Yes" sourceRef="Gateway_WillCommissionParticipate_Art68" targetRef="Task_EnableCommissionParticipation_Art68" />
+    <sequenceFlow id="Flow_GatewayCommissionParticipation_To_GatewayArticle65Case_Art68" name="No" sourceRef="Gateway_WillCommissionParticipate_Art68" targetRef="Gateway_IsThisAnArticle65Case_Art68" />
+    <sequenceFlow id="Flow_GatewaySeveralAuthorities_To_AppointJointRepresentative_Art68" name="Yes" sourceRef="Gateway_AreThereSeveralAuthoritiesInMemberState_Art68" targetRef="Task_AppointJointRepresentative_Art68" />
+    <sequenceFlow id="Flow_GatewaySeveralAuthorities_To_GatewayCommissionParticipation_Art68" name="No" sourceRef="Gateway_AreThereSeveralAuthoritiesInMemberState_Art68" targetRef="Gateway_WillCommissionParticipate_Art68" />
+    <sequenceFlow id="Flow_StartConstituteBoard_To_EstablishBoardBody_Art68" sourceRef="StartEvent_ConstituteBoard_Art68" targetRef="Task_EstablishBoardBody_Art68" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_AppointJointRepresentative_Art68" sourceRef="Task_AppointJointRepresentative_Art68" targetRef="Participant_MemberStates_Art68" />
+    <messageFlow id="MessageFlow_CommunicateBoardActivities_Art68" sourceRef="Task_CommunicateBoardActivities_Art68" targetRef="Participant_Commission_Art68" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

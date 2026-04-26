@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools />
+  <lanes />
+  <tasks>
+    <task id="Task_ApplyConfidentialityToDiscussion_Art76" name="Apply confidentiality to discussion" type="task" poolRef="Process_Board_Art76" />
+    <task id="Task_ApplyDocumentAccessRules_Art76" name="Apply Regulation 1049/2001 access rules" type="task" poolRef="Process_Board_Art76" />
+    <task id="Task_ConductNonConfidentialDiscussion_Art76" name="Conduct non-confidential discussion" type="task" poolRef="Process_Board_Art76" />
+  </tasks>
+  <events>
+    <event id="EndEvent_GovernanceApplied_Art76" name="Governance rules applied" type="endEvent" poolRef="Process_Board_Art76" />
+    <event id="StartEvent_HandleBoardDiscussionOrDocuments_Art76" name="Handle Board discussion or documents" type="startEvent" poolRef="Process_Board_Art76" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_IsConfidentialityNecessary_Art76" name="Is confidentiality necessary under the rules of procedure?" type="exclusiveGateway" poolRef="Process_Board_Art76" />
+    <gateway id="Gateway_JoinGovernancePaths_Art76" type="parallelGateway" poolRef="Process_Board_Art76" />
+    <gateway id="Gateway_MergeDiscussionPath_Art76" type="exclusiveGateway" poolRef="Process_Board_Art76" />
+    <gateway id="Gateway_SplitGovernancePaths_Art76" type="parallelGateway" poolRef="Process_Board_Art76" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_ApplyConfidentiality_To_GatewayMergeDiscussion_Art76" sourceRef="Task_ApplyConfidentialityToDiscussion_Art76" targetRef="Gateway_MergeDiscussionPath_Art76" />
+    <sequenceFlow id="Flow_ApplyDocumentAccessRules_To_GatewayJoinGovernance_Art76" sourceRef="Task_ApplyDocumentAccessRules_Art76" targetRef="Gateway_JoinGovernancePaths_Art76" />
+    <sequenceFlow id="Flow_ConductOpenDiscussion_To_GatewayMergeDiscussion_Art76" sourceRef="Task_ConductNonConfidentialDiscussion_Art76" targetRef="Gateway_MergeDiscussionPath_Art76" />
+    <sequenceFlow id="Flow_GatewayConfidentiality_To_ApplyConfidentiality_Art76" name="Yes" sourceRef="Gateway_IsConfidentialityNecessary_Art76" targetRef="Task_ApplyConfidentialityToDiscussion_Art76" />
+    <sequenceFlow id="Flow_GatewayConfidentiality_To_ConductOpenDiscussion_Art76" name="No" sourceRef="Gateway_IsConfidentialityNecessary_Art76" targetRef="Task_ConductNonConfidentialDiscussion_Art76" />
+    <sequenceFlow id="Flow_GatewayJoinGovernance_To_EndGovernanceApplied_Art76" sourceRef="Gateway_JoinGovernancePaths_Art76" targetRef="EndEvent_GovernanceApplied_Art76" />
+    <sequenceFlow id="Flow_GatewayMergeDiscussion_To_GatewayJoinGovernance_Art76" sourceRef="Gateway_MergeDiscussionPath_Art76" targetRef="Gateway_JoinGovernancePaths_Art76" />
+    <sequenceFlow id="Flow_GatewaySplit_To_ApplyDocumentAccessRules_Art76" sourceRef="Gateway_SplitGovernancePaths_Art76" targetRef="Task_ApplyDocumentAccessRules_Art76" />
+    <sequenceFlow id="Flow_GatewaySplit_To_GatewayConfidentiality_Art76" sourceRef="Gateway_SplitGovernancePaths_Art76" targetRef="Gateway_IsConfidentialityNecessary_Art76" />
+    <sequenceFlow id="Flow_Start_To_GatewaySplitGovernance_Art76" sourceRef="StartEvent_HandleBoardDiscussionOrDocuments_Art76" targetRef="Gateway_SplitGovernancePaths_Art76" />
+  </sequenceFlows>
+  <messageFlows />
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

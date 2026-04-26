@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Board_Art69" name="Board" poolType="active" processRef="Process_Board_Art69" />
+    <pool id="Participant_Commission_Art69" name="Commission" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_ActIndependently_Art69" name="Act independently" type="task" poolRef="Participant_Board_Art69" />
+    <task id="Task_AvoidInstructions_Art69" name="Neither seek nor take instructions" type="task" poolRef="Participant_Board_Art69" />
+    <task id="Task_HandleRequestWithoutInstructions_Art69" name="Handle request without taking instructions" type="task" poolRef="Participant_Board_Art69" />
+    <task id="Task_ReceiveCommissionRequest_Art69" name="Receive Commission request" type="receiveTask" poolRef="Participant_Board_Art69" />
+  </tasks>
+  <events>
+    <event id="EndEvent_BoardIndependenceMaintained_Art69" name="Board independence maintained" type="endEvent" poolRef="Participant_Board_Art69" />
+    <event id="StartEvent_PerformBoardTasksOrPowers_Art69" name="Perform Board tasks or powers" type="startEvent" poolRef="Participant_Board_Art69" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_IsThereACommissionRequest_Art69" name="Is there a Commission request under Article 70?" type="exclusiveGateway" poolRef="Participant_Board_Art69" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_ActIndependently_To_GatewayCommissionRequest_Art69" sourceRef="Task_ActIndependently_Art69" targetRef="Gateway_IsThereACommissionRequest_Art69" />
+    <sequenceFlow id="Flow_AvoidInstructions_To_EndBoardIndependenceMaintained_Art69" sourceRef="Task_AvoidInstructions_Art69" targetRef="EndEvent_BoardIndependenceMaintained_Art69" />
+    <sequenceFlow id="Flow_GatewayCommissionRequest_To_AvoidInstructions_Art69" name="No" sourceRef="Gateway_IsThereACommissionRequest_Art69" targetRef="Task_AvoidInstructions_Art69" />
+    <sequenceFlow id="Flow_GatewayCommissionRequest_To_ReceiveCommissionRequest_Art69" name="Yes" sourceRef="Gateway_IsThereACommissionRequest_Art69" targetRef="Task_ReceiveCommissionRequest_Art69" />
+    <sequenceFlow id="Flow_HandleRequestWithoutInstructions_To_EndBoardIndependenceMaintained_Art69" sourceRef="Task_HandleRequestWithoutInstructions_Art69" targetRef="EndEvent_BoardIndependenceMaintained_Art69" />
+    <sequenceFlow id="Flow_ReceiveCommissionRequest_To_HandleRequestWithoutInstructions_Art69" sourceRef="Task_ReceiveCommissionRequest_Art69" targetRef="Task_HandleRequestWithoutInstructions_Art69" />
+    <sequenceFlow id="Flow_StartPerformBoardTasksOrPowers_To_ActIndependently_Art69" sourceRef="StartEvent_PerformBoardTasksOrPowers_Art69" targetRef="Task_ActIndependently_Art69" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_CommissionRequest_Art69" sourceRef="Participant_Commission_Art69" targetRef="Task_ReceiveCommissionRequest_Art69" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

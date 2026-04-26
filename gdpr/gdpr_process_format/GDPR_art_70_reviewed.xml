@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Board_Art70" name="Board" poolType="active" processRef="Process_Board_Art70" />
+    <pool id="Participant_Commission_Art70" name="Commission" poolType="passive" />
+    <pool id="Participant_CommitteeUnderArticle93_Art70" name="Committee under Article 93" poolType="passive" />
+    <pool id="Participant_InterestedParties_Art70" name="Interested Parties" poolType="passive" />
+    <pool id="Participant_Public_Art70" name="Public" poolType="passive" />
+    <pool id="Participant_SupervisoryAuthorities_Art70" name="Supervisory Authorities" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_ConsultInterestedParties_Art70" name="Consult interested parties" type="task" poolRef="Participant_Board_Art70" />
+    <task id="Task_DeliverConsistencyOutputs_Art70" name="Deliver opinions and decisions" type="task" poolRef="Participant_Board_Art70" />
+    <task id="Task_ForwardOutputs_Art70" name="Forward outputs to Commission and committee" type="task" poolRef="Participant_Board_Art70" />
+    <task id="Task_HandleTimeLimit_Art70" name="Handle indicated time limit" type="task" poolRef="Participant_Board_Art70" />
+    <task id="Task_MakeConsultationResultsPublic_Art70" name="Make consultation results public" type="task" poolRef="Participant_Board_Art70" />
+    <task id="Task_MakeOutputsPublic_Art70" name="Make outputs public" type="task" poolRef="Participant_Board_Art70" />
+    <task id="Task_ReceiveCommissionAdviceRequest_Art70" name="Receive Commission advice request" type="receiveTask" poolRef="Participant_Board_Art70" />
+    <task id="Task_RunCodesAndCertificationWork_Art70" name="Run codes and certification work" type="task" poolRef="Participant_Board_Art70" />
+    <task id="Task_RunConsistencyWork_Art70" name="Run consistency and enforcement work" type="task" poolRef="Participant_Board_Art70" />
+    <task id="Task_RunCooperationWork_Art70" name="Run cooperation and training work" type="task" poolRef="Participant_Board_Art70" />
+    <task id="Task_RunGuidanceWork_Art70" name="Issue guidance and opinions" type="task" poolRef="Participant_Board_Art70" />
+  </tasks>
+  <events>
+    <event id="EndEvent_BoardTasksCompleted_Art70" name="Article 70 tasks completed" type="endEvent" poolRef="Participant_Board_Art70" />
+    <event id="StartEvent_NeedBoardAction_Art70" name="Need Board action" type="startEvent" poolRef="Participant_Board_Art70" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_IsCommissionAdviceRequested_Art70" name="Did the Commission request advice?" type="exclusiveGateway" poolRef="Participant_Board_Art70" />
+    <gateway id="Gateway_JoinTaskGroups_Art70" type="parallelGateway" poolRef="Participant_Board_Art70" />
+    <gateway id="Gateway_MergeAdviceRequest_Art70" type="exclusiveGateway" poolRef="Participant_Board_Art70" />
+    <gateway id="Gateway_ShouldBoardConsultInterestedParties_Art70" name="Should the Board consult interested parties?" type="exclusiveGateway" poolRef="Participant_Board_Art70" />
+    <gateway id="Gateway_SplitTaskGroups_Art70" type="parallelGateway" poolRef="Participant_Board_Art70" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_ConsultInterestedParties_To_MakeConsultationResultsPublic_Art70" sourceRef="Task_ConsultInterestedParties_Art70" targetRef="Task_MakeConsultationResultsPublic_Art70" />
+    <sequenceFlow id="Flow_DeliverConsistencyOutputs_To_GatewayConsultInterestedParties_Art70" sourceRef="Task_DeliverConsistencyOutputs_Art70" targetRef="Gateway_ShouldBoardConsultInterestedParties_Art70" />
+    <sequenceFlow id="Flow_ForwardOutputs_To_MakeOutputsPublic_Art70" sourceRef="Task_ForwardOutputs_Art70" targetRef="Task_MakeOutputsPublic_Art70" />
+    <sequenceFlow id="Flow_GatewayCommissionAdviceRequest_To_GatewayMergeAdviceRequest_Art70" name="No" sourceRef="Gateway_IsCommissionAdviceRequested_Art70" targetRef="Gateway_MergeAdviceRequest_Art70" />
+    <sequenceFlow id="Flow_GatewayCommissionAdviceRequest_To_ReceiveCommissionAdviceRequest_Art70" name="Yes" sourceRef="Gateway_IsCommissionAdviceRequested_Art70" targetRef="Task_ReceiveCommissionAdviceRequest_Art70" />
+    <sequenceFlow id="Flow_GatewayConsultInterestedParties_To_ConsultInterestedParties_Art70" name="Yes" sourceRef="Gateway_ShouldBoardConsultInterestedParties_Art70" targetRef="Task_ConsultInterestedParties_Art70" />
+    <sequenceFlow id="Flow_GatewayConsultInterestedParties_To_ForwardOutputs_Art70" name="No" sourceRef="Gateway_ShouldBoardConsultInterestedParties_Art70" targetRef="Task_ForwardOutputs_Art70" />
+    <sequenceFlow id="Flow_GatewayJoinTaskGroups_To_DeliverConsistencyOutputs_Art70" sourceRef="Gateway_JoinTaskGroups_Art70" targetRef="Task_DeliverConsistencyOutputs_Art70" />
+    <sequenceFlow id="Flow_GatewayMergeAdviceRequest_To_GatewaySplitTaskGroups_Art70" sourceRef="Gateway_MergeAdviceRequest_Art70" targetRef="Gateway_SplitTaskGroups_Art70" />
+    <sequenceFlow id="Flow_GatewaySplitTaskGroups_To_RunCodesAndCertificationWork_Art70" sourceRef="Gateway_SplitTaskGroups_Art70" targetRef="Task_RunCodesAndCertificationWork_Art70" />
+    <sequenceFlow id="Flow_GatewaySplitTaskGroups_To_RunConsistencyWork_Art70" sourceRef="Gateway_SplitTaskGroups_Art70" targetRef="Task_RunConsistencyWork_Art70" />
+    <sequenceFlow id="Flow_GatewaySplitTaskGroups_To_RunCooperationWork_Art70" sourceRef="Gateway_SplitTaskGroups_Art70" targetRef="Task_RunCooperationWork_Art70" />
+    <sequenceFlow id="Flow_GatewaySplitTaskGroups_To_RunGuidanceWork_Art70" sourceRef="Gateway_SplitTaskGroups_Art70" targetRef="Task_RunGuidanceWork_Art70" />
+    <sequenceFlow id="Flow_HandleTimeLimit_To_GatewayMergeAdviceRequest_Art70" sourceRef="Task_HandleTimeLimit_Art70" targetRef="Gateway_MergeAdviceRequest_Art70" />
+    <sequenceFlow id="Flow_MakeConsultationResultsPublic_To_ForwardOutputs_Art70" sourceRef="Task_MakeConsultationResultsPublic_Art70" targetRef="Task_ForwardOutputs_Art70" />
+    <sequenceFlow id="Flow_MakeOutputsPublic_To_EndBoardTasksCompleted_Art70" sourceRef="Task_MakeOutputsPublic_Art70" targetRef="EndEvent_BoardTasksCompleted_Art70" />
+    <sequenceFlow id="Flow_ReceiveCommissionAdviceRequest_To_HandleTimeLimit_Art70" sourceRef="Task_ReceiveCommissionAdviceRequest_Art70" targetRef="Task_HandleTimeLimit_Art70" />
+    <sequenceFlow id="Flow_RunCodesAndCertificationWork_To_GatewayJoinTaskGroups_Art70" sourceRef="Task_RunCodesAndCertificationWork_Art70" targetRef="Gateway_JoinTaskGroups_Art70" />
+    <sequenceFlow id="Flow_RunConsistencyWork_To_GatewayJoinTaskGroups_Art70" sourceRef="Task_RunConsistencyWork_Art70" targetRef="Gateway_JoinTaskGroups_Art70" />
+    <sequenceFlow id="Flow_RunCooperationWork_To_GatewayJoinTaskGroups_Art70" sourceRef="Task_RunCooperationWork_Art70" targetRef="Gateway_JoinTaskGroups_Art70" />
+    <sequenceFlow id="Flow_RunGuidanceWork_To_GatewayJoinTaskGroups_Art70" sourceRef="Task_RunGuidanceWork_Art70" targetRef="Gateway_JoinTaskGroups_Art70" />
+    <sequenceFlow id="Flow_StartNeedBoardAction_To_GatewayCommissionAdviceRequest_Art70" sourceRef="StartEvent_NeedBoardAction_Art70" targetRef="Gateway_IsCommissionAdviceRequested_Art70" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_CommissionAdviceRequest_Art70" sourceRef="Participant_Commission_Art70" targetRef="Task_ReceiveCommissionAdviceRequest_Art70" />
+    <messageFlow id="MessageFlow_ConsultInterestedParties_Art70" sourceRef="Task_ConsultInterestedParties_Art70" targetRef="Participant_InterestedParties_Art70" />
+    <messageFlow id="MessageFlow_MakeConsultationResultsPublic_Art70" sourceRef="Task_MakeConsultationResultsPublic_Art70" targetRef="Participant_Public_Art70" />
+    <messageFlow id="MessageFlow_MakeOutputsPublic_Art70" sourceRef="Task_MakeOutputsPublic_Art70" targetRef="Participant_Public_Art70" />
+    <messageFlow id="MessageFlow_ProvideGuidanceToAuthorities_Art70" sourceRef="Task_DeliverConsistencyOutputs_Art70" targetRef="Participant_SupervisoryAuthorities_Art70" />
+    <messageFlow id="MessageFlow_ProvideOutputsToCommission_Art70" sourceRef="Task_ForwardOutputs_Art70" targetRef="Participant_Commission_Art70" />
+    <messageFlow id="MessageFlow_ProvideOutputsToCommittee_Art70" sourceRef="Task_ForwardOutputs_Art70" targetRef="Participant_CommitteeUnderArticle93_Art70" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

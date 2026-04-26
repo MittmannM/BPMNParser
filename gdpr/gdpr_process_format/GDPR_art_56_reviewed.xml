@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_ControllerOrProcessor_Art56" name="Controller or Processor" poolType="passive" />
+    <pool id="Participant_LeadSupervisoryAuthority_Art56" name="Lead Supervisory Authority" poolType="active" processRef="Process_LeadSupervisoryAuthority_Art56" />
+    <pool id="Participant_LocalSupervisoryAuthority_Art56" name="Local Supervisory Authority" poolType="active" processRef="Process_LocalSupervisoryAuthority_Art56" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_ActAsLeadAuthority_Art56" name="Act as lead supervisory authority" type="task" poolRef="Participant_LeadSupervisoryAuthority_Art56" />
+    <task id="Task_ActAsSoleInterlocutor_Art56" name="Act as sole interlocutor" type="sendTask" poolRef="Participant_LeadSupervisoryAuthority_Art56" />
+    <task id="Task_DecideHandlingWithinThreeWeeks_Art56" name="Decide within three weeks whether to handle the case" type="task" poolRef="Participant_LeadSupervisoryAuthority_Art56" />
+    <task id="Task_HandleCaseArticle60_Art56" name="Handle case under Article 60" type="task" poolRef="Participant_LeadSupervisoryAuthority_Art56" />
+    <task id="Task_HandleCaseLocally_Art56" name="Handle case under Articles 61 and 62" type="task" poolRef="Participant_LocalSupervisoryAuthority_Art56" />
+    <task id="Task_IdentifyLeadAuthority_Art56" name="Identify main or single establishment authority" type="task" poolRef="Participant_LeadSupervisoryAuthority_Art56" />
+    <task id="Task_InformLeadAuthority_Art56" name="Inform lead supervisory authority" type="sendTask" poolRef="Participant_LocalSupervisoryAuthority_Art56" />
+    <task id="Task_PrepareDraftDecision_Art56" name="Prepare draft decision" type="task" poolRef="Participant_LocalSupervisoryAuthority_Art56" />
+    <task id="Task_ReceiveLeadDeclineDecision_Art56" name="Receive lead decline decision" type="receiveTask" poolRef="Participant_LocalSupervisoryAuthority_Art56" />
+    <task id="Task_ReceiveLeadHandlingConfirmation_Art56" name="Receive lead handling confirmation" type="receiveTask" poolRef="Participant_LocalSupervisoryAuthority_Art56" />
+    <task id="Task_ReceiveLocalDraftDecision_Art56" name="Receive local draft decision" type="receiveTask" poolRef="Participant_LeadSupervisoryAuthority_Art56" />
+    <task id="Task_SendLeadDeclineDecision_Art56" name="Send lead decline decision" type="sendTask" poolRef="Participant_LeadSupervisoryAuthority_Art56" />
+    <task id="Task_SendLeadHandlingConfirmation_Art56" name="Send lead handling confirmation" type="sendTask" poolRef="Participant_LeadSupervisoryAuthority_Art56" />
+    <task id="Task_SubmitDraftDecision_Art56" name="Submit draft decision" type="sendTask" poolRef="Participant_LocalSupervisoryAuthority_Art56" />
+    <task id="Task_TakeUtmostAccount_Art56" name="Take utmost account of the local draft" type="task" poolRef="Participant_LeadSupervisoryAuthority_Art56" />
+  </tasks>
+  <events>
+    <event id="EndEvent_LeadCompetenceEstablished_Art56" name="Lead authority competence established" type="endEvent" poolRef="Participant_LeadSupervisoryAuthority_Art56" />
+    <event id="EndEvent_LeadHandledCase_Art56" name="Lead authority handling supported" type="endEvent" poolRef="Participant_LocalSupervisoryAuthority_Art56" />
+    <event id="EndEvent_LocalAuthorityHandles_Art56" name="Local authority handles the case" type="endEvent" poolRef="Participant_LeadSupervisoryAuthority_Art56" />
+    <event id="EndEvent_LocalCaseHandled_Art56" name="Local case handling completed" type="endEvent" poolRef="Participant_LocalSupervisoryAuthority_Art56" />
+    <event id="EndEvent_NoLocalDerogation_Art56" name="No local derogation triggered" type="endEvent" poolRef="Participant_LocalSupervisoryAuthority_Art56" />
+    <event id="StartEvent_AssessCrossBorderProcessing_Art56" name="Assess cross-border processing" type="startEvent" poolRef="Participant_LeadSupervisoryAuthority_Art56" />
+    <event id="StartEvent_ReceiveLocalMatter_Art56" name="Receive complaint or infringement matter" type="startEvent" poolRef="Participant_LocalSupervisoryAuthority_Art56" />
+    <event id="StartEvent_ReceiveReferral_Art56" name="Receive local-authority referral" type="startEvent" poolRef="Participant_LeadSupervisoryAuthority_Art56" eventDefinition="message" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_HandleCase_Art56" name="Will the lead authority handle the case under Article 60?" type="exclusiveGateway" poolRef="Participant_LeadSupervisoryAuthority_Art56" />
+    <gateway id="Gateway_LeadDecisionEvent_Art56" name="Which lead decision is received?" type="eventBasedGateway" poolRef="Participant_LocalSupervisoryAuthority_Art56" />
+    <gateway id="Gateway_LocalDerogation_Art56" name="Does the matter relate only to a local establishment or substantially affect data subjects only in this Member State?" type="exclusiveGateway" poolRef="Participant_LocalSupervisoryAuthority_Art56" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_ActAsLeadAuthority_To_ActAsSoleInterlocutor_Art56" sourceRef="Task_ActAsLeadAuthority_Art56" targetRef="Task_ActAsSoleInterlocutor_Art56" />
+    <sequenceFlow id="Flow_ActAsSoleInterlocutor_To_EndLeadCompetence_Art56" sourceRef="Task_ActAsSoleInterlocutor_Art56" targetRef="EndEvent_LeadCompetenceEstablished_Art56" />
+    <sequenceFlow id="Flow_DecideHandling_To_GatewayHandleCase_Art56" sourceRef="Task_DecideHandlingWithinThreeWeeks_Art56" targetRef="Gateway_HandleCase_Art56" />
+    <sequenceFlow id="Flow_GatewayHandleCase_To_SendLeadDeclineDecision_Art56" name="No" sourceRef="Gateway_HandleCase_Art56" targetRef="Task_SendLeadDeclineDecision_Art56" />
+    <sequenceFlow id="Flow_GatewayHandleCase_To_SendLeadHandlingConfirmation_Art56" name="Yes" sourceRef="Gateway_HandleCase_Art56" targetRef="Task_SendLeadHandlingConfirmation_Art56" />
+    <sequenceFlow id="Flow_GatewayLeadDecisionEvent_To_ReceiveLeadDeclineDecision_Art56" sourceRef="Gateway_LeadDecisionEvent_Art56" targetRef="Task_ReceiveLeadDeclineDecision_Art56" />
+    <sequenceFlow id="Flow_GatewayLeadDecisionEvent_To_ReceiveLeadHandlingConfirmation_Art56" sourceRef="Gateway_LeadDecisionEvent_Art56" targetRef="Task_ReceiveLeadHandlingConfirmation_Art56" />
+    <sequenceFlow id="Flow_GatewayLocalDerogation_To_EndNoLocalDerogation_Art56" name="No" sourceRef="Gateway_LocalDerogation_Art56" targetRef="EndEvent_NoLocalDerogation_Art56" />
+    <sequenceFlow id="Flow_GatewayLocalDerogation_To_InformLeadAuthority_Art56" name="Yes" sourceRef="Gateway_LocalDerogation_Art56" targetRef="Task_InformLeadAuthority_Art56" />
+    <sequenceFlow id="Flow_HandleCaseArticle60_To_ReceiveLocalDraftDecision_Art56" sourceRef="Task_HandleCaseArticle60_Art56" targetRef="Task_ReceiveLocalDraftDecision_Art56" />
+    <sequenceFlow id="Flow_HandleCaseLocally_To_EndLocalCaseHandled_Art56" sourceRef="Task_HandleCaseLocally_Art56" targetRef="EndEvent_LocalCaseHandled_Art56" />
+    <sequenceFlow id="Flow_IdentifyLeadAuthority_To_ActAsLeadAuthority_Art56" sourceRef="Task_IdentifyLeadAuthority_Art56" targetRef="Task_ActAsLeadAuthority_Art56" />
+    <sequenceFlow id="Flow_InformLeadAuthority_To_GatewayLeadDecisionEvent_Art56" sourceRef="Task_InformLeadAuthority_Art56" targetRef="Gateway_LeadDecisionEvent_Art56" />
+    <sequenceFlow id="Flow_PrepareDraftDecision_To_SubmitDraftDecision_Art56" sourceRef="Task_PrepareDraftDecision_Art56" targetRef="Task_SubmitDraftDecision_Art56" />
+    <sequenceFlow id="Flow_ReceiveLeadDeclineDecision_To_HandleCaseLocally_Art56" sourceRef="Task_ReceiveLeadDeclineDecision_Art56" targetRef="Task_HandleCaseLocally_Art56" />
+    <sequenceFlow id="Flow_ReceiveLeadHandlingConfirmation_To_PrepareDraftDecision_Art56" sourceRef="Task_ReceiveLeadHandlingConfirmation_Art56" targetRef="Task_PrepareDraftDecision_Art56" />
+    <sequenceFlow id="Flow_ReceiveLocalDraftDecision_To_TakeUtmostAccount_Art56" sourceRef="Task_ReceiveLocalDraftDecision_Art56" targetRef="Task_TakeUtmostAccount_Art56" />
+    <sequenceFlow id="Flow_SendLeadDeclineDecision_To_EndLocalAuthorityHandles_Art56" sourceRef="Task_SendLeadDeclineDecision_Art56" targetRef="EndEvent_LocalAuthorityHandles_Art56" />
+    <sequenceFlow id="Flow_SendLeadHandlingConfirmation_To_HandleCaseArticle60_Art56" sourceRef="Task_SendLeadHandlingConfirmation_Art56" targetRef="Task_HandleCaseArticle60_Art56" />
+    <sequenceFlow id="Flow_StartCrossBorder_To_IdentifyLeadAuthority_Art56" sourceRef="StartEvent_AssessCrossBorderProcessing_Art56" targetRef="Task_IdentifyLeadAuthority_Art56" />
+    <sequenceFlow id="Flow_StartLocalMatter_To_GatewayLocalDerogation_Art56" sourceRef="StartEvent_ReceiveLocalMatter_Art56" targetRef="Gateway_LocalDerogation_Art56" />
+    <sequenceFlow id="Flow_StartReferral_To_DecideHandling_Art56" sourceRef="StartEvent_ReceiveReferral_Art56" targetRef="Task_DecideHandlingWithinThreeWeeks_Art56" />
+    <sequenceFlow id="Flow_SubmitDraftDecision_To_EndLeadHandledCase_Art56" sourceRef="Task_SubmitDraftDecision_Art56" targetRef="EndEvent_LeadHandledCase_Art56" />
+    <sequenceFlow id="Flow_TakeUtmostAccount_To_ActAsSoleInterlocutor_Art56" sourceRef="Task_TakeUtmostAccount_Art56" targetRef="Task_ActAsSoleInterlocutor_Art56" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_InformLeadAuthority_Art56" sourceRef="Task_InformLeadAuthority_Art56" targetRef="StartEvent_ReceiveReferral_Art56" />
+    <messageFlow id="MessageFlow_LeadInterlocutor_Art56" sourceRef="Task_ActAsSoleInterlocutor_Art56" targetRef="Participant_ControllerOrProcessor_Art56" />
+    <messageFlow id="MessageFlow_SendLeadDeclineDecision_Art56" sourceRef="Task_SendLeadDeclineDecision_Art56" targetRef="Task_ReceiveLeadDeclineDecision_Art56" />
+    <messageFlow id="MessageFlow_SendLeadHandlingConfirmation_Art56" sourceRef="Task_SendLeadHandlingConfirmation_Art56" targetRef="Task_ReceiveLeadHandlingConfirmation_Art56" />
+    <messageFlow id="MessageFlow_SubmitLocalDraft_Art56" sourceRef="Task_SubmitDraftDecision_Art56" targetRef="Task_ReceiveLocalDraftDecision_Art56" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

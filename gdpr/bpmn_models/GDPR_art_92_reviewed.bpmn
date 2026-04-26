@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art92_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art92_Reviewed">
+    <bpmn:participant id="Participant_Commission_Art92"
+                      name="Commission"
+                      processRef="Process_Commission_Art92" />
+    <bpmn:participant id="Participant_EuropeanParliament_Art92"
+                      name="European Parliament" />
+    <bpmn:participant id="Participant_Council_Art92"
+                      name="Council" />
+
+    <bpmn:messageFlow id="MessageFlow_NotifyParliament_Art92"
+                      sourceRef="Task_NotifyParliamentAndCouncil_Art92"
+                      targetRef="Participant_EuropeanParliament_Art92" />
+    <bpmn:messageFlow id="MessageFlow_NotifyCouncil_Art92"
+                      sourceRef="Task_NotifyParliamentAndCouncil_Art92"
+                      targetRef="Participant_Council_Art92" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_Commission_Art92"
+                name="Adopt delegated acts under Article 92"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 92 based on the real English legal text from
+      gdpr_articles/article_92.txt. This collaboration captures the indefinite delegation of
+      power for Articles 12(8) and 43(8) from 24 May 2016, the revocation possibility by the
+      European Parliament or the Council and its effects, the simultaneous notification duty for
+      delegated acts, the objection period with possible extension, and the conditions for entry
+      into force.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_HandleDelegatedActPower_Art92"
+                     name="Handle delegated-act power">
+      <bpmn:outgoing>Flow_Start_To_ConferDelegation_Art92</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_ConferDelegationForIndeterminatePeriod_Art92"
+               name="Confer delegation for indeterminate period">
+      <bpmn:incoming>Flow_Start_To_ConferDelegation_Art92</bpmn:incoming>
+      <bpmn:outgoing>Flow_ConferDelegation_To_GatewayRevocation_Art92</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_HasDelegationBeenRevoked_Art92"
+                           name="Has Parliament or Council revoked the delegation?">
+      <bpmn:incoming>Flow_ConferDelegation_To_GatewayRevocation_Art92</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayRevocation_To_ApplyRevocationDecision_Art92</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayRevocation_To_AdoptDelegatedAct_Art92</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ApplyRevocationDecision_Art92"
+               name="Apply revocation decision">
+      <bpmn:incoming>Flow_GatewayRevocation_To_ApplyRevocationDecision_Art92</bpmn:incoming>
+      <bpmn:outgoing>Flow_ApplyRevocationDecision_To_PreserveExistingValidity_Art92</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_PreserveValidityOfActsAlreadyInForce_Art92"
+               name="Preserve validity of acts already in force">
+      <bpmn:incoming>Flow_ApplyRevocationDecision_To_PreserveExistingValidity_Art92</bpmn:incoming>
+      <bpmn:outgoing>Flow_PreserveExistingValidity_To_EndDelegationRevoked_Art92</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_DelegationRevoked_Art92"
+                   name="Delegation revoked">
+      <bpmn:incoming>Flow_PreserveExistingValidity_To_EndDelegationRevoked_Art92</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:task id="Task_AdoptDelegatedAct_Art92"
+               name="Adopt delegated act">
+      <bpmn:incoming>Flow_GatewayRevocation_To_AdoptDelegatedAct_Art92</bpmn:incoming>
+      <bpmn:outgoing>Flow_AdoptDelegatedAct_To_NotifyParliamentAndCouncil_Art92</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="Task_NotifyParliamentAndCouncil_Art92"
+                   name="Notify Parliament and Council">
+      <bpmn:incoming>Flow_AdoptDelegatedAct_To_NotifyParliamentAndCouncil_Art92</bpmn:incoming>
+      <bpmn:outgoing>Flow_NotifyParliamentAndCouncil_To_GatewayExtension_Art92</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:exclusiveGateway id="Gateway_HasAnExtensionBeenInitiated_Art92"
+                           name="Has Parliament or Council initiated an extension?">
+      <bpmn:incoming>Flow_NotifyParliamentAndCouncil_To_GatewayExtension_Art92</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayExtension_To_ExtendObjectionPeriod_Art92</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayExtension_To_GatewayEarlyNoObjection_Art92</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ExtendObjectionPeriodByThreeMonths_Art92"
+               name="Extend objection period by three months">
+      <bpmn:incoming>Flow_GatewayExtension_To_ExtendObjectionPeriod_Art92</bpmn:incoming>
+      <bpmn:outgoing>Flow_ExtendObjectionPeriod_To_GatewayEarlyNoObjection_Art92</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_DidBothBodiesInformNoObjection_Art92"
+                           name="Did Parliament and Council both inform the Commission that they will not object?">
+      <bpmn:incoming>Flow_GatewayExtension_To_GatewayEarlyNoObjection_Art92</bpmn:incoming>
+      <bpmn:incoming>Flow_ExtendObjectionPeriod_To_GatewayEarlyNoObjection_Art92</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayEarlyNoObjection_To_BringActIntoForce_Art92</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayEarlyNoObjection_To_GatewayObjection_Art92</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_HasAnyBodyObjectedWithinPeriod_Art92"
+                           name="Has either Parliament or Council objected within the objection period?">
+      <bpmn:incoming>Flow_GatewayEarlyNoObjection_To_GatewayObjection_Art92</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayObjection_To_EndActBlocked_Art92</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayObjection_To_BringActIntoForce_Art92</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_DelegatedActBlocked_Art92"
+                   name="Delegated act blocked">
+      <bpmn:incoming>Flow_GatewayObjection_To_EndActBlocked_Art92</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:task id="Task_BringDelegatedActIntoForce_Art92"
+               name="Bring delegated act into force">
+      <bpmn:incoming>Flow_GatewayEarlyNoObjection_To_BringActIntoForce_Art92</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayObjection_To_BringActIntoForce_Art92</bpmn:incoming>
+      <bpmn:outgoing>Flow_BringActIntoForce_To_EndActInForce_Art92</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_DelegatedActInForce_Art92"
+                   name="Delegated act in force">
+      <bpmn:incoming>Flow_BringActIntoForce_To_EndActInForce_Art92</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_ConferDelegation_Art92"
+                       sourceRef="StartEvent_HandleDelegatedActPower_Art92"
+                       targetRef="Task_ConferDelegationForIndeterminatePeriod_Art92" />
+    <bpmn:sequenceFlow id="Flow_ConferDelegation_To_GatewayRevocation_Art92"
+                       sourceRef="Task_ConferDelegationForIndeterminatePeriod_Art92"
+                       targetRef="Gateway_HasDelegationBeenRevoked_Art92" />
+    <bpmn:sequenceFlow id="Flow_GatewayRevocation_To_ApplyRevocationDecision_Art92"
+                       name="Yes"
+                       sourceRef="Gateway_HasDelegationBeenRevoked_Art92"
+                       targetRef="Task_ApplyRevocationDecision_Art92" />
+    <bpmn:sequenceFlow id="Flow_GatewayRevocation_To_AdoptDelegatedAct_Art92"
+                       name="No"
+                       sourceRef="Gateway_HasDelegationBeenRevoked_Art92"
+                       targetRef="Task_AdoptDelegatedAct_Art92" />
+    <bpmn:sequenceFlow id="Flow_ApplyRevocationDecision_To_PreserveExistingValidity_Art92"
+                       sourceRef="Task_ApplyRevocationDecision_Art92"
+                       targetRef="Task_PreserveValidityOfActsAlreadyInForce_Art92" />
+    <bpmn:sequenceFlow id="Flow_PreserveExistingValidity_To_EndDelegationRevoked_Art92"
+                       sourceRef="Task_PreserveValidityOfActsAlreadyInForce_Art92"
+                       targetRef="EndEvent_DelegationRevoked_Art92" />
+    <bpmn:sequenceFlow id="Flow_AdoptDelegatedAct_To_NotifyParliamentAndCouncil_Art92"
+                       sourceRef="Task_AdoptDelegatedAct_Art92"
+                       targetRef="Task_NotifyParliamentAndCouncil_Art92" />
+    <bpmn:sequenceFlow id="Flow_NotifyParliamentAndCouncil_To_GatewayExtension_Art92"
+                       sourceRef="Task_NotifyParliamentAndCouncil_Art92"
+                       targetRef="Gateway_HasAnExtensionBeenInitiated_Art92" />
+    <bpmn:sequenceFlow id="Flow_GatewayExtension_To_ExtendObjectionPeriod_Art92"
+                       name="Yes"
+                       sourceRef="Gateway_HasAnExtensionBeenInitiated_Art92"
+                       targetRef="Task_ExtendObjectionPeriodByThreeMonths_Art92" />
+    <bpmn:sequenceFlow id="Flow_GatewayExtension_To_GatewayEarlyNoObjection_Art92"
+                       name="No"
+                       sourceRef="Gateway_HasAnExtensionBeenInitiated_Art92"
+                       targetRef="Gateway_DidBothBodiesInformNoObjection_Art92" />
+    <bpmn:sequenceFlow id="Flow_ExtendObjectionPeriod_To_GatewayEarlyNoObjection_Art92"
+                       sourceRef="Task_ExtendObjectionPeriodByThreeMonths_Art92"
+                       targetRef="Gateway_DidBothBodiesInformNoObjection_Art92" />
+    <bpmn:sequenceFlow id="Flow_GatewayEarlyNoObjection_To_BringActIntoForce_Art92"
+                       name="Yes"
+                       sourceRef="Gateway_DidBothBodiesInformNoObjection_Art92"
+                       targetRef="Task_BringDelegatedActIntoForce_Art92" />
+    <bpmn:sequenceFlow id="Flow_GatewayEarlyNoObjection_To_GatewayObjection_Art92"
+                       name="No"
+                       sourceRef="Gateway_DidBothBodiesInformNoObjection_Art92"
+                       targetRef="Gateway_HasAnyBodyObjectedWithinPeriod_Art92" />
+    <bpmn:sequenceFlow id="Flow_GatewayObjection_To_EndActBlocked_Art92"
+                       name="Yes"
+                       sourceRef="Gateway_HasAnyBodyObjectedWithinPeriod_Art92"
+                       targetRef="EndEvent_DelegatedActBlocked_Art92" />
+    <bpmn:sequenceFlow id="Flow_GatewayObjection_To_BringActIntoForce_Art92"
+                       name="No"
+                       sourceRef="Gateway_HasAnyBodyObjectedWithinPeriod_Art92"
+                       targetRef="Task_BringDelegatedActIntoForce_Art92" />
+    <bpmn:sequenceFlow id="Flow_BringActIntoForce_To_EndActInForce_Art92"
+                       sourceRef="Task_BringDelegatedActIntoForce_Art92"
+                       targetRef="EndEvent_DelegatedActInForce_Art92" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art92_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art92_Reviewed"
+                      bpmnElement="Collaboration_Art92_Reviewed">
+      <bpmndi:BPMNShape id="Participant_Commission_Art92_di"
+                        bpmnElement="Participant_Commission_Art92"
+                        isHorizontal="true">
+        <dc:Bounds x="80" y="80" width="2680" height="380" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_EuropeanParliament_Art92_di"
+                        bpmnElement="Participant_EuropeanParliament_Art92"
+                        isHorizontal="true">
+        <dc:Bounds x="80" y="500" width="2680" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Council_Art92_di"
+                        bpmnElement="Participant_Council_Art92"
+                        isHorizontal="true">
+        <dc:Bounds x="80" y="660" width="2680" height="120" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_HandleDelegatedActPower_Art92_di"
+                        bpmnElement="StartEvent_HandleDelegatedActPower_Art92">
+        <dc:Bounds x="120" y="252" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ConferDelegationForIndeterminatePeriod_Art92_di"
+                        bpmnElement="Task_ConferDelegationForIndeterminatePeriod_Art92">
+        <dc:Bounds x="210" y="230" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_HasDelegationBeenRevoked_Art92_di"
+                        bpmnElement="Gateway_HasDelegationBeenRevoked_Art92"
+                        isMarkerVisible="true">
+        <dc:Bounds x="520" y="245" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ApplyRevocationDecision_Art92_di"
+                        bpmnElement="Task_ApplyRevocationDecision_Art92">
+        <dc:Bounds x="680" y="120" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PreserveValidityOfActsAlreadyInForce_Art92_di"
+                        bpmnElement="Task_PreserveValidityOfActsAlreadyInForce_Art92">
+        <dc:Bounds x="960" y="120" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_DelegationRevoked_Art92_di"
+                        bpmnElement="EndEvent_DelegationRevoked_Art92">
+        <dc:Bounds x="1262" y="142" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AdoptDelegatedAct_Art92_di"
+                        bpmnElement="Task_AdoptDelegatedAct_Art92">
+        <dc:Bounds x="680" y="310" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_NotifyParliamentAndCouncil_Art92_di"
+                        bpmnElement="Task_NotifyParliamentAndCouncil_Art92">
+        <dc:Bounds x="960" y="310" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_HasAnExtensionBeenInitiated_Art92_di"
+                        bpmnElement="Gateway_HasAnExtensionBeenInitiated_Art92"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1260" y="325" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ExtendObjectionPeriodByThreeMonths_Art92_di"
+                        bpmnElement="Task_ExtendObjectionPeriodByThreeMonths_Art92">
+        <dc:Bounds x="1410" y="220" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_DidBothBodiesInformNoObjection_Art92_di"
+                        bpmnElement="Gateway_DidBothBodiesInformNoObjection_Art92"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1730" y="325" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_HasAnyBodyObjectedWithinPeriod_Art92_di"
+                        bpmnElement="Gateway_HasAnyBodyObjectedWithinPeriod_Art92"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1930" y="325" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_DelegatedActBlocked_Art92_di"
+                        bpmnElement="EndEvent_DelegatedActBlocked_Art92">
+        <dc:Bounds x="2162" y="342" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_BringDelegatedActIntoForce_Art92_di"
+                        bpmnElement="Task_BringDelegatedActIntoForce_Art92">
+        <dc:Bounds x="2160" y="220" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_DelegatedActInForce_Art92_di"
+                        bpmnElement="EndEvent_DelegatedActInForce_Art92">
+        <dc:Bounds x="2432" y="242" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_ConferDelegation_Art92_di"
+                       bpmnElement="Flow_Start_To_ConferDelegation_Art92">
+        <di:waypoint x="156" y="270" />
+        <di:waypoint x="210" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ConferDelegation_To_GatewayRevocation_Art92_di"
+                       bpmnElement="Flow_ConferDelegation_To_GatewayRevocation_Art92">
+        <di:waypoint x="430" y="270" />
+        <di:waypoint x="520" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRevocation_To_ApplyRevocationDecision_Art92_di"
+                       bpmnElement="Flow_GatewayRevocation_To_ApplyRevocationDecision_Art92">
+        <di:waypoint x="545" y="245" />
+        <di:waypoint x="545" y="160" />
+        <di:waypoint x="680" y="160" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="578" y="176" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayRevocation_To_AdoptDelegatedAct_Art92_di"
+                       bpmnElement="Flow_GatewayRevocation_To_AdoptDelegatedAct_Art92">
+        <di:waypoint x="570" y="270" />
+        <di:waypoint x="680" y="350" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="604" y="292" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ApplyRevocationDecision_To_PreserveExistingValidity_Art92_di"
+                       bpmnElement="Flow_ApplyRevocationDecision_To_PreserveExistingValidity_Art92">
+        <di:waypoint x="860" y="160" />
+        <di:waypoint x="960" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_PreserveExistingValidity_To_EndDelegationRevoked_Art92_di"
+                       bpmnElement="Flow_PreserveExistingValidity_To_EndDelegationRevoked_Art92">
+        <di:waypoint x="1180" y="160" />
+        <di:waypoint x="1262" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AdoptDelegatedAct_To_NotifyParliamentAndCouncil_Art92_di"
+                       bpmnElement="Flow_AdoptDelegatedAct_To_NotifyParliamentAndCouncil_Art92">
+        <di:waypoint x="850" y="350" />
+        <di:waypoint x="960" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_NotifyParliamentAndCouncil_To_GatewayExtension_Art92_di"
+                       bpmnElement="Flow_NotifyParliamentAndCouncil_To_GatewayExtension_Art92">
+        <di:waypoint x="1160" y="350" />
+        <di:waypoint x="1260" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExtension_To_ExtendObjectionPeriod_Art92_di"
+                       bpmnElement="Flow_GatewayExtension_To_ExtendObjectionPeriod_Art92">
+        <di:waypoint x="1285" y="325" />
+        <di:waypoint x="1285" y="260" />
+        <di:waypoint x="1410" y="260" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1316" y="276" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExtension_To_GatewayEarlyNoObjection_Art92_di"
+                       bpmnElement="Flow_GatewayExtension_To_GatewayEarlyNoObjection_Art92">
+        <di:waypoint x="1310" y="350" />
+        <di:waypoint x="1730" y="350" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1508" y="332" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ExtendObjectionPeriod_To_GatewayEarlyNoObjection_Art92_di"
+                       bpmnElement="Flow_ExtendObjectionPeriod_To_GatewayEarlyNoObjection_Art92">
+        <di:waypoint x="1630" y="260" />
+        <di:waypoint x="1755" y="260" />
+        <di:waypoint x="1755" y="325" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayEarlyNoObjection_To_BringActIntoForce_Art92_di"
+                       bpmnElement="Flow_GatewayEarlyNoObjection_To_BringActIntoForce_Art92">
+        <di:waypoint x="1780" y="325" />
+        <di:waypoint x="1780" y="260" />
+        <di:waypoint x="2160" y="260" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1948" y="242" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayEarlyNoObjection_To_GatewayObjection_Art92_di"
+                       bpmnElement="Flow_GatewayEarlyNoObjection_To_GatewayObjection_Art92">
+        <di:waypoint x="1780" y="350" />
+        <di:waypoint x="1930" y="350" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1848" y="332" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayObjection_To_EndActBlocked_Art92_di"
+                       bpmnElement="Flow_GatewayObjection_To_EndActBlocked_Art92">
+        <di:waypoint x="1980" y="360" />
+        <di:waypoint x="2162" y="360" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2058" y="342" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayObjection_To_BringActIntoForce_Art92_di"
+                       bpmnElement="Flow_GatewayObjection_To_BringActIntoForce_Art92">
+        <di:waypoint x="1955" y="325" />
+        <di:waypoint x="1955" y="260" />
+        <di:waypoint x="2160" y="260" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2032" y="242" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_BringActIntoForce_To_EndActInForce_Art92_di"
+                       bpmnElement="Flow_BringActIntoForce_To_EndActInForce_Art92">
+        <di:waypoint x="2350" y="260" />
+        <di:waypoint x="2432" y="260" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_NotifyParliament_Art92_di"
+                       bpmnElement="MessageFlow_NotifyParliament_Art92">
+        <di:waypoint x="1060" y="390" />
+        <di:waypoint x="1060" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_NotifyCouncil_Art92_di"
+                       bpmnElement="MessageFlow_NotifyCouncil_Art92">
+        <di:waypoint x="1120" y="390" />
+        <di:waypoint x="1120" y="660" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

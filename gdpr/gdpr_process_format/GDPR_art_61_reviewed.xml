@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Board_Art61" name="Board" poolType="passive" />
+    <pool id="Participant_RequestedAuthority_Art61" name="Requested Supervisory Authority" poolType="active" processRef="Process_RequestedAuthority_Art61" />
+    <pool id="Participant_RequestingAuthority_Art61" name="Requesting Supervisory Authority" poolType="active" processRef="Process_RequestingAuthority_Art61" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_AdoptProvisionalMeasure_Art61" name="Adopt provisional measure under Article 55(1)" type="task" poolRef="Participant_RequestingAuthority_Art61" />
+    <task id="Task_AssessCompetenceAndLegality_Art61" name="Assess competence and legality" type="task" poolRef="Participant_RequestedAuthority_Art61" />
+    <task id="Task_PrepareMutualAssistanceRequest_Art61" name="Prepare request with purpose and reasons" type="task" poolRef="Participant_RequestingAuthority_Art61" />
+    <task id="Task_ReceiveRefusalWithReasons_Art61" name="Receive refusal with reasons" type="receiveTask" poolRef="Participant_RequestingAuthority_Art61" />
+    <task id="Task_ReceiveResultsOrProgress_Art61" name="Receive results or progress" type="receiveTask" poolRef="Participant_RequestingAuthority_Art61" />
+    <task id="Task_RequestUrgentBoardDecision_Art61" name="Request urgent Board decision under Article 66(2)" type="sendTask" poolRef="Participant_RequestingAuthority_Art61" />
+    <task id="Task_SendMutualAssistanceRequest_Art61" name="Send request in standardized electronic format" type="sendTask" poolRef="Participant_RequestingAuthority_Art61" />
+    <task id="Task_SendRefusalWithReasons_Art61" name="Send refusal with reasons" type="sendTask" poolRef="Participant_RequestedAuthority_Art61" />
+    <task id="Task_SendResultsOrProgress_Art61" name="Send results or progress in standardized format" type="sendTask" poolRef="Participant_RequestedAuthority_Art61" />
+    <task id="Task_TakeAppropriateResponseMeasures_Art61" name="Take response measures without undue delay" type="task" poolRef="Participant_RequestedAuthority_Art61" />
+    <task id="Task_UseInformationForRequestedPurpose_Art61" name="Use information only for requested purpose" type="task" poolRef="Participant_RequestingAuthority_Art61" />
+  </tasks>
+  <events>
+    <event id="EndEvent_MutualAssistanceReceived_Art61" name="Mutual assistance received" type="endEvent" poolRef="Participant_RequestingAuthority_Art61" />
+    <event id="EndEvent_RefusalReceived_Art61" name="Reasoned refusal received" type="endEvent" poolRef="Participant_RequestingAuthority_Art61" />
+    <event id="EndEvent_RequestRefused_Art61" name="Request refused with reasons" type="endEvent" poolRef="Participant_RequestedAuthority_Art61" />
+    <event id="EndEvent_ResponseSent_Art61" name="Results or progress sent" type="endEvent" poolRef="Participant_RequestedAuthority_Art61" />
+    <event id="EndEvent_UrgencyTriggered_Art61" name="Urgency route triggered" type="endEvent" poolRef="Participant_RequestingAuthority_Art61" />
+    <event id="IntermediateCatchEvent_OneMonthElapsed_Art61" name="One month elapsed without information" type="intermediateCatchEvent" poolRef="Participant_RequestingAuthority_Art61" eventDefinition="timer" />
+    <event id="StartEvent_NeedMutualAssistance_Art61" name="Need mutual assistance" type="startEvent" poolRef="Participant_RequestingAuthority_Art61" />
+    <event id="StartEvent_ReceiveMutualAssistanceRequest_Art61" name="Receive mutual-assistance request" type="startEvent" poolRef="Participant_RequestedAuthority_Art61" eventDefinition="message" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_RefusalAllowed_Art61" name="Is refusal allowed under Article 61(4)?" type="exclusiveGateway" poolRef="Participant_RequestedAuthority_Art61" />
+    <gateway id="Gateway_ResponseWindow_Art61" name="What is received within one month?" type="eventBasedGateway" poolRef="Participant_RequestingAuthority_Art61" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AdoptProvisionalMeasure_To_RequestUrgentBoardDecision_Art61" sourceRef="Task_AdoptProvisionalMeasure_Art61" targetRef="Task_RequestUrgentBoardDecision_Art61" />
+    <sequenceFlow id="Flow_AssessRequest_To_GatewayRefusalAllowed_Art61" sourceRef="Task_AssessCompetenceAndLegality_Art61" targetRef="Gateway_RefusalAllowed_Art61" />
+    <sequenceFlow id="Flow_GatewayRefusalAllowed_To_SendRefusalWithReasons_Art61" name="Yes" sourceRef="Gateway_RefusalAllowed_Art61" targetRef="Task_SendRefusalWithReasons_Art61" />
+    <sequenceFlow id="Flow_GatewayRefusalAllowed_To_TakeResponseMeasures_Art61" name="No" sourceRef="Gateway_RefusalAllowed_Art61" targetRef="Task_TakeAppropriateResponseMeasures_Art61" />
+    <sequenceFlow id="Flow_GatewayResponseWindow_To_OneMonthElapsed_Art61" sourceRef="Gateway_ResponseWindow_Art61" targetRef="IntermediateCatchEvent_OneMonthElapsed_Art61" />
+    <sequenceFlow id="Flow_GatewayResponseWindow_To_ReceiveRefusalWithReasons_Art61" sourceRef="Gateway_ResponseWindow_Art61" targetRef="Task_ReceiveRefusalWithReasons_Art61" />
+    <sequenceFlow id="Flow_GatewayResponseWindow_To_ReceiveResultsOrProgress_Art61" sourceRef="Gateway_ResponseWindow_Art61" targetRef="Task_ReceiveResultsOrProgress_Art61" />
+    <sequenceFlow id="Flow_OneMonthElapsed_To_AdoptProvisionalMeasure_Art61" sourceRef="IntermediateCatchEvent_OneMonthElapsed_Art61" targetRef="Task_AdoptProvisionalMeasure_Art61" />
+    <sequenceFlow id="Flow_PrepareRequest_To_SendRequest_Art61" sourceRef="Task_PrepareMutualAssistanceRequest_Art61" targetRef="Task_SendMutualAssistanceRequest_Art61" />
+    <sequenceFlow id="Flow_ReceiveRefusalWithReasons_To_EndRefusalReceived_Art61" sourceRef="Task_ReceiveRefusalWithReasons_Art61" targetRef="EndEvent_RefusalReceived_Art61" />
+    <sequenceFlow id="Flow_ReceiveResultsOrProgress_To_UseInformationForPurpose_Art61" sourceRef="Task_ReceiveResultsOrProgress_Art61" targetRef="Task_UseInformationForRequestedPurpose_Art61" />
+    <sequenceFlow id="Flow_RequestUrgentBoardDecision_To_EndUrgencyTriggered_Art61" sourceRef="Task_RequestUrgentBoardDecision_Art61" targetRef="EndEvent_UrgencyTriggered_Art61" />
+    <sequenceFlow id="Flow_SendRefusalWithReasons_To_EndRequestRefused_Art61" sourceRef="Task_SendRefusalWithReasons_Art61" targetRef="EndEvent_RequestRefused_Art61" />
+    <sequenceFlow id="Flow_SendRequest_To_GatewayResponseWindow_Art61" sourceRef="Task_SendMutualAssistanceRequest_Art61" targetRef="Gateway_ResponseWindow_Art61" />
+    <sequenceFlow id="Flow_SendResultsOrProgress_To_EndResponseSent_Art61" sourceRef="Task_SendResultsOrProgress_Art61" targetRef="EndEvent_ResponseSent_Art61" />
+    <sequenceFlow id="Flow_StartNeedAssistance_To_PrepareRequest_Art61" sourceRef="StartEvent_NeedMutualAssistance_Art61" targetRef="Task_PrepareMutualAssistanceRequest_Art61" />
+    <sequenceFlow id="Flow_StartReceiveRequest_To_AssessRequest_Art61" sourceRef="StartEvent_ReceiveMutualAssistanceRequest_Art61" targetRef="Task_AssessCompetenceAndLegality_Art61" />
+    <sequenceFlow id="Flow_TakeResponseMeasures_To_SendResultsOrProgress_Art61" sourceRef="Task_TakeAppropriateResponseMeasures_Art61" targetRef="Task_SendResultsOrProgress_Art61" />
+    <sequenceFlow id="Flow_UseInformationForPurpose_To_EndAssistanceReceived_Art61" sourceRef="Task_UseInformationForRequestedPurpose_Art61" targetRef="EndEvent_MutualAssistanceReceived_Art61" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_RequestUrgentBoardDecision_Art61" sourceRef="Task_RequestUrgentBoardDecision_Art61" targetRef="Participant_Board_Art61" />
+    <messageFlow id="MessageFlow_SendMutualAssistanceRequest_Art61" sourceRef="Task_SendMutualAssistanceRequest_Art61" targetRef="StartEvent_ReceiveMutualAssistanceRequest_Art61" />
+    <messageFlow id="MessageFlow_SendRefusalWithReasons_Art61" sourceRef="Task_SendRefusalWithReasons_Art61" targetRef="Task_ReceiveRefusalWithReasons_Art61" />
+    <messageFlow id="MessageFlow_SendResultsOrProgress_Art61" sourceRef="Task_SendResultsOrProgress_Art61" targetRef="Task_ReceiveResultsOrProgress_Art61" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art72_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:process id="Process_Board_Art72"
+                name="Adopt Article 72 Board decisions"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 72 based on the real English legal text from
+      gdpr_articles/article_72.txt. This compact process captures the Board's default
+      decision-making rule by simple majority unless the Regulation provides otherwise, together
+      with the separate two-thirds-majority path for adopting rules of procedure and organising
+      operational arrangements.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_HandleBoardMatter_Art72"
+                     name="Handle Board matter">
+      <bpmn:outgoing>Flow_StartHandleBoardMatter_To_GatewayMatterType_Art72</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_WhatBoardMatterIsHandled_Art72"
+                           name="What Board matter is handled?">
+      <bpmn:incoming>Flow_StartHandleBoardMatter_To_GatewayMatterType_Art72</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayMatterType_To_GatewaySpecificRule_Art72</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayMatterType_To_AdoptRulesOfProcedure_Art72</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_DoesTheRegulationProvideOtherwise_Art72"
+                           name="Does the Regulation provide another majority rule?">
+      <bpmn:incoming>Flow_GatewayMatterType_To_GatewaySpecificRule_Art72</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySpecificRule_To_AdoptBySimpleMajority_Art72</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySpecificRule_To_ApplySpecificMajorityRule_Art72</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_AdoptBySimpleMajority_Art72"
+               name="Adopt decision by simple majority">
+      <bpmn:incoming>Flow_GatewaySpecificRule_To_AdoptBySimpleMajority_Art72</bpmn:incoming>
+      <bpmn:outgoing>Flow_AdoptBySimpleMajority_To_EndDecisionTaken_Art72</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ApplySpecificMajorityRule_Art72"
+               name="Apply specific majority rule">
+      <bpmn:incoming>Flow_GatewaySpecificRule_To_ApplySpecificMajorityRule_Art72</bpmn:incoming>
+      <bpmn:outgoing>Flow_ApplySpecificMajorityRule_To_EndDecisionTaken_Art72</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_AdoptRulesOfProcedure_Art72"
+               name="Adopt rules of procedure by two-thirds">
+      <bpmn:incoming>Flow_GatewayMatterType_To_AdoptRulesOfProcedure_Art72</bpmn:incoming>
+      <bpmn:outgoing>Flow_AdoptRulesOfProcedure_To_OrganiseOperationalArrangements_Art72</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_OrganiseOperationalArrangements_Art72"
+               name="Organise operational arrangements">
+      <bpmn:incoming>Flow_AdoptRulesOfProcedure_To_OrganiseOperationalArrangements_Art72</bpmn:incoming>
+      <bpmn:outgoing>Flow_OrganiseOperationalArrangements_To_EndDecisionTaken_Art72</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_BoardDecisionTaken_Art72"
+                   name="Board matter decided">
+      <bpmn:incoming>Flow_AdoptBySimpleMajority_To_EndDecisionTaken_Art72</bpmn:incoming>
+      <bpmn:incoming>Flow_ApplySpecificMajorityRule_To_EndDecisionTaken_Art72</bpmn:incoming>
+      <bpmn:incoming>Flow_OrganiseOperationalArrangements_To_EndDecisionTaken_Art72</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartHandleBoardMatter_To_GatewayMatterType_Art72"
+                       sourceRef="StartEvent_HandleBoardMatter_Art72"
+                       targetRef="Gateway_WhatBoardMatterIsHandled_Art72" />
+    <bpmn:sequenceFlow id="Flow_GatewayMatterType_To_GatewaySpecificRule_Art72"
+                       name="General decision"
+                       sourceRef="Gateway_WhatBoardMatterIsHandled_Art72"
+                       targetRef="Gateway_DoesTheRegulationProvideOtherwise_Art72" />
+    <bpmn:sequenceFlow id="Flow_GatewayMatterType_To_AdoptRulesOfProcedure_Art72"
+                       name="Rules or arrangements"
+                       sourceRef="Gateway_WhatBoardMatterIsHandled_Art72"
+                       targetRef="Task_AdoptRulesOfProcedure_Art72" />
+    <bpmn:sequenceFlow id="Flow_GatewaySpecificRule_To_AdoptBySimpleMajority_Art72"
+                       name="No"
+                       sourceRef="Gateway_DoesTheRegulationProvideOtherwise_Art72"
+                       targetRef="Task_AdoptBySimpleMajority_Art72" />
+    <bpmn:sequenceFlow id="Flow_GatewaySpecificRule_To_ApplySpecificMajorityRule_Art72"
+                       name="Yes"
+                       sourceRef="Gateway_DoesTheRegulationProvideOtherwise_Art72"
+                       targetRef="Task_ApplySpecificMajorityRule_Art72" />
+    <bpmn:sequenceFlow id="Flow_AdoptBySimpleMajority_To_EndDecisionTaken_Art72"
+                       sourceRef="Task_AdoptBySimpleMajority_Art72"
+                       targetRef="EndEvent_BoardDecisionTaken_Art72" />
+    <bpmn:sequenceFlow id="Flow_ApplySpecificMajorityRule_To_EndDecisionTaken_Art72"
+                       sourceRef="Task_ApplySpecificMajorityRule_Art72"
+                       targetRef="EndEvent_BoardDecisionTaken_Art72" />
+    <bpmn:sequenceFlow id="Flow_AdoptRulesOfProcedure_To_OrganiseOperationalArrangements_Art72"
+                       sourceRef="Task_AdoptRulesOfProcedure_Art72"
+                       targetRef="Task_OrganiseOperationalArrangements_Art72" />
+    <bpmn:sequenceFlow id="Flow_OrganiseOperationalArrangements_To_EndDecisionTaken_Art72"
+                       sourceRef="Task_OrganiseOperationalArrangements_Art72"
+                       targetRef="EndEvent_BoardDecisionTaken_Art72" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art72_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art72_Reviewed"
+                      bpmnElement="Process_Board_Art72">
+      <bpmndi:BPMNShape id="StartEvent_HandleBoardMatter_Art72_di"
+                        bpmnElement="StartEvent_HandleBoardMatter_Art72">
+        <dc:Bounds x="120" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_WhatBoardMatterIsHandled_Art72_di"
+                        bpmnElement="Gateway_WhatBoardMatterIsHandled_Art72"
+                        isMarkerVisible="true">
+        <dc:Bounds x="240" y="185" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_DoesTheRegulationProvideOtherwise_Art72_di"
+                        bpmnElement="Gateway_DoesTheRegulationProvideOtherwise_Art72"
+                        isMarkerVisible="true">
+        <dc:Bounds x="440" y="105" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AdoptBySimpleMajority_Art72_di"
+                        bpmnElement="Task_AdoptBySimpleMajority_Art72">
+        <dc:Bounds x="620" y="40" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ApplySpecificMajorityRule_Art72_di"
+                        bpmnElement="Task_ApplySpecificMajorityRule_Art72">
+        <dc:Bounds x="620" y="150" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AdoptRulesOfProcedure_Art72_di"
+                        bpmnElement="Task_AdoptRulesOfProcedure_Art72">
+        <dc:Bounds x="440" y="290" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_OrganiseOperationalArrangements_Art72_di"
+                        bpmnElement="Task_OrganiseOperationalArrangements_Art72">
+        <dc:Bounds x="760" y="290" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_BoardDecisionTaken_Art72_di"
+                        bpmnElement="EndEvent_BoardDecisionTaken_Art72">
+        <dc:Bounds x="1080" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_StartHandleBoardMatter_To_GatewayMatterType_Art72_di"
+                       bpmnElement="Flow_StartHandleBoardMatter_To_GatewayMatterType_Art72">
+        <di:waypoint x="156" y="210" />
+        <di:waypoint x="240" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayMatterType_To_GatewaySpecificRule_Art72_di"
+                       bpmnElement="Flow_GatewayMatterType_To_GatewaySpecificRule_Art72">
+        <di:waypoint x="265" y="185" />
+        <di:waypoint x="265" y="130" />
+        <di:waypoint x="440" y="130" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="290" y="112" width="95" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayMatterType_To_AdoptRulesOfProcedure_Art72_di"
+                       bpmnElement="Flow_GatewayMatterType_To_AdoptRulesOfProcedure_Art72">
+        <di:waypoint x="265" y="235" />
+        <di:waypoint x="265" y="330" />
+        <di:waypoint x="440" y="330" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="290" y="302" width="109" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySpecificRule_To_AdoptBySimpleMajority_Art72_di"
+                       bpmnElement="Flow_GatewaySpecificRule_To_AdoptBySimpleMajority_Art72">
+        <di:waypoint x="490" y="130" />
+        <di:waypoint x="620" y="80" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="525" y="94" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySpecificRule_To_ApplySpecificMajorityRule_Art72_di"
+                       bpmnElement="Flow_GatewaySpecificRule_To_ApplySpecificMajorityRule_Art72">
+        <di:waypoint x="490" y="130" />
+        <di:waypoint x="620" y="190" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="525" y="148" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AdoptBySimpleMajority_To_EndDecisionTaken_Art72_di"
+                       bpmnElement="Flow_AdoptBySimpleMajority_To_EndDecisionTaken_Art72">
+        <di:waypoint x="810" y="80" />
+        <di:waypoint x="1098" y="80" />
+        <di:waypoint x="1098" y="192" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ApplySpecificMajorityRule_To_EndDecisionTaken_Art72_di"
+                       bpmnElement="Flow_ApplySpecificMajorityRule_To_EndDecisionTaken_Art72">
+        <di:waypoint x="800" y="190" />
+        <di:waypoint x="1080" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AdoptRulesOfProcedure_To_OrganiseOperationalArrangements_Art72_di"
+                       bpmnElement="Flow_AdoptRulesOfProcedure_To_OrganiseOperationalArrangements_Art72">
+        <di:waypoint x="660" y="330" />
+        <di:waypoint x="760" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_OrganiseOperationalArrangements_To_EndDecisionTaken_Art72_di"
+                       bpmnElement="Flow_OrganiseOperationalArrangements_To_EndDecisionTaken_Art72">
+        <di:waypoint x="960" y="330" />
+        <di:waypoint x="1098" y="330" />
+        <di:waypoint x="1098" y="228" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

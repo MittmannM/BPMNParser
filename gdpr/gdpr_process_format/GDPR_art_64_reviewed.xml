@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Board_Art64" name="Board" poolType="active" processRef="Process_Board_Art64" />
+    <pool id="Participant_Commission_Art64" name="Commission" poolType="passive" />
+    <pool id="Participant_CompetentSupervisoryAuthority_Art64" name="Competent Supervisory Authority" poolType="active" processRef="Process_CompetentSupervisoryAuthority_Art64" />
+    <pool id="Participant_OtherAuthorityOrChair_Art64" name="Other Supervisory Authority or Chair" poolType="passive" />
+    <pool id="Participant_Public_Art64" name="Public" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_AdoptOpinion_Art64" name="Adopt opinion within eight weeks" type="task" poolRef="Participant_Board_Art64" />
+    <task id="Task_CirculateRelevantInformation_Art64" name="Circulate relevant information" type="task" poolRef="Participant_Board_Art64" />
+    <task id="Task_CollectMemberPositions_Art64" name="Collect member positions" type="task" poolRef="Participant_Board_Art64" />
+    <task id="Task_ExtendOpinionPeriod_Art64" name="Extend opinion period by six weeks" type="task" poolRef="Participant_Board_Art64" />
+    <task id="Task_MakeOpinionPublic_Art64" name="Make opinion public" type="sendTask" poolRef="Participant_Board_Art64" />
+    <task id="Task_PrepareDraftDecision_Art64" name="Prepare draft decision" type="task" poolRef="Participant_CompetentSupervisoryAuthority_Art64" />
+    <task id="Task_ReceiveBoardOpinion_Art64" name="Receive Board opinion" type="receiveTask" poolRef="Participant_CompetentSupervisoryAuthority_Art64" />
+    <task id="Task_SendAmendedDraft_Art64" name="Send amended draft within two weeks" type="sendTask" poolRef="Participant_CompetentSupervisoryAuthority_Art64" />
+    <task id="Task_SendDraftDecisionToBoard_Art64" name="Send draft decision to Board" type="sendTask" poolRef="Participant_CompetentSupervisoryAuthority_Art64" />
+    <task id="Task_SendMaintainedDraft_Art64" name="Send maintained draft within two weeks" type="sendTask" poolRef="Participant_CompetentSupervisoryAuthority_Art64" />
+    <task id="Task_SendNonFollowNotice_Art64" name="Send non-follow notice with grounds" type="sendTask" poolRef="Participant_CompetentSupervisoryAuthority_Art64" />
+    <task id="Task_SendOpinionAndInformCommission_Art64" name="Send opinion and inform Commission" type="sendTask" poolRef="Participant_Board_Art64" />
+    <task id="Task_TakeUtmostAccount_Art64" name="Take utmost account of opinion" type="task" poolRef="Participant_CompetentSupervisoryAuthority_Art64" />
+    <task id="Task_UseExistingOpinion_Art64" name="Use existing opinion" type="task" poolRef="Participant_Board_Art64" />
+    <task id="Task_WaitWithoutAdoptingDraft_Art64" name="Withhold adoption during opinion period" type="task" poolRef="Participant_CompetentSupervisoryAuthority_Art64" />
+  </tasks>
+  <events>
+    <event id="EndEvent_Article65Applies_Art64" name="Article 65 applies" type="endEvent" poolRef="Participant_CompetentSupervisoryAuthority_Art64" />
+    <event id="EndEvent_DraftAmended_Art64" name="Amended draft sent" type="endEvent" poolRef="Participant_CompetentSupervisoryAuthority_Art64" />
+    <event id="EndEvent_DraftMaintained_Art64" name="Maintained draft sent" type="endEvent" poolRef="Participant_CompetentSupervisoryAuthority_Art64" />
+    <event id="EndEvent_OpinionHandled_Art64" name="Opinion handled" type="endEvent" poolRef="Participant_Board_Art64" />
+    <event id="StartEvent_IntendMeasureUnderArticle64_Art64" name="Intend Article 64 measure" type="startEvent" poolRef="Participant_CompetentSupervisoryAuthority_Art64" />
+    <event id="StartEvent_ReceiveDraftDecision_Art64" name="Receive draft decision" type="startEvent" poolRef="Participant_Board_Art64" eventDefinition="message" />
+    <event id="StartEvent_ReceiveExaminationRequest_Art64" name="Receive examination request" type="startEvent" poolRef="Participant_Board_Art64" eventDefinition="message" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_HasBoardAlreadyIssuedOpinion_Art64" name="Has the Board already issued an opinion?" type="exclusiveGateway" poolRef="Participant_Board_Art64" />
+    <gateway id="Gateway_IsSubjectComplex_Art64" name="Is the subject matter complex?" type="exclusiveGateway" poolRef="Participant_Board_Art64" />
+    <gateway id="Gateway_MergeOpinionTiming_Art64" type="exclusiveGateway" poolRef="Participant_Board_Art64" />
+    <gateway id="Gateway_MergeSubmission_Art64" type="exclusiveGateway" poolRef="Participant_Board_Art64" />
+    <gateway id="Gateway_WillAuthorityAmendDraft_Art64" name="Will the authority amend the draft?" type="exclusiveGateway" poolRef="Participant_CompetentSupervisoryAuthority_Art64" />
+    <gateway id="Gateway_WillAuthorityFollowOpinion_Art64" name="Will the authority follow the opinion?" type="exclusiveGateway" poolRef="Participant_CompetentSupervisoryAuthority_Art64" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AdoptOpinion_To_SendOpinionAndInformCommission_Art64" sourceRef="Task_AdoptOpinion_Art64" targetRef="Task_SendOpinionAndInformCommission_Art64" />
+    <sequenceFlow id="Flow_CirculateInformation_To_GatewayPriorOpinion_Art64" sourceRef="Task_CirculateRelevantInformation_Art64" targetRef="Gateway_HasBoardAlreadyIssuedOpinion_Art64" />
+    <sequenceFlow id="Flow_CollectMemberPositions_To_AdoptOpinion_Art64" sourceRef="Task_CollectMemberPositions_Art64" targetRef="Task_AdoptOpinion_Art64" />
+    <sequenceFlow id="Flow_ExtendOpinionPeriod_To_GatewayMergeOpinionTiming_Art64" sourceRef="Task_ExtendOpinionPeriod_Art64" targetRef="Gateway_MergeOpinionTiming_Art64" />
+    <sequenceFlow id="Flow_GatewayAmendDraft_To_SendAmendedDraft_Art64" name="Yes" sourceRef="Gateway_WillAuthorityAmendDraft_Art64" targetRef="Task_SendAmendedDraft_Art64" />
+    <sequenceFlow id="Flow_GatewayAmendDraft_To_SendMaintainedDraft_Art64" name="No" sourceRef="Gateway_WillAuthorityAmendDraft_Art64" targetRef="Task_SendMaintainedDraft_Art64" />
+    <sequenceFlow id="Flow_GatewayComplexSubject_To_ExtendOpinionPeriod_Art64" name="Yes" sourceRef="Gateway_IsSubjectComplex_Art64" targetRef="Task_ExtendOpinionPeriod_Art64" />
+    <sequenceFlow id="Flow_GatewayComplexSubject_To_GatewayMergeOpinionTiming_Art64" name="No" sourceRef="Gateway_IsSubjectComplex_Art64" targetRef="Gateway_MergeOpinionTiming_Art64" />
+    <sequenceFlow id="Flow_GatewayFollowOpinion_To_GatewayAmendDraft_Art64" name="Yes" sourceRef="Gateway_WillAuthorityFollowOpinion_Art64" targetRef="Gateway_WillAuthorityAmendDraft_Art64" />
+    <sequenceFlow id="Flow_GatewayFollowOpinion_To_SendNonFollowNotice_Art64" name="No" sourceRef="Gateway_WillAuthorityFollowOpinion_Art64" targetRef="Task_SendNonFollowNotice_Art64" />
+    <sequenceFlow id="Flow_GatewayMergeOpinionTiming_To_CollectMemberPositions_Art64" sourceRef="Gateway_MergeOpinionTiming_Art64" targetRef="Task_CollectMemberPositions_Art64" />
+    <sequenceFlow id="Flow_GatewayMergeSubmission_To_CirculateRelevantInformation_Art64" sourceRef="Gateway_MergeSubmission_Art64" targetRef="Task_CirculateRelevantInformation_Art64" />
+    <sequenceFlow id="Flow_GatewayPriorOpinion_To_GatewayComplexSubject_Art64" name="No" sourceRef="Gateway_HasBoardAlreadyIssuedOpinion_Art64" targetRef="Gateway_IsSubjectComplex_Art64" />
+    <sequenceFlow id="Flow_GatewayPriorOpinion_To_UseExistingOpinion_Art64" name="Yes" sourceRef="Gateway_HasBoardAlreadyIssuedOpinion_Art64" targetRef="Task_UseExistingOpinion_Art64" />
+    <sequenceFlow id="Flow_MakeOpinionPublic_To_EndOpinionHandled_Art64" sourceRef="Task_MakeOpinionPublic_Art64" targetRef="EndEvent_OpinionHandled_Art64" />
+    <sequenceFlow id="Flow_PrepareDraftDecision_To_SendDraftDecision_Art64" sourceRef="Task_PrepareDraftDecision_Art64" targetRef="Task_SendDraftDecisionToBoard_Art64" />
+    <sequenceFlow id="Flow_ReceiveBoardOpinion_To_TakeUtmostAccount_Art64" sourceRef="Task_ReceiveBoardOpinion_Art64" targetRef="Task_TakeUtmostAccount_Art64" />
+    <sequenceFlow id="Flow_SendAmendedDraft_To_EndDraftAmended_Art64" sourceRef="Task_SendAmendedDraft_Art64" targetRef="EndEvent_DraftAmended_Art64" />
+    <sequenceFlow id="Flow_SendDraftDecision_To_WaitForOpinion_Art64" sourceRef="Task_SendDraftDecisionToBoard_Art64" targetRef="Task_WaitWithoutAdoptingDraft_Art64" />
+    <sequenceFlow id="Flow_SendMaintainedDraft_To_EndDraftMaintained_Art64" sourceRef="Task_SendMaintainedDraft_Art64" targetRef="EndEvent_DraftMaintained_Art64" />
+    <sequenceFlow id="Flow_SendNonFollowNotice_To_EndArticle65Applies_Art64" sourceRef="Task_SendNonFollowNotice_Art64" targetRef="EndEvent_Article65Applies_Art64" />
+    <sequenceFlow id="Flow_SendOpinionAndInformCommission_To_MakeOpinionPublic_Art64" sourceRef="Task_SendOpinionAndInformCommission_Art64" targetRef="Task_MakeOpinionPublic_Art64" />
+    <sequenceFlow id="Flow_StartMeasure_To_PrepareDraftDecision_Art64" sourceRef="StartEvent_IntendMeasureUnderArticle64_Art64" targetRef="Task_PrepareDraftDecision_Art64" />
+    <sequenceFlow id="Flow_StartReceiveDraftDecision_To_GatewayMergeSubmission_Art64" sourceRef="StartEvent_ReceiveDraftDecision_Art64" targetRef="Gateway_MergeSubmission_Art64" />
+    <sequenceFlow id="Flow_StartReceiveExaminationRequest_To_GatewayMergeSubmission_Art64" sourceRef="StartEvent_ReceiveExaminationRequest_Art64" targetRef="Gateway_MergeSubmission_Art64" />
+    <sequenceFlow id="Flow_TakeUtmostAccount_To_GatewayFollowOpinion_Art64" sourceRef="Task_TakeUtmostAccount_Art64" targetRef="Gateway_WillAuthorityFollowOpinion_Art64" />
+    <sequenceFlow id="Flow_UseExistingOpinion_To_SendOpinionAndInformCommission_Art64" sourceRef="Task_UseExistingOpinion_Art64" targetRef="Task_SendOpinionAndInformCommission_Art64" />
+    <sequenceFlow id="Flow_WaitForOpinion_To_ReceiveBoardOpinion_Art64" sourceRef="Task_WaitWithoutAdoptingDraft_Art64" targetRef="Task_ReceiveBoardOpinion_Art64" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_CirculateInfoToCommission_Art64" sourceRef="Task_CirculateRelevantInformation_Art64" targetRef="Participant_Commission_Art64" />
+    <messageFlow id="MessageFlow_CommissionRequestsBoardExamination_Art64" sourceRef="Participant_Commission_Art64" targetRef="StartEvent_ReceiveExaminationRequest_Art64" />
+    <messageFlow id="MessageFlow_MakeOpinionPublic_Art64" sourceRef="Task_MakeOpinionPublic_Art64" targetRef="Participant_Public_Art64" />
+    <messageFlow id="MessageFlow_RequestBoardExamination_Art64" sourceRef="Participant_OtherAuthorityOrChair_Art64" targetRef="StartEvent_ReceiveExaminationRequest_Art64" />
+    <messageFlow id="MessageFlow_SendAmendedDraft_Art64" sourceRef="Task_SendAmendedDraft_Art64" targetRef="Participant_Board_Art64" />
+    <messageFlow id="MessageFlow_SendDraftDecision_Art64" sourceRef="Task_SendDraftDecisionToBoard_Art64" targetRef="StartEvent_ReceiveDraftDecision_Art64" />
+    <messageFlow id="MessageFlow_SendMaintainedDraft_Art64" sourceRef="Task_SendMaintainedDraft_Art64" targetRef="Participant_Board_Art64" />
+    <messageFlow id="MessageFlow_SendNonFollowNotice_Art64" sourceRef="Task_SendNonFollowNotice_Art64" targetRef="Participant_Board_Art64" />
+    <messageFlow id="MessageFlow_SendOpinionToAuthority_Art64" sourceRef="Task_SendOpinionAndInformCommission_Art64" targetRef="Task_ReceiveBoardOpinion_Art64" />
+    <messageFlow id="MessageFlow_SendOpinionToCommission_Art64" sourceRef="Task_SendOpinionAndInformCommission_Art64" targetRef="Participant_Commission_Art64" />
+    <messageFlow id="MessageFlow_SendOpinionToOtherAuthorityOrChair_Art64" sourceRef="Task_SendOpinionAndInformCommission_Art64" targetRef="Participant_OtherAuthorityOrChair_Art64" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

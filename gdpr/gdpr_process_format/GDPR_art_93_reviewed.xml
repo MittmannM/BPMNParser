@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Commission_Art93" name="Commission" poolType="active" processRef="Process_Commission_Art93" />
+    <pool id="Participant_Committee_Art93" name="Committee" poolType="active" processRef="Process_Committee_Art93" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_ApplyArticle5Procedure_Art93" name="Apply Article 5 procedure" type="task" poolRef="Participant_Commission_Art93" />
+    <task id="Task_ApplyArticle8WithArticle5Procedure_Art93" name="Apply Article 8 with Article 5" type="task" poolRef="Participant_Commission_Art93" />
+    <task id="Task_AssistCommission_Art93" name="Assist Commission" type="task" poolRef="Participant_Committee_Art93" />
+    <task id="Task_RequestCommitteeAssistance_Art93" name="Request committee assistance" type="sendTask" poolRef="Participant_Commission_Art93" />
+  </tasks>
+  <events>
+    <event id="EndEvent_CommitteeAssistanceProvided_Art93" name="Committee assistance provided" type="endEvent" poolRef="Participant_Committee_Art93" />
+    <event id="EndEvent_ProcedureApplied_Art93" name="Procedure applied" type="endEvent" poolRef="Participant_Commission_Art93" />
+    <event id="StartEvent_HandleCommitteeProcedure_Art93" name="Handle committee procedure" type="startEvent" poolRef="Participant_Commission_Art93" />
+    <event id="StartEvent_ReceiveCommitteeWork_Art93" name="Receive committee work" type="startEvent" poolRef="Participant_Committee_Art93" eventDefinition="message" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_WhichParagraphIsReferenced_Art93" name="Which paragraph is referenced?" type="exclusiveGateway" poolRef="Participant_Commission_Art93" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_ApplyArticle5_To_EndProcedureApplied_Art93" sourceRef="Task_ApplyArticle5Procedure_Art93" targetRef="EndEvent_ProcedureApplied_Art93" />
+    <sequenceFlow id="Flow_ApplyArticle8And5_To_EndProcedureApplied_Art93" sourceRef="Task_ApplyArticle8WithArticle5Procedure_Art93" targetRef="EndEvent_ProcedureApplied_Art93" />
+    <sequenceFlow id="Flow_AssistCommission_To_EndCommitteeAssistance_Art93" sourceRef="Task_AssistCommission_Art93" targetRef="EndEvent_CommitteeAssistanceProvided_Art93" />
+    <sequenceFlow id="Flow_GatewayReference_To_ApplyArticle5_Art93" name="Paragraph 2" sourceRef="Gateway_WhichParagraphIsReferenced_Art93" targetRef="Task_ApplyArticle5Procedure_Art93" />
+    <sequenceFlow id="Flow_GatewayReference_To_ApplyArticle8And5_Art93" name="Paragraph 3" sourceRef="Gateway_WhichParagraphIsReferenced_Art93" targetRef="Task_ApplyArticle8WithArticle5Procedure_Art93" />
+    <sequenceFlow id="Flow_RequestCommitteeAssistance_To_GatewayReference_Art93" sourceRef="Task_RequestCommitteeAssistance_Art93" targetRef="Gateway_WhichParagraphIsReferenced_Art93" />
+    <sequenceFlow id="Flow_StartCommittee_To_AssistCommission_Art93" sourceRef="StartEvent_ReceiveCommitteeWork_Art93" targetRef="Task_AssistCommission_Art93" />
+    <sequenceFlow id="Flow_Start_To_RequestCommitteeAssistance_Art93" sourceRef="StartEvent_HandleCommitteeProcedure_Art93" targetRef="Task_RequestCommitteeAssistance_Art93" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_AssistCommission_Art93" sourceRef="Task_AssistCommission_Art93" targetRef="StartEvent_ReceiveCommitteeWork_Art93" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

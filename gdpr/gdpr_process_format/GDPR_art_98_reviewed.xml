@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools />
+  <lanes />
+  <tasks>
+    <task id="Task_EnsureUniformAndConsistentProtection_Art98" name="Ensure uniform and consistent protection" type="task" poolRef="Process_Art98" />
+    <task id="Task_PrepareLegislativeProposals_Art98" name="Prepare legislative proposals" type="task" poolRef="Process_Art98" />
+    <task id="Task_TargetUnionActsOnDataProtection_Art98" name="Target Union acts on data protection" type="task" poolRef="Process_Art98" />
+  </tasks>
+  <events>
+    <event id="EndEvent_NoProposalSubmitted_Art98" name="No proposal submitted" type="endEvent" poolRef="Process_Art98" />
+    <event id="EndEvent_ProposalSubmitted_Art98" name="Proposal submitted" type="endEvent" poolRef="Process_Art98" />
+    <event id="StartEvent_AssessNeedForLegislativeProposals_Art98" name="Assess need for legislative proposals" type="startEvent" poolRef="Process_Art98" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_IsSubmissionAppropriate_Art98" name="Is it appropriate to submit legislative proposals?" type="exclusiveGateway" poolRef="Process_Art98" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_EnsureUniformProtection_To_EndProposalSubmitted_Art98" sourceRef="Task_EnsureUniformAndConsistentProtection_Art98" targetRef="EndEvent_ProposalSubmitted_Art98" />
+    <sequenceFlow id="Flow_GatewayAppropriateness_To_EndNoProposalSubmitted_Art98" name="No" sourceRef="Gateway_IsSubmissionAppropriate_Art98" targetRef="EndEvent_NoProposalSubmitted_Art98" />
+    <sequenceFlow id="Flow_GatewayAppropriateness_To_PrepareLegislativeProposals_Art98" name="Yes" sourceRef="Gateway_IsSubmissionAppropriate_Art98" targetRef="Task_PrepareLegislativeProposals_Art98" />
+    <sequenceFlow id="Flow_PrepareLegislativeProposals_To_TargetUnionActs_Art98" sourceRef="Task_PrepareLegislativeProposals_Art98" targetRef="Task_TargetUnionActsOnDataProtection_Art98" />
+    <sequenceFlow id="Flow_Start_To_GatewayAppropriateness_Art98" sourceRef="StartEvent_AssessNeedForLegislativeProposals_Art98" targetRef="Gateway_IsSubmissionAppropriate_Art98" />
+    <sequenceFlow id="Flow_TargetUnionActs_To_EnsureUniformProtection_Art98" sourceRef="Task_TargetUnionActsOnDataProtection_Art98" targetRef="Task_EnsureUniformAndConsistentProtection_Art98" />
+  </sequenceFlows>
+  <messageFlows />
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools />
+  <lanes />
+  <tasks>
+    <task id="Task_AppointMember_Art53" name="Appoint supervisory authority member" type="task" poolRef="Process_MemberLifecycle_Art53" />
+    <task id="Task_AssessQualifications_Art53" name="Assess qualifications, experience, and skills" type="task" poolRef="Process_MemberLifecycle_Art53" />
+    <task id="Task_DefineTransparentProcedure_Art53" name="Define transparent appointment procedure" type="task" poolRef="Process_MemberLifecycle_Art53" />
+    <task id="Task_DismissMember_Art53" name="Dismiss member" type="task" poolRef="Process_MemberLifecycle_Art53" />
+    <task id="Task_ServeInOffice_Art53" name="Serve in office" type="task" poolRef="Process_MemberLifecycle_Art53" />
+    <task id="Task_UseGovernmentProcedure_Art53" name="Use government appointment route" type="task" poolRef="Process_MemberLifecycle_Art53" />
+    <task id="Task_UseHeadOfStateProcedure_Art53" name="Use head-of-state appointment route" type="task" poolRef="Process_MemberLifecycle_Art53" />
+    <task id="Task_UseIndependentBodyProcedure_Art53" name="Use independent-body appointment route" type="task" poolRef="Process_MemberLifecycle_Art53" />
+    <task id="Task_UseParliamentProcedure_Art53" name="Use parliament appointment route" type="task" poolRef="Process_MemberLifecycle_Art53" />
+  </tasks>
+  <events>
+    <event id="EndEvent_CompulsoryRetirement_Art53" name="Duties ended by compulsory retirement" type="endEvent" poolRef="Process_MemberLifecycle_Art53" />
+    <event id="EndEvent_Dismissal_Art53" name="Member dismissed" type="endEvent" poolRef="Process_MemberLifecycle_Art53" />
+    <event id="EndEvent_Resignation_Art53" name="Duties ended by resignation" type="endEvent" poolRef="Process_MemberLifecycle_Art53" />
+    <event id="EndEvent_TermExpired_Art53" name="Duties ended by expiry of term" type="endEvent" poolRef="Process_MemberLifecycle_Art53" />
+    <event id="StartEvent_StartAppointment_Art53" name="Start member appointment" type="startEvent" poolRef="Process_MemberLifecycle_Art53" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_AppointingBody_Art53" name="Which appointing body is provided by Member State law?" type="exclusiveGateway" poolRef="Process_MemberLifecycle_Art53" />
+    <gateway id="Gateway_AppointmentJoin_Art53" type="exclusiveGateway" poolRef="Process_MemberLifecycle_Art53" />
+    <gateway id="Gateway_DismissalGrounds_Art53" name="Is there serious misconduct or loss of required conditions?" type="exclusiveGateway" poolRef="Process_MemberLifecycle_Art53" />
+    <gateway id="Gateway_ServiceOutcome_Art53" name="How does the member's service end?" type="exclusiveGateway" poolRef="Process_MemberLifecycle_Art53" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AppointMember_To_ServeOffice_Art53" sourceRef="Task_AppointMember_Art53" targetRef="Task_ServeInOffice_Art53" />
+    <sequenceFlow id="Flow_AssessQualifications_To_AppointMember_Art53" sourceRef="Task_AssessQualifications_Art53" targetRef="Task_AppointMember_Art53" />
+    <sequenceFlow id="Flow_DefineProcedure_To_GatewayAppointingBody_Art53" sourceRef="Task_DefineTransparentProcedure_Art53" targetRef="Gateway_AppointingBody_Art53" />
+    <sequenceFlow id="Flow_DismissMember_To_EndDismissal_Art53" sourceRef="Task_DismissMember_Art53" targetRef="EndEvent_Dismissal_Art53" />
+    <sequenceFlow id="Flow_GatewayAppointingBody_To_GovernmentRoute_Art53" name="Government" sourceRef="Gateway_AppointingBody_Art53" targetRef="Task_UseGovernmentProcedure_Art53" />
+    <sequenceFlow id="Flow_GatewayAppointingBody_To_HeadOfStateRoute_Art53" name="Head of State" sourceRef="Gateway_AppointingBody_Art53" targetRef="Task_UseHeadOfStateProcedure_Art53" />
+    <sequenceFlow id="Flow_GatewayAppointingBody_To_IndependentBodyRoute_Art53" name="Independent body" sourceRef="Gateway_AppointingBody_Art53" targetRef="Task_UseIndependentBodyProcedure_Art53" />
+    <sequenceFlow id="Flow_GatewayAppointingBody_To_ParliamentRoute_Art53" name="Parliament" sourceRef="Gateway_AppointingBody_Art53" targetRef="Task_UseParliamentProcedure_Art53" />
+    <sequenceFlow id="Flow_GatewayAppointmentJoin_To_AssessQualifications_Art53" sourceRef="Gateway_AppointmentJoin_Art53" targetRef="Task_AssessQualifications_Art53" />
+    <sequenceFlow id="Flow_GatewayDismissalGrounds_To_DismissMember_Art53" name="Yes" sourceRef="Gateway_DismissalGrounds_Art53" targetRef="Task_DismissMember_Art53" />
+    <sequenceFlow id="Flow_GatewayDismissalGrounds_To_ServeOffice_Art53" name="No" sourceRef="Gateway_DismissalGrounds_Art53" targetRef="Task_ServeInOffice_Art53" />
+    <sequenceFlow id="Flow_GatewayServiceOutcome_To_EndExpiry_Art53" name="Expiry of term" sourceRef="Gateway_ServiceOutcome_Art53" targetRef="EndEvent_TermExpired_Art53" />
+    <sequenceFlow id="Flow_GatewayServiceOutcome_To_EndResignation_Art53" name="Resignation" sourceRef="Gateway_ServiceOutcome_Art53" targetRef="EndEvent_Resignation_Art53" />
+    <sequenceFlow id="Flow_GatewayServiceOutcome_To_EndRetirement_Art53" name="Compulsory retirement" sourceRef="Gateway_ServiceOutcome_Art53" targetRef="EndEvent_CompulsoryRetirement_Art53" />
+    <sequenceFlow id="Flow_GatewayServiceOutcome_To_GatewayDismissalGrounds_Art53" name="Dismissal considered" sourceRef="Gateway_ServiceOutcome_Art53" targetRef="Gateway_DismissalGrounds_Art53" />
+    <sequenceFlow id="Flow_GovernmentRoute_To_GatewayAppointmentJoin_Art53" sourceRef="Task_UseGovernmentProcedure_Art53" targetRef="Gateway_AppointmentJoin_Art53" />
+    <sequenceFlow id="Flow_HeadOfStateRoute_To_GatewayAppointmentJoin_Art53" sourceRef="Task_UseHeadOfStateProcedure_Art53" targetRef="Gateway_AppointmentJoin_Art53" />
+    <sequenceFlow id="Flow_IndependentBodyRoute_To_GatewayAppointmentJoin_Art53" sourceRef="Task_UseIndependentBodyProcedure_Art53" targetRef="Gateway_AppointmentJoin_Art53" />
+    <sequenceFlow id="Flow_ParliamentRoute_To_GatewayAppointmentJoin_Art53" sourceRef="Task_UseParliamentProcedure_Art53" targetRef="Gateway_AppointmentJoin_Art53" />
+    <sequenceFlow id="Flow_ServeOffice_To_GatewayServiceOutcome_Art53" sourceRef="Task_ServeInOffice_Art53" targetRef="Gateway_ServiceOutcome_Art53" />
+    <sequenceFlow id="Flow_Start_To_DefineProcedure_Art53" sourceRef="StartEvent_StartAppointment_Art53" targetRef="Task_DefineTransparentProcedure_Art53" />
+  </sequenceFlows>
+  <messageFlows />
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

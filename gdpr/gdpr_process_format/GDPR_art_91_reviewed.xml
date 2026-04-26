@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_ChurchOrReligiousAssociation_Art91" name="Church or Religious Association" poolType="active" processRef="Process_ChurchOrReligiousAssociation_Art91" />
+    <pool id="Participant_IndependentSupervisoryAuthority_Art91" name="Independent Supervisory Authority" poolType="active" processRef="Process_IndependentSupervisoryAuthority_Art91" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_AlignRulesWithRegulation_Art91" name="Align rules with the Regulation" type="task" poolRef="Participant_ChurchOrReligiousAssociation_Art91" />
+    <task id="Task_ExerciseIndependentSupervision_Art91" name="Exercise independent supervision" type="task" poolRef="Participant_IndependentSupervisoryAuthority_Art91" />
+    <task id="Task_SubmitRulesForSupervision_Art91" name="Submit rules for supervision" type="sendTask" poolRef="Participant_ChurchOrReligiousAssociation_Art91" />
+    <task id="Task_VerifyChapterVIConditions_Art91" name="Verify Chapter VI conditions" type="task" poolRef="Participant_ChurchOrReligiousAssociation_Art91" />
+  </tasks>
+  <events>
+    <event id="EndEvent_NoContinuedRules_Art91" name="No continued Article 91 rules" type="endEvent" poolRef="Participant_ChurchOrReligiousAssociation_Art91" />
+    <event id="EndEvent_RulesContinueUnderSupervision_Art91" name="Rules continue under supervision" type="endEvent" poolRef="Participant_ChurchOrReligiousAssociation_Art91" />
+    <event id="EndEvent_SupervisionActive_Art91" name="Supervision active" type="endEvent" poolRef="Participant_IndependentSupervisoryAuthority_Art91" />
+    <event id="StartEvent_AssessExistingComprehensiveRules_Art91" name="Assess existing comprehensive rules" type="startEvent" poolRef="Participant_ChurchOrReligiousAssociation_Art91" />
+    <event id="StartEvent_ReceiveSupervisionMandate_Art91" name="Receive supervision mandate" type="startEvent" poolRef="Participant_IndependentSupervisoryAuthority_Art91" eventDefinition="message" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_DoComprehensiveRulesExistAtEntryIntoForce_Art91" name="Did comprehensive rules apply at the entry into force of the Regulation?" type="exclusiveGateway" poolRef="Participant_ChurchOrReligiousAssociation_Art91" />
+    <gateway id="Gateway_IsSpecificAuthorityUsed_Art91" name="Will supervision be carried out by a specific authority?" type="exclusiveGateway" poolRef="Participant_ChurchOrReligiousAssociation_Art91" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AlignRules_To_GatewaySpecificAuthority_Art91" sourceRef="Task_AlignRulesWithRegulation_Art91" targetRef="Gateway_IsSpecificAuthorityUsed_Art91" />
+    <sequenceFlow id="Flow_ExerciseIndependentSupervision_To_EndSupervisionActive_Art91" sourceRef="Task_ExerciseIndependentSupervision_Art91" targetRef="EndEvent_SupervisionActive_Art91" />
+    <sequenceFlow id="Flow_GatewayExistingRules_To_AlignRules_Art91" name="Yes" sourceRef="Gateway_DoComprehensiveRulesExistAtEntryIntoForce_Art91" targetRef="Task_AlignRulesWithRegulation_Art91" />
+    <sequenceFlow id="Flow_GatewayExistingRules_To_EndNoContinuedRules_Art91" name="No" sourceRef="Gateway_DoComprehensiveRulesExistAtEntryIntoForce_Art91" targetRef="EndEvent_NoContinuedRules_Art91" />
+    <sequenceFlow id="Flow_GatewaySpecificAuthority_To_SubmitRulesForSupervision_Art91" name="No" sourceRef="Gateway_IsSpecificAuthorityUsed_Art91" targetRef="Task_SubmitRulesForSupervision_Art91" />
+    <sequenceFlow id="Flow_GatewaySpecificAuthority_To_VerifyChapterVIConditions_Art91" name="Yes" sourceRef="Gateway_IsSpecificAuthorityUsed_Art91" targetRef="Task_VerifyChapterVIConditions_Art91" />
+    <sequenceFlow id="Flow_StartSupervision_To_ExerciseIndependentSupervision_Art91" sourceRef="StartEvent_ReceiveSupervisionMandate_Art91" targetRef="Task_ExerciseIndependentSupervision_Art91" />
+    <sequenceFlow id="Flow_Start_To_GatewayExistingRules_Art91" sourceRef="StartEvent_AssessExistingComprehensiveRules_Art91" targetRef="Gateway_DoComprehensiveRulesExistAtEntryIntoForce_Art91" />
+    <sequenceFlow id="Flow_SubmitRulesForSupervision_To_EndRulesContinueUnderSupervision_Art91" sourceRef="Task_SubmitRulesForSupervision_Art91" targetRef="EndEvent_RulesContinueUnderSupervision_Art91" />
+    <sequenceFlow id="Flow_VerifyChapterVIConditions_To_SubmitRulesForSupervision_Art91" sourceRef="Task_VerifyChapterVIConditions_Art91" targetRef="Task_SubmitRulesForSupervision_Art91" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_SubmitRulesForSupervision_Art91" sourceRef="Task_SubmitRulesForSupervision_Art91" targetRef="StartEvent_ReceiveSupervisionMandate_Art91" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

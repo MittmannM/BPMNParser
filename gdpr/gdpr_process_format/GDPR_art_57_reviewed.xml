@@ -1,0 +1,151 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Board_Art57" name="Board" poolType="passive" />
+    <pool id="Participant_DataSubjectOrArticle80Body_Art57" name="Data Subject or Article 80 Body" poolType="passive" />
+    <pool id="Participant_NationalInstitutions_Art57" name="National Parliament, Government, or Other Institution" poolType="passive" />
+    <pool id="Participant_OtherSupervisoryAuthorities_Art57" name="Other Supervisory Authorities" poolType="passive" />
+    <pool id="Participant_SupervisoryAuthority_Art57" name="Supervisory Authority" poolType="active" processRef="Process_SupervisoryAuthority_Art57" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_AdoptStandardContractualClauses_Art57" name="Adopt standard contractual clauses" type="task" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <task id="Task_AdviseNationalInstitutions_Art57" name="Advise on legislative and administrative measures" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <task id="Task_ApproveBindingCorporateRules_Art57" name="Approve binding corporate rules" type="task" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <task id="Task_AuthoriseArticle46Clauses_Art57" name="Authorise Article 46(3) clauses" type="task" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <task id="Task_ChargeReasonableFee_Art57" name="Charge reasonable fee" type="task" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <task id="Task_ConductAccreditation_Art57" name="Conduct accreditation" type="task" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <task id="Task_ConductInvestigations_Art57" name="Conduct investigations" type="task" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <task id="Task_ContributeToBoardActivities_Art57" name="Contribute to Board activities" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <task id="Task_CooperateAndProvideMutualAssistance_Art57" name="Cooperate and provide mutual assistance" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <task id="Task_CooperateOnRightsRequest_Art57" name="Cooperate on rights request" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <task id="Task_DemonstrateExcessiveRequest_Art57" name="Demonstrate excessive request" type="task" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <task id="Task_DraftPublishAccreditationCriteria_Art57" name="Draft and publish accreditation criteria" type="task" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <task id="Task_EncourageAndApproveCodes_Art57" name="Encourage and approve codes of conduct" type="task" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <task id="Task_EncourageCertification_Art57" name="Encourage certification and approve criteria" type="task" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <task id="Task_FacilitateComplaintSubmission_Art57" name="Facilitate free complaint submission" type="task" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <task id="Task_FulfilOtherDataProtectionTasks_Art57" name="Fulfil other data protection tasks" type="task" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <task id="Task_GiveArticle36Advice_Art57" name="Give Article 36(2) advice" type="task" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <task id="Task_InformComplainant_Art57" name="Inform complainant of progress and outcome" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <task id="Task_InvestigateComplaint_Art57" name="Investigate complaint as appropriate" type="task" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <task id="Task_KeepInternalInfringementRecords_Art57" name="Keep internal infringement records" type="task" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <task id="Task_MaintainDPIAList_Art57" name="Establish and maintain DPIA list" type="task" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <task id="Task_MonitorAndEnforceApplication_Art57" name="Monitor and enforce application" type="task" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <task id="Task_MonitorRelevantDevelopments_Art57" name="Monitor relevant developments" type="task" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <task id="Task_PromoteControllerProcessorAwareness_Art57" name="Promote controller and processor awareness" type="task" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <task id="Task_PromotePublicAwareness_Art57" name="Promote public awareness, with child focus" type="task" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <task id="Task_ProvideRightsInformation_Art57" name="Provide rights information free of charge" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <task id="Task_ReceiveComplaint_Art57" name="Receive complaint" type="receiveTask" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <task id="Task_ReceiveRightsRequest_Art57" name="Receive rights request" type="receiveTask" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <task id="Task_RefuseRequest_Art57" name="Refuse request" type="task" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <task id="Task_ReviewCertifications_Art57" name="Review certifications periodically" type="task" poolRef="Participant_SupervisoryAuthority_Art57" />
+  </tasks>
+  <events>
+    <event id="EndEvent_Article57TasksMaintained_Art57" name="Article 57 tasks maintained" type="endEvent" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <event id="StartEvent_PerformArticle57Tasks_Art57" name="Perform Article 57 tasks" type="startEvent" poolRef="Participant_SupervisoryAuthority_Art57" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_ChargeFee_Art57" name="Will the authority charge a reasonable fee?" type="exclusiveGateway" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <gateway id="Gateway_CooperateRightsRequest_Art57" name="Is cooperation with other supervisory authorities appropriate?" type="exclusiveGateway" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <gateway id="Gateway_ExcessiveRequest_Art57" name="Is the request manifestly unfounded or excessive?" type="exclusiveGateway" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <gateway id="Gateway_JoinAwareness_Art57" type="parallelGateway" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <gateway id="Gateway_JoinCooperation_Art57" type="parallelGateway" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <gateway id="Gateway_JoinDataSubjectTasks_Art57" type="parallelGateway" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <gateway id="Gateway_JoinInstitutionalTasks_Art57" type="parallelGateway" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <gateway id="Gateway_JoinMainTasks_Art57" type="parallelGateway" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <gateway id="Gateway_JoinStandards_Art57" type="parallelGateway" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <gateway id="Gateway_SplitAwareness_Art57" type="parallelGateway" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <gateway id="Gateway_SplitCooperation_Art57" type="parallelGateway" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <gateway id="Gateway_SplitDataSubjectTasks_Art57" type="parallelGateway" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <gateway id="Gateway_SplitInstitutionalTasks_Art57" type="parallelGateway" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <gateway id="Gateway_SplitMainTasks_Art57" type="parallelGateway" poolRef="Participant_SupervisoryAuthority_Art57" />
+    <gateway id="Gateway_SplitStandards_Art57" type="parallelGateway" poolRef="Participant_SupervisoryAuthority_Art57" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AdoptSCCs_To_GatewayJoinStandards_Art57" sourceRef="Task_AdoptStandardContractualClauses_Art57" targetRef="Gateway_JoinStandards_Art57" />
+    <sequenceFlow id="Flow_AdviseInstitutions_To_GatewayJoinAwareness_Art57" sourceRef="Task_AdviseNationalInstitutions_Art57" targetRef="Gateway_JoinAwareness_Art57" />
+    <sequenceFlow id="Flow_ApproveBCRs_To_GatewayJoinStandards_Art57" sourceRef="Task_ApproveBindingCorporateRules_Art57" targetRef="Gateway_JoinStandards_Art57" />
+    <sequenceFlow id="Flow_AuthoriseArticle46Clauses_To_GatewayJoinStandards_Art57" sourceRef="Task_AuthoriseArticle46Clauses_Art57" targetRef="Gateway_JoinStandards_Art57" />
+    <sequenceFlow id="Flow_ChargeReasonableFee_To_GatewayJoinDataSubjectTasks_Art57" sourceRef="Task_ChargeReasonableFee_Art57" targetRef="Gateway_JoinDataSubjectTasks_Art57" />
+    <sequenceFlow id="Flow_ConductAccreditation_To_GatewayJoinStandards_Art57" sourceRef="Task_ConductAccreditation_Art57" targetRef="Gateway_JoinStandards_Art57" />
+    <sequenceFlow id="Flow_ConductInvestigations_To_GatewayJoinCooperation_Art57" sourceRef="Task_ConductInvestigations_Art57" targetRef="Gateway_JoinCooperation_Art57" />
+    <sequenceFlow id="Flow_ContributeBoard_To_GatewayJoinInstitutionalTasks_Art57" sourceRef="Task_ContributeToBoardActivities_Art57" targetRef="Gateway_JoinInstitutionalTasks_Art57" />
+    <sequenceFlow id="Flow_CooperateMutualAssistance_To_GatewayJoinCooperation_Art57" sourceRef="Task_CooperateAndProvideMutualAssistance_Art57" targetRef="Gateway_JoinCooperation_Art57" />
+    <sequenceFlow id="Flow_CooperateOnRightsRequest_To_GatewayJoinDataSubjectTasks_Art57" sourceRef="Task_CooperateOnRightsRequest_Art57" targetRef="Gateway_JoinDataSubjectTasks_Art57" />
+    <sequenceFlow id="Flow_DemonstrateExcessiveRequest_To_GatewayChargeFee_Art57" sourceRef="Task_DemonstrateExcessiveRequest_Art57" targetRef="Gateway_ChargeFee_Art57" />
+    <sequenceFlow id="Flow_DraftAccreditationCriteria_To_GatewayJoinStandards_Art57" sourceRef="Task_DraftPublishAccreditationCriteria_Art57" targetRef="Gateway_JoinStandards_Art57" />
+    <sequenceFlow id="Flow_EncourageCertification_To_GatewayJoinStandards_Art57" sourceRef="Task_EncourageCertification_Art57" targetRef="Gateway_JoinStandards_Art57" />
+    <sequenceFlow id="Flow_EncourageCodes_To_GatewayJoinStandards_Art57" sourceRef="Task_EncourageAndApproveCodes_Art57" targetRef="Gateway_JoinStandards_Art57" />
+    <sequenceFlow id="Flow_FacilitateComplaintSubmission_To_ReceiveComplaint_Art57" sourceRef="Task_FacilitateComplaintSubmission_Art57" targetRef="Task_ReceiveComplaint_Art57" />
+    <sequenceFlow id="Flow_FulfilOtherTasks_To_GatewayJoinInstitutionalTasks_Art57" sourceRef="Task_FulfilOtherDataProtectionTasks_Art57" targetRef="Gateway_JoinInstitutionalTasks_Art57" />
+    <sequenceFlow id="Flow_GatewayChargeFee_To_ChargeReasonableFee_Art57" name="Yes" sourceRef="Gateway_ChargeFee_Art57" targetRef="Task_ChargeReasonableFee_Art57" />
+    <sequenceFlow id="Flow_GatewayChargeFee_To_RefuseRequest_Art57" name="No" sourceRef="Gateway_ChargeFee_Art57" targetRef="Task_RefuseRequest_Art57" />
+    <sequenceFlow id="Flow_GatewayCooperateRightsRequest_To_CooperateOnRightsRequest_Art57" name="Yes" sourceRef="Gateway_CooperateRightsRequest_Art57" targetRef="Task_CooperateOnRightsRequest_Art57" />
+    <sequenceFlow id="Flow_GatewayCooperateRightsRequest_To_GatewayJoinDataSubjectTasks_Art57" name="No" sourceRef="Gateway_CooperateRightsRequest_Art57" targetRef="Gateway_JoinDataSubjectTasks_Art57" />
+    <sequenceFlow id="Flow_GatewayExcessiveRequest_To_DemonstrateExcessiveRequest_Art57" name="Yes" sourceRef="Gateway_ExcessiveRequest_Art57" targetRef="Task_DemonstrateExcessiveRequest_Art57" />
+    <sequenceFlow id="Flow_GatewayExcessiveRequest_To_ProvideRightsInformation_Art57" name="No" sourceRef="Gateway_ExcessiveRequest_Art57" targetRef="Task_ProvideRightsInformation_Art57" />
+    <sequenceFlow id="Flow_GatewayJoinAwareness_To_GatewayJoinMainTasks_Art57" sourceRef="Gateway_JoinAwareness_Art57" targetRef="Gateway_JoinMainTasks_Art57" />
+    <sequenceFlow id="Flow_GatewayJoinCooperation_To_GatewayJoinMainTasks_Art57" sourceRef="Gateway_JoinCooperation_Art57" targetRef="Gateway_JoinMainTasks_Art57" />
+    <sequenceFlow id="Flow_GatewayJoinDataSubjectTasks_To_GatewayJoinMainTasks_Art57" sourceRef="Gateway_JoinDataSubjectTasks_Art57" targetRef="Gateway_JoinMainTasks_Art57" />
+    <sequenceFlow id="Flow_GatewayJoinInstitutionalTasks_To_GatewayJoinMainTasks_Art57" sourceRef="Gateway_JoinInstitutionalTasks_Art57" targetRef="Gateway_JoinMainTasks_Art57" />
+    <sequenceFlow id="Flow_GatewayJoinMainTasks_To_EndTasksMaintained_Art57" sourceRef="Gateway_JoinMainTasks_Art57" targetRef="EndEvent_Article57TasksMaintained_Art57" />
+    <sequenceFlow id="Flow_GatewayJoinStandards_To_GatewayJoinMainTasks_Art57" sourceRef="Gateway_JoinStandards_Art57" targetRef="Gateway_JoinMainTasks_Art57" />
+    <sequenceFlow id="Flow_GatewaySplitAwareness_To_AdviseInstitutions_Art57" sourceRef="Gateway_SplitAwareness_Art57" targetRef="Task_AdviseNationalInstitutions_Art57" />
+    <sequenceFlow id="Flow_GatewaySplitAwareness_To_MonitorEnforce_Art57" sourceRef="Gateway_SplitAwareness_Art57" targetRef="Task_MonitorAndEnforceApplication_Art57" />
+    <sequenceFlow id="Flow_GatewaySplitAwareness_To_PromoteControllerAwareness_Art57" sourceRef="Gateway_SplitAwareness_Art57" targetRef="Task_PromoteControllerProcessorAwareness_Art57" />
+    <sequenceFlow id="Flow_GatewaySplitAwareness_To_PromotePublicAwareness_Art57" sourceRef="Gateway_SplitAwareness_Art57" targetRef="Task_PromotePublicAwareness_Art57" />
+    <sequenceFlow id="Flow_GatewaySplitCooperation_To_ConductInvestigations_Art57" sourceRef="Gateway_SplitCooperation_Art57" targetRef="Task_ConductInvestigations_Art57" />
+    <sequenceFlow id="Flow_GatewaySplitCooperation_To_CooperateMutualAssistance_Art57" sourceRef="Gateway_SplitCooperation_Art57" targetRef="Task_CooperateAndProvideMutualAssistance_Art57" />
+    <sequenceFlow id="Flow_GatewaySplitCooperation_To_MonitorDevelopments_Art57" sourceRef="Gateway_SplitCooperation_Art57" targetRef="Task_MonitorRelevantDevelopments_Art57" />
+    <sequenceFlow id="Flow_GatewaySplitDataSubjectTasks_To_FacilitateComplaintSubmission_Art57" sourceRef="Gateway_SplitDataSubjectTasks_Art57" targetRef="Task_FacilitateComplaintSubmission_Art57" />
+    <sequenceFlow id="Flow_GatewaySplitDataSubjectTasks_To_ReceiveRightsRequest_Art57" sourceRef="Gateway_SplitDataSubjectTasks_Art57" targetRef="Task_ReceiveRightsRequest_Art57" />
+    <sequenceFlow id="Flow_GatewaySplitInstitutionalTasks_To_ContributeBoard_Art57" sourceRef="Gateway_SplitInstitutionalTasks_Art57" targetRef="Task_ContributeToBoardActivities_Art57" />
+    <sequenceFlow id="Flow_GatewaySplitInstitutionalTasks_To_FulfilOtherTasks_Art57" sourceRef="Gateway_SplitInstitutionalTasks_Art57" targetRef="Task_FulfilOtherDataProtectionTasks_Art57" />
+    <sequenceFlow id="Flow_GatewaySplitInstitutionalTasks_To_KeepInfringementRecords_Art57" sourceRef="Gateway_SplitInstitutionalTasks_Art57" targetRef="Task_KeepInternalInfringementRecords_Art57" />
+    <sequenceFlow id="Flow_GatewaySplitMain_To_GatewaySplitAwareness_Art57" sourceRef="Gateway_SplitMainTasks_Art57" targetRef="Gateway_SplitAwareness_Art57" />
+    <sequenceFlow id="Flow_GatewaySplitMain_To_GatewaySplitCooperation_Art57" sourceRef="Gateway_SplitMainTasks_Art57" targetRef="Gateway_SplitCooperation_Art57" />
+    <sequenceFlow id="Flow_GatewaySplitMain_To_GatewaySplitDataSubjectTasks_Art57" sourceRef="Gateway_SplitMainTasks_Art57" targetRef="Gateway_SplitDataSubjectTasks_Art57" />
+    <sequenceFlow id="Flow_GatewaySplitMain_To_GatewaySplitInstitutionalTasks_Art57" sourceRef="Gateway_SplitMainTasks_Art57" targetRef="Gateway_SplitInstitutionalTasks_Art57" />
+    <sequenceFlow id="Flow_GatewaySplitMain_To_GatewaySplitStandards_Art57" sourceRef="Gateway_SplitMainTasks_Art57" targetRef="Gateway_SplitStandards_Art57" />
+    <sequenceFlow id="Flow_GatewaySplitStandards_To_AdoptSCCs_Art57" sourceRef="Gateway_SplitStandards_Art57" targetRef="Task_AdoptStandardContractualClauses_Art57" />
+    <sequenceFlow id="Flow_GatewaySplitStandards_To_ApproveBCRs_Art57" sourceRef="Gateway_SplitStandards_Art57" targetRef="Task_ApproveBindingCorporateRules_Art57" />
+    <sequenceFlow id="Flow_GatewaySplitStandards_To_AuthoriseArticle46Clauses_Art57" sourceRef="Gateway_SplitStandards_Art57" targetRef="Task_AuthoriseArticle46Clauses_Art57" />
+    <sequenceFlow id="Flow_GatewaySplitStandards_To_ConductAccreditation_Art57" sourceRef="Gateway_SplitStandards_Art57" targetRef="Task_ConductAccreditation_Art57" />
+    <sequenceFlow id="Flow_GatewaySplitStandards_To_DraftAccreditationCriteria_Art57" sourceRef="Gateway_SplitStandards_Art57" targetRef="Task_DraftPublishAccreditationCriteria_Art57" />
+    <sequenceFlow id="Flow_GatewaySplitStandards_To_EncourageCertification_Art57" sourceRef="Gateway_SplitStandards_Art57" targetRef="Task_EncourageCertification_Art57" />
+    <sequenceFlow id="Flow_GatewaySplitStandards_To_EncourageCodes_Art57" sourceRef="Gateway_SplitStandards_Art57" targetRef="Task_EncourageAndApproveCodes_Art57" />
+    <sequenceFlow id="Flow_GatewaySplitStandards_To_GiveArticle36Advice_Art57" sourceRef="Gateway_SplitStandards_Art57" targetRef="Task_GiveArticle36Advice_Art57" />
+    <sequenceFlow id="Flow_GatewaySplitStandards_To_MaintainDPIAList_Art57" sourceRef="Gateway_SplitStandards_Art57" targetRef="Task_MaintainDPIAList_Art57" />
+    <sequenceFlow id="Flow_GatewaySplitStandards_To_ReviewCertifications_Art57" sourceRef="Gateway_SplitStandards_Art57" targetRef="Task_ReviewCertifications_Art57" />
+    <sequenceFlow id="Flow_GiveArticle36Advice_To_GatewayJoinStandards_Art57" sourceRef="Task_GiveArticle36Advice_Art57" targetRef="Gateway_JoinStandards_Art57" />
+    <sequenceFlow id="Flow_InformComplainant_To_GatewayJoinDataSubjectTasks_Art57" sourceRef="Task_InformComplainant_Art57" targetRef="Gateway_JoinDataSubjectTasks_Art57" />
+    <sequenceFlow id="Flow_InvestigateComplaint_To_InformComplainant_Art57" sourceRef="Task_InvestigateComplaint_Art57" targetRef="Task_InformComplainant_Art57" />
+    <sequenceFlow id="Flow_KeepInfringementRecords_To_GatewayJoinInstitutionalTasks_Art57" sourceRef="Task_KeepInternalInfringementRecords_Art57" targetRef="Gateway_JoinInstitutionalTasks_Art57" />
+    <sequenceFlow id="Flow_MaintainDPIAList_To_GatewayJoinStandards_Art57" sourceRef="Task_MaintainDPIAList_Art57" targetRef="Gateway_JoinStandards_Art57" />
+    <sequenceFlow id="Flow_MonitorDevelopments_To_GatewayJoinCooperation_Art57" sourceRef="Task_MonitorRelevantDevelopments_Art57" targetRef="Gateway_JoinCooperation_Art57" />
+    <sequenceFlow id="Flow_MonitorEnforce_To_GatewayJoinAwareness_Art57" sourceRef="Task_MonitorAndEnforceApplication_Art57" targetRef="Gateway_JoinAwareness_Art57" />
+    <sequenceFlow id="Flow_PromoteControllerAwareness_To_GatewayJoinAwareness_Art57" sourceRef="Task_PromoteControllerProcessorAwareness_Art57" targetRef="Gateway_JoinAwareness_Art57" />
+    <sequenceFlow id="Flow_PromotePublicAwareness_To_GatewayJoinAwareness_Art57" sourceRef="Task_PromotePublicAwareness_Art57" targetRef="Gateway_JoinAwareness_Art57" />
+    <sequenceFlow id="Flow_ProvideRightsInformation_To_GatewayCooperateRightsRequest_Art57" sourceRef="Task_ProvideRightsInformation_Art57" targetRef="Gateway_CooperateRightsRequest_Art57" />
+    <sequenceFlow id="Flow_ReceiveComplaint_To_InvestigateComplaint_Art57" sourceRef="Task_ReceiveComplaint_Art57" targetRef="Task_InvestigateComplaint_Art57" />
+    <sequenceFlow id="Flow_ReceiveRightsRequest_To_GatewayExcessiveRequest_Art57" sourceRef="Task_ReceiveRightsRequest_Art57" targetRef="Gateway_ExcessiveRequest_Art57" />
+    <sequenceFlow id="Flow_RefuseRequest_To_GatewayJoinDataSubjectTasks_Art57" sourceRef="Task_RefuseRequest_Art57" targetRef="Gateway_JoinDataSubjectTasks_Art57" />
+    <sequenceFlow id="Flow_ReviewCertifications_To_GatewayJoinStandards_Art57" sourceRef="Task_ReviewCertifications_Art57" targetRef="Gateway_JoinStandards_Art57" />
+    <sequenceFlow id="Flow_Start_To_GatewaySplitMainTasks_Art57" sourceRef="StartEvent_PerformArticle57Tasks_Art57" targetRef="Gateway_SplitMainTasks_Art57" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_AdviseNationalInstitutions_Art57" sourceRef="Task_AdviseNationalInstitutions_Art57" targetRef="Participant_NationalInstitutions_Art57" />
+    <messageFlow id="MessageFlow_ContributeToBoard_Art57" sourceRef="Task_ContributeToBoardActivities_Art57" targetRef="Participant_Board_Art57" />
+    <messageFlow id="MessageFlow_CooperateOnRightsRequest_Art57" sourceRef="Task_CooperateOnRightsRequest_Art57" targetRef="Participant_OtherSupervisoryAuthorities_Art57" />
+    <messageFlow id="MessageFlow_FileComplaint_Art57" sourceRef="Participant_DataSubjectOrArticle80Body_Art57" targetRef="Task_ReceiveComplaint_Art57" />
+    <messageFlow id="MessageFlow_InformComplainant_Art57" sourceRef="Task_InformComplainant_Art57" targetRef="Participant_DataSubjectOrArticle80Body_Art57" />
+    <messageFlow id="MessageFlow_ProvideMutualAssistance_Art57" sourceRef="Task_CooperateAndProvideMutualAssistance_Art57" targetRef="Participant_OtherSupervisoryAuthorities_Art57" />
+    <messageFlow id="MessageFlow_ProvideRightsInformation_Art57" sourceRef="Task_ProvideRightsInformation_Art57" targetRef="Participant_DataSubjectOrArticle80Body_Art57" />
+    <messageFlow id="MessageFlow_RequestRightsInformation_Art57" sourceRef="Participant_DataSubjectOrArticle80Body_Art57" targetRef="Task_ReceiveRightsRequest_Art57" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

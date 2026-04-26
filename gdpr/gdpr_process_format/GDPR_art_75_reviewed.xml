@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools />
+  <lanes />
+  <tasks>
+    <task id="Task_EstablishMoU_Art75" name="Establish memorandum of understanding" type="task" poolRef="Process_Board_Art75" />
+    <task id="Task_ManageBoardAndCommissionCommunications_Art75" name="Manage Board and Commission communications" type="sendTask" poolRef="Process_Board_Art75" />
+    <task id="Task_ManageInstitutionalAndPublicCommunications_Art75" name="Manage institutional and public communications" type="sendTask" poolRef="Process_Board_Art75" />
+    <task id="Task_ObtainSecretariatFromEDPS_Art75" name="Obtain secretariat from EDPS" type="task" poolRef="Process_Board_Art75" />
+    <task id="Task_PrepareAndFollowUpMeetings_Art75" name="Prepare and follow up meetings" type="task" poolRef="Process_Board_Art75" />
+    <task id="Task_PrepareAndPublishBoardTexts_Art75" name="Prepare and publish Board texts" type="sendTask" poolRef="Process_Board_Art75" />
+    <task id="Task_ProvideBoardSupport_Art75" name="Provide Board support" type="task" poolRef="Process_Board_Art75" />
+    <task id="Task_PublishMoU_Art75" name="Publish memorandum of understanding" type="sendTask" poolRef="Process_Board_Art75" />
+    <task id="Task_RunDayToDayBusiness_Art75" name="Run day-to-day business" type="task" poolRef="Process_Board_Art75" />
+    <task id="Task_SetChairOnlyInstructions_Art75" name="Set Chair-only instructions" type="task" poolRef="Process_Board_Art75" />
+    <task id="Task_SetSeparateReportingLines_Art75" name="Set separate reporting lines" type="task" poolRef="Process_Board_Art75" />
+    <task id="Task_TranslateRelevantInformation_Art75" name="Translate relevant information" type="task" poolRef="Process_Board_Art75" />
+    <task id="Task_UseElectronicMeans_Art75" name="Use electronic communication means" type="task" poolRef="Process_Board_Art75" />
+  </tasks>
+  <events>
+    <event id="EndEvent_SecretariatSupportsBoard_Art75" name="Secretariat supports Board" type="endEvent" poolRef="Process_Board_Art75" />
+    <event id="StartEvent_SetUpSecretariat_Art75" name="Set up Board secretariat" type="startEvent" poolRef="Process_Board_Art75" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_IsMoUAppropriate_Art75" name="Is a memorandum of understanding appropriate?" type="exclusiveGateway" poolRef="Process_Board_Art75" />
+    <gateway id="Gateway_JoinResponsibilities_Art75" type="parallelGateway" poolRef="Process_Board_Art75" />
+    <gateway id="Gateway_MergeMoUPath_Art75" type="exclusiveGateway" poolRef="Process_Board_Art75" />
+    <gateway id="Gateway_SplitResponsibilities_Art75" type="parallelGateway" poolRef="Process_Board_Art75" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_EstablishMoU_To_PublishMoU_Art75" sourceRef="Task_EstablishMoU_Art75" targetRef="Task_PublishMoU_Art75" />
+    <sequenceFlow id="Flow_GatewayJoinResponsibilities_To_EndSecretariat_Art75" sourceRef="Gateway_JoinResponsibilities_Art75" targetRef="EndEvent_SecretariatSupportsBoard_Art75" />
+    <sequenceFlow id="Flow_GatewayMergeMoU_To_ProvideSupport_Art75" sourceRef="Gateway_MergeMoUPath_Art75" targetRef="Task_ProvideBoardSupport_Art75" />
+    <sequenceFlow id="Flow_GatewayMoU_To_EstablishMoU_Art75" name="Yes" sourceRef="Gateway_IsMoUAppropriate_Art75" targetRef="Task_EstablishMoU_Art75" />
+    <sequenceFlow id="Flow_GatewayMoU_To_GatewayMergeMoU_Art75" name="No" sourceRef="Gateway_IsMoUAppropriate_Art75" targetRef="Gateway_MergeMoUPath_Art75" />
+    <sequenceFlow id="Flow_GatewaySplit_To_ManageBoardAndCommissionCommunications_Art75" sourceRef="Gateway_SplitResponsibilities_Art75" targetRef="Task_ManageBoardAndCommissionCommunications_Art75" />
+    <sequenceFlow id="Flow_GatewaySplit_To_ManageInstitutionalAndPublicCommunications_Art75" sourceRef="Gateway_SplitResponsibilities_Art75" targetRef="Task_ManageInstitutionalAndPublicCommunications_Art75" />
+    <sequenceFlow id="Flow_GatewaySplit_To_PrepareBoardTexts_Art75" sourceRef="Gateway_SplitResponsibilities_Art75" targetRef="Task_PrepareAndPublishBoardTexts_Art75" />
+    <sequenceFlow id="Flow_GatewaySplit_To_PrepareMeetings_Art75" sourceRef="Gateway_SplitResponsibilities_Art75" targetRef="Task_PrepareAndFollowUpMeetings_Art75" />
+    <sequenceFlow id="Flow_GatewaySplit_To_RunDayToDayBusiness_Art75" sourceRef="Gateway_SplitResponsibilities_Art75" targetRef="Task_RunDayToDayBusiness_Art75" />
+    <sequenceFlow id="Flow_GatewaySplit_To_TranslateInformation_Art75" sourceRef="Gateway_SplitResponsibilities_Art75" targetRef="Task_TranslateRelevantInformation_Art75" />
+    <sequenceFlow id="Flow_GatewaySplit_To_UseElectronicMeans_Art75" sourceRef="Gateway_SplitResponsibilities_Art75" targetRef="Task_UseElectronicMeans_Art75" />
+    <sequenceFlow id="Flow_ManageBoardAndCommissionCommunications_To_GatewayJoinResponsibilities_Art75" sourceRef="Task_ManageBoardAndCommissionCommunications_Art75" targetRef="Gateway_JoinResponsibilities_Art75" />
+    <sequenceFlow id="Flow_ManageInstitutionalAndPublicCommunications_To_GatewayJoinResponsibilities_Art75" sourceRef="Task_ManageInstitutionalAndPublicCommunications_Art75" targetRef="Gateway_JoinResponsibilities_Art75" />
+    <sequenceFlow id="Flow_ObtainSecretariat_To_SetInstructions_Art75" sourceRef="Task_ObtainSecretariatFromEDPS_Art75" targetRef="Task_SetChairOnlyInstructions_Art75" />
+    <sequenceFlow id="Flow_PrepareAndFollowUpMeetings_To_GatewayJoinResponsibilities_Art75" sourceRef="Task_PrepareAndFollowUpMeetings_Art75" targetRef="Gateway_JoinResponsibilities_Art75" />
+    <sequenceFlow id="Flow_PrepareAndPublishBoardTexts_To_GatewayJoinResponsibilities_Art75" sourceRef="Task_PrepareAndPublishBoardTexts_Art75" targetRef="Gateway_JoinResponsibilities_Art75" />
+    <sequenceFlow id="Flow_ProvideSupport_To_GatewaySplitResponsibilities_Art75" sourceRef="Task_ProvideBoardSupport_Art75" targetRef="Gateway_SplitResponsibilities_Art75" />
+    <sequenceFlow id="Flow_PublishMoU_To_GatewayMergeMoU_Art75" sourceRef="Task_PublishMoU_Art75" targetRef="Gateway_MergeMoUPath_Art75" />
+    <sequenceFlow id="Flow_RunDayToDayBusiness_To_GatewayJoinResponsibilities_Art75" sourceRef="Task_RunDayToDayBusiness_Art75" targetRef="Gateway_JoinResponsibilities_Art75" />
+    <sequenceFlow id="Flow_SetInstructions_To_SetReportingLines_Art75" sourceRef="Task_SetChairOnlyInstructions_Art75" targetRef="Task_SetSeparateReportingLines_Art75" />
+    <sequenceFlow id="Flow_SetReportingLines_To_GatewayMoU_Art75" sourceRef="Task_SetSeparateReportingLines_Art75" targetRef="Gateway_IsMoUAppropriate_Art75" />
+    <sequenceFlow id="Flow_Start_To_ObtainSecretariat_Art75" sourceRef="StartEvent_SetUpSecretariat_Art75" targetRef="Task_ObtainSecretariatFromEDPS_Art75" />
+    <sequenceFlow id="Flow_TranslateRelevantInformation_To_GatewayJoinResponsibilities_Art75" sourceRef="Task_TranslateRelevantInformation_Art75" targetRef="Gateway_JoinResponsibilities_Art75" />
+    <sequenceFlow id="Flow_UseElectronicMeans_To_GatewayJoinResponsibilities_Art75" sourceRef="Task_UseElectronicMeans_Art75" targetRef="Gateway_JoinResponsibilities_Art75" />
+  </sequenceFlows>
+  <messageFlows />
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

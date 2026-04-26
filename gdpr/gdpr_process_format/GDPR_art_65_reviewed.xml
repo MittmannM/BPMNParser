@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Board_Art65" name="Board" poolType="active" processRef="Process_Board_Art65" />
+    <pool id="Participant_Commission_Art65" name="Commission" poolType="passive" />
+    <pool id="Participant_ConcernedAuthorities_Art65" name="Other Concerned Supervisory Authorities" poolType="passive" />
+    <pool id="Participant_ControllerOrProcessor_Art65" name="Controller or Processor" poolType="passive" />
+    <pool id="Participant_DataSubject_Art65" name="Data Subject" poolType="passive" />
+    <pool id="Participant_LeadOrComplaintAuthority_Art65" name="Lead or Complaint Supervisory Authority" poolType="active" processRef="Process_LeadOrComplaintAuthority_Art65" />
+    <pool id="Participant_Public_Art65" name="Public" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_AdoptBySimpleMajority_Art65" name="Adopt decision within two weeks" type="task" poolRef="Participant_Board_Art65" />
+    <task id="Task_AdoptFinalDecision_Art65" name="Adopt final decision within one month" type="task" poolRef="Participant_LeadOrComplaintAuthority_Art65" />
+    <task id="Task_AdoptReasonedBindingDecision_Art65" name="Adopt reasoned binding decision" type="task" poolRef="Participant_Board_Art65" />
+    <task id="Task_ExtendDecisionPeriod_Art65" name="Extend decision period by one month" type="task" poolRef="Participant_Board_Art65" />
+    <task id="Task_HandleArticle64Conflict_Art65" name="Handle Article 64 conflict" type="task" poolRef="Participant_LeadOrComplaintAuthority_Art65" />
+    <task id="Task_HandleCompetenceConflict_Art65" name="Handle competence conflict" type="task" poolRef="Participant_LeadOrComplaintAuthority_Art65" />
+    <task id="Task_HandleObjectionConflict_Art65" name="Handle Article 60 objection conflict" type="task" poolRef="Participant_LeadOrComplaintAuthority_Art65" />
+    <task id="Task_InformBoardOfNotificationDate_Art65" name="Inform Board of notification date" type="sendTask" poolRef="Participant_LeadOrComplaintAuthority_Art65" />
+    <task id="Task_NotifyAuthoritiesAndCommission_Art65" name="Notify authorities and Commission" type="sendTask" poolRef="Participant_Board_Art65" />
+    <task id="Task_NotifyControllerOrProcessor_Art65" name="Notify controller or processor" type="sendTask" poolRef="Participant_LeadOrComplaintAuthority_Art65" />
+    <task id="Task_NotifyDataSubject_Art65" name="Notify data subject" type="sendTask" poolRef="Participant_LeadOrComplaintAuthority_Art65" />
+    <task id="Task_PublishBoardDecision_Art65" name="Publish Board decision" type="sendTask" poolRef="Participant_Board_Art65" />
+    <task id="Task_ReceiveBindingDecision_Art65" name="Receive binding Board decision" type="receiveTask" poolRef="Participant_LeadOrComplaintAuthority_Art65" />
+    <task id="Task_ReceiveNotificationDate_Art65" name="Receive final-decision notification date" type="receiveTask" poolRef="Participant_Board_Art65" />
+    <task id="Task_SendReferralToBoard_Art65" name="Send referral to Board" type="sendTask" poolRef="Participant_LeadOrComplaintAuthority_Art65" />
+    <task id="Task_SuspendAdoptionDuringBoardPeriod_Art65" name="Suspend adoption during Board period" type="task" poolRef="Participant_LeadOrComplaintAuthority_Art65" />
+    <task id="Task_UseChairVote_Art65" name="Use Chair vote" type="task" poolRef="Participant_Board_Art65" />
+  </tasks>
+  <events>
+    <event id="EndEvent_BoardDecisionPublished_Art65" name="Board decision published" type="endEvent" poolRef="Participant_Board_Art65" />
+    <event id="EndEvent_FinalDecisionNotified_Art65" name="Final decision notified" type="endEvent" poolRef="Participant_LeadOrComplaintAuthority_Art65" />
+    <event id="StartEvent_NeedBindingDecision_Art65" name="Need binding decision" type="startEvent" poolRef="Participant_LeadOrComplaintAuthority_Art65" />
+    <event id="StartEvent_ReceiveReferral_Art65" name="Receive referral" type="startEvent" poolRef="Participant_Board_Art65" eventDefinition="message" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_CanBoardAdoptByTwoThirds_Art65" name="Can the Board adopt by two-thirds majority?" type="exclusiveGateway" poolRef="Participant_Board_Art65" />
+    <gateway id="Gateway_IsBoardSplit_Art65" name="Are Board members split?" type="exclusiveGateway" poolRef="Participant_Board_Art65" />
+    <gateway id="Gateway_IsMatterComplex_Art65" name="Is the subject matter complex?" type="exclusiveGateway" poolRef="Participant_Board_Art65" />
+    <gateway id="Gateway_MergeDecisionOutcome_Art65" type="exclusiveGateway" poolRef="Participant_Board_Art65" />
+    <gateway id="Gateway_MergeDecisionPeriod_Art65" type="exclusiveGateway" poolRef="Participant_Board_Art65" />
+    <gateway id="Gateway_MergeReferralGround_Art65" type="exclusiveGateway" poolRef="Participant_LeadOrComplaintAuthority_Art65" />
+    <gateway id="Gateway_WhatTriggersReferral_Art65" name="What triggers the Article 65 referral?" type="exclusiveGateway" poolRef="Participant_LeadOrComplaintAuthority_Art65" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AdoptBySimpleMajority_To_GatewayBoardSplit_Art65" sourceRef="Task_AdoptBySimpleMajority_Art65" targetRef="Gateway_IsBoardSplit_Art65" />
+    <sequenceFlow id="Flow_AdoptFinalDecision_To_NotifyControllerOrProcessor_Art65" sourceRef="Task_AdoptFinalDecision_Art65" targetRef="Task_NotifyControllerOrProcessor_Art65" />
+    <sequenceFlow id="Flow_AdoptReasonedBindingDecision_To_NotifyAuthoritiesAndCommission_Art65" sourceRef="Task_AdoptReasonedBindingDecision_Art65" targetRef="Task_NotifyAuthoritiesAndCommission_Art65" />
+    <sequenceFlow id="Flow_ExtendDecisionPeriod_To_GatewayMergeDecisionPeriod_Art65" sourceRef="Task_ExtendDecisionPeriod_Art65" targetRef="Gateway_MergeDecisionPeriod_Art65" />
+    <sequenceFlow id="Flow_GatewayBoardSplit_To_GatewayMergeDecisionOutcome_Art65" name="No" sourceRef="Gateway_IsBoardSplit_Art65" targetRef="Gateway_MergeDecisionOutcome_Art65" />
+    <sequenceFlow id="Flow_GatewayBoardSplit_To_UseChairVote_Art65" name="Yes" sourceRef="Gateway_IsBoardSplit_Art65" targetRef="Task_UseChairVote_Art65" />
+    <sequenceFlow id="Flow_GatewayCanAdoptByTwoThirds_To_AdoptBySimpleMajority_Art65" name="No" sourceRef="Gateway_CanBoardAdoptByTwoThirds_Art65" targetRef="Task_AdoptBySimpleMajority_Art65" />
+    <sequenceFlow id="Flow_GatewayCanAdoptByTwoThirds_To_AdoptReasonedBindingDecision_Art65" name="Yes" sourceRef="Gateway_CanBoardAdoptByTwoThirds_Art65" targetRef="Task_AdoptReasonedBindingDecision_Art65" />
+    <sequenceFlow id="Flow_GatewayComplexMatter_To_ExtendDecisionPeriod_Art65" name="Yes" sourceRef="Gateway_IsMatterComplex_Art65" targetRef="Task_ExtendDecisionPeriod_Art65" />
+    <sequenceFlow id="Flow_GatewayComplexMatter_To_GatewayMergeDecisionPeriod_Art65" name="No" sourceRef="Gateway_IsMatterComplex_Art65" targetRef="Gateway_MergeDecisionPeriod_Art65" />
+    <sequenceFlow id="Flow_GatewayMergeDecisionOutcome_To_NotifyAuthoritiesAndCommission_Art65" sourceRef="Gateway_MergeDecisionOutcome_Art65" targetRef="Task_NotifyAuthoritiesAndCommission_Art65" />
+    <sequenceFlow id="Flow_GatewayMergeDecisionPeriod_To_GatewayCanAdoptByTwoThirds_Art65" sourceRef="Gateway_MergeDecisionPeriod_Art65" targetRef="Gateway_CanBoardAdoptByTwoThirds_Art65" />
+    <sequenceFlow id="Flow_GatewayMergeReferralGround_To_SendReferralToBoard_Art65" sourceRef="Gateway_MergeReferralGround_Art65" targetRef="Task_SendReferralToBoard_Art65" />
+    <sequenceFlow id="Flow_GatewayReferralGround_To_HandleArticle64Conflict_Art65" name="Article 64" sourceRef="Gateway_WhatTriggersReferral_Art65" targetRef="Task_HandleArticle64Conflict_Art65" />
+    <sequenceFlow id="Flow_GatewayReferralGround_To_HandleCompetenceConflict_Art65" name="Competence" sourceRef="Gateway_WhatTriggersReferral_Art65" targetRef="Task_HandleCompetenceConflict_Art65" />
+    <sequenceFlow id="Flow_GatewayReferralGround_To_HandleObjectionConflict_Art65" name="Article 60(4)" sourceRef="Gateway_WhatTriggersReferral_Art65" targetRef="Task_HandleObjectionConflict_Art65" />
+    <sequenceFlow id="Flow_HandleArticle64Conflict_To_GatewayMergeReferralGround_Art65" sourceRef="Task_HandleArticle64Conflict_Art65" targetRef="Gateway_MergeReferralGround_Art65" />
+    <sequenceFlow id="Flow_HandleCompetenceConflict_To_GatewayMergeReferralGround_Art65" sourceRef="Task_HandleCompetenceConflict_Art65" targetRef="Gateway_MergeReferralGround_Art65" />
+    <sequenceFlow id="Flow_HandleObjectionConflict_To_GatewayMergeReferralGround_Art65" sourceRef="Task_HandleObjectionConflict_Art65" targetRef="Gateway_MergeReferralGround_Art65" />
+    <sequenceFlow id="Flow_InformBoardOfNotificationDate_To_EndFinalDecisionNotified_Art65" sourceRef="Task_InformBoardOfNotificationDate_Art65" targetRef="EndEvent_FinalDecisionNotified_Art65" />
+    <sequenceFlow id="Flow_NotifyAuthoritiesAndCommission_To_ReceiveNotificationDate_Art65" sourceRef="Task_NotifyAuthoritiesAndCommission_Art65" targetRef="Task_ReceiveNotificationDate_Art65" />
+    <sequenceFlow id="Flow_NotifyControllerOrProcessor_To_NotifyDataSubject_Art65" sourceRef="Task_NotifyControllerOrProcessor_Art65" targetRef="Task_NotifyDataSubject_Art65" />
+    <sequenceFlow id="Flow_NotifyDataSubject_To_InformBoardOfNotificationDate_Art65" sourceRef="Task_NotifyDataSubject_Art65" targetRef="Task_InformBoardOfNotificationDate_Art65" />
+    <sequenceFlow id="Flow_PublishBoardDecision_To_EndDecisionPublished_Art65" sourceRef="Task_PublishBoardDecision_Art65" targetRef="EndEvent_BoardDecisionPublished_Art65" />
+    <sequenceFlow id="Flow_ReceiveBindingDecision_To_AdoptFinalDecision_Art65" sourceRef="Task_ReceiveBindingDecision_Art65" targetRef="Task_AdoptFinalDecision_Art65" />
+    <sequenceFlow id="Flow_ReceiveNotificationDate_To_PublishBoardDecision_Art65" sourceRef="Task_ReceiveNotificationDate_Art65" targetRef="Task_PublishBoardDecision_Art65" />
+    <sequenceFlow id="Flow_SendReferralToBoard_To_SuspendAdoption_Art65" sourceRef="Task_SendReferralToBoard_Art65" targetRef="Task_SuspendAdoptionDuringBoardPeriod_Art65" />
+    <sequenceFlow id="Flow_StartNeedBindingDecision_To_GatewayReferralGround_Art65" sourceRef="StartEvent_NeedBindingDecision_Art65" targetRef="Gateway_WhatTriggersReferral_Art65" />
+    <sequenceFlow id="Flow_StartReceiveReferral_To_GatewayComplexMatter_Art65" sourceRef="StartEvent_ReceiveReferral_Art65" targetRef="Gateway_IsMatterComplex_Art65" />
+    <sequenceFlow id="Flow_SuspendAdoption_To_ReceiveBindingDecision_Art65" sourceRef="Task_SuspendAdoptionDuringBoardPeriod_Art65" targetRef="Task_ReceiveBindingDecision_Art65" />
+    <sequenceFlow id="Flow_UseChairVote_To_GatewayMergeDecisionOutcome_Art65" sourceRef="Task_UseChairVote_Art65" targetRef="Gateway_MergeDecisionOutcome_Art65" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_CommissionReferral_Art65" sourceRef="Participant_Commission_Art65" targetRef="StartEvent_ReceiveReferral_Art65" />
+    <messageFlow id="MessageFlow_InformBoardOfNotificationDate_Art65" sourceRef="Task_InformBoardOfNotificationDate_Art65" targetRef="Task_ReceiveNotificationDate_Art65" />
+    <messageFlow id="MessageFlow_NotifyAuthorities_Art65" sourceRef="Task_NotifyAuthoritiesAndCommission_Art65" targetRef="Task_ReceiveBindingDecision_Art65" />
+    <messageFlow id="MessageFlow_NotifyCommission_Art65" sourceRef="Task_NotifyAuthoritiesAndCommission_Art65" targetRef="Participant_Commission_Art65" />
+    <messageFlow id="MessageFlow_NotifyConcernedAuthorities_Art65" sourceRef="Task_NotifyAuthoritiesAndCommission_Art65" targetRef="Participant_ConcernedAuthorities_Art65" />
+    <messageFlow id="MessageFlow_NotifyControllerOrProcessor_Art65" sourceRef="Task_NotifyControllerOrProcessor_Art65" targetRef="Participant_ControllerOrProcessor_Art65" />
+    <messageFlow id="MessageFlow_NotifyDataSubject_Art65" sourceRef="Task_NotifyDataSubject_Art65" targetRef="Participant_DataSubject_Art65" />
+    <messageFlow id="MessageFlow_PublishBoardDecision_Art65" sourceRef="Task_PublishBoardDecision_Art65" targetRef="Participant_Public_Art65" />
+    <messageFlow id="MessageFlow_SendReferralToBoard_Art65" sourceRef="Task_SendReferralToBoard_Art65" targetRef="StartEvent_ReceiveReferral_Art65" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

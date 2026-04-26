@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Commission_Art85" name="Commission" poolType="passive" />
+    <pool id="Participant_MemberState_Art85" name="Member State" poolType="active" processRef="Process_MemberState_Art85" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_NotifyCommissionOfArticle85Provisions_Art85" name="Notify Commission of Article 85 provisions" type="sendTask" poolRef="Participant_MemberState_Art85" />
+    <task id="Task_ProvideExemptionsAndDerogations_Art85" name="Provide exemptions and derogations" type="task" poolRef="Participant_MemberState_Art85" />
+    <task id="Task_ReconcileRightsByLaw_Art85" name="Reconcile rights by law" type="task" poolRef="Participant_MemberState_Art85" />
+  </tasks>
+  <events>
+    <event id="EndEvent_Article85ProvisionsNotified_Art85" name="Article 85 provisions notified" type="endEvent" poolRef="Participant_MemberState_Art85" />
+    <event id="EndEvent_ReconciliationCompleted_Art85" name="Reconciliation completed" type="endEvent" poolRef="Participant_MemberState_Art85" />
+    <event id="StartEvent_AssessReconciliationByLaw_Art85" name="Assess reconciliation by law" type="startEvent" poolRef="Participant_MemberState_Art85" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_AreExemptionsNecessary_Art85" name="Are exemptions or derogations necessary to reconcile the rights?" type="exclusiveGateway" poolRef="Participant_MemberState_Art85" />
+    <gateway id="Gateway_IsProcessingForSpecialExpressionPurposes_Art85" name="Is the processing for journalistic or academic artistic or literary expression purposes?" type="exclusiveGateway" poolRef="Participant_MemberState_Art85" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_GatewayNecessity_To_EndReconciliationCompleted_Art85" name="No" sourceRef="Gateway_AreExemptionsNecessary_Art85" targetRef="EndEvent_ReconciliationCompleted_Art85" />
+    <sequenceFlow id="Flow_GatewayNecessity_To_ProvideExemptionsAndDerogations_Art85" name="Yes" sourceRef="Gateway_AreExemptionsNecessary_Art85" targetRef="Task_ProvideExemptionsAndDerogations_Art85" />
+    <sequenceFlow id="Flow_GatewaySpecialExpressionPurpose_To_EndReconciliationCompleted_Art85" name="No" sourceRef="Gateway_IsProcessingForSpecialExpressionPurposes_Art85" targetRef="EndEvent_ReconciliationCompleted_Art85" />
+    <sequenceFlow id="Flow_GatewaySpecialExpressionPurpose_To_GatewayNecessity_Art85" name="Yes" sourceRef="Gateway_IsProcessingForSpecialExpressionPurposes_Art85" targetRef="Gateway_AreExemptionsNecessary_Art85" />
+    <sequenceFlow id="Flow_NotifyCommission_To_EndProvisionsNotified_Art85" sourceRef="Task_NotifyCommissionOfArticle85Provisions_Art85" targetRef="EndEvent_Article85ProvisionsNotified_Art85" />
+    <sequenceFlow id="Flow_ProvideExemptionsAndDerogations_To_NotifyCommission_Art85" sourceRef="Task_ProvideExemptionsAndDerogations_Art85" targetRef="Task_NotifyCommissionOfArticle85Provisions_Art85" />
+    <sequenceFlow id="Flow_ReconcileRightsByLaw_To_GatewaySpecialExpressionPurpose_Art85" sourceRef="Task_ReconcileRightsByLaw_Art85" targetRef="Gateway_IsProcessingForSpecialExpressionPurposes_Art85" />
+    <sequenceFlow id="Flow_Start_To_ReconcileRightsByLaw_Art85" sourceRef="StartEvent_AssessReconciliationByLaw_Art85" targetRef="Task_ReconcileRightsByLaw_Art85" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_NotifyCommissionOfArticle85Provisions_Art85" sourceRef="Task_NotifyCommissionOfArticle85Provisions_Art85" targetRef="Participant_Commission_Art85" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

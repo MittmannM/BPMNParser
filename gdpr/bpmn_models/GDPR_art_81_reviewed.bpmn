@@ -1,0 +1,655 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art81_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art81_Reviewed">
+    <bpmn:participant id="Participant_CompetentCourt_Art81"
+                      name="Competent Court"
+                      processRef="Process_CompetentCourt_Art81" />
+    <bpmn:participant id="Participant_OtherMemberStateCourt_Art81"
+                      name="Court in Another Member State"
+                      processRef="Process_OtherCourt_Art81" />
+    <bpmn:participant id="Participant_Party_Art81"
+                      name="Party"
+                      processRef="Process_Party_Art81" />
+
+    <bpmn:messageFlow id="MessageFlow_ContactCourt_Art81"
+                      sourceRef="Task_ContactOtherCourt_Art81"
+                      targetRef="StartEvent_ReceiveCourtContact_Art81" />
+    <bpmn:messageFlow id="MessageFlow_ConfirmProceedings_Art81"
+                      sourceRef="Task_ConfirmProceedingsExist_Art81"
+                      targetRef="Task_ReceiveProceedingsConfirmation_Art81" />
+    <bpmn:messageFlow id="MessageFlow_ApplyToDeclineJurisdiction_Art81"
+                      sourceRef="Task_ApplyToDeclineJurisdiction_Art81"
+                      targetRef="Task_ReceivePartyApplication_Art81" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_CompetentCourt_Art81"
+                name="Handle parallel proceedings"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 81 based on the real English legal text from
+      gdpr_articles/article_81.txt. This collaboration captures court-to-court confirmation of
+      pending proceedings on the same subject matter regarding processing by the same controller
+      or processor, the suspension option for any court other than the court first seized, and
+      the first-instance decline-of-jurisdiction option on a party application where the court
+      first seized has jurisdiction and its law permits consolidation.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_IdentifyPossibleParallelProceedings_Art81"
+                     name="Identify possible parallel proceedings">
+      <bpmn:outgoing>Flow_StartIdentify_To_GatewayInformation_Art81</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_HasInformationOnOtherProceedings_Art81"
+                           name="Does the court have information on proceedings in another Member State?">
+      <bpmn:incoming>Flow_StartIdentify_To_GatewayInformation_Art81</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayInformation_To_GatewaySameMatter_Art81</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayInformation_To_EndNoArticle81Action_Art81</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_IsSameMatterAndSameControllerOrProcessor_Art81"
+                           name="Is it the same subject matter and the same controller or processor?">
+      <bpmn:incoming>Flow_GatewayInformation_To_GatewaySameMatter_Art81</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySameMatter_To_ContactOtherCourt_Art81</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySameMatter_To_EndNoArticle81Action_Art81</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="Task_ContactOtherCourt_Art81"
+                   name="Contact other court">
+      <bpmn:incoming>Flow_GatewaySameMatter_To_ContactOtherCourt_Art81</bpmn:incoming>
+      <bpmn:outgoing>Flow_ContactOtherCourt_To_ReceiveConfirmation_Art81</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:receiveTask id="Task_ReceiveProceedingsConfirmation_Art81"
+                      name="Receive proceedings confirmation">
+      <bpmn:incoming>Flow_ContactOtherCourt_To_ReceiveConfirmation_Art81</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveConfirmation_To_GatewayPending_Art81</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:exclusiveGateway id="Gateway_AreProceedingsPending_Art81"
+                           name="Are proceedings pending in the other Member State?">
+      <bpmn:incoming>Flow_ReceiveConfirmation_To_GatewayPending_Art81</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayPending_To_GatewayFirstSeized_Art81</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayPending_To_EndNoParallelProceedings_Art81</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_IsThisCourtFirstSeized_Art81"
+                           name="Is this the court first seized?">
+      <bpmn:incoming>Flow_GatewayPending_To_GatewayFirstSeized_Art81</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayFirstSeized_To_EndContinueAsFirstSeized_Art81</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayFirstSeized_To_GatewaySuspend_Art81</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_SuspendProceedings_Art81"
+                           name="Suspend proceedings?">
+      <bpmn:incoming>Flow_GatewayFirstSeized_To_GatewaySuspend_Art81</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySuspend_To_SuspendProceedings_Art81</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySuspend_To_GatewayFirstInstance_Art81</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_SuspendProceedings_Art81"
+               name="Suspend proceedings">
+      <bpmn:incoming>Flow_GatewaySuspend_To_SuspendProceedings_Art81</bpmn:incoming>
+      <bpmn:outgoing>Flow_SuspendProceedings_To_EndProceedingsSuspended_Art81</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_AreProceedingsAtFirstInstance_Art81"
+                           name="Are the proceedings pending at first instance?">
+      <bpmn:incoming>Flow_GatewaySuspend_To_GatewayFirstInstance_Art81</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayFirstInstance_To_ReceivePartyApplication_Art81</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayFirstInstance_To_EndContinueProceedings_Art81</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:receiveTask id="Task_ReceivePartyApplication_Art81"
+                      name="Receive party application">
+      <bpmn:incoming>Flow_GatewayFirstInstance_To_ReceivePartyApplication_Art81</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceivePartyApplication_To_GatewayJurisdiction_Art81</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:exclusiveGateway id="Gateway_DoesFirstSeizedCourtMeetDeclineConditions_Art81"
+                           name="Does the court first seized have jurisdiction and does its law permit consolidation?">
+      <bpmn:incoming>Flow_ReceivePartyApplication_To_GatewayJurisdiction_Art81</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJurisdiction_To_DeclineJurisdiction_Art81</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayJurisdiction_To_EndContinueProceedings_Art81</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_DeclineJurisdiction_Art81"
+               name="Decline jurisdiction">
+      <bpmn:incoming>Flow_GatewayJurisdiction_To_DeclineJurisdiction_Art81</bpmn:incoming>
+      <bpmn:outgoing>Flow_DeclineJurisdiction_To_EndJurisdictionDeclined_Art81</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_NoArticle81Action_Art81"
+                   name="No Article 81 action">
+      <bpmn:incoming>Flow_GatewayInformation_To_EndNoArticle81Action_Art81</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewaySameMatter_To_EndNoArticle81Action_Art81</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_NoParallelProceedings_Art81"
+                   name="No parallel proceedings confirmed">
+      <bpmn:incoming>Flow_GatewayPending_To_EndNoParallelProceedings_Art81</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_ContinueAsFirstSeized_Art81"
+                   name="Continue as court first seized">
+      <bpmn:incoming>Flow_GatewayFirstSeized_To_EndContinueAsFirstSeized_Art81</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_ProceedingsSuspended_Art81"
+                   name="Proceedings suspended">
+      <bpmn:incoming>Flow_SuspendProceedings_To_EndProceedingsSuspended_Art81</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_ContinueProceedings_Art81"
+                   name="Continue proceedings">
+      <bpmn:incoming>Flow_GatewayFirstInstance_To_EndContinueProceedings_Art81</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayJurisdiction_To_EndContinueProceedings_Art81</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_JurisdictionDeclined_Art81"
+                   name="Jurisdiction declined">
+      <bpmn:incoming>Flow_DeclineJurisdiction_To_EndJurisdictionDeclined_Art81</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartIdentify_To_GatewayInformation_Art81"
+                       sourceRef="StartEvent_IdentifyPossibleParallelProceedings_Art81"
+                       targetRef="Gateway_HasInformationOnOtherProceedings_Art81" />
+    <bpmn:sequenceFlow id="Flow_GatewayInformation_To_GatewaySameMatter_Art81"
+                       name="Yes"
+                       sourceRef="Gateway_HasInformationOnOtherProceedings_Art81"
+                       targetRef="Gateway_IsSameMatterAndSameControllerOrProcessor_Art81" />
+    <bpmn:sequenceFlow id="Flow_GatewayInformation_To_EndNoArticle81Action_Art81"
+                       name="No"
+                       sourceRef="Gateway_HasInformationOnOtherProceedings_Art81"
+                       targetRef="EndEvent_NoArticle81Action_Art81" />
+    <bpmn:sequenceFlow id="Flow_GatewaySameMatter_To_ContactOtherCourt_Art81"
+                       name="Yes"
+                       sourceRef="Gateway_IsSameMatterAndSameControllerOrProcessor_Art81"
+                       targetRef="Task_ContactOtherCourt_Art81" />
+    <bpmn:sequenceFlow id="Flow_GatewaySameMatter_To_EndNoArticle81Action_Art81"
+                       name="No"
+                       sourceRef="Gateway_IsSameMatterAndSameControllerOrProcessor_Art81"
+                       targetRef="EndEvent_NoArticle81Action_Art81" />
+    <bpmn:sequenceFlow id="Flow_ContactOtherCourt_To_ReceiveConfirmation_Art81"
+                       sourceRef="Task_ContactOtherCourt_Art81"
+                       targetRef="Task_ReceiveProceedingsConfirmation_Art81" />
+    <bpmn:sequenceFlow id="Flow_ReceiveConfirmation_To_GatewayPending_Art81"
+                       sourceRef="Task_ReceiveProceedingsConfirmation_Art81"
+                       targetRef="Gateway_AreProceedingsPending_Art81" />
+    <bpmn:sequenceFlow id="Flow_GatewayPending_To_GatewayFirstSeized_Art81"
+                       name="Yes"
+                       sourceRef="Gateway_AreProceedingsPending_Art81"
+                       targetRef="Gateway_IsThisCourtFirstSeized_Art81" />
+    <bpmn:sequenceFlow id="Flow_GatewayPending_To_EndNoParallelProceedings_Art81"
+                       name="No"
+                       sourceRef="Gateway_AreProceedingsPending_Art81"
+                       targetRef="EndEvent_NoParallelProceedings_Art81" />
+    <bpmn:sequenceFlow id="Flow_GatewayFirstSeized_To_EndContinueAsFirstSeized_Art81"
+                       name="Yes"
+                       sourceRef="Gateway_IsThisCourtFirstSeized_Art81"
+                       targetRef="EndEvent_ContinueAsFirstSeized_Art81" />
+    <bpmn:sequenceFlow id="Flow_GatewayFirstSeized_To_GatewaySuspend_Art81"
+                       name="No"
+                       sourceRef="Gateway_IsThisCourtFirstSeized_Art81"
+                       targetRef="Gateway_SuspendProceedings_Art81" />
+    <bpmn:sequenceFlow id="Flow_GatewaySuspend_To_SuspendProceedings_Art81"
+                       name="Yes"
+                       sourceRef="Gateway_SuspendProceedings_Art81"
+                       targetRef="Task_SuspendProceedings_Art81" />
+    <bpmn:sequenceFlow id="Flow_GatewaySuspend_To_GatewayFirstInstance_Art81"
+                       name="No"
+                       sourceRef="Gateway_SuspendProceedings_Art81"
+                       targetRef="Gateway_AreProceedingsAtFirstInstance_Art81" />
+    <bpmn:sequenceFlow id="Flow_SuspendProceedings_To_EndProceedingsSuspended_Art81"
+                       sourceRef="Task_SuspendProceedings_Art81"
+                       targetRef="EndEvent_ProceedingsSuspended_Art81" />
+    <bpmn:sequenceFlow id="Flow_GatewayFirstInstance_To_ReceivePartyApplication_Art81"
+                       name="Yes"
+                       sourceRef="Gateway_AreProceedingsAtFirstInstance_Art81"
+                       targetRef="Task_ReceivePartyApplication_Art81" />
+    <bpmn:sequenceFlow id="Flow_GatewayFirstInstance_To_EndContinueProceedings_Art81"
+                       name="No"
+                       sourceRef="Gateway_AreProceedingsAtFirstInstance_Art81"
+                       targetRef="EndEvent_ContinueProceedings_Art81" />
+    <bpmn:sequenceFlow id="Flow_ReceivePartyApplication_To_GatewayJurisdiction_Art81"
+                       sourceRef="Task_ReceivePartyApplication_Art81"
+                       targetRef="Gateway_DoesFirstSeizedCourtMeetDeclineConditions_Art81" />
+    <bpmn:sequenceFlow id="Flow_GatewayJurisdiction_To_DeclineJurisdiction_Art81"
+                       name="Yes"
+                       sourceRef="Gateway_DoesFirstSeizedCourtMeetDeclineConditions_Art81"
+                       targetRef="Task_DeclineJurisdiction_Art81" />
+    <bpmn:sequenceFlow id="Flow_GatewayJurisdiction_To_EndContinueProceedings_Art81"
+                       name="No"
+                       sourceRef="Gateway_DoesFirstSeizedCourtMeetDeclineConditions_Art81"
+                       targetRef="EndEvent_ContinueProceedings_Art81" />
+    <bpmn:sequenceFlow id="Flow_DeclineJurisdiction_To_EndJurisdictionDeclined_Art81"
+                       sourceRef="Task_DeclineJurisdiction_Art81"
+                       targetRef="EndEvent_JurisdictionDeclined_Art81" />
+  </bpmn:process>
+
+  <bpmn:process id="Process_OtherCourt_Art81"
+                name="Confirm parallel proceedings"
+                isExecutable="false">
+    <bpmn:startEvent id="StartEvent_ReceiveCourtContact_Art81"
+                     name="Receive court contact">
+      <bpmn:messageEventDefinition />
+      <bpmn:outgoing>Flow_StartReceiveCourtContact_To_ConfirmProceedingsExist_Art81</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:sendTask id="Task_ConfirmProceedingsExist_Art81"
+                   name="Confirm proceedings status">
+      <bpmn:incoming>Flow_StartReceiveCourtContact_To_ConfirmProceedingsExist_Art81</bpmn:incoming>
+      <bpmn:outgoing>Flow_ConfirmProceedingsExist_To_EndOtherCourt_Art81</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_OtherCourtResponded_Art81"
+                   name="Court response sent">
+      <bpmn:incoming>Flow_ConfirmProceedingsExist_To_EndOtherCourt_Art81</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartReceiveCourtContact_To_ConfirmProceedingsExist_Art81"
+                       sourceRef="StartEvent_ReceiveCourtContact_Art81"
+                       targetRef="Task_ConfirmProceedingsExist_Art81" />
+    <bpmn:sequenceFlow id="Flow_ConfirmProceedingsExist_To_EndOtherCourt_Art81"
+                       sourceRef="Task_ConfirmProceedingsExist_Art81"
+                       targetRef="EndEvent_OtherCourtResponded_Art81" />
+  </bpmn:process>
+
+  <bpmn:process id="Process_Party_Art81"
+                name="Apply to decline jurisdiction"
+                isExecutable="false">
+    <bpmn:startEvent id="StartEvent_DecideOnApplication_Art81"
+                     name="Consider decline application">
+      <bpmn:outgoing>Flow_StartParty_To_GatewayApply_Art81</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_ApplyToDeclineJurisdiction_Art81"
+                           name="Apply to decline jurisdiction?">
+      <bpmn:incoming>Flow_StartParty_To_GatewayApply_Art81</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayApply_To_ApplyToDeclineJurisdiction_Art81</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayApply_To_EndNoPartyApplication_Art81</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:sendTask id="Task_ApplyToDeclineJurisdiction_Art81"
+                   name="Apply to decline jurisdiction">
+      <bpmn:incoming>Flow_GatewayApply_To_ApplyToDeclineJurisdiction_Art81</bpmn:incoming>
+      <bpmn:outgoing>Flow_ApplyToDeclineJurisdiction_To_EndPartyApplied_Art81</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_NoPartyApplication_Art81"
+                   name="No application submitted">
+      <bpmn:incoming>Flow_GatewayApply_To_EndNoPartyApplication_Art81</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_PartyApplied_Art81"
+                   name="Application submitted">
+      <bpmn:incoming>Flow_ApplyToDeclineJurisdiction_To_EndPartyApplied_Art81</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartParty_To_GatewayApply_Art81"
+                       sourceRef="StartEvent_DecideOnApplication_Art81"
+                       targetRef="Gateway_ApplyToDeclineJurisdiction_Art81" />
+    <bpmn:sequenceFlow id="Flow_GatewayApply_To_ApplyToDeclineJurisdiction_Art81"
+                       name="Yes"
+                       sourceRef="Gateway_ApplyToDeclineJurisdiction_Art81"
+                       targetRef="Task_ApplyToDeclineJurisdiction_Art81" />
+    <bpmn:sequenceFlow id="Flow_GatewayApply_To_EndNoPartyApplication_Art81"
+                       name="No"
+                       sourceRef="Gateway_ApplyToDeclineJurisdiction_Art81"
+                       targetRef="EndEvent_NoPartyApplication_Art81" />
+    <bpmn:sequenceFlow id="Flow_ApplyToDeclineJurisdiction_To_EndPartyApplied_Art81"
+                       sourceRef="Task_ApplyToDeclineJurisdiction_Art81"
+                       targetRef="EndEvent_PartyApplied_Art81" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art81_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art81_Reviewed"
+                      bpmnElement="Collaboration_Art81_Reviewed">
+      <bpmndi:BPMNShape id="Participant_CompetentCourt_Art81_di"
+                        bpmnElement="Participant_CompetentCourt_Art81"
+                        isHorizontal="true">
+        <dc:Bounds x="80" y="80" width="1960" height="260" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_OtherMemberStateCourt_Art81_di"
+                        bpmnElement="Participant_OtherMemberStateCourt_Art81"
+                        isHorizontal="true">
+        <dc:Bounds x="80" y="380" width="1960" height="140" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Party_Art81_di"
+                        bpmnElement="Participant_Party_Art81"
+                        isHorizontal="true">
+        <dc:Bounds x="80" y="560" width="1960" height="170" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_IdentifyPossibleParallelProceedings_Art81_di"
+                        bpmnElement="StartEvent_IdentifyPossibleParallelProceedings_Art81">
+        <dc:Bounds x="120" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_HasInformationOnOtherProceedings_Art81_di"
+                        bpmnElement="Gateway_HasInformationOnOtherProceedings_Art81"
+                        isMarkerVisible="true">
+        <dc:Bounds x="220" y="175" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_IsSameMatterAndSameControllerOrProcessor_Art81_di"
+                        bpmnElement="Gateway_IsSameMatterAndSameControllerOrProcessor_Art81"
+                        isMarkerVisible="true">
+        <dc:Bounds x="390" y="175" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ContactOtherCourt_Art81_di"
+                        bpmnElement="Task_ContactOtherCourt_Art81">
+        <dc:Bounds x="540" y="160" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReceiveProceedingsConfirmation_Art81_di"
+                        bpmnElement="Task_ReceiveProceedingsConfirmation_Art81">
+        <dc:Bounds x="800" y="160" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AreProceedingsPending_Art81_di"
+                        bpmnElement="Gateway_AreProceedingsPending_Art81"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1090" y="175" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_IsThisCourtFirstSeized_Art81_di"
+                        bpmnElement="Gateway_IsThisCourtFirstSeized_Art81"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1240" y="175" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SuspendProceedings_Art81_di"
+                        bpmnElement="Gateway_SuspendProceedings_Art81"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1390" y="175" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SuspendProceedings_Art81_di"
+                        bpmnElement="Task_SuspendProceedings_Art81">
+        <dc:Bounds x="1520" y="80" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AreProceedingsAtFirstInstance_Art81_di"
+                        bpmnElement="Gateway_AreProceedingsAtFirstInstance_Art81"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1520" y="190" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReceivePartyApplication_Art81_di"
+                        bpmnElement="Task_ReceivePartyApplication_Art81">
+        <dc:Bounds x="1650" y="175" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_DoesFirstSeizedCourtMeetDeclineConditions_Art81_di"
+                        bpmnElement="Gateway_DoesFirstSeizedCourtMeetDeclineConditions_Art81"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1890" y="190" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DeclineJurisdiction_Art81_di"
+                        bpmnElement="Task_DeclineJurisdiction_Art81">
+        <dc:Bounds x="1770" y="80" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NoArticle81Action_Art81_di"
+                        bpmnElement="EndEvent_NoArticle81Action_Art81">
+        <dc:Bounds x="450" y="272" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NoParallelProceedings_Art81_di"
+                        bpmnElement="EndEvent_NoParallelProceedings_Art81">
+        <dc:Bounds x="1102" y="272" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ContinueAsFirstSeized_Art81_di"
+                        bpmnElement="EndEvent_ContinueAsFirstSeized_Art81">
+        <dc:Bounds x="1262" y="272" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ProceedingsSuspended_Art81_di"
+                        bpmnElement="EndEvent_ProceedingsSuspended_Art81">
+        <dc:Bounds x="1732" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ContinueProceedings_Art81_di"
+                        bpmnElement="EndEvent_ContinueProceedings_Art81">
+        <dc:Bounds x="1962" y="272" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_JurisdictionDeclined_Art81_di"
+                        bpmnElement="EndEvent_JurisdictionDeclined_Art81">
+        <dc:Bounds x="1962" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_ReceiveCourtContact_Art81_di"
+                        bpmnElement="StartEvent_ReceiveCourtContact_Art81">
+        <dc:Bounds x="660" y="432" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ConfirmProceedingsExist_Art81_di"
+                        bpmnElement="Task_ConfirmProceedingsExist_Art81">
+        <dc:Bounds x="760" y="410" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_OtherCourtResponded_Art81_di"
+                        bpmnElement="EndEvent_OtherCourtResponded_Art81">
+        <dc:Bounds x="1000" y="432" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_DecideOnApplication_Art81_di"
+                        bpmnElement="StartEvent_DecideOnApplication_Art81">
+        <dc:Bounds x="1400" y="622" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ApplyToDeclineJurisdiction_Art81_di"
+                        bpmnElement="Gateway_ApplyToDeclineJurisdiction_Art81"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1500" y="615" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ApplyToDeclineJurisdiction_Art81_di"
+                        bpmnElement="Task_ApplyToDeclineJurisdiction_Art81">
+        <dc:Bounds x="1630" y="600" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NoPartyApplication_Art81_di"
+                        bpmnElement="EndEvent_NoPartyApplication_Art81">
+        <dc:Bounds x="1592" y="692" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_PartyApplied_Art81_di"
+                        bpmnElement="EndEvent_PartyApplied_Art81">
+        <dc:Bounds x="1872" y="622" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_StartIdentify_To_GatewayInformation_Art81_di"
+                       bpmnElement="Flow_StartIdentify_To_GatewayInformation_Art81">
+        <di:waypoint x="156" y="200" />
+        <di:waypoint x="220" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayInformation_To_GatewaySameMatter_Art81_di"
+                       bpmnElement="Flow_GatewayInformation_To_GatewaySameMatter_Art81">
+        <di:waypoint x="270" y="200" />
+        <di:waypoint x="390" y="200" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="314" y="182" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayInformation_To_EndNoArticle81Action_Art81_di"
+                       bpmnElement="Flow_GatewayInformation_To_EndNoArticle81Action_Art81">
+        <di:waypoint x="245" y="225" />
+        <di:waypoint x="245" y="290" />
+        <di:waypoint x="450" y="290" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="263" y="244" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySameMatter_To_ContactOtherCourt_Art81_di"
+                       bpmnElement="Flow_GatewaySameMatter_To_ContactOtherCourt_Art81">
+        <di:waypoint x="440" y="200" />
+        <di:waypoint x="540" y="200" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="474" y="182" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySameMatter_To_EndNoArticle81Action_Art81_di"
+                       bpmnElement="Flow_GatewaySameMatter_To_EndNoArticle81Action_Art81">
+        <di:waypoint x="415" y="225" />
+        <di:waypoint x="415" y="290" />
+        <di:waypoint x="450" y="290" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="423" y="244" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ContactOtherCourt_To_ReceiveConfirmation_Art81_di"
+                       bpmnElement="Flow_ContactOtherCourt_To_ReceiveConfirmation_Art81">
+        <di:waypoint x="690" y="200" />
+        <di:waypoint x="800" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveConfirmation_To_GatewayPending_Art81_di"
+                       bpmnElement="Flow_ReceiveConfirmation_To_GatewayPending_Art81">
+        <di:waypoint x="980" y="200" />
+        <di:waypoint x="1090" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPending_To_GatewayFirstSeized_Art81_di"
+                       bpmnElement="Flow_GatewayPending_To_GatewayFirstSeized_Art81">
+        <di:waypoint x="1140" y="200" />
+        <di:waypoint x="1240" y="200" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1174" y="182" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPending_To_EndNoParallelProceedings_Art81_di"
+                       bpmnElement="Flow_GatewayPending_To_EndNoParallelProceedings_Art81">
+        <di:waypoint x="1115" y="225" />
+        <di:waypoint x="1115" y="290" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1123" y="244" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayFirstSeized_To_EndContinueAsFirstSeized_Art81_di"
+                       bpmnElement="Flow_GatewayFirstSeized_To_EndContinueAsFirstSeized_Art81">
+        <di:waypoint x="1265" y="225" />
+        <di:waypoint x="1265" y="290" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1273" y="244" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayFirstSeized_To_GatewaySuspend_Art81_di"
+                       bpmnElement="Flow_GatewayFirstSeized_To_GatewaySuspend_Art81">
+        <di:waypoint x="1290" y="200" />
+        <di:waypoint x="1390" y="200" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1324" y="182" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySuspend_To_SuspendProceedings_Art81_di"
+                       bpmnElement="Flow_GatewaySuspend_To_SuspendProceedings_Art81">
+        <di:waypoint x="1415" y="175" />
+        <di:waypoint x="1415" y="120" />
+        <di:waypoint x="1520" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1438" y="138" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySuspend_To_GatewayFirstInstance_Art81_di"
+                       bpmnElement="Flow_GatewaySuspend_To_GatewayFirstInstance_Art81">
+        <di:waypoint x="1440" y="215" />
+        <di:waypoint x="1520" y="215" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1468" y="197" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SuspendProceedings_To_EndProceedingsSuspended_Art81_di"
+                       bpmnElement="Flow_SuspendProceedings_To_EndProceedingsSuspended_Art81">
+        <di:waypoint x="1670" y="120" />
+        <di:waypoint x="1732" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayFirstInstance_To_ReceivePartyApplication_Art81_di"
+                       bpmnElement="Flow_GatewayFirstInstance_To_ReceivePartyApplication_Art81">
+        <di:waypoint x="1570" y="215" />
+        <di:waypoint x="1650" y="215" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1598" y="197" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayFirstInstance_To_EndContinueProceedings_Art81_di"
+                       bpmnElement="Flow_GatewayFirstInstance_To_EndContinueProceedings_Art81">
+        <di:waypoint x="1545" y="240" />
+        <di:waypoint x="1545" y="290" />
+        <di:waypoint x="1962" y="290" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1555" y="257" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceivePartyApplication_To_GatewayJurisdiction_Art81_di"
+                       bpmnElement="Flow_ReceivePartyApplication_To_GatewayJurisdiction_Art81">
+        <di:waypoint x="1820" y="215" />
+        <di:waypoint x="1890" y="215" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJurisdiction_To_DeclineJurisdiction_Art81_di"
+                       bpmnElement="Flow_GatewayJurisdiction_To_DeclineJurisdiction_Art81">
+        <di:waypoint x="1915" y="190" />
+        <di:waypoint x="1915" y="120" />
+        <di:waypoint x="1920" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1923" y="146" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJurisdiction_To_EndContinueProceedings_Art81_di"
+                       bpmnElement="Flow_GatewayJurisdiction_To_EndContinueProceedings_Art81">
+        <di:waypoint x="1940" y="215" />
+        <di:waypoint x="1980" y="215" />
+        <di:waypoint x="1980" y="272" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1948" y="214" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_DeclineJurisdiction_To_EndJurisdictionDeclined_Art81_di"
+                       bpmnElement="Flow_DeclineJurisdiction_To_EndJurisdictionDeclined_Art81">
+        <di:waypoint x="1920" y="120" />
+        <di:waypoint x="1962" y="120" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_StartReceiveCourtContact_To_ConfirmProceedingsExist_Art81_di"
+                       bpmnElement="Flow_StartReceiveCourtContact_To_ConfirmProceedingsExist_Art81">
+        <di:waypoint x="696" y="450" />
+        <di:waypoint x="760" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ConfirmProceedingsExist_To_EndOtherCourt_Art81_di"
+                       bpmnElement="Flow_ConfirmProceedingsExist_To_EndOtherCourt_Art81">
+        <di:waypoint x="940" y="450" />
+        <di:waypoint x="1000" y="450" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_StartParty_To_GatewayApply_Art81_di"
+                       bpmnElement="Flow_StartParty_To_GatewayApply_Art81">
+        <di:waypoint x="1436" y="640" />
+        <di:waypoint x="1500" y="640" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayApply_To_ApplyToDeclineJurisdiction_Art81_di"
+                       bpmnElement="Flow_GatewayApply_To_ApplyToDeclineJurisdiction_Art81">
+        <di:waypoint x="1550" y="640" />
+        <di:waypoint x="1630" y="640" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1578" y="622" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayApply_To_EndNoPartyApplication_Art81_di"
+                       bpmnElement="Flow_GatewayApply_To_EndNoPartyApplication_Art81">
+        <di:waypoint x="1525" y="665" />
+        <di:waypoint x="1525" y="710" />
+        <di:waypoint x="1592" y="710" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1534" y="682" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ApplyToDeclineJurisdiction_To_EndPartyApplied_Art81_di"
+                       bpmnElement="Flow_ApplyToDeclineJurisdiction_To_EndPartyApplied_Art81">
+        <di:waypoint x="1810" y="640" />
+        <di:waypoint x="1872" y="640" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_ContactCourt_Art81_di"
+                       bpmnElement="MessageFlow_ContactCourt_Art81">
+        <di:waypoint x="615" y="240" />
+        <di:waypoint x="615" y="450" />
+        <di:waypoint x="660" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ConfirmProceedings_Art81_di"
+                       bpmnElement="MessageFlow_ConfirmProceedings_Art81">
+        <di:waypoint x="850" y="410" />
+        <di:waypoint x="850" y="240" />
+        <di:waypoint x="890" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_ApplyToDeclineJurisdiction_Art81_di"
+                       bpmnElement="MessageFlow_ApplyToDeclineJurisdiction_Art81">
+        <di:waypoint x="1720" y="600" />
+        <di:waypoint x="1720" y="255" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

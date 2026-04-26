@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools />
+  <lanes />
+  <tasks>
+    <task id="Task_DisapplyArticle56_Art55" name="Disapply Article 56" type="task" poolRef="Process_CompetenceAssessment_Art55" />
+    <task id="Task_ExerciseSpecialCompetence_Art55" name="Exercise Member State competence" type="task" poolRef="Process_CompetenceAssessment_Art55" />
+    <task id="Task_ExerciseTerritorialCompetence_Art55" name="Exercise territorial competence" type="task" poolRef="Process_CompetenceAssessment_Art55" />
+    <task id="Task_IdentifyProcessingContext_Art55" name="Identify processing context" type="task" poolRef="Process_CompetenceAssessment_Art55" />
+  </tasks>
+  <events>
+    <event id="EndEvent_NoCourtCompetence_Art55" name="No competence over courts acting judicially" type="endEvent" poolRef="Process_CompetenceAssessment_Art55" />
+    <event id="EndEvent_OutsideTerritory_Art55" name="Outside territorial competence" type="endEvent" poolRef="Process_CompetenceAssessment_Art55" />
+    <event id="EndEvent_SpecialCompetence_Art55" name="Special competence established" type="endEvent" poolRef="Process_CompetenceAssessment_Art55" />
+    <event id="EndEvent_TerritorialCompetence_Art55" name="Territorial competence established" type="endEvent" poolRef="Process_CompetenceAssessment_Art55" />
+    <event id="StartEvent_AssessCompetence_Art55" name="Assess supervisory authority competence" type="startEvent" poolRef="Process_CompetenceAssessment_Art55" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_ArticleSixBasis_Art55" name="Is the processing carried out under Article 6(1)(c) or (e) by a public authority or private body?" type="exclusiveGateway" poolRef="Process_CompetenceAssessment_Art55" />
+    <gateway id="Gateway_JudicialCapacity_Art55" name="Are courts acting in their judicial capacity involved?" type="exclusiveGateway" poolRef="Process_CompetenceAssessment_Art55" />
+    <gateway id="Gateway_Territory_Art55" name="Does the processing fall within the authority's Member State territory?" type="exclusiveGateway" poolRef="Process_CompetenceAssessment_Art55" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_DisapplyArticle56_To_EndSpecialCompetence_Art55" sourceRef="Task_DisapplyArticle56_Art55" targetRef="EndEvent_SpecialCompetence_Art55" />
+    <sequenceFlow id="Flow_ExerciseSpecialCompetence_To_DisapplyArticle56_Art55" sourceRef="Task_ExerciseSpecialCompetence_Art55" targetRef="Task_DisapplyArticle56_Art55" />
+    <sequenceFlow id="Flow_ExerciseTerritorialCompetence_To_EndTerritorialCompetence_Art55" sourceRef="Task_ExerciseTerritorialCompetence_Art55" targetRef="EndEvent_TerritorialCompetence_Art55" />
+    <sequenceFlow id="Flow_GatewayArticleSixBasis_To_ExerciseSpecialCompetence_Art55" name="Yes" sourceRef="Gateway_ArticleSixBasis_Art55" targetRef="Task_ExerciseSpecialCompetence_Art55" />
+    <sequenceFlow id="Flow_GatewayArticleSixBasis_To_ExerciseTerritorialCompetence_Art55" name="No" sourceRef="Gateway_ArticleSixBasis_Art55" targetRef="Task_ExerciseTerritorialCompetence_Art55" />
+    <sequenceFlow id="Flow_GatewayJudicialCapacity_To_EndNoCourtCompetence_Art55" name="Yes" sourceRef="Gateway_JudicialCapacity_Art55" targetRef="EndEvent_NoCourtCompetence_Art55" />
+    <sequenceFlow id="Flow_GatewayJudicialCapacity_To_GatewayArticleSixBasis_Art55" name="No" sourceRef="Gateway_JudicialCapacity_Art55" targetRef="Gateway_ArticleSixBasis_Art55" />
+    <sequenceFlow id="Flow_GatewayTerritory_To_EndOutsideTerritory_Art55" name="No" sourceRef="Gateway_Territory_Art55" targetRef="EndEvent_OutsideTerritory_Art55" />
+    <sequenceFlow id="Flow_GatewayTerritory_To_GatewayJudicialCapacity_Art55" name="Yes" sourceRef="Gateway_Territory_Art55" targetRef="Gateway_JudicialCapacity_Art55" />
+    <sequenceFlow id="Flow_IdentifyContext_To_GatewayTerritory_Art55" sourceRef="Task_IdentifyProcessingContext_Art55" targetRef="Gateway_Territory_Art55" />
+    <sequenceFlow id="Flow_Start_To_IdentifyContext_Art55" sourceRef="StartEvent_AssessCompetence_Art55" targetRef="Task_IdentifyProcessingContext_Art55" />
+  </sequenceFlows>
+  <messageFlows />
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools />
+  <lanes />
+  <tasks />
+  <events>
+    <event id="EndEvent_Article95NotApplicable_Art95" name="Article 95 not applicable" type="endEvent" poolRef="Process_Art95" />
+    <event id="EndEvent_NoAdditionalObligations_Art95" name="No additional GDPR obligations" type="endEvent" poolRef="Process_Art95" />
+    <event id="StartEvent_AssessElectronicCommunicationsProcessing_Art95" name="Assess electronic communications processing" type="startEvent" poolRef="Process_Art95" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_AreSameObjectiveSpecificObligationsPresent_Art95" name="Are there specific obligations with the same objective under Directive 2002/58/EC?" type="exclusiveGateway" poolRef="Process_Art95" />
+    <gateway id="Gateway_IsPublicElectronicCommunicationsContext_Art95" name="Is the processing linked to publicly available electronic communications services in public communication networks in the Union?" type="exclusiveGateway" poolRef="Process_Art95" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_GatewayPublicServiceContext_To_EndArticle95NotApplicable_Art95" name="No" sourceRef="Gateway_IsPublicElectronicCommunicationsContext_Art95" targetRef="EndEvent_Article95NotApplicable_Art95" />
+    <sequenceFlow id="Flow_GatewayPublicServiceContext_To_GatewaySpecificObligations_Art95" name="Yes" sourceRef="Gateway_IsPublicElectronicCommunicationsContext_Art95" targetRef="Gateway_AreSameObjectiveSpecificObligationsPresent_Art95" />
+    <sequenceFlow id="Flow_GatewaySpecificObligations_To_EndArticle95NotApplicable_Art95" name="No" sourceRef="Gateway_AreSameObjectiveSpecificObligationsPresent_Art95" targetRef="EndEvent_Article95NotApplicable_Art95" />
+    <sequenceFlow id="Flow_GatewaySpecificObligations_To_EndNoAdditionalObligations_Art95" name="Yes" sourceRef="Gateway_AreSameObjectiveSpecificObligationsPresent_Art95" targetRef="EndEvent_NoAdditionalObligations_Art95" />
+    <sequenceFlow id="Flow_Start_To_GatewayPublicServiceContext_Art95" sourceRef="StartEvent_AssessElectronicCommunicationsProcessing_Art95" targetRef="Gateway_IsPublicElectronicCommunicationsContext_Art95" />
+  </sequenceFlows>
+  <messageFlows />
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

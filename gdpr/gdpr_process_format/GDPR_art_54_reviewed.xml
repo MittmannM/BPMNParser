@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_MemberState_Art54" name="Member State" poolType="active" processRef="Process_MemberState_Art54" />
+    <pool id="Participant_SupervisoryAuthority_Art54" name="Supervisory Authority" poolType="active" processRef="Process_SupervisoryAuthority_Art54" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_AllowStaggeredFirstTerm_Art54" name="Allow shorter first term only for staggered independence protection" type="task" poolRef="Participant_MemberState_Art54" />
+    <task id="Task_ObserveProfessionalSecrecy_Art54" name="Observe professional secrecy" type="task" poolRef="Participant_SupervisoryAuthority_Art54" />
+    <task id="Task_ProtectInfringementReport_Art54" name="Protect infringement-report confidentiality" type="task" poolRef="Participant_SupervisoryAuthority_Art54" />
+    <task id="Task_ProvideAppointmentConditions_Art54" name="Provide qualifications and eligibility rules" type="task" poolRef="Participant_MemberState_Art54" />
+    <task id="Task_ProvideAppointmentProcedures_Art54" name="Provide appointment rules and procedures" type="task" poolRef="Participant_MemberState_Art54" />
+    <task id="Task_ProvideEstablishmentRules_Art54" name="Provide establishment rules" type="task" poolRef="Participant_MemberState_Art54" />
+    <task id="Task_ProvideIncompatibilityRules_Art54" name="Provide incompatibility and cessation-of-employment rules" type="task" poolRef="Participant_MemberState_Art54" />
+    <task id="Task_ProvideReappointmentRules_Art54" name="Provide reappointment eligibility rules" type="task" poolRef="Participant_MemberState_Art54" />
+    <task id="Task_ProvideTermRules_Art54" name="Provide term-duration rules" type="task" poolRef="Participant_MemberState_Art54" />
+  </tasks>
+  <events>
+    <event id="EndEvent_LegalFrameworkSet_Art54" name="Article 54 legal framework set" type="endEvent" poolRef="Participant_MemberState_Art54" />
+    <event id="EndEvent_SecrecyMaintained_Art54" name="Article 54 secrecy duties maintained" type="endEvent" poolRef="Participant_SupervisoryAuthority_Art54" />
+    <event id="StartEvent_HandleConfidentialInformation_Art54" name="Handle confidential information" type="startEvent" poolRef="Participant_SupervisoryAuthority_Art54" />
+    <event id="StartEvent_SetLegalFramework_Art54" name="Set supervisory-authority legal framework" type="startEvent" poolRef="Participant_MemberState_Art54" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_JoinLegalFramework_Art54" type="parallelGateway" poolRef="Participant_MemberState_Art54" />
+    <gateway id="Gateway_MergeTermRules_Art54" type="exclusiveGateway" poolRef="Participant_MemberState_Art54" />
+    <gateway id="Gateway_MinimumTerm_Art54" name="Is the term at least four years or a permitted shorter first term?" type="exclusiveGateway" poolRef="Participant_MemberState_Art54" />
+    <gateway id="Gateway_NaturalPersonReport_Art54" name="Does the information concern reporting by natural persons of infringements?" type="exclusiveGateway" poolRef="Participant_SupervisoryAuthority_Art54" />
+    <gateway id="Gateway_SplitLegalFramework_Art54" type="parallelGateway" poolRef="Participant_MemberState_Art54" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AllowStaggeredFirstTerm_To_GatewayMergeTermRules_Art54" sourceRef="Task_AllowStaggeredFirstTerm_Art54" targetRef="Gateway_MergeTermRules_Art54" />
+    <sequenceFlow id="Flow_GatewayJoinLegalFramework_To_EndFrameworkSet_Art54" sourceRef="Gateway_JoinLegalFramework_Art54" targetRef="EndEvent_LegalFrameworkSet_Art54" />
+    <sequenceFlow id="Flow_GatewayMergeTermRules_To_GatewayJoinLegalFramework_Art54" sourceRef="Gateway_MergeTermRules_Art54" targetRef="Gateway_JoinLegalFramework_Art54" />
+    <sequenceFlow id="Flow_GatewayMinimumTerm_To_GatewayMergeTermRules_Art54" name="Yes" sourceRef="Gateway_MinimumTerm_Art54" targetRef="Gateway_MergeTermRules_Art54" />
+    <sequenceFlow id="Flow_GatewayMinimumTerm_To_TaskAllowStaggeredFirstTerm_Art54" name="No" sourceRef="Gateway_MinimumTerm_Art54" targetRef="Task_AllowStaggeredFirstTerm_Art54" />
+    <sequenceFlow id="Flow_GatewayNaturalPersonReport_To_EndSecrecyMaintained_Art54" name="No" sourceRef="Gateway_NaturalPersonReport_Art54" targetRef="EndEvent_SecrecyMaintained_Art54" />
+    <sequenceFlow id="Flow_GatewayNaturalPersonReport_To_ProtectInfringementReport_Art54" name="Yes" sourceRef="Gateway_NaturalPersonReport_Art54" targetRef="Task_ProtectInfringementReport_Art54" />
+    <sequenceFlow id="Flow_GatewaySplit_To_ProvideAppointmentConditions_Art54" sourceRef="Gateway_SplitLegalFramework_Art54" targetRef="Task_ProvideAppointmentConditions_Art54" />
+    <sequenceFlow id="Flow_GatewaySplit_To_ProvideAppointmentProcedures_Art54" sourceRef="Gateway_SplitLegalFramework_Art54" targetRef="Task_ProvideAppointmentProcedures_Art54" />
+    <sequenceFlow id="Flow_GatewaySplit_To_ProvideEstablishmentRules_Art54" sourceRef="Gateway_SplitLegalFramework_Art54" targetRef="Task_ProvideEstablishmentRules_Art54" />
+    <sequenceFlow id="Flow_GatewaySplit_To_ProvideIncompatibilityRules_Art54" sourceRef="Gateway_SplitLegalFramework_Art54" targetRef="Task_ProvideIncompatibilityRules_Art54" />
+    <sequenceFlow id="Flow_GatewaySplit_To_ProvideReappointmentRules_Art54" sourceRef="Gateway_SplitLegalFramework_Art54" targetRef="Task_ProvideReappointmentRules_Art54" />
+    <sequenceFlow id="Flow_GatewaySplit_To_ProvideTermRules_Art54" sourceRef="Gateway_SplitLegalFramework_Art54" targetRef="Task_ProvideTermRules_Art54" />
+    <sequenceFlow id="Flow_ObserveProfessionalSecrecy_To_GatewayNaturalPersonReport_Art54" sourceRef="Task_ObserveProfessionalSecrecy_Art54" targetRef="Gateway_NaturalPersonReport_Art54" />
+    <sequenceFlow id="Flow_ProtectInfringementReport_To_EndSecrecyMaintained_Art54" sourceRef="Task_ProtectInfringementReport_Art54" targetRef="EndEvent_SecrecyMaintained_Art54" />
+    <sequenceFlow id="Flow_ProvideAppointmentConditions_To_GatewayJoinLegalFramework_Art54" sourceRef="Task_ProvideAppointmentConditions_Art54" targetRef="Gateway_JoinLegalFramework_Art54" />
+    <sequenceFlow id="Flow_ProvideAppointmentProcedures_To_GatewayJoinLegalFramework_Art54" sourceRef="Task_ProvideAppointmentProcedures_Art54" targetRef="Gateway_JoinLegalFramework_Art54" />
+    <sequenceFlow id="Flow_ProvideEstablishmentRules_To_GatewayJoinLegalFramework_Art54" sourceRef="Task_ProvideEstablishmentRules_Art54" targetRef="Gateway_JoinLegalFramework_Art54" />
+    <sequenceFlow id="Flow_ProvideIncompatibilityRules_To_GatewayJoinLegalFramework_Art54" sourceRef="Task_ProvideIncompatibilityRules_Art54" targetRef="Gateway_JoinLegalFramework_Art54" />
+    <sequenceFlow id="Flow_ProvideReappointmentRules_To_GatewayJoinLegalFramework_Art54" sourceRef="Task_ProvideReappointmentRules_Art54" targetRef="Gateway_JoinLegalFramework_Art54" />
+    <sequenceFlow id="Flow_ProvideTermRules_To_GatewayMinimumTerm_Art54" sourceRef="Task_ProvideTermRules_Art54" targetRef="Gateway_MinimumTerm_Art54" />
+    <sequenceFlow id="Flow_StartConfidentiality_To_ObserveProfessionalSecrecy_Art54" sourceRef="StartEvent_HandleConfidentialInformation_Art54" targetRef="Task_ObserveProfessionalSecrecy_Art54" />
+    <sequenceFlow id="Flow_Start_To_GatewaySplitLegalFramework_Art54" sourceRef="StartEvent_SetLegalFramework_Art54" targetRef="Gateway_SplitLegalFramework_Art54" />
+  </sequenceFlows>
+  <messageFlows />
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

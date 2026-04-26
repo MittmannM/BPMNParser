@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art94_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:process id="Process_Art94"
+                name="Apply repeal and reference-construction rules"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 94 based on the real English legal text from
+      gdpr_articles/article_94.txt. This compact process captures the repeal of Directive
+      95/46/EC from 25 May 2018 and the two reference-construction rules for references to the
+      repealed Directive and to the former Article 29 Working Party.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_ReachRepealDate_Art94"
+                     name="Reach repeal date">
+      <bpmn:outgoing>Flow_Start_To_RepealDirective_Art94</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_RepealDirective9546EC_Art94"
+               name="Repeal Directive 95/46/EC">
+      <bpmn:incoming>Flow_Start_To_RepealDirective_Art94</bpmn:incoming>
+      <bpmn:outgoing>Flow_RepealDirective_To_SplitReferenceConstruction_Art94</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_SplitReferenceConstruction_Art94">
+      <bpmn:incoming>Flow_RepealDirective_To_SplitReferenceConstruction_Art94</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplit_To_ConstrueDirectiveReferences_Art94</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplit_To_ConstrueWorkingPartyReferences_Art94</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_ConstrueDirectiveReferences_Art94"
+               name="Construe Directive references as Regulation references">
+      <bpmn:incoming>Flow_GatewaySplit_To_ConstrueDirectiveReferences_Art94</bpmn:incoming>
+      <bpmn:outgoing>Flow_ConstrueDirectiveReferences_To_GatewayJoinReferenceConstruction_Art94</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ConstrueWorkingPartyReferences_Art94"
+               name="Construe Working Party references as EDPB references">
+      <bpmn:incoming>Flow_GatewaySplit_To_ConstrueWorkingPartyReferences_Art94</bpmn:incoming>
+      <bpmn:outgoing>Flow_ConstrueWorkingPartyReferences_To_GatewayJoinReferenceConstruction_Art94</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_JoinReferenceConstruction_Art94">
+      <bpmn:incoming>Flow_ConstrueDirectiveReferences_To_GatewayJoinReferenceConstruction_Art94</bpmn:incoming>
+      <bpmn:incoming>Flow_ConstrueWorkingPartyReferences_To_GatewayJoinReferenceConstruction_Art94</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoin_To_EndReferenceRulesApplied_Art94</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:endEvent id="EndEvent_ReferenceRulesApplied_Art94"
+                   name="Reference rules applied">
+      <bpmn:incoming>Flow_GatewayJoin_To_EndReferenceRulesApplied_Art94</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_RepealDirective_Art94"
+                       sourceRef="StartEvent_ReachRepealDate_Art94"
+                       targetRef="Task_RepealDirective9546EC_Art94" />
+    <bpmn:sequenceFlow id="Flow_RepealDirective_To_SplitReferenceConstruction_Art94"
+                       sourceRef="Task_RepealDirective9546EC_Art94"
+                       targetRef="Gateway_SplitReferenceConstruction_Art94" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplit_To_ConstrueDirectiveReferences_Art94"
+                       sourceRef="Gateway_SplitReferenceConstruction_Art94"
+                       targetRef="Task_ConstrueDirectiveReferences_Art94" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplit_To_ConstrueWorkingPartyReferences_Art94"
+                       sourceRef="Gateway_SplitReferenceConstruction_Art94"
+                       targetRef="Task_ConstrueWorkingPartyReferences_Art94" />
+    <bpmn:sequenceFlow id="Flow_ConstrueDirectiveReferences_To_GatewayJoinReferenceConstruction_Art94"
+                       sourceRef="Task_ConstrueDirectiveReferences_Art94"
+                       targetRef="Gateway_JoinReferenceConstruction_Art94" />
+    <bpmn:sequenceFlow id="Flow_ConstrueWorkingPartyReferences_To_GatewayJoinReferenceConstruction_Art94"
+                       sourceRef="Task_ConstrueWorkingPartyReferences_Art94"
+                       targetRef="Gateway_JoinReferenceConstruction_Art94" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoin_To_EndReferenceRulesApplied_Art94"
+                       sourceRef="Gateway_JoinReferenceConstruction_Art94"
+                       targetRef="EndEvent_ReferenceRulesApplied_Art94" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art94_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art94_Reviewed"
+                      bpmnElement="Process_Art94">
+      <bpmndi:BPMNShape id="StartEvent_ReachRepealDate_Art94_di"
+                        bpmnElement="StartEvent_ReachRepealDate_Art94">
+        <dc:Bounds x="120" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RepealDirective9546EC_Art94_di"
+                        bpmnElement="Task_RepealDirective9546EC_Art94">
+        <dc:Bounds x="220" y="170" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SplitReferenceConstruction_Art94_di"
+                        bpmnElement="Gateway_SplitReferenceConstruction_Art94"
+                        isMarkerVisible="true">
+        <dc:Bounds x="490" y="185" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ConstrueDirectiveReferences_Art94_di"
+                        bpmnElement="Task_ConstrueDirectiveReferences_Art94">
+        <dc:Bounds x="650" y="90" width="230" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ConstrueWorkingPartyReferences_Art94_di"
+                        bpmnElement="Task_ConstrueWorkingPartyReferences_Art94">
+        <dc:Bounds x="650" y="220" width="250" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinReferenceConstruction_Art94_di"
+                        bpmnElement="Gateway_JoinReferenceConstruction_Art94"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1010" y="185" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ReferenceRulesApplied_Art94_di"
+                        bpmnElement="EndEvent_ReferenceRulesApplied_Art94">
+        <dc:Bounds x="1142" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_RepealDirective_Art94_di"
+                       bpmnElement="Flow_Start_To_RepealDirective_Art94">
+        <di:waypoint x="156" y="210" />
+        <di:waypoint x="220" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_RepealDirective_To_SplitReferenceConstruction_Art94_di"
+                       bpmnElement="Flow_RepealDirective_To_SplitReferenceConstruction_Art94">
+        <di:waypoint x="400" y="210" />
+        <di:waypoint x="490" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplit_To_ConstrueDirectiveReferences_Art94_di"
+                       bpmnElement="Flow_GatewaySplit_To_ConstrueDirectiveReferences_Art94">
+        <di:waypoint x="515" y="185" />
+        <di:waypoint x="515" y="130" />
+        <di:waypoint x="650" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplit_To_ConstrueWorkingPartyReferences_Art94_di"
+                       bpmnElement="Flow_GatewaySplit_To_ConstrueWorkingPartyReferences_Art94">
+        <di:waypoint x="515" y="235" />
+        <di:waypoint x="515" y="260" />
+        <di:waypoint x="650" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ConstrueDirectiveReferences_To_GatewayJoinReferenceConstruction_Art94_di"
+                       bpmnElement="Flow_ConstrueDirectiveReferences_To_GatewayJoinReferenceConstruction_Art94">
+        <di:waypoint x="880" y="130" />
+        <di:waypoint x="1035" y="130" />
+        <di:waypoint x="1035" y="185" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ConstrueWorkingPartyReferences_To_GatewayJoinReferenceConstruction_Art94_di"
+                       bpmnElement="Flow_ConstrueWorkingPartyReferences_To_GatewayJoinReferenceConstruction_Art94">
+        <di:waypoint x="900" y="260" />
+        <di:waypoint x="1035" y="260" />
+        <di:waypoint x="1035" y="235" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoin_To_EndReferenceRulesApplied_Art94_di"
+                       bpmnElement="Flow_GatewayJoin_To_EndReferenceRulesApplied_Art94">
+        <di:waypoint x="1060" y="210" />
+        <di:waypoint x="1142" y="210" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

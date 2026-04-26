@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art88_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art88_Reviewed">
+    <bpmn:participant id="Participant_MemberState_Art88"
+                      name="Member State"
+                      processRef="Process_MemberState_Art88" />
+    <bpmn:participant id="Participant_Commission_Art88"
+                      name="Commission" />
+
+    <bpmn:messageFlow id="MessageFlow_NotifyCommissionOfArticle88Provisions_Art88"
+                      sourceRef="Task_NotifyCommissionOfArticle88Provisions_Art88"
+                      targetRef="Participant_Commission_Art88" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_MemberState_Art88"
+                name="Set employment-context data-protection rules"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 88 based on the real English legal text from
+      gdpr_articles/article_88.txt. This process captures the optional adoption of more specific
+      rules by law or by collective agreements for the processing of employees' personal data in
+      the employment context, the required suitable and specific safeguards for human dignity and
+      legitimate interests and fundamental rights, including particular regard to transparency and
+      intra-group transfers and workplace monitoring systems, and the duty to notify the
+      Commission of adopted legal provisions and later amendments.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_AssessEmploymentContextRules_Art88"
+                     name="Assess employment-context rules">
+      <bpmn:outgoing>Flow_Start_To_GatewayAdoptSpecificRules_Art88</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_AdoptMoreSpecificRules_Art88"
+                           name="Will the Member State adopt more specific employment-context rules?">
+      <bpmn:incoming>Flow_Start_To_GatewayAdoptSpecificRules_Art88</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAdoptSpecificRules_To_GatewayAdoptionBasis_Art88</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAdoptSpecificRules_To_EndNoAdditionalRules_Art88</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_WhatIsTheAdoptionBasis_Art88"
+                           name="What is the basis for the more specific rules?">
+      <bpmn:incoming>Flow_GatewayAdoptSpecificRules_To_GatewayAdoptionBasis_Art88</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAdoptionBasis_To_AdoptRulesByLaw_Art88</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAdoptionBasis_To_AdoptRulesByCollectiveAgreement_Art88</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_AdoptRulesByLaw_Art88"
+               name="Adopt rules by law">
+      <bpmn:incoming>Flow_GatewayAdoptionBasis_To_AdoptRulesByLaw_Art88</bpmn:incoming>
+      <bpmn:outgoing>Flow_AdoptRulesByLaw_To_GatewayMergeAdoptionBasis_Art88</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_AdoptRulesByCollectiveAgreement_Art88"
+               name="Adopt rules by collective agreement">
+      <bpmn:incoming>Flow_GatewayAdoptionBasis_To_AdoptRulesByCollectiveAgreement_Art88</bpmn:incoming>
+      <bpmn:outgoing>Flow_AdoptRulesByCollectiveAgreement_To_GatewayMergeAdoptionBasis_Art88</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_MergeAdoptionBasis_Art88">
+      <bpmn:incoming>Flow_AdoptRulesByLaw_To_GatewayMergeAdoptionBasis_Art88</bpmn:incoming>
+      <bpmn:incoming>Flow_AdoptRulesByCollectiveAgreement_To_GatewayMergeAdoptionBasis_Art88</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayMergeAdoptionBasis_To_DefineEmploymentPurposes_Art88</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_DefineEmploymentContextPurposes_Art88"
+               name="Define employment-context purposes">
+      <bpmn:incoming>Flow_GatewayMergeAdoptionBasis_To_DefineEmploymentPurposes_Art88</bpmn:incoming>
+      <bpmn:outgoing>Flow_DefineEmploymentPurposes_To_SetSafeguards_Art88</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_SetSpecificSafeguards_Art88"
+               name="Set specific safeguards">
+      <bpmn:incoming>Flow_DefineEmploymentPurposes_To_SetSafeguards_Art88</bpmn:incoming>
+      <bpmn:outgoing>Flow_SetSpecificSafeguards_To_AddressSpecialSafeguardAreas_Art88</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_AddressSpecialSafeguardAreas_Art88"
+               name="Address transparency transfers and monitoring">
+      <bpmn:incoming>Flow_SetSpecificSafeguards_To_AddressSpecialSafeguardAreas_Art88</bpmn:incoming>
+      <bpmn:outgoing>Flow_AddressSpecialSafeguardAreas_To_NotifyCommission_Art88</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="Task_NotifyCommissionOfArticle88Provisions_Art88"
+                   name="Notify Commission of Article 88 provisions">
+      <bpmn:incoming>Flow_AddressSpecialSafeguardAreas_To_NotifyCommission_Art88</bpmn:incoming>
+      <bpmn:outgoing>Flow_NotifyCommission_To_EndArticle88ProvisionsNotified_Art88</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:endEvent id="EndEvent_NoAdditionalRules_Art88"
+                   name="No additional rules adopted">
+      <bpmn:incoming>Flow_GatewayAdoptSpecificRules_To_EndNoAdditionalRules_Art88</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_Article88ProvisionsNotified_Art88"
+                   name="Article 88 provisions notified">
+      <bpmn:incoming>Flow_NotifyCommission_To_EndArticle88ProvisionsNotified_Art88</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_GatewayAdoptSpecificRules_Art88"
+                       sourceRef="StartEvent_AssessEmploymentContextRules_Art88"
+                       targetRef="Gateway_AdoptMoreSpecificRules_Art88" />
+    <bpmn:sequenceFlow id="Flow_GatewayAdoptSpecificRules_To_GatewayAdoptionBasis_Art88"
+                       name="Yes"
+                       sourceRef="Gateway_AdoptMoreSpecificRules_Art88"
+                       targetRef="Gateway_WhatIsTheAdoptionBasis_Art88" />
+    <bpmn:sequenceFlow id="Flow_GatewayAdoptSpecificRules_To_EndNoAdditionalRules_Art88"
+                       name="No"
+                       sourceRef="Gateway_AdoptMoreSpecificRules_Art88"
+                       targetRef="EndEvent_NoAdditionalRules_Art88" />
+    <bpmn:sequenceFlow id="Flow_GatewayAdoptionBasis_To_AdoptRulesByLaw_Art88"
+                       name="Law"
+                       sourceRef="Gateway_WhatIsTheAdoptionBasis_Art88"
+                       targetRef="Task_AdoptRulesByLaw_Art88" />
+    <bpmn:sequenceFlow id="Flow_GatewayAdoptionBasis_To_AdoptRulesByCollectiveAgreement_Art88"
+                       name="Collective agreement"
+                       sourceRef="Gateway_WhatIsTheAdoptionBasis_Art88"
+                       targetRef="Task_AdoptRulesByCollectiveAgreement_Art88" />
+    <bpmn:sequenceFlow id="Flow_AdoptRulesByLaw_To_GatewayMergeAdoptionBasis_Art88"
+                       sourceRef="Task_AdoptRulesByLaw_Art88"
+                       targetRef="Gateway_MergeAdoptionBasis_Art88" />
+    <bpmn:sequenceFlow id="Flow_AdoptRulesByCollectiveAgreement_To_GatewayMergeAdoptionBasis_Art88"
+                       sourceRef="Task_AdoptRulesByCollectiveAgreement_Art88"
+                       targetRef="Gateway_MergeAdoptionBasis_Art88" />
+    <bpmn:sequenceFlow id="Flow_GatewayMergeAdoptionBasis_To_DefineEmploymentPurposes_Art88"
+                       sourceRef="Gateway_MergeAdoptionBasis_Art88"
+                       targetRef="Task_DefineEmploymentContextPurposes_Art88" />
+    <bpmn:sequenceFlow id="Flow_DefineEmploymentPurposes_To_SetSafeguards_Art88"
+                       sourceRef="Task_DefineEmploymentContextPurposes_Art88"
+                       targetRef="Task_SetSpecificSafeguards_Art88" />
+    <bpmn:sequenceFlow id="Flow_SetSpecificSafeguards_To_AddressSpecialSafeguardAreas_Art88"
+                       sourceRef="Task_SetSpecificSafeguards_Art88"
+                       targetRef="Task_AddressSpecialSafeguardAreas_Art88" />
+    <bpmn:sequenceFlow id="Flow_AddressSpecialSafeguardAreas_To_NotifyCommission_Art88"
+                       sourceRef="Task_AddressSpecialSafeguardAreas_Art88"
+                       targetRef="Task_NotifyCommissionOfArticle88Provisions_Art88" />
+    <bpmn:sequenceFlow id="Flow_NotifyCommission_To_EndArticle88ProvisionsNotified_Art88"
+                       sourceRef="Task_NotifyCommissionOfArticle88Provisions_Art88"
+                       targetRef="EndEvent_Article88ProvisionsNotified_Art88" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art88_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art88_Reviewed"
+                      bpmnElement="Collaboration_Art88_Reviewed">
+      <bpmndi:BPMNShape id="Participant_MemberState_Art88_di"
+                        bpmnElement="Participant_MemberState_Art88"
+                        isHorizontal="true">
+        <dc:Bounds x="80" y="80" width="2200" height="300" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Commission_Art88_di"
+                        bpmnElement="Participant_Commission_Art88"
+                        isHorizontal="true">
+        <dc:Bounds x="80" y="440" width="2200" height="120" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_AssessEmploymentContextRules_Art88_di"
+                        bpmnElement="StartEvent_AssessEmploymentContextRules_Art88">
+        <dc:Bounds x="120" y="222" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AdoptMoreSpecificRules_Art88_di"
+                        bpmnElement="Gateway_AdoptMoreSpecificRules_Art88"
+                        isMarkerVisible="true">
+        <dc:Bounds x="220" y="215" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_WhatIsTheAdoptionBasis_Art88_di"
+                        bpmnElement="Gateway_WhatIsTheAdoptionBasis_Art88"
+                        isMarkerVisible="true">
+        <dc:Bounds x="420" y="85" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AdoptRulesByLaw_Art88_di"
+                        bpmnElement="Task_AdoptRulesByLaw_Art88">
+        <dc:Bounds x="580" y="40" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AdoptRulesByCollectiveAgreement_Art88_di"
+                        bpmnElement="Task_AdoptRulesByCollectiveAgreement_Art88">
+        <dc:Bounds x="580" y="150" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_MergeAdoptionBasis_Art88_di"
+                        bpmnElement="Gateway_MergeAdoptionBasis_Art88"
+                        isMarkerVisible="true">
+        <dc:Bounds x="900" y="85" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DefineEmploymentContextPurposes_Art88_di"
+                        bpmnElement="Task_DefineEmploymentContextPurposes_Art88">
+        <dc:Bounds x="1060" y="70" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SetSpecificSafeguards_Art88_di"
+                        bpmnElement="Task_SetSpecificSafeguards_Art88">
+        <dc:Bounds x="1360" y="70" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AddressSpecialSafeguardAreas_Art88_di"
+                        bpmnElement="Task_AddressSpecialSafeguardAreas_Art88">
+        <dc:Bounds x="1630" y="70" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_NotifyCommissionOfArticle88Provisions_Art88_di"
+                        bpmnElement="Task_NotifyCommissionOfArticle88Provisions_Art88">
+        <dc:Bounds x="1940" y="70" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NoAdditionalRules_Art88_di"
+                        bpmnElement="EndEvent_NoAdditionalRules_Art88">
+        <dc:Bounds x="432" y="302" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Article88ProvisionsNotified_Art88_di"
+                        bpmnElement="EndEvent_Article88ProvisionsNotified_Art88">
+        <dc:Bounds x="2202" y="92" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_GatewayAdoptSpecificRules_Art88_di"
+                       bpmnElement="Flow_Start_To_GatewayAdoptSpecificRules_Art88">
+        <di:waypoint x="156" y="240" />
+        <di:waypoint x="220" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAdoptSpecificRules_To_GatewayAdoptionBasis_Art88_di"
+                       bpmnElement="Flow_GatewayAdoptSpecificRules_To_GatewayAdoptionBasis_Art88">
+        <di:waypoint x="245" y="215" />
+        <di:waypoint x="245" y="110" />
+        <di:waypoint x="420" y="110" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="280" y="128" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAdoptSpecificRules_To_EndNoAdditionalRules_Art88_di"
+                       bpmnElement="Flow_GatewayAdoptSpecificRules_To_EndNoAdditionalRules_Art88">
+        <di:waypoint x="245" y="265" />
+        <di:waypoint x="245" y="320" />
+        <di:waypoint x="432" y="320" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="280" y="286" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAdoptionBasis_To_AdoptRulesByLaw_Art88_di"
+                       bpmnElement="Flow_GatewayAdoptionBasis_To_AdoptRulesByLaw_Art88">
+        <di:waypoint x="470" y="110" />
+        <di:waypoint x="580" y="80" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="500" y="78" width="24" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAdoptionBasis_To_AdoptRulesByCollectiveAgreement_Art88_di"
+                       bpmnElement="Flow_GatewayAdoptionBasis_To_AdoptRulesByCollectiveAgreement_Art88">
+        <di:waypoint x="445" y="135" />
+        <di:waypoint x="445" y="190" />
+        <di:waypoint x="580" y="190" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="466" y="152" width="108" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AdoptRulesByLaw_To_GatewayMergeAdoptionBasis_Art88_di"
+                       bpmnElement="Flow_AdoptRulesByLaw_To_GatewayMergeAdoptionBasis_Art88">
+        <di:waypoint x="750" y="80" />
+        <di:waypoint x="900" y="110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AdoptRulesByCollectiveAgreement_To_GatewayMergeAdoptionBasis_Art88_di"
+                       bpmnElement="Flow_AdoptRulesByCollectiveAgreement_To_GatewayMergeAdoptionBasis_Art88">
+        <di:waypoint x="800" y="190" />
+        <di:waypoint x="925" y="190" />
+        <di:waypoint x="925" y="135" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayMergeAdoptionBasis_To_DefineEmploymentPurposes_Art88_di"
+                       bpmnElement="Flow_GatewayMergeAdoptionBasis_To_DefineEmploymentPurposes_Art88">
+        <di:waypoint x="950" y="110" />
+        <di:waypoint x="1060" y="110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_DefineEmploymentPurposes_To_SetSafeguards_Art88_di"
+                       bpmnElement="Flow_DefineEmploymentPurposes_To_SetSafeguards_Art88">
+        <di:waypoint x="1270" y="110" />
+        <di:waypoint x="1360" y="110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SetSpecificSafeguards_To_AddressSpecialSafeguardAreas_Art88_di"
+                       bpmnElement="Flow_SetSpecificSafeguards_To_AddressSpecialSafeguardAreas_Art88">
+        <di:waypoint x="1540" y="110" />
+        <di:waypoint x="1630" y="110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AddressSpecialSafeguardAreas_To_NotifyCommission_Art88_di"
+                       bpmnElement="Flow_AddressSpecialSafeguardAreas_To_NotifyCommission_Art88">
+        <di:waypoint x="1850" y="110" />
+        <di:waypoint x="1940" y="110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_NotifyCommission_To_EndArticle88ProvisionsNotified_Art88_di"
+                       bpmnElement="Flow_NotifyCommission_To_EndArticle88ProvisionsNotified_Art88">
+        <di:waypoint x="2160" y="110" />
+        <di:waypoint x="2202" y="110" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_NotifyCommissionOfArticle88Provisions_Art88_di"
+                       bpmnElement="MessageFlow_NotifyCommissionOfArticle88Provisions_Art88">
+        <di:waypoint x="2050" y="150" />
+        <di:waypoint x="2050" y="440" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

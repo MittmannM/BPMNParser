@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art71_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art71_Reviewed">
+    <bpmn:participant id="Participant_Board_Art71"
+                      name="Board"
+                      processRef="Process_Board_Art71" />
+    <bpmn:participant id="Participant_EuropeanParliament_Art71"
+                      name="European Parliament" />
+    <bpmn:participant id="Participant_Council_Art71"
+                      name="Council" />
+    <bpmn:participant id="Participant_Commission_Art71"
+                      name="Commission" />
+    <bpmn:participant id="Participant_Public_Art71"
+                      name="Public" />
+
+    <bpmn:messageFlow id="MessageFlow_TransmitAnnualReportToEuropeanParliament_Art71"
+                      sourceRef="Task_TransmitAnnualReport_Art71"
+                      targetRef="Participant_EuropeanParliament_Art71" />
+    <bpmn:messageFlow id="MessageFlow_TransmitAnnualReportToCouncil_Art71"
+                      sourceRef="Task_TransmitAnnualReport_Art71"
+                      targetRef="Participant_Council_Art71" />
+    <bpmn:messageFlow id="MessageFlow_TransmitAnnualReportToCommission_Art71"
+                      sourceRef="Task_TransmitAnnualReport_Art71"
+                      targetRef="Participant_Commission_Art71" />
+    <bpmn:messageFlow id="MessageFlow_MakeAnnualReportPublic_Art71"
+                      sourceRef="Task_MakeAnnualReportPublic_Art71"
+                      targetRef="Participant_Public_Art71" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_Board_Art71"
+                name="Prepare and distribute Article 71 annual report"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 71 based on the real English legal text from
+      gdpr_articles/article_71.txt. This compact process captures the Board's annual-report duty
+      regarding the protection of natural persons with regard to processing in the Union and,
+      where relevant, in third countries and international organisations, the mandatory review of
+      the practical application of the Article 70(1)(l) guidelines and of the Article 65 binding
+      decisions, the public-availability duty, and transmission to the European Parliament, the
+      Council, and the Commission.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_StartAnnualBoardReportCycle_Art71"
+                     name="Start annual Board report cycle">
+      <bpmn:outgoing>Flow_StartAnnualBoardReportCycle_To_DrawUpAnnualReport_Art71</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_DrawUpAnnualReport_Art71"
+               name="Draw up annual report">
+      <bpmn:incoming>Flow_StartAnnualBoardReportCycle_To_DrawUpAnnualReport_Art71</bpmn:incoming>
+      <bpmn:outgoing>Flow_DrawUpAnnualReport_To_ReviewPracticalApplication_Art71</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ReviewPracticalApplication_Art71"
+               name="Review practical application">
+      <bpmn:incoming>Flow_DrawUpAnnualReport_To_ReviewPracticalApplication_Art71</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReviewPracticalApplication_To_ReviewBindingDecisions_Art71</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ReviewBindingDecisions_Art71"
+               name="Review binding decisions">
+      <bpmn:incoming>Flow_ReviewPracticalApplication_To_ReviewBindingDecisions_Art71</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReviewBindingDecisions_To_GatewaySplitDistribution_Art71</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_SplitDistribution_Art71">
+      <bpmn:incoming>Flow_ReviewBindingDecisions_To_GatewaySplitDistribution_Art71</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplitDistribution_To_TransmitAnnualReport_Art71</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitDistribution_To_MakeAnnualReportPublic_Art71</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:sendTask id="Task_TransmitAnnualReport_Art71"
+                   name="Transmit annual report">
+      <bpmn:incoming>Flow_GatewaySplitDistribution_To_TransmitAnnualReport_Art71</bpmn:incoming>
+      <bpmn:outgoing>Flow_TransmitAnnualReport_To_GatewayJoinDistribution_Art71</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:sendTask id="Task_MakeAnnualReportPublic_Art71"
+                   name="Make annual report public">
+      <bpmn:incoming>Flow_GatewaySplitDistribution_To_MakeAnnualReportPublic_Art71</bpmn:incoming>
+      <bpmn:outgoing>Flow_MakeAnnualReportPublic_To_GatewayJoinDistribution_Art71</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:parallelGateway id="Gateway_JoinDistribution_Art71">
+      <bpmn:incoming>Flow_TransmitAnnualReport_To_GatewayJoinDistribution_Art71</bpmn:incoming>
+      <bpmn:incoming>Flow_MakeAnnualReportPublic_To_GatewayJoinDistribution_Art71</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinDistribution_To_EndAnnualBoardReportDistributed_Art71</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:endEvent id="EndEvent_AnnualBoardReportDistributed_Art71"
+                   name="Annual Board report distributed">
+      <bpmn:incoming>Flow_GatewayJoinDistribution_To_EndAnnualBoardReportDistributed_Art71</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartAnnualBoardReportCycle_To_DrawUpAnnualReport_Art71"
+                       sourceRef="StartEvent_StartAnnualBoardReportCycle_Art71"
+                       targetRef="Task_DrawUpAnnualReport_Art71" />
+    <bpmn:sequenceFlow id="Flow_DrawUpAnnualReport_To_ReviewPracticalApplication_Art71"
+                       sourceRef="Task_DrawUpAnnualReport_Art71"
+                       targetRef="Task_ReviewPracticalApplication_Art71" />
+    <bpmn:sequenceFlow id="Flow_ReviewPracticalApplication_To_ReviewBindingDecisions_Art71"
+                       sourceRef="Task_ReviewPracticalApplication_Art71"
+                       targetRef="Task_ReviewBindingDecisions_Art71" />
+    <bpmn:sequenceFlow id="Flow_ReviewBindingDecisions_To_GatewaySplitDistribution_Art71"
+                       sourceRef="Task_ReviewBindingDecisions_Art71"
+                       targetRef="Gateway_SplitDistribution_Art71" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitDistribution_To_TransmitAnnualReport_Art71"
+                       sourceRef="Gateway_SplitDistribution_Art71"
+                       targetRef="Task_TransmitAnnualReport_Art71" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitDistribution_To_MakeAnnualReportPublic_Art71"
+                       sourceRef="Gateway_SplitDistribution_Art71"
+                       targetRef="Task_MakeAnnualReportPublic_Art71" />
+    <bpmn:sequenceFlow id="Flow_TransmitAnnualReport_To_GatewayJoinDistribution_Art71"
+                       sourceRef="Task_TransmitAnnualReport_Art71"
+                       targetRef="Gateway_JoinDistribution_Art71" />
+    <bpmn:sequenceFlow id="Flow_MakeAnnualReportPublic_To_GatewayJoinDistribution_Art71"
+                       sourceRef="Task_MakeAnnualReportPublic_Art71"
+                       targetRef="Gateway_JoinDistribution_Art71" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoinDistribution_To_EndAnnualBoardReportDistributed_Art71"
+                       sourceRef="Gateway_JoinDistribution_Art71"
+                       targetRef="EndEvent_AnnualBoardReportDistributed_Art71" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art71_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art71_Reviewed"
+                      bpmnElement="Collaboration_Art71_Reviewed">
+      <bpmndi:BPMNShape id="Participant_Board_Art71_di"
+                        bpmnElement="Participant_Board_Art71"
+                        isHorizontal="true">
+        <dc:Bounds x="20" y="20" width="2200" height="260" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_EuropeanParliament_Art71_di"
+                        bpmnElement="Participant_EuropeanParliament_Art71"
+                        isHorizontal="true">
+        <dc:Bounds x="20" y="310" width="2200" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Council_Art71_di"
+                        bpmnElement="Participant_Council_Art71"
+                        isHorizontal="true">
+        <dc:Bounds x="20" y="430" width="2200" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Commission_Art71_di"
+                        bpmnElement="Participant_Commission_Art71"
+                        isHorizontal="true">
+        <dc:Bounds x="20" y="550" width="2200" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Public_Art71_di"
+                        bpmnElement="Participant_Public_Art71"
+                        isHorizontal="true">
+        <dc:Bounds x="20" y="670" width="2200" height="100" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_StartAnnualBoardReportCycle_Art71_di"
+                        bpmnElement="StartEvent_StartAnnualBoardReportCycle_Art71">
+        <dc:Bounds x="100" y="132" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DrawUpAnnualReport_Art71_di"
+                        bpmnElement="Task_DrawUpAnnualReport_Art71">
+        <dc:Bounds x="220" y="110" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReviewPracticalApplication_Art71_di"
+                        bpmnElement="Task_ReviewPracticalApplication_Art71">
+        <dc:Bounds x="490" y="110" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReviewBindingDecisions_Art71_di"
+                        bpmnElement="Task_ReviewBindingDecisions_Art71">
+        <dc:Bounds x="780" y="110" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SplitDistribution_Art71_di"
+                        bpmnElement="Gateway_SplitDistribution_Art71"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1050" y="125" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_TransmitAnnualReport_Art71_di"
+                        bpmnElement="Task_TransmitAnnualReport_Art71">
+        <dc:Bounds x="1210" y="60" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_MakeAnnualReportPublic_Art71_di"
+                        bpmnElement="Task_MakeAnnualReportPublic_Art71">
+        <dc:Bounds x="1210" y="170" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinDistribution_Art71_di"
+                        bpmnElement="Gateway_JoinDistribution_Art71"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1550" y="125" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_AnnualBoardReportDistributed_Art71_di"
+                        bpmnElement="EndEvent_AnnualBoardReportDistributed_Art71">
+        <dc:Bounds x="1710" y="132" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_StartAnnualBoardReportCycle_To_DrawUpAnnualReport_Art71_di"
+                       bpmnElement="Flow_StartAnnualBoardReportCycle_To_DrawUpAnnualReport_Art71">
+        <di:waypoint x="136" y="150" />
+        <di:waypoint x="220" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_DrawUpAnnualReport_To_ReviewPracticalApplication_Art71_di"
+                       bpmnElement="Flow_DrawUpAnnualReport_To_ReviewPracticalApplication_Art71">
+        <di:waypoint x="400" y="150" />
+        <di:waypoint x="490" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReviewPracticalApplication_To_ReviewBindingDecisions_Art71_di"
+                       bpmnElement="Flow_ReviewPracticalApplication_To_ReviewBindingDecisions_Art71">
+        <di:waypoint x="690" y="150" />
+        <di:waypoint x="780" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReviewBindingDecisions_To_GatewaySplitDistribution_Art71_di"
+                       bpmnElement="Flow_ReviewBindingDecisions_To_GatewaySplitDistribution_Art71">
+        <di:waypoint x="960" y="150" />
+        <di:waypoint x="1050" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitDistribution_To_TransmitAnnualReport_Art71_di"
+                       bpmnElement="Flow_GatewaySplitDistribution_To_TransmitAnnualReport_Art71">
+        <di:waypoint x="1075" y="125" />
+        <di:waypoint x="1075" y="100" />
+        <di:waypoint x="1210" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitDistribution_To_MakeAnnualReportPublic_Art71_di"
+                       bpmnElement="Flow_GatewaySplitDistribution_To_MakeAnnualReportPublic_Art71">
+        <di:waypoint x="1075" y="175" />
+        <di:waypoint x="1075" y="210" />
+        <di:waypoint x="1210" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TransmitAnnualReport_To_GatewayJoinDistribution_Art71_di"
+                       bpmnElement="Flow_TransmitAnnualReport_To_GatewayJoinDistribution_Art71">
+        <di:waypoint x="1380" y="100" />
+        <di:waypoint x="1575" y="100" />
+        <di:waypoint x="1575" y="125" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_MakeAnnualReportPublic_To_GatewayJoinDistribution_Art71_di"
+                       bpmnElement="Flow_MakeAnnualReportPublic_To_GatewayJoinDistribution_Art71">
+        <di:waypoint x="1400" y="210" />
+        <di:waypoint x="1575" y="210" />
+        <di:waypoint x="1575" y="175" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinDistribution_To_EndAnnualBoardReportDistributed_Art71_di"
+                       bpmnElement="Flow_GatewayJoinDistribution_To_EndAnnualBoardReportDistributed_Art71">
+        <di:waypoint x="1600" y="150" />
+        <di:waypoint x="1710" y="150" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_TransmitAnnualReportToEuropeanParliament_Art71_di"
+                       bpmnElement="MessageFlow_TransmitAnnualReportToEuropeanParliament_Art71">
+        <di:waypoint x="1265" y="140" />
+        <di:waypoint x="1265" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_TransmitAnnualReportToCouncil_Art71_di"
+                       bpmnElement="MessageFlow_TransmitAnnualReportToCouncil_Art71">
+        <di:waypoint x="1295" y="140" />
+        <di:waypoint x="1295" y="430" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_TransmitAnnualReportToCommission_Art71_di"
+                       bpmnElement="MessageFlow_TransmitAnnualReportToCommission_Art71">
+        <di:waypoint x="1325" y="140" />
+        <di:waypoint x="1325" y="550" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_MakeAnnualReportPublic_Art71_di"
+                       bpmnElement="MessageFlow_MakeAnnualReportPublic_Art71">
+        <di:waypoint x="1305" y="250" />
+        <di:waypoint x="1305" y="670" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

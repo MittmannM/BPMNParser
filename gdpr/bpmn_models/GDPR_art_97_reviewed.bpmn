@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art97_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art97_Reviewed">
+    <bpmn:participant id="Participant_Commission_Art97"
+                      name="Commission"
+                      processRef="Process_Commission_Art97" />
+    <bpmn:participant id="Participant_EuropeanParliament_Art97"
+                      name="European Parliament" />
+    <bpmn:participant id="Participant_Council_Art97"
+                      name="Council" />
+    <bpmn:participant id="Participant_MemberStatesAndSupervisoryAuthorities_Art97"
+                      name="Member States and Supervisory Authorities" />
+    <bpmn:participant id="Participant_Public_Art97"
+                      name="Public" />
+
+    <bpmn:messageFlow id="MessageFlow_RequestInformation_Art97"
+                      sourceRef="Task_RequestInformation_Art97"
+                      targetRef="Participant_MemberStatesAndSupervisoryAuthorities_Art97" />
+    <bpmn:messageFlow id="MessageFlow_SubmitReportToParliament_Art97"
+                      sourceRef="Task_SubmitReportToParliamentAndCouncil_Art97"
+                      targetRef="Participant_EuropeanParliament_Art97" />
+    <bpmn:messageFlow id="MessageFlow_SubmitReportToCouncil_Art97"
+                      sourceRef="Task_SubmitReportToParliamentAndCouncil_Art97"
+                      targetRef="Participant_Council_Art97" />
+    <bpmn:messageFlow id="MessageFlow_MakeReportPublic_Art97"
+                      sourceRef="Task_MakeReportPublic_Art97"
+                      targetRef="Participant_Public_Art97" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_Commission_Art97"
+                name="Evaluate and review the Regulation"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 97 based on the real English legal text from
+      gdpr_articles/article_97.txt. This collaboration captures the four-year review cycle from
+      25 May 2020, the examination of Chapter V and Chapter VII, optional information requests,
+      consideration of positions and findings, report submission and publication, and the
+      optional submission of proposals to amend the Regulation.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_StartReviewCycle_Art97"
+                     name="Start four-year review cycle">
+      <bpmn:outgoing>Flow_StartReviewCycle_To_RequestInformation_Art97</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_RequestInformation_Art97"
+               name="Request information if needed">
+      <bpmn:incoming>Flow_StartReviewCycle_To_RequestInformation_Art97</bpmn:incoming>
+      <bpmn:outgoing>Flow_RequestInformation_To_SplitReviewWork_Art97</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_SplitReviewWork_Art97">
+      <bpmn:incoming>Flow_RequestInformation_To_SplitReviewWork_Art97</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplit_To_ReviewChapterV_Art97</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplit_To_ReviewChapterVII_Art97</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_ReviewChapterV_Art97"
+               name="Review Chapter V">
+      <bpmn:incoming>Flow_GatewaySplit_To_ReviewChapterV_Art97</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReviewChapterV_To_GatewayJoinReviewWork_Art97</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ReviewChapterVII_Art97"
+               name="Review Chapter VII">
+      <bpmn:incoming>Flow_GatewaySplit_To_ReviewChapterVII_Art97</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReviewChapterVII_To_GatewayJoinReviewWork_Art97</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:parallelGateway id="Gateway_JoinReviewWork_Art97">
+      <bpmn:incoming>Flow_ReviewChapterV_To_GatewayJoinReviewWork_Art97</bpmn:incoming>
+      <bpmn:incoming>Flow_ReviewChapterVII_To_GatewayJoinReviewWork_Art97</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoin_To_TakeIntoAccountPositions_Art97</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_TakeIntoAccountPositionsAndFindings_Art97"
+               name="Take into account positions and findings">
+      <bpmn:incoming>Flow_GatewayJoin_To_TakeIntoAccountPositions_Art97</bpmn:incoming>
+      <bpmn:outgoing>Flow_TakeIntoAccountPositions_To_SubmitReport_Art97</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:sendTask id="Task_SubmitReportToParliamentAndCouncil_Art97"
+                   name="Submit report to Parliament and Council">
+      <bpmn:incoming>Flow_TakeIntoAccountPositions_To_SubmitReport_Art97</bpmn:incoming>
+      <bpmn:outgoing>Flow_SubmitReport_To_SplitPublicationAndAmendment_Art97</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:parallelGateway id="Gateway_SplitPublicationAndAmendment_Art97">
+      <bpmn:incoming>Flow_SubmitReport_To_SplitPublicationAndAmendment_Art97</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplitPublication_To_MakeReportPublic_Art97</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplitPublication_To_GatewayAmendmentNeed_Art97</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:sendTask id="Task_MakeReportPublic_Art97"
+                   name="Make report public">
+      <bpmn:incoming>Flow_GatewaySplitPublication_To_MakeReportPublic_Art97</bpmn:incoming>
+      <bpmn:outgoing>Flow_MakeReportPublic_To_GatewayJoinPublicationAndAmendment_Art97</bpmn:outgoing>
+    </bpmn:sendTask>
+
+    <bpmn:exclusiveGateway id="Gateway_IsAmendmentProposalNecessary_Art97"
+                           name="Is an amendment proposal necessary?">
+      <bpmn:incoming>Flow_GatewaySplitPublication_To_GatewayAmendmentNeed_Art97</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayAmendmentNeed_To_SubmitAmendmentProposals_Art97</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayAmendmentNeed_To_GatewayMergeAmendmentNeed_Art97</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_SubmitAmendmentProposals_Art97"
+               name="Submit amendment proposals">
+      <bpmn:incoming>Flow_GatewayAmendmentNeed_To_SubmitAmendmentProposals_Art97</bpmn:incoming>
+      <bpmn:outgoing>Flow_SubmitAmendmentProposals_To_GatewayMergeAmendmentNeed_Art97</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_MergeAmendmentNeed_Art97">
+      <bpmn:incoming>Flow_GatewayAmendmentNeed_To_GatewayMergeAmendmentNeed_Art97</bpmn:incoming>
+      <bpmn:incoming>Flow_SubmitAmendmentProposals_To_GatewayMergeAmendmentNeed_Art97</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayMergeAmendmentNeed_To_GatewayJoinPublicationAndAmendment_Art97</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:parallelGateway id="Gateway_JoinPublicationAndAmendment_Art97">
+      <bpmn:incoming>Flow_MakeReportPublic_To_GatewayJoinPublicationAndAmendment_Art97</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayMergeAmendmentNeed_To_GatewayJoinPublicationAndAmendment_Art97</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayJoinPublicationAndAmendment_To_EndReviewCycleCompleted_Art97</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:endEvent id="EndEvent_ReviewCycleCompleted_Art97"
+                   name="Review cycle completed">
+      <bpmn:incoming>Flow_GatewayJoinPublicationAndAmendment_To_EndReviewCycleCompleted_Art97</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartReviewCycle_To_RequestInformation_Art97"
+                       sourceRef="StartEvent_StartReviewCycle_Art97"
+                       targetRef="Task_RequestInformation_Art97" />
+    <bpmn:sequenceFlow id="Flow_RequestInformation_To_SplitReviewWork_Art97"
+                       sourceRef="Task_RequestInformation_Art97"
+                       targetRef="Gateway_SplitReviewWork_Art97" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplit_To_ReviewChapterV_Art97"
+                       sourceRef="Gateway_SplitReviewWork_Art97"
+                       targetRef="Task_ReviewChapterV_Art97" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplit_To_ReviewChapterVII_Art97"
+                       sourceRef="Gateway_SplitReviewWork_Art97"
+                       targetRef="Task_ReviewChapterVII_Art97" />
+    <bpmn:sequenceFlow id="Flow_ReviewChapterV_To_GatewayJoinReviewWork_Art97"
+                       sourceRef="Task_ReviewChapterV_Art97"
+                       targetRef="Gateway_JoinReviewWork_Art97" />
+    <bpmn:sequenceFlow id="Flow_ReviewChapterVII_To_GatewayJoinReviewWork_Art97"
+                       sourceRef="Task_ReviewChapterVII_Art97"
+                       targetRef="Gateway_JoinReviewWork_Art97" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoin_To_TakeIntoAccountPositions_Art97"
+                       sourceRef="Gateway_JoinReviewWork_Art97"
+                       targetRef="Task_TakeIntoAccountPositionsAndFindings_Art97" />
+    <bpmn:sequenceFlow id="Flow_TakeIntoAccountPositions_To_SubmitReport_Art97"
+                       sourceRef="Task_TakeIntoAccountPositionsAndFindings_Art97"
+                       targetRef="Task_SubmitReportToParliamentAndCouncil_Art97" />
+    <bpmn:sequenceFlow id="Flow_SubmitReport_To_SplitPublicationAndAmendment_Art97"
+                       sourceRef="Task_SubmitReportToParliamentAndCouncil_Art97"
+                       targetRef="Gateway_SplitPublicationAndAmendment_Art97" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitPublication_To_MakeReportPublic_Art97"
+                       sourceRef="Gateway_SplitPublicationAndAmendment_Art97"
+                       targetRef="Task_MakeReportPublic_Art97" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplitPublication_To_GatewayAmendmentNeed_Art97"
+                       sourceRef="Gateway_SplitPublicationAndAmendment_Art97"
+                       targetRef="Gateway_IsAmendmentProposalNecessary_Art97" />
+    <bpmn:sequenceFlow id="Flow_MakeReportPublic_To_GatewayJoinPublicationAndAmendment_Art97"
+                       sourceRef="Task_MakeReportPublic_Art97"
+                       targetRef="Gateway_JoinPublicationAndAmendment_Art97" />
+    <bpmn:sequenceFlow id="Flow_GatewayAmendmentNeed_To_SubmitAmendmentProposals_Art97"
+                       name="Yes"
+                       sourceRef="Gateway_IsAmendmentProposalNecessary_Art97"
+                       targetRef="Task_SubmitAmendmentProposals_Art97" />
+    <bpmn:sequenceFlow id="Flow_GatewayAmendmentNeed_To_GatewayMergeAmendmentNeed_Art97"
+                       name="No"
+                       sourceRef="Gateway_IsAmendmentProposalNecessary_Art97"
+                       targetRef="Gateway_MergeAmendmentNeed_Art97" />
+    <bpmn:sequenceFlow id="Flow_SubmitAmendmentProposals_To_GatewayMergeAmendmentNeed_Art97"
+                       sourceRef="Task_SubmitAmendmentProposals_Art97"
+                       targetRef="Gateway_MergeAmendmentNeed_Art97" />
+    <bpmn:sequenceFlow id="Flow_GatewayMergeAmendmentNeed_To_GatewayJoinPublicationAndAmendment_Art97"
+                       sourceRef="Gateway_MergeAmendmentNeed_Art97"
+                       targetRef="Gateway_JoinPublicationAndAmendment_Art97" />
+    <bpmn:sequenceFlow id="Flow_GatewayJoinPublicationAndAmendment_To_EndReviewCycleCompleted_Art97"
+                       sourceRef="Gateway_JoinPublicationAndAmendment_Art97"
+                       targetRef="EndEvent_ReviewCycleCompleted_Art97" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art97_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art97_Reviewed"
+                      bpmnElement="Collaboration_Art97_Reviewed">
+      <bpmndi:BPMNShape id="Participant_Commission_Art97_di"
+                        bpmnElement="Participant_Commission_Art97"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="40" width="2800" height="420" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_EuropeanParliament_Art97_di"
+                        bpmnElement="Participant_EuropeanParliament_Art97"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="500" width="2800" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Council_Art97_di"
+                        bpmnElement="Participant_Council_Art97"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="660" width="2800" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_MemberStatesAndSupervisoryAuthorities_Art97_di"
+                        bpmnElement="Participant_MemberStatesAndSupervisoryAuthorities_Art97"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="820" width="2800" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Public_Art97_di"
+                        bpmnElement="Participant_Public_Art97"
+                        isHorizontal="true">
+        <dc:Bounds x="60" y="980" width="2800" height="120" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_StartReviewCycle_Art97_di"
+                        bpmnElement="StartEvent_StartReviewCycle_Art97">
+        <dc:Bounds x="100" y="232" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RequestInformation_Art97_di"
+                        bpmnElement="Task_RequestInformation_Art97">
+        <dc:Bounds x="180" y="210" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SplitReviewWork_Art97_di"
+                        bpmnElement="Gateway_SplitReviewWork_Art97"
+                        isMarkerVisible="true">
+        <dc:Bounds x="430" y="225" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReviewChapterV_Art97_di"
+                        bpmnElement="Task_ReviewChapterV_Art97">
+        <dc:Bounds x="580" y="120" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReviewChapterVII_Art97_di"
+                        bpmnElement="Task_ReviewChapterVII_Art97">
+        <dc:Bounds x="580" y="300" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinReviewWork_Art97_di"
+                        bpmnElement="Gateway_JoinReviewWork_Art97"
+                        isMarkerVisible="true">
+        <dc:Bounds x="860" y="225" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_TakeIntoAccountPositionsAndFindings_Art97_di"
+                        bpmnElement="Task_TakeIntoAccountPositionsAndFindings_Art97">
+        <dc:Bounds x="980" y="210" width="240" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SubmitReportToParliamentAndCouncil_Art97_di"
+                        bpmnElement="Task_SubmitReportToParliamentAndCouncil_Art97">
+        <dc:Bounds x="1310" y="210" width="230" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SplitPublicationAndAmendment_Art97_di"
+                        bpmnElement="Gateway_SplitPublicationAndAmendment_Art97"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1630" y="225" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_MakeReportPublic_Art97_di"
+                        bpmnElement="Task_MakeReportPublic_Art97">
+        <dc:Bounds x="1780" y="120" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_IsAmendmentProposalNecessary_Art97_di"
+                        bpmnElement="Gateway_IsAmendmentProposalNecessary_Art97"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1780" y="315" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SubmitAmendmentProposals_Art97_di"
+                        bpmnElement="Task_SubmitAmendmentProposals_Art97">
+        <dc:Bounds x="1940" y="300" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_MergeAmendmentNeed_Art97_di"
+                        bpmnElement="Gateway_MergeAmendmentNeed_Art97"
+                        isMarkerVisible="true">
+        <dc:Bounds x="2240" y="315" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinPublicationAndAmendment_Art97_di"
+                        bpmnElement="Gateway_JoinPublicationAndAmendment_Art97"
+                        isMarkerVisible="true">
+        <dc:Bounds x="2400" y="225" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ReviewCycleCompleted_Art97_di"
+                        bpmnElement="EndEvent_ReviewCycleCompleted_Art97">
+        <dc:Bounds x="2542" y="232" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_StartReviewCycle_To_RequestInformation_Art97_di"
+                       bpmnElement="Flow_StartReviewCycle_To_RequestInformation_Art97">
+        <di:waypoint x="136" y="250" />
+        <di:waypoint x="180" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_RequestInformation_To_SplitReviewWork_Art97_di"
+                       bpmnElement="Flow_RequestInformation_To_SplitReviewWork_Art97">
+        <di:waypoint x="360" y="250" />
+        <di:waypoint x="430" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplit_To_ReviewChapterV_Art97_di"
+                       bpmnElement="Flow_GatewaySplit_To_ReviewChapterV_Art97">
+        <di:waypoint x="455" y="225" />
+        <di:waypoint x="455" y="160" />
+        <di:waypoint x="580" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplit_To_ReviewChapterVII_Art97_di"
+                       bpmnElement="Flow_GatewaySplit_To_ReviewChapterVII_Art97">
+        <di:waypoint x="455" y="275" />
+        <di:waypoint x="455" y="340" />
+        <di:waypoint x="580" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReviewChapterV_To_GatewayJoinReviewWork_Art97_di"
+                       bpmnElement="Flow_ReviewChapterV_To_GatewayJoinReviewWork_Art97">
+        <di:waypoint x="740" y="160" />
+        <di:waypoint x="885" y="160" />
+        <di:waypoint x="885" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReviewChapterVII_To_GatewayJoinReviewWork_Art97_di"
+                       bpmnElement="Flow_ReviewChapterVII_To_GatewayJoinReviewWork_Art97">
+        <di:waypoint x="750" y="340" />
+        <di:waypoint x="885" y="340" />
+        <di:waypoint x="885" y="275" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoin_To_TakeIntoAccountPositions_Art97_di"
+                       bpmnElement="Flow_GatewayJoin_To_TakeIntoAccountPositions_Art97">
+        <di:waypoint x="910" y="250" />
+        <di:waypoint x="980" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TakeIntoAccountPositions_To_SubmitReport_Art97_di"
+                       bpmnElement="Flow_TakeIntoAccountPositions_To_SubmitReport_Art97">
+        <di:waypoint x="1220" y="250" />
+        <di:waypoint x="1310" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SubmitReport_To_SplitPublicationAndAmendment_Art97_di"
+                       bpmnElement="Flow_SubmitReport_To_SplitPublicationAndAmendment_Art97">
+        <di:waypoint x="1540" y="250" />
+        <di:waypoint x="1630" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitPublication_To_MakeReportPublic_Art97_di"
+                       bpmnElement="Flow_GatewaySplitPublication_To_MakeReportPublic_Art97">
+        <di:waypoint x="1655" y="225" />
+        <di:waypoint x="1655" y="160" />
+        <di:waypoint x="1780" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplitPublication_To_GatewayAmendmentNeed_Art97_di"
+                       bpmnElement="Flow_GatewaySplitPublication_To_GatewayAmendmentNeed_Art97">
+        <di:waypoint x="1655" y="275" />
+        <di:waypoint x="1655" y="340" />
+        <di:waypoint x="1780" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_MakeReportPublic_To_GatewayJoinPublicationAndAmendment_Art97_di"
+                       bpmnElement="Flow_MakeReportPublic_To_GatewayJoinPublicationAndAmendment_Art97">
+        <di:waypoint x="1940" y="160" />
+        <di:waypoint x="2425" y="160" />
+        <di:waypoint x="2425" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAmendmentNeed_To_SubmitAmendmentProposals_Art97_di"
+                       bpmnElement="Flow_GatewayAmendmentNeed_To_SubmitAmendmentProposals_Art97">
+        <di:waypoint x="1830" y="340" />
+        <di:waypoint x="1940" y="340" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1868" y="322" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayAmendmentNeed_To_GatewayMergeAmendmentNeed_Art97_di"
+                       bpmnElement="Flow_GatewayAmendmentNeed_To_GatewayMergeAmendmentNeed_Art97">
+        <di:waypoint x="1805" y="365" />
+        <di:waypoint x="1805" y="430" />
+        <di:waypoint x="2265" y="430" />
+        <di:waypoint x="2265" y="365" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1816" y="382" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SubmitAmendmentProposals_To_GatewayMergeAmendmentNeed_Art97_di"
+                       bpmnElement="Flow_SubmitAmendmentProposals_To_GatewayMergeAmendmentNeed_Art97">
+        <di:waypoint x="2130" y="340" />
+        <di:waypoint x="2240" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayMergeAmendmentNeed_To_GatewayJoinPublicationAndAmendment_Art97_di"
+                       bpmnElement="Flow_GatewayMergeAmendmentNeed_To_GatewayJoinPublicationAndAmendment_Art97">
+        <di:waypoint x="2265" y="315" />
+        <di:waypoint x="2265" y="250" />
+        <di:waypoint x="2400" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayJoinPublicationAndAmendment_To_EndReviewCycleCompleted_Art97_di"
+                       bpmnElement="Flow_GatewayJoinPublicationAndAmendment_To_EndReviewCycleCompleted_Art97">
+        <di:waypoint x="2450" y="250" />
+        <di:waypoint x="2542" y="250" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_RequestInformation_Art97_di"
+                       bpmnElement="MessageFlow_RequestInformation_Art97">
+        <di:waypoint x="270" y="290" />
+        <di:waypoint x="270" y="820" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SubmitReportToParliament_Art97_di"
+                       bpmnElement="MessageFlow_SubmitReportToParliament_Art97">
+        <di:waypoint x="1420" y="290" />
+        <di:waypoint x="1420" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SubmitReportToCouncil_Art97_di"
+                       bpmnElement="MessageFlow_SubmitReportToCouncil_Art97">
+        <di:waypoint x="1470" y="290" />
+        <di:waypoint x="1470" y="660" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_MakeReportPublic_Art97_di"
+                       bpmnElement="MessageFlow_MakeReportPublic_Art97">
+        <di:waypoint x="1860" y="200" />
+        <di:waypoint x="1860" y="980" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

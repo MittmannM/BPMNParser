@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools />
+  <lanes />
+  <tasks>
+    <task id="Task_ApplyChapterVProvisions_Art44" name="Apply all Chapter V provisions" type="task" poolRef="Process_AssessTransfer_Art44" />
+    <task id="Task_AssessOnwardTransfers_Art44" name="Assess onward transfer chain" type="task" poolRef="Process_AssessTransfer_Art44" />
+    <task id="Task_CheckChapterVConditions_Art44" name="Check Chapter V conditions" type="task" poolRef="Process_AssessTransfer_Art44" />
+    <task id="Task_CheckOtherProvisions_Art44" name="Check other GDPR provisions" type="task" poolRef="Process_AssessTransfer_Art44" />
+    <task id="Task_EnsureProtectionLevel_Art44" name="Ensure GDPR protection level is not undermined" type="task" poolRef="Process_AssessTransfer_Art44" />
+    <task id="Task_IdentifyTransfer_Art44" name="Identify third-country or international-organisation transfer" type="task" poolRef="Process_AssessTransfer_Art44" />
+  </tasks>
+  <events>
+    <event id="EndEvent_TransferAllowed_Art44" name="Article 44 transfer principles applied" type="endEvent" poolRef="Process_AssessTransfer_Art44" />
+    <event id="EndEvent_TransferNotAllowed_Art44" name="Transfer not allowed under Article 44" type="endEvent" poolRef="Process_AssessTransfer_Art44" />
+    <event id="StartEvent_NeedTransferAssessment_Art44" name="Need transfer assessment" type="startEvent" poolRef="Process_AssessTransfer_Art44" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_ConditionsComplied_Art44" name="Are the Chapter V conditions complied with by the controller and processor?" type="exclusiveGateway" poolRef="Process_AssessTransfer_Art44" />
+    <gateway id="Gateway_OnwardTransfer_Art44" name="Does the transfer chain include onward transfers?" type="exclusiveGateway" poolRef="Process_AssessTransfer_Art44" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_ApplyChapterV_To_EnsureProtectionLevel_Art44" sourceRef="Task_ApplyChapterVProvisions_Art44" targetRef="Task_EnsureProtectionLevel_Art44" />
+    <sequenceFlow id="Flow_AssessOnwardTransfers_To_CheckOtherProvisions_Art44" sourceRef="Task_AssessOnwardTransfers_Art44" targetRef="Task_CheckOtherProvisions_Art44" />
+    <sequenceFlow id="Flow_CheckChapterVConditions_To_GatewayConditionsComplied_Art44" sourceRef="Task_CheckChapterVConditions_Art44" targetRef="Gateway_ConditionsComplied_Art44" />
+    <sequenceFlow id="Flow_CheckOtherProvisions_To_CheckChapterVConditions_Art44" sourceRef="Task_CheckOtherProvisions_Art44" targetRef="Task_CheckChapterVConditions_Art44" />
+    <sequenceFlow id="Flow_EnsureProtectionLevel_To_EndTransferAllowed_Art44" sourceRef="Task_EnsureProtectionLevel_Art44" targetRef="EndEvent_TransferAllowed_Art44" />
+    <sequenceFlow id="Flow_GatewayConditionsComplied_To_ApplyChapterV_Art44" name="Yes" sourceRef="Gateway_ConditionsComplied_Art44" targetRef="Task_ApplyChapterVProvisions_Art44" />
+    <sequenceFlow id="Flow_GatewayConditionsComplied_To_EndTransferNotAllowed_Art44" name="No" sourceRef="Gateway_ConditionsComplied_Art44" targetRef="EndEvent_TransferNotAllowed_Art44" />
+    <sequenceFlow id="Flow_GatewayOnwardTransfer_To_AssessOnwardTransfers_Art44" name="Yes" sourceRef="Gateway_OnwardTransfer_Art44" targetRef="Task_AssessOnwardTransfers_Art44" />
+    <sequenceFlow id="Flow_GatewayOnwardTransfer_To_CheckOtherProvisions_Art44" name="No" sourceRef="Gateway_OnwardTransfer_Art44" targetRef="Task_CheckOtherProvisions_Art44" />
+    <sequenceFlow id="Flow_IdentifyTransfer_To_GatewayOnwardTransfer_Art44" sourceRef="Task_IdentifyTransfer_Art44" targetRef="Gateway_OnwardTransfer_Art44" />
+    <sequenceFlow id="Flow_Start_To_IdentifyTransfer_Art44" sourceRef="StartEvent_NeedTransferAssessment_Art44" targetRef="Task_IdentifyTransfer_Art44" />
+  </sequenceFlows>
+  <messageFlows />
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

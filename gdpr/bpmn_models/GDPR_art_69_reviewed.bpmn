@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art69_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_Art69_Reviewed">
+    <bpmn:participant id="Participant_Board_Art69"
+                      name="Board"
+                      processRef="Process_Board_Art69" />
+    <bpmn:participant id="Participant_Commission_Art69"
+                      name="Commission" />
+
+    <bpmn:messageFlow id="MessageFlow_CommissionRequest_Art69"
+                      sourceRef="Participant_Commission_Art69"
+                      targetRef="Task_ReceiveCommissionRequest_Art69" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_Board_Art69"
+                name="Perform Board tasks and powers independently"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 69 based on the real English legal text from
+      gdpr_articles/article_69.txt. This compact process captures the Board's independence when
+      performing its tasks or exercising its powers under Articles 70 and 71, while keeping a
+      visible exception path for Commission requests referred to in Article 70(1)(b) and
+      Article 70(2).
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_PerformBoardTasksOrPowers_Art69"
+                     name="Perform Board tasks or powers">
+      <bpmn:outgoing>Flow_StartPerformBoardTasksOrPowers_To_ActIndependently_Art69</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_ActIndependently_Art69"
+               name="Act independently">
+      <bpmn:incoming>Flow_StartPerformBoardTasksOrPowers_To_ActIndependently_Art69</bpmn:incoming>
+      <bpmn:outgoing>Flow_ActIndependently_To_GatewayCommissionRequest_Art69</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_IsThereACommissionRequest_Art69"
+                           name="Is there a Commission request under Article 70?">
+      <bpmn:incoming>Flow_ActIndependently_To_GatewayCommissionRequest_Art69</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayCommissionRequest_To_ReceiveCommissionRequest_Art69</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayCommissionRequest_To_AvoidInstructions_Art69</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:receiveTask id="Task_ReceiveCommissionRequest_Art69"
+                      name="Receive Commission request">
+      <bpmn:incoming>Flow_GatewayCommissionRequest_To_ReceiveCommissionRequest_Art69</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveCommissionRequest_To_HandleRequestWithoutInstructions_Art69</bpmn:outgoing>
+    </bpmn:receiveTask>
+
+    <bpmn:task id="Task_HandleRequestWithoutInstructions_Art69"
+               name="Handle request without taking instructions">
+      <bpmn:incoming>Flow_ReceiveCommissionRequest_To_HandleRequestWithoutInstructions_Art69</bpmn:incoming>
+      <bpmn:outgoing>Flow_HandleRequestWithoutInstructions_To_EndBoardIndependenceMaintained_Art69</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_AvoidInstructions_Art69"
+               name="Neither seek nor take instructions">
+      <bpmn:incoming>Flow_GatewayCommissionRequest_To_AvoidInstructions_Art69</bpmn:incoming>
+      <bpmn:outgoing>Flow_AvoidInstructions_To_EndBoardIndependenceMaintained_Art69</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_BoardIndependenceMaintained_Art69"
+                   name="Board independence maintained">
+      <bpmn:incoming>Flow_HandleRequestWithoutInstructions_To_EndBoardIndependenceMaintained_Art69</bpmn:incoming>
+      <bpmn:incoming>Flow_AvoidInstructions_To_EndBoardIndependenceMaintained_Art69</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_StartPerformBoardTasksOrPowers_To_ActIndependently_Art69"
+                       sourceRef="StartEvent_PerformBoardTasksOrPowers_Art69"
+                       targetRef="Task_ActIndependently_Art69" />
+    <bpmn:sequenceFlow id="Flow_ActIndependently_To_GatewayCommissionRequest_Art69"
+                       sourceRef="Task_ActIndependently_Art69"
+                       targetRef="Gateway_IsThereACommissionRequest_Art69" />
+    <bpmn:sequenceFlow id="Flow_GatewayCommissionRequest_To_ReceiveCommissionRequest_Art69"
+                       name="Yes"
+                       sourceRef="Gateway_IsThereACommissionRequest_Art69"
+                       targetRef="Task_ReceiveCommissionRequest_Art69" />
+    <bpmn:sequenceFlow id="Flow_GatewayCommissionRequest_To_AvoidInstructions_Art69"
+                       name="No"
+                       sourceRef="Gateway_IsThereACommissionRequest_Art69"
+                       targetRef="Task_AvoidInstructions_Art69" />
+    <bpmn:sequenceFlow id="Flow_ReceiveCommissionRequest_To_HandleRequestWithoutInstructions_Art69"
+                       sourceRef="Task_ReceiveCommissionRequest_Art69"
+                       targetRef="Task_HandleRequestWithoutInstructions_Art69" />
+    <bpmn:sequenceFlow id="Flow_HandleRequestWithoutInstructions_To_EndBoardIndependenceMaintained_Art69"
+                       sourceRef="Task_HandleRequestWithoutInstructions_Art69"
+                       targetRef="EndEvent_BoardIndependenceMaintained_Art69" />
+    <bpmn:sequenceFlow id="Flow_AvoidInstructions_To_EndBoardIndependenceMaintained_Art69"
+                       sourceRef="Task_AvoidInstructions_Art69"
+                       targetRef="EndEvent_BoardIndependenceMaintained_Art69" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art69_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art69_Reviewed"
+                      bpmnElement="Collaboration_Art69_Reviewed">
+      <bpmndi:BPMNShape id="Participant_Board_Art69_di"
+                        bpmnElement="Participant_Board_Art69"
+                        isHorizontal="true">
+        <dc:Bounds x="20" y="20" width="1900" height="220" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Commission_Art69_di"
+                        bpmnElement="Participant_Commission_Art69"
+                        isHorizontal="true">
+        <dc:Bounds x="20" y="270" width="1900" height="100" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_PerformBoardTasksOrPowers_Art69_di"
+                        bpmnElement="StartEvent_PerformBoardTasksOrPowers_Art69">
+        <dc:Bounds x="120" y="112" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ActIndependently_Art69_di"
+                        bpmnElement="Task_ActIndependently_Art69">
+        <dc:Bounds x="240" y="90" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_IsThereACommissionRequest_Art69_di"
+                        bpmnElement="Gateway_IsThereACommissionRequest_Art69"
+                        isMarkerVisible="true">
+        <dc:Bounds x="510" y="105" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReceiveCommissionRequest_Art69_di"
+                        bpmnElement="Task_ReceiveCommissionRequest_Art69">
+        <dc:Bounds x="660" y="40" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_HandleRequestWithoutInstructions_Art69_di"
+                        bpmnElement="Task_HandleRequestWithoutInstructions_Art69">
+        <dc:Bounds x="920" y="40" width="210" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AvoidInstructions_Art69_di"
+                        bpmnElement="Task_AvoidInstructions_Art69">
+        <dc:Bounds x="660" y="150" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_BoardIndependenceMaintained_Art69_di"
+                        bpmnElement="EndEvent_BoardIndependenceMaintained_Art69">
+        <dc:Bounds x="1240" y="112" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_StartPerformBoardTasksOrPowers_To_ActIndependently_Art69_di"
+                       bpmnElement="Flow_StartPerformBoardTasksOrPowers_To_ActIndependently_Art69">
+        <di:waypoint x="156" y="130" />
+        <di:waypoint x="240" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ActIndependently_To_GatewayCommissionRequest_Art69_di"
+                       bpmnElement="Flow_ActIndependently_To_GatewayCommissionRequest_Art69">
+        <di:waypoint x="420" y="130" />
+        <di:waypoint x="510" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayCommissionRequest_To_ReceiveCommissionRequest_Art69_di"
+                       bpmnElement="Flow_GatewayCommissionRequest_To_ReceiveCommissionRequest_Art69">
+        <di:waypoint x="535" y="105" />
+        <di:waypoint x="535" y="80" />
+        <di:waypoint x="660" y="80" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="544" y="81" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayCommissionRequest_To_AvoidInstructions_Art69_di"
+                       bpmnElement="Flow_GatewayCommissionRequest_To_AvoidInstructions_Art69">
+        <di:waypoint x="560" y="130" />
+        <di:waypoint x="660" y="190" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="578" y="148" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ReceiveCommissionRequest_To_HandleRequestWithoutInstructions_Art69_di"
+                       bpmnElement="Flow_ReceiveCommissionRequest_To_HandleRequestWithoutInstructions_Art69">
+        <di:waypoint x="840" y="80" />
+        <di:waypoint x="920" y="80" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_HandleRequestWithoutInstructions_To_EndBoardIndependenceMaintained_Art69_di"
+                       bpmnElement="Flow_HandleRequestWithoutInstructions_To_EndBoardIndependenceMaintained_Art69">
+        <di:waypoint x="1130" y="80" />
+        <di:waypoint x="1258" y="80" />
+        <di:waypoint x="1258" y="112" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AvoidInstructions_To_EndBoardIndependenceMaintained_Art69_di"
+                       bpmnElement="Flow_AvoidInstructions_To_EndBoardIndependenceMaintained_Art69">
+        <di:waypoint x="860" y="190" />
+        <di:waypoint x="1258" y="190" />
+        <di:waypoint x="1258" y="148" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_CommissionRequest_Art69_di"
+                       bpmnElement="MessageFlow_CommissionRequest_Art69">
+        <di:waypoint x="750" y="270" />
+        <di:waypoint x="750" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

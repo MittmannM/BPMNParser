@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Art95_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:process id="Process_Art95"
+                name="Check Article 95 no-additional-obligations rule"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for GDPR Article 95 based on the real English legal text from
+      gdpr_articles/article_95.txt. This compact process captures the no-additional-obligations
+      rule for providers of publicly available electronic communications services in public
+      communication networks in the Union where they are already subject to specific obligations
+      with the same objective under Directive 2002/58/EC.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_AssessElectronicCommunicationsProcessing_Art95"
+                     name="Assess electronic communications processing">
+      <bpmn:outgoing>Flow_Start_To_GatewayPublicServiceContext_Art95</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_IsPublicElectronicCommunicationsContext_Art95"
+                           name="Is the processing linked to publicly available electronic communications services in public communication networks in the Union?">
+      <bpmn:incoming>Flow_Start_To_GatewayPublicServiceContext_Art95</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayPublicServiceContext_To_GatewaySpecificObligations_Art95</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayPublicServiceContext_To_EndArticle95NotApplicable_Art95</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_AreSameObjectiveSpecificObligationsPresent_Art95"
+                           name="Are there specific obligations with the same objective under Directive 2002/58/EC?">
+      <bpmn:incoming>Flow_GatewayPublicServiceContext_To_GatewaySpecificObligations_Art95</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySpecificObligations_To_EndNoAdditionalObligations_Art95</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySpecificObligations_To_EndArticle95NotApplicable_Art95</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:endEvent id="EndEvent_NoAdditionalObligations_Art95"
+                   name="No additional GDPR obligations">
+      <bpmn:incoming>Flow_GatewaySpecificObligations_To_EndNoAdditionalObligations_Art95</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_Article95NotApplicable_Art95"
+                   name="Article 95 not applicable">
+      <bpmn:incoming>Flow_GatewayPublicServiceContext_To_EndArticle95NotApplicable_Art95</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewaySpecificObligations_To_EndArticle95NotApplicable_Art95</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_GatewayPublicServiceContext_Art95"
+                       sourceRef="StartEvent_AssessElectronicCommunicationsProcessing_Art95"
+                       targetRef="Gateway_IsPublicElectronicCommunicationsContext_Art95" />
+    <bpmn:sequenceFlow id="Flow_GatewayPublicServiceContext_To_GatewaySpecificObligations_Art95"
+                       name="Yes"
+                       sourceRef="Gateway_IsPublicElectronicCommunicationsContext_Art95"
+                       targetRef="Gateway_AreSameObjectiveSpecificObligationsPresent_Art95" />
+    <bpmn:sequenceFlow id="Flow_GatewayPublicServiceContext_To_EndArticle95NotApplicable_Art95"
+                       name="No"
+                       sourceRef="Gateway_IsPublicElectronicCommunicationsContext_Art95"
+                       targetRef="EndEvent_Article95NotApplicable_Art95" />
+    <bpmn:sequenceFlow id="Flow_GatewaySpecificObligations_To_EndNoAdditionalObligations_Art95"
+                       name="Yes"
+                       sourceRef="Gateway_AreSameObjectiveSpecificObligationsPresent_Art95"
+                       targetRef="EndEvent_NoAdditionalObligations_Art95" />
+    <bpmn:sequenceFlow id="Flow_GatewaySpecificObligations_To_EndArticle95NotApplicable_Art95"
+                       name="No"
+                       sourceRef="Gateway_AreSameObjectiveSpecificObligationsPresent_Art95"
+                       targetRef="EndEvent_Article95NotApplicable_Art95" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Art95_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_Art95_Reviewed"
+                      bpmnElement="Process_Art95">
+      <bpmndi:BPMNShape id="StartEvent_AssessElectronicCommunicationsProcessing_Art95_di"
+                        bpmnElement="StartEvent_AssessElectronicCommunicationsProcessing_Art95">
+        <dc:Bounds x="120" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_IsPublicElectronicCommunicationsContext_Art95_di"
+                        bpmnElement="Gateway_IsPublicElectronicCommunicationsContext_Art95"
+                        isMarkerVisible="true">
+        <dc:Bounds x="250" y="185" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AreSameObjectiveSpecificObligationsPresent_Art95_di"
+                        bpmnElement="Gateway_AreSameObjectiveSpecificObligationsPresent_Art95"
+                        isMarkerVisible="true">
+        <dc:Bounds x="500" y="95" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NoAdditionalObligations_Art95_di"
+                        bpmnElement="EndEvent_NoAdditionalObligations_Art95">
+        <dc:Bounds x="822" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Article95NotApplicable_Art95_di"
+                        bpmnElement="EndEvent_Article95NotApplicable_Art95">
+        <dc:Bounds x="822" y="282" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_GatewayPublicServiceContext_Art95_di"
+                       bpmnElement="Flow_Start_To_GatewayPublicServiceContext_Art95">
+        <di:waypoint x="156" y="210" />
+        <di:waypoint x="250" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPublicServiceContext_To_GatewaySpecificObligations_Art95_di"
+                       bpmnElement="Flow_GatewayPublicServiceContext_To_GatewaySpecificObligations_Art95">
+        <di:waypoint x="275" y="185" />
+        <di:waypoint x="275" y="120" />
+        <di:waypoint x="500" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="334" y="136" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayPublicServiceContext_To_EndArticle95NotApplicable_Art95_di"
+                       bpmnElement="Flow_GatewayPublicServiceContext_To_EndArticle95NotApplicable_Art95">
+        <di:waypoint x="300" y="210" />
+        <di:waypoint x="840" y="210" />
+        <di:waypoint x="840" y="282" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="564" y="192" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySpecificObligations_To_EndNoAdditionalObligations_Art95_di"
+                       bpmnElement="Flow_GatewaySpecificObligations_To_EndNoAdditionalObligations_Art95">
+        <di:waypoint x="550" y="120" />
+        <di:waypoint x="822" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="674" y="102" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySpecificObligations_To_EndArticle95NotApplicable_Art95_di"
+                       bpmnElement="Flow_GatewaySpecificObligations_To_EndArticle95NotApplicable_Art95">
+        <di:waypoint x="525" y="145" />
+        <di:waypoint x="525" y="300" />
+        <di:waypoint x="822" y="300" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="534" y="222" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

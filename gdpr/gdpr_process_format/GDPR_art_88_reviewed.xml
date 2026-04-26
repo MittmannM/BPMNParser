@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Commission_Art88" name="Commission" poolType="passive" />
+    <pool id="Participant_MemberState_Art88" name="Member State" poolType="active" processRef="Process_MemberState_Art88" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_AddressSpecialSafeguardAreas_Art88" name="Address transparency transfers and monitoring" type="task" poolRef="Participant_MemberState_Art88" />
+    <task id="Task_AdoptRulesByCollectiveAgreement_Art88" name="Adopt rules by collective agreement" type="task" poolRef="Participant_MemberState_Art88" />
+    <task id="Task_AdoptRulesByLaw_Art88" name="Adopt rules by law" type="task" poolRef="Participant_MemberState_Art88" />
+    <task id="Task_DefineEmploymentContextPurposes_Art88" name="Define employment-context purposes" type="task" poolRef="Participant_MemberState_Art88" />
+    <task id="Task_NotifyCommissionOfArticle88Provisions_Art88" name="Notify Commission of Article 88 provisions" type="sendTask" poolRef="Participant_MemberState_Art88" />
+    <task id="Task_SetSpecificSafeguards_Art88" name="Set specific safeguards" type="task" poolRef="Participant_MemberState_Art88" />
+  </tasks>
+  <events>
+    <event id="EndEvent_Article88ProvisionsNotified_Art88" name="Article 88 provisions notified" type="endEvent" poolRef="Participant_MemberState_Art88" />
+    <event id="EndEvent_NoAdditionalRules_Art88" name="No additional rules adopted" type="endEvent" poolRef="Participant_MemberState_Art88" />
+    <event id="StartEvent_AssessEmploymentContextRules_Art88" name="Assess employment-context rules" type="startEvent" poolRef="Participant_MemberState_Art88" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_AdoptMoreSpecificRules_Art88" name="Will the Member State adopt more specific employment-context rules?" type="exclusiveGateway" poolRef="Participant_MemberState_Art88" />
+    <gateway id="Gateway_MergeAdoptionBasis_Art88" type="exclusiveGateway" poolRef="Participant_MemberState_Art88" />
+    <gateway id="Gateway_WhatIsTheAdoptionBasis_Art88" name="What is the basis for the more specific rules?" type="exclusiveGateway" poolRef="Participant_MemberState_Art88" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AddressSpecialSafeguardAreas_To_NotifyCommission_Art88" sourceRef="Task_AddressSpecialSafeguardAreas_Art88" targetRef="Task_NotifyCommissionOfArticle88Provisions_Art88" />
+    <sequenceFlow id="Flow_AdoptRulesByCollectiveAgreement_To_GatewayMergeAdoptionBasis_Art88" sourceRef="Task_AdoptRulesByCollectiveAgreement_Art88" targetRef="Gateway_MergeAdoptionBasis_Art88" />
+    <sequenceFlow id="Flow_AdoptRulesByLaw_To_GatewayMergeAdoptionBasis_Art88" sourceRef="Task_AdoptRulesByLaw_Art88" targetRef="Gateway_MergeAdoptionBasis_Art88" />
+    <sequenceFlow id="Flow_DefineEmploymentPurposes_To_SetSafeguards_Art88" sourceRef="Task_DefineEmploymentContextPurposes_Art88" targetRef="Task_SetSpecificSafeguards_Art88" />
+    <sequenceFlow id="Flow_GatewayAdoptSpecificRules_To_EndNoAdditionalRules_Art88" name="No" sourceRef="Gateway_AdoptMoreSpecificRules_Art88" targetRef="EndEvent_NoAdditionalRules_Art88" />
+    <sequenceFlow id="Flow_GatewayAdoptSpecificRules_To_GatewayAdoptionBasis_Art88" name="Yes" sourceRef="Gateway_AdoptMoreSpecificRules_Art88" targetRef="Gateway_WhatIsTheAdoptionBasis_Art88" />
+    <sequenceFlow id="Flow_GatewayAdoptionBasis_To_AdoptRulesByCollectiveAgreement_Art88" name="Collective agreement" sourceRef="Gateway_WhatIsTheAdoptionBasis_Art88" targetRef="Task_AdoptRulesByCollectiveAgreement_Art88" />
+    <sequenceFlow id="Flow_GatewayAdoptionBasis_To_AdoptRulesByLaw_Art88" name="Law" sourceRef="Gateway_WhatIsTheAdoptionBasis_Art88" targetRef="Task_AdoptRulesByLaw_Art88" />
+    <sequenceFlow id="Flow_GatewayMergeAdoptionBasis_To_DefineEmploymentPurposes_Art88" sourceRef="Gateway_MergeAdoptionBasis_Art88" targetRef="Task_DefineEmploymentContextPurposes_Art88" />
+    <sequenceFlow id="Flow_NotifyCommission_To_EndArticle88ProvisionsNotified_Art88" sourceRef="Task_NotifyCommissionOfArticle88Provisions_Art88" targetRef="EndEvent_Article88ProvisionsNotified_Art88" />
+    <sequenceFlow id="Flow_SetSpecificSafeguards_To_AddressSpecialSafeguardAreas_Art88" sourceRef="Task_SetSpecificSafeguards_Art88" targetRef="Task_AddressSpecialSafeguardAreas_Art88" />
+    <sequenceFlow id="Flow_Start_To_GatewayAdoptSpecificRules_Art88" sourceRef="StartEvent_AssessEmploymentContextRules_Art88" targetRef="Gateway_AdoptMoreSpecificRules_Art88" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_NotifyCommissionOfArticle88Provisions_Art88" sourceRef="Task_NotifyCommissionOfArticle88Provisions_Art88" targetRef="Participant_Commission_Art88" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

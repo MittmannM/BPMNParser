@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Commission_Art92" name="Commission" poolType="active" processRef="Process_Commission_Art92" />
+    <pool id="Participant_Council_Art92" name="Council" poolType="passive" />
+    <pool id="Participant_EuropeanParliament_Art92" name="European Parliament" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_AdoptDelegatedAct_Art92" name="Adopt delegated act" type="task" poolRef="Participant_Commission_Art92" />
+    <task id="Task_ApplyRevocationDecision_Art92" name="Apply revocation decision" type="task" poolRef="Participant_Commission_Art92" />
+    <task id="Task_BringDelegatedActIntoForce_Art92" name="Bring delegated act into force" type="task" poolRef="Participant_Commission_Art92" />
+    <task id="Task_ConferDelegationForIndeterminatePeriod_Art92" name="Confer delegation for indeterminate period" type="task" poolRef="Participant_Commission_Art92" />
+    <task id="Task_ExtendObjectionPeriodByThreeMonths_Art92" name="Extend objection period by three months" type="task" poolRef="Participant_Commission_Art92" />
+    <task id="Task_NotifyParliamentAndCouncil_Art92" name="Notify Parliament and Council" type="sendTask" poolRef="Participant_Commission_Art92" />
+    <task id="Task_PreserveValidityOfActsAlreadyInForce_Art92" name="Preserve validity of acts already in force" type="task" poolRef="Participant_Commission_Art92" />
+  </tasks>
+  <events>
+    <event id="EndEvent_DelegatedActBlocked_Art92" name="Delegated act blocked" type="endEvent" poolRef="Participant_Commission_Art92" />
+    <event id="EndEvent_DelegatedActInForce_Art92" name="Delegated act in force" type="endEvent" poolRef="Participant_Commission_Art92" />
+    <event id="EndEvent_DelegationRevoked_Art92" name="Delegation revoked" type="endEvent" poolRef="Participant_Commission_Art92" />
+    <event id="StartEvent_HandleDelegatedActPower_Art92" name="Handle delegated-act power" type="startEvent" poolRef="Participant_Commission_Art92" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_DidBothBodiesInformNoObjection_Art92" name="Did Parliament and Council both inform the Commission that they will not object?" type="exclusiveGateway" poolRef="Participant_Commission_Art92" />
+    <gateway id="Gateway_HasAnExtensionBeenInitiated_Art92" name="Has Parliament or Council initiated an extension?" type="exclusiveGateway" poolRef="Participant_Commission_Art92" />
+    <gateway id="Gateway_HasAnyBodyObjectedWithinPeriod_Art92" name="Has either Parliament or Council objected within the objection period?" type="exclusiveGateway" poolRef="Participant_Commission_Art92" />
+    <gateway id="Gateway_HasDelegationBeenRevoked_Art92" name="Has Parliament or Council revoked the delegation?" type="exclusiveGateway" poolRef="Participant_Commission_Art92" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AdoptDelegatedAct_To_NotifyParliamentAndCouncil_Art92" sourceRef="Task_AdoptDelegatedAct_Art92" targetRef="Task_NotifyParliamentAndCouncil_Art92" />
+    <sequenceFlow id="Flow_ApplyRevocationDecision_To_PreserveExistingValidity_Art92" sourceRef="Task_ApplyRevocationDecision_Art92" targetRef="Task_PreserveValidityOfActsAlreadyInForce_Art92" />
+    <sequenceFlow id="Flow_BringActIntoForce_To_EndActInForce_Art92" sourceRef="Task_BringDelegatedActIntoForce_Art92" targetRef="EndEvent_DelegatedActInForce_Art92" />
+    <sequenceFlow id="Flow_ConferDelegation_To_GatewayRevocation_Art92" sourceRef="Task_ConferDelegationForIndeterminatePeriod_Art92" targetRef="Gateway_HasDelegationBeenRevoked_Art92" />
+    <sequenceFlow id="Flow_ExtendObjectionPeriod_To_GatewayEarlyNoObjection_Art92" sourceRef="Task_ExtendObjectionPeriodByThreeMonths_Art92" targetRef="Gateway_DidBothBodiesInformNoObjection_Art92" />
+    <sequenceFlow id="Flow_GatewayEarlyNoObjection_To_BringActIntoForce_Art92" name="Yes" sourceRef="Gateway_DidBothBodiesInformNoObjection_Art92" targetRef="Task_BringDelegatedActIntoForce_Art92" />
+    <sequenceFlow id="Flow_GatewayEarlyNoObjection_To_GatewayObjection_Art92" name="No" sourceRef="Gateway_DidBothBodiesInformNoObjection_Art92" targetRef="Gateway_HasAnyBodyObjectedWithinPeriod_Art92" />
+    <sequenceFlow id="Flow_GatewayExtension_To_ExtendObjectionPeriod_Art92" name="Yes" sourceRef="Gateway_HasAnExtensionBeenInitiated_Art92" targetRef="Task_ExtendObjectionPeriodByThreeMonths_Art92" />
+    <sequenceFlow id="Flow_GatewayExtension_To_GatewayEarlyNoObjection_Art92" name="No" sourceRef="Gateway_HasAnExtensionBeenInitiated_Art92" targetRef="Gateway_DidBothBodiesInformNoObjection_Art92" />
+    <sequenceFlow id="Flow_GatewayObjection_To_BringActIntoForce_Art92" name="No" sourceRef="Gateway_HasAnyBodyObjectedWithinPeriod_Art92" targetRef="Task_BringDelegatedActIntoForce_Art92" />
+    <sequenceFlow id="Flow_GatewayObjection_To_EndActBlocked_Art92" name="Yes" sourceRef="Gateway_HasAnyBodyObjectedWithinPeriod_Art92" targetRef="EndEvent_DelegatedActBlocked_Art92" />
+    <sequenceFlow id="Flow_GatewayRevocation_To_AdoptDelegatedAct_Art92" name="No" sourceRef="Gateway_HasDelegationBeenRevoked_Art92" targetRef="Task_AdoptDelegatedAct_Art92" />
+    <sequenceFlow id="Flow_GatewayRevocation_To_ApplyRevocationDecision_Art92" name="Yes" sourceRef="Gateway_HasDelegationBeenRevoked_Art92" targetRef="Task_ApplyRevocationDecision_Art92" />
+    <sequenceFlow id="Flow_NotifyParliamentAndCouncil_To_GatewayExtension_Art92" sourceRef="Task_NotifyParliamentAndCouncil_Art92" targetRef="Gateway_HasAnExtensionBeenInitiated_Art92" />
+    <sequenceFlow id="Flow_PreserveExistingValidity_To_EndDelegationRevoked_Art92" sourceRef="Task_PreserveValidityOfActsAlreadyInForce_Art92" targetRef="EndEvent_DelegationRevoked_Art92" />
+    <sequenceFlow id="Flow_Start_To_ConferDelegation_Art92" sourceRef="StartEvent_HandleDelegatedActPower_Art92" targetRef="Task_ConferDelegationForIndeterminatePeriod_Art92" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_NotifyCouncil_Art92" sourceRef="Task_NotifyParliamentAndCouncil_Art92" targetRef="Participant_Council_Art92" />
+    <messageFlow id="MessageFlow_NotifyParliament_Art92" sourceRef="Task_NotifyParliamentAndCouncil_Art92" targetRef="Participant_EuropeanParliament_Art92" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>
