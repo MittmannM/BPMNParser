@@ -32,38 +32,37 @@ def parse_args() -> argparse.Namespace:
 
     parser = argparse.ArgumentParser(
         description=(
-            "Konvertiert GDPR-Artikel und XML-Prozessmodelle in ein fuer Gemma 4 2B "
-            "sauber vorgerendertes Prompt-Completion-JSONL."
+            "Converts GDPR-Articles and XML-Process Models into a properly formatted Prompt-Completion-JSONL for Gemma 4 2B."
         )
     )
     parser.add_argument(
         "--articles-dir",
         type=Path,
         default=project_root / "gdpr_articles",
-        help="Ordner mit den GDPR-Artikeltexten.",
+        help="Folder with the GDPR article texts.",
     )
     parser.add_argument(
         "--process-dir",
         type=Path,
         default=project_root / "gdpr_process_format",
-        help="Ordner mit den XML-Prozessmodellen.",
+        help="Folder with the XML-process models.",
     )
     parser.add_argument(
         "--output-file",
         type=Path,
         default=project_root / "training_data_LLM_format",
-        help="Ziel-Datei fuer das vorgerenderte JSONL.",
+        help="Target file for the preprocessed JSONL.",
     )
     parser.add_argument(
         "--tokenizer-id",
         type=str,
         default=DEFAULT_TOKENIZER_ID,
-        help="Gemma-4-2B-Tokenizer fuer die offizielle Chat-Template-Formatierung.",
+        help="Gemma-4-2B-Tokenizer for the official Chat-Template-Formating.",
     )
     parser.add_argument(
         "--local-files-only",
         action="store_true",
-        help="Laedt den Tokenizer nur aus dem lokalen Cache.",
+        help="Loads the tokenizer only from the local cache.",
     )
     return parser.parse_args()
 

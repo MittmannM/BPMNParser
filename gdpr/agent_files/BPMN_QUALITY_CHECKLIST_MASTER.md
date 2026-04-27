@@ -177,8 +177,8 @@ These points must always be satisfied.
 
 The following points have already been explicitly identified as desired or necessary:
 
-- Art. 33 is the qualitative reference standard.
-- Art. 34 and the following articles should be modeled at the same level.
+- Art. 21 is the qualitative reference standard.
+- Art. 22 and the following articles should be modeled at the same level.
 - Question gateways with `Yes` and `No` are mandatory where decisions diverge.
 - Communication to other actors should be modeled as `sendTask`.
 - Reviewed files must be openable in BPMN tools.
