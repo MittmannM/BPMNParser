@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Commission_Committee" name="Commission or Committee" poolType="active" processRef="Process_Article74" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_AssistByCommittee_Art74" name="Assist by committee" type="task" poolRef="Participant_Commission_Committee" />
+    <task id="Task_ApplyReg182_Art74" name="Apply Reg 182 Art 5" type="task" poolRef="Participant_Commission_Committee" />
+    <task id="Task_ApplyReg182_Art74Conjunction_Art74" name="Apply Reg 182 Arts 8 &amp; 5" type="task" poolRef="Participant_Commission_Committee" />
+  </tasks>
+  <events>
+    <event id="EndEvent_AssistanceProvided_Art74" name="Assistance Provided" type="endEvent" poolRef="Participant_Commission_Committee" />
+    <event id="StartEvent_NeedForReference_Art74" name="Need for Reference" type="startEvent" poolRef="Participant_Commission_Committee" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_WhichApplicationApplies_Art74" name="Which application applies?" type="exclusiveGateway" poolRef="Participant_Commission_Committee" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AssistByCommittee_To_GatewayWhichApplicationApplies_Art74" sourceRef="Task_AssistByCommittee_Art74" targetRef="Gateway_WhichApplicationApplies_Art74" />
+    <sequenceFlow id="Flow_ApplyReg182_Art5_To_GatewayWhichApplicationApplies_Art74" sourceRef="Task_ApplyReg182_Art74" targetRef="Gateway_WhichApplicationApplies_Art74" />
+    <sequenceFlow id="Flow_ApplyReg182Arts8And5_To_GatewayWhichApplicationApplies_Art74" sourceRef="Task_ApplyReg182_Art74Conjunction_Art74" targetRef="Gateway_WhichApplicationApplies_Art74" />
+    <sequenceFlow id="Flow_GatewayWhichApplicationApplies_To_Finish_Art74" sourceRef="Gateway_WhichApplicationApplies_Art74" targetRef="EndEvent_AssistanceProvided_Art74" />
+  </sequenceFlows>
+  <messageFlows />
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

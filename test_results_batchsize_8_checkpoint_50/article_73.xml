@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Board" name="Board" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_ElectChairAndDeputyChairs_SimpleMajority" name="Elect Chair and Deputy Chairs by simple majority" type="task" poolRef="Participant_Board" />
+    <task id="Task_RenewTermOnce_FiveYears" name="Set 5-year terms for Chair and deputies; allow one renewal" type="task" poolRef="Participant_Board" />
+  </tasks>
+  <events>
+    <event id="EndEvent_TermsDefined" name="Office terms defined" type="endEvent" poolRef="Participant_Board" />
+    <event id="StartEvent_DefineGovernanceStructure" name="Need to define governance structure" type="startEvent" poolRef="Participant_Board" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_IsRenewalAllowedOneTime?" name="Can the current tenure be renewed once more?" type="exclusiveGateway" poolRef="Participant_Board" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_ElectChairAndDeputyChairs_To_GatewayRenewalCheck" sourceRef="Task_ElectChairAndDeputyChairs_SimpleMajority" targetRef="Gateway_IsRenewalAllowedOneTime?" />
+    <sequenceFlow id="Flow_GatewayRenewalCheck_To_TerminateDefinition" name="No" sourceRef="Gateway_IsRenewalAllowedOneTime?" targetRef="EndEvent_TermsDefined" />
+    <sequenceFlow id="Flow_GatewayRenewalCheck_To_RenewTermSetting" name="Yes" sourceRef="Gateway_IsRenewalAllowedOneTime?" targetRef="Task_RenewTermOnce_FiveYears" />
+    <sequenceFlow id="Flow_RenewTermSetting_To_GatewayRenewalCheck" sourceRef="Task_RenewTermOnce_FiveYears" targetRef="Gateway_IsRenewalAllowedOneTime?" />
+    <sequenceFlow id="Flow_Start_To_ElectChairAndDeputyChairs" sourceRef="StartEvent_DefineGovernanceStructure" targetRef="Task_ElectChairAndDeputyChairs_SimpleMajority" />
+    <sequenceFlow id="Flow_ElectChairAndDeputyChairs_To_Start" sourceRef="Task_ElectChairAndDeputyChairs_SimpleMajority" targetRef="StartEvent_DefineGovernanceStructure" />
+    <sequenceFlow id="Flow_RenewTermSetting_To_Start" sourceRef="Task_RenewTermOnce_FiveYears" targetRef="StartEvent_DefineGovernanceStructure" />
+  </sequenceFlows>
+  <messageFlows />
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>
