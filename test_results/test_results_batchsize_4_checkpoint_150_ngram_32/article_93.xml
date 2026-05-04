@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Committee_Art6" name="Committee" poolType="active" processRef="Process_Committee_Art6" />
+    <pool id="Participant_Commission_Art6" name="Commission" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_ApplyArticle5_Art6" name="Apply Article 5(Regulation 182/2011)" type="task" poolRef="Participant_Committee_Art6" />
+    <task id="Task_ApplyArticle8And5_Art6" name="Apply Article 8 and Article 5(Regulation 182/2011)" type="task" poolRef="Participant_Committee_Art6" />
+  </tasks>
+  <events>
+    <event id="EndEvent_AssistanceEstablished_Art6" name="Article 6 assistance established" type="endEvent" poolRef="Participant_Commission_Art6" />
+    <event id="StartEvent_NeedCommitteeAssistance_Art6" name="Need committee assistance under Article 6" type="startEvent" poolRef="Participant_Commission_Art6" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_ReferenceToParagraph_Art6" name="Is there a reference to this paragraph?" type="exclusiveGateway" poolRef="Participant_Commission_Art6" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_ApplyArticle5_To_GatewayReference_Art6" sourceRef="Task_ApplyArticle5_Art6" targetRef="Gateway_ReferenceToParagraph_Art6" />
+    <sequenceFlow id="Flow_ApplyArticle8And5_To_GatewayReference_Art6" sourceRef="Task_ApplyArticle8And5_Art6" targetRef="Gateway_ReferenceToParagraph_Art6" />
+    <sequenceFlow id="Flow_GatewayReference_To_ApplyArticle5_Art6" name="Yes" sourceRef="Gateway_ReferenceToParagraph_Art6" targetRef="Task_ApplyArticle5_Art6" />
+    <sequenceFlow id="Flow_GatewayReference_To_ApplyArticle8And5_Art6" name="No" sourceRef="Gateway_ReferenceToParagraph_Art6" targetRef="Task_ApplyArticle8And5_Art6" />
+    <sequenceFlow id="Flow_Start_To_GatewayReference_Art6" sourceRef="StartEvent_NeedCommitteeAssistance_Art6" targetRef="Gateway_ReferenceToParagraph_Art6" />
+    <sequenceFlow id="Flow_EndAssistanceEstablished_To_End_AssistanceEstablished_Art6" sourceRef="EndEvent_AssistanceEstablished_Art6" targetRef="EndEvent_AssistanceEstablished_Art6" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_RequestCommitteeAssistance_Art6" sourceRef="Participant_Commission_Art6" targetRef="Participant_Committee_Art6" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

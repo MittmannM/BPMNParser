@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Board_Art43" name="Board" poolType="active" processRef="Process_Board_Art43" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_ElectChairAndDeputyChairs_Art43" name="Elect chair and two deputy chairs" type="task" poolRef="Participant_Board_Art43" />
+    <task id="Task_SetTermFiveYearsRenewableOnce_Art43" name="Set five-year term renewable once" type="task" poolRef="Participant_Board_Art43" />
+  </tasks>
+  <events>
+    <event id="EndEvent_BoardCompositionSet_Art43" name="Board composition set" type="endEvent" poolRef="Participant_Board_Art43" />
+    <event id="StartEvent_ManageBoardComposition_Art43" name="Manage board composition" type="startEvent" poolRef="Participant_Board_Art43" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_IsElectionMajorityMet_Art43" name="Did the election meet a simple majority?" type="exclusiveGateway" poolRef="Participant_Board_Art43" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_ElectChairAndDeputyChairs_To_GatewayMajority_Art43" sourceRef="Task_ElectChairAndDeputyChairs_Art43" targetRef="Gateway_IsElectionMajorityMet_Art43" />
+    <sequenceFlow id="Flow_GatewayMajority_To_ElectChairAndDeputyChairs_Art43" name="No" sourceRef="Gateway_IsElectionMajorityMet_Art43" targetRef="Task_ElectChairAndDeputyChairs_Art43" />
+    <sequenceFlow id="Flow_GatewayMajority_To_SetTerm_Art43" name="Yes" sourceRef="Gateway_IsElectionMajorityMet_Art43" targetRef="Task_SetTermFiveYearsRenewableOnce_Art43" />
+    <sequenceFlow id="Flow_SetTerm_To_EndComposition_Art43" sourceRef="Task_SetTermFiveYearsRenewableOnce_Art43" targetRef="EndEvent_BoardCompositionSet_Art43" />
+    <sequenceFlow id="Flow_Start_To_ElectChairAndDeputyChairs_Art43" sourceRef="StartEvent_ManageBoardComposition_Art43" targetRef="Task_ElectChairAndDeputyChairs_Art43" />
+  </sequenceFlows>
+  <messageFlows />
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

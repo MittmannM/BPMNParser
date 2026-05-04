@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_MemberState_Art93" name="Member State" poolType="passive" />
+    <pool id="Participant_Member_Art93" name="Member or Staff" poolType="active" processRef="Process_MemberOrStaff_Art93" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_DefineSupervisoryAuthority_Art93" name="Define supervisory authority" type="task" poolRef="Participant_MemberState_Art93" />
+    <task id="Task_EstablishSupervisoryAuthority_Art93" name="Establish supervisory authority" type="task" poolRef="Participant_MemberState_Art93" />
+    <task id="Task_SetAppointmentRules_Art93" name="Set appointment rules" type="task" poolRef="Participant_MemberState_Art93" />
+    <task id="Task_SetQualificationsAndEligibility_Art93" name="Set qualifications and eligibility conditions" type="task" poolRef="Participant_MemberState_Art93" />
+    <task id="Task_SetTermDuration_Art93" name="Set term duration" type="task" poolRef="Participant_MemberState_Art93" />
+    <task id="Task_SetReappointmentEligibility_Art93" name="Set reappointment eligibility" type="task" poolRef="Participant_MemberState_Art93" />
+    <task id="Task_SetProfessionalSecrecyDuty_Art93" name="Set professional secrecy duty" type="task" poolRef="Participant_MemberState_Art93" />
+    <task id="Task_SetProhibitionsAndCessationRules_Art93" name="Set prohibitions and cessation rules" type="task" poolRef="Participant_MemberState_Art93" />
+  </tasks>
+  <events>
+    <event id="EndEvent_Article93Completed_Art93" name="Article 93 completed" type="endEvent" poolRef="Participant_MemberState_Art93" />
+    <event id="StartEvent_DesignSupervisoryAuthority_Art93" name="Design supervisory authority" type="startEvent" poolRef="Participant_MemberState_Art93" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_IsStaggeredAppointmentNecessary_Art93" name="Is a staggered appointment necessary to protect independence?" type="exclusiveGateway" poolRef="Participant_MemberState_Art93" />
+    <gateway id="Gateway_IsReappointmentEligible_Art93" name="Is reappointment eligible?" type="exclusiveGateway" poolRef="Participant_MemberState_Art93" />
+    <gateway id="Gateway_ShallMemberBeSubjectToProfessionalSecrecy_Art93" name="Shall the member or staff be subject to professional secrecy?" type="exclusiveGateway" poolRef="Participant_MemberState_Art93" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_GatewayStaggeredAppointment_To_TaskSetTermDuration_Art93" name="No" sourceRef="Gateway_IsStaggeredAppointmentNecessary_Art93" targetRef="Task_SetTermDuration_Art93" />
+    <sequenceFlow id="Flow_GatewayStaggeredAppointment_To_TaskSetReappointmentEligibility_Art93" name="Yes" sourceRef="Gateway_IsStaggeredAppointmentNecessary_Art93" targetRef="Task_SetReappointmentEligibility_Art93" />
+    <sequenceFlow id="Flow_GatewayReappointmentEligible_To_TaskSetProfessionalSecrecyDuty_Art93" name="No" sourceRef="Gateway_IsReappointmentEligible_Art93" targetRef="Task_SetProfessionalSecrecyDuty_Art93" />
+    <sequenceFlow id="Flow_GatewayReappointmentEligible_To_TaskSetTermDuration_Art93" name="Yes" sourceRef="Gateway_IsReappointmentEligible_Art93" targetRef="Task_SetTermDuration_Art93" />
+    <sequenceFlow id="Flow_GatewayShallMemberBeSubjectToProfessionalSecrecy_To_TaskSetProhibitionsAndCessationRules_Art93" name="No" sourceRef="Gateway_ShallMemberBeSubjectToProfessionalSecrecy_Art93" targetRef="Task_SetProhibitionsAndCessationRules_Art93" />
+    <sequenceFlow id="Flow_GatewayShallMemberBeSubjectToProfessionalSecrecy_To_TaskSetQualificationsAndEligibility_Art93" name="Yes" sourceRef="Gateway_ShallMemberBeSubjectToProfessionalSecrecy_Art93" targetRef="Task_SetQualificationsAndEligibility_Art93" />
+    <sequenceFlow id="Flow_EstablishSupervisoryAuthority_To_GatewayStaggeredAppointment_Art93" sourceRef="Task_EstablishSupervisoryAuthority_Art93" targetRef="Gateway_IsStaggeredAppointmentNecessary_Art93" />
+    <sequenceFlow id="Flow_GatewayStaggeredAppointment_To_TaskDefineSupervisoryAuthority_Art93" name="No" sourceRef="Gateway_IsStaggeredAppointmentNecessary_Art93" targetRef="Task_DefineSupervisoryAuthority_Art93" />
+    <sequenceFlow id="Flow_GatewayStaggeredAppointment_To_TaskSetAppointmentRules_Art93" name="Yes" sourceRef="Gateway_IsStaggeredAppointmentNecessary_Art93" targetRef="Task_SetAppointmentRules_Art93" />
+    <sequenceFlow id="Flow_GatewayReappointmentEligible_To_TaskSetAppointmentRules_Art93" name="No" sourceRef="Gateway_IsReappointmentEligible_Art93" targetRef="Task_SetAppointmentRules_Art93" />
+    <sequenceFlow id="Flow_GatewayReappointmentEligibility_To_TaskSetReappointmentEligibility_Art93" name="Yes" sourceRef="Gateway_IsReappointmentEligible_Art93" targetRef="Task_SetReappointmentEligibility_Art93" />
+    <sequenceFlow id="Flow_GatewayShallMemberBeSubjectToProfessionalSecrecy_To_TaskSetTermDuration_Art93" name="No" sourceRef="Gateway_ShallMemberBeSubjectToProfessionalSecrecy_Art93" targetRef="Gateway_IsReappointmentEligible_Art93" />
+    <sequenceFlow id="Flow_GatewayShallMemberBeSubjectToProfessionalSecrecy_To_TaskSetQualifications_Art93" name="Yes" sourceRef="Gateway_ShallMemberBeSubjectToProfessionalSecrecy_Art93" targetRef="Gateway_IsStaggeredAppointmentNecessary_Art93" />
+    <sequenceFlow id="Flow_MessageSend_To_GatewayShallMemberBeSubjectToProfessionalSecrecy_Art93" sourceRef="Task_SetProfessionalSecrecyDuty_Art93" targetRef="Gateway_ShallMemberBeSubjectToProfessionalSecrecy_Art93" />
+    <sequenceFlow id="Flow_MessageSend_To_TaskEstablishSupervisoryAuthority_Art93" sourceRef="Task_SetQualificationsAndEligibility_Art93" targetRef="Task_EstablishSupervisoryAuthority_Art93" />
+    <sequenceFlow id="Flow_MessageSend_To_TaskSetAppointmentRules_Art93" sourceRef="Task_SetAppointmentRules_Art93" targetRef="Task_SetQualificationsAndEligibility_Art93" />
+    <sequenceFlow id="Flow_MessageSend_To_TaskSetQualificationsAndEligibility_Art93" sourceRef="Task_SetQualificationsAndEligibility_Art93" targetRef="Task_SetTermDuration_Art93" />
+    <sequenceFlow id="Flow_MessageSend_To_TaskSetTermDuration_Art93" sourceRef="Task_SetTermDuration_Art93" targetRef="Task_SetAppointmentRules_Art93" />
+    <sequenceFlow id="Flow_MessageSend_To_TaskSetReappointmentEligibility_Art93" sourceRef="Task_SetReappointmentEligibility_Art93" targetRef="Task_SetProfessionalSecrecyDuty_Art93" />
+    <sequenceFlow id="Flow_MessageSend_To_TaskSetProhibitionsAndCessationRules_Art93" sourceRef="Task_SetProhibitionsAndCessationRules_Art93" targetRef="EndEvent_Article93Completed_Art93" />
+    <sequenceFlow id="Flow_StartDesignSupervisoryAuthority_To_TaskDefineSupervisoryAuthority_Art93" sourceRef="StartEvent_DesignSupervisoryAuthority_Art93" targetRef="Task_DefineSupervisoryAuthority_Art93" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_SetProfessionalSecrecyDuty_Art93" sourceRef="Task_SetProfessionalSecrecyDuty_Art93" targetRef="Participant_Member_Art93" />
+    <messageFlow id="MessageFlow_SetQualificationsAndEligibility_Art93" sourceRef="Task_SetQualificationsAndEligibility_Art93" targetRef="Participant_Member_Art93" />
+    <messageFlow id="MessageFlow_SetTermDuration_Art93" sourceRef="Task_SetTermDuration_Art93" targetRef="Participant_Member_Art93" />
+    <messageFlow id="MessageFlow_SetReappointmentEligibility_Art93" sourceRef="Task_SetReappointmentEligibility_Art93" targetRef="Participant_Member_Art93" />
+    <messageFlow id="MessageFlow_SetProhibitionsAndCessationRules_Art93" sourceRef="Task_SetProhibitionsAndCessationRules_Art99" targetRef="Participant_Member_Art93" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

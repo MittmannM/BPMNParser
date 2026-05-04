@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Controller_Art46" name="Controller" poolType="active" processRef="Process_Controller_Art46" />
+    <pool id="Participant_Processor_Art46" name="Processor" poolType="active" processRef="Process_Processor_Art46" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_ApplyChapterProvisions_Art46" name="Apply Chapter provisions" type="task" poolRef="Participant_Controller_Art46" />
+    <task id="Task_AssessTransferRisk_Art46" name="Assess transfer risk" type="task" poolRef="Participant_Controller_Art46" />
+    <task id="Task_CheckTransferConditions_Art46" name="Check transfer conditions" type="task" poolRef="Participant_Controller_Art46" />
+    <task id="Task_DocumentTransfer_Art46" name="Document transfer" type="task" poolRef="Participant_Controller_Art46" />
+    <task id="Task_PrepareTransfer_Art46" name="Prepare transfer" type="task" poolRef="Participant_Controller_Art46" />
+    <task id="Task_ReviewOnwardTransfer_Art46" name="Review onward transfer" type="task" poolRef="Participant_Controller_Art46" />
+    <task id="Task_VerifyCompliance_Art46" name="Verify compliance" type="task" poolRef="Participant_Controller_Art46" />
+    <task id="Task_SendTransferNotice_Art46" name="Send transfer notice" type="sendTask" poolRef="Participant_Controller_Art46" />
+  </tasks>
+  <events>
+    <event id="EndEvent_TransferNotPermitted_Art46" name="Transfer not permitted under Article 46" type="endEvent" poolRef="Participant_Controller_Art46" />
+    <event id="EndEvent_TransferCompleted_Art46" name="Transfer completed under Article 46" type="endEvent" poolRef="Participant_Controller_Art46" />
+    <event id="StartEvent_NeedThirdCountryTransfer_Art46" name="Need third-country transfer" type="startEvent" poolRef="Participant_Controller_Art46" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_AreOtherProvisionsMet_Art46" name="Are other Chapter provisions met?" type="exclusiveGateway" poolRef="Participant_Controller_Art46" />
+    <gateway id="Gateway_IsOnwardTransferPresent_Art46" name="Is an onward transfer present?" type="exclusiveGateway" poolRef="Participant_Controller_Art46" />
+    <gateway id="Gateway_IsTransferToThirdCountryOrInternationalOrganisation_Art46" name="Is the transfer to a third country or international organisation?" type="exclusiveGateway" poolRef="Participant_Controller_Art46" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_ApplyChapterProvisions_To_GatewayOtherProvisions_Art46" sourceRef="Task_ApplyChapterProvisions_Art46" targetRef="Gateway_AreOtherProvisionsMet_Art46" />
+    <sequenceFlow id="Flow_AssessTransferRisk_To_GatewayOnwardTransfer_Art46" sourceRef="Task_AssessTransferRisk_Art46" targetRef="Gateway_IsOnwardTransferPresent_Art46" />
+    <sequenceFlow id="Flow_CheckTransferConditions_To_GatewayOtherProvisions_Art46" sourceRef="Task_CheckTransferConditions_Art46" targetRef="Gateway_AreOtherProvisionsMet_Art46" />
+    <sequenceFlow id="Flow_DocumentTransfer_To_SendTransferNotice_Art46" sourceRef="Task_DocumentTransfer_Art46" targetRef="Task_SendTransferNotice_Art46" />
+    <sequenceFlow id="Flow_PrepareTransfer_To_GatewayTransferType_Art46" sourceRef="Task_PrepareTransfer_Art46" targetRef="Gateway_IsTransferToThirdCountryOrInternationalOrganisation_Art46" />
+    <sequenceFlow id="Flow_ReviewOnwardTransfer_To_GatewayTransferType_Art46" sourceRef="Task_ReviewOnwardTransfer_Art46" targetRef="Gateway_IsTransferToThirdCountryOrInternationalOrganisation_Art46" />
+    <sequenceFlow id_="Flow_SendTransferNotice_To_EndTransferCompleted_Art46" sourceRef="Task_SendTransferNotice_Art46" targetRef="EndEvent_TransferCompleted_Art46" />
+    <sequenceFlow id="Flow_StartNeedThirdCountryTransfer_To_AssessTransferRisk_Art46" sourceRef="StartEvent_NeedThirdCountryTransfer_Art46" targetRef="Task_AssessTransferRisk_Art46" />
+    <sequenceFlow id="Flow_VerifyCompliance_To_DocumentTransfer_Art46" sourceRef="Task_VerifyCompliance_Art46" targetRef="Task_DocumentTransfer_Art46" />
+    <sequenceFlow id="Flow_TransferNotPermitted_To_EndTransferNotPermitted_Art46" sourceRef="EndEvent_TransferNotPermitted_Art46" targetRef="EndEvent_TransferNotPermitted_Art46" />
+    <sequenceFlow id="Flow_TransferCompleted_To_EndTransferCompleted_Art46" sourceRef="EndEvent_TransferCompleted_Art46" targetRef="EndEvent_TransferCompleted_Art46" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_SendTransferNotice_Art46" sourceRef="Task_SendTransferNotice_Art46" targetRef="Participant_Processor_Art46" />
+    <messageFlow id="MessageFlow_ReceiveTransferNotice_Art46" sourceRef="Participant_Processor_Art46" targetRef="Task_SendTransferNotice_Art46" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>
