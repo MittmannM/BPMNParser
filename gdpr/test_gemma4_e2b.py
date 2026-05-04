@@ -227,7 +227,7 @@ def memory_summary() -> str:
     )
 
 
-def generate_xml(legal_text, max_new_tokens, temperature, top_p, repetition_penalty):
+def generate_xml(legal_text, max_new_tokens, temperature, top_p, repetition_penalty, no_repeat_ngram_size):
     legal_text = (legal_text or "").strip()
     if not legal_text:
         yield "", "No input text."
@@ -257,6 +257,8 @@ def generate_xml(legal_text, max_new_tokens, temperature, top_p, repetition_pena
     if do_sample:
         generation_kwargs["temperature"] = float(temperature)
         generation_kwargs["top_p"] = float(top_p)
+    if int(no_repeat_ngram_size) > 0:
+        generation_kwargs["no_repeat_ngram_size"] = int(no_repeat_ngram_size)
 
     streamer = TextIteratorStreamer(tokenizer, skip_prompt=True, skip_special_tokens=True)
     generation_kwargs["streamer"] = streamer
@@ -280,7 +282,8 @@ def generate_xml(legal_text, max_new_tokens, temperature, top_p, repetition_pena
         generated_tokens = len(tokenizer(output_text, add_special_tokens=False)["input_ids"])
         stats = (
             f"input_tokens={input_tokens} | generated_tokens~={generated_tokens} | "
-            f"adapter={ADAPTER_DIR.name} | streaming | {memory_summary()}"
+            f"adapter={ADAPTER_DIR.name} | no_repeat_ngram_size={int(no_repeat_ngram_size)} | "
+            f"streaming | {memory_summary()}"
         )
         yield output_text, stats
 
@@ -290,7 +293,8 @@ def generate_xml(legal_text, max_new_tokens, temperature, top_p, repetition_pena
     status = "error" if errors else "done"
     stats = (
         f"input_tokens={input_tokens} | generated_tokens~={generated_tokens} | "
-        f"adapter={ADAPTER_DIR.name} | {status} | {memory_summary()}"
+        f"adapter={ADAPTER_DIR.name} | no_repeat_ngram_size={int(no_repeat_ngram_size)} | "
+        f"{status} | {memory_summary()}"
     )
     yield output_text, stats
 
@@ -310,6 +314,13 @@ with gr.Blocks(title="Gemma 4 E2B QLoRA Adapter Test") as demo:
             with gr.Row():
                 top_p = gr.Slider(0.1, 1.0, value=0.9, step=0.05, label="top_p")
                 repetition_penalty = gr.Slider(1.0, 1.3, value=1.05, step=0.01, label="repetition_penalty")
+            no_repeat_ngram_size = gr.Slider(
+                0,
+                32,
+                value=18,
+                step=1,
+                label="no_repeat_ngram_size",
+            )
             run_button = gr.Button("Generate XML", variant="primary")
         with gr.Column(scale=1):
             xml_output = gr.Textbox(label="Generated XML", lines=24, max_lines=32)
@@ -317,7 +328,7 @@ with gr.Blocks(title="Gemma 4 E2B QLoRA Adapter Test") as demo:
 
     run_button.click(
         fn=generate_xml,
-        inputs=[legal_text, max_new_tokens, temperature, top_p, repetition_penalty],
+        inputs=[legal_text, max_new_tokens, temperature, top_p, repetition_penalty, no_repeat_ngram_size],
         outputs=[xml_output, stats_output],
     )
 
