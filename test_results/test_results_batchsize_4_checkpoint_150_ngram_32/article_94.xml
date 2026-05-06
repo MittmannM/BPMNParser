@@ -1,33 +1,35 @@
 <?xml version='1.0' encoding='utf-8'?>
 <processModel>
   <pools>
-    <pool id="Participant_Controller_Processor_DataSubject" name="Participants" poolType="active" />
+    <pool id="Participant_ControllerOrProcessor_Art53" name="Controller or Processor" poolType="active" processRef="Process_ControllerOrProcessor_Art53" />
+    <pool id="Participant_DataSubject_Art53" name="Data Subject" poolType="passive" />
   </pools>
   <lanes />
   <tasks>
-    <task id="Task_ApplyArticle29Reference_Art29" name="Apply Article 29 reference" type="task" poolRef="Participant_Controller_Processor_DataSubject" />
-    <task id="Task_ApplyWorkingPartyReference_WP" name="Apply Working Party reference" type="task" poolRef="Participant_Controller_Processor_DataSubject" />
-    <task id="Task_ApplyRepealReference_Repeal" name="Apply Repeal reference" type="task" poolRef="Participant_Controller_Processor_DataSubject" />
+    <task id="Task_ApplyRegulationReference_Art53" name="Apply Regulation reference" type="task" poolRef="Participant_ControllerOrProcessor_Art53" />
+    <task id="Task_InterpretRepealedDirectiveAsRegulationReference_Art53" name="Interpret repealed directive as regulation reference" type="task" poolRef="Participant_ControllerOrProcessor_Art53" />
+    <task id="Task_InterpretWorkingPartyAsBoardReference_Art53" name="Interpret Working Party as Board reference" type="task" poolRef="Participant_ControllerOrProcessor_Art53" />
   </tasks>
   <events>
-    <event id="EndEvent_NoActionNeeded" name="No action needed" type="endEvent" poolRef="Participant_Controller_Processor_DataSubject" />
-    <event id="StartEvent_ReceiveRequest" name="Receive request" type="startEvent" poolRef="Participant_Controller_Processor_DataSubject" />
+    <event id="EndEvent_NoActionRequired_Art53" name="No action required" type="endEvent" poolRef="Participant_ControllerOrProcessor_Art53" />
+    <event id="StartEvent_HandleArticle53Request_Art53" name="Handle Article 53 request" type="startEvent" poolRef="Participant_ControllerOrProcessor_Art53" />
   </events>
   <gateways>
-    <gateway id="Gateway_WhichReference_WhichReference" name="Which reference applies?" type="exclusiveGateway" poolRef="Participant_Controller_Processor_DataSubject" />
+    <gateway id="Gateway_IsDirective9546ECRepealed_Art53" name="Is Directive 95/46/EC repealed?" type="exclusiveGateway" poolRef="Participant_ControllerOrProcessor_Art53" />
+    <gateway id="Gateway_IsWorkingPartyReference_Art53" name="Does the reference concern the Working Party on the Protection of Individuals with regard to the Processing of Personal Data?" type="exclusiveGateway" poolRef="Participant_ControllerOrProcessor_Art53" />
   </gateways>
   <sequenceFlows>
-    <sequenceFlow id="Flow_ApplyArticle29Reference_To_GatewayWhichReference_If_Yes" sourceRef="Task_ApplyArticle29Reference_Art29" targetRef="Gateway_WhichReference_WhichReference" />
-    <sequenceFlow id="Flow_ApplyWorkingPartyReference_To_GatewayWhichReference_If_Yes" sourceRef="Task_ApplyWorkingPartyReference_WP" targetRef="Gateway_WhichReference_WhichReference" />
-    <sequenceFlow id="Flow_ApplyRepealReference_To_GatewayWhichReference_If_Yes" sourceRef="Task_ApplyRepealReference_Repeal" targetRef="Gateway_WhichReference_WhichReference" />
-    <sequenceFlow id="Flow_EndNoActionNeeded_From_GatewayWhichReference_If_None" sourceRef="Gateway_WhichReference_WhichReference" targetRef="EndEvent_NoActionNeeded" />
-    <sequenceFlow id="Flow_GatewayWhichReference_To_ApplyArticle29Reference_If_Article29" name="Article 29 reference" sourceRef="Gateway_WhichReference_WhichReference" targetRef="Task_ApplyArticle29Reference_Art29" />
-    <sequenceFlow id="Flow_GatewayWhichReference_To_ApplyWorkingPartyReference_If_WP" name="Working Party reference" sourceRef="Gateway_WhichReference_WhichReference" targetRef="Task_ApplyWorkingPartyReference_WP" />
-    <sequenceFlow id="Flow_GatewayWhichReference_To_ApplyRepealReference_If_Repeal" name="Repealed Directive reference" sourceRef="Gateway_WhichReference_WhichReference" targetRef="Task_ApplyRepealReference_Repeal" />
+    <sequenceFlow id="Flow_ApplyRegulationReference_To_EndNoActionRequired_Art53" sourceRef="Task_ApplyRegulationReference_Art53" targetRef="EndEvent_NoActionRequired_Art53" />
+    <sequenceFlow id="Flow_InterpretRepealedDirectiveAsRegulationReference_To_EndNoActionRequired_Art53" sourceRef="Task_InterpretRepealedDirectiveAsRegulationReference_Art53" targetRef="EndEvent_NoActionRequired_Art53" />
+    <sequenceFlow id="Flow_GatewayDirectiveRepealed_To_ApplyRegulationReference_Art53" name="Yes" sourceRef="Gateway_IsDirective9546ECRepealed_Art53" targetRef="Task_ApplyRegulationReference_Art53" />
+    <sequenceFlow id="Flow_GatewayDirectiveRepealed_To_InterpretRepealedDirectiveAsRegulationReference_Art53" name="No" sourceRef="Gateway_IsDirective9546ECRepealed_Art53" targetRef="Task_InterpretRepealedDirectiveAsRegulationReference_Art53" />
+    <sequenceFlow id="Flow_GatewayWorkingParty_To_ApplyRegulationReference_Art53" name="No" sourceRef="Gateway_IsWorkingPartyReference_Art53" targetRef="Task_ApplyRegulationReference_Art53" />
+    <sequenceFlow id="Flow_GatewayWorkingParty_To_InterpretWorkingPartyAsBoardReference_Art53" name="Yes" sourceRef="Gateway_IsWorkingPartyReference_Art53" targetRef="Task_InterpretWorkingPartyAsBoardReference_Art53" />
+    <sequenceFlow id="Flow_StartHandleRequest_To_GatewayDirectiveRepealed_Art53" sourceRef="StartEvent_HandleArticle53Request_Art53" targetRef="Gateway_IsDirective9546ECRepealed_Art53" />
+    <sequenceFlow id="Flow_InterpretRepealedDirectiveAsRegulationReference_To_GatewayWorkingParty_Art53" sourceRef="Task_InterpretRepealedDirectiveAsRegulationReference_Art53" targetRef="Gateway_IsWorkingPartyReference_Art53" />
+    <sequenceFlow id="Flow_InterpretWorkingPartyAsBoardReference_To_ApplyRegulationReference_Art53" sourceRef="Task_InterpretWorkingPartyAsBoardReference_Art53" targetRef="Task_ApplyRegulationReference_Art53" />
   </sequenceFlows>
-  <messageFlows>
-    <messageFlow id="MessageFlow_ReceiveRequest_To_GatewayWhichReference_Start" sourceRef="StartEvent_ReceiveRequest" targetRef="Gateway_WhichReference_WhichReference" />
-  </messageFlows>
+  <messageFlows />
   <dataObjects />
   <dataStores />
   <dataAssociations />
