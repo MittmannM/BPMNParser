@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Child_Art13" name="Child" poolType="passive" />
+    <pool id="Participant_Parent_Art13" name="Parent" poolType="active" processRef="Process_Parent_Art13" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_AbandonResidence_Art13" name="Abandon residence" type="task" poolRef="Participant_Child_Art13" />
+    <task id="Task_CarryResidence_Art13" name="Carry residence" type="task" poolRef="Participant_Child_Art13" />
+    <task id="Task_DetermineCareRight_Art13" name="Determine care right" type="task" poolRef="Participant_Parent_Art13" />
+    <task id="Task_DetermineSharedResidence_Art13" name="Determine shared residence" type="task" poolRef="Participant_Parent_Art13" />
+    <task id="Task_IdentifyParentWithCareRight_Art13" name="Identify parent with care right" type="task" poolRef="Participant_Parent_Art13" />
+  </tasks>
+  <events>
+    <event id="EndEvent_ResidenceAbandoned_Art13" name="Residence abandoned" type="endEvent" poolRef="Participant_Child_Art13" />
+    <event id="EndEvent_ResidenceHeldByParent_Art13" name="Residence held by parent" type="endEvent" poolRef="Participant_Child_Art13" />
+    <event id="StartEvent_NeedResidenceArrangement_Art13" name="Need residence arrangement" type="startEvent" poolRef="Participant_Parent_Art13" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_IsNeitherParentCaring_Art13" name="Does neither parent have the right to care?" type="exclusiveGateway" poolRef="Participant_Parent_Art13" />
+    <gateway id="Gateway_HasParentCareRight_Art13" name="Does a parent have the right to care?" type="exclusiveGateway" poolRef="Participant_Parent_Art13" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AbandonResidence_To_EndResidenceAbandoned_Art13" sourceRef="Task_AbandonResidence_Art13" targetRef="EndEvent_ResidenceAbandoned_Art13" />
+    <sequenceFlow id="Flow_CarryResidence_To_EndResidenceHeldByParent_Art13" sourceRef="Task_CarryResidence_Art13" targetRef="EndEvent_ResidenceHeldByParent_Art13" />
+    <sequenceFlow id="Flow_DetermineCareRight_To_GatewayIsNeitherParentCaring_Art13" sourceRef="Task_DetermineCareRight_Art13" targetRef="Gateway_IsNeitherParentCaring_Art13" />
+    <sequenceFlow id="Flow_DetermineSharedResidence_To_TaskIdentifyParentWithCareRight_Art13" sourceRef="Task_DetermineSharedResidence_Art13" targetRef="Task_IdentifyParentWithCareRight_Art13" />
+    <sequenceFlow id="Flow_GatewayIsNeitherParentCaring_To_TaskCarryResidence_Art13" name="Yes" sourceRef="Gateway_IsNeitherParentCaring_Art13" targetRef="Task_CarryResidence_Art13" />
+    <sequenceFlow id="Flow_GatewayIsNeitherParentCaring_To_TaskAbandonResidence_Art13" name="No" sourceRef="Gateway_IsNeitherParentCaring_Art13" targetRef="Task_AbandonResidence_Art13" />
+    <sequenceFlow id="Flow_GatewayHasParentCareRight_To_TaskDetermineSharedResidence_Art13" name="Yes" sourceRef="Gateway_HasParentCareRight_Art13" targetRef="Task_DetermineSharedResidence_Art13" />
+    <sequenceFlow id="Flow_GatewayHasParentCareRight_To_TaskDetermineCareRight_Art13" name="No" sourceRef="Gateway_HasParentCareRight_Art13" targetRef="Task_DetermineCareRight_Art13" />
+    <sequenceFlow id="Flow_IdentifyParentWithCareRight_To_TaskCarryResidence_Art13" sourceRef="Task_IdentifyParentWithCareRight_Art13" targetRef="Task_CarryResidence_Art13" />
+    <sequenceFlow id="Flow_StartNeedResidenceArrangement_To_DetermineCareRight_Art13" sourceRef="StartEvent_NeedResidenceArrangement_Art13" targetRef="Task_DetermineCareRight_Art13" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_DetermineCareRight_Art13" sourceRef="Task_DetermineCareRight_Art13" targetRef="Task_DetermineSharedResidence_Art13" />
+    <messageFlow id="MessageFlow_IdentifyParentWithCareRight_Art13" sourceRef="Task_IdentifyParentWithCareRight_Art13" targetRef="Task_DetermineSharedResidence_Art13" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

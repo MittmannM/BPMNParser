@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools />
+  <lanes />
+  <tasks>
+    <task id="Task_ApplyChapterProvisions_Art73" name="Apply Chapter provisions" type="task" poolRef="Process_ControllerOrProcessor_Art73" />
+    <task id="Task_AssessTransferRisk_Art73" name="Assess transfer risk" type="task" poolRef="Process_ControllerOrProcessor_Art73" />
+    <task id="Task_PrepareTransferDocumentation_Art73" name="Prepare transfer documentation" type="task" poolRef="Process_ControllerOrProcessor_Art73" />
+    <task id="Task_VerifyThirdCountryOrInternationalOrganisation_Art73" name="Verify third country or international organisation" type="task" poolRef="Process_ControllerOrProcessor_Art73" />
+  </tasks>
+  <events>
+    <event id="EndEvent_NoTransferRequired_Art73" name="No transfer required" type="endEvent" poolRef="Process_ControllerOrProcessor_Art73" />
+    <event id="EndEvent_TransferNotPermitted_Art73" name="Transfer not permitted" type="endEvent" poolRef="Process_ControllerOrProcessor_Art73" />
+    <event id="StartEvent_ConsiderTransfer_Art73" name="Consider transfer" type="startEvent" poolRef="Process_ControllerOrProcessor_Art73" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_IsTransferToThirdCountryOrInternationalOrganisation_Art73" name="Is the transfer to a third country or international organisation?" type="exclusiveGateway" poolRef="Process_ControllerOrProcessor_Art73" />
+    <gateway id="Gateway_IsOnwardTransferFromThirdCountryOrInternationalOrganisation_Art73" name="Is there an onward transfer from a third country or international organisation?" type="exclusiveGateway" poolRef="Process_ControllerOrProcessor_Art73" />
+    <gateway id_id="Gateway_IsTransferToAnotherThirdCountryOrInternationalOrganisation_Art73" name="Is the transfer to another third country or international organisation?" type="exclusiveGateway" poolRef="Process_ControllerOrProcessor_Art73" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_ApplyChapterProvisions_To_AssessTransferRisk_Art73" sourceRef="Task_ApplyChapterProvisions_Art73" targetRef="Task_AssessTransferRisk_Art73" />
+    <sequenceFlow id="Flow_AssessTransferRisk_To_PrepareTransferDocumentation_Art73" sourceRef="Task_AssessTransferRisk_Art73" targetRef="Task_PrepareTransferDocumentation_Art73" />
+    <sequenceFlow id="Flow_AssessTransferRisk_To_EndNoTransferRequired_Art73" sourceRef="Task_AssessTransferRisk_Art73" targetRef="EndEvent_NoTransferRequired_Art73" />
+    <sequenceFlow id="Flow_AssessTransferRisk_To_GatewayIsTransferToThirdCountryOrInternationalOrganisation_Art73" sourceRef="Task_AssessTransferRisk_Art73" targetRef="Gateway_IsTransferToThirdCountryOrInternationalOrganisation_Art73" />
+    <sequenceFlow id="Flow_PrepareTransferDocumentation_To_VerifyThirdCountryOrInternationalOrganisation_Art73" sourceRef="Task_PrepareTransferDocumentation_Art73" targetRef="Task_VerifyThirdCountryOrInternationalOrganisation_Art73" />
+    <sequenceFlow id="Flow_PrepareTransferDocumentation_To_EndTransferNotPermitted_Art73" sourceRef="Task_PrepareTransferDocumentation_Art73" targetRef="EndEvent_TransferNotPermitted_Art73" />
+    <sequenceFlow id="Flow_VerifyThirdCountryOrInternationalOrganisation_To_GatewayIsOnwardTransferFromThirdCountryOrInternationalOrganisation_Art73" sourceRef="Task_VerifyThirdCountryOrInternationalOrganisation_Art73" targetRef="Gateway_IsOnwardTransferFromThirdCountryOrInternationalOrganisation_Art73" />
+    <sequenceFlow id="Flow_VerifyThirdCountryOrInternationalOrganisation_To_GatewayIsTransferToAnotherThirdCountryOrInternationalOrganisation_Art73" sourceRef="Task_VerifyThirdCountryOrInternationalOrganisation_Art73" targetRef="Gateway_IdTransferToAnotherThirdCountryOrInternationalOrganisation_Art73" />
+    <sequenceFlow id="Flow_VerifyThirdCountryOrInternationalOrganisation_To_EndTransferNotPermitted_Art73" sourceRef="Task_VerifyThirdCountryOrInternationalOrganisation_Art73" targetRef="EndEvent_TransferNotPermitted_Art73" />
+    <sequenceFlow id="Flow_StartConsiderTransfer_To_ApplyChapterProvisions_Art73" sourceRef="StartEvent_ConsiderTransfer_Art73" targetRef="Task_ApplyChapterProvisions_Art73" />
+    <sequenceFlow id="Flow_GatewayIsOnwardTransferFromThirdCountryOrInternationalOrganisation_To_EndTransferNotPermitted_Art73" sourceRef="Gateway_IsOnwardTransferFromThirdCountryOrInternationalOrganisation_Art73" targetRef="EndEvent_TransferNotPermitted_Art73" />
+    <sequenceFlow_id="Flow_GatewayIsTransferToAnotherThirdCountryOrInternationalOrganisation_To_GatewayIsTransferToThirdCountryOrInternationalOrganisation_Art73" sourceRef="Gateway_IdTransferToAnotherThirdCountryOrInternationalOrganisation_Art73" targetRef="Gateway_IsTransferToAnotherThirdCountryOrInternationalOrganisation_Art73" />
+    <sequenceFlow id="Flow_GatewayIsTransferToThirdCountryOrInternationalOrganisation_To_PrepareTransferDocumentation_Art73" sourceRef="Gateway_IsTransferToThirdCountryOrInternationalOrganisation_Art73" targetRef="Task_PrepareTransferDocumentation_Art73" />
+    <sequenceFlow id="Flow_GatewayIsTransferToThirdCountryOrInternationalOrganisation_To_EndNoTransferRequired_Art73" sourceRef="Gateway_IsTransferToThirdCountryOrInternationalOrganisation_Art73" targetRef="EndEvent_NoTransferRequired_Art73" />
+  </sequenceFlows>
+  <messageFlows />
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>

@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Bundesrat_President_Länder_FederalGovernment" name="Bundesrat President, Länder, Federal Government" poolType="active" processRef="Process_Bundesrat_President_Länder_FederalGovernment" />
+    <pool id="Participant_Public" name="Public" poolType="passive" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_ConveneBundesrat" name="Convene Bundesrat" type="sendTask" poolRef="Participant_Bundesrat_President_Länder_FederalGovernment" />
+    <task id="Task_ElectPresidentForOneYear" name="Elect President for one year" type="sendTask" poolRef="Participant_Bundesrat_President_Länder_FederalGovernment" />
+    <!-- Task for the President -->
+    <task id="Task_AdhereToDemand" name="Adhere to demand" type="sendTask" poolRef="Participant_Bundesrat_President_Länder_FederalGovernment" />
+    
+    <!-- Tasks for the Bundesrat (Decision making/Procedure) -->
+    <task id="Task_AdoptRulesOfProcedure" name="Adopt rules of procedure" type="sendTask" poolRef="Participant_Bundesrat_President_Länder_FederalGovernment" />
+    {
+      <task id="Task_EstablishChamberForEuropeanAffairs" name="Establish Chamber for European Affairs" type="sendTask" poolRef="Participant_Bundesrat_President_Länder_FederalGovernment" />
+      <task id="Task_DetermineVotingUniformity" name="Determine voting uniformity" type="sendTask" poolRef="Participant_Bundesrat_President_Länder_FederalGovernment" />
+      
+      <task id="Task_EnsureMajorityVote" name="Ensure majority vote" type="sendTask" poolRef="Participant_Bundesrat_President_Länder_FederalGovernment" />
+      <!-- Decision tasks are modeled as tasks that lead to a gateway -->
+    </tasks>
+  <events>
+    <event id="EndEvent_PresidentTermEnds" name="President term ends" type="endEvent" poolRef="Participant_Bundesrat_President_Länder_FederalGovernment" />
+    <event id="EndEvent_NoActionRequired" name="No action required" type="endEvent" poolRef="Participant_Bundesrat_President_Länder_FederalGovernment" />
+    
+    <event id="StartEvent_PresidentTermStarts" name="President term starts" type="startEvent" poolRef="Participant_Bundesrat_President_Länder_FederalGovernment" />
+    <event id="StartEvent_BundesratMeeting" name="Bundesrat meeting" type="startEvent" poolRef="Participant_Bundesrat_President_Länder_FederalGovernment" />
+    
+    <event name="Public may attend meeting" type="endEvent" poolRef="Participant_Public" />
+    <event name="Public may not attend meeting" type="endEvent" poolRef="Participant_Public" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_IsTwoOrMoreLänderOrFederalGovernmentDemandingConvene" name="Are two or more Länder or the Federal Government demanding the President convene the Bundesrat?" type="exclusiveGateway" poolRef="Participant_Bundesrat_President_Länder_FederalGovernment" />
+    <gateway id="Gateway_IsEuropeanUnionMatter" name="Does the matter concern the European Union?" type="exclusiveGateway" poolRef="Participant_Bundesrat_President_Länder_FederalGovernment" />
+    
+    <gateway id="Gateway_IsPublicExcluded" name="Will the public be excluded from the meeting?" type="exclusiveGateway" poolRef="Participant_Bundesrat_President_Länder_FederalGovernment" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_ConveneBundesrat_To_GatewayIsTwoOrMoreLänderOrFederalGovernmentDemandingConvene" sourceRef="Task_ConveneBundesrat" targetRef="Gateway_IsTwoOrMoreLänderOrFederalGovernmentDemandingConvene" />
+    <sequenceFlow id="Flow_ElectPresidentForOneYear_To_EndNoActionRequired" sourceRef="Task_ElectPresidentForOneYear" targetRef="EndEvent_NoActionRequired" />
+    <sequenceFlow id="Flow_AdhereToDemand_To_EndNoActionRequired" sourceRef="Task_AdhereToDemand" targetRef="EndEvent_NoActionRequired" />
+    <sequenceFlow id="Flow_AdoptRulesOfProcedure_To_GatewayIsPublicExcluded" sourceRef="Task_AdoptRulesOfProcedure" targetRef="Gateway_IsPublicExcluded" />
+    <sequenceFlow id="Flow_EstablishChamberForEuropeanAffairs_To_GatewayIsEuropeanUnionMatter" sourceRef="Task_EstablishChamberForEuropeanAffairs" targetRef="Gateway_IsEuropeanUnionMatter" />
+    <sequenceFlow id="Flow_DetermineVotingUniformity_To_GatewayIsEuropeanUnionMatter" sourceRef="Task_DetermineVotingUniformity" targetRef="Gateway_IsEuropeanUnionMatter" />
+    <sequenceFlow id="Flow_EnsureMajorityVote_To_EndNoActionRequired" sourceRef="Task_EnsureMajorityVote" targetRef="EndEvent_NoActionRequired" />
+    <sequenceFlow id="Flow_GatewayIsTwoOrMoreLänderOrFederalGovernmentDemandingConvene_To_ConveneBundesrat" name="Yes" sourceRef="Gateway_IsTwoOrMoreLänderOrFederalGovernmentDemandingConvene" targetRef="Task_ConveneBundesrat" />
+    <sequenceFlow id="Flow_GatewayIsTwoOrMoreLänderOrFederalGovernmentDemandingConvene__No_To_ElectPresidentForOneYear" name="No" sourceRef="Gateway_IsTwoOrMoreLänderOrFederalGovernmentDemandingConvene" targetRef="Task_ElectPresidentForOneYear" />
+    <sequenceFlow id="Flow_GatewayIsEuropeanUnionMatter_To_EstablishChamberForEuropeanAffairs" name="Yes" sourceRef="Gateway_IsEuropeanUnionMatter" targetRef="Task_EstablishChamberForEuropeanAffairs" />
+    <sequenceFlow id="Flow_GatewayIsEuropeanUnionMatter__No_To_AdoptRulesOfProcedure" name="No" sourceRef="Gateway_IsEuropeanUnionMatter" targetRef="Task_AdoptRulesOfProcedure" />
+    <sequenceFlow id="Flow_GatewayIsPublicExcluded_To_EndNoActionRequired" name="No" sourceRef="Gateway_IsPublicExcluded" targetRef="EndEvent_NoActionRequired" />
+    <sequenceFlow id="Flow_GatewayIsPublicExcluded__Yes_To_EndPublicMayNotAttendMeeting" name="Yes" sourceRef="Gateway_IsPublicExcluded" targetRef="EndEvent_PublicMayNotAttendMeeting" />
+    <sequenceFlow id="Flow_Start_To_GatewayIsPublicExcluded" sourceRef="StartEvent_BundesratMeeting" targetRef="Gateway_IsPublicExcluded" />
+    <sequenceFlow id="Flow_Start_To_GatewayIsEuropeanUnionMatter" sourceRef="StartEvent_BundesratMeeting" targetRef="Gateway_IsEuropeanUnionMatter" />
+    <sequenceFlow id="Flow_TaskConveneBundesrat_To_Start_To_GatewayIsTwoOrMoreLänderOrFederalGovernmentDemandingConvene" sourceRef="Task_ConveneBudrat" targetRef="StartEvent_BundesratMeeting" />
+    <sequenceFlow id="Flow_TaskElectPresidentForOneYear_To_EndPresidentTermEnds" sourceRef="Task_ElectPresidentForOneYear" targetRef="EndEvent_PresidentTermEnds" />
+    <sequenceFlow id="Flow_TaskAdhereToDemand_To_EndNoActionRequired" sourceRef="Task_AdhereToDemand" targetRef="StartEvent_BundesratMeeting" />
+    <sequenceFlow id="Flow_TaskAdoptRulesOfProcedure_To_GatewayIsPublicExcluded" sourceRef="Task_AdoptRulesOfProcedure" targetRef="EndEvent_NoActionRequired" />
+    <sequenceFlow id="Flow_TaskEstablishChamberForEuropeanAffairs_To_GatewayIsEuropeanUnionMatter" sourceRef="Task_EstablishChamberForEuropainAffairs" targetRef="Gateway_IsEuropeanUnionMatter" />
+    <sequenceFlow id="Flow_TaskDetermineVotingUniformity_To_GatewayIsEuropeanUnionMatter" sourceRef="Task_DetermineVotingUniformity" targetRef_No_
+    <sequenceFlow id="Flow_TaskEnsureMajorityVote_To_EndNoActionRequired" sourceRef="Task_EnsureMajorityVote" targetRef="EndEventNoActionRequired" />
+    <sequenceFlow id="Flow_GatewayIsPublicExcluded__Yes_To_EndPublicNotAttendMeeting" sourceRef="Gateway_IsPublicExcluded__Yes" targetRef="EndEvent_PublicMayNotAttendMeeting" />
+    <sequenceFlow id="Flow_GatewayIsEuropeanUnionMatter_To_GatewayIsPublicExcluded" name="No" sourceRef="Gateway_IsEuropeanUnionMatter" targetRef="Gateway_IsPublicExcluded" />
+    <sequenceFlow id="Flow_GatewayIsPublicExcluded_To_GatewayIsEuropeanUnionMatter" name="Yes" sourceRef="Gateway_IsPublicExcluded__Yes" targetRef="Gateway_IsEuropeanUnionMatter" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_AdhereToDemand_To_BundesratPresident_Länder_FederalGovernment" sourceRef="Task_AdhereToDemand" targetRef="Participant_Bundesrat_President_Länder_FederalGovernment" />
+    <messageFlow id="MessageFlow_ConveneBundesrat_To_BundesratPresident_Länder_FederalGovernment" sourceRef="Task_ConveneBundesrat" targetRef="Participant_Bundesrat_President_Länder_FederalGovernment" />
+    <messageFlow id="DataFlow_DetermineVotingUniformity_To_BundesratPresident_Länder_FederalGovernment" sourceRef="Task_DetermineVotingUniformity" targetRef="Participant_Bundesrat_President_Länder_FederalGovernment" />
+    <messageFlow id="SendTask_AdhereToDemand_To_BundesratPresident_Länder_FederalGovernment" sourceRef="Task_AdhereDemand" targetRef="Participant_Bundesrat_President_Länder_FederalGovernment" />
+    <messageFlow id="_SendTask_AdhereToDemand_To_BundesratPresident_Länder_FederalGovernment" sourceRef="Task_ConveneBundesrat" targetRef="_SendTask_AdhereToDemand_To_BundesratPresident_Länder_FederalGovernment" />
+    <messageFlow id="SendTask_AdoptRulesOfProcedure_To_BundesratPresident_Länder_FederalGovernment" sourceRef="Task_AdoptRulesOfProcedure" targetRef="Participant_Bundesrat_President_Länder_FederalGovernment" />
+    <messageFlow id="ReceiveTask_AdhereToDemand_From_BundesratPresident_Länder_FederalGovernment" sourceRef="Task_AdhereToDemand" targetRef="Task_AdhereToDemand" />
+    <messageFlow id="ReceiveTask_ConveneBundesrat_From_BundesratPresident_Länder_FederalGovernment" sourceRef="Task_ConveneBundesrat" targetRef="Task_ConveneBundesrat" />
+    <messageFlow id="ReceiveTask_ElectPresidentForOneYear_From_BundesratPresident_Länder_FederalGovernment" sourceRef="Task_ElectPresidentForOneYear" targetRef="Task_ElectPresidentForOneYear" />
+    <messageFlow id="ReceiveTask_EstablishChamberForEuropeanAffairs_From_BundesratPresident_Länder_FederalGovernment" sourceRef="Task_EstablishChamberForEuropeanAffairs" targetRef="Task_EstablishChamberForEuropeanAffairs" />
+    <messageFlow id="ReceiveTask_DetermineVotingUniformity_From_BundesratPresident_Länder_FederalGovernment" sourceRef="Task_DetermineVotingUniformity" targetRef="Task_DetermineVotingUniformity" />
+    <messageFlow id="ReceiveTask_EnsureMajorityVote_From_BundesratPresident_Länder_FederalGovernment" sourceRef="Task_EnsureMajorityVote" targetRef="Task_EnsureMajorityVote" />
+    <messageFlow id="ReceiveTask_PublicMayNotAttendMeeting_From_BundesratPresident_Länder_FederalGovernment" sourceRef="EndEvent_PublicMayNotAttendMeeting" targetRef="Task_AdoptRulesOfProcedure" />
+    <messageFlow id="ReceiveTask_PublicMayAttendMeeting_From_BundesratPresident_Länder_FederalGovernment" sourceRef="EndEvent_PresidentTermEnds" targetRef="Task_ConveneBundesrat" />
+    <messageFlow id="ReceiveTask_PublicMayAttendMeeting_From_BundesratPresident_Länder" sourceRef="EndEvent_PresidentTermEnds" targetRef="Task_ConveneBundesrat" />
+    <dataFlow id="DataFlow_DetermineVotingUniformity_To_BundesratPresident_Länder_FederalGovernment" sourceRef_DetermineVotingUniformity" targetRef="Task_DetermineVotingUniformity" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>
