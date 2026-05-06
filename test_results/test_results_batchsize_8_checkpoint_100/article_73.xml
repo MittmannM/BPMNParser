@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Board_Chair_DeputyChairs_Member" name="Board Members" poolType="passive" />
+    <pool id="Participant_Board_Chair_DeputyChairs_Term" name="Board Chair and Deputy Chairs" poolType="active" processRef="Process_Board_Chair_DeputyChairs_Term" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_Elect_Chair_DeputyChairs_SimpleMajority" name="Elect Chair and Deputy Chairs by simple majority" type="task" poolRef="Participant_Board_Chair_DeputyChairs_Member" />
+    <task id="Task_Set_FiveYearTerm" name="Set five-year term" type="task" poolRef="Participant_Board_Chair_DeputyChairs_Term" />
+    <task id="Task_Set_RenewableOnce" name="Set renewable once" type="task" poolRef="Participant_Board_Chair_DeputyChairs_Term" />
+  </tasks>
+  <events>
+    <event id="EndEvent_Term_Completed" name="Term completed" type="endEvent" poolRef="Participant_Board_Chair_DeputyChairs_Term" />
+    <event id="StartEvent_Need_New_Chair_DeputyChairs" name="Need new Chair and Deputy Chairs" type="startEvent" poolRef="Participant_Board_Chair_DeputyChairs_Term" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_Is_Term_Renewable" name="Is the term renewable?" type="exclusiveGateway" poolRef="Participant_Board_Chair_DeputyChairs_Term" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_Elect_To_Set_FiveYearTerm" sourceRef="Task_Elect_Chair_DeputyChairs_SimpleMajority" targetRef="Task_Set_FiveYearTerm" />
+    <sequenceFlow id="Flow_Elect_To_Set_RenewableOnce" sourceRef="Task_Elect_Chair_DeputyChairs_SimpleMajority" targetRef="Task_SetRenewableOnce" />
+    <sequenceFlow id="Flow_Gateway_To_End_TermCompleted" name="No" sourceRef="Gateway_Is_Term_Renewable" targetRef="EndEvent_Term_Completed" />
+    <sequenceFlow id="Flow_Gateway_To_Start_NeedNewChair_Renewable" name="Yes" sourceRef="Gateway_Is_Term_Renewable" targetRef="StartEvent_Need_New_Chair_DeputyChairs" />
+    <sequenceFlow id="Flow_SetFiveYearTerm_To_Gateway_IsTermRenewable" sourceRef="Task_Set_FiveYearTerm" targetRef="Gateway_Is_Term_Renewable" />
+    <sequenceFlow id="Flow_SetRenewableOnce_To_Gateway_IsTermRenewable" sourceRef="Task_SetRenewableOnce" targetRef="Gateway_Is_Term_Renewable" />
+    <sequenceFlow id="Flow_StartNeedNewChair_To_ElectChair_DeputyChairs_SimpleMajority" sourceRef="StartEvent_Need_New_Chair_DeputyChairs" targetRef="Task_Elect_Chair_DeputyChairs_SimpleMajority" />
+  </sequenceFlows>
+  <messageFlows />
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>
