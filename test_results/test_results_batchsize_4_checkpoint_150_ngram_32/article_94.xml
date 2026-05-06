@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Controller_Processor_DataSubject" name="Participants" poolType="active" />
+  </pools>
+  <lanes />
+  <tasks>
+    <task id="Task_ApplyArticle29Reference_Art29" name="Apply Article 29 reference" type="task" poolRef="Participant_Controller_Processor_DataSubject" />
+    <task id="Task_ApplyWorkingPartyReference_WP" name="Apply Working Party reference" type="task" poolRef="Participant_Controller_Processor_DataSubject" />
+    <task id="Task_ApplyRepealReference_Repeal" name="Apply Repeal reference" type="task" poolRef="Participant_Controller_Processor_DataSubject" />
+  </tasks>
+  <events>
+    <event id="EndEvent_NoActionNeeded" name="No action needed" type="endEvent" poolRef="Participant_Controller_Processor_DataSubject" />
+    <event id="StartEvent_ReceiveRequest" name="Receive request" type="startEvent" poolRef="Participant_Controller_Processor_DataSubject" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_WhichReference_WhichReference" name="Which reference applies?" type="exclusiveGateway" poolRef="Participant_Controller_Processor_DataSubject" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_ApplyArticle29Reference_To_GatewayWhichReference_If_Yes" sourceRef="Task_ApplyArticle29Reference_Art29" targetRef="Gateway_WhichReference_WhichReference" />
+    <sequenceFlow id="Flow_ApplyWorkingPartyReference_To_GatewayWhichReference_If_Yes" sourceRef="Task_ApplyWorkingPartyReference_WP" targetRef="Gateway_WhichReference_WhichReference" />
+    <sequenceFlow id="Flow_ApplyRepealReference_To_GatewayWhichReference_If_Yes" sourceRef="Task_ApplyRepealReference_Repeal" targetRef="Gateway_WhichReference_WhichReference" />
+    <sequenceFlow id="Flow_EndNoActionNeeded_From_GatewayWhichReference_If_None" sourceRef="Gateway_WhichReference_WhichReference" targetRef="EndEvent_NoActionNeeded" />
+    <sequenceFlow id="Flow_GatewayWhichReference_To_ApplyArticle29Reference_If_Article29" name="Article 29 reference" sourceRef="Gateway_WhichReference_WhichReference" targetRef="Task_ApplyArticle29Reference_Art29" />
+    <sequenceFlow id="Flow_GatewayWhichReference_To_ApplyWorkingPartyReference_If_WP" name="Working Party reference" sourceRef="Gateway_WhichReference_WhichReference" targetRef="Task_ApplyWorkingPartyReference_WP" />
+    <sequenceFlow id="Flow_GatewayWhichReference_To_ApplyRepealReference_If_Repeal" name="Repealed Directive reference" sourceRef="Gateway_WhichReference_WhichReference" targetRef="Task_ApplyRepealReference_Repeal" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_ReceiveRequest_To_GatewayWhichReference_Start" sourceRef="StartEvent_ReceiveRequest" targetRef="Gateway_WhichReference_WhichReference" />
+  </messageFlows>
+  <dataObjects />
+  <dataStores />
+  <dataAssociations />
+  <annotations />
+  <associations />
+</processModel>
