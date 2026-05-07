@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <processModel>
   <pools />
-  <lanes />
   <tasks>
     <task id="Task_ChildSharesResidence_UntilAbandonment_Task" name="Share residence until abandonment" type="task" poolRef="Process_ChildResidenceManagement" />
     <task id="Task_ParentLacksCareRight_Task" name="Does the parent lack the right to care for the child?" type="task" poolRef="Process_ChildResidenceManagement" />
@@ -39,9 +38,4 @@
     <sequenceFlow id="Flow_ParentHasCareRight_To_ParentHasCareRight_From_Gateway_ParentHasCareRight_Gateway_ParentHasCareRight_Task" sourceRef="Gateway_ParentHasCareRight_ParentHasCareRight_Task" targetRef="Gateway_ParentHasCareRight_Gateway_ParentHasCareRight_Task" />
   </sequenceFlows>
   <messageFlows />
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>
