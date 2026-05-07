@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools>
+    <pool id="Participant_Bundesrat_GGArt52" name="Bundesrat" poolType="active" processRef="Process_Bundesrat_GGArt52" />
+    <pool id="Participant_FederalGovernment_GGArt52" name="Federal Government" poolType="passive" />
+    <pool id="Participant_TwoLaenderDelegates_GGArt52" name="Delegates of at least two Lander" poolType="passive" />
+  </pools>
+  <tasks>
+    <task id="Task_AdoptRulesOfProcedure_GGArt52" name="Adopt rules of procedure" type="task" poolRef="Participant_Bundesrat_GGArt52" />
+    <task id="Task_AppointCommitteeMembers_GGArt52" name="Appoint other Land-government members or representatives to committees" type="task" poolRef="Participant_Bundesrat_GGArt52" />
+    <task id="Task_CastLandVotesUniformly_GGArt52" name="Cast Land votes uniformly under Article 51(2)" type="task" poolRef="Participant_Bundesrat_GGArt52" />
+    <task id="Task_ConveneBundesrat_GGArt52" name="Convene Bundesrat" type="task" poolRef="Participant_Bundesrat_GGArt52" />
+    <task id="Task_ElectPresidentForOneYear_GGArt52" name="Elect President for one year" type="task" poolRef="Participant_Bundesrat_GGArt52" />
+    <task id="Task_EstablishEuropeanAffairsChamber_GGArt52" name="Establish Chamber for European Affairs" type="task" poolRef="Participant_Bundesrat_GGArt52" />
+    <task id="Task_ExcludePublic_GGArt52" name="Exclude public" type="task" poolRef="Participant_Bundesrat_GGArt52" />
+    <task id="Task_HoldPublicMeeting_GGArt52" name="Hold public meeting" type="task" poolRef="Participant_Bundesrat_GGArt52" />
+    <task id="Task_TakeDecisionByMajority_GGArt52" name="Take decisions by majority" type="task" poolRef="Participant_Bundesrat_GGArt52" />
+    <task id="Task_TreatChamberDecisionAsBundesratDecision_GGArt52" name="Treat chamber decision as Bundesrat decision" type="task" poolRef="Participant_Bundesrat_GGArt52" />
+  </tasks>
+  <events>
+    <event id="EndEvent_BundesratConvened_GGArt52" name="Bundesrat convened" type="endEvent" poolRef="Participant_Bundesrat_GGArt52" />
+    <event id="EndEvent_CommitteeMembersAppointed_GGArt52" name="Committee members appointed" type="endEvent" poolRef="Participant_Bundesrat_GGArt52" />
+    <event id="EndEvent_EUChamberApplied_GGArt52" name="European Affairs chamber rules applied" type="endEvent" poolRef="Participant_Bundesrat_GGArt52" />
+    <event id="EndEvent_NoEUChamberPath_GGArt52" name="No European Affairs chamber path used" type="endEvent" poolRef="Participant_Bundesrat_GGArt52" />
+    <event id="EndEvent_Paragraph3RulesApplied_GGArt52" name="Decision and procedure rules applied" type="endEvent" poolRef="Participant_Bundesrat_GGArt52" />
+    <event id="EndEvent_PresidentElected_GGArt52" name="President elected" type="endEvent" poolRef="Participant_Bundesrat_GGArt52" />
+    <event id="Event_NeedToConveneBundesrat_GGArt52" name="Need to convene Bundesrat" type="intermediateCatchEvent" poolRef="Participant_Bundesrat_GGArt52" eventDefinition="signal" />
+    <event id="Event_ReceiveFederalGovernmentDemand_GGArt52" name="Receive demand from Federal Government" type="intermediateCatchEvent" poolRef="Participant_Bundesrat_GGArt52" eventDefinition="message" />
+    <event id="Event_ReceiveTwoLaenderDemand_GGArt52" name="Receive demand from at least two Lander" type="intermediateCatchEvent" poolRef="Participant_Bundesrat_GGArt52" eventDefinition="message" />
+    <event id="StartEvent_ApplyArticle52Rules_GGArt52" name="Apply Article 52 rules" type="startEvent" poolRef="Participant_Bundesrat_GGArt52" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_ConveningMerge_GGArt52" type="exclusiveGateway" poolRef="Participant_Bundesrat_GGArt52" />
+    <gateway id="Gateway_ConveningTrigger_GGArt52" name="What triggers convening?" type="eventBasedGateway" poolRef="Participant_Bundesrat_GGArt52" />
+    <gateway id="Gateway_EstablishEuropeanChamber_GGArt52" name="Establish Chamber for European Affairs?" type="exclusiveGateway" poolRef="Participant_Bundesrat_GGArt52" />
+    <gateway id="Gateway_ExcludePublic_GGArt52" name="Exclude the public?" type="exclusiveGateway" poolRef="Participant_Bundesrat_GGArt52" />
+    <gateway id="Gateway_MatterConcernsEU_GGArt52" name="Does the matter concern the European Union?" type="exclusiveGateway" poolRef="Participant_Bundesrat_GGArt52" />
+    <gateway id="Gateway_MeetingMerge_GGArt52" type="exclusiveGateway" poolRef="Participant_Bundesrat_GGArt52" />
+    <gateway id="Gateway_Paragraph3Join_GGArt52" type="parallelGateway" poolRef="Participant_Bundesrat_GGArt52" />
+    <gateway id="Gateway_Paragraph3Split_GGArt52" type="parallelGateway" poolRef="Participant_Bundesrat_GGArt52" />
+    <gateway id="Gateway_SplitRules_GGArt52" type="parallelGateway" poolRef="Participant_Bundesrat_GGArt52" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AdoptRules_To_GatewayParagraph3Join_GGArt52" sourceRef="Task_AdoptRulesOfProcedure_GGArt52" targetRef="Gateway_Paragraph3Join_GGArt52" />
+    <sequenceFlow id="Flow_AppointCommitteeMembers_To_EndCommitteeMembersAppointed_GGArt52" sourceRef="Task_AppointCommitteeMembers_GGArt52" targetRef="EndEvent_CommitteeMembersAppointed_GGArt52" />
+    <sequenceFlow id="Flow_CastVotesUniformly_To_EndEUChamberApplied_GGArt52" sourceRef="Task_CastLandVotesUniformly_GGArt52" targetRef="EndEvent_EUChamberApplied_GGArt52" />
+    <sequenceFlow id="Flow_ConveneBundesrat_To_EndBundesratConvened_GGArt52" sourceRef="Task_ConveneBundesrat_GGArt52" targetRef="EndEvent_BundesratConvened_GGArt52" />
+    <sequenceFlow id="Flow_ElectPresident_To_EndPresidentElected_GGArt52" sourceRef="Task_ElectPresidentForOneYear_GGArt52" targetRef="EndEvent_PresidentElected_GGArt52" />
+    <sequenceFlow id="Flow_EstablishChamber_To_TreatDecisionAsBundesratDecision_GGArt52" sourceRef="Task_EstablishEuropeanAffairsChamber_GGArt52" targetRef="Task_TreatChamberDecisionAsBundesratDecision_GGArt52" />
+    <sequenceFlow id="Flow_EventFederalGovernmentDemand_To_GatewayConveningMerge_GGArt52" sourceRef="Event_ReceiveFederalGovernmentDemand_GGArt52" targetRef="Gateway_ConveningMerge_GGArt52" />
+    <sequenceFlow id="Flow_EventNeedToConvene_To_GatewayConveningMerge_GGArt52" sourceRef="Event_NeedToConveneBundesrat_GGArt52" targetRef="Gateway_ConveningMerge_GGArt52" />
+    <sequenceFlow id="Flow_EventTwoLaenderDemand_To_GatewayConveningMerge_GGArt52" sourceRef="Event_ReceiveTwoLaenderDemand_GGArt52" targetRef="Gateway_ConveningMerge_GGArt52" />
+    <sequenceFlow id="Flow_ExcludePublic_To_GatewayMeetingMerge_GGArt52" sourceRef="Task_ExcludePublic_GGArt52" targetRef="Gateway_MeetingMerge_GGArt52" />
+    <sequenceFlow id="Flow_GatewayConveningMerge_To_ConveneBundesrat_GGArt52" sourceRef="Gateway_ConveningMerge_GGArt52" targetRef="Task_ConveneBundesrat_GGArt52" />
+    <sequenceFlow id="Flow_GatewayConveningTrigger_To_EventFederalGovernmentDemand_GGArt52" sourceRef="Gateway_ConveningTrigger_GGArt52" targetRef="Event_ReceiveFederalGovernmentDemand_GGArt52" />
+    <sequenceFlow id="Flow_GatewayConveningTrigger_To_EventNeedToConvene_GGArt52" sourceRef="Gateway_ConveningTrigger_GGArt52" targetRef="Event_NeedToConveneBundesrat_GGArt52" />
+    <sequenceFlow id="Flow_GatewayConveningTrigger_To_EventTwoLaenderDemand_GGArt52" sourceRef="Gateway_ConveningTrigger_GGArt52" targetRef="Event_ReceiveTwoLaenderDemand_GGArt52" />
+    <sequenceFlow id="Flow_GatewayEstablishChamber_To_EndNoEUChamberPath_GGArt52" name="No" sourceRef="Gateway_EstablishEuropeanChamber_GGArt52" targetRef="EndEvent_NoEUChamberPath_GGArt52" />
+    <sequenceFlow id="Flow_GatewayEstablishChamber_To_EstablishChamber_GGArt52" name="Yes" sourceRef="Gateway_EstablishEuropeanChamber_GGArt52" targetRef="Task_EstablishEuropeanAffairsChamber_GGArt52" />
+    <sequenceFlow id="Flow_GatewayExcludePublic_To_ExcludePublic_GGArt52" name="Yes" sourceRef="Gateway_ExcludePublic_GGArt52" targetRef="Task_ExcludePublic_GGArt52" />
+    <sequenceFlow id="Flow_GatewayExcludePublic_To_GatewayMeetingMerge_GGArt52" name="No" sourceRef="Gateway_ExcludePublic_GGArt52" targetRef="Gateway_MeetingMerge_GGArt52" />
+    <sequenceFlow id="Flow_GatewayMatterEU_To_EndNoEUChamberPath_GGArt52" name="No" sourceRef="Gateway_MatterConcernsEU_GGArt52" targetRef="EndEvent_NoEUChamberPath_GGArt52" />
+    <sequenceFlow id="Flow_GatewayMatterEU_To_GatewayEstablishChamber_GGArt52" name="Yes" sourceRef="Gateway_MatterConcernsEU_GGArt52" targetRef="Gateway_EstablishEuropeanChamber_GGArt52" />
+    <sequenceFlow id="Flow_GatewayMeetingMerge_To_GatewayParagraph3Join_GGArt52" sourceRef="Gateway_MeetingMerge_GGArt52" targetRef="Gateway_Paragraph3Join_GGArt52" />
+    <sequenceFlow id="Flow_GatewayParagraph3Join_To_EndParagraph3Applied_GGArt52" sourceRef="Gateway_Paragraph3Join_GGArt52" targetRef="EndEvent_Paragraph3RulesApplied_GGArt52" />
+    <sequenceFlow id="Flow_GatewayParagraph3Split_To_AdoptRules_GGArt52" sourceRef="Gateway_Paragraph3Split_GGArt52" targetRef="Task_AdoptRulesOfProcedure_GGArt52" />
+    <sequenceFlow id="Flow_GatewayParagraph3Split_To_HoldPublicMeeting_GGArt52" sourceRef="Gateway_Paragraph3Split_GGArt52" targetRef="Task_HoldPublicMeeting_GGArt52" />
+    <sequenceFlow id="Flow_GatewayParagraph3Split_To_TakeDecision_GGArt52" sourceRef="Gateway_Paragraph3Split_GGArt52" targetRef="Task_TakeDecisionByMajority_GGArt52" />
+    <sequenceFlow id="Flow_GatewaySplit_To_AppointCommitteeMembers_GGArt52" sourceRef="Gateway_SplitRules_GGArt52" targetRef="Task_AppointCommitteeMembers_GGArt52" />
+    <sequenceFlow id="Flow_GatewaySplit_To_ElectPresident_GGArt52" sourceRef="Gateway_SplitRules_GGArt52" targetRef="Task_ElectPresidentForOneYear_GGArt52" />
+    <sequenceFlow id="Flow_GatewaySplit_To_GatewayConveningTrigger_GGArt52" sourceRef="Gateway_SplitRules_GGArt52" targetRef="Gateway_ConveningTrigger_GGArt52" />
+    <sequenceFlow id="Flow_GatewaySplit_To_GatewayMatterEU_GGArt52" sourceRef="Gateway_SplitRules_GGArt52" targetRef="Gateway_MatterConcernsEU_GGArt52" />
+    <sequenceFlow id="Flow_GatewaySplit_To_GatewayParagraph3Split_GGArt52" sourceRef="Gateway_SplitRules_GGArt52" targetRef="Gateway_Paragraph3Split_GGArt52" />
+    <sequenceFlow id="Flow_HoldPublicMeeting_To_GatewayExcludePublic_GGArt52" sourceRef="Task_HoldPublicMeeting_GGArt52" targetRef="Gateway_ExcludePublic_GGArt52" />
+    <sequenceFlow id="Flow_Start_To_GatewaySplitRules_GGArt52" sourceRef="StartEvent_ApplyArticle52Rules_GGArt52" targetRef="Gateway_SplitRules_GGArt52" />
+    <sequenceFlow id="Flow_TakeDecision_To_GatewayParagraph3Join_GGArt52" sourceRef="Task_TakeDecisionByMajority_GGArt52" targetRef="Gateway_Paragraph3Join_GGArt52" />
+    <sequenceFlow id="Flow_TreatDecision_To_CastVotesUniformly_GGArt52" sourceRef="Task_TreatChamberDecisionAsBundesratDecision_GGArt52" targetRef="Task_CastLandVotesUniformly_GGArt52" />
+  </sequenceFlows>
+  <messageFlows>
+    <messageFlow id="MessageFlow_FederalGovernmentDemand_GGArt52" sourceRef="Participant_FederalGovernment_GGArt52" targetRef="Event_ReceiveFederalGovernmentDemand_GGArt52" />
+    <messageFlow id="MessageFlow_TwoLaenderDemand_GGArt52" sourceRef="Participant_TwoLaenderDelegates_GGArt52" targetRef="Event_ReceiveTwoLaenderDemand_GGArt52" />
+  </messageFlows>
+</processModel>

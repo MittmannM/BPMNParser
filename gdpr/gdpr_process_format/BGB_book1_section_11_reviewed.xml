@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='utf-8'?>
+<processModel>
+  <pools />
+  <tasks>
+    <task id="Task_AssessCareRights_BGBSection11" name="Assess care rights" type="task" poolRef="Process_BGBSection11" />
+    <task id="Task_RetainResidenceUntilValidlyAbandoned_BGBSection11" name="Retain residence until validly abandoned" type="task" poolRef="Process_BGBSection11" />
+    <task id="Task_ShareResidenceOfParentWithCareRight_BGBSection11" name="Share residence of parent with care right" type="task" poolRef="Process_BGBSection11" />
+    <task id="Task_ShareResidenceOfParents_BGBSection11" name="Share residence of parents" type="task" poolRef="Process_BGBSection11" />
+    <task id="Task_ShareResidenceOfPersonWithCareRight_BGBSection11" name="Share residence of person with care right" type="task" poolRef="Process_BGBSection11" />
+  </tasks>
+  <events>
+    <event id="EndEvent_ResidenceRuleApplied_BGBSection11" name="Residence rule applied" type="endEvent" poolRef="Process_BGBSection11" />
+    <event id="StartEvent_DetermineChildResidence_BGBSection11" name="Determine residence of minor child" type="startEvent" poolRef="Process_BGBSection11" />
+  </events>
+  <gateways>
+    <gateway id="Gateway_BothParentsHaveCareRight_BGBSection11" name="Do both parents have the right to care for the person of the child?" type="exclusiveGateway" poolRef="Process_BGBSection11" />
+    <gateway id="Gateway_ParentHasCareRight_BGBSection11" name="Does at least one parent have the right to care for the person of the child?" type="exclusiveGateway" poolRef="Process_BGBSection11" />
+    <gateway id="Gateway_ResidenceAssigned_BGBSection11" type="exclusiveGateway" poolRef="Process_BGBSection11" />
+  </gateways>
+  <sequenceFlows>
+    <sequenceFlow id="Flow_AssessCareRights_To_GatewayParentHasCareRight_BGBSection11" sourceRef="Task_AssessCareRights_BGBSection11" targetRef="Gateway_ParentHasCareRight_BGBSection11" />
+    <sequenceFlow id="Flow_GatewayBothParentsHaveCareRight_To_ShareResidenceOfParentWithCareRight_BGBSection11" name="No" sourceRef="Gateway_BothParentsHaveCareRight_BGBSection11" targetRef="Task_ShareResidenceOfParentWithCareRight_BGBSection11" />
+    <sequenceFlow id="Flow_GatewayBothParentsHaveCareRight_To_ShareResidenceOfParents_BGBSection11" name="Yes" sourceRef="Gateway_BothParentsHaveCareRight_BGBSection11" targetRef="Task_ShareResidenceOfParents_BGBSection11" />
+    <sequenceFlow id="Flow_GatewayParentHasCareRight_To_GatewayBothParentsHaveCareRight_BGBSection11" name="Yes" sourceRef="Gateway_ParentHasCareRight_BGBSection11" targetRef="Gateway_BothParentsHaveCareRight_BGBSection11" />
+    <sequenceFlow id="Flow_GatewayParentHasCareRight_To_ShareResidenceOfPersonWithCareRight_BGBSection11" name="No" sourceRef="Gateway_ParentHasCareRight_BGBSection11" targetRef="Task_ShareResidenceOfPersonWithCareRight_BGBSection11" />
+    <sequenceFlow id="Flow_GatewayResidenceAssigned_To_RetainResidence_BGBSection11" sourceRef="Gateway_ResidenceAssigned_BGBSection11" targetRef="Task_RetainResidenceUntilValidlyAbandoned_BGBSection11" />
+    <sequenceFlow id="Flow_RetainResidence_To_EndResidenceRuleApplied_BGBSection11" sourceRef="Task_RetainResidenceUntilValidlyAbandoned_BGBSection11" targetRef="EndEvent_ResidenceRuleApplied_BGBSection11" />
+    <sequenceFlow id="Flow_ShareResidenceOfParentWithCareRight_To_GatewayResidenceAssigned_BGBSection11" sourceRef="Task_ShareResidenceOfParentWithCareRight_BGBSection11" targetRef="Gateway_ResidenceAssigned_BGBSection11" />
+    <sequenceFlow id="Flow_ShareResidenceOfParents_To_GatewayResidenceAssigned_BGBSection11" sourceRef="Task_ShareResidenceOfParents_BGBSection11" targetRef="Gateway_ResidenceAssigned_BGBSection11" />
+    <sequenceFlow id="Flow_ShareResidenceOfPersonWithCareRight_To_GatewayResidenceAssigned_BGBSection11" sourceRef="Task_ShareResidenceOfPersonWithCareRight_BGBSection11" targetRef="Gateway_ResidenceAssigned_BGBSection11" />
+    <sequenceFlow id="Flow_Start_To_AssessCareRights_BGBSection11" sourceRef="StartEvent_DetermineChildResidence_BGBSection11" targetRef="Task_AssessCareRights_BGBSection11" />
+  </sequenceFlows>
+  <messageFlows />
+</processModel>
