@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <processModel>
   <pools />
-  <lanes />
   <tasks>
     <task id="Task_ApplyRegardlessLocation_Art3" name="Apply GDPR regardless of processing location" type="task" poolRef="Process_AssessScope_Art3" />
     <task id="Task_AssessNonUnionRoute_Art3" name="Assess non-Union applicability route" type="task" poolRef="Process_AssessScope_Art3" />
@@ -38,9 +37,4 @@
     <sequenceFlow id="Flow_Start_To_AssessUnionEstablishment_Art3" sourceRef="StartEvent_AssessTerritorialScope_Art3" targetRef="Task_AssessUnionEstablishment_Art3" />
   </sequenceFlows>
   <messageFlows />
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

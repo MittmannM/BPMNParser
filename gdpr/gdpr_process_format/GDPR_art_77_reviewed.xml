@@ -4,7 +4,6 @@
     <pool id="Participant_DataSubject_Art77" name="Data Subject" poolType="active" processRef="Process_DataSubject_Art77" />
     <pool id="Participant_SupervisoryAuthority_Art77" name="Supervisory Authority" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="ReceiveTask_ReceiveOutcomeInfo_Art77" name="Receive progress, outcome, and Article 78 remedy information" type="receiveTask" poolRef="Participant_DataSubject_Art77" />
     <task id="SendTask_LodgeInfringementComplaint_Art77" name="Lodge complaint in infringement Member State" type="sendTask" poolRef="Participant_DataSubject_Art77" />
@@ -38,9 +37,4 @@
     <messageFlow id="MessageFlow_LodgeWorkComplaint_Art77" sourceRef="SendTask_LodgeWorkComplaint_Art77" targetRef="Participant_SupervisoryAuthority_Art77" />
     <messageFlow id="MessageFlow_ReceiveOutcomeInfo_Art77" sourceRef="Participant_SupervisoryAuthority_Art77" targetRef="ReceiveTask_ReceiveOutcomeInfo_Art77" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

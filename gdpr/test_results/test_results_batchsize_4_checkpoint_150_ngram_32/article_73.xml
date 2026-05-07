@@ -3,7 +3,6 @@
   <pools>
     <pool id="Participant_Board_Art43" name="Board" poolType="active" processRef="Process_Board_Art43" />
   </pools>
-  <lanes />
   <tasks>
     <task id="Task_ElectChairAndDeputyChairs_Art43" name="Elect chair and two deputy chairs" type="task" poolRef="Participant_Board_Art43" />
     <task id="Task_SetTermFiveYearsRenewableOnce_Art43" name="Set five-year term renewable once" type="task" poolRef="Participant_Board_Art43" />
@@ -23,9 +22,4 @@
     <sequenceFlow id="Flow_Start_To_ElectChairAndDeputyChairs_Art43" sourceRef="StartEvent_ManageBoardComposition_Art43" targetRef="Task_ElectChairAndDeputyChairs_Art43" />
   </sequenceFlows>
   <messageFlows />
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

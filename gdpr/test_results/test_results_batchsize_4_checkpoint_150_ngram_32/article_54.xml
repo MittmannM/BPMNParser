@@ -4,7 +4,6 @@
     <pool id="Participant_MemberState_Art93" name="Member State" poolType="passive" />
     <pool id="Participant_Member_Art93" name="Member or Staff" poolType="active" processRef="Process_MemberOrStaff_Art93" />
   </pools>
-  <lanes />
   <tasks>
     <task id="Task_DefineSupervisoryAuthority_Art93" name="Define supervisory authority" type="task" poolRef="Participant_MemberState_Art93" />
     <task id="Task_EstablishSupervisoryAuthority_Art93" name="Establish supervisory authority" type="task" poolRef="Participant_MemberState_Art93" />
@@ -54,9 +53,4 @@
     <messageFlow id="MessageFlow_SetReappointmentEligibility_Art93" sourceRef="Task_SetReappointmentEligibility_Art93" targetRef="Participant_Member_Art93" />
     <messageFlow id="MessageFlow_SetProhibitionsAndCessationRules_Art93" sourceRef="Task_SetProhibitionsAndCessationRules_Art99" targetRef="Participant_Member_Art93" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

@@ -6,7 +6,6 @@
     <pool id="Participant_LänderDelegates_Art69" name="Länder Delegates" poolType="passive" />
     <pool id="Participant_Public_Art69" name="Public" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="Task_ConveneBundesrat_Art69" name="Convene Bundesrat" type="sendTask" poolRef="Participant_Bundesrat_Art69" />
     <task id="Task_ElectPresidentForOneYear_Art69" name="Elect President for one year" type="task" poolRef="Participant_Bundesrat_Art69" />
@@ -50,9 +49,4 @@
     <messageFlow id="MessageFlow_ConveneBundesrat_Art69" sourceRef="Task_ConveneBundesrat_Art69" targetRef="Participant_LänderDelegates_Art69" />
     <messageFlow id="MessageFlow_JoinCommittee_Art69" sourceRef="Task_JoinCommittee_Art69" targetRef="Participant_FederalGovernment_Art69" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

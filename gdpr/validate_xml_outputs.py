@@ -8,9 +8,8 @@ from xml.etree import ElementTree as ET
 
 
 # Directory for the XML output
-DEFAULT_MODEL_DIR = Path(r"test_results\test_results_batchsize_4_checkpoint_150_ngram_32")
+DEFAULT_MODEL_DIR = Path(r"test_results\test_results_batchsize_8_checkpoint_100")
 REFERENCE_ATTRIBUTES = {"sourceRef","targetRef"}
-
 
 @dataclass
 class ValidationResult:
@@ -20,18 +19,12 @@ class ValidationResult:
     parseable: bool = False
     single_root: bool = False
     errors: list[str] = field(default_factory=list)
-    warnings: list[str] = field(default_factory=list)
     failing_lines: list[str] = field(default_factory=list)
 
     @property
     def is_valid(self) -> bool:
         """A file is valid if it passes all mandatory step-1 checks."""
         return self.parseable and self.single_root and not self.errors
-
-    @property
-    def has_warnings(self) -> bool:
-        return bool(self.warnings)
-
 
 def local_name(name: str) -> str:
     """Return the local part of an XML tag or attribute name.
@@ -135,7 +128,7 @@ def add_failing_lines(result: ValidationResult, lines: Iterable[str]) -> None:
 
 
 def validate_file(path: Path) -> ValidationResult:
-    """Validate one XML file and collect errors/warnings without raising."""
+    """Validate one XML file and collect errors without raising."""
     result = ValidationResult(path=path)
 
     try:
@@ -165,12 +158,6 @@ def validate_file(path: Path) -> ValidationResult:
                 result.errors.append(f"Empty id attribute on {element_label(element)}.")
                 add_failing_lines(result, attribute_value_context(data, "id", raw_id))
             else:
-                if raw_id != normalized_id:
-                    result.warnings.append(
-                        f"id attribute has leading/trailing whitespace on "
-                        f"{element_label(element)}."
-                    )
-
                 previous = ids_by_value.get(normalized_id)
                 if previous is not None:
                     result.errors.append(
@@ -181,10 +168,6 @@ def validate_file(path: Path) -> ValidationResult:
                     add_failing_lines(result, attribute_value_context(data, "id", raw_id))
                 else:
                     ids_by_value[normalized_id] = element
-
-        raw_name = get_attribute(element, "name")
-        if raw_name is not None and raw_name.strip() == "":
-            result.warnings.append(f"Empty name attribute on {element_label(element)}.")
 
     known_ids = set(ids_by_value)
 
@@ -201,12 +184,6 @@ def validate_file(path: Path) -> ValidationResult:
                     result, attribute_value_context(data, attribute_name, raw_reference)
                 )
                 continue
-
-            if raw_reference != reference:
-                result.warnings.append(
-                    f"{attribute_name} reference has leading/trailing whitespace on "
-                    f"{element_label(element)}."
-                )
 
             if reference not in known_ids:
                 result.errors.append(
@@ -246,12 +223,6 @@ def print_file_report(result: ValidationResult) -> None:
         for line in result.failing_lines:
             print(line)
 
-    print("Warnings:")
-    if result.warnings:
-        for warning in result.warnings:
-            print(f"- {warning}")
-    else:
-        print("- none")
     print()
 
 
@@ -260,13 +231,11 @@ def print_summary(results: list[ValidationResult]) -> None:
     total = len(results)
     valid = sum(1 for result in results if result.is_valid)
     invalid = total - valid
-    with_warnings = sum(1 for result in results if result.has_warnings)
 
     print("Summary:")
     print(f"Total files checked: {total}")
     print(f"Valid XML files: {valid}")
     print(f"Invalid XML files: {invalid}")
-    print(f"Files with warnings: {with_warnings}")
 
 
 def main() -> int:

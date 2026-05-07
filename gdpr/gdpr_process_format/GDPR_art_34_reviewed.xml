@@ -6,7 +6,6 @@
     <pool id="Participant_Public_Art34" name="Public" poolType="passive" />
     <pool id="Participant_SupervisoryAuthority_Art34" name="Supervisory Authority" poolType="active" processRef="Process_SupervisoryAuthority_Art34" />
   </pools>
-  <lanes />
   <tasks>
     <task id="SendTask_CommunicateDataSubject_Art34" name="Communicate breach without undue delay" type="sendTask" poolRef="Participant_Controller_Art34" />
     <task id="SendTask_PublicCommunication_Art34" name="Issue public communication or similar measure" type="sendTask" poolRef="Participant_Controller_Art34" />
@@ -82,9 +81,4 @@
     <messageFlow id="MessageFlow_CommunicateToDataSubject_Art34" sourceRef="SendTask_CommunicateDataSubject_Art34" targetRef="Participant_DataSubject_Art34" />
     <messageFlow id="MessageFlow_PublicCommunication_Art34" sourceRef="SendTask_PublicCommunication_Art34" targetRef="Participant_Public_Art34" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

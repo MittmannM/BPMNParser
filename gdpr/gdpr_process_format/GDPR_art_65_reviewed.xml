@@ -9,7 +9,6 @@
     <pool id="Participant_LeadOrComplaintAuthority_Art65" name="Lead or Complaint Supervisory Authority" poolType="active" processRef="Process_LeadOrComplaintAuthority_Art65" />
     <pool id="Participant_Public_Art65" name="Public" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="Task_AdoptBySimpleMajority_Art65" name="Adopt decision within two weeks" type="task" poolRef="Participant_Board_Art65" />
     <task id="Task_AdoptFinalDecision_Art65" name="Adopt final decision within one month" type="task" poolRef="Participant_LeadOrComplaintAuthority_Art65" />
@@ -88,9 +87,4 @@
     <messageFlow id="MessageFlow_PublishBoardDecision_Art65" sourceRef="Task_PublishBoardDecision_Art65" targetRef="Participant_Public_Art65" />
     <messageFlow id="MessageFlow_SendReferralToBoard_Art65" sourceRef="Task_SendReferralToBoard_Art65" targetRef="StartEvent_ReceiveReferral_Art65" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

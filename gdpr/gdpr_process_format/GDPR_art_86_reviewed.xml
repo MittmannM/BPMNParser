@@ -4,7 +4,6 @@
     <pool id="Participant_Authority_Art86" name="Authority or body" poolType="active" processRef="Process_Authority_Art86" />
     <pool id="Participant_Requester_Art86" name="Requester or member of the public" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="ReceiveTask_ReceiveAccessRequest_Art86" name="Receive access request" type="receiveTask" poolRef="Participant_Authority_Art86" />
     <task id="SendTask_DisclosePersonalData_Art86" name="Disclose personal data" type="sendTask" poolRef="Participant_Authority_Art86" />
@@ -38,9 +37,4 @@
     <messageFlow id="MessageFlow_DiscloseDocumentData_Art86" sourceRef="SendTask_DisclosePersonalData_Art86" targetRef="Participant_Requester_Art86" />
     <messageFlow id="MessageFlow_RequestAccess_Art86" sourceRef="Participant_Requester_Art86" targetRef="ReceiveTask_ReceiveAccessRequest_Art86" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

@@ -6,7 +6,6 @@
     <pool id="Participant_NotForProfitBody_Art80" name="Not-for-profit body, organisation, or association" poolType="active" processRef="Process_NotForProfitBody_Art80" />
     <pool id="Participant_SupervisoryAuthority_Art80" name="Supervisory Authority" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="ReceiveTask_ReceiveMandate_Art80" name="Receive mandate" type="receiveTask" poolRef="Participant_NotForProfitBody_Art80" />
     <task id="SendTask_LodgeComplaint_Art80" name="Lodge complaint" type="sendTask" poolRef="Participant_NotForProfitBody_Art80" />
@@ -56,9 +55,4 @@
     <messageFlow id="MessageFlow_RequestJudicialRemedy_Art80" sourceRef="SendTask_RequestJudicialRemedy_Art80" targetRef="Participant_Court_Art80" />
     <messageFlow id="MessageFlow_RequestMandate_Art80" sourceRef="SendTask_RequestMandate_Art80" targetRef="Participant_DataSubject_Art80" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

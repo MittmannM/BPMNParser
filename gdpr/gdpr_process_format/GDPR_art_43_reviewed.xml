@@ -7,7 +7,6 @@
     <pool id="Participant_NationalAccreditationBody_Art43" name="National Accreditation Body" poolType="passive" />
     <pool id="Participant_SupervisoryAuthority_Art43" name="Supervisory Authority" poolType="active" processRef="Process_SupervisoryAuthority_Art43" />
   </pools>
-  <lanes />
   <tasks>
     <task id="ReceiveTask_ReceiveGrantReasons_Art43" name="Receive grant or renewal reasons" type="receiveTask" poolRef="Participant_SupervisoryAuthority_Art43" />
     <task id="ReceiveTask_ReceiveIssuanceInformation_Art43" name="Receive issuance information" type="receiveTask" poolRef="Participant_SupervisoryAuthority_Art43" />
@@ -107,9 +106,4 @@
     <messageFlow id="MessageFlow_SendWithdrawalReasons_Art43" sourceRef="SendTask_SendWithdrawalReasons_Art43" targetRef="ReceiveTask_ReceiveWithdrawalReasons_Art43" />
     <messageFlow id="MessageFlow_SubmitRequirementsToBoard_Art43" sourceRef="SendTask_SubmitRequirementsToBoard_Art43" targetRef="Participant_Board_Art43" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

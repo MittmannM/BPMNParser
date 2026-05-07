@@ -7,7 +7,6 @@
     <pool id="Participant_ControllerOrProcessor_Art60" name="Controller or Processor" poolType="passive" />
     <pool id="Participant_LeadSupervisoryAuthority_Art60" name="Lead Supervisory Authority" poolType="active" processRef="Process_LeadSupervisoryAuthority_Art60" />
   </pools>
-  <lanes />
   <tasks>
     <task id="Task_AdoptActionPartDecision_Art60" name="Adopt action-part decision" type="task" poolRef="Participant_LeadSupervisoryAuthority_Art60" />
     <task id="Task_AdoptDecision_Art60" name="Adopt decision" type="task" poolRef="Participant_LeadSupervisoryAuthority_Art60" />
@@ -159,9 +158,4 @@
     <messageFlow id="MessageFlow_SubmitConsistencyMechanism_Art60" sourceRef="Task_SubmitMatterToConsistencyMechanism_Art60" targetRef="Participant_Board_Art60" />
     <messageFlow id="MessageFlow_TriggerUrgencyProcedure_Art60" sourceRef="Task_TriggerArticle66UrgencyProcedure_Art60" targetRef="Participant_Board_Art60" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

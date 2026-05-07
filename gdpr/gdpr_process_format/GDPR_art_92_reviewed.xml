@@ -5,7 +5,6 @@
     <pool id="Participant_Council_Art92" name="Council" poolType="passive" />
     <pool id="Participant_EuropeanParliament_Art92" name="European Parliament" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="Task_AdoptDelegatedAct_Art92" name="Adopt delegated act" type="task" poolRef="Participant_Commission_Art92" />
     <task id="Task_ApplyRevocationDecision_Art92" name="Apply revocation decision" type="task" poolRef="Participant_Commission_Art92" />
@@ -49,9 +48,4 @@
     <messageFlow id="MessageFlow_NotifyCouncil_Art92" sourceRef="Task_NotifyParliamentAndCouncil_Art92" targetRef="Participant_Council_Art92" />
     <messageFlow id="MessageFlow_NotifyParliament_Art92" sourceRef="Task_NotifyParliamentAndCouncil_Art92" targetRef="Participant_EuropeanParliament_Art92" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

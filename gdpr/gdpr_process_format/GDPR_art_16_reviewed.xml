@@ -4,7 +4,6 @@
     <pool id="Participant_Controller_Art16" name="Controller" poolType="active" processRef="Process_Controller_Art16" />
     <pool id="Participant_DataSubject_Art16" name="Data Subject" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="ReceiveTask_ReceiveRectificationRequest_Art16" name="Receive rectification request" type="receiveTask" poolRef="Participant_Controller_Art16" />
     <task id="Task_CompleteData_Art16" name="Complete incomplete data with supplementary statement" type="task" poolRef="Participant_Controller_Art16" />
@@ -28,9 +27,4 @@
   <messageFlows>
     <messageFlow id="MessageFlow_SendRectificationRequest_Art16" sourceRef="Participant_DataSubject_Art16" targetRef="ReceiveTask_ReceiveRectificationRequest_Art16" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

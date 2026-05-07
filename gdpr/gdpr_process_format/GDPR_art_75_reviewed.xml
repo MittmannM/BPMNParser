@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <processModel>
   <pools />
-  <lanes />
   <tasks>
     <task id="Task_EstablishMoU_Art75" name="Establish memorandum of understanding" type="task" poolRef="Process_Board_Art75" />
     <task id="Task_ManageBoardAndCommissionCommunications_Art75" name="Manage Board and Commission communications" type="sendTask" poolRef="Process_Board_Art75" />
@@ -55,9 +54,4 @@
     <sequenceFlow id="Flow_UseElectronicMeans_To_GatewayJoinResponsibilities_Art75" sourceRef="Task_UseElectronicMeans_Art75" targetRef="Gateway_JoinResponsibilities_Art75" />
   </sequenceFlows>
   <messageFlows />
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

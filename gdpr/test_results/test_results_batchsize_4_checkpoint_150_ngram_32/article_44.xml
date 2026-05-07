@@ -4,7 +4,6 @@
     <pool id="Participant_Controller_Art46" name="Controller" poolType="active" processRef="Process_Controller_Art46" />
     <pool id="Participant_Processor_Art46" name="Processor" poolType="active" processRef="Process_Processor_Art46" />
   </pools>
-  <lanes />
   <tasks>
     <task id="Task_ApplyChapterProvisions_Art46" name="Apply Chapter provisions" type="task" poolRef="Participant_Controller_Art46" />
     <task id="Task_AssessTransferRisk_Art46" name="Assess transfer risk" type="task" poolRef="Participant_Controller_Art46" />
@@ -42,9 +41,4 @@
     <messageFlow id="MessageFlow_SendTransferNotice_Art46" sourceRef="Task_SendTransferNotice_Art46" targetRef="Participant_Processor_Art46" />
     <messageFlow id="MessageFlow_ReceiveTransferNotice_Art46" sourceRef="Participant_Processor_Art46" targetRef="Task_SendTransferNotice_Art46" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

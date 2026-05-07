@@ -4,7 +4,6 @@
     <pool id="Participant_Commission_Art84" name="Commission" poolType="passive" />
     <pool id="Participant_MemberState_Art84" name="Member State" poolType="active" processRef="Process_MemberState_Art84" />
   </pools>
-  <lanes />
   <tasks>
     <task id="Task_EnsurePenaltyQuality_Art84" name="Ensure effective proportionate dissuasive penalties" type="task" poolRef="Participant_MemberState_Art84" />
     <task id="Task_LayDownPenaltyRules_Art84" name="Lay down other penalty rules" type="task" poolRef="Participant_MemberState_Art84" />
@@ -32,9 +31,4 @@
   <messageFlows>
     <messageFlow id="MessageFlow_NotifyCommissionOfPenaltyProvisions_Art84" sourceRef="Task_NotifyCommissionOfPenaltyProvisions_Art84" targetRef="Participant_Commission_Art84" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

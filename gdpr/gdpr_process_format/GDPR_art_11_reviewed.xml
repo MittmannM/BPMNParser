@@ -4,7 +4,6 @@
     <pool id="Participant_Controller_Art11" name="Controller" poolType="active" processRef="Process_Controller_Art11" />
     <pool id="Participant_DataSubject_Art11" name="Data Subject" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="ReceiveTask_ReceiveRightsRequest_Art11" name="Receive rights request and added information" type="receiveTask" poolRef="Participant_Controller_Art11" />
     <task id="SendTask_InformDataSubject_Art11" name="Inform inability to identify" type="sendTask" poolRef="Participant_Controller_Art11" />
@@ -47,9 +46,4 @@
     <messageFlow id="MessageFlow_InformDataSubject_Art11" sourceRef="SendTask_InformDataSubject_Art11" targetRef="Participant_DataSubject_Art11" />
     <messageFlow id="MessageFlow_RightsRequest_Art11" sourceRef="Participant_DataSubject_Art11" targetRef="ReceiveTask_ReceiveRightsRequest_Art11" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

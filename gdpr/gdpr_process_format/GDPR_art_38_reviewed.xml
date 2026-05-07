@@ -5,7 +5,6 @@
     <pool id="Participant_DPO_Art38" name="Data Protection Officer" poolType="active" processRef="Process_DPO_Art38" />
     <pool id="Participant_DataSubject_Art38" name="Data Subject" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="ReceiveTask_ReceiveDataSubjectMatter_Art38" name="Receive data-subject matter" type="receiveTask" poolRef="Participant_DPO_Art38" />
     <task id="ReceiveTask_ReceiveIssue_Art38" name="Receive DPO issue" type="receiveTask" poolRef="Participant_DPO_Art38" />
@@ -73,9 +72,4 @@
     <messageFlow id="MessageFlow_DataSubjectContact_Art38" sourceRef="Participant_DataSubject_Art38" targetRef="ReceiveTask_ReceiveDataSubjectMatter_Art38" />
     <messageFlow id="MessageFlow_InvolveDPO_Art38" sourceRef="SendTask_InvolveDPO_Art38" targetRef="ReceiveTask_ReceiveIssue_Art38" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

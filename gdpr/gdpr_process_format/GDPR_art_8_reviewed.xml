@@ -5,7 +5,6 @@
     <pool id="Participant_Controller_Art8" name="Controller" poolType="active" processRef="Process_Controller_Art8" />
     <pool id="Participant_ParentalResponsibility_Art8" name="Holder of Parental Responsibility" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="ReceiveTask_ReceiveChildConsent_Art8" name="Receive child consent" type="receiveTask" poolRef="Participant_Controller_Art8" />
     <task id="ReceiveTask_ReceiveParentalAuthorisation_Art8" name="Receive parental authorisation" type="receiveTask" poolRef="Participant_Controller_Art8" />
@@ -50,9 +49,4 @@
     <messageFlow id="MessageFlow_RequestChildConsent_Art8" sourceRef="SendTask_RequestChildConsent_Art8" targetRef="Participant_Child_Art8" />
     <messageFlow id="MessageFlow_RequestParentalAuthorisation_Art8" sourceRef="SendTask_RequestParentalAuthorisation_Art8" targetRef="Participant_ParentalResponsibility_Art8" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

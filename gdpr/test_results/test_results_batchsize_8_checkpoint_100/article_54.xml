@@ -4,7 +4,6 @@
     <pool id="Participant_MemberState_Art1" name="Member State" poolType="passive" />
     <pool id="Participant_SupervisoryAuthority_Art1" name="Supervisory Authority" poolType="active" processRef="Process_SupervisoryAuthority_Art1" />
   </pools>
-  <lanes />
   <tasks>
     <task id="Task_EstablishSupervisoryAuthority_Art1" name="Establish supervisory authority" type="task" poolRef="Participant_MemberState_Art1" />
     <task id="Task_DefineAppointmentRules_Art1" name="Define appointment rules" type="task" poolRef="Participant_MemberState_Art1" />
@@ -70,9 +69,4 @@
     <messageFlow id="MessageFlow_SupervisoryAuthority_Art1_DefineStaggeredAppointment_Art1" sourceRef="Participant_SupervisoryAuthority_Art1" targetRef="Task_DefineStaggeredAppointment_Art1" />
     <messageFlow id="MessageFlow_SupervisoryAuthority_Art1_EnsureUnionLawCompliance_Art1" sourceRef="Participant_SupervisoryAuthority_Art1" targetRef="Task_DefineUnionLawCompliance_Art1" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

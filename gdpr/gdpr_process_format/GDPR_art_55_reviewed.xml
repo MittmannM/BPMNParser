@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <processModel>
   <pools />
-  <lanes />
   <tasks>
     <task id="Task_DisapplyArticle56_Art55" name="Disapply Article 56" type="task" poolRef="Process_CompetenceAssessment_Art55" />
     <task id="Task_ExerciseSpecialCompetence_Art55" name="Exercise Member State competence" type="task" poolRef="Process_CompetenceAssessment_Art55" />
@@ -34,9 +33,4 @@
     <sequenceFlow id="Flow_Start_To_IdentifyContext_Art55" sourceRef="StartEvent_AssessCompetence_Art55" targetRef="Task_IdentifyProcessingContext_Art55" />
   </sequenceFlows>
   <messageFlows />
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

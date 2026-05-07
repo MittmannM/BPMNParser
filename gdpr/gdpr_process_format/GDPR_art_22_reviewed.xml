@@ -4,7 +4,6 @@
     <pool id="Participant_Controller_Art22" name="Controller" poolType="active" processRef="Process_Controller_Art22" />
     <pool id="Participant_DataSubject_Art22" name="Data Subject" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="ReceiveTask_ReceiveContest_Art22" name="Receive contest" type="receiveTask" poolRef="Participant_Controller_Art22" />
     <task id="ReceiveTask_ReceivePointOfView_Art22" name="Receive point of view" type="receiveTask" poolRef="Participant_Controller_Art22" />
@@ -83,9 +82,4 @@
     <messageFlow id="MessageFlow_ReceiveContest_Art22" sourceRef="Participant_DataSubject_Art22" targetRef="ReceiveTask_ReceiveContest_Art22" />
     <messageFlow id="MessageFlow_ReceivePointOfView_Art22" sourceRef="Participant_DataSubject_Art22" targetRef="ReceiveTask_ReceivePointOfView_Art22" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

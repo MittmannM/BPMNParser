@@ -8,7 +8,6 @@
     <pool id="Participant_NationalInstitutionsAndPublic_Art58" name="National Institutions and Public" poolType="passive" />
     <pool id="Participant_SupervisoryAuthority_Art58" name="Supervisory Authority" poolType="active" processRef="Process_SupervisoryAuthority_Art58" />
   </pools>
-  <lanes />
   <tasks>
     <task id="Task_AccreditCertificationBodies_Art58" name="Accredit certification bodies" type="task" poolRef="Participant_SupervisoryAuthority_Art58" />
     <task id="Task_AdoptStandardDataProtectionClauses_Art58" name="Adopt standard data protection clauses" type="task" poolRef="Participant_SupervisoryAuthority_Art58" />
@@ -142,9 +141,4 @@
     <messageFlow id="MessageFlow_SuspendThirdCountryDataFlows_Art58" sourceRef="Task_SuspendThirdCountryDataFlows_Art58" targetRef="Participant_ControllerProcessorRepresentative_Art58" />
     <messageFlow id="MessageFlow_WithdrawOrBlockCertification_Art58" sourceRef="Task_WithdrawOrBlockCertification_Art58" targetRef="Participant_CertificationBody_Art58" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

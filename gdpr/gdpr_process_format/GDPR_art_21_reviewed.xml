@@ -4,7 +4,6 @@
     <pool id="Participant_Controller_Art21" name="Controller" poolType="active" processRef="Process_Controller_Art21" />
     <pool id="Participant_DataSubject_Art21" name="Data Subject" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="ReceiveTask_ReceiveObjection_Art21" name="Receive objection" type="receiveTask" poolRef="Participant_Controller_Art21" />
     <task id="SendTask_InformRightToObject_Art21" name="Inform data subject of right to object" type="sendTask" poolRef="Participant_Controller_Art21" />
@@ -62,9 +61,4 @@
     <messageFlow id="MessageFlow_InformRightToObject_Art21" sourceRef="SendTask_InformRightToObject_Art21" targetRef="Participant_DataSubject_Art21" />
     <messageFlow id="MessageFlow_ReceiveObjection_Art21" sourceRef="Participant_DataSubject_Art21" targetRef="ReceiveTask_ReceiveObjection_Art21" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

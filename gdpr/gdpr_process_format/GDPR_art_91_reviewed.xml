@@ -4,7 +4,6 @@
     <pool id="Participant_ChurchOrReligiousAssociation_Art91" name="Church or Religious Association" poolType="active" processRef="Process_ChurchOrReligiousAssociation_Art91" />
     <pool id="Participant_IndependentSupervisoryAuthority_Art91" name="Independent Supervisory Authority" poolType="active" processRef="Process_IndependentSupervisoryAuthority_Art91" />
   </pools>
-  <lanes />
   <tasks>
     <task id="Task_AlignRulesWithRegulation_Art91" name="Align rules with the Regulation" type="task" poolRef="Participant_ChurchOrReligiousAssociation_Art91" />
     <task id="Task_ExerciseIndependentSupervision_Art91" name="Exercise independent supervision" type="task" poolRef="Participant_IndependentSupervisoryAuthority_Art91" />
@@ -37,9 +36,4 @@
   <messageFlows>
     <messageFlow id="MessageFlow_SubmitRulesForSupervision_Art91" sourceRef="Task_SubmitRulesForSupervision_Art91" targetRef="StartEvent_ReceiveSupervisionMandate_Art91" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

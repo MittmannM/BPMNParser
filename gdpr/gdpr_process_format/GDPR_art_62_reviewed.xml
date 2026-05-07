@@ -7,7 +7,6 @@
     <pool id="Participant_ParticipatingSupervisoryAuthority_Art62" name="Participating Supervisory Authority" poolType="active" processRef="Process_ParticipatingSupervisoryAuthority_Art62" />
     <pool id="Participant_SecondingMemberState_Art62" name="Seconding Member State" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="Task_AdoptProvisionalMeasure_Art62" name="Adopt provisional measure under Article 55" type="task" poolRef="Participant_ParticipatingSupervisoryAuthority_Art62" />
     <task id="Task_AuthorizeSecondedStaff_Art62" name="Authorize seconded members or staff" type="task" poolRef="Participant_ParticipatingSupervisoryAuthority_Art62" />
@@ -79,9 +78,4 @@
     <messageFlow id="MessageFlow_SendParticipationInvite_Art62" sourceRef="Task_SendParticipationInvite_Art62" targetRef="StartEvent_ReceiveParticipationInvite_Art62" />
     <messageFlow id="MessageFlow_SendParticipationResponse_Art62" sourceRef="Task_SendParticipationResponse_Art62" targetRef="Task_ReceiveParticipationResponse_Art62" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

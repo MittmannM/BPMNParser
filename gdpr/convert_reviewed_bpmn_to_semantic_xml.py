@@ -47,17 +47,11 @@ EVENT_DEFINITION_TAGS = {
 }
 SECTION_ORDER = [
     "pools",
-    "lanes",
     "tasks",
     "events",
     "gateways",
     "sequenceFlows",
     "messageFlows",
-    "dataObjects",
-    "dataStores",
-    "dataAssociations",
-    "annotations",
-    "associations",
 ]
 
 PROJECT_ROOT = Path(__file__).resolve().parent
@@ -236,37 +230,6 @@ def extract_semantic_sections(source_path: Path) -> dict[str, list[tuple[str, di
             )
         )
 
-    flow_node_to_lane: dict[str, tuple[str, int]] = {}
-    for element in root.iter():
-        if local_name(element.tag) != "lane":
-            continue
-
-        lane_id = normalize_reference(element.get("id"))
-        parent_lane = nearest_ancestor(element, parent_map, "lane")
-        parent_lane_ref = normalize_reference(parent_lane.get("id")) if parent_lane is not None else None
-        pool_ref = process_context_ref(element, parent_map, process_to_participants)
-
-        sections["lanes"].append(
-            (
-                "lane",
-                ordered_attributes(
-                    ("id", lane_id),
-                    ("name", element.get("name")),
-                    ("poolRef", pool_ref),
-                    ("parentLaneRef", parent_lane_ref),
-                ),
-            )
-        )
-
-        if lane_id is None:
-            continue
-
-        depth = lane_depth(element, parent_map)
-        for flow_node_ref in child_texts(element, "flowNodeRef"):
-            existing = flow_node_to_lane.get(flow_node_ref)
-            if existing is None or depth >= existing[1]:
-                flow_node_to_lane[flow_node_ref] = (lane_id, depth)
-
     for element in root.iter():
         name = local_name(element.tag)
         element_id = normalize_reference(element.get("id"))
@@ -280,7 +243,6 @@ def extract_semantic_sections(source_path: Path) -> dict[str, list[tuple[str, di
                         ("name", element.get("name")),
                         ("type", name if name != "subProcess" else "subProcess"),
                         ("poolRef", process_context_ref(element, parent_map, process_to_participants)),
-                        ("laneRef", resolve_lane_ref(element, parent_map, flow_node_to_lane)),
                         ("calledElement", normalize_reference(element.get("calledElement"))),
                     ),
                 )
@@ -300,7 +262,6 @@ def extract_semantic_sections(source_path: Path) -> dict[str, list[tuple[str, di
                         ("name", element.get("name")),
                         ("type", name),
                         ("poolRef", process_context_ref(element, parent_map, process_to_participants)),
-                        ("laneRef", resolve_lane_ref(element, parent_map, flow_node_to_lane)),
                         ("eventDefinition", detect_event_definition(element)),
                         ("attachedToRef", normalize_reference(element.get("attachedToRef"))),
                         ("cancelActivity", cancel_activity),
@@ -318,7 +279,6 @@ def extract_semantic_sections(source_path: Path) -> dict[str, list[tuple[str, di
                         ("name", element.get("name")),
                         ("type", name),
                         ("poolRef", process_context_ref(element, parent_map, process_to_participants)),
-                        ("laneRef", resolve_lane_ref(element, parent_map, flow_node_to_lane)),
                         ("defaultFlowRef", normalize_reference(element.get("default"))),
                     ),
                 )
@@ -360,110 +320,9 @@ def extract_semantic_sections(source_path: Path) -> dict[str, list[tuple[str, di
             )
             continue
 
-        if name == "dataObject":
-            sections["dataObjects"].append(
-                (
-                    "dataObject",
-                    ordered_attributes(
-                        ("id", element_id),
-                        ("name", element.get("name")),
-                    ),
-                )
-            )
-            continue
-
-        if name == "dataObjectReference":
-            sections["dataObjects"].append(
-                (
-                    "dataObjectReference",
-                    ordered_attributes(
-                        ("id", element_id),
-                        ("name", element.get("name")),
-                        ("dataObjectRef", normalize_reference(element.get("dataObjectRef"))),
-                    ),
-                )
-            )
-            continue
-
-        if name == "dataStore":
-            sections["dataStores"].append(
-                (
-                    "dataStore",
-                    ordered_attributes(
-                        ("id", element_id),
-                        ("name", element.get("name")),
-                    ),
-                )
-            )
-            continue
-
-        if name == "dataStoreReference":
-            sections["dataStores"].append(
-                (
-                    "dataStoreReference",
-                    ordered_attributes(
-                        ("id", element_id),
-                        ("name", element.get("name")),
-                        ("dataStoreRef", normalize_reference(element.get("dataStoreRef"))),
-                    ),
-                )
-            )
-            continue
-
-        if name in {"dataInputAssociation", "dataOutputAssociation"}:
-            source_refs = child_texts(element, "sourceRef")
-            target_refs = child_texts(element, "targetRef")
-            sections["dataAssociations"].append(
-                (
-                    name,
-                    ordered_attributes(
-                        ("id", element_id),
-                        ("sourceRef", " ".join(source_refs) if source_refs else None),
-                        ("targetRef", " ".join(target_refs) if target_refs else None),
-                    ),
-                )
-            )
-            continue
-
-        if name == "textAnnotation":
-            annotation_text = None
-            for child in element:
-                if local_name(child.tag) == "text":
-                    annotation_text = text_content(child)
-                    break
-
-            sections["annotations"].append(
-                (
-                    "textAnnotation",
-                    ordered_attributes(
-                        ("id", element_id),
-                        ("text", annotation_text),
-                    ),
-                )
-            )
-            continue
-
-        if name == "association":
-            sections["associations"].append(
-                (
-                    "association",
-                    ordered_attributes(
-                        ("id", element_id),
-                        ("sourceRef", normalize_reference(element.get("sourceRef"))),
-                        ("targetRef", normalize_reference(element.get("targetRef"))),
-                        ("associationDirection", normalize_reference(element.get("associationDirection"))),
-                    ),
-                )
-            )
-
     pool_ids = {
         attrs["id"]
         for _, attrs in sections["pools"]
-        if "id" in attrs
-    }
-    lane_ids = {
-        attrs["id"]
-        for _, attrs in sections["lanes"]
         if "id" in attrs
     }
     flow_node_ids = {
@@ -472,33 +331,12 @@ def extract_semantic_sections(source_path: Path) -> dict[str, list[tuple[str, di
         for _, attrs in sections[section_name]
         if "id" in attrs
     }
-    data_object_ids = {
-        attrs["id"]
-        for tag_name, attrs in sections["dataObjects"]
-        if tag_name == "dataObject" and "id" in attrs
-    }
-    data_store_ids = {
-        attrs["id"]
-        for tag_name, attrs in sections["dataStores"]
-        if tag_name == "dataStore" and "id" in attrs
-    }
     referenceable_ids = {
         attrs["id"]
-        for section_name in ("pools", "lanes", "tasks", "events", "gateways", "dataObjects", "dataStores", "annotations")
+        for section_name in ("pools", "tasks", "events", "gateways")
         for _, attrs in sections[section_name]
         if "id" in attrs
     }
-
-    cleaned_lanes: list[tuple[str, dict[str, str]]] = []
-    for tag_name, attrs in sections["lanes"]:
-        if attrs.get("poolRef") is not None and attrs["poolRef"] not in pool_ids and attrs["poolRef"] not in process_ids:
-            attrs = dict(attrs)
-            attrs.pop("poolRef", None)
-        if attrs.get("parentLaneRef") is not None and attrs["parentLaneRef"] not in lane_ids:
-            attrs = dict(attrs)
-            attrs.pop("parentLaneRef", None)
-        cleaned_lanes.append((tag_name, attrs))
-    sections["lanes"] = cleaned_lanes
 
     for section_name in ("tasks", "events", "gateways"):
         cleaned_section: list[tuple[str, dict[str, str]]] = []
@@ -507,10 +345,6 @@ def extract_semantic_sections(source_path: Path) -> dict[str, list[tuple[str, di
             pool_ref = cleaned.get("poolRef")
             if pool_ref is not None and pool_ref not in pool_ids and pool_ref not in process_ids:
                 cleaned.pop("poolRef", None)
-
-            lane_ref = cleaned.get("laneRef")
-            if lane_ref is not None and lane_ref not in lane_ids:
-                cleaned.pop("laneRef", None)
 
             if section_name == "events":
                 attached_to_ref = cleaned.get("attachedToRef")
@@ -543,32 +377,6 @@ def extract_semantic_sections(source_path: Path) -> dict[str, list[tuple[str, di
     sections["messageFlows"] = [
         (tag_name, attrs)
         for tag_name, attrs in sections["messageFlows"]
-        if attrs.get("sourceRef") in referenceable_ids and attrs.get("targetRef") in referenceable_ids
-    ]
-
-    cleaned_data_objects: list[tuple[str, dict[str, str]]] = []
-    for tag_name, attrs in sections["dataObjects"]:
-        cleaned = dict(attrs)
-        if tag_name == "dataObjectReference":
-            data_object_ref = cleaned.get("dataObjectRef")
-            if data_object_ref is not None and data_object_ref not in data_object_ids:
-                cleaned.pop("dataObjectRef", None)
-        cleaned_data_objects.append((tag_name, cleaned))
-    sections["dataObjects"] = cleaned_data_objects
-
-    cleaned_data_stores: list[tuple[str, dict[str, str]]] = []
-    for tag_name, attrs in sections["dataStores"]:
-        cleaned = dict(attrs)
-        if tag_name == "dataStoreReference":
-            data_store_ref = cleaned.get("dataStoreRef")
-            if data_store_ref is not None and data_store_ref not in data_store_ids:
-                cleaned.pop("dataStoreRef", None)
-        cleaned_data_stores.append((tag_name, cleaned))
-    sections["dataStores"] = cleaned_data_stores
-
-    sections["associations"] = [
-        (tag_name, attrs)
-        for tag_name, attrs in sections["associations"]
         if attrs.get("sourceRef") in referenceable_ids and attrs.get("targetRef") in referenceable_ids
     ]
 

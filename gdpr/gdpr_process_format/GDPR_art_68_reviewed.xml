@@ -5,7 +5,6 @@
     <pool id="Participant_Commission_Art68" name="Commission" poolType="passive" />
     <pool id="Participant_MemberStates_Art68" name="Member States" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="Task_AppointJointRepresentative_Art68" name="Appoint joint representative" type="sendTask" poolRef="Participant_Board_Art68" />
     <task id="Task_AssessEDPSVotingRights_Art68" name="Assess EDPS voting rights" type="task" poolRef="Participant_Board_Art68" />
@@ -44,9 +43,4 @@
     <messageFlow id="MessageFlow_AppointJointRepresentative_Art68" sourceRef="Task_AppointJointRepresentative_Art68" targetRef="Participant_MemberStates_Art68" />
     <messageFlow id="MessageFlow_CommunicateBoardActivities_Art68" sourceRef="Task_CommunicateBoardActivities_Art68" targetRef="Participant_Commission_Art68" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

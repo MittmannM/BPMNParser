@@ -4,7 +4,6 @@
     <pool id="Participant_Controller_Art12" name="Controller" poolType="active" processRef="Process_Controller_Art12" />
     <pool id="Participant_DataSubject_Art12" name="Data Subject" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="ReceiveTask_ReceiveAdditionalIdentityInfo_Art12" name="Receive additional identity information" type="receiveTask" poolRef="Participant_Controller_Art12" />
     <task id="ReceiveTask_ReceiveRequest_Art12" name="Receive request" type="receiveTask" poolRef="Participant_Controller_Art12" />
@@ -127,9 +126,4 @@
     <messageFlow id="MessageFlow_SendWrittenInformation_Art12" sourceRef="SendTask_SendWrittenInformation_Art12" targetRef="Participant_DataSubject_Art12" />
     <messageFlow id="MessageFlow_SendWrittenResponse_Art12" sourceRef="SendTask_SendWrittenResponse_Art12" targetRef="Participant_DataSubject_Art12" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

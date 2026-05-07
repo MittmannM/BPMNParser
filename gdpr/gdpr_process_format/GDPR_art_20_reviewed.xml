@@ -5,7 +5,6 @@
     <pool id="Participant_DataSubject_Art20" name="Data Subject" poolType="passive" />
     <pool id="Participant_ReceivingController_Art20" name="Receiving Controller" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="ReceiveTask_ReceivePortabilityRequest_Art20" name="Receive portability request" type="receiveTask" poolRef="Participant_Controller_Art20" />
     <task id="SendTask_ProvidePortableDataToDataSubject_Art20" name="Provide portable data set" type="sendTask" poolRef="Participant_Controller_Art20" />
@@ -60,9 +59,4 @@
     <messageFlow id="MessageFlow_ReceivePortabilityRequest_Art20" sourceRef="Participant_DataSubject_Art20" targetRef="ReceiveTask_ReceivePortabilityRequest_Art20" />
     <messageFlow id="MessageFlow_TransmitDataToReceivingController_Art20" sourceRef="SendTask_TransmitDataToReceivingController_Art20" targetRef="Participant_ReceivingController_Art20" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

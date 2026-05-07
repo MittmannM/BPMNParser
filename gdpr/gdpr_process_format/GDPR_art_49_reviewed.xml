@@ -6,7 +6,6 @@
     <pool id="Participant_SupervisoryAuthority_Art49" name="Supervisory Authority" poolType="passive" />
     <pool id="Participant_ThirdCountryRecipient_Art49" name="Third-country recipient or requester" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="ReceiveTask_ReceiveExplicitConsent_Art49" name="Receive explicit consent" type="receiveTask" poolRef="Participant_ControllerProcessor_Art49" />
     <task id="SendTask_InformDataSubjectAboutFallbackTransfer_Art49" name="Inform data subject of fallback transfer" type="sendTask" poolRef="Participant_ControllerProcessor_Art49" />
@@ -83,9 +82,4 @@
     <messageFlow id="MessageFlow_InformSupervisoryAuthority_Art49" sourceRef="SendTask_InformSupervisoryAuthority_Art49" targetRef="Participant_SupervisoryAuthority_Art49" />
     <messageFlow id="MessageFlow_TransferUnderDerogation_Art49" sourceRef="SendTask_TransferUnderDerogation_Art49" targetRef="Participant_ThirdCountryRecipient_Art49" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

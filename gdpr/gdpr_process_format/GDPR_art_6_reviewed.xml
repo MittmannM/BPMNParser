@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <processModel>
   <pools />
-  <lanes />
   <tasks>
     <task id="Task_CheckLawDetails_Art6" name="Check Union or Member State law basis and specific rules" type="task" poolRef="Process_Controller_Art6" />
     <task id="Task_CollectionContext_Art6" name="Check collection context" type="task" poolRef="Process_Controller_Art6" />
@@ -61,9 +60,4 @@
     <sequenceFlow id="Flow_TaskVitalInterests_To_GatewayLegalBasisJoin_Art6" sourceRef="Task_VitalInterests_Art6" targetRef="Gateway_LegalBasisJoin_Art6" />
   </sequenceFlows>
   <messageFlows />
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

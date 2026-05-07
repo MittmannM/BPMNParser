@@ -20,11 +20,8 @@ ERROR_RULE_TYPES = [
     "node_cannot_reach_end",
     "task_missing_incoming_or_outgoing",
     "gateway_missing_incoming_or_outgoing",
-    "gateway_join_and_split",
     "edge_references_unknown_node",
     "task_multiple_outgoing",
-    "task_multiple_incoming",
-    "xor_split_not_closed",
     "and_split_not_closed",
     "xml_parse_error",
     "file_read_error",
@@ -368,11 +365,11 @@ def downstream_has_gateway_join(
 def check_gateway_closing(
     nodes: dict[str, Node], graph: ProcessGraph
 ) -> list[ValidationIssue]:
-    """Check XOR/AND split closing with a pragmatic downstream heuristic."""
+    """Check AND split closing with a pragmatic downstream heuristic."""
     issues: list[ValidationIssue] = []
 
     for node in nodes.values():
-        if node.kind != "gateway" or node.gateway_kind not in {"xor", "and"}:
+        if node.kind != "gateway" or node.gateway_kind != "and":
             continue
 
         incoming = len(graph.incoming.get(node.id, []))
@@ -392,22 +389,13 @@ def check_gateway_closing(
         if branches_end:
             continue
 
-        if node.gateway_kind == "xor":
-            issues.append(
-                issue(
-                    "error",
-                    "xor_split_not_closed",
-                    f"XOR split {node.id!r} is not closed by XOR join.",
-                )
+        issues.append(
+            issue(
+                "error",
+                "and_split_not_closed",
+                f"AND split {node.id!r} is not closed by AND join.",
             )
-        else:
-            issues.append(
-                issue(
-                    "error",
-                    "and_split_not_closed",
-                    f"AND split {node.id!r} is not closed by AND join.",
-                )
-            )
+        )
 
     return issues
 
@@ -467,14 +455,6 @@ def validate_structure(
                         f"Task {node.id!r} has {outgoing} outgoing edge(s).",
                     )
                 )
-            if incoming > 1:
-                issues.append(
-                    issue(
-                        "error",
-                        "task_multiple_incoming",
-                        f"Task {node.id!r} has {incoming} incoming edge(s).",
-                    )
-                )
 
         if node.kind == "gateway":
             if incoming == 0 or outgoing == 0:
@@ -483,15 +463,6 @@ def validate_structure(
                         "error",
                         "gateway_missing_incoming_or_outgoing",
                         f"Gateway {node.id!r} has incoming={incoming}, outgoing={outgoing}.",
-                    )
-                )
-            if incoming > 1 and outgoing > 1:
-                issues.append(
-                    issue(
-                        "error",
-                        "gateway_join_and_split",
-                        f"Gateway {node.id!r} is both join and split "
-                        f"(incoming={incoming}, outgoing={outgoing}).",
                     )
                 )
 

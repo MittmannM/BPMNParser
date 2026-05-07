@@ -6,7 +6,6 @@
     <pool id="Participant_ControllerProcessor_Art42" name="Controller or Processor" poolType="active" processRef="Process_ControllerProcessor_Art42" />
     <pool id="Participant_SupervisoryAuthority_Art42" name="Supervisory Authority" poolType="active" processRef="Process_SupervisoryAuthority_Art42" />
   </pools>
-  <lanes />
   <tasks>
     <task id="ReceiveTask_ReceiveAuthorityCertificationRequest_Art42" name="Receive authority certification request" type="receiveTask" poolRef="Participant_SupervisoryAuthority_Art42" />
     <task id="ReceiveTask_ReceiveAuthorityInfo_Art42" name="Receive authority information and access" type="receiveTask" poolRef="Participant_SupervisoryAuthority_Art42" />
@@ -193,9 +192,4 @@
     <messageFlow id="MessageFlow_WithdrawAuthorityCertification_Art42" sourceRef="SendTask_WithdrawAuthorityCertification_Art42" targetRef="Participant_ControllerProcessor_Art42" />
     <messageFlow id="MessageFlow_WithdrawBodyCertification_Art42" sourceRef="SendTask_WithdrawBodyCertification_Art42" targetRef="Participant_ControllerProcessor_Art42" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

@@ -6,7 +6,6 @@
     <pool id="Participant_Representative_Art27" name="Representative in the Union" poolType="passive" />
     <pool id="Participant_SupervisoryAuthority_Art27" name="Supervisory Authority" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="SendTask_IssueWrittenDesignation_Art27" name="Issue written designation" type="sendTask" poolRef="Participant_ControllerOrProcessor_Art27" />
     <task id="Task_MandateRepresentative_Art27" name="Mandate representative" type="task" poolRef="Participant_ControllerOrProcessor_Art27" />
@@ -47,9 +46,4 @@
     <messageFlow id="MessageFlow_SA_To_ControllerOrProcessor_Art27" sourceRef="Participant_SupervisoryAuthority_Art27" targetRef="Participant_ControllerOrProcessor_Art27" />
     <messageFlow id="MessageFlow_SA_To_Representative_Art27" sourceRef="Participant_SupervisoryAuthority_Art27" targetRef="Participant_Representative_Art27" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

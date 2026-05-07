@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <processModel>
   <pools />
-  <lanes />
   <tasks>
     <task id="Task_ApplyDefaultProhibition_Art9" name="Apply default prohibition" type="task" poolRef="Process_Controller_Art9" />
     <task id="Task_CheckNationalConditions_Art9" name="Check added national conditions if applicable" type="task" poolRef="Process_Controller_Art9" />
@@ -65,9 +64,4 @@
     <sequenceFlow id="Flow_TaskVitalInterests_To_GatewayExceptionJoin_Art9" sourceRef="Task_VitalInterests_Art9" targetRef="Gateway_ExceptionJoin_Art9" />
   </sequenceFlows>
   <messageFlows />
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

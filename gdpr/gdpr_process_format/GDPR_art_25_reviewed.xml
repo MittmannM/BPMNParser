@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <processModel>
   <pools />
-  <lanes />
   <tasks>
     <task id="Task_AssessDesignFactors_Art25" name="Assess design factors" type="task" poolRef="Process_Controller_Art25" />
     <task id="Task_ConfigureDefaultSettings_Art25" name="Configure default settings" type="task" poolRef="Process_Controller_Art25" />
@@ -51,9 +50,4 @@
     <sequenceFlow id="Flow_TaskUseCertification_To_EndDesignDefaultApplied_Art25" sourceRef="Task_UseCertification_Art25" targetRef="EndEvent_DesignDefaultApplied_Art25" />
   </sequenceFlows>
   <messageFlows />
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

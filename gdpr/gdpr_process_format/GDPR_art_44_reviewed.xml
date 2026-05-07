@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <processModel>
   <pools />
-  <lanes />
   <tasks>
     <task id="Task_ApplyChapterVProvisions_Art44" name="Apply all Chapter V provisions" type="task" poolRef="Process_AssessTransfer_Art44" />
     <task id="Task_AssessOnwardTransfers_Art44" name="Assess onward transfer chain" type="task" poolRef="Process_AssessTransfer_Art44" />
@@ -33,9 +32,4 @@
     <sequenceFlow id="Flow_Start_To_IdentifyTransfer_Art44" sourceRef="StartEvent_NeedTransferAssessment_Art44" targetRef="Task_IdentifyTransfer_Art44" />
   </sequenceFlows>
   <messageFlows />
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

@@ -4,7 +4,6 @@
     <pool id="Participant_Controller_Art7" name="Controller" poolType="active" processRef="Process_Controller_Art7" />
     <pool id="Participant_DataSubject_Art7" name="Data Subject" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="ReceiveTask_ReceiveConsent_Art7" name="Receive consent" type="receiveTask" poolRef="Participant_Controller_Art7" />
     <task id="ReceiveTask_ReceiveWithdrawal_Art7" name="Receive withdrawal" type="receiveTask" poolRef="Participant_Controller_Art7" />
@@ -44,9 +43,4 @@
     <messageFlow id="MessageFlow_PresentConsentRequest_Art7" sourceRef="SendTask_RequestConsent_Art7" targetRef="Participant_DataSubject_Art7" />
     <messageFlow id="MessageFlow_WithdrawConsent_Art7" sourceRef="Participant_DataSubject_Art7" targetRef="ReceiveTask_ReceiveWithdrawal_Art7" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

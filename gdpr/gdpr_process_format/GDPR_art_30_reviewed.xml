@@ -5,7 +5,6 @@
     <pool id="Participant_Processor_Art30" name="Processor" poolType="active" processRef="Process_Processor_Art30" />
     <pool id="Participant_SupervisoryAuthority_Art30" name="Supervisory Authority" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="ReceiveTask_ReceiveControllerRequest_Art30" name="Receive authority request" type="receiveTask" poolRef="Participant_Controller_Art30" />
     <task id="ReceiveTask_ReceiveProcessorRequest_Art30" name="Receive authority request" type="receiveTask" poolRef="Participant_Processor_Art30" />
@@ -107,9 +106,4 @@
     <messageFlow id="MessageFlow_SARequestControllerRecord_Art30" sourceRef="Participant_SupervisoryAuthority_Art30" targetRef="ReceiveTask_ReceiveControllerRequest_Art30" />
     <messageFlow id="MessageFlow_SARequestProcessorRecord_Art30" sourceRef="Participant_SupervisoryAuthority_Art30" targetRef="ReceiveTask_ReceiveProcessorRequest_Art30" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

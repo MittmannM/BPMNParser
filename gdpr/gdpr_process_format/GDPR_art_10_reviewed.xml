@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <processModel>
   <pools />
-  <lanes />
   <tasks>
     <task id="Task_AssessAuthorization_Art10" name="Check legal authorisation and safeguards" type="task" poolRef="Process_Controller_Art10" />
     <task id="Task_IdentifyArticle10Data_Art10" name="Check Article 10 data or register" type="task" poolRef="Process_Controller_Art10" />
@@ -38,9 +37,4 @@
     <sequenceFlow id="Flow_TaskIdentifyArticle10Data_To_GatewayArticle10Applies_Art10" sourceRef="Task_IdentifyArticle10Data_Art10" targetRef="Gateway_Article10Applies_Art10" />
   </sequenceFlows>
   <messageFlows />
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

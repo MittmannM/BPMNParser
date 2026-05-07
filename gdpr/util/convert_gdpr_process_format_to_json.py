@@ -19,7 +19,7 @@ USER_PROMPT = """Generate process-structure XML from this legal text.
 Model only process-relevant legal logic.
 Use short task names, question-style exclusive gateways, and labeled exclusive branches.
 Use this exact top-level order:
-<pools><lanes /><tasks><events><gateways><sequenceFlows><messageFlows><dataObjects /><dataStores /><dataAssociations /><annotations /><associations />
+<pools><tasks><events><gateways><sequenceFlows><messageFlows>
 Text:"""
 
 

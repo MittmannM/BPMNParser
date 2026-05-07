@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <processModel>
   <pools />
-  <lanes />
   <tasks>
     <task id="Task_AdhereCertification_Art24" name="Adhere to approved certification" type="task" poolRef="Process_Controller_Art24" />
     <task id="Task_AdhereCode_Art24" name="Adhere to approved code" type="task" poolRef="Process_Controller_Art24" />
@@ -46,9 +45,4 @@
     <sequenceFlow id="Flow_TaskUpdateMeasures_To_EndAccountabilityMaintained_Art24" sourceRef="Task_UpdateMeasures_Art24" targetRef="EndEvent_AccountabilityMaintained_Art24" />
   </sequenceFlows>
   <messageFlows />
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

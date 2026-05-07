@@ -5,7 +5,6 @@
     <pool id="Participant_MemberState_Art51" name="Member State" poolType="active" processRef="Process_MemberState_Art51" />
     <pool id="Participant_SupervisoryAuthorities_Art51" name="Supervisory Authority or Authorities" poolType="active" processRef="Process_SupervisoryAuthorities_Art51" />
   </pools>
-  <lanes />
   <tasks>
     <task id="SendTask_NotifyCommission_Art51" name="Notify Commission of legal provisions and amendments" type="sendTask" poolRef="Participant_MemberState_Art51" />
     <task id="Task_ContributeConsistency_Art51" name="Cooperate under Chapter VII for consistent application" type="task" poolRef="Participant_SupervisoryAuthorities_Art51" />
@@ -49,9 +48,4 @@
   <messageFlows>
     <messageFlow id="MessageFlow_NotifyCommission_Art51" sourceRef="SendTask_NotifyCommission_Art51" targetRef="Participant_Commission_Art51" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

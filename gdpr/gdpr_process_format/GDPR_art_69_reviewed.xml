@@ -4,7 +4,6 @@
     <pool id="Participant_Board_Art69" name="Board" poolType="active" processRef="Process_Board_Art69" />
     <pool id="Participant_Commission_Art69" name="Commission" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="Task_ActIndependently_Art69" name="Act independently" type="task" poolRef="Participant_Board_Art69" />
     <task id="Task_AvoidInstructions_Art69" name="Neither seek nor take instructions" type="task" poolRef="Participant_Board_Art69" />
@@ -30,9 +29,4 @@
   <messageFlows>
     <messageFlow id="MessageFlow_CommissionRequest_Art69" sourceRef="Participant_Commission_Art69" targetRef="Task_ReceiveCommissionRequest_Art69" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

@@ -4,7 +4,6 @@
     <pool id="Participant_Board_Chair_DeputyChairs_Member" name="Board Members" poolType="passive" />
     <pool id="Participant_Board_Chair_DeputyChairs_Term" name="Board Chair and Deputy Chairs" poolType="active" processRef="Process_Board_Chair_DeputyChairs_Term" />
   </pools>
-  <lanes />
   <tasks>
     <task id="Task_Elect_Chair_DeputyChairs_SimpleMajority" name="Elect Chair and Deputy Chairs by simple majority" type="task" poolRef="Participant_Board_Chair_DeputyChairs_Member" />
     <task id="Task_Set_FiveYearTerm" name="Set five-year term" type="task" poolRef="Participant_Board_Chair_DeputyChairs_Term" />
@@ -27,9 +26,4 @@
     <sequenceFlow id="Flow_StartNeedNewChair_To_ElectChair_DeputyChairs_SimpleMajority" sourceRef="StartEvent_Need_New_Chair_DeputyChairs" targetRef="Task_Elect_Chair_DeputyChairs_SimpleMajority" />
   </sequenceFlows>
   <messageFlows />
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

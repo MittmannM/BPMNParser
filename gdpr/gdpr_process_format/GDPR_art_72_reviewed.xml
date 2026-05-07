@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <processModel>
   <pools />
-  <lanes />
   <tasks>
     <task id="Task_AdoptBySimpleMajority_Art72" name="Adopt decision by simple majority" type="task" poolRef="Process_Board_Art72" />
     <task id="Task_AdoptRulesOfProcedure_Art72" name="Adopt rules of procedure by two-thirds" type="task" poolRef="Process_Board_Art72" />
@@ -28,9 +27,4 @@
     <sequenceFlow id="Flow_StartHandleBoardMatter_To_GatewayMatterType_Art72" sourceRef="StartEvent_HandleBoardMatter_Art72" targetRef="Gateway_WhatBoardMatterIsHandled_Art72" />
   </sequenceFlows>
   <messageFlows />
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

@@ -5,7 +5,6 @@
     <pool id="Participant_RequestedAuthority_Art61" name="Requested Supervisory Authority" poolType="active" processRef="Process_RequestedAuthority_Art61" />
     <pool id="Participant_RequestingAuthority_Art61" name="Requesting Supervisory Authority" poolType="active" processRef="Process_RequestingAuthority_Art61" />
   </pools>
-  <lanes />
   <tasks>
     <task id="Task_AdoptProvisionalMeasure_Art61" name="Adopt provisional measure under Article 55(1)" type="task" poolRef="Participant_RequestingAuthority_Art61" />
     <task id="Task_AssessCompetenceAndLegality_Art61" name="Assess competence and legality" type="task" poolRef="Participant_RequestedAuthority_Art61" />
@@ -60,9 +59,4 @@
     <messageFlow id="MessageFlow_SendRefusalWithReasons_Art61" sourceRef="Task_SendRefusalWithReasons_Art61" targetRef="Task_ReceiveRefusalWithReasons_Art61" />
     <messageFlow id="MessageFlow_SendResultsOrProgress_Art61" sourceRef="Task_SendResultsOrProgress_Art61" targetRef="Task_ReceiveResultsOrProgress_Art61" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

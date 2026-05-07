@@ -7,7 +7,6 @@
     <pool id="Participant_Public_Art59" name="Public" poolType="passive" />
     <pool id="Participant_SupervisoryAuthority_Art59" name="Supervisory Authority" poolType="active" processRef="Process_SupervisoryAuthority_Art59" />
   </pools>
-  <lanes />
   <tasks>
     <task id="Task_AddOptionalLists_Art59" name="Add infringement and measure lists" type="task" poolRef="Participant_SupervisoryAuthority_Art59" />
     <task id="Task_DrawUpAnnualReport_Art59" name="Draw up annual report" type="task" poolRef="Participant_SupervisoryAuthority_Art59" />
@@ -49,9 +48,4 @@
     <messageFlow id="MessageFlow_SendAnnualReportToCommission_Art59" sourceRef="Task_SendAnnualReportToCommission_Art59" targetRef="Participant_Commission_Art59" />
     <messageFlow id="MessageFlow_TransmitAnnualReport_Art59" sourceRef="Task_TransmitAnnualReport_Art59" targetRef="Participant_NationalInstitutions_Art59" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

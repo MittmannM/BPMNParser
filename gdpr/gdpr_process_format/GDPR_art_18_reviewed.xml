@@ -4,7 +4,6 @@
     <pool id="Participant_Controller_Art18" name="Controller" poolType="active" processRef="Process_Controller_Art18" />
     <pool id="Participant_DataSubject_Art18" name="Data Subject" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="ReceiveTask_ReceiveRestrictionRequest_Art18" name="Receive restriction request" type="receiveTask" poolRef="Participant_Controller_Art18" />
     <task id="SendTask_InformBeforeLift_Art18" name="Inform before lifting restriction" type="sendTask" poolRef="Participant_Controller_Art18" />
@@ -65,9 +64,4 @@
     <messageFlow id="MessageFlow_InformBeforeLift_Art18" sourceRef="SendTask_InformBeforeLift_Art18" targetRef="Participant_DataSubject_Art18" />
     <messageFlow id="MessageFlow_SendRestrictionRequest_Art18" sourceRef="Participant_DataSubject_Art18" targetRef="ReceiveTask_ReceiveRestrictionRequest_Art18" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

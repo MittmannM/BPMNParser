@@ -4,7 +4,6 @@
     <pool id="Participant_AuthorizedPerson_Art29" name="Authorized Person" poolType="passive" />
     <pool id="Participant_ControllerOrProcessor_Art29" name="Controller or Processor" poolType="active" processRef="Process_ControllerOrProcessor_Art29" />
   </pools>
-  <lanes />
   <tasks>
     <task id="SendTask_SendProcessingInstruction_Art29" name="Send processing instruction" type="sendTask" poolRef="Participant_ControllerOrProcessor_Art29" />
   </tasks>
@@ -29,9 +28,4 @@
   <messageFlows>
     <messageFlow id="MessageFlow_SendProcessingInstruction_Art29" sourceRef="SendTask_SendProcessingInstruction_Art29" targetRef="Participant_AuthorizedPerson_Art29" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

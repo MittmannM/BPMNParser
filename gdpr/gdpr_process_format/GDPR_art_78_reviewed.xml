@@ -5,7 +5,6 @@
     <pool id="Participant_Court_Art78" name="Court" poolType="passive" />
     <pool id="Participant_SupervisoryAuthority_Art78" name="Supervisory Authority" poolType="active" processRef="Process_SupervisoryAuthority_Art78" />
   </pools>
-  <lanes />
   <tasks>
     <task id="ReceiveTask_ReceiveNoticeOfProceedings_Art78" name="Receive notice of proceedings" type="receiveTask" poolRef="Participant_SupervisoryAuthority_Art78" />
     <task id="SendTask_BringProceedingsToCourt_Art78" name="Bring proceedings before SA Member-State court" type="sendTask" poolRef="Participant_Applicant_Art78" />
@@ -52,9 +51,4 @@
     <messageFlow id="MessageFlow_CourtNotifiesAuthority_Art78" sourceRef="Participant_Court_Art78" targetRef="ReceiveTask_ReceiveNoticeOfProceedings_Art78" />
     <messageFlow id="MessageFlow_ForwardBoardMaterial_Art78" sourceRef="SendTask_ForwardBoardMaterial_Art78" targetRef="Participant_Court_Art78" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

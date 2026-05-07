@@ -8,7 +8,6 @@
     <pool id="Participant_Public_Art70" name="Public" poolType="passive" />
     <pool id="Participant_SupervisoryAuthorities_Art70" name="Supervisory Authorities" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="Task_ConsultInterestedParties_Art70" name="Consult interested parties" type="task" poolRef="Participant_Board_Art70" />
     <task id="Task_DeliverConsistencyOutputs_Art70" name="Deliver opinions and decisions" type="task" poolRef="Participant_Board_Art70" />
@@ -66,9 +65,4 @@
     <messageFlow id="MessageFlow_ProvideOutputsToCommission_Art70" sourceRef="Task_ForwardOutputs_Art70" targetRef="Participant_Commission_Art70" />
     <messageFlow id="MessageFlow_ProvideOutputsToCommittee_Art70" sourceRef="Task_ForwardOutputs_Art70" targetRef="Participant_CommitteeUnderArticle93_Art70" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

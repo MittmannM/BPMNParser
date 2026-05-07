@@ -3,7 +3,6 @@
   <pools>
     <pool id="Participant_Controller_Processor_DataSubject" name="Participants" poolType="active" />
   </pools>
-  <lanes />
   <tasks>
     <task id="Task_ApplyArticle29Reference_Art29" name="Apply Article 29 reference" type="task" poolRef="Participant_Controller_Processor_DataSubject" />
     <task id="Task_ApplyWorkingPartyReference_WP" name="Apply Working Party reference" type="task" poolRef="Participant_Controller_Processor_DataSubject" />
@@ -28,9 +27,4 @@
   <messageFlows>
     <messageFlow id="MessageFlow_ReceiveRequest_To_GatewayWhichReference_Start" sourceRef="StartEvent_ReceiveRequest" targetRef="Gateway_WhichReference_WhichReference" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

@@ -4,7 +4,6 @@
     <pool id="Participant_ControllerProcessor_Art48" name="Controller or Processor" poolType="active" processRef="Process_ControllerProcessor_Art48" />
     <pool id="Participant_ThirdCountryAuthority_Art48" name="Third-country court or administrative authority" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="ReceiveTask_ReceiveThirdCountryRequest_Art48" name="Receive transfer or disclosure order" type="receiveTask" poolRef="Participant_ControllerProcessor_Art48" />
     <task id="SendTask_TransferOrDiscloseData_Art48" name="Transfer or disclose data" type="sendTask" poolRef="Participant_ControllerProcessor_Art48" />
@@ -30,9 +29,4 @@
     <messageFlow id="MessageFlow_RequestDecision_Art48" sourceRef="Participant_ThirdCountryAuthority_Art48" targetRef="ReceiveTask_ReceiveThirdCountryRequest_Art48" />
     <messageFlow id="MessageFlow_TransferDisclosure_Art48" sourceRef="SendTask_TransferOrDiscloseData_Art48" targetRef="Participant_ThirdCountryAuthority_Art48" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

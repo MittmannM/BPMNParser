@@ -4,7 +4,6 @@
     <pool id="Participant_MemberState_Art54" name="Member State" poolType="active" processRef="Process_MemberState_Art54" />
     <pool id="Participant_SupervisoryAuthority_Art54" name="Supervisory Authority" poolType="active" processRef="Process_SupervisoryAuthority_Art54" />
   </pools>
-  <lanes />
   <tasks>
     <task id="Task_AllowStaggeredFirstTerm_Art54" name="Allow shorter first term only for staggered independence protection" type="task" poolRef="Participant_MemberState_Art54" />
     <task id="Task_ObserveProfessionalSecrecy_Art54" name="Observe professional secrecy" type="task" poolRef="Participant_SupervisoryAuthority_Art54" />
@@ -55,9 +54,4 @@
     <sequenceFlow id="Flow_Start_To_GatewaySplitLegalFramework_Art54" sourceRef="StartEvent_SetLegalFramework_Art54" targetRef="Gateway_SplitLegalFramework_Art54" />
   </sequenceFlows>
   <messageFlows />
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

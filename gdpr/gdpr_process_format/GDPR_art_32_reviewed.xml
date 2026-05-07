@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <processModel>
   <pools />
-  <lanes />
   <tasks>
     <task id="Task_AssessProcessingRisks_Art32" name="Assess security risks" type="task" poolRef="Process_ControllerOrProcessor_Art32" />
     <task id="Task_AssessSecurityContext_Art32" name="Assess state, costs, and processing context" type="task" poolRef="Process_ControllerOrProcessor_Art32" />
@@ -46,9 +45,4 @@
     <sequenceFlow id="Flow_TaskUseCodeOrCertification_To_TaskSetInstructionOnlyRules_Art32" sourceRef="Task_UseCodeOrCertification_Art32" targetRef="Task_SetInstructionOnlyRules_Art32" />
   </sequenceFlows>
   <messageFlows />
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

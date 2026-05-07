@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <processModel>
   <pools />
-  <lanes />
   <tasks>
     <task id="Task_Accuracy_Art5" name="Keep data accurate and up to date" type="task" poolRef="Process_Controller_Art5" />
     <task id="Task_DataMinimisation_Art5" name="Limit data to what is necessary" type="task" poolRef="Process_Controller_Art5" />
@@ -46,9 +45,4 @@
     <sequenceFlow id="Flow_TaskStorageLimitation_To_GatewayJoinPrinciples_Art5" sourceRef="Task_StorageLimitation_Art5" targetRef="Gateway_JoinPrinciples_Art5" />
   </sequenceFlows>
   <messageFlows />
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

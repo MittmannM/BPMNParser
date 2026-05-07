@@ -4,7 +4,6 @@
     <pool id="Participant_ControllerOrProcessor_Art53" name="Controller or Processor" poolType="active" processRef="Process_ControllerOrProcessor_Art53" />
     <pool id="Participant_DataSubject_Art53" name="Data Subject" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="Task_ApplyRegulationReference_Art53" name="Apply Regulation reference" type="task" poolRef="Participant_ControllerOrProcessor_Art53" />
     <task id="Task_InterpretRepealedDirectiveAsRegulationReference_Art53" name="Interpret repealed directive as regulation reference" type="task" poolRef="Participant_ControllerOrProcessor_Art53" />
@@ -30,9 +29,4 @@
     <sequenceFlow id="Flow_InterpretWorkingPartyAsBoardReference_To_ApplyRegulationReference_Art53" sourceRef="Task_InterpretWorkingPartyAsBoardReference_Art53" targetRef="Task_ApplyRegulationReference_Art53" />
   </sequenceFlows>
   <messageFlows />
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

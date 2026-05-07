@@ -4,7 +4,6 @@
     <pool id="Participant_Controller_Art14" name="Controller" poolType="active" processRef="Process_Controller_Art14" />
     <pool id="Participant_DataSubject_Art14" name="Data Subject" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="SendTask_SendArticle14Notice_Art14" name="Send Article 14 notice" type="sendTask" poolRef="Participant_Controller_Art14" />
     <task id="SendTask_SendFurtherPurposeNotice_Art14" name="Send further-purpose notice" type="sendTask" poolRef="Participant_Controller_Art14" />
@@ -87,9 +86,4 @@
     <messageFlow id="MessageFlow_SendArticle14Notice_Art14" sourceRef="SendTask_SendArticle14Notice_Art14" targetRef="Participant_DataSubject_Art14" />
     <messageFlow id="MessageFlow_SendFurtherPurposeNotice_Art14" sourceRef="SendTask_SendFurtherPurposeNotice_Art14" targetRef="Participant_DataSubject_Art14" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

@@ -5,7 +5,6 @@
     <pool id="Participant_OtherMemberStateCourt_Art81" name="Court in Another Member State" poolType="active" processRef="Process_OtherCourt_Art81" />
     <pool id="Participant_Party_Art81" name="Party" poolType="active" processRef="Process_Party_Art81" />
   </pools>
-  <lanes />
   <tasks>
     <task id="Task_ApplyToDeclineJurisdiction_Art81" name="Apply to decline jurisdiction" type="sendTask" poolRef="Participant_Party_Art81" />
     <task id="Task_ConfirmProceedingsExist_Art81" name="Confirm proceedings status" type="sendTask" poolRef="Participant_OtherMemberStateCourt_Art81" />
@@ -72,9 +71,4 @@
     <messageFlow id="MessageFlow_ConfirmProceedings_Art81" sourceRef="Task_ConfirmProceedingsExist_Art81" targetRef="Task_ReceiveProceedingsConfirmation_Art81" />
     <messageFlow id="MessageFlow_ContactCourt_Art81" sourceRef="Task_ContactOtherCourt_Art81" targetRef="StartEvent_ReceiveCourtContact_Art81" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

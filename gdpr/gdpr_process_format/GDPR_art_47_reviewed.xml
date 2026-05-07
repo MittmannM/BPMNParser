@@ -5,7 +5,6 @@
     <pool id="Participant_GroupMember_Art47" name="Group member" poolType="active" processRef="Process_GroupMember_Art47" />
     <pool id="Participant_SupervisoryAuthority_Art47" name="Supervisory Authority" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="ReceiveTask_ReceiveBCRApprovalDecision_Art47" name="Receive BCR approval" type="receiveTask" poolRef="Participant_GroupMember_Art47" />
     <task id="SendTask_MakeBCRAvailable_Art47" name="Provide BCR information" type="sendTask" poolRef="Participant_GroupMember_Art47" />
@@ -81,9 +80,4 @@
     <messageFlow id="MessageFlow_NotifySupervisoryAuthority_Art47" sourceRef="SendTask_NotifySupervisoryAuthority_Art47" targetRef="Participant_SupervisoryAuthority_Art47" />
     <messageFlow id="MessageFlow_SubmitBCRApproval_Art47" sourceRef="SendTask_SubmitBCRApproval_Art47" targetRef="Participant_SupervisoryAuthority_Art47" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

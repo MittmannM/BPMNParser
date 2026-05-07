@@ -7,7 +7,6 @@
     <pool id="Participant_EuropeanParliament_Art71" name="European Parliament" poolType="passive" />
     <pool id="Participant_Public_Art71" name="Public" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="Task_DrawUpAnnualReport_Art71" name="Draw up annual report" type="task" poolRef="Participant_Board_Art71" />
     <task id="Task_MakeAnnualReportPublic_Art71" name="Make annual report public" type="sendTask" poolRef="Participant_Board_Art71" />
@@ -40,9 +39,4 @@
     <messageFlow id="MessageFlow_TransmitAnnualReportToCouncil_Art71" sourceRef="Task_TransmitAnnualReport_Art71" targetRef="Participant_Council_Art71" />
     <messageFlow id="MessageFlow_TransmitAnnualReportToEuropeanParliament_Art71" sourceRef="Task_TransmitAnnualReport_Art71" targetRef="Participant_EuropeanParliament_Art71" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

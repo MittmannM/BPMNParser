@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_BGBSection11_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:process id="Process_BGBSection11"
+                name="Determine residence of a minor child"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for BGB Book 1 Section 11 based on the user-provided English legal
+      text. The model captures the residence rule for minor children through parental care rights,
+      the fallback to another person with the right to care for the person of the child, and the
+      retention of the residence until the child validly abandons it.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_DetermineChildResidence_BGBSection11"
+                     name="Determine residence of minor child">
+      <bpmn:outgoing>Flow_Start_To_AssessCareRights_BGBSection11</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_AssessCareRights_BGBSection11"
+               name="Assess care rights">
+      <bpmn:incoming>Flow_Start_To_AssessCareRights_BGBSection11</bpmn:incoming>
+      <bpmn:outgoing>Flow_AssessCareRights_To_GatewayParentHasCareRight_BGBSection11</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_ParentHasCareRight_BGBSection11"
+                           name="Does at least one parent have the right to care for the person of the child?">
+      <bpmn:incoming>Flow_AssessCareRights_To_GatewayParentHasCareRight_BGBSection11</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayParentHasCareRight_To_GatewayBothParentsHaveCareRight_BGBSection11</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayParentHasCareRight_To_ShareResidenceOfPersonWithCareRight_BGBSection11</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_BothParentsHaveCareRight_BGBSection11"
+                           name="Do both parents have the right to care for the person of the child?">
+      <bpmn:incoming>Flow_GatewayParentHasCareRight_To_GatewayBothParentsHaveCareRight_BGBSection11</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayBothParentsHaveCareRight_To_ShareResidenceOfParents_BGBSection11</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayBothParentsHaveCareRight_To_ShareResidenceOfParentWithCareRight_BGBSection11</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ShareResidenceOfParents_BGBSection11"
+               name="Share residence of parents">
+      <bpmn:incoming>Flow_GatewayBothParentsHaveCareRight_To_ShareResidenceOfParents_BGBSection11</bpmn:incoming>
+      <bpmn:outgoing>Flow_ShareResidenceOfParents_To_GatewayResidenceAssigned_BGBSection11</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ShareResidenceOfParentWithCareRight_BGBSection11"
+               name="Share residence of parent with care right">
+      <bpmn:incoming>Flow_GatewayBothParentsHaveCareRight_To_ShareResidenceOfParentWithCareRight_BGBSection11</bpmn:incoming>
+      <bpmn:outgoing>Flow_ShareResidenceOfParentWithCareRight_To_GatewayResidenceAssigned_BGBSection11</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_ShareResidenceOfPersonWithCareRight_BGBSection11"
+               name="Share residence of person with care right">
+      <bpmn:incoming>Flow_GatewayParentHasCareRight_To_ShareResidenceOfPersonWithCareRight_BGBSection11</bpmn:incoming>
+      <bpmn:outgoing>Flow_ShareResidenceOfPersonWithCareRight_To_GatewayResidenceAssigned_BGBSection11</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_ResidenceAssigned_BGBSection11">
+      <bpmn:incoming>Flow_ShareResidenceOfParents_To_GatewayResidenceAssigned_BGBSection11</bpmn:incoming>
+      <bpmn:incoming>Flow_ShareResidenceOfParentWithCareRight_To_GatewayResidenceAssigned_BGBSection11</bpmn:incoming>
+      <bpmn:incoming>Flow_ShareResidenceOfPersonWithCareRight_To_GatewayResidenceAssigned_BGBSection11</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayResidenceAssigned_To_RetainResidence_BGBSection11</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_RetainResidenceUntilValidlyAbandoned_BGBSection11"
+               name="Retain residence until validly abandoned">
+      <bpmn:incoming>Flow_GatewayResidenceAssigned_To_RetainResidence_BGBSection11</bpmn:incoming>
+      <bpmn:outgoing>Flow_RetainResidence_To_EndResidenceRuleApplied_BGBSection11</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_ResidenceRuleApplied_BGBSection11"
+                   name="Residence rule applied">
+      <bpmn:incoming>Flow_RetainResidence_To_EndResidenceRuleApplied_BGBSection11</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_AssessCareRights_BGBSection11"
+                       sourceRef="StartEvent_DetermineChildResidence_BGBSection11"
+                       targetRef="Task_AssessCareRights_BGBSection11" />
+    <bpmn:sequenceFlow id="Flow_AssessCareRights_To_GatewayParentHasCareRight_BGBSection11"
+                       sourceRef="Task_AssessCareRights_BGBSection11"
+                       targetRef="Gateway_ParentHasCareRight_BGBSection11" />
+    <bpmn:sequenceFlow id="Flow_GatewayParentHasCareRight_To_GatewayBothParentsHaveCareRight_BGBSection11"
+                       name="Yes"
+                       sourceRef="Gateway_ParentHasCareRight_BGBSection11"
+                       targetRef="Gateway_BothParentsHaveCareRight_BGBSection11" />
+    <bpmn:sequenceFlow id="Flow_GatewayParentHasCareRight_To_ShareResidenceOfPersonWithCareRight_BGBSection11"
+                       name="No"
+                       sourceRef="Gateway_ParentHasCareRight_BGBSection11"
+                       targetRef="Task_ShareResidenceOfPersonWithCareRight_BGBSection11" />
+    <bpmn:sequenceFlow id="Flow_GatewayBothParentsHaveCareRight_To_ShareResidenceOfParents_BGBSection11"
+                       name="Yes"
+                       sourceRef="Gateway_BothParentsHaveCareRight_BGBSection11"
+                       targetRef="Task_ShareResidenceOfParents_BGBSection11" />
+    <bpmn:sequenceFlow id="Flow_GatewayBothParentsHaveCareRight_To_ShareResidenceOfParentWithCareRight_BGBSection11"
+                       name="No"
+                       sourceRef="Gateway_BothParentsHaveCareRight_BGBSection11"
+                       targetRef="Task_ShareResidenceOfParentWithCareRight_BGBSection11" />
+    <bpmn:sequenceFlow id="Flow_ShareResidenceOfParents_To_GatewayResidenceAssigned_BGBSection11"
+                       sourceRef="Task_ShareResidenceOfParents_BGBSection11"
+                       targetRef="Gateway_ResidenceAssigned_BGBSection11" />
+    <bpmn:sequenceFlow id="Flow_ShareResidenceOfParentWithCareRight_To_GatewayResidenceAssigned_BGBSection11"
+                       sourceRef="Task_ShareResidenceOfParentWithCareRight_BGBSection11"
+                       targetRef="Gateway_ResidenceAssigned_BGBSection11" />
+    <bpmn:sequenceFlow id="Flow_ShareResidenceOfPersonWithCareRight_To_GatewayResidenceAssigned_BGBSection11"
+                       sourceRef="Task_ShareResidenceOfPersonWithCareRight_BGBSection11"
+                       targetRef="Gateway_ResidenceAssigned_BGBSection11" />
+    <bpmn:sequenceFlow id="Flow_GatewayResidenceAssigned_To_RetainResidence_BGBSection11"
+                       sourceRef="Gateway_ResidenceAssigned_BGBSection11"
+                       targetRef="Task_RetainResidenceUntilValidlyAbandoned_BGBSection11" />
+    <bpmn:sequenceFlow id="Flow_RetainResidence_To_EndResidenceRuleApplied_BGBSection11"
+                       sourceRef="Task_RetainResidenceUntilValidlyAbandoned_BGBSection11"
+                       targetRef="EndEvent_ResidenceRuleApplied_BGBSection11" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_BGBSection11_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_BGBSection11_Reviewed"
+                      bpmnElement="Process_BGBSection11">
+      <bpmndi:BPMNShape id="StartEvent_DetermineChildResidence_BGBSection11_di"
+                        bpmnElement="StartEvent_DetermineChildResidence_BGBSection11">
+        <dc:Bounds x="90" y="252" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessCareRights_BGBSection11_di"
+                        bpmnElement="Task_AssessCareRights_BGBSection11">
+        <dc:Bounds x="180" y="230" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ParentHasCareRight_BGBSection11_di"
+                        bpmnElement="Gateway_ParentHasCareRight_BGBSection11"
+                        isMarkerVisible="true">
+        <dc:Bounds x="410" y="245" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_BothParentsHaveCareRight_BGBSection11_di"
+                        bpmnElement="Gateway_BothParentsHaveCareRight_BGBSection11"
+                        isMarkerVisible="true">
+        <dc:Bounds x="560" y="115" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ShareResidenceOfParents_BGBSection11_di"
+                        bpmnElement="Task_ShareResidenceOfParents_BGBSection11">
+        <dc:Bounds x="700" y="50" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ShareResidenceOfParentWithCareRight_BGBSection11_di"
+                        bpmnElement="Task_ShareResidenceOfParentWithCareRight_BGBSection11">
+        <dc:Bounds x="700" y="170" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ShareResidenceOfPersonWithCareRight_BGBSection11_di"
+                        bpmnElement="Task_ShareResidenceOfPersonWithCareRight_BGBSection11">
+        <dc:Bounds x="560" y="335" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ResidenceAssigned_BGBSection11_di"
+                        bpmnElement="Gateway_ResidenceAssigned_BGBSection11"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1010" y="245" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RetainResidenceUntilValidlyAbandoned_BGBSection11_di"
+                        bpmnElement="Task_RetainResidenceUntilValidlyAbandoned_BGBSection11">
+        <dc:Bounds x="1130" y="230" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ResidenceRuleApplied_BGBSection11_di"
+                        bpmnElement="EndEvent_ResidenceRuleApplied_BGBSection11">
+        <dc:Bounds x="1430" y="252" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_AssessCareRights_BGBSection11_di"
+                       bpmnElement="Flow_Start_To_AssessCareRights_BGBSection11">
+        <di:waypoint x="126" y="270" />
+        <di:waypoint x="180" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AssessCareRights_To_GatewayParentHasCareRight_BGBSection11_di"
+                       bpmnElement="Flow_AssessCareRights_To_GatewayParentHasCareRight_BGBSection11">
+        <di:waypoint x="340" y="270" />
+        <di:waypoint x="410" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayParentHasCareRight_To_GatewayBothParentsHaveCareRight_BGBSection11_di"
+                       bpmnElement="Flow_GatewayParentHasCareRight_To_GatewayBothParentsHaveCareRight_BGBSection11">
+        <di:waypoint x="435" y="245" />
+        <di:waypoint x="435" y="140" />
+        <di:waypoint x="560" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayParentHasCareRight_To_ShareResidenceOfPersonWithCareRight_BGBSection11_di"
+                       bpmnElement="Flow_GatewayParentHasCareRight_To_ShareResidenceOfPersonWithCareRight_BGBSection11">
+        <di:waypoint x="435" y="295" />
+        <di:waypoint x="435" y="375" />
+        <di:waypoint x="560" y="375" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayBothParentsHaveCareRight_To_ShareResidenceOfParents_BGBSection11_di"
+                       bpmnElement="Flow_GatewayBothParentsHaveCareRight_To_ShareResidenceOfParents_BGBSection11">
+        <di:waypoint x="610" y="127" />
+        <di:waypoint x="700" y="90" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayBothParentsHaveCareRight_To_ShareResidenceOfParentWithCareRight_BGBSection11_di"
+                       bpmnElement="Flow_GatewayBothParentsHaveCareRight_To_ShareResidenceOfParentWithCareRight_BGBSection11">
+        <di:waypoint x="610" y="152" />
+        <di:waypoint x="700" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ShareResidenceOfParents_To_GatewayResidenceAssigned_BGBSection11_di"
+                       bpmnElement="Flow_ShareResidenceOfParents_To_GatewayResidenceAssigned_BGBSection11">
+        <di:waypoint x="890" y="90" />
+        <di:waypoint x="1035" y="90" />
+        <di:waypoint x="1035" y="245" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ShareResidenceOfParentWithCareRight_To_GatewayResidenceAssigned_BGBSection11_di"
+                       bpmnElement="Flow_ShareResidenceOfParentWithCareRight_To_GatewayResidenceAssigned_BGBSection11">
+        <di:waypoint x="920" y="210" />
+        <di:waypoint x="1010" y="258" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ShareResidenceOfPersonWithCareRight_To_GatewayResidenceAssigned_BGBSection11_di"
+                       bpmnElement="Flow_ShareResidenceOfPersonWithCareRight_To_GatewayResidenceAssigned_BGBSection11">
+        <di:waypoint x="780" y="375" />
+        <di:waypoint x="1035" y="375" />
+        <di:waypoint x="1035" y="295" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayResidenceAssigned_To_RetainResidence_BGBSection11_di"
+                       bpmnElement="Flow_GatewayResidenceAssigned_To_RetainResidence_BGBSection11">
+        <di:waypoint x="1060" y="270" />
+        <di:waypoint x="1130" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_RetainResidence_To_EndResidenceRuleApplied_BGBSection11_di"
+                       bpmnElement="Flow_RetainResidence_To_EndResidenceRuleApplied_BGBSection11">
+        <di:waypoint x="1350" y="270" />
+        <di:waypoint x="1430" y="270" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

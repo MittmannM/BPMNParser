@@ -4,7 +4,6 @@
     <pool id="Participant_Controller_Art15" name="Controller" poolType="active" processRef="Process_Controller_Art15" />
     <pool id="Participant_DataSubject_Art15" name="Data Subject" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="ReceiveTask_ReceiveAccessRequest_Art15" name="Receive access request" type="receiveTask" poolRef="Participant_Controller_Art15" />
     <task id="SendTask_SendElectronicAccessResponse_Art15" name="Send electronic access response" type="sendTask" poolRef="Participant_Controller_Art15" />
@@ -82,9 +81,4 @@
     <messageFlow id="MessageFlow_SendNoProcessingConfirmation_Art15" sourceRef="SendTask_SendNoProcessingConfirmation_Art15" targetRef="Participant_DataSubject_Art15" />
     <messageFlow id="MessageFlow_SendRequestedFormatAccessResponse_Art15" sourceRef="SendTask_SendRequestedFormatAccessResponse_Art15" targetRef="Participant_DataSubject_Art15" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

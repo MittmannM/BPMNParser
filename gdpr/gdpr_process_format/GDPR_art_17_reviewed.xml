@@ -5,7 +5,6 @@
     <pool id="Participant_DataSubject_Art17" name="Data Subject" poolType="passive" />
     <pool id="Participant_OtherControllers_Art17" name="Other Controllers" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="ReceiveTask_ReceiveErasureRequest_Art17" name="Receive erasure request" type="receiveTask" poolRef="Participant_Controller_Art17" />
     <task id="SendTask_InformOtherControllers_Art17" name="Inform other controllers to erase links and copies" type="sendTask" poolRef="Participant_Controller_Art17" />
@@ -67,9 +66,4 @@
     <messageFlow id="MessageFlow_InformOtherControllers_Art17" sourceRef="SendTask_InformOtherControllers_Art17" targetRef="Participant_OtherControllers_Art17" />
     <messageFlow id="MessageFlow_SendErasureRequest_Art17" sourceRef="Participant_DataSubject_Art17" targetRef="ReceiveTask_ReceiveErasureRequest_Art17" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

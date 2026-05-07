@@ -4,7 +4,6 @@
     <pool id="Participant_Child_Art13" name="Child" poolType="passive" />
     <pool id="Participant_Parent_Art13" name="Parent" poolType="active" processRef="Process_Parent_Art13" />
   </pools>
-  <lanes />
   <tasks>
     <task id="Task_AbandonResidence_Art13" name="Abandon residence" type="task" poolRef="Participant_Child_Art13" />
     <task id="Task_CarryResidence_Art13" name="Carry residence" type="task" poolRef="Participant_Child_Art13" />
@@ -37,9 +36,4 @@
     <messageFlow id="MessageFlow_DetermineCareRight_Art13" sourceRef="Task_DetermineCareRight_Art13" targetRef="Task_DetermineSharedResidence_Art13" />
     <messageFlow id="MessageFlow_IdentifyParentWithCareRight_Art13" sourceRef="Task_IdentifyParentWithCareRight_Art13" targetRef="Task_DetermineSharedResidence_Art13" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

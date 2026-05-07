@@ -7,7 +7,6 @@
     <pool id="Participant_MonitoringBody_Art41" name="Monitoring Body" poolType="active" processRef="Process_MonitoringBody_Art41" />
     <pool id="Participant_SupervisoryAuthority_Art41" name="Supervisory Authority" poolType="active" processRef="Process_SupervisoryAuthority_Art41" />
   </pools>
-  <lanes />
   <tasks>
     <task id="ReceiveTask_ReceiveAccreditationDecision_Art41" name="Receive accreditation decision" type="receiveTask" poolRef="Participant_MonitoringBody_Art41" />
     <task id="ReceiveTask_ReceiveAccreditationRequest_Art41" name="Receive accreditation request" type="receiveTask" poolRef="Participant_SupervisoryAuthority_Art41" />
@@ -119,9 +118,4 @@
     <messageFlow id="MessageFlow_SubmitRequirementsToBoard_Art41" sourceRef="SendTask_SubmitRequirementsToBoard_Art41" targetRef="Participant_Board_Art41" />
     <messageFlow id="MessageFlow_SuspendOrExclude_Art41" sourceRef="SendTask_SuspendOrExcludeAdherent_Art41" targetRef="Participant_ControllerProcessor_Art41" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

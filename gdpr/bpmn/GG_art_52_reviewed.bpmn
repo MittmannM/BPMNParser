@@ -1,0 +1,682 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_GGArt52_Reviewed"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collaboration_GGArt52_Reviewed">
+    <bpmn:participant id="Participant_TwoLaenderDelegates_GGArt52"
+                      name="Delegates of at least two Lander" />
+    <bpmn:participant id="Participant_FederalGovernment_GGArt52"
+                      name="Federal Government" />
+    <bpmn:participant id="Participant_Bundesrat_GGArt52"
+                      name="Bundesrat"
+                      processRef="Process_Bundesrat_GGArt52" />
+
+    <bpmn:messageFlow id="MessageFlow_TwoLaenderDemand_GGArt52"
+                      sourceRef="Participant_TwoLaenderDelegates_GGArt52"
+                      targetRef="Event_ReceiveTwoLaenderDemand_GGArt52" />
+    <bpmn:messageFlow id="MessageFlow_FederalGovernmentDemand_GGArt52"
+                      sourceRef="Participant_FederalGovernment_GGArt52"
+                      targetRef="Event_ReceiveFederalGovernmentDemand_GGArt52" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_Bundesrat_GGArt52"
+                name="Apply Bundesrat Article 52 rules"
+                isExecutable="false">
+    <bpmn:documentation>
+      Manual BPMN conversion for German Basic Law Article 52 based on the user-provided
+      English legal text. The model captures the annual election of the Bundesrat President,
+      the convening duty including demands by delegates of at least two Lander or by the
+      Federal Government, the majority and procedure and public-meeting rules, the optional
+      Chamber for European Affairs for EU matters, and the service of other Land-government
+      members or representatives on Bundesrat committees.
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_ApplyArticle52Rules_GGArt52"
+                     name="Apply Article 52 rules">
+      <bpmn:outgoing>Flow_Start_To_GatewaySplitRules_GGArt52</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:parallelGateway id="Gateway_SplitRules_GGArt52">
+      <bpmn:incoming>Flow_Start_To_GatewaySplitRules_GGArt52</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewaySplit_To_ElectPresident_GGArt52</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplit_To_GatewayConveningTrigger_GGArt52</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplit_To_GatewayParagraph3Split_GGArt52</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplit_To_GatewayMatterEU_GGArt52</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewaySplit_To_AppointCommitteeMembers_GGArt52</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_ElectPresidentForOneYear_GGArt52"
+               name="Elect President for one year">
+      <bpmn:incoming>Flow_GatewaySplit_To_ElectPresident_GGArt52</bpmn:incoming>
+      <bpmn:outgoing>Flow_ElectPresident_To_EndPresidentElected_GGArt52</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_PresidentElected_GGArt52"
+                   name="President elected">
+      <bpmn:incoming>Flow_ElectPresident_To_EndPresidentElected_GGArt52</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:eventBasedGateway id="Gateway_ConveningTrigger_GGArt52"
+                            name="What triggers convening?">
+      <bpmn:incoming>Flow_GatewaySplit_To_GatewayConveningTrigger_GGArt52</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayConveningTrigger_To_EventTwoLaenderDemand_GGArt52</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayConveningTrigger_To_EventFederalGovernmentDemand_GGArt52</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayConveningTrigger_To_EventNeedToConvene_GGArt52</bpmn:outgoing>
+    </bpmn:eventBasedGateway>
+
+    <bpmn:intermediateCatchEvent id="Event_ReceiveTwoLaenderDemand_GGArt52"
+                                 name="Receive demand from at least two Lander">
+      <bpmn:incoming>Flow_GatewayConveningTrigger_To_EventTwoLaenderDemand_GGArt52</bpmn:incoming>
+      <bpmn:outgoing>Flow_EventTwoLaenderDemand_To_GatewayConveningMerge_GGArt52</bpmn:outgoing>
+      <bpmn:messageEventDefinition />
+    </bpmn:intermediateCatchEvent>
+
+    <bpmn:intermediateCatchEvent id="Event_ReceiveFederalGovernmentDemand_GGArt52"
+                                 name="Receive demand from Federal Government">
+      <bpmn:incoming>Flow_GatewayConveningTrigger_To_EventFederalGovernmentDemand_GGArt52</bpmn:incoming>
+      <bpmn:outgoing>Flow_EventFederalGovernmentDemand_To_GatewayConveningMerge_GGArt52</bpmn:outgoing>
+      <bpmn:messageEventDefinition />
+    </bpmn:intermediateCatchEvent>
+
+    <bpmn:intermediateCatchEvent id="Event_NeedToConveneBundesrat_GGArt52"
+                                 name="Need to convene Bundesrat">
+      <bpmn:incoming>Flow_GatewayConveningTrigger_To_EventNeedToConvene_GGArt52</bpmn:incoming>
+      <bpmn:outgoing>Flow_EventNeedToConvene_To_GatewayConveningMerge_GGArt52</bpmn:outgoing>
+      <bpmn:signalEventDefinition />
+    </bpmn:intermediateCatchEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_ConveningMerge_GGArt52">
+      <bpmn:incoming>Flow_EventTwoLaenderDemand_To_GatewayConveningMerge_GGArt52</bpmn:incoming>
+      <bpmn:incoming>Flow_EventFederalGovernmentDemand_To_GatewayConveningMerge_GGArt52</bpmn:incoming>
+      <bpmn:incoming>Flow_EventNeedToConvene_To_GatewayConveningMerge_GGArt52</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayConveningMerge_To_ConveneBundesrat_GGArt52</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ConveneBundesrat_GGArt52"
+               name="Convene Bundesrat">
+      <bpmn:incoming>Flow_GatewayConveningMerge_To_ConveneBundesrat_GGArt52</bpmn:incoming>
+      <bpmn:outgoing>Flow_ConveneBundesrat_To_EndBundesratConvened_GGArt52</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_BundesratConvened_GGArt52"
+                   name="Bundesrat convened">
+      <bpmn:incoming>Flow_ConveneBundesrat_To_EndBundesratConvened_GGArt52</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:parallelGateway id="Gateway_Paragraph3Split_GGArt52">
+      <bpmn:incoming>Flow_GatewaySplit_To_GatewayParagraph3Split_GGArt52</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayParagraph3Split_To_TakeDecision_GGArt52</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayParagraph3Split_To_AdoptRules_GGArt52</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayParagraph3Split_To_HoldPublicMeeting_GGArt52</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:task id="Task_TakeDecisionByMajority_GGArt52"
+               name="Take decisions by majority">
+      <bpmn:incoming>Flow_GatewayParagraph3Split_To_TakeDecision_GGArt52</bpmn:incoming>
+      <bpmn:outgoing>Flow_TakeDecision_To_GatewayParagraph3Join_GGArt52</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_AdoptRulesOfProcedure_GGArt52"
+               name="Adopt rules of procedure">
+      <bpmn:incoming>Flow_GatewayParagraph3Split_To_AdoptRules_GGArt52</bpmn:incoming>
+      <bpmn:outgoing>Flow_AdoptRules_To_GatewayParagraph3Join_GGArt52</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_HoldPublicMeeting_GGArt52"
+               name="Hold public meeting">
+      <bpmn:incoming>Flow_GatewayParagraph3Split_To_HoldPublicMeeting_GGArt52</bpmn:incoming>
+      <bpmn:outgoing>Flow_HoldPublicMeeting_To_GatewayExcludePublic_GGArt52</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_ExcludePublic_GGArt52"
+                           name="Exclude the public?">
+      <bpmn:incoming>Flow_HoldPublicMeeting_To_GatewayExcludePublic_GGArt52</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayExcludePublic_To_ExcludePublic_GGArt52</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayExcludePublic_To_GatewayMeetingMerge_GGArt52</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_ExcludePublic_GGArt52"
+               name="Exclude public">
+      <bpmn:incoming>Flow_GatewayExcludePublic_To_ExcludePublic_GGArt52</bpmn:incoming>
+      <bpmn:outgoing>Flow_ExcludePublic_To_GatewayMeetingMerge_GGArt52</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:exclusiveGateway id="Gateway_MeetingMerge_GGArt52">
+      <bpmn:incoming>Flow_GatewayExcludePublic_To_GatewayMeetingMerge_GGArt52</bpmn:incoming>
+      <bpmn:incoming>Flow_ExcludePublic_To_GatewayMeetingMerge_GGArt52</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayMeetingMerge_To_GatewayParagraph3Join_GGArt52</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:parallelGateway id="Gateway_Paragraph3Join_GGArt52">
+      <bpmn:incoming>Flow_TakeDecision_To_GatewayParagraph3Join_GGArt52</bpmn:incoming>
+      <bpmn:incoming>Flow_AdoptRules_To_GatewayParagraph3Join_GGArt52</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayMeetingMerge_To_GatewayParagraph3Join_GGArt52</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayParagraph3Join_To_EndParagraph3Applied_GGArt52</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:endEvent id="EndEvent_Paragraph3RulesApplied_GGArt52"
+                   name="Decision and procedure rules applied">
+      <bpmn:incoming>Flow_GatewayParagraph3Join_To_EndParagraph3Applied_GGArt52</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_MatterConcernsEU_GGArt52"
+                           name="Does the matter concern the European Union?">
+      <bpmn:incoming>Flow_GatewaySplit_To_GatewayMatterEU_GGArt52</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayMatterEU_To_GatewayEstablishChamber_GGArt52</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayMatterEU_To_EndNoEUChamberPath_GGArt52</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:exclusiveGateway id="Gateway_EstablishEuropeanChamber_GGArt52"
+                           name="Establish Chamber for European Affairs?">
+      <bpmn:incoming>Flow_GatewayMatterEU_To_GatewayEstablishChamber_GGArt52</bpmn:incoming>
+      <bpmn:outgoing>Flow_GatewayEstablishChamber_To_EstablishChamber_GGArt52</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GatewayEstablishChamber_To_EndNoEUChamberPath_GGArt52</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:task id="Task_EstablishEuropeanAffairsChamber_GGArt52"
+               name="Establish Chamber for European Affairs">
+      <bpmn:incoming>Flow_GatewayEstablishChamber_To_EstablishChamber_GGArt52</bpmn:incoming>
+      <bpmn:outgoing>Flow_EstablishChamber_To_TreatDecisionAsBundesratDecision_GGArt52</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_TreatChamberDecisionAsBundesratDecision_GGArt52"
+               name="Treat chamber decision as Bundesrat decision">
+      <bpmn:incoming>Flow_EstablishChamber_To_TreatDecisionAsBundesratDecision_GGArt52</bpmn:incoming>
+      <bpmn:outgoing>Flow_TreatDecision_To_CastVotesUniformly_GGArt52</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_CastLandVotesUniformly_GGArt52"
+               name="Cast Land votes uniformly under Article 51(2)">
+      <bpmn:incoming>Flow_TreatDecision_To_CastVotesUniformly_GGArt52</bpmn:incoming>
+      <bpmn:outgoing>Flow_CastVotesUniformly_To_EndEUChamberApplied_GGArt52</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_NoEUChamberPath_GGArt52"
+                   name="No European Affairs chamber path used">
+      <bpmn:incoming>Flow_GatewayMatterEU_To_EndNoEUChamberPath_GGArt52</bpmn:incoming>
+      <bpmn:incoming>Flow_GatewayEstablishChamber_To_EndNoEUChamberPath_GGArt52</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="EndEvent_EUChamberApplied_GGArt52"
+                   name="European Affairs chamber rules applied">
+      <bpmn:incoming>Flow_CastVotesUniformly_To_EndEUChamberApplied_GGArt52</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:task id="Task_AppointCommitteeMembers_GGArt52"
+               name="Appoint other Land-government members or representatives to committees">
+      <bpmn:incoming>Flow_GatewaySplit_To_AppointCommitteeMembers_GGArt52</bpmn:incoming>
+      <bpmn:outgoing>Flow_AppointCommitteeMembers_To_EndCommitteeMembersAppointed_GGArt52</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_CommitteeMembersAppointed_GGArt52"
+                   name="Committee members appointed">
+      <bpmn:incoming>Flow_AppointCommitteeMembers_To_EndCommitteeMembersAppointed_GGArt52</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_Start_To_GatewaySplitRules_GGArt52"
+                       sourceRef="StartEvent_ApplyArticle52Rules_GGArt52"
+                       targetRef="Gateway_SplitRules_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplit_To_ElectPresident_GGArt52"
+                       sourceRef="Gateway_SplitRules_GGArt52"
+                       targetRef="Task_ElectPresidentForOneYear_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_ElectPresident_To_EndPresidentElected_GGArt52"
+                       sourceRef="Task_ElectPresidentForOneYear_GGArt52"
+                       targetRef="EndEvent_PresidentElected_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplit_To_GatewayConveningTrigger_GGArt52"
+                       sourceRef="Gateway_SplitRules_GGArt52"
+                       targetRef="Gateway_ConveningTrigger_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_GatewayConveningTrigger_To_EventTwoLaenderDemand_GGArt52"
+                       sourceRef="Gateway_ConveningTrigger_GGArt52"
+                       targetRef="Event_ReceiveTwoLaenderDemand_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_GatewayConveningTrigger_To_EventFederalGovernmentDemand_GGArt52"
+                       sourceRef="Gateway_ConveningTrigger_GGArt52"
+                       targetRef="Event_ReceiveFederalGovernmentDemand_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_GatewayConveningTrigger_To_EventNeedToConvene_GGArt52"
+                       sourceRef="Gateway_ConveningTrigger_GGArt52"
+                       targetRef="Event_NeedToConveneBundesrat_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_EventTwoLaenderDemand_To_GatewayConveningMerge_GGArt52"
+                       sourceRef="Event_ReceiveTwoLaenderDemand_GGArt52"
+                       targetRef="Gateway_ConveningMerge_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_EventFederalGovernmentDemand_To_GatewayConveningMerge_GGArt52"
+                       sourceRef="Event_ReceiveFederalGovernmentDemand_GGArt52"
+                       targetRef="Gateway_ConveningMerge_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_EventNeedToConvene_To_GatewayConveningMerge_GGArt52"
+                       sourceRef="Event_NeedToConveneBundesrat_GGArt52"
+                       targetRef="Gateway_ConveningMerge_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_GatewayConveningMerge_To_ConveneBundesrat_GGArt52"
+                       sourceRef="Gateway_ConveningMerge_GGArt52"
+                       targetRef="Task_ConveneBundesrat_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_ConveneBundesrat_To_EndBundesratConvened_GGArt52"
+                       sourceRef="Task_ConveneBundesrat_GGArt52"
+                       targetRef="EndEvent_BundesratConvened_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplit_To_GatewayParagraph3Split_GGArt52"
+                       sourceRef="Gateway_SplitRules_GGArt52"
+                       targetRef="Gateway_Paragraph3Split_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_GatewayParagraph3Split_To_TakeDecision_GGArt52"
+                       sourceRef="Gateway_Paragraph3Split_GGArt52"
+                       targetRef="Task_TakeDecisionByMajority_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_GatewayParagraph3Split_To_AdoptRules_GGArt52"
+                       sourceRef="Gateway_Paragraph3Split_GGArt52"
+                       targetRef="Task_AdoptRulesOfProcedure_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_GatewayParagraph3Split_To_HoldPublicMeeting_GGArt52"
+                       sourceRef="Gateway_Paragraph3Split_GGArt52"
+                       targetRef="Task_HoldPublicMeeting_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_TakeDecision_To_GatewayParagraph3Join_GGArt52"
+                       sourceRef="Task_TakeDecisionByMajority_GGArt52"
+                       targetRef="Gateway_Paragraph3Join_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_AdoptRules_To_GatewayParagraph3Join_GGArt52"
+                       sourceRef="Task_AdoptRulesOfProcedure_GGArt52"
+                       targetRef="Gateway_Paragraph3Join_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_HoldPublicMeeting_To_GatewayExcludePublic_GGArt52"
+                       sourceRef="Task_HoldPublicMeeting_GGArt52"
+                       targetRef="Gateway_ExcludePublic_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_GatewayExcludePublic_To_ExcludePublic_GGArt52"
+                       name="Yes"
+                       sourceRef="Gateway_ExcludePublic_GGArt52"
+                       targetRef="Task_ExcludePublic_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_GatewayExcludePublic_To_GatewayMeetingMerge_GGArt52"
+                       name="No"
+                       sourceRef="Gateway_ExcludePublic_GGArt52"
+                       targetRef="Gateway_MeetingMerge_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_ExcludePublic_To_GatewayMeetingMerge_GGArt52"
+                       sourceRef="Task_ExcludePublic_GGArt52"
+                       targetRef="Gateway_MeetingMerge_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_GatewayMeetingMerge_To_GatewayParagraph3Join_GGArt52"
+                       sourceRef="Gateway_MeetingMerge_GGArt52"
+                       targetRef="Gateway_Paragraph3Join_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_GatewayParagraph3Join_To_EndParagraph3Applied_GGArt52"
+                       sourceRef="Gateway_Paragraph3Join_GGArt52"
+                       targetRef="EndEvent_Paragraph3RulesApplied_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplit_To_GatewayMatterEU_GGArt52"
+                       sourceRef="Gateway_SplitRules_GGArt52"
+                       targetRef="Gateway_MatterConcernsEU_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_GatewayMatterEU_To_GatewayEstablishChamber_GGArt52"
+                       name="Yes"
+                       sourceRef="Gateway_MatterConcernsEU_GGArt52"
+                       targetRef="Gateway_EstablishEuropeanChamber_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_GatewayMatterEU_To_EndNoEUChamberPath_GGArt52"
+                       name="No"
+                       sourceRef="Gateway_MatterConcernsEU_GGArt52"
+                       targetRef="EndEvent_NoEUChamberPath_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_GatewayEstablishChamber_To_EstablishChamber_GGArt52"
+                       name="Yes"
+                       sourceRef="Gateway_EstablishEuropeanChamber_GGArt52"
+                       targetRef="Task_EstablishEuropeanAffairsChamber_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_GatewayEstablishChamber_To_EndNoEUChamberPath_GGArt52"
+                       name="No"
+                       sourceRef="Gateway_EstablishEuropeanChamber_GGArt52"
+                       targetRef="EndEvent_NoEUChamberPath_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_EstablishChamber_To_TreatDecisionAsBundesratDecision_GGArt52"
+                       sourceRef="Task_EstablishEuropeanAffairsChamber_GGArt52"
+                       targetRef="Task_TreatChamberDecisionAsBundesratDecision_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_TreatDecision_To_CastVotesUniformly_GGArt52"
+                       sourceRef="Task_TreatChamberDecisionAsBundesratDecision_GGArt52"
+                       targetRef="Task_CastLandVotesUniformly_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_CastVotesUniformly_To_EndEUChamberApplied_GGArt52"
+                       sourceRef="Task_CastLandVotesUniformly_GGArt52"
+                       targetRef="EndEvent_EUChamberApplied_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_GatewaySplit_To_AppointCommitteeMembers_GGArt52"
+                       sourceRef="Gateway_SplitRules_GGArt52"
+                       targetRef="Task_AppointCommitteeMembers_GGArt52" />
+    <bpmn:sequenceFlow id="Flow_AppointCommitteeMembers_To_EndCommitteeMembersAppointed_GGArt52"
+                       sourceRef="Task_AppointCommitteeMembers_GGArt52"
+                       targetRef="EndEvent_CommitteeMembersAppointed_GGArt52" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_GGArt52_Reviewed">
+    <bpmndi:BPMNPlane id="BPMNPlane_GGArt52_Reviewed"
+                      bpmnElement="Collaboration_GGArt52_Reviewed">
+      <bpmndi:BPMNShape id="Participant_TwoLaenderDelegates_GGArt52_di"
+                        bpmnElement="Participant_TwoLaenderDelegates_GGArt52"
+                        isHorizontal="true">
+        <dc:Bounds x="30" y="20" width="1900" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_FederalGovernment_GGArt52_di"
+                        bpmnElement="Participant_FederalGovernment_GGArt52"
+                        isHorizontal="true">
+        <dc:Bounds x="30" y="80" width="1900" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Bundesrat_GGArt52_di"
+                        bpmnElement="Participant_Bundesrat_GGArt52"
+                        isHorizontal="true">
+        <dc:Bounds x="30" y="150" width="1900" height="980" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_ApplyArticle52Rules_GGArt52_di"
+                        bpmnElement="StartEvent_ApplyArticle52Rules_GGArt52">
+        <dc:Bounds x="100" y="600" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SplitRules_GGArt52_di"
+                        bpmnElement="Gateway_SplitRules_GGArt52"
+                        isMarkerVisible="true">
+        <dc:Bounds x="220" y="593" width="50" height="50" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Task_ElectPresidentForOneYear_GGArt52_di"
+                        bpmnElement="Task_ElectPresidentForOneYear_GGArt52">
+        <dc:Bounds x="340" y="210" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_PresidentElected_GGArt52_di"
+                        bpmnElement="EndEvent_PresidentElected_GGArt52">
+        <dc:Bounds x="650" y="232" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Gateway_ConveningTrigger_GGArt52_di"
+                        bpmnElement="Gateway_ConveningTrigger_GGArt52">
+        <dc:Bounds x="340" y="355" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_ReceiveTwoLaenderDemand_GGArt52_di"
+                        bpmnElement="Event_ReceiveTwoLaenderDemand_GGArt52">
+        <dc:Bounds x="600" y="242" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_ReceiveFederalGovernmentDemand_GGArt52_di"
+                        bpmnElement="Event_ReceiveFederalGovernmentDemand_GGArt52">
+        <dc:Bounds x="600" y="362" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_NeedToConveneBundesrat_GGArt52_di"
+                        bpmnElement="Event_NeedToConveneBundesrat_GGArt52">
+        <dc:Bounds x="600" y="482" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ConveningMerge_GGArt52_di"
+                        bpmnElement="Gateway_ConveningMerge_GGArt52"
+                        isMarkerVisible="true">
+        <dc:Bounds x="700" y="355" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ConveneBundesrat_GGArt52_di"
+                        bpmnElement="Task_ConveneBundesrat_GGArt52">
+        <dc:Bounds x="860" y="340" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_BundesratConvened_GGArt52_di"
+                        bpmnElement="EndEvent_BundesratConvened_GGArt52">
+        <dc:Bounds x="1160" y="362" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Gateway_Paragraph3Split_GGArt52_di"
+                        bpmnElement="Gateway_Paragraph3Split_GGArt52"
+                        isMarkerVisible="true">
+        <dc:Bounds x="340" y="635" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_TakeDecisionByMajority_GGArt52_di"
+                        bpmnElement="Task_TakeDecisionByMajority_GGArt52">
+        <dc:Bounds x="520" y="540" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AdoptRulesOfProcedure_GGArt52_di"
+                        bpmnElement="Task_AdoptRulesOfProcedure_GGArt52">
+        <dc:Bounds x="520" y="650" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_HoldPublicMeeting_GGArt52_di"
+                        bpmnElement="Task_HoldPublicMeeting_GGArt52">
+        <dc:Bounds x="520" y="760" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ExcludePublic_GGArt52_di"
+                        bpmnElement="Gateway_ExcludePublic_GGArt52"
+                        isMarkerVisible="true">
+        <dc:Bounds x="780" y="775" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ExcludePublic_GGArt52_di"
+                        bpmnElement="Task_ExcludePublic_GGArt52">
+        <dc:Bounds x="900" y="730" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_MeetingMerge_GGArt52_di"
+                        bpmnElement="Gateway_MeetingMerge_GGArt52"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1130" y="775" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Paragraph3Join_GGArt52_di"
+                        bpmnElement="Gateway_Paragraph3Join_GGArt52"
+                        isMarkerVisible="true">
+        <dc:Bounds x="1360" y="635" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Paragraph3RulesApplied_GGArt52_di"
+                        bpmnElement="EndEvent_Paragraph3RulesApplied_GGArt52">
+        <dc:Bounds x="1540" y="642" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Gateway_MatterConcernsEU_GGArt52_di"
+                        bpmnElement="Gateway_MatterConcernsEU_GGArt52"
+                        isMarkerVisible="true">
+        <dc:Bounds x="340" y="885" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_EstablishEuropeanChamber_GGArt52_di"
+                        bpmnElement="Gateway_EstablishEuropeanChamber_GGArt52"
+                        isMarkerVisible="true">
+        <dc:Bounds x="520" y="885" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_EstablishEuropeanAffairsChamber_GGArt52_di"
+                        bpmnElement="Task_EstablishEuropeanAffairsChamber_GGArt52">
+        <dc:Bounds x="860" y="820" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_TreatChamberDecisionAsBundesratDecision_GGArt52_di"
+                        bpmnElement="Task_TreatChamberDecisionAsBundesratDecision_GGArt52">
+        <dc:Bounds x="1120" y="840" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CastLandVotesUniformly_GGArt52_di"
+                        bpmnElement="Task_CastLandVotesUniformly_GGArt52">
+        <dc:Bounds x="1380" y="840" width="220" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NoEUChamberPath_GGArt52_di"
+                        bpmnElement="EndEvent_NoEUChamberPath_GGArt52">
+        <dc:Bounds x="880" y="962" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_EUChamberApplied_GGArt52_di"
+                        bpmnElement="EndEvent_EUChamberApplied_GGArt52">
+        <dc:Bounds x="1710" y="862" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Task_AppointCommitteeMembers_GGArt52_di"
+                        bpmnElement="Task_AppointCommitteeMembers_GGArt52">
+        <dc:Bounds x="340" y="1020" width="250" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_CommitteeMembersAppointed_GGArt52_di"
+                        bpmnElement="EndEvent_CommitteeMembersAppointed_GGArt52">
+        <dc:Bounds x="700" y="1042" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_Start_To_GatewaySplitRules_GGArt52_di"
+                       bpmnElement="Flow_Start_To_GatewaySplitRules_GGArt52">
+        <di:waypoint x="136" y="618" />
+        <di:waypoint x="220" y="618" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewaySplit_To_ElectPresident_GGArt52_di"
+                       bpmnElement="Flow_GatewaySplit_To_ElectPresident_GGArt52">
+        <di:waypoint x="245" y="593" />
+        <di:waypoint x="245" y="250" />
+        <di:waypoint x="340" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ElectPresident_To_EndPresidentElected_GGArt52_di"
+                       bpmnElement="Flow_ElectPresident_To_EndPresidentElected_GGArt52">
+        <di:waypoint x="540" y="250" />
+        <di:waypoint x="650" y="250" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_GatewaySplit_To_GatewayConveningTrigger_GGArt52_di"
+                       bpmnElement="Flow_GatewaySplit_To_GatewayConveningTrigger_GGArt52">
+        <di:waypoint x="270" y="605" />
+        <di:waypoint x="290" y="605" />
+        <di:waypoint x="290" y="380" />
+        <di:waypoint x="340" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayConveningTrigger_To_EventTwoLaenderDemand_GGArt52_di"
+                       bpmnElement="Flow_GatewayConveningTrigger_To_EventTwoLaenderDemand_GGArt52">
+        <di:waypoint x="365" y="355" />
+        <di:waypoint x="365" y="260" />
+        <di:waypoint x="600" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayConveningTrigger_To_EventFederalGovernmentDemand_GGArt52_di"
+                       bpmnElement="Flow_GatewayConveningTrigger_To_EventFederalGovernmentDemand_GGArt52">
+        <di:waypoint x="390" y="380" />
+        <di:waypoint x="600" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayConveningTrigger_To_EventNeedToConvene_GGArt52_di"
+                       bpmnElement="Flow_GatewayConveningTrigger_To_EventNeedToConvene_GGArt52">
+        <di:waypoint x="365" y="405" />
+        <di:waypoint x="365" y="500" />
+        <di:waypoint x="600" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_EventTwoLaenderDemand_To_GatewayConveningMerge_GGArt52_di"
+                       bpmnElement="Flow_EventTwoLaenderDemand_To_GatewayConveningMerge_GGArt52">
+        <di:waypoint x="636" y="260" />
+        <di:waypoint x="725" y="260" />
+        <di:waypoint x="725" y="355" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_EventFederalGovernmentDemand_To_GatewayConveningMerge_GGArt52_di"
+                       bpmnElement="Flow_EventFederalGovernmentDemand_To_GatewayConveningMerge_GGArt52">
+        <di:waypoint x="636" y="380" />
+        <di:waypoint x="700" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_EventNeedToConvene_To_GatewayConveningMerge_GGArt52_di"
+                       bpmnElement="Flow_EventNeedToConvene_To_GatewayConveningMerge_GGArt52">
+        <di:waypoint x="636" y="500" />
+        <di:waypoint x="725" y="500" />
+        <di:waypoint x="725" y="405" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayConveningMerge_To_ConveneBundesrat_GGArt52_di"
+                       bpmnElement="Flow_GatewayConveningMerge_To_ConveneBundesrat_GGArt52">
+        <di:waypoint x="750" y="380" />
+        <di:waypoint x="860" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ConveneBundesrat_To_EndBundesratConvened_GGArt52_di"
+                       bpmnElement="Flow_ConveneBundesrat_To_EndBundesratConvened_GGArt52">
+        <di:waypoint x="1050" y="380" />
+        <di:waypoint x="1160" y="380" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_GatewaySplit_To_GatewayParagraph3Split_GGArt52_di"
+                       bpmnElement="Flow_GatewaySplit_To_GatewayParagraph3Split_GGArt52">
+        <di:waypoint x="270" y="618" />
+        <di:waypoint x="340" y="660" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayParagraph3Split_To_TakeDecision_GGArt52_di"
+                       bpmnElement="Flow_GatewayParagraph3Split_To_TakeDecision_GGArt52">
+        <di:waypoint x="365" y="635" />
+        <di:waypoint x="365" y="580" />
+        <di:waypoint x="520" y="580" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayParagraph3Split_To_AdoptRules_GGArt52_di"
+                       bpmnElement="Flow_GatewayParagraph3Split_To_AdoptRules_GGArt52">
+        <di:waypoint x="390" y="660" />
+        <di:waypoint x="520" y="690" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayParagraph3Split_To_HoldPublicMeeting_GGArt52_di"
+                       bpmnElement="Flow_GatewayParagraph3Split_To_HoldPublicMeeting_GGArt52">
+        <di:waypoint x="365" y="685" />
+        <di:waypoint x="365" y="800" />
+        <di:waypoint x="520" y="800" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TakeDecision_To_GatewayParagraph3Join_GGArt52_di"
+                       bpmnElement="Flow_TakeDecision_To_GatewayParagraph3Join_GGArt52">
+        <di:waypoint x="720" y="580" />
+        <di:waypoint x="1385" y="580" />
+        <di:waypoint x="1385" y="635" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AdoptRules_To_GatewayParagraph3Join_GGArt52_di"
+                       bpmnElement="Flow_AdoptRules_To_GatewayParagraph3Join_GGArt52">
+        <di:waypoint x="720" y="690" />
+        <di:waypoint x="1360" y="660" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_HoldPublicMeeting_To_GatewayExcludePublic_GGArt52_di"
+                       bpmnElement="Flow_HoldPublicMeeting_To_GatewayExcludePublic_GGArt52">
+        <di:waypoint x="720" y="800" />
+        <di:waypoint x="780" y="800" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExcludePublic_To_ExcludePublic_GGArt52_di"
+                       bpmnElement="Flow_GatewayExcludePublic_To_ExcludePublic_GGArt52">
+        <di:waypoint x="830" y="787" />
+        <di:waypoint x="900" y="770" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayExcludePublic_To_GatewayMeetingMerge_GGArt52_di"
+                       bpmnElement="Flow_GatewayExcludePublic_To_GatewayMeetingMerge_GGArt52">
+        <di:waypoint x="830" y="800" />
+        <di:waypoint x="1130" y="800" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ExcludePublic_To_GatewayMeetingMerge_GGArt52_di"
+                       bpmnElement="Flow_ExcludePublic_To_GatewayMeetingMerge_GGArt52">
+        <di:waypoint x="1080" y="770" />
+        <di:waypoint x="1130" y="800" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayMeetingMerge_To_GatewayParagraph3Join_GGArt52_di"
+                       bpmnElement="Flow_GatewayMeetingMerge_To_GatewayParagraph3Join_GGArt52">
+        <di:waypoint x="1180" y="800" />
+        <di:waypoint x="1385" y="800" />
+        <di:waypoint x="1385" y="685" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayParagraph3Join_To_EndParagraph3Applied_GGArt52_di"
+                       bpmnElement="Flow_GatewayParagraph3Join_To_EndParagraph3Applied_GGArt52">
+        <di:waypoint x="1410" y="660" />
+        <di:waypoint x="1540" y="660" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_GatewaySplit_To_GatewayMatterEU_GGArt52_di"
+                       bpmnElement="Flow_GatewaySplit_To_GatewayMatterEU_GGArt52">
+        <di:waypoint x="245" y="643" />
+        <di:waypoint x="245" y="910" />
+        <di:waypoint x="340" y="910" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayMatterEU_To_GatewayEstablishChamber_GGArt52_di"
+                       bpmnElement="Flow_GatewayMatterEU_To_GatewayEstablishChamber_GGArt52">
+        <di:waypoint x="390" y="910" />
+        <di:waypoint x="520" y="910" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayMatterEU_To_EndNoEUChamberPath_GGArt52_di"
+                       bpmnElement="Flow_GatewayMatterEU_To_EndNoEUChamberPath_GGArt52">
+        <di:waypoint x="365" y="935" />
+        <di:waypoint x="365" y="980" />
+        <di:waypoint x="880" y="980" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayEstablishChamber_To_EstablishChamber_GGArt52_di"
+                       bpmnElement="Flow_GatewayEstablishChamber_To_EstablishChamber_GGArt52">
+        <di:waypoint x="545" y="885" />
+        <di:waypoint x="545" y="860" />
+        <di:waypoint x="860" y="860" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_GatewayEstablishChamber_To_EndNoEUChamberPath_GGArt52_di"
+                       bpmnElement="Flow_GatewayEstablishChamber_To_EndNoEUChamberPath_GGArt52">
+        <di:waypoint x="545" y="935" />
+        <di:waypoint x="545" y="980" />
+        <di:waypoint x="880" y="980" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_EstablishChamber_To_TreatDecisionAsBundesratDecision_GGArt52_di"
+                       bpmnElement="Flow_EstablishChamber_To_TreatDecisionAsBundesratDecision_GGArt52">
+        <di:waypoint x="1050" y="860" />
+        <di:waypoint x="1120" y="880" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TreatDecision_To_CastVotesUniformly_GGArt52_di"
+                       bpmnElement="Flow_TreatDecision_To_CastVotesUniformly_GGArt52">
+        <di:waypoint x="1320" y="880" />
+        <di:waypoint x="1380" y="880" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_CastVotesUniformly_To_EndEUChamberApplied_GGArt52_di"
+                       bpmnElement="Flow_CastVotesUniformly_To_EndEUChamberApplied_GGArt52">
+        <di:waypoint x="1600" y="880" />
+        <di:waypoint x="1710" y="880" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_GatewaySplit_To_AppointCommitteeMembers_GGArt52_di"
+                       bpmnElement="Flow_GatewaySplit_To_AppointCommitteeMembers_GGArt52">
+        <di:waypoint x="245" y="643" />
+        <di:waypoint x="245" y="1060" />
+        <di:waypoint x="340" y="1060" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AppointCommitteeMembers_To_EndCommitteeMembersAppointed_GGArt52_di"
+                       bpmnElement="Flow_AppointCommitteeMembers_To_EndCommitteeMembersAppointed_GGArt52">
+        <di:waypoint x="590" y="1060" />
+        <di:waypoint x="700" y="1060" />
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="MessageFlow_TwoLaenderDemand_GGArt52_di"
+                       bpmnElement="MessageFlow_TwoLaenderDemand_GGArt52">
+        <di:waypoint x="618" y="70" />
+        <di:waypoint x="618" y="242" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_FederalGovernmentDemand_GGArt52_di"
+                       bpmnElement="MessageFlow_FederalGovernmentDemand_GGArt52">
+        <di:waypoint x="618" y="130" />
+        <di:waypoint x="618" y="362" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -4,11 +4,9 @@
     <pool id="Participant_Commission_Committee_Art5" name="Commission or Committee under Art 5" poolType="active" processRef="Process_Commission_Committee_Art5" />
     <pool id="Participant_Commission_Committee_Art8" name="Commission or Committee under Art 8" poolType="passive" processRef="Process_Commission_Committee_Art8" />
   </pools>
-  <lanes />
   <tasks>
     <task id="Task_Assist_Committee_Art5" name="Assist committee under Art 5" type="task" poolRef="Participant_Commission_Committee_Art5" />
     <task id="Task_Apply_Art5_Art8_Art5" name="Apply Art 5, Art 8, and Art 5" type="task" poolRef="Participant_Commission_Committee_Art5" />
-    <!-- Task for the passive participant -->
     <task id="Task_Receive_Art8_Art5_Art5" name="Receive Art 8, Art 5, and Art 5" type="receiveTask" poolRef="Participant_Commission_Committee_Art8" />
   </tasks>
   <events>
@@ -28,9 +26,4 @@
     <sequenceFlow id="Flow_Start_To_Gateway_Reference" sourceRef="StartEvent_Need_Committee_Art5" targetRef="Gateway_Reference_Art5_Art8_Art5" />
   </sequenceFlows>
   <messageFlows />
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

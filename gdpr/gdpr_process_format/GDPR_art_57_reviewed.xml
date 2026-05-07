@@ -7,7 +7,6 @@
     <pool id="Participant_OtherSupervisoryAuthorities_Art57" name="Other Supervisory Authorities" poolType="passive" />
     <pool id="Participant_SupervisoryAuthority_Art57" name="Supervisory Authority" poolType="active" processRef="Process_SupervisoryAuthority_Art57" />
   </pools>
-  <lanes />
   <tasks>
     <task id="Task_AdoptStandardContractualClauses_Art57" name="Adopt standard contractual clauses" type="task" poolRef="Participant_SupervisoryAuthority_Art57" />
     <task id="Task_AdviseNationalInstitutions_Art57" name="Advise on legislative and administrative measures" type="sendTask" poolRef="Participant_SupervisoryAuthority_Art57" />
@@ -143,9 +142,4 @@
     <messageFlow id="MessageFlow_ProvideRightsInformation_Art57" sourceRef="Task_ProvideRightsInformation_Art57" targetRef="Participant_DataSubjectOrArticle80Body_Art57" />
     <messageFlow id="MessageFlow_RequestRightsInformation_Art57" sourceRef="Participant_DataSubjectOrArticle80Body_Art57" targetRef="Task_ReceiveRightsRequest_Art57" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

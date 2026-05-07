@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <processModel>
   <pools />
-  <lanes />
   <tasks>
     <task id="Task_ApplySafeguards_Art50" name="Apply safeguards for personal data and fundamental rights" type="task" poolRef="Process_InternationalCooperation_Art50" />
     <task id="Task_DevelopCooperationMechanisms_Art50" name="Develop international cooperation mechanisms" type="task" poolRef="Process_InternationalCooperation_Art50" />
@@ -33,9 +32,4 @@
     <sequenceFlow id="Flow_Start_To_ScopeInternationalCooperation_Art50" sourceRef="StartEvent_NeedInternationalCooperation_Art50" targetRef="Task_ScopeInternationalCooperation_Art50" />
   </sequenceFlows>
   <messageFlows />
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

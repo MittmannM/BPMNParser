@@ -5,7 +5,6 @@
     <pool id="Participant_DPO_Art39" name="Data Protection Officer" poolType="active" processRef="Process_DPO_Art39" />
     <pool id="Participant_SupervisoryAuthority_Art39" name="Supervisory Authority" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="Task_AdviseDPIA" name="Advise on DPIA where requested" type="task" poolRef="Participant_DPO_Art39" />
     <task id="Task_AssessRisk" name="Assess task-related risk" type="task" poolRef="Participant_DPO_Art39" />
@@ -48,9 +47,4 @@
     <messageFlow id="MessageFlow_InformControllerProcessor" sourceRef="Task_InformControllerProcessor" targetRef="Participant_ControllerProcessor_Art39" />
     <messageFlow id="MessageFlow_InformEmployees" sourceRef="Task_InformEmployees" targetRef="Participant_ControllerProcessor_Art39" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

@@ -5,7 +5,6 @@
     <pool id="Participant_JointControllerA_Art26" name="Joint Controller A" poolType="active" processRef="Process_JointControllerA_Art26" />
     <pool id="Participant_JointControllerB_Art26" name="Joint Controller B" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="ReceiveTask_ReceiveArrangementInput_Art26" name="Receive arrangement input" type="receiveTask" poolRef="Participant_JointControllerA_Art26" />
     <task id="ReceiveTask_ReceiveRightsRequestA_Art26" name="Receive rights request" type="receiveTask" poolRef="Participant_JointControllerA_Art26" />
@@ -57,9 +56,4 @@
     <messageFlow id="MessageFlow_MakeEssenceAvailable_Art26" sourceRef="SendTask_MakeEssenceAvailable_Art26" targetRef="Participant_DataSubject_Art26" />
     <messageFlow id="MessageFlow_ReceiveArrangementInput_Art26" sourceRef="Participant_JointControllerB_Art26" targetRef="ReceiveTask_ReceiveArrangementInput_Art26" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

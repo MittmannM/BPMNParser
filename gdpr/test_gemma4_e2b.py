@@ -40,8 +40,7 @@ USER_PROMPT_PREFIX = (
     "Model only process-relevant legal logic.\n"
     "Use short task names, question-style exclusive gateways, and labeled exclusive branches.\n"
     "Use this exact top-level order:\n"
-    "<pools><lanes /><tasks><events><gateways><sequenceFlows><messageFlows>"
-    "<dataObjects /><dataStores /><dataAssociations /><annotations /><associations />\n"
+    "<pools><tasks><events><gateways><sequenceFlows><messageFlows>\n"
     "Text:\n\n"
 )
 

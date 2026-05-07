@@ -4,7 +4,6 @@
     <pool id="Participant_Court_Art79" name="Court" poolType="passive" />
     <pool id="Participant_DataSubject_Art79" name="Data Subject" poolType="active" processRef="Process_DataSubject_Art79" />
   </pools>
-  <lanes />
   <tasks>
     <task id="SendTask_BringProceedings_Art79" name="Bring proceedings against controller or processor" type="sendTask" poolRef="Participant_DataSubject_Art79" />
     <task id="Task_UseEstablishmentCourt_Art79" name="Use establishment Member-State court" type="task" poolRef="Participant_DataSubject_Art79" />
@@ -35,9 +34,4 @@
   <messageFlows>
     <messageFlow id="MessageFlow_BringProceedings_Art79" sourceRef="SendTask_BringProceedings_Art79" targetRef="Participant_Court_Art79" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

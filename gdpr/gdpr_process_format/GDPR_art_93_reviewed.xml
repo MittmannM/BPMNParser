@@ -4,7 +4,6 @@
     <pool id="Participant_Commission_Art93" name="Commission" poolType="active" processRef="Process_Commission_Art93" />
     <pool id="Participant_Committee_Art93" name="Committee" poolType="active" processRef="Process_Committee_Art93" />
   </pools>
-  <lanes />
   <tasks>
     <task id="Task_ApplyArticle5Procedure_Art93" name="Apply Article 5 procedure" type="task" poolRef="Participant_Commission_Art93" />
     <task id="Task_ApplyArticle8WithArticle5Procedure_Art93" name="Apply Article 8 with Article 5" type="task" poolRef="Participant_Commission_Art93" />
@@ -33,9 +32,4 @@
   <messageFlows>
     <messageFlow id="MessageFlow_AssistCommission_Art93" sourceRef="Task_AssistCommission_Art93" targetRef="StartEvent_ReceiveCommitteeWork_Art93" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

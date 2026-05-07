@@ -4,7 +4,6 @@
     <pool id="Participant_Controller_Art28" name="Controller" poolType="active" processRef="Process_Controller_Art28" />
     <pool id="Participant_Processor_Art28" name="Processor" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="ReceiveTask_ReceiveComplianceInfo_Art28" name="Receive compliance information" type="receiveTask" poolRef="Participant_Controller_Art28" />
     <task id="ReceiveTask_ReceiveInfringementNotice_Art28" name="Receive infringement notice" type="receiveTask" poolRef="Participant_Controller_Art28" />
@@ -78,9 +77,4 @@
     <messageFlow id="MessageFlow_RequestComplianceInfo_Art28" sourceRef="SendTask_RequestComplianceInfo_Art28" targetRef="Participant_Processor_Art28" />
     <messageFlow id="MessageFlow_SendProcessorContract_Art28" sourceRef="SendTask_SendProcessorContract_Art28" targetRef="Participant_Processor_Art28" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <processModel>
   <pools />
-  <lanes />
   <tasks>
     <task id="Task_ElectChairAndDeputies_Art73" name="Elect chair and two deputy chairs" type="task" poolRef="Process_Board_Art73" />
     <task id="Task_EndAfterFirstTerm_Art73" name="End office after first term" type="task" poolRef="Process_Board_Art73" />
@@ -30,9 +29,4 @@
     <sequenceFlow id="Flow_StartElection_To_ElectLeadership_Art73" sourceRef="StartEvent_HandleLeadershipElection_Art73" targetRef="Task_ElectChairAndDeputies_Art73" />
   </sequenceFlows>
   <messageFlows />
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

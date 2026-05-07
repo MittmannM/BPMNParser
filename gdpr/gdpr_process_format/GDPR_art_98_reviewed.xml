@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <processModel>
   <pools />
-  <lanes />
   <tasks>
     <task id="Task_EnsureUniformAndConsistentProtection_Art98" name="Ensure uniform and consistent protection" type="task" poolRef="Process_Art98" />
     <task id="Task_PrepareLegislativeProposals_Art98" name="Prepare legislative proposals" type="task" poolRef="Process_Art98" />
@@ -24,9 +23,4 @@
     <sequenceFlow id="Flow_TargetUnionActs_To_EnsureUniformProtection_Art98" sourceRef="Task_TargetUnionActsOnDataProtection_Art98" targetRef="Task_EnsureUniformAndConsistentProtection_Art98" />
   </sequenceFlows>
   <messageFlows />
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

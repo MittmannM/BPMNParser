@@ -6,7 +6,6 @@
     <pool id="Participant_Recipient_Art45" name="Recipient" poolType="passive" />
     <pool id="Participant_ThirdCountryIO_Art45" name="Third Country or International Organisation" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="ReceiveTask_ConsultAdequacyList_Art45" name="Check adequacy list" type="receiveTask" poolRef="Participant_ControllerProcessor_Art45" />
     <task id="SendTask_ConsultThirdCountry_Art45" name="Consult third country or organisation" type="sendTask" poolRef="Participant_Commission_Art45" />
@@ -89,9 +88,4 @@
     <messageFlow id="MessageFlow_PublishDecisionChange_Art45" sourceRef="SendTask_PublishDecisionChange_Art45" targetRef="Participant_ControllerProcessor_Art45" />
     <messageFlow id="MessageFlow_TransferData_Art45" sourceRef="SendTask_TransferData_Art45" targetRef="Participant_Recipient_Art45" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

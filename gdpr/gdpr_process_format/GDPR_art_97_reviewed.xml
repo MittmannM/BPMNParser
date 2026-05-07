@@ -7,7 +7,6 @@
     <pool id="Participant_MemberStatesAndSupervisoryAuthorities_Art97" name="Member States and Supervisory Authorities" poolType="passive" />
     <pool id="Participant_Public_Art97" name="Public" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="Task_MakeReportPublic_Art97" name="Make report public" type="sendTask" poolRef="Participant_Commission_Art97" />
     <task id="Task_RequestInformation_Art97" name="Request information if needed" type="task" poolRef="Participant_Commission_Art97" />
@@ -54,9 +53,4 @@
     <messageFlow id="MessageFlow_SubmitReportToCouncil_Art97" sourceRef="Task_SubmitReportToParliamentAndCouncil_Art97" targetRef="Participant_Council_Art97" />
     <messageFlow id="MessageFlow_SubmitReportToParliament_Art97" sourceRef="Task_SubmitReportToParliamentAndCouncil_Art97" targetRef="Participant_EuropeanParliament_Art97" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

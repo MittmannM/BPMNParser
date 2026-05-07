@@ -7,7 +7,6 @@
     <pool id="Participant_OtherAuthorityOrChair_Art64" name="Other Supervisory Authority or Chair" poolType="passive" />
     <pool id="Participant_Public_Art64" name="Public" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="Task_AdoptOpinion_Art64" name="Adopt opinion within eight weeks" type="task" poolRef="Participant_Board_Art64" />
     <task id="Task_CirculateRelevantInformation_Art64" name="Circulate relevant information" type="task" poolRef="Participant_Board_Art64" />
@@ -85,9 +84,4 @@
     <messageFlow id="MessageFlow_SendOpinionToCommission_Art64" sourceRef="Task_SendOpinionAndInformCommission_Art64" targetRef="Participant_Commission_Art64" />
     <messageFlow id="MessageFlow_SendOpinionToOtherAuthorityOrChair_Art64" sourceRef="Task_SendOpinionAndInformCommission_Art64" targetRef="Participant_OtherAuthorityOrChair_Art64" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

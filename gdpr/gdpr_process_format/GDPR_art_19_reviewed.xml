@@ -5,7 +5,6 @@
     <pool id="Participant_DataSubject_Art19" name="Data Subject" poolType="passive" />
     <pool id="Participant_Recipients_Art19" name="Recipients" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="SendTask_InformDataSubjectAboutRecipients_Art19" name="Inform data subject of notified recipients" type="sendTask" poolRef="Participant_Controller_Art19" />
     <task id="SendTask_NotifyRecipients_Art19" name="Communicate the rectification, erasure, or restriction to each recipient" type="sendTask" poolRef="Participant_Controller_Art19" />
@@ -44,9 +43,4 @@
     <messageFlow id="MessageFlow_InformDataSubjectAboutRecipients_Art19" sourceRef="SendTask_InformDataSubjectAboutRecipients_Art19" targetRef="Participant_DataSubject_Art19" />
     <messageFlow id="MessageFlow_NotifyRecipients_Art19" sourceRef="SendTask_NotifyRecipients_Art19" targetRef="Participant_Recipients_Art19" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

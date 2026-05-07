@@ -5,7 +5,6 @@
     <pool id="Participant_MemberState_Art36" name="Member State" poolType="active" processRef="Process_MemberState_Art36" />
     <pool id="Participant_SupervisoryAuthority_Art36" name="Supervisory Authority" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="ReceiveTask_ReceiveAdditionalInfoRequest_Art36" name="Receive additional-info request" type="receiveTask" poolRef="Participant_Controller_Art36" />
     <task id="ReceiveTask_ReceiveExtensionNotice_Art36" name="Receive extension notice with reasons" type="receiveTask" poolRef="Participant_Controller_Art36" />
@@ -91,9 +90,4 @@
     <messageFlow id="MessageFlow_SendPriorConsultation_Art36" sourceRef="SendTask_SendPriorConsultation_Art36" targetRef="Participant_SupervisoryAuthority_Art36" />
     <messageFlow id="MessageFlow_SendWrittenAdvice_Art36" sourceRef="Participant_SupervisoryAuthority_Art36" targetRef="ReceiveTask_ReceiveWrittenAdvice_Art36" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

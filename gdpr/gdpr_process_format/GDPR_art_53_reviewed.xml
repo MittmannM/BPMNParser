@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <processModel>
   <pools />
-  <lanes />
   <tasks>
     <task id="Task_AppointMember_Art53" name="Appoint supervisory authority member" type="task" poolRef="Process_MemberLifecycle_Art53" />
     <task id="Task_AssessQualifications_Art53" name="Assess qualifications, experience, and skills" type="task" poolRef="Process_MemberLifecycle_Art53" />
@@ -50,9 +49,4 @@
     <sequenceFlow id="Flow_Start_To_DefineProcedure_Art53" sourceRef="StartEvent_StartAppointment_Art53" targetRef="Task_DefineTransparentProcedure_Art53" />
   </sequenceFlows>
   <messageFlows />
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

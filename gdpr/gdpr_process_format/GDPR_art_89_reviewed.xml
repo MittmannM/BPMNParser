@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <processModel>
   <pools />
-  <lanes />
   <tasks>
     <task id="Task_CheckArchivingDerogation_Art89" name="Check archiving derogation" type="task" poolRef="Process_Controller_Art89" />
     <task id="Task_CheckResearchDerogation_Art89" name="Check research or statistics derogation" type="task" poolRef="Process_Controller_Art89" />
@@ -49,9 +48,4 @@
     <sequenceFlow id="Flow_TaskUsePseudonymisation_To_GatewayNonIdentifyingMode_Art89" sourceRef="Task_UsePseudonymisation_Art89" targetRef="Gateway_NonIdentifyingMode_Art89" />
   </sequenceFlows>
   <messageFlows />
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

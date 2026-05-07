@@ -5,7 +5,6 @@
     <pool id="Participant_Processor_Art33" name="Processor" poolType="active" processRef="Process_Processor_Art33" />
     <pool id="Participant_SupervisoryAuthority_Art33" name="Supervisory Authority" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="SendTask_ProcessorNotifyController_Art33" name="Notify controller without undue delay" type="sendTask" poolRef="Participant_Processor_Art33" />
     <task id="SendTask_SendFullNotice_Art33" name="Notify competent supervisory authority" type="sendTask" poolRef="Participant_Controller_Art33" />
@@ -80,9 +79,4 @@
     <messageFlow id="MessageFlow_SendInitialNotice_Art33" sourceRef="SendTask_SendInitialNotice_Art33" targetRef="Participant_SupervisoryAuthority_Art33" />
     <messageFlow id="MessageFlow_SendPhasedInfo_Art33" sourceRef="SendTask_SendPhasedInfo_Art33" targetRef="Participant_SupervisoryAuthority_Art33" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>

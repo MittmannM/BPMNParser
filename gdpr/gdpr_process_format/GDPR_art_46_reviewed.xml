@@ -5,7 +5,6 @@
     <pool id="Participant_Counterparty_Art46" name="Third-country recipient or public authority" poolType="passive" />
     <pool id="Participant_SupervisoryAuthority_Art46" name="Supervisory Authority" poolType="passive" />
   </pools>
-  <lanes />
   <tasks>
     <task id="ReceiveTask_ReceiveArrangementAuthorisation_Art46" name="Receive arrangement authorisation" type="receiveTask" poolRef="Participant_ControllerProcessor_Art46" />
     <task id="ReceiveTask_ReceiveClauseAuthorisation_Art46" name="Receive clause authorisation" type="receiveTask" poolRef="Participant_ControllerProcessor_Art46" />
@@ -97,9 +96,4 @@
     <messageFlow id="MessageFlow_RequestClauseAuthorisation_Art46" sourceRef="SendTask_RequestClauseAuthorisation_Art46" targetRef="Participant_SupervisoryAuthority_Art46" />
     <messageFlow id="MessageFlow_TransferPersonalData_Art46" sourceRef="SendTask_TransferData_Art46" targetRef="Participant_Counterparty_Art46" />
   </messageFlows>
-  <dataObjects />
-  <dataStores />
-  <dataAssociations />
-  <annotations />
-  <associations />
 </processModel>
