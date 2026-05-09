@@ -1,0 +1,91 @@
+```xml
+<processModel>
+  <pools>
+    <tasks>
+      <task name="Elect Chair">
+        <events>
+          <gateway name="Is election required?">
+            <sequenceFlows>
+              <flow to="Yes">
+                <nextTask>Elect Chair</nextTask>
+              </flow>
+              <flow to="No">
+                <nextTask>End</nextTask>
+              </flow>
+            </sequenceFlows>
+          </gateway>
+        </events>
+      </task>
+      <task name="Elect Deputy Chairs">
+        <events>
+          <gateway name="Is election for Deputy Chairs required?">
+            <sequenceFlows>
+              <flow to="Yes">
+                <nextTask>Elect Deputy Chairs</nextTask>
+              </flow>
+              <flow to="No">
+                <nextTask>End</nextTask>
+              </flow>
+            </sequenceFlows>
+          </gateway>
+        </events>
+      </task>
+      <task name="Determine Elected Officers">
+        <events>
+          <gateway name="Are Chair and two Deputy Chairs elected?">
+            <sequenceFlows>
+              <flow to="Yes">
+                <nextTask>Confirm Election</nextTask>
+              </flow>
+              <flow to="No">
+                <nextTask>End</nextTask>
+              </flow>
+            </sequenceFlows>
+          </gateway>
+        </events>
+      </task>
+      <task name="Set Term Length">
+        <events>
+          <gateway name="Is term length setting required?">
+            <sequenceFlows>
+              <flow to="Yes">
+                <nextTask>Set Term Length</nextTask>
+              </flow>
+              <flow to="No">
+                <nextTask>End</nextTask>
+              </flow>
+            </sequenceFlows>
+          </gateway>
+        </events>
+      </task>
+      <task name="Define Term Duration">
+        <events>
+          <gateway name="Is term duration definition required?">
+            <sequenceFlows>
+              <flow to="Yes">
+                <nextTask>Define Term Duration</nextTask>
+              </flow>
+              <flow to="No">
+                <nextTask>End</nextTask>
+              </flow>
+            </sequenceFlows>
+          </gateway>
+        </events>
+      </task>
+      <task name="Set Term Duration Value">
+        <events>
+          <gateway name="Is term duration value setting required?">
+            <sequenceFlows>
+              <flow to="Yes">
+                <nextTask>Set Term Duration Value</nextTask>
+              </flow>
+              <flow to="No">
+                <nextTask>End</nextTask>
+              </flow>
+            </sequenceFlows>
+          </gateway>
+        </events>
+      </task>
+    </tasks>
+  </pools>
+</processModel>

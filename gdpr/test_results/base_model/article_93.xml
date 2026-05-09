@@ -1,0 +1,21 @@
+```xml
+<processModel>
+  <pools>
+    <tasks>
+      <task name="Establish Committee">
+        <events>
+          <gateway name="Is assistance required?">
+            <sequenceFlows>
+              <flow to="Yes">
+                <taskRef>Form Committee</taskRef>
+              </flow>
+              <flow to="No">
+                <taskRef>End</taskRef>
+              </flow>
+            </sequenceFlows>
+          </gateway>
+        </events>
+      </task>
+    </tasks>
+  </pools>
+</processModel>

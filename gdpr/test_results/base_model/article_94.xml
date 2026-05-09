@@ -1,0 +1,40 @@
+```xml
+<processModel>
+  <pools>
+    <tasks>
+      <task name="Check Directive Status">
+        <events>
+          <gateway name="Is Directive 95/46/EC in force?">
+            <sequenceFlows>
+              <flow to="Repealed" condition="Directive 95/46/EC is repealed with effect from 25 May 2018."/>
+            </sequenceFlows>
+            <branch name="Repealed">
+              <sequenceFlows>
+                <flow to="Interpret Reference" condition="References to the repealed Directive shall be construed as references to this Regulation."/>
+              </sequenceFlows>
+            </branch>
+            <branch name="Not Repealed">
+              <!-- No specific action defined for non-repealed state based on text -->
+            </branch>
+          </gateway>
+        </events>
+      <task name="Interpret References">
+        <events>
+          <gateway name="Are there references to the repealed Directive?">
+            <sequenceFlows>
+              <flow to="Constrain Reference" condition="References to the repealed Directive shall be construed as references to this Regulation."/>
+            </sequenceFlows>
+          </gateway>
+        </events>
+      <task name="Interpret Working Party Reference">
+        <events>
+          <gateway name="Are there references to the Working Party on the Protection of Individuals with regard to the Processing of Personal Data established by Article 29 of Directive 95/46/EC?">
+            <sequenceFlows>
+              <flow to="Constrain Reference" condition="References to the Working Party on the Protection of Individuals with regard to the Processing of Personal Data established by Article 29 of Directive 95/46/EC shall be construed as references to the European Data Protection Board established by this Regulation."/>
+            </sequenceFlows>
+          </gateway>
+        </events>
+      </task>
+    </tasks>
+  </pools>
+</processModel>

@@ -1,0 +1,72 @@
+```xml
+<processModel>
+  <pools>
+    <tasks>
+      <task name="Check Transfer Condition">
+        <events>
+          <gateway name="Is transfer to third country/international organisation occurring?">
+            <sequenceFlows>
+              <flow to="ComplianceCheck"/>
+            </sequenceFlows>
+          </gateway>
+        </events>
+        <events>
+          <gateway name="Are conditions laid down in this Chapter complied with by controller and processor?">
+            <sequenceFlows>
+              <flow to="ProceedIfComplied"/>
+              <flow to="StopIfNotComplied"/>
+            </sequenceFlows>
+          </gateway>
+        </events>
+        <events>
+          <gateway name="Are conditions complied with for onward transfers from third country/international organisation to another third country/international organisation?">
+            <sequenceFlows>
+              <flow to="ProceedIfCompliedOnward"/>
+              <flow to="StopIfNotCompliedOnward"/>
+            </sequenceFlows>
+          </gateway>
+        </events>
+      </task>
+    </tasks>
+    <messageFlows>
+      <messageFlow name="Transfer_Requires_Compliance">
+        <source>Check Transfer Condition</source>
+        <target>Controller/Processor Compliance Check</target>
+      </messageFlow>
+      <messageFlow name="Transfer_Allowed_If_Complied">
+        <source>Controller/Processor Compliance Check</source>
+        <target>Transfer Execution</target>
+      </messageFlow>
+      <messageFlow name="Transfer_Prohibited_If_NonCompliant">
+        <source>Controller/Processor Compliance Check</source>
+        <target>Transfer Blocked</target>
+      </messageFlow>
+    </messageFlows>
+    <sequenceFlows>
+      <sequenceFlow name="Initial_Transfer_Check">
+        <source>Start</source>
+        <target>Check Transfer Condition</target>
+      </sequenceFlow>
+      <sequenceFlow name="Check_Compliance">
+        <source>Check Transfer Condition</source>
+        <target>Are conditions laid down in this Chapter complied with by controller and processor?</target>
+      </sequenceFlow>
+      <sequenceFlow name="Check_Onward_Compliance">
+        <source>Are conditions laid down in this Chapter complied with by controller and processor?</source>
+        <target>Are conditions complied with for onward transfers from third country/international organisation to another third country/international organisation?</target>
+      </sequenceFlow>
+      <sequenceFlow name="Determine_Transfer_Validity">
+        <source>Are conditions complied with for onward transfers from third country/international organisation to another third country or to another international organisation?</source>
+        <target>Transfer_Decision</target>
+      </sequenceFlow>
+      <sequenceFlow name="Execute_Transfer">
+        <source>Transfer_Decision (Approved)</source>
+        <target>Transfer_Allowed_If_Complied</target>
+      </sequenceFlow>
+      <sequenceFlow name="Block_Transfer">
+        <source>Transfer_Decision (Rejected)</source>
+        <target>Transfer_Prohibited_If_NonCompliant</target>
+      </sequenceFlow>
+    </sequenceFlows>
+  </pools>
+</processModel>

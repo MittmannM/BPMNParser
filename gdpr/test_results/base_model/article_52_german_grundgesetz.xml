@@ -1,0 +1,117 @@
+```xml
+<processModel>
+  <pools>
+    <tasks>
+      <task name="Elect President">
+        <event name="Start" />
+        <gateways>
+          <sequenceFlows>
+            <flow to="Convene Bundesrat"/>
+          </sequenceFlows>
+        </gateways>
+        <messageFlows>
+          <flow to="President elected"/>
+        </messageFlows>
+      </task>
+      <task name="Convene Bundesrat">
+        <event name="President elected" />
+        <gateways>
+          <sequenceFlows>
+            <flow to="Decision required"/>
+          </sequenceFlows>
+        </gateways>
+        <messageFlows>
+          <flow to="Bundesrat convened"/>
+        </messageFlows>
+      </task>
+      <task name="Determine Mandate">
+        <event name="Bundesrat convened" />
+        <gateways>
+          <sequenceFlows>
+            <flow to="Check demand"/>
+          </sequenceFlows>
+        </gateways>
+        <messageFlows>
+          <flow to="Demand check"/>
+        </messageFlows>
+      </task>
+      <task name="Require Majority Vote">
+        <event name="Demand check" />
+        <gateways>
+          <sequenceFlows>
+            <flow to="Vote required"/>
+          </sequenceFlows>
+        </gateways>
+        <messageFlows>
+          <flow to="Majority vote required"/>
+        </messageFlows>
+      </task>
+      <task name="Adopt Rules of Procedure">
+        <event name="Vote required" />
+        <gateways>
+          <sequenceFlows>
+            <flow to="Rules adopted"/>
+          </sequenceFlows>
+        </gateways>
+        <messageFlows>
+          <flow to="Rules of procedure adopted"/>
+        </messageFlows>
+      </task>
+      <task name="Open Meetings">
+        <event name="Rules adopted" />
+        <gateways>
+          <sequenceFlows>
+            <flow to="Meetings open"/>
+          </sequenceFlows>
+        </gateways>
+        <messageFlows>
+          <flow to="Meetings open to public"/>
+        </messageFlows>
+      </task>
+      <task name="Exclude Public">
+        <event name="Meetings open" />
+        <gateways>
+          <sequenceFlows>
+            <flow to="Public exclusion decision"/>
+          </sequenceFlows>
+        </gateways>
+        <messageFlows>
+          <flow to="Public exclusion decision"/>
+        </messageFlows>
+      </task>
+      <task name="Establish Chamber for EU Affairs">
+        <event name="Matter concerning EU" />
+        <gateways>
+          <sequenceFlows>
+            <flow to="Chamber established"/>
+          </sequenceFlows>
+        </gateways>
+        <messageFlows>
+          <flow to="Chamber for European Affairs established"/>
+        </messageFlows>
+      </task>
+      <task name="Determine EU Votes">
+        <event name="Chamber established" />
+        <gateways>
+          <sequenceFlows>
+            <flow to="Determine votes"/>
+          </sequenceFlows>
+        </gateways>
+        <messageFlows>
+          <flow to="Determine voting structure"/>
+        </messageFlows>
+      </task>
+      <task name="Members Serve on Committees">
+        <event name="Any member/representative request" />
+        <gateways>
+          <sequenceFlows>
+            <flow to="Committee assignment"/>
+          </sequenceFlows>
+        </gateways>
+        <messageFlows>
+          <flow to="Committee assignment"/>
+        </messageFlows>
+      </task>
+    </tasks>
+  </pools>
+</processModel>

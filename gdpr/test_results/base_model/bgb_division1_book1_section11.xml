@@ -1,0 +1,83 @@
+```xml
+<processModel>
+  <pools>
+    <tasks>
+      <task name="Check Parent 1 Care Right">
+        <events>
+          <gateway name="Parent 1 Has Care Right?">
+            <sequenceFlows>
+              <flow to="Parent 1 Has Care Right?">
+                <branch name="Yes">
+                  <nextTask>Check Parent 2 Care Right</nextTask>
+                </branch>
+                <branch name="No">
+                  <nextTask>Check Parent 2 Care Right</nextTask>
+                </branch>
+              </flow>
+            </sequenceFlows>
+          </gateway>
+        </events>
+      <task name="Check Parent 2 Care Right">
+        <events>
+          <gateway name="Parent 2 Has Care Right?">
+            <sequenceFlows>
+              <flow to="Parent 2 Has Care Right?">
+                <branch name="Yes">
+                  <nextTask>Determine Residence Holder</nextTask>
+                </branch>
+                <branch name="No">
+                  <nextTask>Determine Residence Holder</nextTask>
+                </branch>
+              </flow>
+            </sequenceFlows>
+          </gateway>
+        </events>
+      <task name="Determine Residence Holder">
+        <events>
+          <gateway name="Both Parents Lack Care Right?">
+            <sequenceFlows>
+              <flow to="Both Parents Lack Care Right?">
+                <branch name="Yes">
+                  <nextTask>Identify Person with Care Right</nextTask>
+                </branch>
+                <branch name="No">
+                  <nextTask>Child Shares Residence with Parent 1</nextTask>
+                </branch>
+              </flow>
+            </sequenceFlows>
+          </gateway>
+        </events>
+      <task name="Identify Person with Care Right">
+        <events>
+          <gateway name="Person with Care Right Identified?">
+            <sequenceFlows>
+              <flow to="Person with Care Right Identified?">
+                <branch name="Yes">
+                  <nextTask>Child Shares Residence with Person with Care Right</nextTask>
+                </branch>
+                <branch name="No">
+                  <nextTask>Error/Undefined State</nextTask>
+                </branch>
+              </flow>
+            </sequenceFlows>
+          </gateway>
+        </events>
+      <task name="Child Validly Abandons Residence">
+        <events>
+          <gateway name="Child Abandons Residence?">
+            <sequenceFlows>
+              <flow to="Child Abandons Residence?">
+                <branch name="Yes">
+                  <nextTask>Residence Transfer Complete</nextTask>
+                </branch>
+                <branch name="No">
+                  <nextTask>Child Retains Residence</nextTask>
+                </branch>
+              </flow>
+            </sequenceFlows>
+          </gateway>
+        </events>
+      </task>
+    </tasks>
+  </pools>
+</processModel>

@@ -1,0 +1,119 @@
+```xml
+<processModel>
+  <pools>
+    <tasks>
+      <event name="Establish Supervisory Authority">
+        <gateways>
+          <sequenceFlows>
+            <flow name="Provide Law for Establishment">
+              <next>Determine establishment requirements</next>
+            </flow>
+          </sequenceFlows>
+        </gateways>
+        <messageFlows>
+          <flow name="Establishment Requirement">
+            <next>Check for provision of law</next>
+          </flow>
+        </messageFlows>
+      </event>
+      <event name="Define Qualifications and Eligibility">
+        <gateways>
+          <sequenceFlows>
+            <flow name="Provide Qualifications">
+              <next>Determine qualification requirements</next>
+            </flow>
+          </sequenceFlows>
+        </gateways>
+        <messageFlows>
+          <flow name="Qualification Requirement">
+            <next>Check for provision of qualifications</next>
+          </flow>
+        </messageFlows>
+      </event>
+      <event name="Establish Appointment Rules">
+        <gateways>
+          <sequenceFlows>
+            <flow name="Provide Rules for Appointment">
+              <next>Determine rules for appointment</next>
+            </flow>
+          </sequenceFlows>
+        </gateways>
+        <messageFlows>
+          <flow name="Appointment Rule Requirement">
+            <next>Check for provision of rules</next>
+          </flow>
+        </messageFlows>
+      </event>
+      <event name="Define Term Duration">
+        <gateways>
+          <sequenceFlows>
+            <flow name="Provide Term Duration">
+              <next>Determine term duration requirements</next>
+            </flow>
+          </sequenceFlows>
+        </gateways>
+        <messageFlows>
+          <flow name="Term Duration Requirement">
+            <next>Check for provision of term duration</next>
+          </flow>
+        </messageFlows>
+      </event>
+      <event name="Define Reappointment Eligibility">
+        <gateways>
+          <sequenceFlows>
+            <flow name="Provide Reappointment Eligibility">
+              <next>Determine reappointment eligibility</next>
+            </flow>
+          </sequenceFlows>
+        </gateways>
+        <messageFlows>
+          <flow name="Reappointment Eligibility Requirement">
+            <next>Check for provision of reappointment rules</next>
+          </flow>
+        </messageFlows>
+      </event>
+      <event name="Define Obligations and Prohibitions">
+        <gateways>
+          <sequenceFlows>
+            <flow name="Provide Obligations and Prohibitions">
+              <next>Determine obligations and prohibitions</next>
+            </flow>
+          </sequenceFlows>
+        </gateways>
+        <messageFlows>
+          <flow name="Obligation Requirement">
+            <next>Check for provision of obligations</next>
+          </flow>
+        </messageFlows>
+      </event>
+      <event name="Define Cessation of Employment Rules">
+        <gateways>
+          <sequenceFlows>
+            <flow name="Provide Cessation Rules">
+              <next>Determine cessation rules</next>
+            </flow>
+          </sequenceFlows>
+        </gateways>
+        <messageFlows>
+          <flow name="Cessation Rule Requirement">
+            <next>Check for provision of cessation rules</next>
+          </flow>
+        </messageFlows>
+      </event>
+      <event name="Apply Duty of Professional Secrecy">
+        <gateways>
+          <sequenceFlows>
+            <flow name="Apply Secrecy Duty">
+              <next>Execute secrecy duty</next>
+            </flow>
+          </sequenceFlows>
+        </gateways>
+        <messageFlows>
+          <flow name="Secrecy Duty Application">
+            <next>Check for duty of professional secrecy</next>
+          </flow>
+        </messageFlows>
+      </event>
+    </tasks>
+  </pools>
+</processModel>
